@@ -1,17 +1,18 @@
-==================
-openklant
-==================
+==========
+Open Klant
+==========
 
 :Version: 0.1.0
 :Source: https://bitbucket.org/maykinmedia/openklant
-:Keywords: ``<keywords>``
-:PythonVersion: 3.7
+:Keywords: ``klanten``, ``contactmomenten``, ``API``, ``Common Ground``
+:PythonVersion: 3.8
 
 |build-status| |requirements|
 
-``<oneliner describing the project>``
+Project that combines `Klanten API`_ and `Contactmomenten API`_ into a single
+production worthy component.
 
-Developed by `Maykin Media B.V.`_ for ``<client>``
+Developed by `Maykin Media B.V.`_ for the municipality of Den Haag
 
 
 Introduction
