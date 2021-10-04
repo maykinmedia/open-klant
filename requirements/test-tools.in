@@ -1,0 +1,13 @@
+-c base.txt
+
+# Dependencies only relevant for (unit) testing
+coverage < 5.0
+django-jenkins
+django-webtest
+factory-boy
+freezegun
+pep8
+pylint
+pyquery  # integrates with webtest
+requests-mock
+tblib

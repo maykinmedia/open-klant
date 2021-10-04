@@ -1,0 +1,10 @@
+SECRET_KEY="django-insecure-$8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b"
+DB_NAME="openklant"
+DB_USER="openklant"
+#
+# For peer authentication via unix domain socket
+# these should be kept empty.
+#
+DB_PASSWORD=""
+DB_HOST=""
+DB_PORT=""

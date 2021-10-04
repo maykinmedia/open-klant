@@ -1,0 +1,39 @@
+# Developers
+.hg
+.git
+.svn
+.idea/
+.vscode/
+.sass-cache/
+*.db
+*.pyc
+__pycache__
+*~
+*.mo
+
+# Javascript libraries
+/node_modules/
+
+# Generated files
+/docs/_build
+
+# Coverage reports
+/reports/
+/htmlcov/
+.coverage
+
+# Environment
+#/deployment/app.*.yml
+#/deployment/hosts.*
+local.py
+/env/
+/media/
+/static/
+/mail/
+/log/*.log*
+/log/nginx/*.log*
+/.env
+
+# Static files
+src/openklant/static/bundles/
+src/openklant/fonts/

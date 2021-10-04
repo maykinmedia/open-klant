@@ -1,0 +1,30 @@
+# Core python libraries
+Pillow  # handle images
+psycopg2  # database driver
+pytz  # handle timezones
+python-dotenv  # environment variables for secrets
+python-decouple  # processing of envvar configs
+
+# Framework libraries
+django < 3.0
+django-admin-index
+django-axes
+django-choices
+django-hijack
+django-hijack-admin
+django-redis
+django-rosetta
+django-sniplates
+-e git+git://github.com/maykinmedia/django-two-factor-auth@729249e647674c7022b894fcb0ccc4c231ed23d8#egg=django-two-factor-auth
+phonenumbers
+
+# API libraries
+# djangorestframework
+# django-extra-fields
+# django-filter
+# drf-yasg  # api documentation
+
+# WSGI servers & monitoring - production oriented
+uwsgi
+sentry-sdk  # error monitoring
+elastic-apm  # Elastic APM integration
