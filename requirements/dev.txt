@@ -40,6 +40,17 @@ click==8.0.1
     # via
     #   black
     #   pip-tools
+coreapi==2.3.3
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   drf-yasg
+coreschema==0.0.4
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   coreapi
+    #   drf-yasg
 coverage==4.5.4
     # via
     #   -c requirements/ci.txt
@@ -60,15 +71,22 @@ django==2.2.24
     #   django-choices
     #   django-debug-toolbar
     #   django-extensions
+    #   django-filter
     #   django-formtools
     #   django-hijack
     #   django-jenkins
+    #   django-markup
     #   django-otp
     #   django-phonenumber-field
     #   django-redis
+    #   django-rest-framework-condition
     #   django-rosetta
     #   django-sniplates
     #   django-two-factor-auth
+    #   djangorestframework
+    #   drf-nested-routers
+    #   drf-yasg
+    #   vng-api-common
 django-admin-index==1.5.0
     # via
     #   -c requirements/ci.txt
@@ -77,19 +95,33 @@ django-axes==5.25.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+django-better-admin-arrayfield==1.4.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 django-choices==1.7.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   vng-api-common
 django-compat==1.0.15
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-hijack-admin
+django-cors-middleware==1.5.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 django-debug-toolbar==3.2.2
     # via -r requirements/dev.in
 django-extensions==3.1.3
     # via -r requirements/dev.in
+django-filter==21.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 django-formtools==2.3
     # via
     #   -c requirements/ci.txt
@@ -113,6 +145,11 @@ django-jenkins==0.110.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+django-markup==1.3
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 django-ordered-model==3.4.3
     # via
     #   -c requirements/ci.txt
@@ -132,6 +169,11 @@ django-redis==5.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+django-rest-framework-condition==0.1.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 django-rosetta==0.9.7
     # via
     #   -c requirements/ci.txt
@@ -140,14 +182,41 @@ django-sniplates==0.7.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+django-solo==1.2.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 django-webtest==1.9.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+djangorestframework==3.12.4
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   drf-nested-routers
+    #   drf-yasg
+    #   vng-api-common
+djangorestframework-camel-case==1.2.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 docutils==0.17.1
     # via
     #   sphinx
     #   sphinx-rtd-theme
+drf-nested-routers==0.93.3
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
+drf-yasg==1.20.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 elastic-apm==6.4.0
     # via
     #   -c requirements/ci.txt
@@ -167,6 +236,11 @@ freezegun==1.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+gemma-zds-client==1.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 idna==3.2
     # via
     #   -c requirements/ci.txt
@@ -174,14 +248,38 @@ idna==3.2
     #   requests
 imagesize==1.2.0
     # via sphinx
+inflection==0.5.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   drf-yasg
+iso-639==0.4.5
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
+isodate==0.6.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 isort==5.9.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   -r requirements/dev.in
     #   pylint
-jinja2==3.0.1
-    # via sphinx
+itypes==1.2.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   coreapi
+jinja2==3.0.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   coreschema
+    #   sphinx
 lazy-object-proxy==1.6.0
     # via
     #   -c requirements/ci.txt
@@ -192,8 +290,16 @@ lxml==4.6.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
+markdown==3.3.4
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 markupsafe==2.0.1
-    # via jinja2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   jinja2
 mccabe==0.6.1
     # via
     #   -c requirements/ci.txt
@@ -202,8 +308,17 @@ mccabe==0.6.1
     #   pylint
 mypy-extensions==0.4.3
     # via black
+oyaml==1.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
 packaging==21.0
-    # via sphinx
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   drf-yasg
+    #   sphinx
 pathspec==0.9.0
     # via black
 pep517==0.11.0
@@ -243,12 +358,21 @@ pyflakes==2.3.1
     # via flake8
 pygments==2.10.0
     # via sphinx
+pyjwt==2.1.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   gemma-zds-client
+    #   vng-api-common
 pylint==2.11.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
 pyparsing==2.4.7
-    # via packaging
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   packaging
 pyquery==1.4.3
     # via
     #   -c requirements/ci.txt
@@ -273,6 +397,13 @@ pytz==2021.3
     #   -r requirements/ci.txt
     #   babel
     #   django
+pyyaml==5.4.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   gemma-zds-client
+    #   oyaml
+    #   vng-api-common
 qrcode==6.1
     # via
     #   -c requirements/ci.txt
@@ -289,15 +420,28 @@ requests==2.26.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   coreapi
     #   ddt-api-calls
     #   django-rosetta
+    #   gemma-zds-client
     #   requests-mock
     #   sphinx
+    #   vng-api-common
 requests-mock==1.9.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   ddt-api-calls
+ruamel.yaml==0.17.16
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   drf-yasg
+ruamel.yaml.clib==0.2.6
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   ruamel.yaml
 sentry-sdk==1.4.3
     # via
     #   -c requirements/ci.txt
@@ -308,6 +452,8 @@ six==1.16.0
     #   -r requirements/ci.txt
     #   django-choices
     #   django-compat
+    #   django-markup
+    #   isodate
     #   python-dateutil
     #   qrcode
     #   requests-mock
@@ -367,6 +513,17 @@ typing-extensions==3.10.0.2
     #   astroid
     #   black
     #   pylint
+unidecode==1.3.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vng-api-common
+uritemplate==3.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   coreapi
+    #   drf-yasg
 urllib3==1.26.7
     # via
     #   -c requirements/ci.txt
@@ -375,6 +532,10 @@ urllib3==1.26.7
     #   requests
     #   sentry-sdk
 uwsgi==2.0.19.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+vng-api-common[markdown_docs]==1.6.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

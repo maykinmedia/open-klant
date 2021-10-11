@@ -9,7 +9,9 @@ python-decouple  # processing of envvar configs
 django < 3.0
 django-admin-index
 django-axes
+django-better-admin-arrayfield
 django-choices
+django-cors-middleware
 django-hijack
 django-hijack-admin
 django-redis
@@ -19,10 +21,11 @@ django-sniplates
 phonenumbers
 
 # API libraries
-# djangorestframework
+djangorestframework
 # django-extra-fields
 # django-filter
 # drf-yasg  # api documentation
+vng-api-common[markdown_docs]
 
 # WSGI servers & monitoring - production oriented
 uwsgi
