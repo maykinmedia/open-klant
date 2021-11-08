@@ -47,7 +47,6 @@ django==2.2.24
     #   django-choices
     #   django-filter
     #   django-formtools
-    #   django-hijack
     #   django-jenkins
     #   django-markup
     #   django-otp
@@ -78,11 +77,6 @@ django-choices==1.7.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   vng-api-common
-django-compat==1.0.15
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-hijack-admin
 django-cors-middleware==1.5.0
     # via
     #   -c requirements/base.txt
@@ -97,15 +91,6 @@ django-formtools==2.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
-django-hijack==3.0.4
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-hijack-admin
-django-hijack-admin==2.1.10
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
 django-ipware==4.0.0
     # via
     #   -c requirements/base.txt
@@ -269,7 +254,7 @@ polib==1.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-rosetta
-psycopg2==2.9.1
+psycopg2==2.8.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -352,7 +337,6 @@ six==1.16.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-choices
-    #   django-compat
     #   django-markup
     #   isodate
     #   python-dateutil
