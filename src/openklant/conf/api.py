@@ -6,7 +6,7 @@ from vng_api_common.conf.api import *  # noqa - imports white-listed
 del API_VERSION  # noqa
 
 # TODO remove after adding contactmomenten
-API_VERSION = "1.0.0"
+# API_VERSION = "1.0.0"
 KLANTEN_API_VERSION = "1.0.0"
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
@@ -38,6 +38,6 @@ SWAGGER_SETTINGS.update(
 
 GEMMA_URL_INFORMATIEMODEL_VERSIE = "1.0"
 
-SELF_REPO = "VNG-Realisatie/klanten-api"
-SELF_BRANCH = os.getenv("SELF_BRANCH") or API_VERSION
-GITHUB_API_SPEC = f"https://raw.githubusercontent.com/{SELF_REPO}/{SELF_BRANCH}/src/openapi.yaml"  # noqa
+# SELF_REPO = "VNG-Realisatie/klanten-api"
+# SELF_BRANCH = os.getenv("SELF_BRANCH") or KLANTEN_API_VERSION
+# GITHUB_API_SPEC = f"https://raw.githubusercontent.com/{SELF_REPO}/{SELF_BRANCH}/src/openapi.yaml"  # noqa

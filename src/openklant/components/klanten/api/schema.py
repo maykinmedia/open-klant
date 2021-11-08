@@ -39,8 +39,8 @@ genereren.
 """
 
 info = openapi.Info(
-    title=f"{settings.PROJECT_NAME} API",
-    default_version=settings.API_VERSION,
+    title=f"Klanten API",
+    default_version=settings.KLANTEN_API_VERSION,
     description=description,
     contact=openapi.Contact(
         email="standaarden.ondersteuning@vng.nl",

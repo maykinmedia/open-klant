@@ -20,7 +20,7 @@ BASE_DIR = os.path.abspath(
 #
 # Core Django settings
 #
-# SITE_ID = config("SITE_ID", default=1)
+SITE_ID = config("SITE_ID", default=1)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
@@ -121,6 +121,7 @@ INSTALLED_APPS = [
     "django_markup",
     "solo",
     # Project applications.
+    "openklant",
     "openklant.accounts",
     "openklant.utils",
     "openklant.components.klanten",
