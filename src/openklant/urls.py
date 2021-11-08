@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 
 from two_factor.admin import AdminSiteOTPRequired
@@ -46,7 +46,13 @@ urlpatterns = [
     ),
     path("klanten/api/", include("openklant.components.klanten.api.urls")),
     # Simply show the master template.
-    path("", TemplateView.as_view(template_name="index.html")),
+    path("", TemplateView.as_view(template_name="main.html")),
+    # separate apps
+    re_path(
+        r"^(?P<component>klanten|contactmomenten)/$",
+        TemplateView.as_view(template_name="index.html"),
+        name="main",
+    ),
     path("ref/", include("vng_api_common.urls")),
     path("ref/", include("vng_api_common.notifications.urls")),
 ]

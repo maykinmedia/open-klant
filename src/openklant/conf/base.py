@@ -38,7 +38,7 @@ IS_HTTPS = config("IS_HTTPS", default=not DEBUG)
 
 LANGUAGE_CODE = "nl-nl"
 
-TIME_ZONE = "Europe/Amsterdam"  # note: this *may* affect the output of DRF datetimes
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -138,7 +138,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "vng_api_common.middleware.APIVersionHeaderMiddleware",
+    "openklant.utils.middleware.APIVersionHeaderMiddleware",
 ]
 
 ROOT_URLCONF = "openklant.urls"
@@ -345,6 +345,19 @@ SITE_TITLE = "API dashboard"
 ENVIRONMENT = config("ENVIRONMENT", "")
 SHOW_ALERT = True
 
+# urls for OAS3 specifications
+SPEC_URL = {
+    "klanten": os.path.join(
+        BASE_DIR, "src", "openklant", "components", "klanten", "openapi.yaml"
+    ),
+    "contactmomenten": os.path.join(
+        BASE_DIR, "src", "openklant", "components", "contactmomenten", "openapi.yaml"
+    ),
+}
+
+# settings for sending notifications
+KLANTEN_NOTIFICATIONS_KANAAL = "klanten"
+
 ##############################
 #                            #
 # 3RD PARTY LIBRARY SETTINGS #
@@ -425,6 +438,3 @@ ELASTIC_APM = {
 if not ELASTIC_APM_SERVER_URL:
     ELASTIC_APM["ENABLED"] = False
     ELASTIC_APM["SERVER_URL"] = "http://localhost:8200"
-
-# settings for sending notifications
-KLANTEN_NOTIFICATIONS_KANAAL = "klanten"

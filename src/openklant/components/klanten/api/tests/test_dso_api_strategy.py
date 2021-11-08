@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.test import override_settings
 from django.utils.translation import ugettext as _
 
@@ -6,26 +8,34 @@ from vng_api_common.tests import reverse
 
 from . import views
 
+EXPECTED_VERSIONS = (
+    ("klanten", "1.0.0"),
+    # ("contactmomenten", "1.0.0"),
+)
+
 
 class DSOApiStrategyTests(APITestCase):
     def test_api_19_documentation_version(self):
-        url = reverse("schema-json", kwargs={"format": ".json"})
+        for component, _ in EXPECTED_VERSIONS:
+            with self.subTest(component=component):
+                url = reverse(f"schema-json-{component}", kwargs={"format": ".json"})
 
-        response = self.client.get(url)
+                response = self.client.get(url)
 
-        self.assertIn("application/json", response["Content-Type"])
+                self.assertIn("application/json", response["Content-Type"])
 
-        doc = response.json()
+                doc = response.json()
 
-        if "swagger" in doc:
-            self.assertGreaterEqual(doc["swagger"], "2.0")
-        elif "openapi" in doc:
-            self.assertGreaterEqual(doc["openapi"], "3.0.0")
-        else:
-            self.fail("Unknown documentation version")
+                if "swagger" in doc:
+                    self.assertGreaterEqual(doc["swagger"], "2.0")
+                elif "openapi" in doc:
+                    self.assertGreaterEqual(doc["openapi"], "3.0.0")
+                else:
+                    self.fail("Unknown documentation version")
 
+    @patch("openklant.utils.middleware.get_version_mapping", return_value={"/": "1.0.0"})
     @override_settings(ROOT_URLCONF="openklant.components.klanten.api.tests.test_urls")
-    def test_api_24_version_header(self):
+    def test_api_24_version_header(self, m):
         response = self.client.get("/test-view")
         self.assertEqual(response["API-version"], "1.0.0")
 
