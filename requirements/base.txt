@@ -26,7 +26,6 @@ django==2.2.24
     #   django-choices
     #   django-filter
     #   django-formtools
-    #   django-markup
     #   django-otp
     #   django-phonenumber-field
     #   django-redis
@@ -34,7 +33,6 @@ django==2.2.24
     #   django-rosetta
     #   django-sniplates
     #   django-two-factor-auth
-    #   djangorestframework
     #   drf-nested-routers
     #   drf-yasg
     #   vng-api-common
@@ -56,8 +54,6 @@ django-formtools==2.3
     # via django-two-factor-auth
 django-ipware==4.0.0
     # via django-axes
-django-markup==1.3
-    # via vng-api-common
 django-ordered-model==3.4.3
     # via django-admin-index
 django-otp==1.1.1
@@ -74,7 +70,7 @@ django-sniplates==0.7.0
     # via -r requirements/base.in
 django-solo==1.2.0
     # via vng-api-common
-djangorestframework==3.12.4
+djangorestframework==3.9.4
     # via
     #   -r requirements/base.in
     #   drf-nested-routers
@@ -84,7 +80,7 @@ djangorestframework-camel-case==1.2.0
     # via vng-api-common
 drf-nested-routers==0.93.3
     # via vng-api-common
-drf-yasg==1.20.0
+drf-yasg==1.16.0
     # via vng-api-common
 elastic-apm==6.4.0
     # via -r requirements/base.in
@@ -102,14 +98,10 @@ itypes==1.2.0
     # via coreapi
 jinja2==3.0.2
     # via coreschema
-markdown==3.3.4
-    # via vng-api-common
 markupsafe==2.0.1
     # via jinja2
 oyaml==1.0
     # via vng-api-common
-packaging==21.0
-    # via drf-yasg
 phonenumbers==8.12.33
     # via -r requirements/base.in
 pillow==8.3.2
@@ -118,12 +110,10 @@ polib==1.1.1
     # via django-rosetta
 psycopg2==2.8.6
     # via -r requirements/base.in
-pyjwt==2.1.0
+pyjwt==1.7.1
     # via
     #   gemma-zds-client
     #   vng-api-common
-pyparsing==2.4.7
-    # via packaging
 python-decouple==3.5
     # via -r requirements/base.in
 python-dotenv==0.19.0
@@ -156,7 +146,7 @@ sentry-sdk==1.4.3
 six==1.16.0
     # via
     #   django-choices
-    #   django-markup
+    #   drf-yasg
     #   isodate
     #   qrcode
 sqlparse==0.4.2
@@ -174,5 +164,5 @@ urllib3==1.26.7
     #   sentry-sdk
 uwsgi==2.0.19.1
     # via -r requirements/base.in
-vng-api-common[markdown_docs]==1.6.4
+vng-api-common[markdown_docs]==1.5.10
     # via -r requirements/base.in
