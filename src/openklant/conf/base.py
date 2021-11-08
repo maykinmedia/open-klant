@@ -1,10 +1,10 @@
 import os
 
-# Django-hijack (and Django-hijack-admin)
 from django.urls import reverse_lazy
 
 import sentry_sdk
 
+from .api import *  # noqa
 from .utils import config, get_current_version, get_sentry_integrations
 
 # Build paths inside the project, so further paths can be defined relative to
@@ -93,16 +93,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     # NOTE: If enabled, at least one Site object is required and
     # uncomment SITE_ID above.
-    # 'django.contrib.sites',
+    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # Admin auth
     "django_otp",
     "django_otp.plugins.otp_static",
     "django_otp.plugins.otp_totp",
     "two_factor",
-
     # Optional applications.
     "ordered_model",
     "django_admin_index",
@@ -112,13 +110,20 @@ INSTALLED_APPS = [
     # 'django.contrib.sitemaps',
     # External applications.
     "axes",
-    "sniplates",
-    "compat",  # Part of hijack
-    "hijack",
-    "hijack_admin",
+    "django_filters",
+    "corsheaders",
+    "vng_api_common",  # before drf_yasg to override the management command
+    "vng_api_common.notifications",
+    "vng_api_common.authorizations",
+    "vng_api_common.audittrails",
+    "drf_yasg",
+    "rest_framework",
+    "django_markup",
+    "solo",
     # Project applications.
     "openklant.accounts",
     "openklant.utils",
+    "openklant.components.klanten",
 ]
 
 MIDDLEWARE = [
@@ -128,10 +133,11 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "vng_api_common.middleware.AuthMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "axes.middleware.AxesMiddleware",
-    "django_otp.middleware.OTPMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "vng_api_common.middleware.APIVersionHeaderMiddleware",
 ]
 
 ROOT_URLCONF = "openklant.urls"
@@ -320,7 +326,7 @@ SESSION_COOKIE_SECURE = IS_HTTPS
 SESSION_COOKIE_HTTPONLY = True
 
 CSRF_COOKIE_SECURE = IS_HTTPS
-CSRF_FAILURE_VIEW = 'openklant.accounts.views.csrf_failure'
+CSRF_FAILURE_VIEW = "openklant.accounts.views.csrf_failure"
 
 X_FRAME_OPTIONS = "DENY"
 
@@ -333,7 +339,8 @@ FIXTURE_DIRS = (os.path.join(DJANGO_PROJECT_DIR, "fixtures"),)
 #
 # Custom settings
 #
-PROJECT_NAME = "openklant"
+PROJECT_NAME = "Open Klant"
+SITE_TITLE = "API dashboard"
 ENVIRONMENT = config("ENVIRONMENT", "")
 SHOW_ALERT = True
 
@@ -387,24 +394,14 @@ IPWARE_META_PRECEDENCE_ORDER = (
 )
 
 #
-# DJANGO-HIJACK
-#
-HIJACK_LOGIN_REDIRECT_URL = "/"
-HIJACK_LOGOUT_REDIRECT_URL = reverse_lazy("admin:accounts_user_changelist")
-HIJACK_REGISTER_ADMIN = False
-# This is a CSRF-security risk.
-# See: http://django-hijack.readthedocs.io/en/latest/configuration/#allowing-get-method-for-hijack-views
-HIJACK_ALLOW_GET_REQUESTS = True
-
-#
 # SENTRY - error monitoring
 #
 SENTRY_DSN = config("SENTRY_DSN", None)
 RELEASE = get_current_version()
 
 # Two factor auth
-LOGIN_URL = 'two_factor:login'
-LOGIN_REDIRECT_URL = 'admin:index'
+LOGIN_URL = "two_factor:login"
+LOGIN_REDIRECT_URL = "admin:index"
 
 if SENTRY_DSN:
     SENTRY_CONFIG = {
@@ -418,12 +415,15 @@ if SENTRY_DSN:
     )
 
 # Elastic APM
-ELASTIC_APM_SERVER_URL = os.getenv('ELASTIC_APM_SERVER_URL', None)
+ELASTIC_APM_SERVER_URL = os.getenv("ELASTIC_APM_SERVER_URL", None)
 ELASTIC_APM = {
     "SERVICE_NAME": f"openklant {ENVIRONMENT}",
     "SECRET_TOKEN": config("ELASTIC_APM_SECRET_TOKEN", "default"),
     "SERVER_URL": ELASTIC_APM_SERVER_URL,
 }
 if not ELASTIC_APM_SERVER_URL:
-    ELASTIC_APM['ENABLED'] = False
-    ELASTIC_APM['SERVER_URL'] = 'http://localhost:8200'
+    ELASTIC_APM["ENABLED"] = False
+    ELASTIC_APM["SERVER_URL"] = "http://localhost:8200"
+
+# settings for sending notifications
+KLANTEN_NOTIFICATIONS_KANAAL = "klanten"

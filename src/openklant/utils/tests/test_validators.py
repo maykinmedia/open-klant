@@ -1,6 +1,7 @@
-from src.project_name.utils.validators import validate_charfield_entry, validate_postal_code, validate_phone_number
+from openklant.utils.validators import validate_charfield_entry, validate_postal_code, validate_phone_number
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+
 
 
 class ValidatorsTestCase(TestCase):

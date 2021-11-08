@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% load i18n static hijack_tags utils %}
+{% load i18n static utils %}
 
 {% block title %}
 {{ title }} | {{ site_title|default:_('Administration') }}
@@ -8,7 +8,6 @@
 {% block extrastyle %}
     {{ block.super }}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'hijack/hijack-styles.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'bundles/admin_overrides.css' %}">
 {% endblock %}
 
@@ -31,6 +30,5 @@
 {% endblock %}
 
 {% block messages %}
-    {% hijack_notification %}
     {{ block.super }}
 {% endblock %}

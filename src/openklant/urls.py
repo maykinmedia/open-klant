@@ -32,9 +32,8 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(),
         name="password_reset_done",
     ),
-    path("admin/hijack/", include("hijack.urls")),
     path("admin/", admin.site.urls),
-    path('admin/', include(tf_urls)),
+    path("admin/", include(tf_urls)),
     path(
         "reset/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(),
@@ -45,8 +44,11 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path("klanten/api/", include("openklant.components.klanten.api.urls")),
     # Simply show the master template.
-    path("", TemplateView.as_view(template_name="master.html")),
+    path("", TemplateView.as_view(template_name="index.html")),
+    path("ref/", include("vng_api_common.urls")),
+    path("ref/", include("vng_api_common.notifications.urls")),
 ]
 
 # NOTE: The staticfiles_urlpatterns also discovers static files (ie. no need to run collectstatic). Both the static
@@ -58,4 +60,6 @@ urlpatterns += staticfiles_urlpatterns() + static(
 if settings.DEBUG and apps.is_installed("debug_toolbar"):
     import debug_toolbar
 
-    urlpatterns = [path("__debug__/", include(debug_toolbar.urls)),] + urlpatterns
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ] + urlpatterns
