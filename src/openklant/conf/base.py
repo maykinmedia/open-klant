@@ -97,10 +97,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Admin auth
-    "django_otp",
-    "django_otp.plugins.otp_static",
-    "django_otp.plugins.otp_totp",
-    "two_factor",
+    # "django_otp",
+    # "django_otp.plugins.otp_static",
+    # "django_otp.plugins.otp_totp",
+    # "two_factor",
     # Optional applications.
     "ordered_model",
     "django_admin_index",
@@ -120,6 +120,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_markup",
     "solo",
+    "django_better_admin_arrayfield",
     # Project applications.
     "openklant",
     "openklant.accounts",
@@ -424,7 +425,8 @@ SENTRY_DSN = config("SENTRY_DSN", None)
 RELEASE = get_current_version()
 
 # Two factor auth
-LOGIN_URL = "two_factor:login"
+# LOGIN_URL = "two_factor:login"
+LOGIN_URL = "admin:login"
 LOGIN_REDIRECT_URL = "admin:index"
 
 if SENTRY_DSN:

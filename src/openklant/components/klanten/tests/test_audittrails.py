@@ -61,7 +61,9 @@ class AuditTrailTests(JWTAuthMixin, APITestCase):
 
         klant_response = response.data
 
-        audittrails = AuditTrail.objects.filter(hoofd_object=klant_response["url"])
+        audittrails = AuditTrail.objects.filter(
+            hoofd_object=klant_response["url"]
+        ).order_by("pk")
         self.assertEqual(audittrails.count(), 2)
 
         klant_update_audittrail = audittrails[1]
@@ -77,7 +79,9 @@ class AuditTrailTests(JWTAuthMixin, APITestCase):
         response = self.client.patch(klant_data["url"], {"emailadres": "new@gmail.com"})
         klant_response = response.data
 
-        audittrails = AuditTrail.objects.filter(hoofd_object=klant_response["url"])
+        audittrails = AuditTrail.objects.filter(
+            hoofd_object=klant_response["url"]
+        ).order_by("pk")
         self.assertEqual(audittrails.count(), 2)
 
         klant_update_audittrail = audittrails[1]

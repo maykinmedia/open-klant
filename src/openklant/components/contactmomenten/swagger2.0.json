@@ -169,6 +169,20 @@
                         ]
                     },
                     {
+                        "name": "object",
+                        "in": "query",
+                        "description": "De URL van het gerelateerde object (zoals vastgelegd in de OBJECTCONTACTMOMENT resource). Meerdere waardes kunnen met komma's gescheiden worden.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "klant",
+                        "in": "query",
+                        "description": "De URL van de gerelateerde KLANT (zoals vastgelegd in de KLANTCONTACTMOMENT resource). Meerdere waardes kunnen met komma's gescheiden worden.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
