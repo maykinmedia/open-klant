@@ -32,6 +32,15 @@ class ContactMomentFilter(FilterSet):
             "Meerdere waardes kunnen met komma's gescheiden worden."
         ),
     )
+    klant = filters.BaseCSVFilter(
+        "klantcontactmoment__klant",
+        lookup_expr="in",
+        help_text=_(
+            "De URL van de gerelateerde KLANT "
+            "(zoals vastgelegd in de KLANTCONTACTMOMENT resource). "
+            "Meerdere waardes kunnen met komma's gescheiden worden."
+        ),
+    )
     ordering = filters.OrderingFilter(
         fields=(
             "url",
