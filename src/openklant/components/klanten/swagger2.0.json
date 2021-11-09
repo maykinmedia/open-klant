@@ -895,6 +895,7 @@
     },
     "definitions": {
         "KlantAdres": {
+            "title": "Adres",
             "description": "Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres zijn)",
             "type": "object",
             "properties": {
@@ -1046,6 +1047,7 @@
             "discriminator": "subjectType"
         },
         "VerblijfsAdres": {
+            "title": "Verblijfsadres",
             "required": [
                 "aoaIdentificatie",
                 "gorOpenbareRuimteNaam"
@@ -1098,10 +1100,10 @@
                     "type": "string",
                     "maxLength": 1000
                 }
-            },
-            "x-nullable": true
+            }
         },
         "SubVerblijfBuitenland": {
+            "title": "Sub verblijf buitenland",
             "required": [
                 "lndLandcode",
                 "lndLandnaam"
@@ -1137,10 +1139,10 @@
                     "type": "string",
                     "maxLength": 35
                 }
-            },
-            "x-nullable": true
+            }
         },
         "NatuurlijkPersoon": {
+            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "inpBsn": {
@@ -1228,6 +1230,7 @@
             ]
         },
         "NietNatuurlijkPersoon": {
+            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "innNnpId": {
@@ -1305,6 +1308,7 @@
             ]
         },
         "Vestiging": {
+            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "vestigingsNummer": {
@@ -1477,6 +1481,7 @@
             }
         },
         "Wijzigingen": {
+            "title": "Wijzigingen",
             "type": "object",
             "properties": {
                 "oud": {
@@ -1772,11 +1777,5 @@
                 }
             }
         }
-    },
-    "tags": [
-        {
-            "name": "klanten",
-            "description": "Een KLANT is een eenvoudige weergave van een NATUURLIJK PERSOON of\nVESTIGING waarbij het gaat om niet geverifieerde gegevens. Om deze reden\nzijn ook alle attributen optioneel.\n\nIndien de KLANT geverifieerd is mag een relatie gelegd worden met een\nNATUURLIJK PERSOON of VESTIGING  middels het attribuut `subject` of, indien\ner geen API beschikbaar is voor deze objecten, middels\n`subjectIdentificatie`."
-        }
-    ]
+    }
 }

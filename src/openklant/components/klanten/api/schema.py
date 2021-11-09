@@ -39,7 +39,7 @@ genereren.
 """
 
 info = openapi.Info(
-    title=f"Klanten API",
+    title="Klanten API",
     default_version=settings.KLANTEN_API_VERSION,
     description=description,
     contact=openapi.Contact(

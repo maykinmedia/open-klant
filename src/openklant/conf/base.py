@@ -358,6 +358,13 @@ SPEC_URL = {
 # settings for sending notifications
 KLANTEN_NOTIFICATIONS_KANAAL = "klanten"
 
+# Generating the schema, depending on the component
+subpath = config("SUBPATH", None)
+if subpath:
+    if not subpath.startswith("/"):
+        subpath = f"/{subpath}"
+    SUBPATH = subpath
+
 ##############################
 #                            #
 # 3RD PARTY LIBRARY SETTINGS #

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.urls import set_script_prefix
 
 from vng_api_common.management.commands import generate_swagger
+from vng_api_common.schema import OpenAPISchemaGenerator
 
 SCHEMA_MAPPING = {
     "info": "openklant.components.{}.api.schema.info",
@@ -19,6 +20,13 @@ class Command(generate_swagger.Command):
             default=None,
             help="The component name to define urlconf, base_path and schema info",
         )
+
+    # Workaround since vng-api-common 1.5.x does not pass the urlconf to its
+    # schema_generator_class
+    def get_schema_generator(
+        self, generator_class_name, info, api_version, api_url
+    ):
+        return OpenAPISchemaGenerator(info=info, url=api_url, urlconf=self.urlconf)
 
     def handle(
         self,
@@ -42,8 +50,8 @@ class Command(generate_swagger.Command):
         settings.API_VERSION = _version
         api_version = _version.split('.')[0]
 
-        # if settings.SUBPATH:
-        #     set_script_prefix(settings.SUBPATH)
+        if settings.SUBPATH:
+            set_script_prefix(settings.SUBPATH)
 
         if not component:
             super().handle(
@@ -64,6 +72,8 @@ class Command(generate_swagger.Command):
         # rewrite command arguments based on the component
         info = SCHEMA_MAPPING["info"].format(component)
         urlconf = SCHEMA_MAPPING["urlconf"].format(component)
+
+        self.urlconf = urlconf
 
         # generate schema
         super().handle(
