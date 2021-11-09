@@ -10,6 +10,7 @@ from openklant.components.contactmomenten.datamodel.constants import InitiatiefN
 from openklant.components.contactmomenten.datamodel.models import ContactMoment
 from openklant.components.contactmomenten.datamodel.tests.factories import (
     ContactMomentFactory,
+    KlantContactMomentFactory,
     MedewerkerFactory,
     ObjectContactMomentFactory,
 )
@@ -611,4 +612,108 @@ class ContactMomentFilterTests(JWTAuthMixin, APITestCase):
         self.assertEqual(
             response.data["results"][1]["kanaal"],
             "whatsapp",
+        )
+
+    def test_filter_klant_url(self):
+        cm1 = ContactMomentFactory.create(kanaal="telefoon")
+        cm2 = ContactMomentFactory.create(kanaal="whatsapp")
+        cm3 = ContactMomentFactory.create(kanaal="email")
+
+        KlantContactMomentFactory.create(
+            contactmoment=cm1, klant="http://example.com/api/v1/1"
+        )
+        KlantContactMomentFactory.create(
+            contactmoment=cm2, klant="http://example.com/api/v1/2"
+        )
+        KlantContactMomentFactory.create(
+            contactmoment=cm3, klant="http://example.com/api/v1/2"
+        )
+
+        response = self.client.get(
+            self.list_url,
+            {"klant": "http://example.com/api/v1/2"},
+            HTTP_HOST="testserver.com",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data["results"]), 2)
+        self.assertEqual(
+            response.data["results"][0]["kanaal"],
+            "email",
+        )
+        self.assertEqual(
+            response.data["results"][1]["kanaal"],
+            "whatsapp",
+        )
+
+    def test_filter_object_url_multiple(self):
+        cm1 = ContactMomentFactory.create(kanaal="telefoon")
+        cm2 = ContactMomentFactory.create(kanaal="whatsapp")
+        cm3 = ContactMomentFactory.create(kanaal="email")
+
+        KlantContactMomentFactory.create(
+            contactmoment=cm1, klant="http://example.com/api/v1/1"
+        )
+        KlantContactMomentFactory.create(
+            contactmoment=cm2, klant="http://example.com/api/v1/2"
+        )
+        KlantContactMomentFactory.create(
+            contactmoment=cm3, klant="http://example.com/api/v1/3"
+        )
+
+        response = self.client.get(
+            self.list_url,
+            {"klant": "http://example.com/api/v1/2,http://example.com/api/v1/3"},
+            HTTP_HOST="testserver.com",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data["results"]), 2)
+        self.assertEqual(
+            response.data["results"][0]["kanaal"],
+            "email",
+        )
+        self.assertEqual(
+            response.data["results"][1]["kanaal"],
+            "whatsapp",
+        )
+
+    def test_filter_klant_url_and_object_url(self):
+        cm1 = ContactMomentFactory.create(kanaal="telefoon")
+        cm2 = ContactMomentFactory.create(kanaal="whatsapp")
+        cm3 = ContactMomentFactory.create(kanaal="email")
+
+        KlantContactMomentFactory.create(
+            contactmoment=cm1, klant="http://example.com/api/v1/1"
+        )
+        KlantContactMomentFactory.create(
+            contactmoment=cm2, klant="http://example.com/api/v1/2"
+        )
+        KlantContactMomentFactory.create(
+            contactmoment=cm3, klant="http://example.com/api/v1/2"
+        )
+        ObjectContactMomentFactory.create(
+            contactmoment=cm1, object="http://example.com/api/v1/1"
+        )
+        ObjectContactMomentFactory.create(
+            contactmoment=cm2, object="http://example.com/api/v1/2"
+        )
+        ObjectContactMomentFactory.create(
+            contactmoment=cm3, object="http://example.com/api/v1/3"
+        )
+
+        response = self.client.get(
+            self.list_url,
+            {
+                "klant": "http://example.com/api/v1/2",
+                "object": "http://example.com/api/v1/3",
+            },
+            HTTP_HOST="testserver.com",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data["results"]), 1)
+        self.assertEqual(
+            response.data["results"][0]["kanaal"],
+            "email",
         )
