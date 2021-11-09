@@ -3,7 +3,7 @@ from unittest import skipIf
 from unittest.mock import mock_open, patch
 
 from django.conf import settings
-from django.test import TestCase
+from django.test import SimpleTestCase, TestCase
 from django.utils.module_loading import import_string
 
 from openklant.conf.utils import get_current_version
@@ -27,7 +27,9 @@ class GitVersionTestCase(VersionTestCase):
     def setUp(self):
         super().setUp()
 
-        self.mocked_which.return_value = True # assume git is installed for this testcase
+        self.mocked_which.return_value = (
+            True  # assume git is installed for this testcase
+        )
 
     def tearDown(self):
         patch.stopall()
@@ -92,9 +94,7 @@ class FileVersionTestCase(VersionTestCase):
 
     @patch("builtins.open", new_callable=mock_open, read_data="commit-hash")
     def test_simple(self, mock_file):
-        self.mocked_listdir.return_value = (
-            "master", "main", "foo"
-        )
+        self.mocked_listdir.return_value = ("master", "main", "foo")
 
         self.assertEqual(get_current_version(), "commit-hash")
 
@@ -115,7 +115,10 @@ class FileVersionTestCase(VersionTestCase):
 
 
 class BeatConfigTests(SimpleTestCase):
-    @skipIf(not hasattr(settings, "CELERY_BEAT_SCHEDULE")
+    @skipIf(
+        not hasattr(settings, "CELERY_BEAT_SCHEDULE"),
+        reason="Not relevant if celery beat is not installed",
+    )
     def test_task_references_correct(self):
         """
         Assert that the task import paths in the Beat config are valid.

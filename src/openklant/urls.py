@@ -4,22 +4,23 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 
-from two_factor.admin import AdminSiteOTPRequired
-from two_factor.urls import urlpatterns as tf_urls
-
 from openklant.accounts.views.password_reset import PasswordResetView
+
+# from two_factor.admin import AdminSiteOTPRequired
+# from two_factor.urls import urlpatterns as tf_urls
+
 
 handler500 = "openklant.utils.views.server_error"
 admin.site.site_header = "openklant admin"
 admin.site.site_title = "openklant admin"
 admin.site.index_title = "Welcome to the openklant admin"
 
-# This will cause users not to be able to login any longer without the OTP setup. There are some
-# issues in this package that need to be resolved.
-admin.site.__class__ = AdminSiteOTPRequired
+# # This will cause users not to be able to login any longer without the OTP setup. There are some
+# # issues in this package that need to be resolved.
+# admin.site.__class__ = AdminSiteOTPRequired
 
 urlpatterns = [
     path(
@@ -32,9 +33,8 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(),
         name="password_reset_done",
     ),
-    path("admin/hijack/", include("hijack.urls")),
     path("admin/", admin.site.urls),
-    path('admin/', include(tf_urls)),
+    # path("admin/", include(tf_urls)),
     path(
         "reset/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(),
@@ -45,8 +45,20 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path("klanten/api/", include("openklant.components.klanten.api.urls")),
+    path(
+        "contactmomenten/api/", include("openklant.components.contactmomenten.api.urls")
+    ),
     # Simply show the master template.
-    path("", TemplateView.as_view(template_name="master.html")),
+    path("", TemplateView.as_view(template_name="main.html")),
+    # separate apps
+    re_path(
+        r"^(?P<component>klanten|contactmomenten)/$",
+        TemplateView.as_view(template_name="index.html"),
+        name="main",
+    ),
+    path("ref/", include("vng_api_common.urls")),
+    path("ref/", include("vng_api_common.notifications.urls")),
 ]
 
 # NOTE: The staticfiles_urlpatterns also discovers static files (ie. no need to run collectstatic). Both the static
@@ -58,4 +70,6 @@ urlpatterns += staticfiles_urlpatterns() + static(
 if settings.DEBUG and apps.is_installed("debug_toolbar"):
     import debug_toolbar
 
-    urlpatterns = [path("__debug__/", include(debug_toolbar.urls)),] + urlpatterns
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ] + urlpatterns

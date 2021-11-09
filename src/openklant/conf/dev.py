@@ -1,9 +1,12 @@
 import os
+import sys
 import warnings
 
 os.environ.setdefault("DEBUG", "yes")
 os.environ.setdefault("ALLOWED_HOSTS", "*")
-os.environ.setdefault("SECRET_KEY", "django-insecure-$8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b")
+os.environ.setdefault(
+    "SECRET_KEY", "django-insecure-$8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b"
+)
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("VERSION_TAG", "dev")
 
@@ -101,6 +104,9 @@ warnings.filterwarnings(
     RuntimeWarning,
     r"django\.db\.models\.fields",
 )
+
+if "test" in sys.argv:
+    NOTIFICATIONS_DISABLED = True
 
 # Override settings with local settings.
 try:

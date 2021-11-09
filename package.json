@@ -10,7 +10,8 @@
     "build": "npm run bundle",
     "bundle": "webpack",
     "test": "karma start",
-    "watch": "webpack -w"
+    "watch": "webpack -w",
+    "convert": "swagger2openapi $SCHEMA_PATH/swagger2.0.json -o $SCHEMA_PATH/openapi.yaml"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "sass-loader": "latest",
     "simulant": "latest",
     "sinon": "latest",
+    "swagger2openapi": "^7.0.4",
     "url-loader": "latest",
     "webpack": "latest",
     "webpack-cli": "latest",

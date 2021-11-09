@@ -1,7 +1,7 @@
+from time import time
+
 from django.core.cache import caches
 from django.core.exceptions import PermissionDenied
-
-from time import time
 
 
 class ThrottleMixin:
@@ -14,19 +14,19 @@ class ThrottleMixin:
 
     # n visits per period (in seconds)
     throttle_visits = 100
-    throttle_period = 60**2  # in seconds
+    throttle_period = 60 ** 2  # in seconds
     throttle_403 = True
-    throttle_name = 'default'
+    throttle_name = "default"
 
     # get and options should always be fast. By default
     # do not throttle them.
-    throttle_methods = ['post', 'put', 'patch', 'delete', 'head', 'trace']
+    throttle_methods = ["post", "put", "patch", "delete", "head", "trace"]
 
     def get_throttle_cache(self):
-        return caches['default']
+        return caches["default"]
 
     def get_throttle_identifier(self):
-        user = getattr(self, 'user_cache', self.request.user)
+        user = getattr(self, "user_cache", self.request.user)
         return str(user.id)
 
     def create_throttle_key(self):
@@ -34,10 +34,10 @@ class ThrottleMixin:
         :rtype string Use as key to save the last access
         """
 
-        return 'throttling_{id}_{throttle_name}_{window}'.format(
+        return "throttling_{id}_{throttle_name}_{window}".format(
             id=self.get_throttle_identifier(),
             throttle_name=self.throttle_name,
-            window=self.get_throttle_window()
+            window=self.get_throttle_window(),
         )
 
     def get_throttle_window(self):
@@ -63,13 +63,16 @@ class ThrottleMixin:
         return visits
 
     def should_be_throttled(self):
-        if self.throttle_methods == 'all':
+        if self.throttle_methods == "all":
             return True
         return self.request.method.lower() in self.throttle_methods
 
     def dispatch(self, request, *args, **kwargs):
         if self.throttle_403:
-            if self.should_be_throttled() and self.get_visits_in_window() > self.throttle_visits:
+            if (
+                self.should_be_throttled()
+                and self.get_visits_in_window() > self.throttle_visits
+            ):
                 raise PermissionDenied
 
         return super().dispatch(request, *args, **kwargs)
@@ -83,4 +86,4 @@ class IPThrottleMixin(ThrottleMixin):
 
     def get_throttle_identifier(self):
         # REMOTE_ADDR is correctly set in XForwardedForMiddleware
-        return str(self.request.META['REMOTE_ADDR'])
+        return str(self.request.META["REMOTE_ADDR"])
