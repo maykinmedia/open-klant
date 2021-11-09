@@ -8,7 +8,7 @@ from vng_api_common.tests import reverse
 
 EXPECTED_VERSIONS = (
     ("klanten", "1.0.0"),
-    # ("contactmomenten", "1.0.0"),
+    ("contactmomenten", "1.0.0"),
 )
 
 

@@ -11,7 +11,7 @@ from vng_api_common.middleware import (
 
 
 def get_version_mapping() -> Dict[str, str]:
-    apis = ("klanten",)
+    apis = ("klanten", "contactmomenten",)
     version = settings.REST_FRAMEWORK["DEFAULT_VERSION"]
 
     return {

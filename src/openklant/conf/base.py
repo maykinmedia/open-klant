@@ -125,6 +125,7 @@ INSTALLED_APPS = [
     "openklant.accounts",
     "openklant.utils",
     "openklant.components.klanten",
+    "openklant.components.contactmomenten",
 ]
 
 MIDDLEWARE = [
@@ -139,6 +140,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "openklant.utils.middleware.APIVersionHeaderMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "openklant.urls"
@@ -357,6 +359,7 @@ SPEC_URL = {
 
 # settings for sending notifications
 KLANTEN_NOTIFICATIONS_KANAAL = "klanten"
+CONTACTMOMENTEN_NOTIFICATIONS_KANAAL = "contactmomenten"
 
 # Generating the schema, depending on the component
 subpath = config("SUBPATH", None)
