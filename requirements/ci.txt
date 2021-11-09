@@ -79,7 +79,7 @@ django-cors-middleware==1.5.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-django-filter==21.1
+django-filter==2.1.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

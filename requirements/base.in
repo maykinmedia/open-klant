@@ -12,6 +12,7 @@ django-axes
 django-better-admin-arrayfield
 django-choices
 django-cors-middleware
+django-filter<=2.2.0
 django-redis
 django-rosetta
 django-sniplates

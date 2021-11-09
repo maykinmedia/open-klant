@@ -48,8 +48,10 @@ django-choices==1.7.2
     #   vng-api-common
 django-cors-middleware==1.5.0
     # via -r requirements/base.in
-django-filter==21.1
-    # via vng-api-common
+django-filter==2.1.0
+    # via
+    #   -r requirements/base.in
+    #   vng-api-common
 django-formtools==2.3
     # via django-two-factor-auth
 django-ipware==4.0.0
