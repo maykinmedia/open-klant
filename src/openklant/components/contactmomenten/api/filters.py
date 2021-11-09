@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_filters import filters
 from vng_api_common.filters import URLModelChoiceFilter
 from vng_api_common.filtersets import FilterSet
+from vng_api_common.utils import get_help_text
 
 from openklant.components.contactmomenten.datamodel.constants import Rol
 from openklant.components.contactmomenten.datamodel.models import (
@@ -41,6 +42,22 @@ class ContactMomentFilter(FilterSet):
             "Meerdere waardes kunnen met komma's gescheiden worden."
         ),
     )
+    medewerker_identificatie__identificatie = filters.CharFilter(
+        field_name="medewerker_identificatie__identificatie",
+        help_text=get_help_text("contactmomenten.Medewerker", "identificatie"),
+    )
+    medewerker_identificatie__achternaam = filters.CharFilter(
+        field_name="medewerker_identificatie__achternaam",
+        help_text=get_help_text("contactmomenten.Medewerker", "achternaam"),
+    )
+    medewerker_identificatie__voorletters = filters.CharFilter(
+        field_name="medewerker_identificatie__voorletters",
+        help_text=get_help_text("contactmomenten.Medewerker", "voorletters"),
+    )
+    medewerker_identificatie__voorvoegsel_achternaam = filters.CharFilter(
+        field_name="medewerker_identificatie__voorvoegsel_achternaam",
+        help_text=get_help_text("contactmomenten.Medewerker", "voorvoegsel_achternaam"),
+    )
     ordering = filters.OrderingFilter(
         fields=(
             "url",
@@ -71,6 +88,10 @@ class ContactMomentFilter(FilterSet):
             "initiatiefnemer": ["exact"],
             "medewerker": ["exact"],
             "ordering": ["exact"],
+            "medewerker_identificatie__identificatie": ["exact"],
+            "medewerker_identificatie__achternaam": ["exact"],
+            "medewerker_identificatie__voorletters": ["exact"],
+            "medewerker_identificatie__voorvoegsel_achternaam": ["exact"],
         }
 
     @classmethod
