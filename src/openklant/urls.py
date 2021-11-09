@@ -7,19 +7,20 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 
-from two_factor.admin import AdminSiteOTPRequired
-from two_factor.urls import urlpatterns as tf_urls
-
 from openklant.accounts.views.password_reset import PasswordResetView
+
+# from two_factor.admin import AdminSiteOTPRequired
+# from two_factor.urls import urlpatterns as tf_urls
+
 
 handler500 = "openklant.utils.views.server_error"
 admin.site.site_header = "openklant admin"
 admin.site.site_title = "openklant admin"
 admin.site.index_title = "Welcome to the openklant admin"
 
-# This will cause users not to be able to login any longer without the OTP setup. There are some
-# issues in this package that need to be resolved.
-admin.site.__class__ = AdminSiteOTPRequired
+# # This will cause users not to be able to login any longer without the OTP setup. There are some
+# # issues in this package that need to be resolved.
+# admin.site.__class__ = AdminSiteOTPRequired
 
 urlpatterns = [
     path(
@@ -33,7 +34,7 @@ urlpatterns = [
         name="password_reset_done",
     ),
     path("admin/", admin.site.urls),
-    path("admin/", include(tf_urls)),
+    # path("admin/", include(tf_urls)),
     path(
         "reset/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(),

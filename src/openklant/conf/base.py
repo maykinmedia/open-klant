@@ -97,10 +97,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Admin auth
-    "django_otp",
-    "django_otp.plugins.otp_static",
-    "django_otp.plugins.otp_totp",
-    "two_factor",
+    # "django_otp",
+    # "django_otp.plugins.otp_static",
+    # "django_otp.plugins.otp_totp",
+    # "two_factor",
     # Optional applications.
     "ordered_model",
     "django_admin_index",
@@ -424,7 +424,8 @@ SENTRY_DSN = config("SENTRY_DSN", None)
 RELEASE = get_current_version()
 
 # Two factor auth
-LOGIN_URL = "two_factor:login"
+# LOGIN_URL = "two_factor:login"
+LOGIN_URL = "admin:login"
 LOGIN_REDIRECT_URL = "admin:index"
 
 if SENTRY_DSN:
