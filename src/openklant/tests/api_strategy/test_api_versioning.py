@@ -35,7 +35,9 @@ class APIVersioningTests(APITestCase):
                 doc = yaml.safe_load(response.content)
                 self.assertGreaterEqual(doc["openapi"], "3.0.0")
 
-    @patch("openklant.utils.middleware.get_version_mapping", return_value={"/": "1.0.0"})
+    @patch(
+        "openklant.utils.middleware.get_version_mapping", return_value={"/": "1.0.0"}
+    )
     @override_settings(ROOT_URLCONF="openklant.tests.api_strategy.urls")
     def test_api_24_version_header(self, m):
         response = self.client.get("/test-view")

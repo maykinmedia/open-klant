@@ -10,7 +10,6 @@ from vng_api_common.tests import JWTAuthMixin
 
 from ..datamodel.constants import KlantType
 from ..datamodel.tests.factories import KlantFactory
-
 from .utils import get_operation_url
 
 SUBJECT = "http://example.com/subject/1"

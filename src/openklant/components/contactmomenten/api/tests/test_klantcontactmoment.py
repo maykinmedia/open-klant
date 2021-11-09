@@ -3,15 +3,22 @@ from datetime import datetime
 from django.utils.timezone import make_aware
 
 import requests_mock
-from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer, Rol
-from openklant.components.contactmomenten.datamodel.models import ContactMoment, KlantContactMoment
+from rest_framework import status
+from rest_framework.test import APITestCase
+from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
+
+from openklant.components.contactmomenten.datamodel.constants import (
+    InitiatiefNemer,
+    Rol,
+)
+from openklant.components.contactmomenten.datamodel.models import (
+    ContactMoment,
+    KlantContactMoment,
+)
 from openklant.components.contactmomenten.datamodel.tests.factories import (
     ContactMomentFactory,
     KlantContactMomentFactory,
 )
-from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
 
 
 class KlantContactMomentTests(JWTAuthMixin, APITestCase):

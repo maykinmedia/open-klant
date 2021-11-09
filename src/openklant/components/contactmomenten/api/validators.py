@@ -4,11 +4,12 @@ from django.conf import settings
 from django.utils.module_loading import import_string
 from django.utils.translation import ugettext_lazy as _
 
-from openklant.components.contactmomenten.datamodel.models import ObjectContactMoment
 from rest_framework import exceptions, serializers
 from vng_api_common.models import APICredential
 from vng_api_common.validators import ResourceValidator
 from zds_client import ClientError
+
+from openklant.components.contactmomenten.datamodel.models import ObjectContactMoment
 
 from .auth import get_auth
 from .utils import get_absolute_url

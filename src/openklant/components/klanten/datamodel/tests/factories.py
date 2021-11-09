@@ -1,7 +1,15 @@
 import factory.fuzzy
 
 from ..constants import KlantType, SoortRechtsvorm
-from ..models import Klant, KlantAdres, NietNatuurlijkPersoon, NatuurlijkPersoon, Vestiging, VerblijfsAdres, SubVerblijfBuitenland
+from ..models import (
+    Klant,
+    KlantAdres,
+    NatuurlijkPersoon,
+    NietNatuurlijkPersoon,
+    SubVerblijfBuitenland,
+    VerblijfsAdres,
+    Vestiging,
+)
 
 
 class KlantFactory(factory.django.DjangoModelFactory):

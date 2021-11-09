@@ -23,9 +23,7 @@ class Command(generate_swagger.Command):
 
     # Workaround since vng-api-common 1.5.x does not pass the urlconf to its
     # schema_generator_class
-    def get_schema_generator(
-        self, generator_class_name, info, api_version, api_url
-    ):
+    def get_schema_generator(self, generator_class_name, info, api_version, api_url):
         return OpenAPISchemaGenerator(info=info, url=api_url, urlconf=self.urlconf)
 
     def handle(
@@ -48,7 +46,7 @@ class Command(generate_swagger.Command):
 
         # Setting must exist for vng-api-common, so monkeypatch it in
         settings.API_VERSION = _version
-        api_version = _version.split('.')[0]
+        api_version = _version.split(".")[0]
 
         if settings.SUBPATH:
             set_script_prefix(settings.SUBPATH)

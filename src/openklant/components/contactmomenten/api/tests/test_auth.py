@@ -1,9 +1,12 @@
 """
 Guarantee that the proper authorization machinery is in place.
 """
-from openklant.components.contactmomenten.datamodel.tests.factories import ContactMomentFactory
 from rest_framework.test import APITestCase
 from vng_api_common.tests import AuthCheckMixin, reverse
+
+from openklant.components.contactmomenten.datamodel.tests.factories import (
+    ContactMomentFactory,
+)
 
 
 class KlantScopeForbiddenTests(AuthCheckMixin, APITestCase):

@@ -63,9 +63,7 @@ ELASTIC_APM["DEBUG"] = True
 INSTALLED_APPS += [
     "django_jenkins",
 ]
-PROJECT_APPS = [
-    app for app in INSTALLED_APPS if app.startswith("openklant.")
-]
+PROJECT_APPS = [app for app in INSTALLED_APPS if app.startswith("openklant.")]
 JENKINS_TASKS = (
     # 'django_jenkins.tasks.run_pylint',  # Pylint < 2.0 does not run on Python 3.7+
     "django_jenkins.tasks.run_pep8",

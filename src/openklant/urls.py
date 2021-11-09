@@ -45,7 +45,9 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("klanten/api/", include("openklant.components.klanten.api.urls")),
-    path("contactmomenten/api/", include("openklant.components.contactmomenten.api.urls")),
+    path(
+        "contactmomenten/api/", include("openklant.components.contactmomenten.api.urls")
+    ),
     # Simply show the master template.
     path("", TemplateView.as_view(template_name="main.html")),
     # separate apps

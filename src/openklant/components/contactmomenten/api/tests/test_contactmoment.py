@@ -2,15 +2,16 @@ from datetime import datetime
 
 from django.utils.timezone import make_aware
 
+from rest_framework import status
+from rest_framework.test import APITestCase
+from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
+
 from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer
 from openklant.components.contactmomenten.datamodel.models import ContactMoment
 from openklant.components.contactmomenten.datamodel.tests.factories import (
     ContactMomentFactory,
     MedewerkerFactory,
 )
-from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
 
 KLANT = "http://klanten.nl/api/v1/klanten/12345"
 

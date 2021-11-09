@@ -3,16 +3,17 @@ from unittest.mock import patch
 
 from django.test import override_settings
 
+from rest_framework import status
+from rest_framework.test import APITestCase
+from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
+from zds_client.tests.mocks import mock_client
+
 from openklant.components.contactmomenten.datamodel.constants import ObjectTypes
 from openklant.components.contactmomenten.datamodel.models import ObjectContactMoment
 from openklant.components.contactmomenten.datamodel.tests.factories import (
     ContactMomentFactory,
     ObjectContactMomentFactory,
 )
-from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
-from zds_client.tests.mocks import mock_client
 
 ZAAK = "http://example.com/api/v1/zaken/1"
 

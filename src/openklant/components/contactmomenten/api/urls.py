@@ -1,5 +1,5 @@
-from django.conf.urls import url
 from django.conf import settings
+from django.conf.urls import url
 from django.urls import include, path
 
 from vng_api_common import routers
@@ -21,6 +21,7 @@ router.register(
 )
 router.register("objectcontactmomenten", ObjectContactMomentViewSet)
 router.register("klantcontactmomenten", KlantContactMomentViewSet)
+
 
 class SchemaView(_SchemaView):
     schema_path = settings.SPEC_URL["contactmomenten"]

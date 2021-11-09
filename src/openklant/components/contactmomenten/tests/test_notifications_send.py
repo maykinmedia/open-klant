@@ -2,12 +2,15 @@ from unittest.mock import patch
 
 from django.test import override_settings
 
-from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer
-from openklant.components.contactmomenten.datamodel.tests.factories import ContactMomentFactory
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 from vng_api_common.tests import JWTAuthMixin
+
+from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer
+from openklant.components.contactmomenten.datamodel.tests.factories import (
+    ContactMomentFactory,
+)
 
 from .utils import get_operation_url
 
