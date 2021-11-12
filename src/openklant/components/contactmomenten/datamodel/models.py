@@ -156,6 +156,10 @@ class KlantContactMoment(APIMixin, models.Model):
             "KLANTCONTACTMOMENTen aangemaakt."
         ),
     )
+    gelezen = models.BooleanField(
+        default=False,
+        help_text=_("Geeft aan of het bericht gelezen is door de KLANT."),
+    )
 
 
 class Medewerker(models.Model):
