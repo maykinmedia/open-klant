@@ -1,5 +1,3 @@
-import os
-
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
 # Remove the reference - we don't have a single API version.

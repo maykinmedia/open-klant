@@ -201,7 +201,7 @@ class ObjectContactMomentFilterTests(JWTAuthMixin, APITestCase):
         self.assertEqual(response.data["results"][0]["object"], oio.object)
 
     def test_filter_object_type(self):
-        oio = ObjectContactMomentFactory.create(object_type=ObjectTypes.zaak)
+        ObjectContactMomentFactory.create(object_type=ObjectTypes.zaak)
 
         response = self.client.get(self.list_url, {"objectType": ObjectTypes.zaak})
 

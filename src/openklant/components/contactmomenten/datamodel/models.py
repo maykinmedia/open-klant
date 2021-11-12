@@ -7,7 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from django_better_admin_arrayfield.models.fields import ArrayField
 from vng_api_common.fields import RSINField
 from vng_api_common.models import APIMixin
-from vng_api_common.utils import get_uuid_from_path
 
 from .constants import InitiatiefNemer, ObjectTypes, Rol
 
