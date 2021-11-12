@@ -211,6 +211,17 @@
                         "type": "string"
                     },
                     {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "Haal details van inline resources direct op.",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "klantcontactmomenten",
+                            "objectcontactmomenten"
+                        ]
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -576,6 +587,16 @@
                 "summary": "Een specifiek CONTACTMOMENT opvragen.",
                 "description": "Een specifiek CONTACTMOMENT opvragen.",
                 "parameters": [
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "Haal details van inline resources direct op.",
+                        "type": "string",
+                        "enum": [
+                            "klantcontactmomenten",
+                            "objectcontactmomenten"
+                        ]
+                    },
                     {
                         "name": "If-None-Match",
                         "in": "header",

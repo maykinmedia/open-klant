@@ -1,5 +1,7 @@
 import logging
 
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.serializers import ValidationError
@@ -97,6 +99,20 @@ class ContactMomentViewSet(
     }
     notifications_kanaal = KANAAL_CONTACTMOMENTEN
     audit = AUDIT_CONTACTMOMENTEN
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "expand",
+                openapi.IN_QUERY,
+                description="Haal details van inline resources direct op.",
+                type=openapi.TYPE_STRING,
+                enum=ContactMomentSerializer.Meta.expandable_fields,
+            )
+        ]
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ObjectContactMomentViewSet(
