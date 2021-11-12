@@ -150,6 +150,7 @@ class KlantContactMomentSerializer(serializers.HyperlinkedModelSerializer):
             "contactmoment",
             "klant",
             "rol",
+            "gelezen",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
