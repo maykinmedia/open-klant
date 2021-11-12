@@ -4,10 +4,6 @@
 #
 #    ./bin/compile_dependencies.sh
 #
--e git+git://github.com/maykinmedia/django-two-factor-auth@729249e647674c7022b894fcb0ccc4c231ed23d8#egg=django-two-factor-auth
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
 astroid==2.8.0
     # via pylint
 beautifulsoup4==4.10.0
@@ -50,15 +46,11 @@ django==2.2.24
     #   django-axes
     #   django-choices
     #   django-filter
-    #   django-formtools
     #   django-jenkins
-    #   django-otp
-    #   django-phonenumber-field
     #   django-redis
     #   django-rest-framework-condition
     #   django-rosetta
     #   django-sniplates
-    #   django-two-factor-auth
     #   drf-nested-routers
     #   drf-yasg
     #   vng-api-common
@@ -88,11 +80,6 @@ django-filter==2.1.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   vng-api-common
-django-formtools==2.3
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-two-factor-auth
 django-ipware==4.0.0
     # via
     #   -c requirements/base.txt
@@ -105,16 +92,6 @@ django-ordered-model==3.4.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-admin-index
-django-otp==1.1.1
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-two-factor-auth
-django-phonenumber-field==5.2.0
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-two-factor-auth
 django-redis==5.0.0
     # via
     #   -c requirements/base.txt
@@ -236,10 +213,6 @@ pathspec==0.9.0
     # via black
 pep8==1.7.1
     # via -r requirements/test-tools.in
-phonenumbers==8.12.33
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
 pillow==8.3.2
     # via
     #   -c requirements/base.txt
@@ -295,11 +268,6 @@ pyyaml==5.4.1
     #   gemma-zds-client
     #   oyaml
     #   vng-api-common
-qrcode==6.1
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-two-factor-auth
 redis==3.5.3
     # via
     #   -c requirements/base.txt
@@ -340,7 +308,6 @@ six==1.16.0
     #   drf-yasg
     #   isodate
     #   python-dateutil
-    #   qrcode
     #   requests-mock
 soupsieve==2.2.1
     # via beautifulsoup4
