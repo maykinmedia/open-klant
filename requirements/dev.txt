@@ -22,8 +22,10 @@ beautifulsoup4==4.10.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   webtest
-black==21.9b0
-    # via -r requirements/dev.in
+black==21.10b0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 certifi==2021.5.30
     # via
     #   -c requirements/ci.txt
@@ -36,8 +38,10 @@ charset-normalizer==2.0.6
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   requests
-click==8.0.1
+click==8.0.3
     # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
     #   black
     #   pip-tools
 coreapi==2.3.3
@@ -208,8 +212,10 @@ faker==8.16.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-flake8==3.9.2
-    # via -r requirements/dev.in
+flake8==4.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 freezegun==1.1.0
     # via
     #   -c requirements/ci.txt
@@ -245,7 +251,6 @@ isort==5.9.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   -r requirements/dev.in
     #   pylint
 itypes==1.2.0
     # via
@@ -280,7 +285,10 @@ mccabe==0.6.1
     #   flake8
     #   pylint
 mypy-extensions==0.4.3
-    # via black
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   black
 oyaml==1.0
     # via
     #   -c requirements/ci.txt
@@ -289,7 +297,10 @@ oyaml==1.0
 packaging==21.0
     # via sphinx
 pathspec==0.9.0
-    # via black
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   black
 pep517==0.11.0
     # via pip-tools
 pep8==1.7.1
@@ -321,10 +332,16 @@ psycopg2==2.8.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-pycodestyle==2.7.0
-    # via flake8
-pyflakes==2.3.1
-    # via flake8
+pycodestyle==2.8.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   flake8
+pyflakes==2.4.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   flake8
 pygments==2.10.0
     # via sphinx
 pyjwt==1.7.1
@@ -380,8 +397,11 @@ redis==3.5.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-redis
-regex==2021.9.30
-    # via black
+regex==2021.11.10
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   black
 requests==2.26.0
     # via
     #   -c requirements/ci.txt
@@ -467,8 +487,10 @@ toml==0.10.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-tomli==1.2.1
+tomli==1.2.2
     # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
     #   black
     #   pep517
 typing-extensions==3.10.0.2

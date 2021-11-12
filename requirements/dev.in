@@ -3,11 +3,6 @@
 # Helpers
 pip-tools
 
-# Code formatting
-black
-isort
-flake8
-
 # Debug tooling
 django-debug-toolbar
 ddt-api-calls

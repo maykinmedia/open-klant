@@ -12,6 +12,8 @@ astroid==2.8.0
     # via pylint
 beautifulsoup4==4.10.0
     # via webtest
+black==21.10b0
+    # via -r requirements/test-tools.in
 certifi==2021.5.30
     # via
     #   -c requirements/base.txt
@@ -24,6 +26,8 @@ charset-normalizer==2.0.6
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   requests
+click==8.0.3
+    # via black
 coreapi==2.3.3
     # via
     #   -c requirements/base.txt
@@ -165,6 +169,8 @@ factory-boy==3.2.0
     # via -r requirements/test-tools.in
 faker==8.16.0
     # via factory-boy
+flake8==4.0.1
+    # via -r requirements/test-tools.in
 freezegun==1.1.0
     # via -r requirements/test-tools.in
 gemma-zds-client==1.0.1
@@ -193,7 +199,9 @@ isodate==0.6.0
     #   -r requirements/base.txt
     #   vng-api-common
 isort==5.9.3
-    # via pylint
+    # via
+    #   -r requirements/test-tools.in
+    #   pylint
 itypes==1.2.0
     # via
     #   -c requirements/base.txt
@@ -214,12 +222,18 @@ markupsafe==2.0.1
     #   -r requirements/base.txt
     #   jinja2
 mccabe==0.6.1
-    # via pylint
+    # via
+    #   flake8
+    #   pylint
+mypy-extensions==0.4.3
+    # via black
 oyaml==1.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   vng-api-common
+pathspec==0.9.0
+    # via black
 pep8==1.7.1
     # via -r requirements/test-tools.in
 phonenumbers==8.12.33
@@ -231,7 +245,9 @@ pillow==8.3.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
 platformdirs==2.4.0
-    # via pylint
+    # via
+    #   black
+    #   pylint
 polib==1.1.1
     # via
     #   -c requirements/base.txt
@@ -241,6 +257,10 @@ psycopg2==2.8.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+pycodestyle==2.8.0
+    # via flake8
+pyflakes==2.4.0
+    # via flake8
 pyjwt==1.7.1
     # via
     #   -c requirements/base.txt
@@ -285,6 +305,8 @@ redis==3.5.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-redis
+regex==2021.11.10
+    # via black
 requests==2.26.0
     # via
     #   -c requirements/base.txt
@@ -333,9 +355,12 @@ text-unidecode==1.3
     # via faker
 toml==0.10.2
     # via pylint
+tomli==1.2.2
+    # via black
 typing-extensions==3.10.0.2
     # via
     #   astroid
+    #   black
     #   pylint
 unidecode==1.3.2
     # via
