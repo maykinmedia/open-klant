@@ -1015,6 +1015,11 @@ components:
           - niet_natuurlijk_persoon
           - vestiging
           nullable: true
+        aanmaakkanaal:
+          title: Aanmaakkanaal
+          description: Het communicatiekanaal waarlangs de klant is aangemaakt.
+          type: string
+          maxLength: 50
       discriminator:
         propertyName: subjectType
     VerblijfsAdres:

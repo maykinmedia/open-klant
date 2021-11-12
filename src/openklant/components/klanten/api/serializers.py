@@ -292,11 +292,14 @@ class KlantSerializer(PolymorphicSerializer):
             "adres",
             "subject",
             "subject_type",
+            "aanmaakkanaal",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "subject": {"required": False, "validators": [URLValidator()]},
             "subject_type": {"validators": [IsImmutableValidator()]},
+            # Disabled for now, see https://github.com/maykinmedia/open-klant/pull/11#pullrequestreview-805051480
+            # "aanmaakkanaal": {"validators": [IsImmutableValidator()]},
         }
 
     def __init__(self, *args, **kwargs):

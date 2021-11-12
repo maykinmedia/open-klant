@@ -68,6 +68,11 @@ class Klant(APIMixin, models.Model):
         choices=KlantType.choices,
         help_text="Type van de `subject`.",
     )
+    aanmaakkanaal = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text=_("Het communicatiekanaal waarlangs de klant is aangemaakt."),
+    )
 
     class Meta:
         verbose_name = "klant"

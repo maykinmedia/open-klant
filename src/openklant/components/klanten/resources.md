@@ -43,6 +43,7 @@ Uitleg bij mogelijke waarden:
 * `natuurlijk_persoon` - Natuurlijk persoon
 * `niet_natuurlijk_persoon` - Niet-natuurlijk persoon
 * `vestiging` - Vestiging | string | nee | C​R​U​D |
+| aanmaakkanaal | Het communicatiekanaal waarlangs de klant is aangemaakt. | string | nee | C​R​U​D |
 
 ## VerblijfsAdres
 
