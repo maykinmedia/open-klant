@@ -182,12 +182,7 @@ class ContactMomentAuditTrailViewSet(AuditTrailViewSet):
     main_resource_lookup_field = "contactmoment_uuid"
 
 
-class KlantContactMomentViewSet(
-    CheckQueryParamsMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    viewsets.ReadOnlyModelViewSet,
-):
+class KlantContactMomentViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """
     Opvragen en verwijderen van OBJECT-CONTACTMOMENT relaties.
 
@@ -230,5 +225,7 @@ class KlantContactMomentViewSet(
         "list": SCOPE_CONTACTMOMENTEN_ALLES_LEZEN,
         "retrieve": SCOPE_CONTACTMOMENTEN_ALLES_LEZEN,
         "create": SCOPE_CONTACTMOMENTEN_AANMAKEN,
+        "update": SCOPE_CONTACTMOMENTEN_AANMAKEN,
+        "partial_update": SCOPE_CONTACTMOMENTEN_AANMAKEN,
         "destroy": SCOPE_CONTACTMOMENTEN_ALLES_VERWIJDEREN,
     }
