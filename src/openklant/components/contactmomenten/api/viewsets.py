@@ -76,7 +76,12 @@ class ContactMomentViewSet(
     Verwijder een CONTACTMOMENT.
     """
 
-    queryset = ContactMoment.objects.all().order_by("-registratiedatum")
+    queryset = (
+        ContactMoment.objects.all()
+        .prefetch_related("klantcontactmoment_set")
+        .prefetch_related("objectcontactmoment_set")
+        .order_by("-registratiedatum")
+    )
     serializer_class = ContactMomentSerializer
     filterset_class = ContactMomentFilter
     lookup_field = "uuid"

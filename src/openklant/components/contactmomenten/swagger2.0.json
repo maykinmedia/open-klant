@@ -1768,6 +1768,28 @@
                 },
                 "medewerkerIdentificatie": {
                     "$ref": "#/definitions/Medewerker"
+                },
+                "klantcontactmomenten": {
+                    "description": "Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen",
+                    "type": "array",
+                    "items": {
+                        "description": "Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
+                },
+                "objectcontactmomenten": {
+                    "description": "Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen",
+                    "type": "array",
+                    "items": {
+                        "description": "Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
                 }
             }
         },

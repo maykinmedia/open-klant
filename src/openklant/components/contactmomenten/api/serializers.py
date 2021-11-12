@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from vng_api_common.serializers import add_choice_values_help_text
 from vng_api_common.validators import IsImmutableValidator, URLValidator
 
@@ -33,6 +34,22 @@ class MedewerkerSerializer(serializers.ModelSerializer):
 
 class ContactMomentSerializer(serializers.HyperlinkedModelSerializer):
     medewerker_identificatie = MedewerkerSerializer(required=False, allow_null=True)
+    klantcontactmomenten = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        lookup_field="uuid",
+        view_name="klantcontactmoment-detail",
+        source="klantcontactmoment_set",
+        help_text=_("Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen"),
+    )
+    objectcontactmomenten = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        lookup_field="uuid",
+        view_name="objectcontactmoment-detail",
+        source="objectcontactmoment_set",
+        help_text=_("Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen"),
+    )
 
     class Meta:
         model = ContactMoment
@@ -50,6 +67,8 @@ class ContactMomentSerializer(serializers.HyperlinkedModelSerializer):
             "initiatiefnemer",
             "medewerker",
             "medewerker_identificatie",
+            "klantcontactmomenten",
+            "objectcontactmomenten",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},

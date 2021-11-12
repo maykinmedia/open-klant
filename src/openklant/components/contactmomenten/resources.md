@@ -33,6 +33,8 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | onderwerpLinks | Eén of meerdere links naar een product, webpagina of andere entiteit zodat contactmomenten gegroepeerd kunnen worden op onderwerp. | array | nee | C​R​U​D |
 | initiatiefnemer | De partij die het contact heeft geïnitieerd. | string | nee | C​R​U​D |
 | medewerker | URL-referentie naar een medewerker | string | nee | C​R​U​D |
+| klantcontactmomenten | Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| objectcontactmomenten | Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## AuditTrail
 
