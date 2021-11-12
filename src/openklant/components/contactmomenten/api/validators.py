@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 from django.conf import settings
 from django.utils.module_loading import import_string
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import exceptions, serializers
 from vng_api_common.models import APICredential
