@@ -4,6 +4,7 @@ from django.utils.timezone import make_aware
 
 from rest_framework import status
 from rest_framework.test import APITestCase
+from vng_api_common.constants import ComponentTypes
 from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
 
 from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer
@@ -18,6 +19,8 @@ from openklant.components.contactmomenten.datamodel.tests.factories import (
     MedewerkerFactory,
     ObjectContactMomentFactory,
 )
+
+from ..scopes import SCOPE_CONTACTMOMENTEN_AANMAKEN, SCOPE_CONTACTMOMENTEN_ALLES_LEZEN
 
 KLANT = "http://klanten.nl/api/v1/klanten/12345"
 
@@ -979,3 +982,143 @@ class ContactMomentFilterTests(JWTAuthMixin, APITestCase):
                     response.data["results"][0]["kanaal"],
                     "whatsapp",
                 )
+
+
+class ContactmomentenExpandTests(JWTAuthMixin, APITestCase):
+    scopes = [SCOPE_CONTACTMOMENTEN_AANMAKEN, SCOPE_CONTACTMOMENTEN_ALLES_LEZEN]
+    component = ComponentTypes.cmc
+    maxDiff = None
+
+    def test_list_expand(self):
+        # Create unrelated resources
+        KlantContactMomentFactory.create_batch(2)
+        ObjectContactMomentFactory.create_batch(2)
+
+        contactmoment = ContactMomentFactory.create()
+        contactmoment_url = reverse(contactmoment)
+
+        # Create related resources
+        KlantContactMomentFactory.create_batch(2, contactmoment=contactmoment)
+        ObjectContactMomentFactory.create_batch(2, contactmoment=contactmoment)
+
+        url = reverse(ContactMoment)
+
+        for resource in [
+            "klantcontactmomenten",
+            "objectcontactmomenten",
+        ]:
+            with self.subTest(resource=resource):
+                response = self.client.get(url, {"expand": resource})
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["count"], 5)
+
+                inline_resources = response.data["results"][0][resource]
+
+                self.assertEqual(len(inline_resources), 2)
+                self.assertEqual(
+                    *[r["contactmoment"] for r in inline_resources],
+                    f"http://testserver{contactmoment_url}",
+                )
+
+    def test_list_expand_all(self):
+        # Create unrelated resources
+        KlantContactMomentFactory.create_batch(2)
+        ObjectContactMomentFactory.create_batch(2)
+
+        contactmoment = ContactMomentFactory.create()
+        contactmoment_url = reverse(contactmoment)
+
+        # Create related resources
+        KlantContactMomentFactory.create_batch(2, contactmoment=contactmoment)
+        ObjectContactMomentFactory.create_batch(2, contactmoment=contactmoment)
+
+        url = reverse(ContactMoment)
+
+        response = self.client.get(
+            url,
+            {
+                "expand": [
+                    "klantcontactmomenten",
+                    "objectcontactmomenten",
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 5)
+
+        inline_klantcontactmomenten = response.data["results"][0][
+            "klantcontactmomenten"
+        ]
+
+        self.assertEqual(len(inline_klantcontactmomenten), 2)
+        self.assertEqual(
+            *[r["contactmoment"] for r in inline_klantcontactmomenten],
+            f"http://testserver{contactmoment_url}",
+        )
+
+        inline_objectcontactmomenten = response.data["results"][0][
+            "objectcontactmomenten"
+        ]
+
+        self.assertEqual(len(inline_objectcontactmomenten), 2)
+        self.assertEqual(
+            *[r["contactmoment"] for r in inline_objectcontactmomenten],
+            f"http://testserver{contactmoment_url}",
+        )
+
+    def test_detail_expand(self):
+        contactmoment = ContactMomentFactory.create()
+        contactmoment_url = reverse(contactmoment)
+
+        # Create related resources
+        KlantContactMomentFactory.create_batch(2, contactmoment=contactmoment)
+        ObjectContactMomentFactory.create_batch(2, contactmoment=contactmoment)
+
+        # Create unrelated resources
+        KlantContactMomentFactory.create_batch(2)
+        ObjectContactMomentFactory.create_batch(2)
+
+        url = reverse(contactmoment)
+
+        for resource in [
+            "klantcontactmomenten",
+            "objectcontactmomenten",
+        ]:
+            with self.subTest(resource=resource):
+                response = self.client.get(url, {"expand": resource})
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+                inline_resources = response.data[resource]
+
+                self.assertEqual(len(inline_resources), 2)
+                self.assertEqual(
+                    *[r["contactmoment"] for r in inline_resources],
+                    f"http://testserver{contactmoment_url}",
+                )
+
+    def test_list_expand_invalid_parameter(self):
+        ContactMomentFactory.create()
+
+        url = reverse(ContactMoment)
+
+        response = self.client.get(url, {"expand": "foo"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "expand")
+        self.assertEqual(error["code"], "invalid_choice")
+
+    def test_detail_expand_invalid_parameter(self):
+        contactmoment = ContactMomentFactory.create()
+
+        url = reverse(contactmoment)
+
+        response = self.client.get(url, {"expand": "foo"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "expand")
+        self.assertEqual(error["code"], "invalid_choice")
