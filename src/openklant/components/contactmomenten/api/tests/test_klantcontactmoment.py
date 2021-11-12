@@ -60,6 +60,7 @@ class KlantContactMomentTests(JWTAuthMixin, APITestCase):
                 "klant": klantcontactmoment.klant,
                 "contactmoment": f"http://testserver{cmc_url}",
                 "rol": Rol.belanghebbende,
+                "gelezen": False,
             },
         )
 
@@ -88,6 +89,7 @@ class KlantContactMomentTests(JWTAuthMixin, APITestCase):
         self.assertEqual(klantcontactmoment.klant, "http://testserver.com/klant/1")
         self.assertEqual(klantcontactmoment.contactmoment, cmc)
         self.assertEqual(klantcontactmoment.rol, Rol.gesprekspartner)
+        self.assertEqual(klantcontactmoment.gelezen, False)
 
     def test_create_klantcontactmoment_klant_url_invalid(self):
         cmc = ContactMomentFactory.create(
@@ -142,6 +144,53 @@ class KlantContactMomentTests(JWTAuthMixin, APITestCase):
 
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "unique")
+
+    def test_update_klantcontactmoment(self):
+        cmc = ContactMomentFactory.create(
+            registratiedatum=make_aware(datetime(2019, 1, 1)),
+            initiatiefnemer=InitiatiefNemer.gemeente,
+        )
+        cmc_url = reverse(cmc)
+        klantcontactmoment = KlantContactMomentFactory.create(contactmoment=cmc)
+        url = reverse(klantcontactmoment)
+
+        data = {
+            "klant": "http://testserver.com/klant/1",
+            "contactmoment": f"http://testserver{cmc_url}",
+            "rol": Rol.gesprekspartner,
+            "gelezen": True,
+        }
+
+        with requests_mock.Mocker() as m:
+            m.get("http://testserver.com/klant/1", json={})
+            response = self.client.put(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        klantcontactmoment = KlantContactMoment.objects.get()
+
+        self.assertEqual(klantcontactmoment.klant, "http://testserver.com/klant/1")
+        self.assertEqual(klantcontactmoment.contactmoment, cmc)
+        self.assertEqual(klantcontactmoment.rol, Rol.gesprekspartner)
+        self.assertEqual(klantcontactmoment.gelezen, True)
+
+    def test_partial_update_klantcontactmoment(self):
+        cmc = ContactMomentFactory.create(
+            registratiedatum=make_aware(datetime(2019, 1, 1)),
+            initiatiefnemer=InitiatiefNemer.gemeente,
+        )
+        klantcontactmoment = KlantContactMomentFactory.create(contactmoment=cmc)
+        url = reverse(klantcontactmoment)
+
+        with requests_mock.Mocker() as m:
+            m.get("http://testserver.com/klant/1", json={})
+            response = self.client.patch(url, {"gelezen": True})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        klantcontactmoment = KlantContactMoment.objects.get()
+
+        self.assertEqual(klantcontactmoment.gelezen, True)
 
     def test_destroy_klantcontactmoment(self):
         klantcontactmoment = KlantContactMomentFactory.create()
