@@ -7,7 +7,11 @@ from rest_framework.test import APITestCase
 from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
 
 from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer
-from openklant.components.contactmomenten.datamodel.models import ContactMoment
+from openklant.components.contactmomenten.datamodel.models import (
+    ContactMoment,
+    KlantContactMoment,
+    ObjectContactMoment,
+)
 from openklant.components.contactmomenten.datamodel.tests.factories import (
     ContactMomentFactory,
     KlantContactMomentFactory,
@@ -61,6 +65,8 @@ class ContactMomentTests(JWTAuthMixin, APITestCase):
                 "initiatiefnemer": InitiatiefNemer.gemeente,
                 "medewerker": contactmoment.medewerker,
                 "medewerkerIdentificatie": None,
+                "klantcontactmomenten": [],
+                "objectcontactmomenten": [],
             },
         )
 
@@ -101,6 +107,100 @@ class ContactMomentTests(JWTAuthMixin, APITestCase):
                     "voorletters": medewerker.voorletters,
                     "voorvoegselAchternaam": medewerker.voorvoegsel_achternaam,
                 },
+                "klantcontactmomenten": [],
+                "objectcontactmomenten": [],
+            },
+        )
+
+    def test_read_contactmoment_klantcontactmomenten(self):
+        contactmoment = ContactMomentFactory.create(
+            registratiedatum=make_aware(datetime(2019, 1, 1)),
+            initiatiefnemer=InitiatiefNemer.gemeente,
+        )
+        klantcontactmoment1 = KlantContactMomentFactory.create(
+            contactmoment=contactmoment
+        )
+        klantcontactmoment1_url = reverse(klantcontactmoment1)
+        klantcontactmoment2 = KlantContactMomentFactory.create(
+            contactmoment=contactmoment
+        )
+        klantcontactmoment2_url = reverse(klantcontactmoment2)
+
+        detail_url = reverse(contactmoment)
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(
+            data,
+            {
+                "url": f"http://testserver{detail_url}",
+                "vorigContactmoment": None,
+                "volgendContactmoment": None,
+                "bronorganisatie": contactmoment.bronorganisatie,
+                "registratiedatum": "2019-01-01T00:00:00Z",
+                "kanaal": contactmoment.kanaal,
+                "voorkeurskanaal": contactmoment.voorkeurskanaal,
+                "voorkeurstaal": contactmoment.voorkeurstaal,
+                "tekst": contactmoment.tekst,
+                "onderwerpLinks": [],
+                "initiatiefnemer": InitiatiefNemer.gemeente,
+                "medewerker": contactmoment.medewerker,
+                "medewerkerIdentificatie": None,
+                "klantcontactmomenten": [
+                    f"http://testserver{klantcontactmoment2_url}",
+                    f"http://testserver{klantcontactmoment1_url}",
+                ],
+                "objectcontactmomenten": [],
+            },
+        )
+
+    def test_read_contactmoment_objectcontactmomenten(self):
+        contactmoment = ContactMomentFactory.create(
+            registratiedatum=make_aware(datetime(2019, 1, 1)),
+            initiatiefnemer=InitiatiefNemer.gemeente,
+        )
+        objectcontactmoment1 = ObjectContactMomentFactory.create(
+            contactmoment=contactmoment
+        )
+        objectcontactmoment1_url = reverse(objectcontactmoment1)
+        objectcontactmoment2 = ObjectContactMomentFactory.create(
+            contactmoment=contactmoment
+        )
+        objectcontactmoment2_url = reverse(objectcontactmoment2)
+
+        detail_url = reverse(contactmoment)
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(
+            data,
+            {
+                "url": f"http://testserver{detail_url}",
+                "vorigContactmoment": None,
+                "volgendContactmoment": None,
+                "bronorganisatie": contactmoment.bronorganisatie,
+                "registratiedatum": "2019-01-01T00:00:00Z",
+                "kanaal": contactmoment.kanaal,
+                "voorkeurskanaal": contactmoment.voorkeurskanaal,
+                "voorkeurstaal": contactmoment.voorkeurstaal,
+                "tekst": contactmoment.tekst,
+                "onderwerpLinks": [],
+                "initiatiefnemer": InitiatiefNemer.gemeente,
+                "medewerker": contactmoment.medewerker,
+                "medewerkerIdentificatie": None,
+                "klantcontactmomenten": [],
+                "objectcontactmomenten": [
+                    f"http://testserver{objectcontactmoment2_url}",
+                    f"http://testserver{objectcontactmoment1_url}",
+                ],
             },
         )
 
@@ -212,6 +312,48 @@ class ContactMomentTests(JWTAuthMixin, APITestCase):
         vorig_cmc.refresh_from_db()
         self.assertEqual(vorig_cmc.volgend_contactmoment, contactmoment)
 
+    def test_create_contactmoment_ignore_klantcontactmomenten(self):
+        list_url = reverse(ContactMoment)
+        data = {
+            "bronorganisatie": "423182687",
+            "kanaal": "telephone",
+            "tekst": "some text",
+            "onderwerpLinks": [],
+            "initiatiefnemer": InitiatiefNemer.gemeente,
+            "medewerker": "http://example.com/medewerker/1",
+            # Should be ignored
+            "klantcontactmomenten": ["http://example.com/1"],
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        contactmoment = ContactMoment.objects.get()
+
+        self.assertEqual(contactmoment.klantcontactmoment_set.count(), 0)
+
+    def test_create_contactmoment_ignore_objectcontactmomenten(self):
+        list_url = reverse(ContactMoment)
+        data = {
+            "bronorganisatie": "423182687",
+            "kanaal": "telephone",
+            "tekst": "some text",
+            "onderwerpLinks": [],
+            "initiatiefnemer": InitiatiefNemer.gemeente,
+            "medewerker": "http://example.com/medewerker/1",
+            # Should be ignored
+            "objectcontactmomenten": ["http://example.com/1"],
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        contactmoment = ContactMoment.objects.get()
+
+        self.assertEqual(contactmoment.objectcontactmoment_set.count(), 0)
+
     def test_update_contactmoment(self):
         contactmoment = ContactMomentFactory.create()
         detail_url = reverse(contactmoment)
@@ -269,6 +411,78 @@ class ContactMomentTests(JWTAuthMixin, APITestCase):
 
         self.assertEqual(contactmoment.vorig_contactmoment, new_vorig_cmc)
         self.assertEqual(new_vorig_cmc.volgend_contactmoment, contactmoment)
+
+    def test_update_contactmoment_ignore_klantcontactmomenten(self):
+        contactmoment = ContactMomentFactory.create()
+        detail_url = reverse(contactmoment)
+
+        data = {
+            "bronorganisatie": "423182687",
+            "kanaal": "telephone",
+            "tekst": "some text",
+            "onderwerpLinks": [],
+            "initiatiefnemer": InitiatiefNemer.gemeente,
+            "medewerker": "http://example.com/medewerker/1",
+            "klantcontactmomenten": ["http://example.com/1"],
+        }
+
+        response = self.client.put(detail_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        contactmoment.refresh_from_db()
+
+        self.assertEqual(contactmoment.klantcontactmoment_set.count(), 0)
+
+    def test_update_contactmoment_ignore_objectcontactmomenten(self):
+        contactmoment = ContactMomentFactory.create()
+        detail_url = reverse(contactmoment)
+
+        data = {
+            "bronorganisatie": "423182687",
+            "kanaal": "telephone",
+            "tekst": "some text",
+            "onderwerpLinks": [],
+            "initiatiefnemer": InitiatiefNemer.gemeente,
+            "medewerker": "http://example.com/medewerker/1",
+            "objectcontactmomenten": ["http://example.com/1"],
+        }
+
+        response = self.client.put(detail_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        contactmoment.refresh_from_db()
+
+        self.assertEqual(contactmoment.objectcontactmoment_set.count(), 0)
+
+    def test_partial_update_contactmoment_ignore_klantcontactmomenten(self):
+        contactmoment = ContactMomentFactory.create()
+        detail_url = reverse(contactmoment)
+
+        response = self.client.patch(
+            detail_url, {"klantcontactmomenten": ["http://example.com/1"]}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        contactmoment.refresh_from_db()
+
+        self.assertEqual(contactmoment.klantcontactmoment_set.count(), 0)
+
+    def test_partial_update_contactmoment_ignore_objectcontactmomenten(self):
+        contactmoment = ContactMomentFactory.create()
+        detail_url = reverse(contactmoment)
+
+        response = self.client.patch(
+            detail_url, {"objectcontactmomenten": ["http://example.com/1"]}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        contactmoment.refresh_from_db()
+
+        self.assertEqual(contactmoment.objectcontactmoment_set.count(), 0)
 
     def test_destroy_contactmoment(self):
         contactmoment = ContactMomentFactory.create()
