@@ -22,6 +22,7 @@ class KlantFactory(factory.django.DjangoModelFactory):
     functie = factory.Faker("word")
     subject = factory.Faker("url")
     subject_type = factory.fuzzy.FuzzyChoice(KlantType.values)
+    aanmaakkanaal = "email"
 
     class Meta:
         model = Klant
