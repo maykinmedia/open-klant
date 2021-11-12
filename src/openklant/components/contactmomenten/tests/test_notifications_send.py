@@ -4,13 +4,13 @@ from django.test import override_settings
 
 from freezegun import freeze_time
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin
+from rest_framework.test import APITransactionTestCase
 
 from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer
 from openklant.components.contactmomenten.datamodel.tests.factories import (
     ContactMomentFactory,
 )
+from openklant.utils.tests.mixins import JWTAuthTransactionMixin
 
 from .utils import get_operation_url
 
@@ -22,9 +22,26 @@ MEDEWERKER = (
 
 @freeze_time("2018-09-07T00:00:00Z")
 @override_settings(NOTIFICATIONS_DISABLED=False)
-class SendNotifTestCase(JWTAuthMixin, APITestCase):
+class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
 
     heeft_alle_autorisaties = True
+
+    def setUp(self):
+        # FIXME setUpTestData() doesn't work with APITransactionTestCase
+        applicatie, autorisatie = self._create_credentials(
+            self.client_id,
+            self.secret,
+            heeft_alle_autorisaties=self.heeft_alle_autorisaties,
+            scopes=self.scopes,
+            zaaktype=self.zaaktype,
+            informatieobjecttype=self.informatieobjecttype,
+            besluittype=self.besluittype,
+            max_vertrouwelijkheidaanduiding=self.max_vertrouwelijkheidaanduiding,
+        )
+        self.applicatie = applicatie
+        self.autorisatie = autorisatie
+
+        super().setUp()
 
     @patch("zds_client.Client.from_url")
     def test_send_notif_create_contactmoment(self, mock_client):

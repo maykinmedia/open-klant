@@ -1,69 +1,73 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from djchoices import ChoiceItem, DjangoChoices
 
 
 class GeslachtsAanduiding(DjangoChoices):
-    man = ChoiceItem("m", "Man")
-    vrouw = ChoiceItem("v", "Vrouw")
-    onbekend = ChoiceItem("o", "Onbekend")
+    man = ChoiceItem("m", _("Man"))
+    vrouw = ChoiceItem("v", _("Vrouw"))
+    onbekend = ChoiceItem("o", _("Onbekend"))
 
 
 class KlantType(DjangoChoices):
-    natuurlijk_persoon = ChoiceItem("natuurlijk_persoon", "Natuurlijk persoon")
+    natuurlijk_persoon = ChoiceItem("natuurlijk_persoon", _("Natuurlijk persoon"))
     niet_natuurlijk_persoon = ChoiceItem(
-        "niet_natuurlijk_persoon", "Niet-natuurlijk persoon"
+        "niet_natuurlijk_persoon", _("Niet-natuurlijk persoon")
     )
-    vestiging = ChoiceItem("vestiging", "Vestiging")
+    vestiging = ChoiceItem("vestiging", _("Vestiging"))
 
 
 # TODO: Copied from Zaken API, move to common
 class SoortRechtsvorm(DjangoChoices):
-    besloten_vennootschap = ChoiceItem("besloten_vennootschap", "Besloten Vennootschap")
+    besloten_vennootschap = ChoiceItem(
+        "besloten_vennootschap", _("Besloten Vennootschap")
+    )
     cooperatie_europees_economische_samenwerking = ChoiceItem(
         "cooperatie_europees_economische_samenwerking",
-        "Cooperatie, Europees Economische Samenwerking",
+        _("Cooperatie, Europees Economische Samenwerking"),
     )
     europese_cooperatieve_vennootschap = ChoiceItem(
-        "europese_cooperatieve_venootschap", "Europese Cooperatieve Venootschap"
+        "europese_cooperatieve_venootschap", _("Europese Cooperatieve Venootschap")
     )
     europese_naamloze_vennootschap = ChoiceItem(
-        "europese_naamloze_vennootschap", "Europese Naamloze Vennootschap"
+        "europese_naamloze_vennootschap", _("Europese Naamloze Vennootschap")
     )
     kerkelijke_organisatie = ChoiceItem(
-        "kerkelijke_organisatie", "Kerkelijke Organisatie"
+        "kerkelijke_organisatie", _("Kerkelijke Organisatie")
     )
-    naamloze_vennootschap = ChoiceItem("naamloze_vennootschap", "Naamloze Vennootschap")
+    naamloze_vennootschap = ChoiceItem(
+        "naamloze_vennootschap", _("Naamloze Vennootschap")
+    )
     onderlinge_waarborg_maatschappij = ChoiceItem(
-        "onderlinge_waarborg_maatschappij", "Onderlinge Waarborg Maatschappij"
+        "onderlinge_waarborg_maatschappij", _("Onderlinge Waarborg Maatschappij")
     )
     overig_privaatrechtelijke_rechtspersoon = ChoiceItem(
         "overig_privaatrechtelijke_rechtspersoon",
-        "Overig privaatrechtelijke rechtspersoon",
+        _("Overig privaatrechtelijke rechtspersoon"),
     )
-    stichting = ChoiceItem("stichting", "Stichting")
-    vereniging = ChoiceItem("vereniging", "Vereniging")
+    stichting = ChoiceItem("stichting", _("Stichting"))
+    vereniging = ChoiceItem("vereniging", _("Vereniging"))
     vereniging_van_eigenaars = ChoiceItem(
-        "vereniging_van_eigenaars", "Vereniging van Eigenaars"
+        "vereniging_van_eigenaars", _("Vereniging van Eigenaars")
     )
     publiekrechtelijke_rechtspersoon = ChoiceItem(
-        "publiekrechtelijke_rechtspersoon", "Publiekrechtelijke Rechtspersoon"
+        "publiekrechtelijke_rechtspersoon", _("Publiekrechtelijke Rechtspersoon")
     )
     vennootschap_onder_firma = ChoiceItem(
-        "vennootschap_onder_firma", "Vennootschap onder Firma"
+        "vennootschap_onder_firma", _("Vennootschap onder Firma")
     )
-    maatschap = ChoiceItem("maatschap", "Maatschap")
-    rederij = ChoiceItem("rederij", "Rederij")
+    maatschap = ChoiceItem("maatschap", _("Maatschap"))
+    rederij = ChoiceItem("rederij", _("Rederij"))
     commanditaire_vennootschap = ChoiceItem(
-        "commanditaire_vennootschap", "Commanditaire vennootschap"
+        "commanditaire_vennootschap", _("Commanditaire vennootschap")
     )
     kapitaalvennootschap_binnen_eer = ChoiceItem(
-        "kapitaalvennootschap_binnen_eer", "Kapitaalvennootschap binnen EER"
+        "kapitaalvennootschap_binnen_eer", _("Kapitaalvennootschap binnen EER")
     )
     overige_buitenlandse_rechtspersoon_vennootschap = ChoiceItem(
         "overige_buitenlandse_rechtspersoon_vennootschap",
-        "Overige buitenlandse rechtspersoon vennootschap",
+        _("Overige buitenlandse rechtspersoon vennootschap"),
     )
     kapitaalvennootschap_buiten_eer = ChoiceItem(
-        "kapitaalvennootschap_buiten_eer", "Kapitaalvennootschap buiten EER"
+        "kapitaalvennootschap_buiten_eer", _("Kapitaalvennootschap buiten EER")
     )

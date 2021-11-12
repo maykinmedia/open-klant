@@ -11,10 +11,7 @@ from openklant.components.contactmomenten.datamodel.constants import (
     InitiatiefNemer,
     Rol,
 )
-from openklant.components.contactmomenten.datamodel.models import (
-    ContactMoment,
-    KlantContactMoment,
-)
+from openklant.components.contactmomenten.datamodel.models import KlantContactMoment
 from openklant.components.contactmomenten.datamodel.tests.factories import (
     ContactMomentFactory,
     KlantContactMomentFactory,
@@ -158,9 +155,7 @@ class KlantContactMomentFilterTests(JWTAuthMixin, APITestCase):
     list_url = reverse(KlantContactMoment)
 
     def test_filter_klant(self):
-        klantcontactmoment = KlantContactMomentFactory.create(
-            klant="https://testserver.com/klant/1"
-        )
+        KlantContactMomentFactory.create(klant="https://testserver.com/klant/1")
         KlantContactMomentFactory.create()
 
         response = self.client.get(

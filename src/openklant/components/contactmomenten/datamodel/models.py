@@ -2,25 +2,28 @@ import uuid
 
 from django.db import models
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from django_better_admin_arrayfield.models.fields import ArrayField
 from vng_api_common.fields import RSINField
 from vng_api_common.models import APIMixin
-from vng_api_common.utils import get_uuid_from_path
 
 from .constants import InitiatiefNemer, ObjectTypes, Rol
 
 
 class ContactMoment(APIMixin, models.Model):
     uuid = models.UUIDField(
-        unique=True, default=uuid.uuid4, help_text="Unieke resource identifier (UUID4)"
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke resource identifier (UUID4)"),
     )
     bronorganisatie = RSINField(
-        help_text="Het RSIN van de Niet-natuurlijk persoon zijnde de "
-        "organisatie die de klantinteractie heeft gecreeerd. Dit moet een "
-        "geldig RSIN zijn van 9 nummers en voldoen aan "
-        "https://nl.wikipedia.org/wiki/Burgerservicenummer#11-proef"
+        help_text=_(
+            "Het RSIN van de Niet-natuurlijk persoon zijnde de "
+            "organisatie die de klantinteractie heeft gecreeerd. Dit moet een "
+            "geldig RSIN zijn van 9 nummers en voldoen aan "
+            "https://nl.wikipedia.org/wiki/Burgerservicenummer#11-proef"
+        )
     )
     registratiedatum = models.DateTimeField(
         default=timezone.now,
@@ -62,7 +65,7 @@ class ContactMoment(APIMixin, models.Model):
         help_text=_("De partij die het contact heeft geïnitieerd."),
     )
     medewerker = models.URLField(
-        help_text="URL-referentie naar een medewerker", max_length=1000, blank=True
+        help_text=_("URL-referentie naar een medewerker"), max_length=1000, blank=True
     )
     onderwerp_links = ArrayField(
         models.URLField(
@@ -112,21 +115,23 @@ class ObjectContactMoment(APIMixin, models.Model):
     """
 
     uuid = models.UUIDField(
-        unique=True, default=uuid.uuid4, help_text="Unieke resource identifier (UUID4)"
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke resource identifier (UUID4)"),
     )
     object = models.URLField(
-        help_text="URL-referentie naar het gerelateerde OBJECT (in een andere API)."
+        help_text=_("URL-referentie naar het gerelateerde OBJECT (in een andere API).")
     )
     object_type = models.CharField(
-        "objecttype",
+        _("objecttype"),
         max_length=100,
         choices=ObjectTypes.choices,
-        help_text="Het type van het gerelateerde OBJECT.",
+        help_text=_("Het type van het gerelateerde OBJECT."),
     )
     contactmoment = models.ForeignKey(
         ContactMoment,
         on_delete=models.CASCADE,
-        help_text="URL-referentie naar het CONTACTMOMENT.",
+        help_text=_("URL-referentie naar het CONTACTMOMENT."),
     )
 
     class Meta:
@@ -137,7 +142,9 @@ class ObjectContactMoment(APIMixin, models.Model):
 
 class KlantContactMoment(APIMixin, models.Model):
     uuid = models.UUIDField(
-        unique=True, default=uuid.uuid4, help_text="Unieke resource identifier (UUID4)"
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke resource identifier (UUID4)"),
     )
     contactmoment = models.ForeignKey(
         ContactMoment,
@@ -167,25 +174,31 @@ class Medewerker(models.Model):
     identificatie = models.CharField(
         max_length=24,
         blank=True,
-        help_text="Een korte unieke aanduiding van de MEDEWERKER.",
+        help_text=_("Een korte unieke aanduiding van de MEDEWERKER."),
         db_index=True,
     )
     achternaam = models.CharField(
         max_length=200,
         blank=True,
-        help_text="De achternaam zoals de MEDEWERKER die in het dagelijkse verkeer gebruikt.",
+        help_text=_(
+            "De achternaam zoals de MEDEWERKER die in het dagelijkse verkeer gebruikt."
+        ),
     )
     voorletters = models.CharField(
         max_length=20,
         blank=True,
-        help_text="De verzameling letters die gevormd wordt door de eerste letter van "
-        "alle in volgorde voorkomende voornamen.",
+        help_text=_(
+            "De verzameling letters die gevormd wordt door de eerste letter van "
+            "alle in volgorde voorkomende voornamen."
+        ),
     )
     voorvoegsel_achternaam = models.CharField(
         max_length=10,
         blank=True,
-        help_text="Dat deel van de geslachtsnaam dat voorkomt in Tabel 36 (GBA), "
-        "voorvoegseltabel, en door een spatie van de geslachtsnaam is",
+        help_text=_(
+            "Dat deel van de geslachtsnaam dat voorkomt in Tabel 36 (GBA), "
+            "voorvoegseltabel, en door een spatie van de geslachtsnaam is"
+        ),
     )
 
     class Meta:

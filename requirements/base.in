@@ -16,8 +16,8 @@ django-filter<=2.2.0
 django-redis
 django-rosetta
 django-sniplates
--e git+git://github.com/maykinmedia/django-two-factor-auth@729249e647674c7022b894fcb0ccc4c231ed23d8#egg=django-two-factor-auth
-phonenumbers
+# maykin-django-two-factor-auth
+# phonenumbers
 
 # API libraries
 djangorestframework

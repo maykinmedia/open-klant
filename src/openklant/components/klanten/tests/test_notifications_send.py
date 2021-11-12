@@ -5,8 +5,9 @@ from django.test import override_settings
 import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin
+from rest_framework.test import APITransactionTestCase
+
+from openklant.utils.tests.mixins import JWTAuthTransactionMixin
 
 from ..datamodel.constants import KlantType
 from ..datamodel.tests.factories import KlantFactory
@@ -17,7 +18,7 @@ SUBJECT = "http://example.com/subject/1"
 
 @freeze_time("2018-09-07T00:00:00Z")
 @override_settings(NOTIFICATIONS_DISABLED=False)
-class SendNotifTestCase(JWTAuthMixin, APITestCase):
+class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
 
     heeft_alle_autorisaties = True
 

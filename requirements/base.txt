@@ -4,8 +4,6 @@
 #
 #    ./bin/compile_dependencies.sh
 #
--e git+git://github.com/maykinmedia/django-two-factor-auth@729249e647674c7022b894fcb0ccc4c231ed23d8#egg=django-two-factor-auth
-    # via -r requirements/base.in
 certifi==2021.5.30
     # via
     #   elastic-apm
@@ -25,14 +23,12 @@ django==2.2.24
     #   django-axes
     #   django-choices
     #   django-filter
-    #   django-formtools
-    #   django-otp
-    #   django-phonenumber-field
+    #   django-markup
     #   django-redis
     #   django-rest-framework-condition
     #   django-rosetta
     #   django-sniplates
-    #   django-two-factor-auth
+    #   djangorestframework
     #   drf-nested-routers
     #   drf-yasg
     #   vng-api-common
@@ -52,16 +48,12 @@ django-filter==2.1.0
     # via
     #   -r requirements/base.in
     #   vng-api-common
-django-formtools==2.3
-    # via django-two-factor-auth
 django-ipware==4.0.0
     # via django-axes
+django-markup==1.3
+    # via vng-api-common
 django-ordered-model==3.4.3
     # via django-admin-index
-django-otp==1.1.1
-    # via django-two-factor-auth
-django-phonenumber-field==5.2.0
-    # via django-two-factor-auth
 django-redis==5.0.0
     # via -r requirements/base.in
 django-rest-framework-condition==0.1.1
@@ -72,7 +64,7 @@ django-sniplates==0.7.0
     # via -r requirements/base.in
 django-solo==1.2.0
     # via vng-api-common
-djangorestframework==3.9.4
+djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   drf-nested-routers
@@ -82,7 +74,7 @@ djangorestframework-camel-case==1.2.0
     # via vng-api-common
 drf-nested-routers==0.93.3
     # via vng-api-common
-drf-yasg==1.16.0
+drf-yasg==1.20.0
     # via vng-api-common
 elastic-apm==6.4.0
     # via -r requirements/base.in
@@ -100,12 +92,14 @@ itypes==1.2.0
     # via coreapi
 jinja2==3.0.2
     # via coreschema
+markdown==3.3.4
+    # via vng-api-common
 markupsafe==2.0.1
     # via jinja2
 oyaml==1.0
     # via vng-api-common
-phonenumbers==8.12.33
-    # via -r requirements/base.in
+packaging==21.2
+    # via drf-yasg
 pillow==8.3.2
     # via -r requirements/base.in
 polib==1.1.1
@@ -116,6 +110,8 @@ pyjwt==1.7.1
     # via
     #   gemma-zds-client
     #   vng-api-common
+pyparsing==2.4.7
+    # via packaging
 python-decouple==3.5
     # via -r requirements/base.in
 python-dotenv==0.19.0
@@ -129,8 +125,6 @@ pyyaml==5.4.1
     #   gemma-zds-client
     #   oyaml
     #   vng-api-common
-qrcode==6.1
-    # via django-two-factor-auth
 redis==3.5.3
     # via django-redis
 requests==2.26.0
@@ -148,9 +142,8 @@ sentry-sdk==1.4.3
 six==1.16.0
     # via
     #   django-choices
-    #   drf-yasg
+    #   django-markup
     #   isodate
-    #   qrcode
 sqlparse==0.4.2
     # via django
 unidecode==1.3.2
@@ -166,5 +159,5 @@ urllib3==1.26.7
     #   sentry-sdk
 uwsgi==2.0.19.1
     # via -r requirements/base.in
-vng-api-common[markdown_docs]==1.5.10
+vng-api-common[markdown_docs]==1.6.4
     # via -r requirements/base.in

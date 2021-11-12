@@ -646,7 +646,7 @@ class ContactMomentFilterTests(JWTAuthMixin, APITestCase):
             "whatsapp",
         )
 
-    def test_filter_object_url_multiple(self):
+    def test_filter_klant_url_multiple(self):
         cm1 = ContactMomentFactory.create(kanaal="telefoon")
         cm2 = ContactMomentFactory.create(kanaal="whatsapp")
         cm3 = ContactMomentFactory.create(kanaal="email")

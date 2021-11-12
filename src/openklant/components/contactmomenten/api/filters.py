@@ -1,10 +1,9 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from django_filters import filters
 from vng_api_common.filters import URLModelChoiceFilter
 from vng_api_common.filtersets import FilterSet
 
-from openklant.components.contactmomenten.datamodel.constants import Rol
 from openklant.components.contactmomenten.datamodel.models import (
     ContactMoment,
     KlantContactMoment,

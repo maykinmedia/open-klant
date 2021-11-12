@@ -897,20 +897,6 @@ class KlantFilterTests(JWTAuthMixin, APITestCase):
         result = response_data["results"][0]
         self.assertEqual(result["telefoonnummer"], "321")
 
-    def test_filter_telefoonnummer(self):
-        KlantFactory.create(telefoonnummer="123")
-        KlantFactory.create(telefoonnummer="321")
-        url = reverse(Klant)
-
-        response = self.client.get(url, {"telefoonnummer": "321"})
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = response.json()
-        self.assertEqual(response_data["count"], 1)
-
-        result = response_data["results"][0]
-        self.assertEqual(result["telefoonnummer"], "321")
-
     def test_filter_adres__straatnaam(self):
         KlantAdresFactory.create(straatnaam="naam1")
         KlantAdresFactory.create(straatnaam="naam2")
