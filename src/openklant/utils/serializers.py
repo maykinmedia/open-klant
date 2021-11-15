@@ -3,6 +3,8 @@ from django.utils.module_loading import import_string
 from rest_framework_nested.serializers import NestedHyperlinkedRelatedField
 
 
+# TODO should be moved to vng-api-common once merged/reviewed
+# in Open Zaak: https://github.com/open-zaak/open-zaak/pull/1037
 class ExpandSerializer(NestedHyperlinkedRelatedField):
     def __init__(self, *args, **kwargs):
         # For some reason self.field_name is empty for `many=True`
