@@ -19,13 +19,18 @@ Deze API is afhankelijk van:
 * Verzoeken API *(optioneel)*
 * Documenten API *(optioneel)*
 
+**API specificatie afwijkingen**
+
+Afwijkingen in de API specificatie ten opzichte van de referentie API specificatie
+zijn aangemerkt met ***AFWIJKING:**
+
 **Autorisatie**
 
 Deze API vereist autorisatie. Je kan de
 [token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te
 genereren.
 
-** Notificaties
+**Notificaties**
 
 {notification_documentation(KANAAL_CONTACTMOMENTEN)}
 

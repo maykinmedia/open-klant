@@ -25,6 +25,14 @@ info:
     * Documenten API *(optioneel)*
 
 
+    **API specificatie afwijkingen**
+
+
+    Afwijkingen in de API specificatie ten opzichte van de referentie API specificatie
+
+    zijn aangemerkt met ***AFWIJKING:**
+
+
     **Autorisatie**
 
 
@@ -35,7 +43,7 @@ info:
     genereren.
 
 
-    ** Notificaties
+    **Notificaties**
 
 
     Deze API publiceert notificaties op het kanaal `contactmomenten`.
@@ -206,48 +214,51 @@ paths:
           - -medewerker_identificatie
       - name: medewerkerIdentificatie__identificatie
         in: query
-        description: Een korte unieke aanduiding van de MEDEWERKER.
+        description: '***AFWIJKING:** Een korte unieke aanduiding van de MEDEWERKER.'
         required: false
         schema:
           type: string
       - name: medewerkerIdentificatie__achternaam
         in: query
-        description: De achternaam zoals de MEDEWERKER die in het dagelijkse verkeer
-          gebruikt.
+        description: '***AFWIJKING:** De achternaam zoals de MEDEWERKER die in het
+          dagelijkse verkeer gebruikt.'
         required: false
         schema:
           type: string
       - name: medewerkerIdentificatie__voorletters
         in: query
-        description: De verzameling letters die gevormd wordt door de eerste letter
-          van alle in volgorde voorkomende voornamen.
+        description: '***AFWIJKING:** De verzameling letters die gevormd wordt door
+          de eerste letter van alle in volgorde voorkomende voornamen.'
         required: false
         schema:
           type: string
       - name: medewerkerIdentificatie__voorvoegselAchternaam
         in: query
-        description: Dat deel van de geslachtsnaam dat voorkomt in Tabel 36 (GBA),
-          voorvoegseltabel, en door een spatie van de geslachtsnaam is
+        description: '***AFWIJKING:** Dat deel van de geslachtsnaam dat voorkomt in
+          Tabel 36 (GBA), voorvoegseltabel, en door een spatie van de geslachtsnaam
+          is'
         required: false
         schema:
           type: string
       - name: object
         in: query
-        description: De URL van het gerelateerde object (zoals vastgelegd in de OBJECTCONTACTMOMENT
-          resource). Meerdere waardes kunnen met komma's gescheiden worden.
+        description: '***AFWIJKING:** De URL van het gerelateerde object (zoals vastgelegd
+          in de OBJECTCONTACTMOMENT resource). Meerdere waardes kunnen met komma''s
+          gescheiden worden.'
         required: false
         schema:
           type: string
       - name: klant
         in: query
-        description: De URL van de gerelateerde KLANT (zoals vastgelegd in de KLANTCONTACTMOMENT
-          resource). Meerdere waardes kunnen met komma's gescheiden worden.
+        description: '***AFWIJKING:** De URL van de gerelateerde KLANT (zoals vastgelegd
+          in de KLANTCONTACTMOMENT resource). Meerdere waardes kunnen met komma''s
+          gescheiden worden.'
         required: false
         schema:
           type: string
       - name: expand
         in: query
-        description: Haal details van inline resources direct op.
+        description: '***AFWIJKING:** Haal details van inline resources direct op.'
         required: false
         schema:
           type: string
@@ -889,11 +900,7 @@ paths:
           enum:
           - application/json
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/KlantContactMoment'
-        required: true
+        $ref: '#/components/requestBodies/KlantContactMoment'
       responses:
         '201':
           description: Created
@@ -1002,6 +1009,112 @@ paths:
       security:
       - JWT-Claims:
         - contactmomenten.lezen
+    put:
+      operationId: klantcontactmoment_update
+      summary: Werk een KLANT-CONTACTMOMENT in zijn geheel bij.
+      description: '***AFWIJKING:** Werk een KLANT-CONTACTMOMENT in zijn geheel bij.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/KlantContactMoment'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KlantContactMoment'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontactmomenten
+      security:
+      - JWT-Claims:
+        - contactmomenten.aanmaken
+    patch:
+      operationId: klantcontactmoment_partial_update
+      summary: Werk een KLANT-CONTACTMOMENT deels bij.
+      description: '***AFWIJKING:** Werk een KLANT-CONTACTMOMENT deels bij.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/KlantContactMoment'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KlantContactMoment'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontactmomenten
+      security:
+      - JWT-Claims:
+        - contactmomenten.aanmaken
     delete:
       operationId: klantcontactmoment_delete
       summary: Verwijder een KLANT-CONTACTMOMENT relatie.
@@ -1464,6 +1577,12 @@ components:
           schema:
             $ref: '#/components/schemas/ContactMoment'
       required: true
+    KlantContactMoment:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KlantContactMoment'
+      required: true
   securitySchemes:
     JWT-Claims:
       type: http
@@ -1471,7 +1590,6 @@ components:
       bearerFormat: JWT
   schemas:
     Medewerker:
-      title: Medewerker identificatie
       type: object
       properties:
         identificatie:
@@ -1593,7 +1711,7 @@ components:
         medewerkerIdentificatie:
           $ref: '#/components/schemas/Medewerker'
         klantcontactmomenten:
-          description: Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen
+          description: '***AFWIJKING:** Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen'
           type: array
           items:
             description: Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen
@@ -1602,7 +1720,7 @@ components:
           readOnly: true
           uniqueItems: true
         objectcontactmomenten:
-          description: Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen
+          description: '***AFWIJKING:** Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen'
           type: array
           items:
             description: Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen
@@ -1714,7 +1832,6 @@ components:
           items:
             $ref: '#/components/schemas/FieldValidationError'
     Wijzigingen:
-      title: Wijzigingen
       type: object
       properties:
         oud:
@@ -1911,6 +2028,11 @@ components:
           enum:
           - belanghebbende
           - gesprekspartner
+        gelezen:
+          title: Gelezen
+          description: '***AFWIJKING:** Geeft aan of het bericht gelezen is door de
+            KLANT.'
+          type: boolean
     ObjectContactMoment:
       required:
       - contactmoment

@@ -30,6 +30,14 @@ info:
     * Documenten API *(optioneel)*
 
 
+    **API specificatie afwijkingen**
+
+
+    Afwijkingen in de API specificatie ten opzichte van de referentie API specificatie
+
+    zijn aangemerkt met ***AFWIJKING:**
+
+
     **Autorisatie**
 
 
@@ -40,7 +48,7 @@ info:
     genereren.
 
 
-    ** Notificaties
+    **Notificaties**
 
 
     Deze API publiceert notificaties op het kanaal `klanten`.
@@ -875,7 +883,6 @@ components:
       bearerFormat: JWT
   schemas:
     KlantAdres:
-      title: Adres
       description: Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres
         zijn)
       type: object
@@ -1017,13 +1024,13 @@ components:
           nullable: true
         aanmaakkanaal:
           title: Aanmaakkanaal
-          description: Het communicatiekanaal waarlangs de klant is aangemaakt.
+          description: '***AFWIJKING:** Het communicatiekanaal waarlangs de klant
+            is aangemaakt.'
           type: string
           maxLength: 50
       discriminator:
         propertyName: subjectType
     VerblijfsAdres:
-      title: Verblijfsadres
       required:
       - aoaIdentificatie
       - gorOpenbareRuimteNaam
@@ -1068,8 +1075,8 @@ components:
           title: Inp locatiebeschrijving
           type: string
           maxLength: 1000
+      nullable: true
     SubVerblijfBuitenland:
-      title: Sub verblijf buitenland
       required:
       - lndLandcode
       - lndLandnaam
@@ -1101,8 +1108,8 @@ components:
           title: Sub adres buitenland 3
           type: string
           maxLength: 35
+      nullable: true
     NatuurlijkPersoon:
-      title: subject_identificatie
       type: object
       properties:
         inpBsn:
@@ -1181,7 +1188,6 @@ components:
       - $ref: '#/components/schemas/Klant'
       - $ref: '#/components/schemas/subject_identificatie_NatuurlijkPersoon'
     NietNatuurlijkPersoon:
-      title: subject_identificatie
       type: object
       properties:
         innNnpId:
@@ -1245,7 +1251,6 @@ components:
       - $ref: '#/components/schemas/Klant'
       - $ref: '#/components/schemas/subject_identificatie_NietNatuurlijkPersoon'
     Vestiging:
-      title: subject_identificatie
       type: object
       properties:
         vestigingsNummer:
@@ -1378,7 +1383,6 @@ components:
           items:
             $ref: '#/components/schemas/FieldValidationError'
     Wijzigingen:
-      title: Wijzigingen
       type: object
       properties:
         oud:

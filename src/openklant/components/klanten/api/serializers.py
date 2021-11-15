@@ -21,6 +21,7 @@ from openklant.components.klanten.datamodel.models import (
     VerblijfsAdres,
     Vestiging,
 )
+from openklant.utils.api_spec import mark_oas_difference
 
 logger = logging.getLogger(__name__)
 
@@ -307,6 +308,11 @@ class KlantSerializer(PolymorphicSerializer):
 
         value_display_mapping = add_choice_values_help_text(KlantType)
         self.fields["subject_type"].help_text += f"\n\n{value_display_mapping}"
+
+        # Document
+        self.fields["aanmaakkanaal"].help_text = mark_oas_difference(
+            self.fields["aanmaakkanaal"].help_text
+        )
 
     def validate(self, attrs):
         validated_attrs = super().validate(attrs)

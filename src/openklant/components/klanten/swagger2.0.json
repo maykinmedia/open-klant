@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "Klanten API",
-        "description": "Een API om klanten te benaderen.\n\nEen API om zowel klanten te registreren als op te vragen. Een klant\nis een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging\nwaarbij het gaat om niet geverifieerde gegevens. De Klanten API kan\nzelfstandig of met andere API's samen werken om tot volledige functionaliteit\nte komen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Autorisaties API\n* Notificaties API\n* Zaken API *(optioneel)*\n* Documenten API *(optioneel)*\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te\ngenereren.\n\n** Notificaties\n\nDeze API publiceert notificaties op het kanaal `klanten`.\n\n**Main resource**\n\n`klant`\n\n\n\n**Kenmerken**\n\n* `subject_type`: Type van de `subject`.\n\n**Resources en acties**\n\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
+        "description": "Een API om klanten te benaderen.\n\nEen API om zowel klanten te registreren als op te vragen. Een klant\nis een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging\nwaarbij het gaat om niet geverifieerde gegevens. De Klanten API kan\nzelfstandig of met andere API's samen werken om tot volledige functionaliteit\nte komen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Autorisaties API\n* Notificaties API\n* Zaken API *(optioneel)*\n* Documenten API *(optioneel)*\n\n**API specificatie afwijkingen**\n\nAfwijkingen in de API specificatie ten opzichte van de referentie API specificatie\nzijn aangemerkt met ***AFWIJKING:**\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te\ngenereren.\n\n**Notificaties**\n\nDeze API publiceert notificaties op het kanaal `klanten`.\n\n**Main resource**\n\n`klant`\n\n\n\n**Kenmerken**\n\n* `subject_type`: Type van de `subject`.\n\n**Resources en acties**\n\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
         "contact": {
             "url": "https://zaakgerichtwerken.vng.cloud",
             "email": "standaarden.ondersteuning@vng.nl"
@@ -895,7 +895,6 @@
     },
     "definitions": {
         "KlantAdres": {
-            "title": "Adres",
             "description": "Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres zijn)",
             "type": "object",
             "properties": {
@@ -1045,7 +1044,7 @@
                 },
                 "aanmaakkanaal": {
                     "title": "Aanmaakkanaal",
-                    "description": "Het communicatiekanaal waarlangs de klant is aangemaakt.",
+                    "description": "***AFWIJKING:** Het communicatiekanaal waarlangs de klant is aangemaakt.",
                     "type": "string",
                     "maxLength": 50
                 }
@@ -1053,7 +1052,6 @@
             "discriminator": "subjectType"
         },
         "VerblijfsAdres": {
-            "title": "Verblijfsadres",
             "required": [
                 "aoaIdentificatie",
                 "gorOpenbareRuimteNaam"
@@ -1106,10 +1104,10 @@
                     "type": "string",
                     "maxLength": 1000
                 }
-            }
+            },
+            "x-nullable": true
         },
         "SubVerblijfBuitenland": {
-            "title": "Sub verblijf buitenland",
             "required": [
                 "lndLandcode",
                 "lndLandnaam"
@@ -1145,10 +1143,10 @@
                     "type": "string",
                     "maxLength": 35
                 }
-            }
+            },
+            "x-nullable": true
         },
         "NatuurlijkPersoon": {
-            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "inpBsn": {
@@ -1236,7 +1234,6 @@
             ]
         },
         "NietNatuurlijkPersoon": {
-            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "innNnpId": {
@@ -1314,7 +1311,6 @@
             ]
         },
         "Vestiging": {
-            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "vestigingsNummer": {
@@ -1487,7 +1483,6 @@
             }
         },
         "Wijzigingen": {
-            "title": "Wijzigingen",
             "type": "object",
             "properties": {
                 "oud": {
