@@ -1,5 +1,9 @@
 import logging
 
+from django.db.models import Prefetch
+
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.serializers import ValidationError
@@ -76,7 +80,22 @@ class ContactMomentViewSet(
     Verwijder een CONTACTMOMENT.
     """
 
-    queryset = ContactMoment.objects.all().order_by("-registratiedatum")
+    queryset = (
+        ContactMoment.objects.all()
+        .prefetch_related(
+            Prefetch(
+                "klantcontactmoment_set",
+                queryset=KlantContactMoment.objects.order_by("-pk"),
+            )
+        )
+        .prefetch_related(
+            Prefetch(
+                "objectcontactmoment_set",
+                queryset=ObjectContactMoment.objects.order_by("-pk"),
+            )
+        )
+        .order_by("-registratiedatum")
+    )
     serializer_class = ContactMomentSerializer
     filterset_class = ContactMomentFilter
     lookup_field = "uuid"
@@ -92,6 +111,20 @@ class ContactMomentViewSet(
     }
     notifications_kanaal = KANAAL_CONTACTMOMENTEN
     audit = AUDIT_CONTACTMOMENTEN
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "expand",
+                openapi.IN_QUERY,
+                description="Haal details van inline resources direct op.",
+                type=openapi.TYPE_STRING,
+                enum=ContactMomentSerializer.Meta.expandable_fields,
+            )
+        ]
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ObjectContactMomentViewSet(
@@ -137,7 +170,7 @@ class ObjectContactMomentViewSet(
     endpoint bij het synchroniseren van relaties.
     """
 
-    queryset = ObjectContactMoment.objects.all()
+    queryset = ObjectContactMoment.objects.order_by("-pk")
     serializer_class = ObjectContactMomentSerializer
     filterset_class = ObjectContactMomentFilter
     lookup_field = "uuid"
@@ -215,7 +248,7 @@ class KlantContactMomentViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     Verwijder een KLANT-CONTACTMOMENT relatie.
     """
 
-    queryset = KlantContactMoment.objects.all()
+    queryset = KlantContactMoment.objects.order_by("-pk")
     serializer_class = KlantContactMomentSerializer
     filterset_class = KlantContactMomentFilter
     pagination_class = PageNumberPagination

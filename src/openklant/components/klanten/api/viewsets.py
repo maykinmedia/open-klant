@@ -71,7 +71,7 @@ class KlantViewSet(
     Verwijder een KLANT.
     """
 
-    queryset = Klant.objects.all()
+    queryset = Klant.objects.order_by("-pk")
     serializer_class = KlantSerializer
     lookup_field = "uuid"
     permission_classes = (AuthScopesRequired,)

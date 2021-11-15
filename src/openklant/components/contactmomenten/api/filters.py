@@ -10,6 +10,9 @@ from openklant.components.contactmomenten.datamodel.models import (
     KlantContactMoment,
     ObjectContactMoment,
 )
+from openklant.utils.filters import ExpandFilter
+
+from .serializers import ContactMomentSerializer
 
 
 class ObjectContactMomentFilter(FilterSet):
@@ -56,6 +59,10 @@ class ContactMomentFilter(FilterSet):
     medewerker_identificatie__voorvoegsel_achternaam = filters.CharFilter(
         field_name="medewerker_identificatie__voorvoegsel_achternaam",
         help_text=get_help_text("contactmomenten.Medewerker", "voorvoegsel_achternaam"),
+    )
+    expand = ExpandFilter(
+        serializer_class=ContactMomentSerializer,
+        help_text=_("Haal details van inline resources direct op."),
     )
     ordering = filters.OrderingFilter(
         fields=(
