@@ -1,5 +1,7 @@
 import logging
 
+from django.db.models import Prefetch
+
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins, viewsets
@@ -80,8 +82,18 @@ class ContactMomentViewSet(
 
     queryset = (
         ContactMoment.objects.all()
-        .prefetch_related("klantcontactmoment_set")
-        .prefetch_related("objectcontactmoment_set")
+        .prefetch_related(
+            Prefetch(
+                "klantcontactmoment_set",
+                queryset=KlantContactMoment.objects.order_by("-pk"),
+            )
+        )
+        .prefetch_related(
+            Prefetch(
+                "objectcontactmoment_set",
+                queryset=ObjectContactMoment.objects.order_by("-pk"),
+            )
+        )
         .order_by("-registratiedatum")
     )
     serializer_class = ContactMomentSerializer
@@ -158,7 +170,7 @@ class ObjectContactMomentViewSet(
     endpoint bij het synchroniseren van relaties.
     """
 
-    queryset = ObjectContactMoment.objects.all()
+    queryset = ObjectContactMoment.objects.order_by("-pk")
     serializer_class = ObjectContactMomentSerializer
     filterset_class = ObjectContactMomentFilter
     lookup_field = "uuid"
@@ -236,7 +248,7 @@ class KlantContactMomentViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     Verwijder een KLANT-CONTACTMOMENT relatie.
     """
 
-    queryset = KlantContactMoment.objects.all()
+    queryset = KlantContactMoment.objects.order_by("-pk")
     serializer_class = KlantContactMomentSerializer
     filterset_class = KlantContactMomentFilter
     pagination_class = PageNumberPagination
