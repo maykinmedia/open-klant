@@ -41,7 +41,7 @@ class Klant(APIMixin, models.Model):
         help_text=_(
             "Het label of etiket dat aan de specifieke informatiebron, zoals "
             "een webpagina, een bestand of een plaatje op internet is toegewezen "
-            " waar de KLANT in de regel op het internet vindbaar is."
+            "waar de KLANT in de regel op het internet vindbaar is."
         ),
     )
     voornaam = models.CharField(
