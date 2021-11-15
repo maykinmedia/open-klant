@@ -895,7 +895,6 @@
     },
     "definitions": {
         "KlantAdres": {
-            "title": "Adres",
             "description": "Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres zijn)",
             "type": "object",
             "properties": {
@@ -1053,7 +1052,6 @@
             "discriminator": "subjectType"
         },
         "VerblijfsAdres": {
-            "title": "Verblijfsadres",
             "required": [
                 "aoaIdentificatie",
                 "gorOpenbareRuimteNaam"
@@ -1106,10 +1104,10 @@
                     "type": "string",
                     "maxLength": 1000
                 }
-            }
+            },
+            "x-nullable": true
         },
         "SubVerblijfBuitenland": {
-            "title": "Sub verblijf buitenland",
             "required": [
                 "lndLandcode",
                 "lndLandnaam"
@@ -1145,10 +1143,10 @@
                     "type": "string",
                     "maxLength": 35
                 }
-            }
+            },
+            "x-nullable": true
         },
         "NatuurlijkPersoon": {
-            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "inpBsn": {
@@ -1236,7 +1234,6 @@
             ]
         },
         "NietNatuurlijkPersoon": {
-            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "innNnpId": {
@@ -1314,7 +1311,6 @@
             ]
         },
         "Vestiging": {
-            "title": "subject_identificatie",
             "type": "object",
             "properties": {
                 "vestigingsNummer": {
@@ -1487,7 +1483,6 @@
             }
         },
         "Wijzigingen": {
-            "title": "Wijzigingen",
             "type": "object",
             "properties": {
                 "oud": {
