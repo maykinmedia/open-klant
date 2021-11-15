@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: stevenbal/open-klant  # Temporary, should be maykinmedia/open-klant
+  IMAGE_NAME: maykinmedia/open-klant
   DJANGO_SETTINGS_MODULE: openklant.conf.jenkins
   DB_PASSWORD: ''
   DB_USER: postgres
