@@ -23,6 +23,7 @@ KLANT = "http://klanten.nl/api/v1/klanten/12345"
 
 class ContactMomentTests(JWTAuthMixin, APITestCase):
     heeft_alle_autorisaties = True
+    maxDiff = None
 
     def test_list_contactmomenten(self):
         list_url = reverse(ContactMoment)
