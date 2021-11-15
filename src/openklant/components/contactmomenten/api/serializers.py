@@ -15,6 +15,7 @@ from openklant.components.contactmomenten.datamodel.models import (
     Medewerker,
     ObjectContactMoment,
 )
+from openklant.utils.api_spec import mark_oas_difference
 from openklant.utils.serializers import ExpandSerializer
 
 from .validators import ObjectContactMomentCreateValidator
@@ -84,6 +85,13 @@ class KlantContactMomentSerializer(serializers.HyperlinkedModelSerializer):
             ),
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["gelezen"].help_text = mark_oas_difference(
+            self.fields["gelezen"].help_text
+        )
+
 
 class ContactMomentSerializer(serializers.HyperlinkedModelSerializer):
     medewerker_identificatie = MedewerkerSerializer(required=False, allow_null=True)
@@ -150,6 +158,16 @@ class ContactMomentSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
         expandable_fields = ["klantcontactmomenten", "objectcontactmomenten"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["klantcontactmomenten"].help_text = mark_oas_difference(
+            self.fields["klantcontactmomenten"].help_text
+        )
+        self.fields["objectcontactmomenten"].help_text = mark_oas_difference(
+            self.fields["objectcontactmomenten"].help_text
+        )
 
     def validate(self, attrs):
         validated_attrs = super().validate(attrs)

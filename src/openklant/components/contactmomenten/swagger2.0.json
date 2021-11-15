@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "Contactmomenten API",
-        "description": "Een API om contactmomenten met klanten te registreren of op\nte vragen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Autorisaties API\n* Notificaties API\n* Klanten API\n* Zaken API *(optioneel)*\n* Verzoeken API *(optioneel)*\n* Documenten API *(optioneel)*\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te\ngenereren.\n\n** Notificaties\n\nDeze API publiceert notificaties op het kanaal `contactmomenten`.\n\n**Main resource**\n\n`contactmoment`\n\n\n\n**Kenmerken**\n\n* `bronorganisatie`: Het RSIN van de Niet-natuurlijk persoon zijnde de organisatie die de klantinteractie heeft gecreeerd. Dit moet een geldig RSIN zijn van 9 nummers en voldoen aan https://nl.wikipedia.org/wiki/Burgerservicenummer#11-proef\n* `kanaal`: Het communicatiekanaal waarlangs het CONTACTMOMENT gevoerd wordt\n\n**Resources en acties**\n\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
+        "description": "Een API om contactmomenten met klanten te registreren of op\nte vragen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Autorisaties API\n* Notificaties API\n* Klanten API\n* Zaken API *(optioneel)*\n* Verzoeken API *(optioneel)*\n* Documenten API *(optioneel)*\n\n**API specificatie afwijkingen**\n\nAfwijkingen in de API specificatie ten opzichte van de referentie API specificatie\nzijn aangemerkt met ***AFWIJKING:**\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te\ngenereren.\n\n**Notificaties**\n\nDeze API publiceert notificaties op het kanaal `contactmomenten`.\n\n**Main resource**\n\n`contactmoment`\n\n\n\n**Kenmerken**\n\n* `bronorganisatie`: Het RSIN van de Niet-natuurlijk persoon zijnde de organisatie die de klantinteractie heeft gecreeerd. Dit moet een geldig RSIN zijn van 9 nummers en voldoen aan https://nl.wikipedia.org/wiki/Burgerservicenummer#11-proef\n* `kanaal`: Het communicatiekanaal waarlangs het CONTACTMOMENT gevoerd wordt\n\n**Resources en acties**\n\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
         "contact": {
             "url": "https://zaakgerichtwerken.vng.cloud",
             "email": "standaarden.ondersteuning@vng.nl"
@@ -171,49 +171,49 @@
                     {
                         "name": "medewerkerIdentificatie__identificatie",
                         "in": "query",
-                        "description": "Een korte unieke aanduiding van de MEDEWERKER.",
+                        "description": "***AFWIJKING:** Een korte unieke aanduiding van de MEDEWERKER.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "name": "medewerkerIdentificatie__achternaam",
                         "in": "query",
-                        "description": "De achternaam zoals de MEDEWERKER die in het dagelijkse verkeer gebruikt.",
+                        "description": "***AFWIJKING:** De achternaam zoals de MEDEWERKER die in het dagelijkse verkeer gebruikt.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "name": "medewerkerIdentificatie__voorletters",
                         "in": "query",
-                        "description": "De verzameling letters die gevormd wordt door de eerste letter van alle in volgorde voorkomende voornamen.",
+                        "description": "***AFWIJKING:** De verzameling letters die gevormd wordt door de eerste letter van alle in volgorde voorkomende voornamen.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "name": "medewerkerIdentificatie__voorvoegselAchternaam",
                         "in": "query",
-                        "description": "Dat deel van de geslachtsnaam dat voorkomt in Tabel 36 (GBA), voorvoegseltabel, en door een spatie van de geslachtsnaam is",
+                        "description": "***AFWIJKING:** Dat deel van de geslachtsnaam dat voorkomt in Tabel 36 (GBA), voorvoegseltabel, en door een spatie van de geslachtsnaam is",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "name": "object",
                         "in": "query",
-                        "description": "De URL van het gerelateerde object (zoals vastgelegd in de OBJECTCONTACTMOMENT resource). Meerdere waardes kunnen met komma's gescheiden worden.",
+                        "description": "***AFWIJKING:** De URL van het gerelateerde object (zoals vastgelegd in de OBJECTCONTACTMOMENT resource). Meerdere waardes kunnen met komma's gescheiden worden.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "name": "klant",
                         "in": "query",
-                        "description": "De URL van de gerelateerde KLANT (zoals vastgelegd in de KLANTCONTACTMOMENT resource). Meerdere waardes kunnen met komma's gescheiden worden.",
+                        "description": "***AFWIJKING:** De URL van de gerelateerde KLANT (zoals vastgelegd in de KLANTCONTACTMOMENT resource). Meerdere waardes kunnen met komma's gescheiden worden.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "name": "expand",
                         "in": "query",
-                        "description": "Haal details van inline resources direct op.",
+                        "description": "***AFWIJKING:** Haal details van inline resources direct op.",
                         "required": false,
                         "type": "string",
                         "enum": [
@@ -1236,8 +1236,8 @@
             },
             "put": {
                 "operationId": "klantcontactmoment_update",
-                "summary": "Opvragen en verwijderen van OBJECT-CONTACTMOMENT relaties.",
-                "description": "Het betreft een relatie tussen een KLANT (uit de Klanten API) en een CONTACTMOMENT.",
+                "summary": "Werk een KLANT-CONTACTMOMENT in zijn geheel bij.",
+                "description": "***AFWIJKING:** Werk een KLANT-CONTACTMOMENT in zijn geheel bij.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -1317,8 +1317,8 @@
             },
             "patch": {
                 "operationId": "klantcontactmoment_partial_update",
-                "summary": "Opvragen en verwijderen van OBJECT-CONTACTMOMENT relaties.",
-                "description": "Het betreft een relatie tussen een KLANT (uit de Klanten API) en een CONTACTMOMENT.",
+                "summary": "Werk een KLANT-CONTACTMOMENT deels bij.",
+                "description": "***AFWIJKING:** Werk een KLANT-CONTACTMOMENT deels bij.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -1952,7 +1952,7 @@
                     "$ref": "#/definitions/Medewerker"
                 },
                 "klantcontactmomenten": {
-                    "description": "Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen",
+                    "description": "***AFWIJKING:** Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen",
                     "type": "array",
                     "items": {
                         "description": "Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen",
@@ -1963,7 +1963,7 @@
                     "uniqueItems": true
                 },
                 "objectcontactmomenten": {
-                    "description": "Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen",
+                    "description": "***AFWIJKING:** Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen",
                     "type": "array",
                     "items": {
                         "description": "Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen",
@@ -2286,7 +2286,7 @@
                 },
                 "gelezen": {
                     "title": "Gelezen",
-                    "description": "Geeft aan of het bericht gelezen is door de KLANT.",
+                    "description": "***AFWIJKING:** Geeft aan of het bericht gelezen is door de KLANT.",
                     "type": "boolean"
                 }
             }

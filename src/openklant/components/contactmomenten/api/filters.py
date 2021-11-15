@@ -10,6 +10,7 @@ from openklant.components.contactmomenten.datamodel.models import (
     KlantContactMoment,
     ObjectContactMoment,
 )
+from openklant.utils.api_spec import mark_oas_difference
 from openklant.utils.filters import ExpandFilter
 
 from .serializers import ContactMomentSerializer
@@ -30,39 +31,53 @@ class ContactMomentFilter(FilterSet):
         "objectcontactmoment__object",
         lookup_expr="in",
         help_text=_(
-            "De URL van het gerelateerde object "
-            "(zoals vastgelegd in de OBJECTCONTACTMOMENT resource). "
-            "Meerdere waardes kunnen met komma's gescheiden worden."
+            mark_oas_difference(
+                "De URL van het gerelateerde object "
+                "(zoals vastgelegd in de OBJECTCONTACTMOMENT resource). "
+                "Meerdere waardes kunnen met komma's gescheiden worden."
+            )
         ),
     )
     klant = filters.BaseCSVFilter(
         "klantcontactmoment__klant",
         lookup_expr="in",
         help_text=_(
-            "De URL van de gerelateerde KLANT "
-            "(zoals vastgelegd in de KLANTCONTACTMOMENT resource). "
-            "Meerdere waardes kunnen met komma's gescheiden worden."
+            mark_oas_difference(
+                "De URL van de gerelateerde KLANT "
+                "(zoals vastgelegd in de KLANTCONTACTMOMENT resource). "
+                "Meerdere waardes kunnen met komma's gescheiden worden."
+            )
         ),
     )
     medewerker_identificatie__identificatie = filters.CharFilter(
         field_name="medewerker_identificatie__identificatie",
-        help_text=get_help_text("contactmomenten.Medewerker", "identificatie"),
+        help_text=mark_oas_difference(
+            get_help_text("contactmomenten.Medewerker", "identificatie")
+        ),
     )
     medewerker_identificatie__achternaam = filters.CharFilter(
         field_name="medewerker_identificatie__achternaam",
-        help_text=get_help_text("contactmomenten.Medewerker", "achternaam"),
+        help_text=mark_oas_difference(
+            get_help_text("contactmomenten.Medewerker", "achternaam")
+        ),
     )
     medewerker_identificatie__voorletters = filters.CharFilter(
         field_name="medewerker_identificatie__voorletters",
-        help_text=get_help_text("contactmomenten.Medewerker", "voorletters"),
+        help_text=mark_oas_difference(
+            get_help_text("contactmomenten.Medewerker", "voorletters")
+        ),
     )
     medewerker_identificatie__voorvoegsel_achternaam = filters.CharFilter(
         field_name="medewerker_identificatie__voorvoegsel_achternaam",
-        help_text=get_help_text("contactmomenten.Medewerker", "voorvoegsel_achternaam"),
+        help_text=mark_oas_difference(
+            get_help_text("contactmomenten.Medewerker", "voorvoegsel_achternaam")
+        ),
     )
     expand = ExpandFilter(
         serializer_class=ContactMomentSerializer,
-        help_text=_("Haal details van inline resources direct op."),
+        help_text=_(
+            mark_oas_difference("Haal details van inline resources direct op.")
+        ),
     )
     ordering = filters.OrderingFilter(
         fields=(

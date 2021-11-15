@@ -237,6 +237,16 @@ class KlantContactMomentViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
 
     Deze lijst kan gefilterd wordt met query-string parameters.
 
+    update:
+    Werk een KLANT-CONTACTMOMENT in zijn geheel bij.
+
+    ***AFWIJKING:** Werk een KLANT-CONTACTMOMENT in zijn geheel bij.
+
+    partial_update:
+    Werk een KLANT-CONTACTMOMENT deels bij.
+
+    ***AFWIJKING:** Werk een KLANT-CONTACTMOMENT deels bij.
+
     retrieve:
     Een specifieke KLANT-CONTACTMOMENT relatie opvragen.
 
