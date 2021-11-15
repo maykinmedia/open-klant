@@ -8,11 +8,7 @@ from vng_api_common.constants import ComponentTypes
 from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
 
 from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer
-from openklant.components.contactmomenten.datamodel.models import (
-    ContactMoment,
-    KlantContactMoment,
-    ObjectContactMoment,
-)
+from openklant.components.contactmomenten.datamodel.models import ContactMoment
 from openklant.components.contactmomenten.datamodel.tests.factories import (
     ContactMomentFactory,
     KlantContactMomentFactory,
