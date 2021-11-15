@@ -1234,6 +1234,168 @@
                     }
                 ]
             },
+            "put": {
+                "operationId": "klantcontactmoment_update",
+                "summary": "Opvragen en verwijderen van OBJECT-CONTACTMOMENT relaties.",
+                "description": "Het betreft een relatie tussen een KLANT (uit de Klanten API) en een CONTACTMOMENT.",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/KlantContactMoment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/KlantContactMoment"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "klantcontactmomenten"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "contactmomenten.aanmaken"
+                        ]
+                    }
+                ]
+            },
+            "patch": {
+                "operationId": "klantcontactmoment_partial_update",
+                "summary": "Opvragen en verwijderen van OBJECT-CONTACTMOMENT relaties.",
+                "description": "Het betreft een relatie tussen een KLANT (uit de Klanten API) en een CONTACTMOMENT.",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/KlantContactMoment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/KlantContactMoment"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "klantcontactmomenten"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "contactmomenten.aanmaken"
+                        ]
+                    }
+                ]
+            },
             "delete": {
                 "operationId": "klantcontactmoment_delete",
                 "summary": "Verwijder een KLANT-CONTACTMOMENT relatie.",
@@ -1659,7 +1821,6 @@
     },
     "definitions": {
         "Medewerker": {
-            "title": "Medewerker identificatie",
             "type": "object",
             "properties": {
                 "identificatie": {
@@ -1942,7 +2103,6 @@
             }
         },
         "Wijzigingen": {
-            "title": "Wijzigingen",
             "type": "object",
             "properties": {
                 "oud": {
@@ -2123,6 +2283,11 @@
                         "belanghebbende",
                         "gesprekspartner"
                     ]
+                },
+                "gelezen": {
+                    "title": "Gelezen",
+                    "description": "Geeft aan of het bericht gelezen is door de KLANT.",
+                    "type": "boolean"
                 }
             }
         },

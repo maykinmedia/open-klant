@@ -889,11 +889,7 @@ paths:
           enum:
           - application/json
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/KlantContactMoment'
-        required: true
+        $ref: '#/components/requestBodies/KlantContactMoment'
       responses:
         '201':
           description: Created
@@ -1002,6 +998,114 @@ paths:
       security:
       - JWT-Claims:
         - contactmomenten.lezen
+    put:
+      operationId: klantcontactmoment_update
+      summary: Opvragen en verwijderen van OBJECT-CONTACTMOMENT relaties.
+      description: Het betreft een relatie tussen een KLANT (uit de Klanten API) en
+        een CONTACTMOMENT.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/KlantContactMoment'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KlantContactMoment'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontactmomenten
+      security:
+      - JWT-Claims:
+        - contactmomenten.aanmaken
+    patch:
+      operationId: klantcontactmoment_partial_update
+      summary: Opvragen en verwijderen van OBJECT-CONTACTMOMENT relaties.
+      description: Het betreft een relatie tussen een KLANT (uit de Klanten API) en
+        een CONTACTMOMENT.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/KlantContactMoment'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KlantContactMoment'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontactmomenten
+      security:
+      - JWT-Claims:
+        - contactmomenten.aanmaken
     delete:
       operationId: klantcontactmoment_delete
       summary: Verwijder een KLANT-CONTACTMOMENT relatie.
@@ -1464,6 +1568,12 @@ components:
           schema:
             $ref: '#/components/schemas/ContactMoment'
       required: true
+    KlantContactMoment:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KlantContactMoment'
+      required: true
   securitySchemes:
     JWT-Claims:
       type: http
@@ -1471,7 +1581,6 @@ components:
       bearerFormat: JWT
   schemas:
     Medewerker:
-      title: Medewerker identificatie
       type: object
       properties:
         identificatie:
@@ -1714,7 +1823,6 @@ components:
           items:
             $ref: '#/components/schemas/FieldValidationError'
     Wijzigingen:
-      title: Wijzigingen
       type: object
       properties:
         oud:
@@ -1911,6 +2019,10 @@ components:
           enum:
           - belanghebbende
           - gesprekspartner
+        gelezen:
+          title: Gelezen
+          description: Geeft aan of het bericht gelezen is door de KLANT.
+          type: boolean
     ObjectContactMoment:
       required:
       - contactmoment
