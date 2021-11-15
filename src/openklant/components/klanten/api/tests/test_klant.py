@@ -72,6 +72,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
                 "subject": SUBJECT,
                 "subjectType": KlantType.natuurlijk_persoon,
                 "subjectIdentificatie": None,
+                "aanmaakkanaal": "email",
             },
         )
 
@@ -146,6 +147,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
                         "subAdresBuitenland3": buitenland.sub_adres_buitenland_3,
                     },
                 },
+                "aanmaakkanaal": "email",
             },
         )
 
@@ -205,6 +207,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
                         "subAdresBuitenland3": buitenland.sub_adres_buitenland_3,
                     },
                 },
+                "aanmaakkanaal": "email",
             },
         )
 
@@ -268,6 +271,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
                         "subAdresBuitenland3": buitenland.sub_adres_buitenland_3,
                     },
                 },
+                "aanmaakkanaal": "email",
             },
         )
 
@@ -619,6 +623,18 @@ class KlantTests(JWTAuthMixin, APITestCase):
         validation_error = get_validation_errors(response, "subjectType")
         self.assertEqual(validation_error["code"], "wijzigen-niet-toegelaten")
 
+    def test_partial_update_klant_aanmaakkanaal(self):
+        klant = KlantFactory.create(aanmaakkanaal="email")
+        detail_url = reverse(klant)
+
+        response = self.client.patch(detail_url, {"aanmaakkanaal": "telefoon"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        klant.refresh_from_db()
+
+        self.assertEqual(klant.aanmaakkanaal, "telefoon")
+
     def test_update_klant_url(self):
         klant = KlantFactory.create(subject=SUBJECT, voornaam="old name")
         detail_url = reverse(klant)
@@ -774,6 +790,24 @@ class KlantTests(JWTAuthMixin, APITestCase):
 
         self.assertEqual(buitenland.lnd_landcode, "ABCD")
         self.assertEqual(buitenland.lnd_landnaam, "Hollywood")
+
+    def test_update_klant_aanmaakkanaal(self):
+        klant = KlantFactory.create(aanmaakkanaal="email")
+        detail_url = reverse(klant)
+        data = self.client.get(detail_url).json()
+        del data["url"]
+        del data["subjectIdentificatie"]
+        data.update({"aanmaakkanaal": "telefoon"})
+
+        with requests_mock.Mocker() as m:
+            m.get(klant.subject, status_code=200)
+            response = self.client.put(detail_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        klant.refresh_from_db()
+
+        self.assertEqual(klant.aanmaakkanaal, "telefoon")
 
     def test_destroy_klant(self):
         klant = KlantFactory.create()

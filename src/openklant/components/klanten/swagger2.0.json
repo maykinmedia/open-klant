@@ -1042,6 +1042,12 @@
                         "vestiging"
                     ],
                     "x-nullable": true
+                },
+                "aanmaakkanaal": {
+                    "title": "Aanmaakkanaal",
+                    "description": "Het communicatiekanaal waarlangs de klant is aangemaakt.",
+                    "type": "string",
+                    "maxLength": 50
                 }
             },
             "discriminator": "subjectType"

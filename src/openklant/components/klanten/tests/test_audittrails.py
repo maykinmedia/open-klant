@@ -27,6 +27,7 @@ class AuditTrailTests(JWTAuthMixin, APITestCase):
             "emailadres": "test@gmail.com",
             "subjectType": KlantType.natuurlijk_persoon,
             "subject": SUBJECT,
+            "aanmaakkanaal": "email",
         }
 
         with requests_mock.Mocker() as m:
