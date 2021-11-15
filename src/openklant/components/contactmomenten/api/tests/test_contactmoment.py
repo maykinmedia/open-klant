@@ -717,3 +717,51 @@ class ContactMomentFilterTests(JWTAuthMixin, APITestCase):
             response.data["results"][0]["kanaal"],
             "email",
         )
+
+    def test_filter_medewerker_identificatie_identificatie(self):
+        cm1 = ContactMomentFactory.create(kanaal="telefoon")
+        cm2 = ContactMomentFactory.create(kanaal="whatsapp")
+        cm3 = ContactMomentFactory.create(kanaal="email")
+
+        MedewerkerFactory.create(
+            contactmoment=cm1,
+            identificatie="1234",
+            achternaam="foo",
+            voorletters="b",
+            voorvoegsel_achternaam="c",
+        )
+        MedewerkerFactory.create(
+            contactmoment=cm2,
+            identificatie="4321",
+            achternaam="bar",
+            voorletters="c",
+            voorvoegsel_achternaam="a",
+        )
+        MedewerkerFactory.create(
+            contactmoment=cm3,
+            identificatie="5678",
+            achternaam="baz",
+            voorletters="a",
+            voorvoegsel_achternaam="b",
+        )
+
+        filters = {
+            "identificatie": "4321",
+            "achternaam": "bar",
+            "voorletters": "c",
+            "voorvoegselAchternaam": "a",
+        }
+
+        for parameter, value in filters.items():
+            with self.subTest(parameter=parameter):
+                response = self.client.get(
+                    self.list_url,
+                    {f"medewerkerIdentificatie__{parameter}": value},
+                )
+
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(len(response.data["results"]), 1)
+                self.assertEqual(
+                    response.data["results"][0]["kanaal"],
+                    "whatsapp",
+                )

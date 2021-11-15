@@ -169,6 +169,34 @@
                         ]
                     },
                     {
+                        "name": "medewerkerIdentificatie__identificatie",
+                        "in": "query",
+                        "description": "Een korte unieke aanduiding van de MEDEWERKER.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "medewerkerIdentificatie__achternaam",
+                        "in": "query",
+                        "description": "De achternaam zoals de MEDEWERKER die in het dagelijkse verkeer gebruikt.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "medewerkerIdentificatie__voorletters",
+                        "in": "query",
+                        "description": "De verzameling letters die gevormd wordt door de eerste letter van alle in volgorde voorkomende voornamen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "medewerkerIdentificatie__voorvoegselAchternaam",
+                        "in": "query",
+                        "description": "Dat deel van de geslachtsnaam dat voorkomt in Tabel 36 (GBA), voorvoegseltabel, en door een spatie van de geslachtsnaam is",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "object",
                         "in": "query",
                         "description": "De URL van het gerelateerde object (zoals vastgelegd in de OBJECTCONTACTMOMENT resource). Meerdere waardes kunnen met komma's gescheiden worden.",
