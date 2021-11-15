@@ -30,6 +30,14 @@ info:
     * Documenten API *(optioneel)*
 
 
+    **API specificatie afwijkingen**
+
+
+    Afwijkingen in de API specificatie ten opzichte van de referentie API specificatie
+
+    zijn aangemerkt met ***AFWIJKING:**
+
+
     **Autorisatie**
 
 
@@ -40,7 +48,7 @@ info:
     genereren.
 
 
-    ** Notificaties
+    **Notificaties**
 
 
     Deze API publiceert notificaties op het kanaal `klanten`.
@@ -1016,7 +1024,8 @@ components:
           nullable: true
         aanmaakkanaal:
           title: Aanmaakkanaal
-          description: Het communicatiekanaal waarlangs de klant is aangemaakt.
+          description: '***AFWIJKING:** Het communicatiekanaal waarlangs de klant
+            is aangemaakt.'
           type: string
           maxLength: 50
       discriminator:
