@@ -335,12 +335,6 @@ CSRF_FAILURE_VIEW = "openklant.accounts.views.csrf_failure"
 X_FRAME_OPTIONS = "DENY"
 
 #
-# FIXTURES
-#
-
-FIXTURE_DIRS = (os.path.join(DJANGO_PROJECT_DIR, "fixtures"),)
-
-#
 # Custom settings
 #
 PROJECT_NAME = "Open Klant"
