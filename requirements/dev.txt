@@ -29,6 +29,11 @@ certifi==2021.5.30
     #   elastic-apm
     #   requests
     #   sentry-sdk
+cffi==1.15.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   cryptography
 charset-normalizer==2.0.6
     # via
     #   -c requirements/ci.txt
@@ -55,6 +60,13 @@ coverage==4.5.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+cryptography==36.0.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   josepy
+    #   mozilla-django-oidc
+    #   pyopenssl
 cssselect==1.1.0
     # via
     #   -c requirements/ci.txt
@@ -81,6 +93,8 @@ django==2.2.24
     #   djangorestframework
     #   drf-nested-routers
     #   drf-yasg
+    #   mozilla-django-oidc
+    #   mozilla-django-oidc-db
     #   vng-api-common
 django-admin-index==1.5.0
     # via
@@ -94,6 +108,7 @@ django-better-admin-arrayfield==1.4.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   mozilla-django-oidc-db
 django-choices==1.7.2
     # via
     #   -c requirements/ci.txt
@@ -152,6 +167,7 @@ django-solo==1.2.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   mozilla-django-oidc-db
     #   vng-api-common
 django-webtest==1.9.7
     # via
@@ -247,6 +263,11 @@ jinja2==3.0.2
     #   -r requirements/ci.txt
     #   coreschema
     #   sphinx
+josepy==1.11.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   mozilla-django-oidc
 lazy-object-proxy==1.6.0
     # via
     #   -c requirements/ci.txt
@@ -273,6 +294,15 @@ mccabe==0.6.1
     #   -r requirements/ci.txt
     #   flake8
     #   pylint
+mozilla-django-oidc==1.2.4
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   mozilla-django-oidc-db
+mozilla-django-oidc-db==0.5.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 mypy-extensions==0.4.3
     # via
     #   -c requirements/ci.txt
@@ -321,11 +351,17 @@ psycopg2==2.8.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   mozilla-django-oidc-db
 pycodestyle==2.8.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   flake8
+pycparser==2.21
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   cffi
 pyflakes==2.4.0
     # via
     #   -c requirements/ci.txt
@@ -343,6 +379,11 @@ pylint==2.11.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+pyopenssl==21.0.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   josepy
 pyparsing==2.4.7
     # via
     #   -c requirements/ci.txt
@@ -397,6 +438,7 @@ requests==2.26.0
     #   ddt-api-calls
     #   django-rosetta
     #   gemma-zds-client
+    #   mozilla-django-oidc
     #   requests-mock
     #   sphinx
     #   vng-api-common
@@ -426,6 +468,8 @@ six==1.16.0
     #   django-choices
     #   django-markup
     #   isodate
+    #   mozilla-django-oidc
+    #   pyopenssl
     #   python-dateutil
     #   requests-mock
 snowballstemmer==2.1.0
