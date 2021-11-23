@@ -174,3 +174,10 @@ div.breadcrumbs {
 .version {
   font-size: $typography-font-size-text-small;
 }
+
+/* Extra login links in admin login screen */
+.admin-login-option {
+  text-align: center;
+  clear: both;
+  padding-top: 1em;
+}
