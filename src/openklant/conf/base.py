@@ -117,6 +117,8 @@ INSTALLED_APPS = [
     "vng_api_common.authorizations",
     "vng_api_common.audittrails",
     "drf_yasg",
+    "mozilla_django_oidc",
+    "mozilla_django_oidc_db",
     "rest_framework",
     "django_markup",
     "solo",
@@ -137,6 +139,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "vng_api_common.middleware.AuthMiddleware",
+    "mozilla_django_oidc_db.middleware.SessionRefresh",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -292,6 +295,10 @@ LOGGING = {
             "level": "INFO",
             "propagate": True,
         },
+        "mozilla_django_oidc": {
+            "handlers": ["project"],
+            "level": "DEBUG",
+        },
     },
 }
 
@@ -315,6 +322,7 @@ AUTHENTICATION_BACKENDS = [
     "axes.backends.AxesBackend",
     "openklant.accounts.backends.UserModelEmailBackend",
     "django.contrib.auth.backends.ModelBackend",
+    "mozilla_django_oidc_db.backends.OIDCAuthenticationBackend",
 ]
 
 SESSION_COOKIE_NAME = "openklant_sessionid"
@@ -322,6 +330,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 LOGIN_URL = reverse_lazy("admin:login")
 LOGIN_REDIRECT_URL = reverse_lazy("admin:index")
+LOGOUT_REDIRECT_URL = reverse_lazy("admin:index")
 
 #
 # SECURITY settings
@@ -420,8 +429,6 @@ RELEASE = get_current_version()
 
 # Two factor auth
 # LOGIN_URL = "two_factor:login"
-LOGIN_URL = "admin:login"
-LOGIN_REDIRECT_URL = "admin:index"
 
 if SENTRY_DSN:
     SENTRY_CONFIG = {
@@ -444,3 +451,11 @@ ELASTIC_APM = {
 if not ELASTIC_APM_SERVER_URL:
     ELASTIC_APM["ENABLED"] = False
     ELASTIC_APM["SERVER_URL"] = "http://localhost:8200"
+
+
+#
+# Mozilla Django OIDC DB settings
+#
+OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
+MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
+MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60

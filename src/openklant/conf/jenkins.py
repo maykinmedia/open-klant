@@ -53,6 +53,7 @@ CACHES = {
     "axes": {
         "BACKEND": "django.core.cache.backends.dummy.DummyCache",
     },
+    "oidc": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
 }
 
 ELASTIC_APM["DEBUG"] = True

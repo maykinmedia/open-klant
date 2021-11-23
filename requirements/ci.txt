@@ -17,6 +17,11 @@ certifi==2021.5.30
     #   elastic-apm
     #   requests
     #   sentry-sdk
+cffi==1.15.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   cryptography
 charset-normalizer==2.0.6
     # via
     #   -c requirements/base.txt
@@ -37,6 +42,13 @@ coreschema==0.0.4
     #   drf-yasg
 coverage==4.5.4
     # via -r requirements/test-tools.in
+cryptography==36.0.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   josepy
+    #   mozilla-django-oidc
+    #   pyopenssl
 cssselect==1.1.0
     # via pyquery
 django==2.2.24
@@ -55,6 +67,8 @@ django==2.2.24
     #   djangorestframework
     #   drf-nested-routers
     #   drf-yasg
+    #   mozilla-django-oidc
+    #   mozilla-django-oidc-db
     #   vng-api-common
 django-admin-index==1.5.0
     # via
@@ -68,6 +82,7 @@ django-better-admin-arrayfield==1.4.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   mozilla-django-oidc-db
 django-choices==1.7.2
     # via
     #   -c requirements/base.txt
@@ -120,6 +135,7 @@ django-solo==1.2.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   mozilla-django-oidc-db
     #   vng-api-common
 django-webtest==1.9.7
     # via -r requirements/test-tools.in
@@ -196,6 +212,11 @@ jinja2==3.0.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   coreschema
+josepy==1.11.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   mozilla-django-oidc
 lazy-object-proxy==1.6.0
     # via astroid
 lxml==4.6.3
@@ -214,6 +235,15 @@ mccabe==0.6.1
     # via
     #   flake8
     #   pylint
+mozilla-django-oidc==1.2.4
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   mozilla-django-oidc-db
+mozilla-django-oidc-db==0.5.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 mypy-extensions==0.4.3
     # via black
 oyaml==1.0
@@ -247,8 +277,14 @@ psycopg2==2.8.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   mozilla-django-oidc-db
 pycodestyle==2.8.0
     # via flake8
+pycparser==2.21
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   cffi
 pyflakes==2.4.0
     # via flake8
 pyjwt==1.7.1
@@ -259,6 +295,11 @@ pyjwt==1.7.1
     #   vng-api-common
 pylint==2.11.1
     # via -r requirements/test-tools.in
+pyopenssl==21.0.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   josepy
 pyparsing==2.4.7
     # via
     #   -c requirements/base.txt
@@ -304,6 +345,7 @@ requests==2.26.0
     #   coreapi
     #   django-rosetta
     #   gemma-zds-client
+    #   mozilla-django-oidc
     #   requests-mock
     #   vng-api-common
 requests-mock==1.9.3
@@ -329,6 +371,8 @@ six==1.16.0
     #   django-choices
     #   django-markup
     #   isodate
+    #   mozilla-django-oidc
+    #   pyopenssl
     #   python-dateutil
     #   requests-mock
 soupsieve==2.2.1

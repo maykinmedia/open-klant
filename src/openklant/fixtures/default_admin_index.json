@@ -117,6 +117,10 @@
             [
                 "auth",
                 "group"
+            ],
+            [
+                "mozilla_django_oidc_db",
+                "openidconnectconfig"
             ]
         ]
     }
