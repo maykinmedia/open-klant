@@ -79,6 +79,7 @@ CACHES = {
             "IGNORE_EXCEPTIONS": True,
         },
     },
+    "oidc": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
 }
 
 
