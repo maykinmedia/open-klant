@@ -16,7 +16,7 @@ django-filter<=2.2.0
 django-redis
 django-rosetta
 django-sniplates
-mozilla-django-oidc-db
+git+https://github.com/maykinmedia/mozilla-django-oidc-db.git@af3ffdae53d81452ef1d42332723adcf8187519d#egg=mozilla-django-oidc-db
 # maykin-django-two-factor-auth
 # phonenumbers
 
