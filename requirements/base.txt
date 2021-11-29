@@ -113,7 +113,7 @@ markupsafe==2.0.1
     # via jinja2
 mozilla-django-oidc==1.2.4
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==0.7.0
+mozilla-django-oidc-db==0.7.1
     # via -r requirements/base.in
 oyaml==1.0
     # via vng-api-common
