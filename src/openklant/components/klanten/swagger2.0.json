@@ -942,8 +942,7 @@
         "Klant": {
             "required": [
                 "bronorganisatie",
-                "klantnummer",
-                "websiteUrl"
+                "klantnummer"
             ],
             "type": "object",
             "properties": {
@@ -987,8 +986,7 @@
                     "description": "Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is.",
                     "type": "string",
                     "format": "uri",
-                    "maxLength": 1000,
-                    "minLength": 1
+                    "maxLength": 1000
                 },
                 "voornaam": {
                     "title": "Voornaam",

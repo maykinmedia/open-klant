@@ -43,6 +43,7 @@ class Klant(APIMixin, models.Model):
             "een webpagina, een bestand of een plaatje op internet is toegewezen "
             "waar de KLANT in de regel op het internet vindbaar is."
         ),
+        blank=True,
     )
     voornaam = models.CharField(
         max_length=200,

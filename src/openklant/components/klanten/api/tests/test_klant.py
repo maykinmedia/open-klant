@@ -313,6 +313,37 @@ class KlantTests(JWTAuthMixin, APITestCase):
         self.assertEqual(klant.subject, SUBJECT)
         self.assertEqual(klant.adres.straatnaam, "Keizersgracht")
 
+    def test_create_klant_website_url_optional(self):
+        list_url = reverse(Klant)
+        data = {
+            "bronorganisatie": "950428139",
+            "klantnummer": "1111",
+            "voornaam": "Xavier",
+            "achternaam": "Jackson",
+            "emailadres": "test@gmail.com",
+            "adres": {
+                "straatnaam": "Keizersgracht",
+                "huisnummer": "117",
+                "huisletter": "A",
+                "postcode": "1015CJ",
+                "woonplaatsnaam": "test",
+                "landcode": "1234",
+            },
+            "subjectType": KlantType.natuurlijk_persoon,
+            "subject": SUBJECT,
+        }
+
+        with requests_mock.Mocker() as m:
+            m.get(SUBJECT, json={})
+            response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        klant = Klant.objects.get()
+
+        self.assertEqual(klant.bronorganisatie, "950428139")
+        self.assertEqual(klant.website_url, "")
+
     def test_create_klant_natuurlijkpersoon(self):
         list_url = reverse(Klant)
         data = {
