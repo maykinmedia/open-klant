@@ -29,7 +29,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | klantnummer | De unieke identificatie van de klant binnen de bronorganisatie. | string | ja | C​R​U​D |
 | bedrijfsnaam | De bedrijfsnaam van de klant. | string | nee | C​R​U​D |
 | functie | De functie van de klant. | string | nee | C​R​U​D |
-| websiteUrl | Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is. | string | ja | C​R​U​D |
+| websiteUrl | Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is. | string | nee | C​R​U​D |
 | voornaam | De voornaam, voorletters of roepnaam van de klant. | string | nee | C​R​U​D |
 | voorvoegselAchternaam | Het voorvoegsel van de achternaam van de klant. | string | nee | C​R​U​D |
 | achternaam | De achternaam van de klant. | string | nee | C​R​U​D |

@@ -924,7 +924,6 @@ components:
       required:
       - bronorganisatie
       - klantnummer
-      - websiteUrl
       type: object
       properties:
         url:
@@ -968,7 +967,6 @@ components:
           type: string
           format: uri
           maxLength: 1000
-          minLength: 1
         voornaam:
           title: Voornaam
           description: De voornaam, voorletters of roepnaam van de klant.
