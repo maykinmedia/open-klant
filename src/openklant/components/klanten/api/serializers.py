@@ -300,7 +300,8 @@ class KlantSerializer(PolymorphicSerializer):
             "url": {"lookup_field": "uuid"},
             "subject": {"required": False, "validators": [URLValidator()]},
             "subject_type": {"validators": [IsImmutableValidator()]},
-            "geverifieerd": {"validators": [IsImmutableValidator()]},
+            # Disabled for now, should return once logic is implemented
+            # "geverifieerd": {"validators": [IsImmutableValidator()]},
             # Disabled for now, see https://github.com/maykinmedia/open-klant/pull/11#pullrequestreview-805051480
             # "aanmaakkanaal": {"validators": [IsImmutableValidator()]},
         }
