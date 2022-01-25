@@ -51,7 +51,7 @@ cryptography==36.0.0
     #   pyopenssl
 cssselect==1.1.0
     # via pyquery
-django==2.2.24
+django==2.2.26
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -260,7 +260,7 @@ pathspec==0.9.0
     # via black
 pep8==1.7.1
     # via -r requirements/test-tools.in
-pillow==8.3.2
+pillow==9.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

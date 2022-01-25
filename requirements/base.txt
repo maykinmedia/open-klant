@@ -24,7 +24,7 @@ cryptography==36.0.0
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
-django==2.2.24
+django==2.2.26
     # via
     #   -r requirements/base.in
     #   django-axes
@@ -119,7 +119,7 @@ oyaml==1.0
     # via vng-api-common
 packaging==21.2
     # via drf-yasg
-pillow==8.3.2
+pillow==9.0.0
     # via -r requirements/base.in
 polib==1.1.1
     # via django-rosetta

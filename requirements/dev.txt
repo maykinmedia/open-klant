@@ -74,7 +74,7 @@ cssselect==1.1.0
     #   pyquery
 ddt-api-calls==0.3.2
     # via -r requirements/dev.in
-django==2.2.24
+django==2.2.26
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -330,7 +330,7 @@ pep8==1.7.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-pillow==8.3.2
+pillow==9.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
