@@ -1,5 +1,4 @@
 # Core python libraries
-Pillow  # handle images
 psycopg2  # database driver
 pytz  # handle timezones
 python-dotenv  # environment variables for secrets

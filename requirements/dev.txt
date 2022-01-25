@@ -330,10 +330,6 @@ pep8==1.7.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-pillow==9.0.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 pip-tools==6.3.0
     # via -r requirements/dev.in
 platformdirs==2.4.0

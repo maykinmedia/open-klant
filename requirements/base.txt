@@ -119,8 +119,6 @@ oyaml==1.0
     # via vng-api-common
 packaging==21.2
     # via drf-yasg
-pillow==9.0.0
-    # via -r requirements/base.in
 polib==1.1.1
     # via django-rosetta
 psycopg2==2.8.6

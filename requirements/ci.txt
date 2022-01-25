@@ -260,10 +260,6 @@ pathspec==0.9.0
     # via black
 pep8==1.7.1
     # via -r requirements/test-tools.in
-pillow==9.0.0
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
 platformdirs==2.4.0
     # via
     #   black
