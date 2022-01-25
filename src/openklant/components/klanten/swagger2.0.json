@@ -1080,6 +1080,11 @@
                     "description": "***AFWIJKING:** Het communicatiekanaal waarlangs de klant is aangemaakt.",
                     "type": "string",
                     "maxLength": 50
+                },
+                "geverifieerd": {
+                    "title": "Geverifieerd",
+                    "description": "***AFWIJKING:** Geeft aan of de KLANT wel of niet geverifieerd is.",
+                    "type": "boolean"
                 }
             },
             "discriminator": "subjectType"

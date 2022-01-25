@@ -84,6 +84,9 @@ class Klant(APIMixin, models.Model):
         blank=True,
         help_text=_("Het communicatiekanaal waarlangs de klant is aangemaakt."),
     )
+    geverifieerd = models.BooleanField(
+        default=False, help_text=_("Geeft aan of de KLANT wel of niet geverifieerd is.")
+    )
 
     class Meta:
         verbose_name = "klant"

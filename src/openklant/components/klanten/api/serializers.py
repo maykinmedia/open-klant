@@ -294,11 +294,13 @@ class KlantSerializer(PolymorphicSerializer):
             "subject",
             "subject_type",
             "aanmaakkanaal",
+            "geverifieerd",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "subject": {"required": False, "validators": [URLValidator()]},
             "subject_type": {"validators": [IsImmutableValidator()]},
+            "geverifieerd": {"validators": [IsImmutableValidator()]},
             # Disabled for now, see https://github.com/maykinmedia/open-klant/pull/11#pullrequestreview-805051480
             # "aanmaakkanaal": {"validators": [IsImmutableValidator()]},
         }
@@ -309,10 +311,11 @@ class KlantSerializer(PolymorphicSerializer):
         value_display_mapping = add_choice_values_help_text(KlantType)
         self.fields["subject_type"].help_text += f"\n\n{value_display_mapping}"
 
-        # Document
-        self.fields["aanmaakkanaal"].help_text = mark_oas_difference(
-            self.fields["aanmaakkanaal"].help_text
-        )
+        # Document OAS differences from standard
+        for custom_field in ["aanmaakkanaal", "geverifieerd"]:
+            self.fields[custom_field].help_text = mark_oas_difference(
+                self.fields[custom_field].help_text
+            )
 
     def validate(self, attrs):
         validated_attrs = super().validate(attrs)
@@ -347,6 +350,8 @@ class KlantSerializer(PolymorphicSerializer):
         group_data = validated_data.pop("subject_identificatie", None)
         adres_data = validated_data.pop("adres", None)
         klant = super().create(validated_data)
+
+        # TODO verify Klant with BRP or KvK?
 
         if adres_data:
             adres_data["klant"] = klant
