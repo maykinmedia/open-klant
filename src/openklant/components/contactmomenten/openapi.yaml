@@ -183,35 +183,6 @@ paths:
         schema:
           type: string
           format: uri
-      - name: ordering
-        in: query
-        description: Het veld waarop de resultaten geordend worden.
-        required: false
-        schema:
-          type: string
-          enum:
-          - url
-          - -url
-          - bronorganisatie
-          - -bronorganisatie
-          - klant
-          - -klant
-          - registratiedatum
-          - -registratiedatum
-          - kanaal
-          - -kanaal
-          - voorkeurskanaal
-          - -voorkeurskanaal
-          - tekst
-          - -tekst
-          - onderwerp_links
-          - -onderwerp_links
-          - initiatiefnemer
-          - -initiatiefnemer
-          - medewerker
-          - -medewerker
-          - medewerker_identificatie
-          - -medewerker_identificatie
       - name: medewerkerIdentificatie__identificatie
         in: query
         description: '***AFWIJKING:** Een korte unieke aanduiding van de MEDEWERKER.'
@@ -265,6 +236,35 @@ paths:
           enum:
           - klantcontactmomenten
           - objectcontactmomenten
+      - name: ordering
+        in: query
+        description: Het veld waarop de resultaten geordend worden.
+        required: false
+        schema:
+          type: string
+          enum:
+          - url
+          - -url
+          - bronorganisatie
+          - -bronorganisatie
+          - klant
+          - -klant
+          - registratiedatum
+          - -registratiedatum
+          - kanaal
+          - -kanaal
+          - voorkeurskanaal
+          - -voorkeurskanaal
+          - tekst
+          - -tekst
+          - onderwerp_links
+          - -onderwerp_links
+          - initiatiefnemer
+          - -initiatiefnemer
+          - medewerker
+          - -medewerker
+          - medewerker_identificatie
+          - -medewerker_identificatie
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
