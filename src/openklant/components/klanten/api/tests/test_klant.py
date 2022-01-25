@@ -1110,6 +1110,45 @@ class KlantFilterTests(JWTAuthMixin, APITestCase):
         result = response_data["results"][0]
         self.assertEqual(result["subjectIdentificatie"]["inpANummer"], "123")
 
+    def test_filter_subject_natuurlijk_persoon_geboortedatum(self):
+        klant1, klant2, klant3 = KlantFactory.create_batch(
+            3, subject="", subject_type=KlantType.natuurlijk_persoon
+        )
+        NatuurlijkPersoonFactory.create(geboortedatum="2020-01-01", klant=klant1)
+        NatuurlijkPersoonFactory.create(geboortedatum="2021-01-01", klant=klant2)
+        NatuurlijkPersoonFactory.create(geboortedatum="2022-01-01", klant=klant3)
+
+        url = reverse(Klant)
+        responses = [
+            [klant2],
+            [klant3],
+            [klant3, klant2],
+            [klant1],
+            [klant2, klant1],
+        ]
+        filter_name = "subject_natuurlijkPersoon__geboortedatum"
+        for i, name in enumerate(
+            [
+                filter_name,
+                f"{filter_name}__gt",
+                f"{filter_name}__gte",
+                f"{filter_name}__lt",
+                f"{filter_name}__lte",
+            ]
+        ):
+            with self.subTest(name=name):
+                response = self.client.get(url, {name: "2021-01-01"})
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                response_data = response.json()
+                self.assertEqual(response_data["count"], len(responses[i]))
+
+                for j, result in enumerate(response_data["results"]):
+                    self.assertEqual(
+                        result["subjectIdentificatie"]["geboortedatum"],
+                        responses[i][j].natuurlijk_persoon.geboortedatum,
+                    )
+
     def test_filter_subject_niet_natuurlijk_persoon__inn_nnp_id(self):
         klant1, klant2 = KlantFactory.create_batch(
             2, subject="", subject_type=KlantType.niet_natuurlijk_persoon
