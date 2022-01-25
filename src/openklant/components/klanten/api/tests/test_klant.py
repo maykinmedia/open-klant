@@ -73,6 +73,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
                 "subjectType": KlantType.natuurlijk_persoon,
                 "subjectIdentificatie": None,
                 "aanmaakkanaal": "email",
+                "geverifieerd": False,
             },
         )
 
@@ -148,6 +149,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
                     },
                 },
                 "aanmaakkanaal": "email",
+                "geverifieerd": False,
             },
         )
 
@@ -208,6 +210,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
                     },
                 },
                 "aanmaakkanaal": "email",
+                "geverifieerd": False,
             },
         )
 
@@ -272,6 +275,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
                     },
                 },
                 "aanmaakkanaal": "email",
+                "geverifieerd": False,
             },
         )
 
