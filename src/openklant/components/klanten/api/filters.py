@@ -1,6 +1,10 @@
+from django.utils.translation import gettext_lazy as _
+
 from django_filters import filters
 from vng_api_common.filtersets import FilterSet
 from vng_api_common.utils import get_help_text
+
+from openklant.utils.api_spec import mark_oas_difference
 
 from ..datamodel.models import Klant
 
@@ -17,6 +21,31 @@ class KlantFilter(FilterSet):
     subject_natuurlijk_persoon__inp_a_nummer = filters.CharFilter(
         field_name="natuurlijk_persoon__inp_a_nummer",
         help_text=get_help_text("klanten.NatuurlijkPersoon", "inp_a_nummer"),
+    )
+    subject_natuurlijk_persoon__geboortedatum = filters.CharFilter(
+        field_name="natuurlijk_persoon__geboortedatum",
+        help_text=mark_oas_difference(_("Geboortedatum van de persoon")),
+        lookup_expr="exact",
+    )
+    subject_natuurlijk_persoon__geboortedatum__gt = filters.CharFilter(
+        field_name="natuurlijk_persoon__geboortedatum",
+        help_text=mark_oas_difference(_("Geboortedatum van de persoon")),
+        lookup_expr="gt",
+    )
+    subject_natuurlijk_persoon__geboortedatum__gte = filters.CharFilter(
+        field_name="natuurlijk_persoon__geboortedatum",
+        help_text=mark_oas_difference(_("Geboortedatum van de persoon")),
+        lookup_expr="gte",
+    )
+    subject_natuurlijk_persoon__geboortedatum__lt = filters.CharFilter(
+        field_name="natuurlijk_persoon__geboortedatum",
+        help_text=mark_oas_difference(_("Geboortedatum van de persoon")),
+        lookup_expr="lt",
+    )
+    subject_natuurlijk_persoon__geboortedatum__lte = filters.CharFilter(
+        field_name="natuurlijk_persoon__geboortedatum",
+        help_text=mark_oas_difference(_("Geboortedatum van de persoon")),
+        lookup_expr="lte",
     )
     subject_niet_natuurlijk_persoon__inn_nnp_id = filters.CharFilter(
         field_name="niet_natuurlijk_persoon__inn_nnp_id",

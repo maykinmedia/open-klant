@@ -158,6 +158,41 @@
                         "type": "string"
                     },
                     {
+                        "name": "subjectNatuurlijkPersoon__geboortedatum",
+                        "in": "query",
+                        "description": "***AFWIJKING:** Geboortedatum van de persoon",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "subjectNatuurlijkPersoon__geboortedatum__gt",
+                        "in": "query",
+                        "description": "***AFWIJKING:** Geboortedatum van de persoon",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "subjectNatuurlijkPersoon__geboortedatum__gte",
+                        "in": "query",
+                        "description": "***AFWIJKING:** Geboortedatum van de persoon",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "subjectNatuurlijkPersoon__geboortedatum__lt",
+                        "in": "query",
+                        "description": "***AFWIJKING:** Geboortedatum van de persoon",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "subjectNatuurlijkPersoon__geboortedatum__lte",
+                        "in": "query",
+                        "description": "***AFWIJKING:** Geboortedatum van de persoon",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "subjectNietNatuurlijkPersoon__innNnpId",
                         "in": "query",
                         "description": "Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON",
