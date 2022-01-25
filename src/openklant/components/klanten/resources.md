@@ -44,6 +44,7 @@ Uitleg bij mogelijke waarden:
 * `niet_natuurlijk_persoon` - Niet-natuurlijk persoon
 * `vestiging` - Vestiging | string | nee | C​R​U​D |
 | aanmaakkanaal | ***AFWIJKING:** Het communicatiekanaal waarlangs de klant is aangemaakt. | string | nee | C​R​U​D |
+| geverifieerd | ***AFWIJKING:** Geeft aan of de KLANT wel of niet geverifieerd is. | boolean | nee | C​R​U​D |
 
 ## VerblijfsAdres
 
