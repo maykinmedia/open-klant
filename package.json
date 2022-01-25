@@ -41,7 +41,7 @@
     "karma-spec-reporter": "latest",
     "karma-webpack": "latest",
     "mini-css-extract-plugin": "latest",
-    "mocha": "latest",
+    "mocha": "^9.2.0",
     "postcss-loader": "latest",
     "postcss-selector-lint": "latest",
     "sass": "latest",
@@ -52,7 +52,7 @@
     "url-loader": "latest",
     "webpack": "latest",
     "webpack-cli": "latest",
-    "webpack-dev-server": "latest",
+    "webpack-dev-server": "^4.7.3",
     "webpack-stream": "latest",
     "yargs": "latest"
   }

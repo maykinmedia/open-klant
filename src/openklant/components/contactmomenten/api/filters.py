@@ -108,7 +108,6 @@ class ContactMomentFilter(FilterSet):
             "voorkeurstaal": ["exact"],
             "initiatiefnemer": ["exact"],
             "medewerker": ["exact"],
-            "ordering": ["exact"],
             "medewerker_identificatie__identificatie": ["exact"],
             "medewerker_identificatie__achternaam": ["exact"],
             "medewerker_identificatie__voorletters": ["exact"],
