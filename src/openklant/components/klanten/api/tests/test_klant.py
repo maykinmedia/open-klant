@@ -3,9 +3,9 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
 
-from openklant.components.klanten.datamodel.constants import KlantType, SoortRechtsvorm
-from openklant.components.klanten.datamodel.models import Klant
-from openklant.components.klanten.datamodel.tests.factories import (
+from openklant.components.klanten.models.constants import KlantType, SoortRechtsvorm
+from openklant.components.klanten.models.klanten import Klant
+from openklant.components.klanten.models.tests.factories import (
     KlantAdresFactory,
     KlantFactory,
     NatuurlijkPersoonFactory,

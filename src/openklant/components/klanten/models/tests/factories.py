@@ -1,7 +1,7 @@
 import factory.fuzzy
 
 from ..constants import KlantType, SoortRechtsvorm
-from ..models import (
+from ..klanten import (
     Klant,
     KlantAdres,
     NatuurlijkPersoon,

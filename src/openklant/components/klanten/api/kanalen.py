@@ -2,7 +2,7 @@ from django.conf import settings
 
 from vng_api_common.notifications.kanalen import Kanaal
 
-from openklant.components.klanten.datamodel.models import Klant
+from openklant.components.klanten.models.klanten import Klant
 
 KANAAL_KLANTEN = Kanaal(
     settings.KLANTEN_NOTIFICATIONS_KANAAL,
