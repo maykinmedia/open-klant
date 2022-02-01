@@ -16,7 +16,7 @@ from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.permissions import AuthScopesRequired
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ..datamodel.models import ContactMoment, KlantContactMoment, ObjectContactMoment
+from ..models.contactmomenten import ContactMoment, KlantContactMoment, ObjectContactMoment
 from .audits import AUDIT_CONTACTMOMENTEN
 from .filters import (
     ContactMomentFilter,
