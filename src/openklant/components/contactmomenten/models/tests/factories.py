@@ -1,7 +1,12 @@
 import factory.fuzzy
 
 from ..constants import InitiatiefNemer, ObjectTypes
-from ..contactmomenten import ContactMoment, KlantContactMoment, Medewerker, ObjectContactMoment
+from ..contactmomenten import (
+    ContactMoment,
+    KlantContactMoment,
+    Medewerker,
+    ObjectContactMoment,
+)
 
 
 class ContactMomentFactory(factory.django.DjangoModelFactory):

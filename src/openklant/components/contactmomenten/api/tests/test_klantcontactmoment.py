@@ -7,11 +7,10 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
 
-from openklant.components.contactmomenten.models.constants import (
-    InitiatiefNemer,
-    Rol,
+from openklant.components.contactmomenten.models.constants import InitiatiefNemer, Rol
+from openklant.components.contactmomenten.models.contactmomenten import (
+    KlantContactMoment,
 )
-from openklant.components.contactmomenten.models.contactmomenten import KlantContactMoment
 from openklant.components.contactmomenten.models.tests.factories import (
     ContactMomentFactory,
     KlantContactMomentFactory,

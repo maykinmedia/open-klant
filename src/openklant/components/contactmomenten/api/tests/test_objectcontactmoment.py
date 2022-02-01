@@ -9,7 +9,9 @@ from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
 from zds_client.tests.mocks import mock_client
 
 from openklant.components.contactmomenten.models.constants import ObjectTypes
-from openklant.components.contactmomenten.models.contactmomenten import ObjectContactMoment
+from openklant.components.contactmomenten.models.contactmomenten import (
+    ObjectContactMoment,
+)
 from openklant.components.contactmomenten.models.tests.factories import (
     ContactMomentFactory,
     ObjectContactMomentFactory,
