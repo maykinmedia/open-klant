@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .datamodel.models import (
+from .models.klanten import (
     Klant,
     KlantAdres,
     NatuurlijkPersoon,

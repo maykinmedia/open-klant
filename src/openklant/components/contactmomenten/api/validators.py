@@ -9,7 +9,9 @@ from vng_api_common.models import APICredential
 from vng_api_common.validators import ResourceValidator
 from zds_client import ClientError
 
-from openklant.components.contactmomenten.datamodel.models import ObjectContactMoment
+from openklant.components.contactmomenten.models.contactmomenten import (
+    ObjectContactMoment,
+)
 
 from .auth import get_auth
 from .utils import get_absolute_url

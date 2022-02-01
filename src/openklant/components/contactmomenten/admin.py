@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
 
-from .datamodel.models import (
+from .models.contactmomenten import (
     ContactMoment,
     KlantContactMoment,
     Medewerker,

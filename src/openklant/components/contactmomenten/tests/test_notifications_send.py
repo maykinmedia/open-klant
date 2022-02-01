@@ -6,8 +6,8 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
-from openklant.components.contactmomenten.datamodel.constants import InitiatiefNemer
-from openklant.components.contactmomenten.datamodel.tests.factories import (
+from openklant.components.contactmomenten.models.constants import InitiatiefNemer
+from openklant.components.contactmomenten.models.tests.factories import (
     ContactMomentFactory,
 )
 from openklant.utils.tests.mixins import JWTAuthTransactionMixin

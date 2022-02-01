@@ -9,8 +9,8 @@ from rest_framework.test import APITransactionTestCase
 
 from openklant.utils.tests.mixins import JWTAuthTransactionMixin
 
-from ..datamodel.constants import KlantType
-from ..datamodel.tests.factories import KlantFactory
+from ..models.constants import KlantType
+from ..models.tests.factories import KlantFactory
 from .utils import get_operation_url
 
 SUBJECT = "http://example.com/subject/1"

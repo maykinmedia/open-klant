@@ -7,7 +7,7 @@ from django.test import override_settings
 from rest_framework.test import APITestCase
 from vng_api_common.notifications.kanalen import Kanaal
 
-from openklant.components.contactmomenten.datamodel.models import ContactMoment
+from openklant.components.contactmomenten.models.contactmomenten import ContactMoment
 
 
 @override_settings(IS_HTTPS=True)

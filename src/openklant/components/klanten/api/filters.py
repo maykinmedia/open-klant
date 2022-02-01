@@ -6,7 +6,7 @@ from vng_api_common.utils import get_help_text
 
 from openklant.utils.api_spec import mark_oas_difference
 
-from ..datamodel.models import Klant
+from ..models.klanten import Klant
 
 
 class KlantFilter(FilterSet):

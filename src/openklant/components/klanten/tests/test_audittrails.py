@@ -6,8 +6,8 @@ from rest_framework.test import APITestCase
 from vng_api_common.audittrails.models import AuditTrail
 from vng_api_common.tests import JWTAuthMixin, reverse
 
-from ..datamodel.constants import KlantType
-from ..datamodel.models import Klant
+from ..models.constants import KlantType
+from ..models.klanten import Klant
 
 SUBJECT = "https://example.com/subject/1"
 
