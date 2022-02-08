@@ -67,11 +67,6 @@ cryptography==36.0.0
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
-cssselect==1.1.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pyquery
 ddt-api-calls==0.3.2
     # via -r requirements/dev.in
 django==2.2.26
@@ -273,11 +268,6 @@ lazy-object-proxy==1.6.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   astroid
-lxml==4.6.3
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pyquery
 markdown==3.3.4
     # via
     #   -c requirements/ci.txt
@@ -385,10 +375,6 @@ pyparsing==2.4.7
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   packaging
-pyquery==1.4.3
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 python-dateutil==2.8.2
     # via
     #   -c requirements/ci.txt

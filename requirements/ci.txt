@@ -49,8 +49,6 @@ cryptography==36.0.0
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
-cssselect==1.1.0
-    # via pyquery
 django==2.2.26
     # via
     #   -c requirements/base.txt
@@ -219,8 +217,6 @@ josepy==1.11.0
     #   mozilla-django-oidc
 lazy-object-proxy==1.6.0
     # via astroid
-lxml==4.6.3
-    # via pyquery
 markdown==3.3.4
     # via
     #   -c requirements/base.txt
@@ -301,8 +297,6 @@ pyparsing==2.4.7
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   packaging
-pyquery==1.4.3
-    # via -r requirements/test-tools.in
 python-dateutil==2.8.2
     # via
     #   faker
