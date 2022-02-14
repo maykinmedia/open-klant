@@ -49,7 +49,7 @@ cryptography==36.0.0
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
-django==2.2.26
+django==2.2.27
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

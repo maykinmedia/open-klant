@@ -33,7 +33,7 @@
     "css-loader": "latest",
     "cssnano": "latest",
     "istanbul-instrumenter-loader": "latest",
-    "karma": "latest",
+    "karma": "^6.3.14",
     "karma-chrome-launcher": "latest",
     "karma-coverage": "latest",
     "karma-junit-reporter": "latest",
