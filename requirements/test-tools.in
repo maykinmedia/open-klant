@@ -10,6 +10,7 @@ pep8
 pylint
 requests-mock
 tblib
+waitress>=2.1.1
 
 # Code formatting
 black
