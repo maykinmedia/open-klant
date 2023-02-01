@@ -9,7 +9,7 @@ Open Klant
 
 |build-status| |requirements|
 
-Project that combines `Klanten API`_ and `Contactmomenten API`_ into a single
+Project that combines `Klanten API` | https://klanten-api.vng.cloud and `Contactmomenten API | https://contactmomenten-api.vng.cloud/ into a single
 production worthy component.
 
 Developed by `Maykin Media B.V.`_ for the municipality of Den Haag
