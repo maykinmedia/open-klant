@@ -74,7 +74,7 @@ cryptography==36.0.0
     #   pyopenssl
 ddt-api-calls==0.3.2
     # via -r requirements/dev.in
-django==3.0
+django==3.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
