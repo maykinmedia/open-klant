@@ -5,7 +5,7 @@ python-dotenv  # environment variables for secrets
 python-decouple  # processing of envvar configs
 
 # Framework libraries
-django < 3.0
+django==3.0
 django-admin-index
 django-axes
 django-better-admin-arrayfield
@@ -24,7 +24,7 @@ djangorestframework
 # django-extra-fields
 # django-filter
 # drf-yasg  # api documentation
-vng-api-common[markdown_docs]
+vng-api-common[markdown_docs]==1.8.0
 
 # WSGI servers & monitoring - production oriented
 uwsgi
