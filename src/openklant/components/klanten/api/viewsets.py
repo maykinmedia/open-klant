@@ -1,12 +1,12 @@
 import logging
 
+from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from vng_api_common.audittrails.viewsets import (
     AuditTrailViewSet,
     AuditTrailViewsetMixin,
 )
-from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.permissions import AuthScopesRequired
 
 from openklant.components.klanten.models.klanten import Klant

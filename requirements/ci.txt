@@ -4,6 +4,11 @@
 #
 #    ./bin/compile_dependencies.sh
 #
+amqp==5.1.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   kombu
 asgiref==3.6.0
     # via
     #   -c requirements/base.txt
@@ -13,12 +18,23 @@ astroid==2.8.0
     # via pylint
 beautifulsoup4==4.10.0
     # via webtest
+billiard==3.6.4.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   celery
 black==21.10b0
     # via -r requirements/test-tools.in
+celery==5.2.7
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   notifications-api-common
 certifi==2021.5.30
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   django-simple-certmanager
     #   elastic-apm
     #   requests
     #   sentry-sdk
@@ -32,8 +48,30 @@ charset-normalizer==2.0.6
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   requests
-click==8.0.3
-    # via black
+click==8.1.3
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   black
+    #   celery
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
+click-didyoumean==0.3.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   celery
+click-plugins==1.1.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   celery
+click-repl==0.2.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   celery
 coreapi==2.3.3
     # via
     #   -c requirements/base.txt
@@ -47,10 +85,11 @@ coreschema==0.0.4
     #   drf-yasg
 coverage==4.5.4
     # via -r requirements/test-tools.in
-cryptography==36.0.0
+cryptography==39.0.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   django-simple-certmanager
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
@@ -63,16 +102,22 @@ django==3.2
     #   django-filter
     #   django-jenkins
     #   django-markup
+    #   django-privates
     #   django-redis
+    #   django-relativedelta
     #   django-rest-framework-condition
     #   django-rosetta
+    #   django-sendfile2
+    #   django-simple-certmanager
     #   django-sniplates
     #   djangorestframework
     #   drf-nested-routers
     #   drf-yasg
     #   mozilla-django-oidc
     #   mozilla-django-oidc-db
+    #   notifications-api-common
     #   vng-api-common
+    #   zgw-consumers
 django-admin-index==1.5.0
     # via
     #   -c requirements/base.txt
@@ -117,10 +162,20 @@ django-ordered-model==3.4.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-admin-index
+django-privates==1.5.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-simple-certmanager
 django-redis==5.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+django-relativedelta==1.1.2
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   zgw-consumers
 django-rest-framework-condition==0.1.1
     # via
     #   -c requirements/base.txt
@@ -130,6 +185,16 @@ django-rosetta==0.9.7
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+django-sendfile2==0.7.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-privates
+django-simple-certmanager==1.3.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   zgw-consumers
 django-sniplates==0.7.0
     # via
     #   -c requirements/base.txt
@@ -139,7 +204,9 @@ django-solo==1.2.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
+    #   notifications-api-common
     #   vng-api-common
+    #   zgw-consumers
 django-webtest==1.9.7
     # via -r requirements/test-tools.in
 djangorestframework==3.12.4
@@ -148,11 +215,13 @@ djangorestframework==3.12.4
     #   -r requirements/base.txt
     #   drf-nested-routers
     #   drf-yasg
+    #   notifications-api-common
     #   vng-api-common
 djangorestframework-camel-case==1.2.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   notifications-api-common
     #   vng-api-common
 drf-nested-routers==0.93.3
     # via
@@ -170,8 +239,12 @@ elastic-apm==6.4.0
     #   -r requirements/base.txt
 factory-boy==3.2.0
     # via -r requirements/test-tools.in
-faker==8.16.0
-    # via factory-boy
+faker==18.2.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   factory-boy
+    #   zgw-consumers
 flake8==4.0.1
     # via -r requirements/test-tools.in
 freezegun==1.1.0
@@ -180,7 +253,9 @@ gemma-zds-client==1.0.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   notifications-api-common
     #   vng-api-common
+    #   zgw-consumers
 idna==3.2
     # via
     #   -c requirements/base.txt
@@ -220,6 +295,11 @@ josepy==1.11.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc
+kombu==5.2.4
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   celery
 lazy-object-proxy==1.6.0
     # via astroid
 markdown==3.3.4
@@ -247,6 +327,11 @@ mozilla-django-oidc-db==0.7.2
     #   -r requirements/base.txt
 mypy-extensions==0.4.3
     # via black
+notifications-api-common==0.2.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   vng-api-common
 oyaml==1.0
     # via
     #   -c requirements/base.txt
@@ -270,6 +355,11 @@ polib==1.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-rosetta
+prompt-toolkit==3.0.38
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   click-repl
 psycopg2==2.8.6
     # via
     #   -c requirements/base.txt
@@ -292,11 +382,13 @@ pyjwt==1.7.1
     #   vng-api-common
 pylint==2.11.1
     # via -r requirements/test-tools.in
-pyopenssl==21.0.0
+pyopenssl==23.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   django-simple-certmanager
     #   josepy
+    #   zgw-consumers
 pyparsing==2.4.7
     # via
     #   -c requirements/base.txt
@@ -304,6 +396,9 @@ pyparsing==2.4.7
     #   packaging
 python-dateutil==2.8.2
     # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-relativedelta
     #   faker
     #   freezegun
 python-decouple==3.5
@@ -318,6 +413,7 @@ pytz==2021.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   celery
     #   django
 pyyaml==5.4.1
     # via
@@ -343,8 +439,13 @@ requests==2.26.0
     #   mozilla-django-oidc
     #   requests-mock
     #   vng-api-common
-requests-mock==1.9.3
-    # via -r requirements/test-tools.in
+    #   zgw-consumers
+requests-mock==1.10.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   -r requirements/test-tools.in
+    #   zgw-consumers
 ruamel-yaml==0.17.16
     # via
     #   -c requirements/base.txt
@@ -363,11 +464,11 @@ six==1.16.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   click-repl
     #   django-choices
     #   django-markup
     #   isodate
     #   mozilla-django-oidc
-    #   pyopenssl
     #   python-dateutil
     #   requests-mock
 soupsieve==2.2.1
@@ -379,8 +480,6 @@ sqlparse==0.4.2
     #   django
 tblib==1.7.0
     # via -r requirements/test-tools.in
-text-unidecode==1.3
-    # via faker
 toml==0.10.2
     # via pylint
 tomli==1.2.2
@@ -407,7 +506,14 @@ uwsgi==2.0.19.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-vng-api-common[markdown_docs]==1.8.0
+vine==5.0.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   amqp
+    #   celery
+    #   kombu
+vng-api-common[markdown_docs]==1.9.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -415,12 +521,22 @@ waitress==2.1.1
     # via
     #   -r requirements/test-tools.in
     #   webtest
+wcwidth==0.2.6
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   prompt-toolkit
 webob==1.8.7
     # via webtest
 webtest==3.0.0
     # via django-webtest
 wrapt==1.12.1
     # via astroid
+zgw-consumers==0.25.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   notifications-api-common
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

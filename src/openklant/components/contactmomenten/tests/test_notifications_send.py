@@ -3,6 +3,7 @@ from unittest.mock import patch
 from django.test import override_settings
 
 from freezegun import freeze_time
+from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
@@ -26,29 +27,12 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
 
     heeft_alle_autorisaties = True
 
-    def setUp(self):
-        # FIXME setUpTestData() doesn't work with APITransactionTestCase
-        applicatie, autorisatie = self._create_credentials(
-            self.client_id,
-            self.secret,
-            heeft_alle_autorisaties=self.heeft_alle_autorisaties,
-            scopes=self.scopes,
-            zaaktype=self.zaaktype,
-            informatieobjecttype=self.informatieobjecttype,
-            besluittype=self.besluittype,
-            max_vertrouwelijkheidaanduiding=self.max_vertrouwelijkheidaanduiding,
-        )
-        self.applicatie = applicatie
-        self.autorisatie = autorisatie
-
-        super().setUp()
-
-    @patch("zds_client.Client.from_url")
-    def test_send_notif_create_contactmoment(self, mock_client):
+    @patch.object(NotificationsConfig, 'get_client')
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_send_notif_create_contactmoment(self, mock_task, mock_client):
         """
         Check if notifications will be send when ContactMoment is created
         """
-        client = mock_client.return_value
         url = get_operation_url("contactmoment_create")
         data = {
             "bronorganisatie": "423182687",
@@ -65,8 +49,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
         data = response.json()
-        client.create.assert_called_once_with(
-            "notificaties",
+        mock_task.assert_called_once_with(
             {
                 "kanaal": "contactmomenten",
                 "hoofdObject": data["url"],
@@ -78,12 +61,12 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
             },
         )
 
-    @patch("zds_client.Client.from_url")
-    def test_send_notif_delete_contactmoment(self, mock_client):
+    @patch.object(NotificationsConfig, 'get_client')
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_send_notif_delete_contactmoment(self,  mock_task, mock_client):
         """
         Check if notifications will be send when ContactMoment is deleted
         """
-        client = mock_client.return_value
         contactmoment = ContactMomentFactory.create(
             bronorganisatie=423182687, kanaal="telephone"
         )
@@ -97,8 +80,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
             response.status_code, status.HTTP_204_NO_CONTENT, response.data
         )
 
-        client.create.assert_called_once_with(
-            "notificaties",
+        mock_task.assert_called_once_with(
             {
                 "kanaal": "contactmomenten",
                 "hoofdObject": f"http://testserver{contactmoment_url}",
