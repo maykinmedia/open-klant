@@ -10,12 +10,14 @@ set CUSTOM_COMPILE_COMMAND="./bin/compile_dependencies.sh"
 REM Base deps
 pip-compile^
     --no-emit-index-url^
+    --resolver=backtracking^
     %*^
     requirements/base.in
 
 REM Dependencies for testing
 pip-compile^
     --no-emit-index-url^
+    --resolver=backtracking^
     --output-file requirements/ci.txt^
     %*^
     requirements/base.txt^
@@ -24,6 +26,7 @@ pip-compile^
 REM Dev depedencies - exact same set as CI + some extra tooling
 pip-compile^
     --no-emit-index-url^
+    --resolver=backtracking^
     --output-file requirements/dev.txt^
     %*^
     requirements/ci.txt^
