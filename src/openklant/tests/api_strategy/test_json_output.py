@@ -35,7 +35,6 @@ class NoContentTypeRequestFactory(APIRequestFactory):
 
 
 class JSONFormatTests(APITestCase):
-
     factory = APIRequestFactory()
 
     def _get_response(self, request=None):

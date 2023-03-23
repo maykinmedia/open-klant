@@ -10,7 +10,6 @@ import vng_api_common.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = []

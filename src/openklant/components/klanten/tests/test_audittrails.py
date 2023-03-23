@@ -13,7 +13,6 @@ SUBJECT = "https://example.com/subject/1"
 
 
 class AuditTrailTests(JWTAuthMixin, APITestCase):
-
     heeft_alle_autorisaties = True
 
     def _create_klant(self):

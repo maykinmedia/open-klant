@@ -20,7 +20,6 @@ SUBJECT = "http://example.com/subject/1"
 @freeze_time("2018-09-07T00:00:00Z")
 @override_settings(NOTIFICATIONS_DISABLED=False)
 class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
-
     heeft_alle_autorisaties = True
 
     @patch.object(NotificationsConfig, "get_client")
