@@ -6,7 +6,7 @@ Open Klant
 :Source: https://bitbucket.org/maykinmedia/openklant
 :Keywords: ``klanten``, ``contactmomenten``, ``API``, ``Common Ground``
 :License: EUPL
-:PythonVersion: 3.8
+:PythonVersion: 3.11
 
 |build-status| |requirements|
 
