@@ -3,24 +3,26 @@ from unittest.mock import patch
 
 from django.core.management import call_command
 from django.test import override_settings
+
 from notifications_api_common.kanalen import KANAAL_REGISTRY, Kanaal
 from notifications_api_common.models import NotificationsConfig
-from zgw_consumers.models import Service
-
 from rest_framework.test import APITestCase
+from zgw_consumers.models import Service
 
 from ..models.klanten import Klant
 
 
 @override_settings(IS_HTTPS=True)
 class CreateNotifKanaalTestCase(APITestCase):
-    @patch.object(NotificationsConfig, 'get_client')
+    @patch.object(NotificationsConfig, "get_client")
     @patch("notifications_api_common.models.NotificationsConfig.get_solo")
     def test_kanaal_create_with_name(self, mock_config, mock_client):
         """
         Test is request to create kanaal is send with specified kanaal name
         """
-        mock_config.return_value = NotificationsConfig(notifications_api_service=Service(api_root="http://example.com/"))
+        mock_config.return_value = NotificationsConfig(
+            notifications_api_service=Service(api_root="http://example.com/")
+        )
         client = mock_client.return_value
         client.list.return_value = []
 
@@ -43,14 +45,16 @@ class CreateNotifKanaalTestCase(APITestCase):
             },
         )
 
-    @patch.object(NotificationsConfig, 'get_client')
+    @patch.object(NotificationsConfig, "get_client")
     @patch("notifications_api_common.models.NotificationsConfig.get_solo")
     @override_settings(NOTIFICATIONS_KANAAL="dummy-kanaal")
     def test_kanaal_create_without_name(self, mock_config, mock_client):
         """
         Test is request to create kanaal is send with default kanaal name
         """
-        mock_config.return_value = NotificationsConfig(notifications_api_service=Service(api_root="http://example.com/"))
+        mock_config.return_value = NotificationsConfig(
+            notifications_api_service=Service(api_root="http://example.com/")
+        )
         client = mock_client.return_value
         client.list.return_value = []
 

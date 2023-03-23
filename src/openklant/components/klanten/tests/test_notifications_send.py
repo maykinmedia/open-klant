@@ -1,8 +1,8 @@
 from unittest.mock import patch
 
-import requests_mock
 from django.test import override_settings
 
+import requests_mock
 from freezegun import freeze_time
 from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
@@ -23,7 +23,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
 
     heeft_alle_autorisaties = True
 
-    @patch.object(NotificationsConfig, 'get_client')
+    @patch.object(NotificationsConfig, "get_client")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     def test_send_notif_create_klant(self, mock_task, mock_client):
         """
@@ -62,7 +62,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
             },
         )
 
-    @patch.object(NotificationsConfig, 'get_client')
+    @patch.object(NotificationsConfig, "get_client")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     def test_send_notif_delete_klant(self, mock_task, mock_client):
         """

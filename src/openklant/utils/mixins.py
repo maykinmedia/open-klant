@@ -14,7 +14,7 @@ class ThrottleMixin:
 
     # n visits per period (in seconds)
     throttle_visits = 100
-    throttle_period = 60 ** 2  # in seconds
+    throttle_period = 60**2  # in seconds
     throttle_403 = True
     throttle_name = "default"
 

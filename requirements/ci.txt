@@ -23,7 +23,7 @@ billiard==3.6.4.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
-black==21.10b0
+black==22.3.0
     # via -r requirements/test-tools.in
 celery==5.2.7
     # via
@@ -427,8 +427,6 @@ redis==3.5.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-redis
-regex==2021.11.10
-    # via black
 requests==2.26.0
     # via
     #   -c requirements/base.txt

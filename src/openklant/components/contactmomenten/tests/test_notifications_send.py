@@ -27,7 +27,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
 
     heeft_alle_autorisaties = True
 
-    @patch.object(NotificationsConfig, 'get_client')
+    @patch.object(NotificationsConfig, "get_client")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     def test_send_notif_create_contactmoment(self, mock_task, mock_client):
         """
@@ -61,9 +61,9 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
             },
         )
 
-    @patch.object(NotificationsConfig, 'get_client')
+    @patch.object(NotificationsConfig, "get_client")
     @patch("notifications_api_common.viewsets.send_notification.delay")
-    def test_send_notif_delete_contactmoment(self,  mock_task, mock_client):
+    def test_send_notif_delete_contactmoment(self, mock_task, mock_client):
         """
         Check if notifications will be send when ContactMoment is deleted
         """

@@ -1,4 +1,5 @@
 from django.conf import settings
+
 from notifications_api_common.kanalen import Kanaal
 
 from openklant.components.klanten.models.klanten import Klant
