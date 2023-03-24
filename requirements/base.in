@@ -26,8 +26,8 @@ djangorestframework
 # drf-yasg  # api documentation
 
 vng-api-common[markdown_docs]==1.9.0  # pinned here before the move from drf-yasg to drf-spectacular
-gemma-zds-client<2.0.0  # source repos for 2.0.0 is MIA so stick with 1.x
-zgw-consumers>=0.25.0  # newest with cert manager
+gemma-zds-client<2.0.0  # lots of breaking changes in 2.0.0
+zgw-consumers>=0.25.0  # newest with simple cert manager
 
 # WSGI servers & monitoring - production oriented
 uwsgi
