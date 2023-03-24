@@ -3,7 +3,7 @@ Open Klant
 ==========
 
 :Version: 0.1.0
-:Source: https://bitbucket.org/maykinmedia/openklant
+:Source: https://github.com/maykinmedia/open-klant
 :Keywords: ``klanten``, ``contactmomenten``, ``API``, ``Common Ground``
 :License: EUPL
 :PythonVersion: 3.8

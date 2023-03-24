@@ -11,8 +11,8 @@ Quick start
 
 #. Get the code::
 
-    $ git clone git@bitbucket.org:maykinmedia/openklant.git
-    $ cd openklant
+    $ git clone git@github.com:maykinmedia/open-klant.git
+    $ cd open-klant
 
 #. Bootstrap the virtual environment and install all required libraries. The
    ``bootstrap.py`` script basically sets the proper Django settings file to be
