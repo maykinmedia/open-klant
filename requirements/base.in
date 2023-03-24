@@ -5,7 +5,7 @@ python-dotenv  # environment variables for secrets
 python-decouple  # processing of envvar configs
 
 # Framework libraries
-django==3.2
+django~=3.2.0
 django-admin-index
 django-axes
 django-better-admin-arrayfield

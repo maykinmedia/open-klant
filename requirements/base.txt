@@ -52,7 +52,7 @@ cryptography==39.0.2
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
-django==3.2
+django==3.2.18
     # via
     #   -r requirements/base.in
     #   django-admin-index

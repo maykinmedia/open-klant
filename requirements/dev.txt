@@ -128,9 +128,8 @@ dill==0.3.6
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-django==3.2
+django==3.2.18
     # via
-    #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   ddt-api-calls
     #   django-admin-index
