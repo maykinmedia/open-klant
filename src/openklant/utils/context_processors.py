@@ -8,6 +8,7 @@ def settings(request):
         "SHOW_ALERT",
         "SITE_TITLE",
         "PROJECT_NAME",
+        "VNG_COMPONENTS_BRANCH",
     )
 
     context = {
