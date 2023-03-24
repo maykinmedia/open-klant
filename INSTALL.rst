@@ -44,8 +44,8 @@ development machine.
 
    .. code-block:: bash
 
-       $ git clone git@bitbucket.org:maykinmedia/openklant.git
-       $ cd openklant
+       $ git clone git@github.com:maykinmedia/open-klant.git
+       $ cd open-klant
 
 3. Install all required (backend) libraries.
    **Tip:** You can use the ``bootstrap.py`` script to install the requiments
@@ -105,7 +105,7 @@ When updating an existing installation:
 
    .. code-block:: bash
 
-       $ cd openklant
+       $ cd open-klant
        $ source env/bin/activate
 
 2. Update the code and libraries:
@@ -163,11 +163,11 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ git clone git@bitbucket.org:maykinmedia/openklant.git
+       $ git clone git@github.com:maykinmedia/open-klant.git
        Cloning into 'openklant'...
        ...
 
-       $ cd openklant
+       $ cd open-klant
 
 2. Start the database and web services:
 

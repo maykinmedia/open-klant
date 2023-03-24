@@ -38,6 +38,8 @@ SWAGGER_SETTINGS.update(
     }
 )
 
+VNG_COMPONENTS_BRANCH = "master"
+
 GEMMA_URL_INFORMATIEMODEL_VERSIE = "1.0"
 
 # SELF_REPO = "VNG-Realisatie/klanten-api"
