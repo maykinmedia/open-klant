@@ -146,6 +146,11 @@ class ContactMomentSerializer(serializers.HyperlinkedModelSerializer):
             "medewerker_identificatie",
             "klantcontactmomenten",
             "objectcontactmomenten",
+            "identificatie",
+            "type",
+            "onderwerp",
+            "status",
+            "antwoord",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
