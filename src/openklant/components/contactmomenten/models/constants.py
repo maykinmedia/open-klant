@@ -13,5 +13,11 @@ class ObjectTypes(DjangoChoices):
 
 
 class Rol(DjangoChoices):
-    belanghebbende = ChoiceItem("belanghebbende", "Belanghebbende")
-    gesprekspartner = ChoiceItem("gesprekspartner", "Gesprekspartner")
+    belanghebbende = ChoiceItem("belanghebbende",  _("Belanghebbende"))
+    gesprekspartner = ChoiceItem("gesprekspartner",  _("Gesprekspartner"))
+
+
+class Status(DjangoChoices):
+    nieuw = ChoiceItem("nieuw",  _("Nieuw"))
+    in_behandeling = ChoiceItem("in_behandeling",  _("In behandeling"))
+    afgehandeld = ChoiceItem("afgehandeld",  _("Afgehandeld"))

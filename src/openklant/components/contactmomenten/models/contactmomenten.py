@@ -8,7 +8,7 @@ from django_better_admin_arrayfield.models.fields import ArrayField
 from vng_api_common.fields import RSINField
 from vng_api_common.models import APIMixin
 
-from .constants import InitiatiefNemer, ObjectTypes, Rol
+from .constants import InitiatiefNemer, ObjectTypes, Rol, Status
 
 
 class ContactMoment(APIMixin, models.Model):
@@ -89,6 +89,48 @@ class ContactMoment(APIMixin, models.Model):
         on_delete=models.DO_NOTHING,
         related_name="volgend_contactmoment",
         help_text=_("URL-referentie naar het vorige CONTACTMOMENT."),
+    )
+
+    identificatie = models.CharField(
+        _("identificatie"),
+        max_length=50,
+        blank=True,
+        help_text=_(
+            "Unieke identificatie van het contactmoment. ***AFWIJKING:**"
+        ),
+        # validators=[alphanumeric_excluding_diacritic],
+    )
+    type = models.CharField(
+        _("type"),
+        max_length=50,
+        blank=True,
+        help_text=_(
+            "Type van het contactmoment. ***AFWIJKING:**"
+        ),
+    )
+    onderwerp = models.CharField(
+        _("onderwerp"),
+        max_length=255,
+        blank=True,
+        help_text=_(
+            "Onderwerp van het contactmoment. ***AFWIJKING:**"
+        ),
+    )
+    status = models.CharField(
+        _("status"),
+        max_length=50,
+        blank=True,
+        choices=Status.choices,
+        help_text=_(
+            "Status van het contactmoment. ***AFWIJKING:**"
+        ),
+    )
+    antwoord = models.TextField(
+        _("antwoord"),
+        blank=True,
+        help_text=_(
+            "Een toelichting die inhoudelijk de klantinteractie van de klant beschrijft. ***AFWIJKING:**"
+        ),
     )
 
     class Meta:
