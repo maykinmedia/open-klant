@@ -218,7 +218,11 @@ paths:
           gescheiden worden.'
         required: false
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+        style: form
+        explode: false
       - name: klant
         in: query
         description: '***AFWIJKING:** De URL van de gerelateerde KLANT (zoals vastgelegd
@@ -226,7 +230,11 @@ paths:
           gescheiden worden.'
         required: false
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+        style: form
+        explode: false
       - name: expand
         in: query
         description: '***AFWIJKING:** Haal details van inline resources direct op.'
@@ -241,30 +249,34 @@ paths:
         description: Het veld waarop de resultaten geordend worden.
         required: false
         schema:
-          type: string
-          enum:
-          - url
-          - -url
-          - bronorganisatie
-          - -bronorganisatie
-          - klant
-          - -klant
-          - registratiedatum
-          - -registratiedatum
-          - kanaal
-          - -kanaal
-          - voorkeurskanaal
-          - -voorkeurskanaal
-          - tekst
-          - -tekst
-          - onderwerp_links
-          - -onderwerp_links
-          - initiatiefnemer
-          - -initiatiefnemer
-          - medewerker
-          - -medewerker
-          - medewerker_identificatie
-          - -medewerker_identificatie
+          type: array
+          items:
+            type: string
+            enum:
+            - url
+            - -url
+            - bronorganisatie
+            - -bronorganisatie
+            - klant
+            - -klant
+            - registratiedatum
+            - -registratiedatum
+            - kanaal
+            - -kanaal
+            - voorkeurskanaal
+            - -voorkeurskanaal
+            - tekst
+            - -tekst
+            - onderwerp_links
+            - -onderwerp_links
+            - initiatiefnemer
+            - -initiatiefnemer
+            - medewerker
+            - -medewerker
+            - medewerker_identificatie
+            - -medewerker_identificatie
+        style: form
+        explode: false
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -399,6 +411,13 @@ paths:
       operationId: audittrail_list
       summary: Alle audit trail regels behorend bij de CONTACTMOMENT.
       description: Alle audit trail regels behorend bij de CONTACTMOMENT.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: OK
@@ -411,9 +430,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AuditTrail'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AuditTrail'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -448,35 +483,10 @@ paths:
       operationId: audittrail_read
       summary: Een specifieke audit trail regel opvragen.
       description: Een specifieke audit trail regel opvragen.
-      parameters:
-      - name: If-None-Match
-        in: header
-        description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
-          n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
-          \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
-          \ deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie\
-          \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
-          \ voor meer informatie."
-        required: false
-        examples:
-          oneValue:
-            summary: "E\xE9n ETag-waarde"
-            value: '"79054025255fb1a26e4bc422aef54eb4"'
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
-        schema:
-          type: string
       responses:
         '200':
           description: OK
           headers:
-            ETag:
-              description: De ETag berekend op de response body JSON. Indien twee
-                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
-                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
-              schema:
-                type: string
             API-version:
               schema:
                 type: string
@@ -538,34 +548,10 @@ paths:
           enum:
           - klantcontactmomenten
           - objectcontactmomenten
-      - name: If-None-Match
-        in: header
-        description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
-          n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
-          \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
-          \ deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie\
-          \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
-          \ voor meer informatie."
-        required: false
-        examples:
-          oneValue:
-            summary: "E\xE9n ETag-waarde"
-            value: '"79054025255fb1a26e4bc422aef54eb4"'
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
-        schema:
-          type: string
       responses:
         '200':
           description: OK
           headers:
-            ETag:
-              description: De ETag berekend op de response body JSON. Indien twee
-                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
-                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
-              schema:
-                type: string
             API-version:
               schema:
                 type: string
@@ -948,35 +934,10 @@ paths:
       operationId: klantcontactmoment_read
       summary: Een specifieke KLANT-CONTACTMOMENT relatie opvragen.
       description: Een specifieke KLANT-CONTACTMOMENT relatie opvragen.
-      parameters:
-      - name: If-None-Match
-        in: header
-        description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
-          n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
-          \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
-          \ deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie\
-          \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
-          \ voor meer informatie."
-        required: false
-        examples:
-          oneValue:
-            summary: "E\xE9n ETag-waarde"
-            value: '"79054025255fb1a26e4bc422aef54eb4"'
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
-        schema:
-          type: string
       responses:
         '200':
           description: OK
           headers:
-            ETag:
-              description: De ETag berekend op de response body JSON. Indien twee
-                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
-                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
-              schema:
-                type: string
             API-version:
               schema:
                 type: string
@@ -1321,35 +1282,10 @@ paths:
       operationId: objectcontactmoment_read
       summary: Een specifiek OBJECT-CONTACTMOMENT relatie opvragen.
       description: Een specifiek OBJECT-CONTACTMOMENT relatie opvragen.
-      parameters:
-      - name: If-None-Match
-        in: header
-        description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
-          n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
-          \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
-          \ deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie\
-          \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
-          \ voor meer informatie."
-        required: false
-        examples:
-          oneValue:
-            summary: "E\xE9n ETag-waarde"
-            value: '"79054025255fb1a26e4bc422aef54eb4"'
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
-        schema:
-          type: string
       responses:
         '200':
           description: OK
           headers:
-            ETag:
-              description: De ETag berekend op de response body JSON. Indien twee
-                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
-                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
-              schema:
-                type: string
             API-version:
               schema:
                 type: string
@@ -1728,6 +1664,34 @@ components:
             format: uri
           readOnly: true
           uniqueItems: true
+        identificatie:
+          title: Identificatie
+          description: Unieke identificatie van het contactmoment. ***AFWIJKING:**
+          type: string
+          maxLength: 50
+        type:
+          title: Type
+          description: Type van het contactmoment. ***AFWIJKING:**
+          type: string
+          maxLength: 50
+        onderwerp:
+          title: Onderwerp
+          description: Onderwerp van het contactmoment. ***AFWIJKING:**
+          type: string
+          maxLength: 255
+        status:
+          title: Status
+          description: Status van het contactmoment. ***AFWIJKING:**
+          type: string
+          enum:
+          - nieuw
+          - in_behandeling
+          - afgehandeld
+        antwoord:
+          title: Antwoord
+          description: Een toelichting die inhoudelijk de klantinteractie van de klant
+            beschrijft. ***AFWIJKING:**
+          type: string
     Fout:
       required:
       - code
@@ -1882,7 +1846,9 @@ components:
 
             * `cmc` - Contactmomenten API
 
-            * `kc` - Klanten API'
+            * `kc` - Klanten API
+
+            * `vrc` - Verzoeken API'
           type: string
           enum:
           - ac
@@ -1893,6 +1859,7 @@ components:
           - brc
           - cmc
           - kc
+          - vrc
         applicatieId:
           title: Applicatie id
           description: Unieke identificatie van de applicatie, binnen de organisatie.

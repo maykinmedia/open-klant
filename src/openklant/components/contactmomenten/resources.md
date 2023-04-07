@@ -35,6 +35,11 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | medewerker | URL-referentie naar een medewerker | string | nee | C​R​U​D |
 | klantcontactmomenten | ***AFWIJKING:** Lijst met URLs van gerelateerde KLANTCONTACTMOMENTen | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | objectcontactmomenten | ***AFWIJKING:** Lijst met URLs van gerelateerde OBJECTCONTACTMOMENTen | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| identificatie | Unieke identificatie van het contactmoment. ***AFWIJKING:** | string | nee | C​R​U​D |
+| type | Type van het contactmoment. ***AFWIJKING:** | string | nee | C​R​U​D |
+| onderwerp | Onderwerp van het contactmoment. ***AFWIJKING:** | string | nee | C​R​U​D |
+| status | Status van het contactmoment. ***AFWIJKING:** | string | nee | C​R​U​D |
+| antwoord | Een toelichting die inhoudelijk de klantinteractie van de klant beschrijft. ***AFWIJKING:** | string | nee | C​R​U​D |
 
 ## AuditTrail
 
@@ -54,7 +59,8 @@ Uitleg bij mogelijke waarden:
 * `drc` - Documenten API
 * `brc` - Besluiten API
 * `cmc` - Contactmomenten API
-* `kc` - Klanten API | string | ja | C​R​U​D |
+* `kc` - Klanten API
+* `vrc` - Verzoeken API | string | ja | C​R​U​D |
 | applicatieId | Unieke identificatie van de applicatie, binnen de organisatie. | string | nee | C​R​U​D |
 | applicatieWeergave | Vriendelijke naam van de applicatie. | string | nee | C​R​U​D |
 | gebruikersId | Unieke identificatie van de gebruiker die binnen de organisatie herleid kan worden naar een persoon. | string | nee | C​R​U​D |
