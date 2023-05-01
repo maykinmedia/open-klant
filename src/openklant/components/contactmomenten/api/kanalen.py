@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from vng_api_common.notifications.kanalen import Kanaal
+from notifications_api_common.kanalen import Kanaal
 
 from openklant.components.contactmomenten.models.contactmomenten import ContactMoment
 

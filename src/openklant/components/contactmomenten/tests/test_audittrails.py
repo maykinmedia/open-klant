@@ -15,7 +15,6 @@ MEDEWERKER = (
 
 
 class AuditTrailTests(JWTAuthMixin, APITestCase):
-
     heeft_alle_autorisaties = True
 
     def _create_contactmoment(self):

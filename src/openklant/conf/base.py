@@ -36,7 +36,7 @@ IS_HTTPS = config("IS_HTTPS", default=not DEBUG)
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = "nl-nl"
+LANGUAGE_CODE = "nl"
 
 TIME_ZONE = "UTC"
 
@@ -61,6 +61,10 @@ DATABASES = {
         "PORT": config("DB_PORT", 5432),
     }
 }
+
+# keep the current schema for now and deal with migrating to BigAutoField later, see
+# https://docs.djangoproject.com/en/4.0/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 CACHES = {
     "default": {
@@ -117,6 +121,9 @@ INSTALLED_APPS = [
     "vng_api_common.notifications",
     "vng_api_common.authorizations",
     "vng_api_common.audittrails",
+    "simple_certmanager",
+    "zgw_consumers",
+    "notifications_api_common",
     "drf_yasg",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",

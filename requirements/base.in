@@ -5,7 +5,7 @@ python-dotenv  # environment variables for secrets
 python-decouple  # processing of envvar configs
 
 # Framework libraries
-django < 3.0
+django~=3.2.0
 django-admin-index
 django-axes
 django-better-admin-arrayfield
@@ -24,7 +24,10 @@ djangorestframework
 # django-extra-fields
 # django-filter
 # drf-yasg  # api documentation
-vng-api-common[markdown_docs]
+
+vng-api-common[markdown_docs]==1.9.0  # pinned here before the move from drf-yasg to drf-spectacular
+gemma-zds-client<2.0.0  # lots of breaking changes in 2.0.0
+zgw-consumers>=0.25.0  # newest with simple cert manager
 
 # WSGI servers & monitoring - production oriented
 uwsgi

@@ -4,6 +4,7 @@ from django.test import override_settings
 
 import requests_mock
 from freezegun import freeze_time
+from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
@@ -19,15 +20,14 @@ SUBJECT = "http://example.com/subject/1"
 @freeze_time("2018-09-07T00:00:00Z")
 @override_settings(NOTIFICATIONS_DISABLED=False)
 class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
-
     heeft_alle_autorisaties = True
 
-    @patch("zds_client.Client.from_url")
-    def test_send_notif_create_klant(self, mock_client):
+    @patch.object(NotificationsConfig, "get_client")
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_send_notif_create_klant(self, mock_task, mock_client):
         """
         Check if notifications will be send when Klant is created
         """
-        client = mock_client.return_value
         url = get_operation_url("klant_create")
         data = {
             "bronorganisatie": "950428139",
@@ -47,8 +47,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
         data = response.json()
-        client.create.assert_called_once_with(
-            "notificaties",
+        mock_task.assert_called_once_with(
             {
                 "kanaal": "klanten",
                 "hoofdObject": data["url"],
@@ -62,12 +61,12 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
             },
         )
 
-    @patch("zds_client.Client.from_url")
-    def test_send_notif_delete_klant(self, mock_client):
+    @patch.object(NotificationsConfig, "get_client")
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_send_notif_delete_klant(self, mock_task, mock_client):
         """
         Check if notifications will be send when Klant is deleted
         """
-        client = mock_client.return_value
         klant = KlantFactory.create(subject_type=KlantType.natuurlijk_persoon)
         klant_url = get_operation_url("klant_delete", uuid=klant.uuid)
 
@@ -77,8 +76,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
             response.status_code, status.HTTP_204_NO_CONTENT, response.data
         )
 
-        client.create.assert_called_once_with(
-            "notificaties",
+        mock_task.assert_called_once_with(
             {
                 "kanaal": "klanten",
                 "hoofdObject": f"http://testserver{klant_url}",
