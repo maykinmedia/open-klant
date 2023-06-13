@@ -18,6 +18,7 @@ from openklant.components.contactmomenten.models.contactmomenten import (
 from openklant.utils.api_spec import mark_oas_difference
 from openklant.utils.serializers import ExpandSerializer
 
+from .auth import get_auth
 from .validators import ObjectContactMomentCreateValidator
 
 logger = logging.getLogger(__name__)
@@ -76,7 +77,7 @@ class KlantContactMomentSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "contactmoment": {"lookup_field": "uuid"},
-            "klant": {"validators": [URLValidator()]},
+            "klant": {"validators": [URLValidator(get_auth=get_auth)]},
         }
         validators = [
             UniqueTogetherValidator(
