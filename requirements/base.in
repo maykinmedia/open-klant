@@ -29,6 +29,9 @@ vng-api-common[markdown_docs]==1.9.0  # pinned here before the move from drf-yas
 gemma-zds-client<2.0.0  # lots of breaking changes in 2.0.0
 zgw-consumers>=0.25.0  # newest with simple cert manager
 
+# task queue
+celery
+
 # WSGI servers & monitoring - production oriented
 uwsgi
 sentry-sdk  # error monitoring

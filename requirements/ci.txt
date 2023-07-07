@@ -108,6 +108,7 @@ dill==0.3.6
     # via pylint
 django==3.2.18
     # via
+    #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-admin-index
     #   django-axes
