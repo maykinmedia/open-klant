@@ -23,6 +23,7 @@ You need the following libraries and/or programs:
 * `PostgreSQL`_ 10 or above
 * `Node.js`_
 * `npm`_
+* `celery`_ setup + deploy at least one worker
 
 .. _Python: https://www.python.org/
 .. _Virtualenv: https://virtualenv.pypa.io/en/stable/
@@ -30,6 +31,7 @@ You need the following libraries and/or programs:
 .. _PostgreSQL: https://www.postgresql.org
 .. _Node.js: http://nodejs.org/
 .. _npm: https://www.npmjs.com/
+.. _celery: https://docs.celeryq.dev/en/stable/#
 
 
 Getting started
