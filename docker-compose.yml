@@ -16,10 +16,23 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=openklant.conf.docker
       - SECRET_KEY=${SECRET_KEY:-django-insecure-$8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     ports:
       - 8000:8000
     depends_on:
       - db
+      - redis
+
+  redis:
+    image: redis
+
+  celery:
+    build: .
+    command: /celery_worker.sh
+    depends_on:
+      - db
+      - redis
 
 # See: src/openklant/conf/docker.py
 # Optional containers below:

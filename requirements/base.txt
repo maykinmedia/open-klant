@@ -17,7 +17,9 @@ boltons==23.0.0
     #   face
     #   glom
 celery==5.2.7
-    # via notifications-api-common
+    # via
+    #   -r requirements/base.in
+    #   notifications-api-common
 certifi==2022.12.7
     # via
     #   django-simple-certmanager
