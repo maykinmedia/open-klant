@@ -68,6 +68,8 @@ RUN mkdir /app/media
 COPY --from=backend-build /usr/local/lib/python3.11 /usr/local/lib/python3.11
 COPY --from=backend-build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 COPY --from=backend-build /app/src/ /app/src/
+COPY --from=backend-build /usr/local/bin/celery /usr/local/bin/celery
+
 
 # copy frontend build statics
 COPY --from=frontend-build /app/src/openklant/static /app/src/openklant/static
