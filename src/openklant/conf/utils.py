@@ -106,3 +106,14 @@ def get_current_version():
         return _get_version_from_git()
 
     return _get_version_from_file()
+
+
+def get_git_sha():
+    """
+    Returns the current git commit hash
+    """
+    try:
+        return check_output(["git", "rev-parse", "HEAD"], universal_newlines=True)
+    except CalledProcessError:
+        logger.warning("Unable to list current commit hash")
+        return None

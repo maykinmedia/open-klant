@@ -9,6 +9,8 @@ def settings(request):
         "SITE_TITLE",
         "PROJECT_NAME",
         "VNG_COMPONENTS_BRANCH",
+        "RELEASE",
+        "GIT_SHA",
     )
 
     context = {

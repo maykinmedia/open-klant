@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 import sentry_sdk
 
 from .api import *  # noqa
-from .utils import config, get_current_version, get_sentry_integrations
+from .utils import config, get_current_version, get_git_sha, get_sentry_integrations
 
 # Build paths inside the project, so further paths can be defined relative to
 # the code root.
@@ -434,6 +434,7 @@ IPWARE_META_PRECEDENCE_ORDER = (
 #
 SENTRY_DSN = config("SENTRY_DSN", None)
 RELEASE = get_current_version()
+GIT_SHA = get_git_sha()
 
 # Two factor auth
 # LOGIN_URL = "two_factor:login"
