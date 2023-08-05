@@ -372,6 +372,7 @@ SPEC_URL = {
 # settings for sending notifications
 KLANTEN_NOTIFICATIONS_KANAAL = "klanten"
 CONTACTMOMENTEN_NOTIFICATIONS_KANAAL = "contactmomenten"
+NOTIFICATIONS_DISABLED = config("NOTIFICATIONS_DISABLED", default=False)
 
 # Generating the schema, depending on the component
 subpath = config("SUBPATH", None)
