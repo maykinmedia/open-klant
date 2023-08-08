@@ -84,6 +84,8 @@ RUN chown -R maykin /app
 USER maykin
 
 ARG COMMIT_HASH
+ARG RELEASE
+ENV RELEASE=${RELEASE}
 ENV GIT_SHA=${COMMIT_HASH}
 ENV DJANGO_SETTINGS_MODULE=openklant.conf.docker
 
