@@ -348,7 +348,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
         self.assertEqual(klant.bronorganisatie, "950428139")
         self.assertEqual(klant.website_url, "")
 
-    def test_create_klant_website_url_optional(self):
+    def test_create_klant_website_url_optional_klantnummer(self):
         list_url = reverse(Klant)
         data = {
             "bronorganisatie": "950428139",
