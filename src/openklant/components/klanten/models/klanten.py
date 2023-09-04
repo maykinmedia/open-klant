@@ -15,8 +15,10 @@ from .constants import GeslachtsAanduiding, KlantType, SoortRechtsvorm
 
 class KlantManager(models.Manager):
     def get_next_klantnummer(self):
-        id_max = Klant.objects.all().aggregate(Max("klantnummer"))["id__max"]
-        return id_max + 1 if id_max else 1
+        id_max = Klant.objects.all().aggregate(models.Max("klantnummer"))[
+            "klantnummer__max"
+        ]
+        return int(id_max) + 1 if id_max else 1
 
 
 class Klant(APIMixin, models.Model):
@@ -102,6 +104,8 @@ class Klant(APIMixin, models.Model):
         verbose_name_plural = "klanten"
 
     def save(self, *args, **kwargs):
+        if not self.klantnummer:
+            self.klantnummer = Klant.objects.get_next_klantnummer()
         if not self.pk:
             if Klant.objects.filter(klantnummer=self.klantnummer):
                 raise Conflict("Klantnummer bestaat al")

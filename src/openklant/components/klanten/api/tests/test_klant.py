@@ -377,7 +377,16 @@ class KlantTests(JWTAuthMixin, APITestCase):
 
         self.assertEqual(klant.bronorganisatie, "950428139")
         self.assertEqual(klant.website_url, "")
-        self.assertTrue(klant.klantnummer != 0)
+        self.assertEqual(klant.klantnummer, "1")
+
+        with requests_mock.Mocker() as m:
+            m.get(SUBJECT, json={})
+            response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        klant = Klant.objects.get(klantnummer__gt=1)
+        self.assertEqual(klant.klantnummer, "2")
 
     def test_create_klant_website_url_duplicate_klantnummer(self):
         list_url = reverse(Klant)
