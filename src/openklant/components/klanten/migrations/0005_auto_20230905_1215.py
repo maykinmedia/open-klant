@@ -5,19 +5,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('klanten', '0004_klant_geverifieerd'),
+        ("klanten", "0004_klant_geverifieerd"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='klant',
-            name='klantnummer',
-            field=models.CharField(help_text='De unieke identificatie van de klant binnen de bronorganisatie.', max_length=8, validators=[django.core.validators.RegexValidator(code='only-digits', message='Waarde moet numeriek zijn.', regex='^[0-9]+$')]),
+            model_name="klant",
+            name="klantnummer",
+            field=models.CharField(
+                help_text="De unieke identificatie van de klant binnen de bronorganisatie.",
+                max_length=8,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        code="only-digits",
+                        message="Waarde moet numeriek zijn.",
+                        regex="^[0-9]+$",
+                    )
+                ],
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='klant',
+            name="klant",
             unique_together=set(),
         ),
     ]
