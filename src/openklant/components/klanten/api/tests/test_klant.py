@@ -435,6 +435,23 @@ class KlantTests(JWTAuthMixin, APITestCase):
 
         self.assertFalse(klanten)
 
+        data = {
+            "bronorganisatie": "950428139",
+            "subjectType": KlantType.natuurlijk_persoon,
+            "klantnummer": "KLANT1",
+            "subject": SUBJECT,
+        }
+
+        with requests_mock.Mocker() as m:
+            m.get(SUBJECT, json={})
+            response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, 400)
+
+        klanten = Klant.objects.all()
+
+        self.assertFalse(klanten)
+
     def test_create_klant_natuurlijkpersoon(self):
         list_url = reverse(Klant)
         data = {

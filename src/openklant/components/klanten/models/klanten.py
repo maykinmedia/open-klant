@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.exceptions import Conflict
 from vng_api_common.fields import BSNField, RSINField
 from vng_api_common.models import APIMixin
+from vng_api_common.validators import validate_digits
 
 from .constants import GeslachtsAanduiding, KlantType, SoortRechtsvorm
 
@@ -38,6 +39,7 @@ class Klant(APIMixin, models.Model):
     klantnummer = models.CharField(
         max_length=8,
         help_text=_("De unieke identificatie van de klant binnen de bronorganisatie."),
+        validators=[validate_digits],
     )
     bedrijfsnaam = models.CharField(
         max_length=200,
