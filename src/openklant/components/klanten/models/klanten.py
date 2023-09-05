@@ -6,10 +6,20 @@ from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from vng_api_common.exceptions import Conflict
 from vng_api_common.fields import BSNField, RSINField
 from vng_api_common.models import APIMixin
+from vng_api_common.validators import validate_digits
 
 from .constants import GeslachtsAanduiding, KlantType, SoortRechtsvorm
+
+
+class KlantManager(models.Manager):
+    def get_next_klantnummer(self):
+        id_max = Klant.objects.all().aggregate(models.Max("klantnummer"))[
+            "klantnummer__max"
+        ]
+        return int(id_max) + 1 if id_max else 1
 
 
 class Klant(APIMixin, models.Model):
@@ -29,6 +39,7 @@ class Klant(APIMixin, models.Model):
     klantnummer = models.CharField(
         max_length=8,
         help_text=_("De unieke identificatie van de klant binnen de bronorganisatie."),
+        validators=[validate_digits],
     )
     bedrijfsnaam = models.CharField(
         max_length=200,
@@ -88,10 +99,19 @@ class Klant(APIMixin, models.Model):
         default=False, help_text=_("Geeft aan of de KLANT wel of niet geverifieerd is.")
     )
 
+    objects = KlantManager()
+
     class Meta:
         verbose_name = "klant"
         verbose_name_plural = "klanten"
-        unique_together = ("bronorganisatie", "klantnummer")
+
+    def save(self, *args, **kwargs):
+        if not self.klantnummer:
+            self.klantnummer = Klant.objects.get_next_klantnummer()
+        if not self.pk:
+            if Klant.objects.filter(klantnummer=self.klantnummer):
+                raise Conflict("Klantnummer bestaat al")
+        return super().save(*args, **kwargs)
 
     @property
     def subject_identificatie(self):

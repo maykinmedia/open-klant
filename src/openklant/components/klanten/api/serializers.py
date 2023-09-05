@@ -297,6 +297,7 @@ class KlantSerializer(PolymorphicSerializer):
             "url": {"lookup_field": "uuid"},
             "subject": {"required": False, "validators": [URLValidator()]},
             "subject_type": {"validators": [IsImmutableValidator()]},
+            "klantnummer": {"required": False},
             # Disabled for now, should return once logic is implemented
             # "geverifieerd": {"validators": [IsImmutableValidator()]},
             # Disabled for now, see https://github.com/maykinmedia/open-klant/pull/11#pullrequestreview-805051480
@@ -331,7 +332,6 @@ class KlantSerializer(PolymorphicSerializer):
                 _("subject or subjectIdentificatie must be provided"),
                 code="invalid-subject",
             )
-
         return validated_attrs
 
     def to_internal_value(self, data):
