@@ -316,11 +316,6 @@ class KlantSerializer(PolymorphicSerializer):
                 self.fields[custom_field].help_text
             )
 
-    def validate_klantnummer(self, value):
-        if not value:
-            value = str(Klant.objects.get_next_klantnummer())
-        return value
-
     def validate(self, attrs):
         validated_attrs = super().validate(attrs)
         subject = validated_attrs.get("subject", None)
