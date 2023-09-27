@@ -153,6 +153,9 @@ file or as part of the ``(post)activate`` of your virtualenv.
   logger and will send errors/logging to Sentry. If unset, Sentry SDK will be
   disabled.
 
+* ``CACHE_DEFAULT``: location of the default cache engine. Defaults to ``localhost:6379/0``
+* ``CACHE_AXES``: location of the cache engine used by Django Axes. Defaults to ``localhost:6379/0``
+
 Docker
 ======
 
