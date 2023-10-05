@@ -182,11 +182,11 @@ class ContactMomentSerializer(serializers.HyperlinkedModelSerializer):
                 self.instance, "medewerker_identificatie", None
             )
 
-        if not medewerker and not medewerker_identificatie:
-            raise serializers.ValidationError(
-                _("medewerker or medewerkerIdentificatie must be provided"),
-                code="invalid-medewerker",
-            )
+        #if not medewerker and not medewerker_identificatie:
+        #    raise serializers.ValidationError(
+        #        _("medewerker or medewerkerIdentificatie must be provided"),
+        #        code="invalid-medewerker",
+        #    )
 
         return validated_attrs
 
