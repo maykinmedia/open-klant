@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.descriptors import GegevensGroepType
 
 from .constants import SoortPartij
+from .klantcontacten import Betrokkene
 
 
 class Partij(models.Model):
@@ -18,6 +19,14 @@ class Partij(models.Model):
         help_text=_(
             "Unieke (technische) identificatiecode van de betrokkene bij klantcontact."
         ),
+    )
+    betrokkene = models.ForeignKey(
+        Betrokkene,
+        on_delete=models.CASCADE,
+        verbose_name=_("Betrokkene bij klantcontact"),
+        related_name="partijen",
+        help_text=_("'Betrokkene bij klantcontact' was 'Partij'"),
+        null=True,
     )
     nummer = models.PositiveIntegerField(
         _("Nummer"),
@@ -196,6 +205,8 @@ class Persoon(models.Model):
         on_delete=models.CASCADE,
         related_name="persoon",
     )
+
+    # Contactnaam model fields:
     # TODO: check if the max length is correct
     contactnaam_voorletters = models.CharField(
         _("Voorletters"),
@@ -232,6 +243,7 @@ class Persoon(models.Model):
         blank=True,
     )
 
+    # Group types:
     Contactnaam = GegevensGroepType(
         {
             "voorletters": contactnaam_voorletters,
@@ -255,6 +267,8 @@ class Contactpersoon(models.Model):
         on_delete=models.CASCADE,
         related_name="contact_persoon",
     )
+
+    # Contactnaam model fields:
     # TODO: check if the max length is correct
     contactnaam_voorletters = models.CharField(
         _("Voorletters"),
@@ -291,6 +305,7 @@ class Contactpersoon(models.Model):
         blank=True,
     )
 
+    # Group types:
     Contactnaam = GegevensGroepType(
         {
             "voorletters": contactnaam_voorletters,
