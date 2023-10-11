@@ -3,7 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from djchoices import ChoiceItem, DjangoChoices
 
 
-# TODO: change value when document gets updated: https://vng-realisatie.github.io/klantinteracties/informatiemodel/gegevenswoordenboek#detail_class_Model_Initiator
+# TODO: change value when document gets updated:
+# https://vng-realisatie.github.io/klantinteracties/informatiemodel/gegevenswoordenboek#detail_class_Model_Initiator
 class Initiator(DjangoChoices):
     gemeente = ChoiceItem("gemeente", _("Gemeente"))
     klant = ChoiceItem("klant", _("Klant"))

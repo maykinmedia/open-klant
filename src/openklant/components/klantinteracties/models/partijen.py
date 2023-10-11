@@ -1,12 +1,12 @@
 import uuid
 
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MaxValueValidator
 
 from vng_api_common.descriptors import GegevensGroepType
 
-from openklant.components.klantinteracties.constants import SoortPartij
+from .constants import SoortPartij
 
 
 class Partij(models.Model):
@@ -22,7 +22,8 @@ class Partij(models.Model):
     nummer = models.PositiveIntegerField(
         _("Nummer"),
         help_text=_(
-            "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden."
+            "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
+            "worden gebruikt om de specifieke partij aan te duiden."
         ),
         validators=[MaxValueValidator(9999999999)],
         blank=False,
@@ -45,7 +46,8 @@ class Partij(models.Model):
     indicatie_geheimhouding = models.BooleanField(
         _("Indicatie geheimhouding"),
         help_text=_(
-            "Geeft aan of de verstrekker van partijgegevens heeft aangegeven dat deze gegevens als geheim beschouwd moeten worden."
+            "Geeft aan of de verstrekker van partijgegevens heeft aangegeven dat "
+            "deze gegevens als geheim beschouwd moeten worden."
         ),
         blank=False,
     )
@@ -68,7 +70,8 @@ class Partij(models.Model):
     indicatie_actief = models.BooleanField(
         _("Indicatie actief"),
         help_text=_(
-            "Geeft aan of de contactgegevens van de partij nog gebruikt morgen worden om contact op te nemen. Gegevens van niet-actieve partijen mogen hiervoor niet worden gebruikt."
+            "Geeft aan of de contactgegevens van de partij nog gebruikt morgen worden om contact op te nemen. "
+            "Gegevens van niet-actieve partijen mogen hiervoor niet worden gebruikt."
         ),
         blank=False,
     )
@@ -109,7 +112,8 @@ class Partij(models.Model):
     correspondentieadres_land = models.CharField(
         _("Land"),
         help_text=_(
-            "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft. "
+            "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) "
+            "aangeeft alwaar de ingeschrevene verblijft. "
         ),
         max_length=50,
         blank=True,
@@ -151,7 +155,8 @@ class Partij(models.Model):
     bezoekadres_land = models.CharField(
         _("Land"),
         help_text=_(
-            "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft."
+            "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) "
+            "aangeeft alwaar de ingeschrevene verblijft."
         ),
         max_length=50,
         blank=True,
@@ -195,7 +200,8 @@ class Persoon(models.Model):
     contactnaam_voorletters = models.CharField(
         _("Voorletters"),
         help_text=_(
-            "Een afkorting van de voornamen. Meestal de beginletter, maar in sommige gevallen de beginletter gecombineerd met de tweede letter van een voornaam."
+            "Een afkorting van de voornamen. Meestal de beginletter, maar in sommige gevallen "
+            "de beginletter gecombineerd met de tweede letter van een voornaam."
         ),
         max_length=6,
         blank=False,
@@ -211,7 +217,8 @@ class Persoon(models.Model):
     contactnaam_voorvoegsel_achternaam = models.CharField(
         _("Voorvoegsel achternaam"),
         help_text=_(
-            "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente."
+            "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon "
+            "wil gebruiken tijdens communicatie met de gemeente."
         ),
         max_length=10,
         blank=True,
@@ -252,7 +259,8 @@ class Contactpersoon(models.Model):
     contactnaam_voorletters = models.CharField(
         _("Voorletters"),
         help_text=_(
-            "Een afkorting van de voornamen. Meestal de beginletter, maar in sommige gevallen de beginletter gecombineerd met de tweede letter van een voornaam."
+            "Een afkorting van de voornamen. Meestal de beginletter, maar in sommige gevallen "
+            "de beginletter gecombineerd met de tweede letter van een voornaam."
         ),
         max_length=6,
         blank=False,
@@ -268,7 +276,8 @@ class Contactpersoon(models.Model):
     contactnaam_voorvoegsel_achternaam = models.CharField(
         _("Voorvoegsel achternaam"),
         help_text=_(
-            "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente."
+            "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon "
+            "wil gebruiken tijdens communicatie met de gemeente."
         ),
         max_length=10,
         blank=True,
