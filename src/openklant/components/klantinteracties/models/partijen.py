@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.descriptors import GegevensGroepType
 
 from .constants import SoortPartij
+from .digitaal_adres import DigitaalAdres
 from .klantcontacten import Betrokkene
 
 
@@ -23,6 +24,14 @@ class Partij(models.Model):
         verbose_name=_("Betrokkene"),
         related_name="partijen",
         help_text=_("'Betrokkene bij klantcontact' was 'Partij'"),
+        null=True,
+    )
+    digitaal_adres = models.ForeignKey(
+        DigitaalAdres,
+        on_delete=models.CASCADE,
+        verbose_name=_("Digitaal adres"),
+        related_name="digitale_adressen",
+        help_text=_("'Digitaal Adres' was 'Partij'"),
         null=True,
     )
     nummer = models.CharField(
