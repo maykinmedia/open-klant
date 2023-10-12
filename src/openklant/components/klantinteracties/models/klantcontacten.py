@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.descriptors import GegevensGroepType
 
 from .constants import Initiator, Klantcontrol
+from .digitaal_adres import DigitaalAdres
 
 
 class Klantcontact(models.Model):
@@ -108,7 +109,14 @@ class Betrokkene(models.Model):
         help_text=_("'Klantcontact' had 'Betrokkene bij klantcontact'"),
         null=False,
     )
-    # TODO: Add fk to Digital adres
+    digitaal_adres = models.ForeignKey(
+        DigitaalAdres,
+        on_delete=models.CASCADE,
+        verbose_name=_("Digitaal adres"),
+        related_name="partijen",
+        help_text=_("'Digitaal Adres' had 'Betrokkene bij klantcontact'"),
+        null=True,
+    )
     rol = models.CharField(
         _("Rol"),
         help_text=_(
