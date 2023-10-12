@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
 
+from .actoren import Actor
 from .constants import Initiator, Klantcontrol
 from .digitaal_adres import DigitaalAdres
 
@@ -19,7 +20,26 @@ class Klantcontact(models.Model):
             "Unieke (technische) identificatiecode van de betrokkene bij klantcontact."
         ),
     )
-    # TODO: add fk to Actor
+    klantcontact = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        related_name="klantcontacten",
+        verbose_name=_("Klant contact"),
+        help_text=_(
+            "De persoon of organisatie die betrokken was bij een klantcontact."
+        ),
+        blank=True,
+        null=True,
+    )
+    actoren = models.ManyToManyField(
+        Actor,
+        verbose_name=_("Actoren"),
+        related_name="klantcontacten",
+        help_text=_(
+            "De actoren die tijdens het klantcontant contact had met klanten of hun vertegenwoordigers."
+        ),
+        blank=False,
+    )
     # TODO: add fk to Onderwerpobject
     # TODO: add fk to Inhoudsobject
     nummer = models.CharField(
