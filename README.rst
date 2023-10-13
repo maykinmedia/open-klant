@@ -2,60 +2,141 @@
 Open Klant
 ==========
 
-:Version: 0.1.0
+:Version: 0.5.0-pre
 :Source: https://github.com/maykinmedia/open-klant
-:Keywords: ``klanten``, ``contactmomenten``, ``API``, ``Common Ground``
+:Keywords: klanten, klantinteracties, contactmomenten, api, common ground
 :License: EUPL
-:PythonVersion: 3.11
 
 |build-status| |requirements|
 
-Project dat de `Klanten API` | https://klanten-api.vng.cloud en `Contactmomenten API` | https://contactmomenten-api.vng.cloud/ in een enkel component combineert.
+Registratiecomponent voor de opslag en ontsluiting van klantgegevens volgens de
+Klantinteracties API-specificatie. (`English version`_)
 
-Ontwikkeld door `Maykin Media B.V.`_ voor de gemeente Den Haag
+Ontwikkeld door `Maykin B.V.`_ in opdracht van de gemeente Den Haag.
 
 
 Introductie
-============
+===========
 
-Open Klant biedt de volgende APIs aan:
+Open Klant implementeert de (concept) `Klantinteracties API`_ specificatie van 
+`VNG`_ welke een beperkte set aan gegevens over klanten en hun interactie met
+de gemeente kan opslaan en ontsluiten.
 
- * Klanten API
- * Contactmomenten API
+Samen met gemeenten, die volop bezig zijn met de implementatie van Common 
+Ground, en VNG, wordt gewerkt aan standaardisatie van de API en realisatie van 
+Open Klant als beproeving van de toekomstige API standaard.
 
-Deze APIs zijn door de VNG grotendeels gestandaardiseerd in het kader van de Zaakgericht Werken APIs, echter zijn niet opgenomen in de definitieve ZGW API scope ( https://vng.nl/projecten/zaakgericht-werken-api ) en zijn dus aangrenzende APIs die naast de ZGW APIs kunnen worden ingezet.
 
-Doel en functionaliteiten
+API specificatie
+================
+
+|lint-oas| |generate-sdks| |generate-postman-collection|
+
+==============  ==============  =============================
+Versie          Release datum   API specificatie
+==============  ==============  =============================
+latest          n/a             t.b.d.
+
+0.5-pre         2023-08-05      Klanten:
+                                `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/v0.5-pre/src/openklant/components/klanten/openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/v0.5-pre/src/openklant/components/klanten/openapi.yaml>`_
+                                Contactmomenten:
+                                `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/v0.5-pre/src/openklant/components/contactmomenten/openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/v0.5-pre/src/openklant/components/contactmomenten/openapi.yaml>`_
+==============  ==============  =============================
+
+Vorige versies worden nog 6 maanden ondersteund nadat de volgende versie is 
+uitgebracht. Versie 0.5-pre bevat nog de Klanten en Contactmomenten 
+API-specificatie die door VNG is geschrapt en beschouwd moet worden als legacy.
+
+Zie: `Alle versies en wijzigingen <https://github.com/maykinmedia/open-klant/blob/master/CHANGELOG.rst>`_
+
+
+Ready-to-go implementatie
 =========================
 
-Doel van Open Klant is het bieden van 1 centrale registratieplaats van klantgegevens (inwoner/bedrijf) en contactmomenten van een gemeente. Hiermee worden verdubbelingen qua registratie voorkomen en kan er vanuit andere applicaties inzicht gegeven in welke berichten naar welke klanten zijn gestuurd.
+|build-status| |coverage| |black| |docker| |python-versions|
 
-Open Klant heeft vergeleken met de referentiecomponenten een aantal uitbreidingen gekregen, zoals het inloggen via SSO/OIDC en integratie met Open Notificaties.
+Deze implementatie is bedoeld als referentie implementatie van de API 
+specificaties maar tevens een productiewaardig component dat ingezet kan worden
+in het gemeentelijke ICT landschap.
 
-Open Klant biedt momenteel nog geen automatische BRP (Haal Centraal) integratie: de aanroepende applicaties zijn verantwoordelijk voor het invoeren en waar nodig bijwerken van de klantgegevens.
+Quickstart
+----------
 
-Open Klant biedt momenteel geen eigen klantnotificatie functionaliteit: de Contactmomenten API is voor het registreren door een vakapplicatie van bijvoorbeeld een emailbericht wat naar een bepaalde klant is gestuurd.
+1. Download en start Open Klant:
 
-Open Klant biedt momenteel geen integratie met Open Zaak. Een aanroepende applicatie is verantwoordelijk voor het leggen van de juiste verwijzingen in Open Zaak naar de Open Klant APIs en het onderhouden van de verwijzingen.
+   .. code:: bash
 
-Relatie met de VNG Klanten API en Contactmomenten API
-=====================================================
+      $ wget https://raw.githubusercontent.com/maykinmedia/open-klant/master/docker-compose-quickstart.yml -O docker-compose.yml
+      $ docker-compose -f docker-compose-qs.yml up -d
+      $ docker-compose exec web src/manage.py loaddata demodata
+      $ docker-compose exec web src/manage.py createsuperuser
 
-Open Klant is een 'friendly fork' van beide referentiecomponenten. De API is op enkele punten uitgebreid met additionele velden, die expliciet als 'AFWIJKING' zijn gemarkeerd in de OAS. Bij de inzet van Open Klant wordt zoveel mogelijk vastgehouden aan de specificatie en werking van de VNG APIs.
-
-Ondersteuning en ontwikkeling
-=============================
-
-Dit component wordt momenteel alleen ingezet en doorontwikkeld voor gemeente Den Haag. Inzet door derden is conform de licentie toegestaan echter as-is en zonder ondersteuning, voor vragen over doorontwikkelingen en/of een supportovereenkomst kan contact opgenomen worden met Maykin. Beantwoording van issues in Github wordt overgelaten aan de community.
-
-Documentatie
-=============
-
-See ``INSTALL.rst`` for installation instructions, available settings and
-commands.
+2. In de browser, navigeer naar ``http://localhost:8000/`` om de beheerinterface
+   en de API te benaderen.
 
 
-References
-==========
+Links
+=====
 
-.. _Maykin Media B.V.: https://www.maykinmedia.nl
+* `Documentatie <https://open-klant.readthedocs.io/>`_
+* `Docker image <https://hub.docker.com/r/maykinmedia/open-klant>`_
+* `Issues <https://github.com/maykinmedia/open-klant/open-klant>`_
+* `Code <https://github.com/maykinmedia/open-klant>`_
+* `Community <https://commonground.nl/groups/view/6bca7599-0f58-44e4-a405-7aa3a4c682f3/open-klant>`_
+
+
+Licentie
+========
+
+Copyright © Maykin B.V., 2023
+
+Licensed under the EUPL_
+
+
+.. _`English version`: README.EN.rst
+
+.. _`Maykin B.V.`: https://www.maykinmedia.nl
+
+.. _`Klantinteracties API`: https://vng-realisatie.github.io/klantinteracties/
+
+.. _`VNG`: https://vng.nl/
+
+.. _`EUPL`: LICENSE.md
+
+.. |build-status| image:: https://github.com/maykinmedia/open-klant/workflows/ci/badge.svg?branch=master
+    :alt: Build status
+    :target: https://github.com/maykinmedia/open-klant/actions?query=workflow%3Aci
+
+.. |docs| image:: https://readthedocs.org/projects/objects-and-objecttypes-api/badge/?version=latest
+    :target: https://objects-and-objecttypes-api.readthedocs.io/
+    :alt: Documentation Status
+
+.. |coverage| image:: https://codecov.io/github/maykinmedia/open-klant/branch/master/graphs/badge.svg?branch=master
+    :alt: Coverage
+    :target: https://codecov.io/gh/maykinmedia/open-klant
+
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :alt: Code style
+    :target: https://github.com/psf/black
+
+.. |docker| image:: https://images.microbadger.com/badges/image/maykinmedia/open-klant.svg
+    :alt: Docker image
+    :target: https://hub.docker.com/r/maykinmedia/open-klant
+
+.. |python-versions| image:: https://img.shields.io/badge/python-3.7%2B-blue.svg
+    :alt: Supported Python version
+
+.. |lint-oas| image:: https://github.com/maykinmedia/open-klant/workflows/lint-oas/badge.svg
+    :alt: Lint OAS
+    :target: https://github.com/maykinmedia/open-klant/actions?query=workflow%3Alint-oas
+
+.. |generate-sdks| image:: https://github.com/maykinmedia/open-klant/workflows/generate-sdks/badge.svg
+    :alt: Generate SDKs
+    :target: https://github.com/maykinmedia/open-klant/actions?query=workflow%3Agenerate-sdks
+
+.. |generate-postman-collection| image:: https://github.com/maykinmedia/open-klant/workflows/generate-postman-collection/badge.svg
+    :alt: Generate Postman collection
+    :target: https://github.com/maykinmedia/open-klant/actions?query=workflow%3Agenerate-postman-collection
+

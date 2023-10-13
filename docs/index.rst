@@ -1,18 +1,28 @@
 .. _index:
 
-===================
+========================
+Open Klant Documentation
+========================
 
-===================
+**Open Klant** is a modern, open-source data- and services-layer to store and
+expose client metadata and communications between clients and the municipality.
+It implements the `VNG API standard for Klantinteracties`_ in line with the 
+`Common Ground`_ model.
 
-Welcome to the documentation for the  project.
+.. _`Common Ground`: https://commonground.nl/
+.. _`VNG API standard for Klantinteracties`: https://vng-realisatie.github.io/klantinteracties/
 
+Getting Started
+---------------
 
-Documentation
-=============
+To get you started, you might find some of these links relevant:
+
+TODO
+
+Open Klant `is`_ and only uses :ref:`introduction_open-source`.
+
+.. _`is`: https://github.com/maykinmedia/open-klant/blob/master/LICENSE.md
 
 .. toctree::
-    :maxdepth: 3
-
-    general/index
-    coding_style/index
-    testing
+   :maxdepth: 3
+   :hidden:
