@@ -23,24 +23,25 @@ export CUSTOM_COMPILE_COMMAND="./bin/compile_dependencies.sh"
 # Base (& prod) deps
 pip-compile \
     --no-emit-index-url \
-    --resolver=backtracking \
+    --allow-unsafe \
     "$@" \
     requirements/base.in
 
 # Dependencies for testing
 pip-compile \
     --no-emit-index-url \
-    --resolver=backtracking \
     --output-file requirements/ci.txt \
+    --allow-unsafe \
     "$@" \
     requirements/base.txt \
-    requirements/test-tools.in
+    requirements/test-tools.in \
+    requirements/docs.in
 
-# Dev depedencies - exact same set as CI + some extra tooling
+# Dev dependencies - exact same set as CI + some extra tooling
 pip-compile \
     --no-emit-index-url \
-    --resolver=backtracking \
     --output-file requirements/dev.txt \
+    --allow-unsafe \
     "$@" \
     requirements/ci.txt \
     requirements/dev.in
