@@ -19,7 +19,7 @@ To get you started, you might find some of these links relevant:
 
 TODO
 
-Open Klant `is`_ and only uses :ref:`introduction_open-source`.
+Open Klant `is`_ and only uses open source.
 
 .. _`is`: https://github.com/maykinmedia/open-klant/blob/master/LICENSE.md
 

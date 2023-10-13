@@ -39,8 +39,8 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.todo",
     "sphinx.ext.intersphinx",
-    "sphinx_tabs.tabs",
-    "recommonmark",
+    # "sphinx_tabs.tabs",
+    # "recommonmark",
     # "sphinx_markdown_tables",
 ]
 
