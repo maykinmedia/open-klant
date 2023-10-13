@@ -13,9 +13,9 @@ import django
 sys.path.insert(0, os.path.abspath("../src"))
 os.environ["LOG_REQUESTS"] = "false"
 
-import openforms  # noqa isort:skip
+import openklant  # noqa isort:skip
 
-from openforms.setup import setup_env  # noqa isort:skip
+from openklant.setup import setup_env  # noqa isort:skip
 
 setup_env()
 django.setup()
@@ -24,10 +24,10 @@ django.setup()
 
 project = "Open Klant"
 copyright = "2023, Maykin Media"
-author = openforms.__author__
+author = openklant.__author__
 
 # The full version, including alpha/beta/rc tags
-release = openforms.__version__
+release = openklant.__version__
 
 
 # -- General configuration ---------------------------------------------------
