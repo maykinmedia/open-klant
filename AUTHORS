@@ -1,0 +1,26 @@
+The Open Klant project was initiated by Municipality of The Hague to store
+a minimal set of data and metadata about clients and conversations with 
+clients, in compliance with privacy and security regulations.
+
+Open Klant is a registration component to re-use client data within the whole 
+municipality, following with the Common Ground principles.
+
+Here is an inevitably incomplete list of MUCH-APPRECIATED CONTRIBUTORS --
+people who laid the groundwork, have submitted patches, reported bugs, added
+translations, helped answer questions, and generally made Open Forms that much 
+better:
+
+    Steven Bal
+    Alex de Landgraaf
+    Nathanael Gey
+    Bart van der Schoor
+    ErhanCitil
+    Joeri Bekker
+    Bart Burgmans
+
+A big THANK YOU goes to:
+
+    All municipalities who participated and risked implementing an API 
+    specification that was not yet finalized by VNG.
+
+    All people behind Common Ground for their enthusiasm and vision.
