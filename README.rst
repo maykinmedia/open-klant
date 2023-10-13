@@ -7,7 +7,7 @@ Open Klant
 :Keywords: klanten, klantinteracties, contactmomenten, api, common ground
 :License: EUPL
 
-|build-status| |requirements|
+|docs| |docker|
 
 Registratiecomponent voor de opslag en ontsluiting van klantgegevens volgens de
 Klantinteracties API-specificatie. (`English version`_)
@@ -55,7 +55,7 @@ Zie: `Alle versies en wijzigingen <https://github.com/maykinmedia/open-klant/blo
 Ready-to-go implementatie
 =========================
 
-|build-status| |coverage| |black| |docker| |python-versions|
+|build-status| |coverage| |code-quality| |black| |python-versions|
 
 Deze implementatie is bedoeld als referentie implementatie van de API 
 specificaties maar tevens een productiewaardig component dat ingezet kan worden
@@ -105,12 +105,12 @@ Licensed under the EUPL_
 
 .. _`EUPL`: LICENSE.md
 
-.. |build-status| image:: https://github.com/maykinmedia/open-klant/workflows/ci/badge.svg?branch=master
+.. |build-status| image:: https://github.com/maykinmedia/open-klant/actions/workflows/ci.yml/badge.svg?branch=master
     :alt: Build status
     :target: https://github.com/maykinmedia/open-klant/actions?query=workflow%3Aci
 
-.. |docs| image:: https://readthedocs.org/projects/objects-and-objecttypes-api/badge/?version=latest
-    :target: https://objects-and-objecttypes-api.readthedocs.io/
+.. |docs| image:: https://readthedocs.org/projects/open-klant/badge/?version=latest
+    :target: https://open-klant.readthedocs.io/
     :alt: Documentation Status
 
 .. |coverage| image:: https://codecov.io/github/maykinmedia/open-klant/branch/master/graphs/badge.svg?branch=master
@@ -121,22 +121,22 @@ Licensed under the EUPL_
     :alt: Code style
     :target: https://github.com/psf/black
 
-.. |docker| image:: https://images.microbadger.com/badges/image/maykinmedia/open-klant.svg
+.. |docker| image:: https://img.shields.io/docker/v/maykinmedia/open-klant?sort=semver
     :alt: Docker image
     :target: https://hub.docker.com/r/maykinmedia/open-klant
 
-.. |python-versions| image:: https://img.shields.io/badge/python-3.7%2B-blue.svg
+.. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
     :alt: Supported Python version
 
-.. |lint-oas| image:: https://github.com/maykinmedia/open-klant/workflows/lint-oas/badge.svg
+.. |lint-oas| image:: https://github.com/maykinmedia/open-klant/workflows/actions/lint-oas/badge.svg
     :alt: Lint OAS
     :target: https://github.com/maykinmedia/open-klant/actions?query=workflow%3Alint-oas
 
-.. |generate-sdks| image:: https://github.com/maykinmedia/open-klant/workflows/generate-sdks/badge.svg
+.. |generate-sdks| image:: https://github.com/maykinmedia/open-klant/workflows/actions/generate-sdks/badge.svg
     :alt: Generate SDKs
     :target: https://github.com/maykinmedia/open-klant/actions?query=workflow%3Agenerate-sdks
 
-.. |generate-postman-collection| image:: https://github.com/maykinmedia/open-klant/workflows/generate-postman-collection/badge.svg
+.. |generate-postman-collection| image:: https://github.com/maykinmedia/open-klant/workflows/actions/generate-postman-collection/badge.svg
     :alt: Generate Postman collection
     :target: https://github.com/maykinmedia/open-klant/actions?query=workflow%3Agenerate-postman-collection
 
