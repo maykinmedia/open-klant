@@ -18,9 +18,9 @@ Prerequisites
 
 You need the following libraries and/or programs:
 
-* `Python`_ 3.6 or above
+* `Python`_ 3.11 or above
 * Python `Virtualenv`_ and `Pip`_
-* `PostgreSQL`_ 10 or above
+* `PostgreSQL`_ 11 or above
 * `Node.js`_
 * `npm`_
 
@@ -47,10 +47,7 @@ development machine.
        $ git clone git@github.com:maykinmedia/open-klant.git
        $ cd open-klant
 
-3. Install all required (backend) libraries.
-   **Tip:** You can use the ``bootstrap.py`` script to install the requiments
-   and set the proper settings in ``manage.py``. Or, perform the steps
-   manually:
+3. Install all required (backend) libraries:
 
    .. code-block:: bash
 
