@@ -14,7 +14,6 @@ class Actor(ActorIdentifcatorMixin):
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van de actor."),
     )
-    # TODO: add FK to Interne Taak
     naam = models.CharField(
         _("Naam"),
         help_text=_("Naam van de actor."),
