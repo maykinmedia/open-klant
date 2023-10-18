@@ -7,8 +7,8 @@ from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
-from openklant.components.contactmomenten.models.constants import InitiatiefNemer
-from openklant.components.contactmomenten.models.tests.factories import (
+from openklant.components.legacy.contactmomenten.models.constants import InitiatiefNemer
+from openklant.components.legacy.contactmomenten.models.tests.factories import (
     ContactMomentFactory,
 )
 from openklant.utils.tests.mixins import JWTAuthTransactionMixin

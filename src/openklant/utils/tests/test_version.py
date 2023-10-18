@@ -40,7 +40,7 @@ class GitVersionTestCase(VersionTestCase):
         self.assertEqual(get_current_version(), "v1.2.4")
 
     def test_multiple_tags(self):
-        self.mocked_subprocess.return_value = "v5.1.1\nv3.4.1\nv0.2.2\n"
+        self.mocked_subprocess.return_value = "v5.1.1\nv3.4.1\nv1.2.2\n"
 
         self.assertEqual(get_current_version(), "v5.1.1")
 

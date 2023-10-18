@@ -9,7 +9,9 @@ from notifications_api_common.models import NotificationsConfig
 from rest_framework.test import APITestCase
 from zgw_consumers.models import Service
 
-from openklant.components.contactmomenten.models.contactmomenten import ContactMoment
+from openklant.components.legacy.contactmomenten.models.contactmomenten import (
+    ContactMoment,
+)
 
 
 @override_settings(IS_HTTPS=True)

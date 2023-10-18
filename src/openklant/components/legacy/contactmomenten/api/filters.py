@@ -5,7 +5,7 @@ from vng_api_common.filters import URLModelChoiceFilter
 from vng_api_common.filtersets import FilterSet
 from vng_api_common.utils import get_help_text
 
-from openklant.components.contactmomenten.models.contactmomenten import (
+from openklant.components.legacy.contactmomenten.models.contactmomenten import (
     ContactMoment,
     KlantContactMoment,
     ObjectContactMoment,

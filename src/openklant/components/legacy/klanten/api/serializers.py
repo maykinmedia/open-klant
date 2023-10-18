@@ -8,8 +8,11 @@ from vng_api_common.polymorphism import Discriminator, PolymorphicSerializer
 from vng_api_common.serializers import add_choice_values_help_text
 from vng_api_common.validators import IsImmutableValidator, URLValidator
 
-from openklant.components.klanten.models.constants import GeslachtsAanduiding, KlantType
-from openklant.components.klanten.models.klanten import (
+from openklant.components.legacy.klanten.models.constants import (
+    GeslachtsAanduiding,
+    KlantType,
+)
+from openklant.components.legacy.klanten.models.klanten import (
     Klant,
     KlantAdres,
     NatuurlijkPersoon,

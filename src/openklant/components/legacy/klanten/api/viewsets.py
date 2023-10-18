@@ -9,7 +9,7 @@ from vng_api_common.audittrails.viewsets import (
 )
 from vng_api_common.permissions import AuthScopesRequired
 
-from openklant.components.klanten.models.klanten import Klant
+from openklant.components.legacy.klanten.models.klanten import Klant
 
 from .audits import AUDIT_KLANTEN
 from .filters import KlantFilter

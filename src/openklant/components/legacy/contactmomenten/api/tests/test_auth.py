@@ -4,7 +4,7 @@ Guarantee that the proper authorization machinery is in place.
 from rest_framework.test import APITestCase
 from vng_api_common.tests import AuthCheckMixin, reverse
 
-from openklant.components.contactmomenten.models.tests.factories import (
+from openklant.components.legacy.contactmomenten.models.tests.factories import (
     ContactMomentFactory,
 )
 
