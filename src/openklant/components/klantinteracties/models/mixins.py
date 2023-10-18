@@ -6,17 +6,17 @@ from vng_api_common.descriptors import GegevensGroepType
 
 
 class BezoekAdresMixin(models.Model):
-    bezoekadres_nummeraanduiding_id = models.UUIDField(
-        verbose_name=_("Nummeraanduiding ID"),
+    # TODO: Check if this is correct.
+    bezoekadres_nummeraanduiding_id = models.CharField(
+        _("nummeraanduiding id"),
         help_text=_(
             "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
         ),
-        unique=True,
+        max_length=255,
         blank=True,
-        null=True,
     )
     bezoekadres_adresregel1 = models.CharField(
-        _("Adresregel 1"),
+        _("adresregel 1"),
         help_text=_(
             "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen."
         ),
@@ -24,7 +24,7 @@ class BezoekAdresMixin(models.Model):
         blank=True,
     )
     bezoekadres_adresregel2 = models.CharField(
-        _("Adresregel 2"),
+        _("adresregel 2"),
         help_text=_(
             "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen."
         ),
@@ -32,7 +32,7 @@ class BezoekAdresMixin(models.Model):
         blank=True,
     )
     bezoekadres_adresregel3 = models.CharField(
-        _("Adresregel 3"),
+        _("adresregel 3"),
         help_text=_(
             "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen."
         ),
@@ -40,7 +40,7 @@ class BezoekAdresMixin(models.Model):
         blank=True,
     )
     bezoekadres_land = models.CharField(
-        _("Land"),
+        _("land"),
         help_text=_(
             "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) "
             "aangeeft alwaar de ingeschrevene verblijft."
@@ -55,10 +55,10 @@ class BezoekAdresMixin(models.Model):
 
     bezoekadres = GegevensGroepType(
         {
-            "nummeraanduiding id": bezoekadres_nummeraanduiding_id,
-            "adresregel 1": bezoekadres_adresregel1,
-            "adresregel 2": bezoekadres_adresregel2,
-            "adresregel 3": bezoekadres_adresregel3,
+            "nummeraanduiding_id": bezoekadres_nummeraanduiding_id,
+            "adresregel_1": bezoekadres_adresregel1,
+            "adresregel_2": bezoekadres_adresregel2,
+            "adresregel_3": bezoekadres_adresregel3,
             "land": bezoekadres_land,
         }
     )
@@ -68,17 +68,17 @@ class BezoekAdresMixin(models.Model):
 
 
 class CorrespondentieAdresMixin(models.Model):
-    correspondentieadres_nummeraanduiding_id = models.UUIDField(
-        verbose_name=_("Nummeraanduiding ID"),
+    # TODO: Check if this is correct.
+    correspondentieadres_nummeraanduiding_id = models.CharField(
+        _("nummeraanduiding ID"),
         help_text=_(
             "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
         ),
-        unique=True,
+        max_length=255,
         blank=True,
-        null=True,
     )
     correspondentieadres_adresregel1 = models.CharField(
-        _("Adresregel 1"),
+        _("adresregel 1"),
         help_text=_(
             "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen."
         ),
@@ -86,7 +86,7 @@ class CorrespondentieAdresMixin(models.Model):
         blank=True,
     )
     correspondentieadres_adresregel2 = models.CharField(
-        _("Adresregel 2"),
+        _("adresregel 2"),
         help_text=_(
             "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen."
         ),
@@ -94,7 +94,7 @@ class CorrespondentieAdresMixin(models.Model):
         blank=True,
     )
     correspondentieadres_adresregel3 = models.CharField(
-        _("Adresregel 3"),
+        _("adresregel 3"),
         help_text=_(
             "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen."
         ),
@@ -102,7 +102,7 @@ class CorrespondentieAdresMixin(models.Model):
         blank=True,
     )
     correspondentieadres_land = models.CharField(
-        _("Land"),
+        _("land"),
         help_text=_(
             "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) "
             "aangeeft alwaar de ingeschrevene verblijft."
@@ -117,10 +117,10 @@ class CorrespondentieAdresMixin(models.Model):
 
     correspondentieadres = GegevensGroepType(
         {
-            "nummeraanduiding id": correspondentieadres_nummeraanduiding_id,
-            "adresregel 1": correspondentieadres_adresregel1,
-            "adresregel 2": correspondentieadres_adresregel2,
-            "adresregel 3": correspondentieadres_adresregel3,
+            "nummeraanduiding_id": correspondentieadres_nummeraanduiding_id,
+            "adresregel_1": correspondentieadres_adresregel1,
+            "adresregel_2": correspondentieadres_adresregel2,
+            "adresregel_3": correspondentieadres_adresregel3,
             "land": correspondentieadres_land,
         },
     )
@@ -131,7 +131,7 @@ class CorrespondentieAdresMixin(models.Model):
 
 class ContactNaamMixin(models.Model):
     contactnaam_voorletters = models.CharField(
-        _("Voorletters"),
+        _("voorletters"),
         help_text=_(
             "Een afkorting van de voornamen. Meestal de beginletter, maar in sommige gevallen "
             "de beginletter gecombineerd met de tweede letter van een voornaam."
@@ -139,7 +139,7 @@ class ContactNaamMixin(models.Model):
         max_length=10,
     )
     contactnaam_voornaam = models.CharField(
-        _("Voornaam"),
+        _("voornaam"),
         help_text=_(
             "De voornaam die de persoon wil gebruiken tijdens communicatie met de gemeente."
         ),
@@ -147,7 +147,7 @@ class ContactNaamMixin(models.Model):
         blank=True,
     )
     contactnaam_voorvoegsel_achternaam = models.CharField(
-        _("Voorvoegsel achternaam"),
+        _("voorvoegsel achternaam"),
         help_text=_(
             "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon "
             "wil gebruiken tijdens communicatie met de gemeente."
@@ -156,7 +156,7 @@ class ContactNaamMixin(models.Model):
         blank=True,
     )
     contactnaam_achternaam = models.CharField(
-        _("Achternaam"),
+        _("achternaam"),
         help_text=_(
             "Een achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente."
         ),
@@ -168,7 +168,7 @@ class ContactNaamMixin(models.Model):
         {
             "voorletters": contactnaam_voorletters,
             "voornaam": contactnaam_voornaam,
-            "voorvoegsel achternaam": contactnaam_voorvoegsel_achternaam,
+            "voorvoegsel_achternaam": contactnaam_voorvoegsel_achternaam,
             "achternaam": contactnaam_achternaam,
         }
     )
@@ -177,33 +177,33 @@ class ContactNaamMixin(models.Model):
         abstract = True
 
 
-class ActorIdentifcatorMixin(models.Model):
-    actoridentifcator_objecttype = models.CharField(
-        _("Objecttype"),
+class IdentificatorMixin(models.Model):
+    identificator_objecttype = models.CharField(
+        _("objecttype"),
         help_text=_(
             "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
         ),
         max_length=200,
         blank=False,
     )
-    actoridentifcator_soort_object_id = models.CharField(
-        _("Soort Object ID"),
+    identificator_soort_object_id = models.CharField(
+        _("soort object id"),
         help_text=_(
             "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
         ),
         max_length=200,
         blank=False,
     )
-    actoridentifcator_object_id = models.CharField(
-        _("Object ID"),
+    identificator_object_id = models.CharField(
+        _("object id"),
         help_text=_(
             "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
         ),
         max_length=200,
         blank=False,
     )
-    actoridentifcator_register = models.CharField(
-        _("Object ID"),
+    identificator_register = models.CharField(
+        _("register"),
         help_text=_(
             "Binnen het landschap van registers unieke omschrijving van het register waarin "
             "het object is geregistreerd, bijvoorbeeld: 'BRP'."
@@ -212,12 +212,12 @@ class ActorIdentifcatorMixin(models.Model):
         blank=False,
     )
 
-    actoridentifcator = GegevensGroepType(
+    identificator = GegevensGroepType(
         {
-            "objecttype": actoridentifcator_objecttype,
-            "soort object id": actoridentifcator_soort_object_id,
-            "object id": actoridentifcator_object_id,
-            "register": actoridentifcator_register,
+            "objecttype": identificator_objecttype,
+            "soort_object_id": identificator_soort_object_id,
+            "object_id": identificator_object_id,
+            "register": identificator_register,
         }
     )
 

@@ -10,8 +10,7 @@ from .klantcontacten import Klantcontact
 
 
 class InterneTaak(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
+    uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van de interne taak."),
@@ -19,23 +18,19 @@ class InterneTaak(models.Model):
     actor = models.ForeignKey(
         Actor,
         on_delete=models.CASCADE,
-        verbose_name=_("Actor"),
-        related_name="interne_taak",
+        verbose_name=_("actor"),
         help_text=_("De actor aan wie de interne taak werd toegewezen."),
-        null=True,
     )
     klantcontact = models.ForeignKey(
         Klantcontact,
         on_delete=models.CASCADE,
-        verbose_name=_("Klantcontact"),
-        related_name="interne_taak",
+        verbose_name=_("klantcontact"),
         help_text=_(
             "Het klantcontact dat aanleiding gaf tot het ontstaan van een interne taak."
         ),
-        null=True,
     )
     nummer = models.CharField(
-        _("Nummer"),
+        _("nummer"),
         help_text=_(
             "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
             "worden gebruikt om de specifieke interne taak aan te duiden."
@@ -44,12 +39,12 @@ class InterneTaak(models.Model):
         max_length=10,
     )
     gevraagde_handeling = models.CharField(
-        _("Gevraagde handeling"),
+        _("gevraagde handeling"),
         help_text=_("Handeling die moet worden uitgevoerd om de taak af te ronden."),
         max_length=200,
     )
-    toelichting = models.CharField(
-        _("Toelichting"),
+    toelichting = models.TextField(
+        _("toelichting"),
         help_text=_(
             "Toelichting die, aanvullend bij de inhoud van het klantcontact dat "
             "aanleiding gaf tot de taak en de gevraagde handeling, "
@@ -58,16 +53,17 @@ class InterneTaak(models.Model):
         max_length=400,
     )
     status = models.CharField(
-        _("Status"),
+        _("status"),
         help_text=_("Aanduiding van de vordering bij afhandeling van de interne taak."),
         choices=Taakstatus.choices,
         max_length=12,
     )
     toegewezen_op = models.DateTimeField(
-        _("Toegewezen op"),
+        _("toegewezen op"),
         help_text=_(
             "Datum en tijdstip waarop de interne taak aan een actor werd toegewezen."
         ),
+        auto_now_add=True,
         blank=False,
     )
 

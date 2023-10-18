@@ -4,34 +4,33 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .constants import SoortActor
-from .mixins import ActorIdentifcatorMixin
+from .mixins import IdentificatorMixin
 
 
-class Actor(ActorIdentifcatorMixin):
-    id = models.UUIDField(
-        primary_key=True,
+class Actor(IdentificatorMixin):
+    uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van de actor."),
     )
     naam = models.CharField(
-        _("Naam"),
+        _("naam"),
         help_text=_("Naam van de actor."),
         max_length=200,
     )
     soort_actor = models.CharField(
-        _("Soort actor"),
+        _("soort actor"),
         help_text=_("Geeft aan van welke specifieke soort actor sprake is."),
         choices=SoortActor.choices,
         max_length=24,
     )
     indicatie_actief = models.BooleanField(
-        _("Indicatie actief"),
+        _("indicatie actief"),
         help_text=_(
             "Geeft aan of aan de actor nog betrokken mag worden bij nieuwe klantcontacten. "
             "Voor niet-actieve is dit niet toegestaan."
         ),
-        blank=False,
+        default=True,
     )
 
     class Meta:
@@ -47,19 +46,17 @@ class GeautomatiseerdeActor(models.Model):
         Actor,
         on_delete=models.CASCADE,
         verbose_name=_("Actor"),
-        related_name="geautomatiseerde_actor",
         help_text=_("'GeautomatiseerdeActor' was 'Actor'"),
-        null=False,
     )
     functie = models.CharField(
-        _("Functie"),
+        _("functie"),
         help_text=_(
             "Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert."
         ),
         max_length=40,
     )
     omschrijving = models.CharField(
-        _("Omschrijving"),
+        _("omschrijving"),
         help_text=_("Omschrijving van de geautomatiseerde actor."),
         max_length=200,
         blank=True,
@@ -77,27 +74,25 @@ class Medewerker(models.Model):
     actor = models.ForeignKey(
         Actor,
         on_delete=models.CASCADE,
-        verbose_name=_("Actor"),
-        related_name="medewerker",
+        verbose_name=_("actor"),
         help_text=_("'GeautomatiseerdeActor' was 'Actor'"),
-        null=False,
     )
     functie = models.CharField(
-        _("Functie"),
+        _("functie"),
         help_text=_(
             "Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert."
         ),
         max_length=40,
     )
-    email = models.EmailField(
-        _("email address"),
+    emailadres = models.EmailField(
+        _("e-mailadres"),
         help_text=_(
             "Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is."
         ),
         blank=True,
     )
     telefoonnummer = models.CharField(
-        _("Telefoonnummer"),
+        _("telefoonnummer"),
         help_text=_(
             "Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is."
         ),
@@ -106,7 +101,7 @@ class Medewerker(models.Model):
 
     class Meta:
         verbose_name = _("medewerker")
-        verbose_name_plural = _("Mederwerkers")
+        verbose_name_plural = _("mederwerkers")
 
         def __str__(self):
             return self.functie
@@ -116,33 +111,32 @@ class OrganisatorischeEenheid(models.Model):
     actor = models.ForeignKey(
         Actor,
         on_delete=models.CASCADE,
-        verbose_name=_("Actor"),
-        related_name="organisatorische_eenheid",
+        verbose_name=_("actor"),
         help_text=_("'GeautomatiseerdeActor' was 'Actor'"),
-        null=False,
+        unique=True,
     )
     omschrijving = models.CharField(
-        _("Omschrijving"),
+        _("omschrijving"),
         help_text=_("Omschrijving van de geautomatiseerde actor."),
         max_length=200,
         blank=True,
     )
-    email = models.EmailField(
-        _("email address"),
+    emailadres = models.EmailField(
+        _("e-mailadres"),
         help_text=_(
             "Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is."
         ),
         blank=True,
     )
     faxnummer = models.CharField(
-        _("Faxnummer"),
+        _("faxnummer"),
         help_text=_(
             "Faxnummer waaronder de organisatorische eenheid in de regel bereikbaar is."
         ),
         max_length=20,
     )
     telefoonnummer = models.CharField(
-        _("Telefoonnummer"),
+        _("telefoonnummer"),
         help_text=_(
             "Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is."
         ),

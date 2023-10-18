@@ -11,8 +11,7 @@ from .mixins import BezoekAdresMixin, ContactNaamMixin, CorrespondentieAdresMixi
 
 
 class Partij(BezoekAdresMixin, CorrespondentieAdresMixin):
-    id = models.UUIDField(
-        primary_key=True,
+    uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van de partij."),
@@ -20,21 +19,34 @@ class Partij(BezoekAdresMixin, CorrespondentieAdresMixin):
     betrokkene = models.ForeignKey(
         Betrokkene,
         on_delete=models.CASCADE,
-        verbose_name=_("Betrokkene"),
-        related_name="partijen",
+        verbose_name=_("betrokkene"),
         help_text=_("'Betrokkene bij klantcontact' was 'Partij'"),
         null=True,
     )
     digitaal_adres = models.ForeignKey(
         DigitaalAdres,
         on_delete=models.CASCADE,
-        verbose_name=_("Digitaal adres"),
-        related_name="digitale_adressen",
+        verbose_name=_("digitaal adres"),
         help_text=_("'Digitaal Adres' was 'Partij'"),
         null=True,
     )
+    voorkeurs_digitaal_adres = models.ForeignKey(
+        DigitaalAdres,
+        on_delete=models.CASCADE,
+        related_name="voorkeurs_partij",
+        verbose_name=_("voorkeurs digitaal adres"),
+        help_text=_("'Partij' gaf voorkeur aan voor contact via 'Digitaal adres'"),
+        null=True,
+    )
+    vertegenwoordigde = models.ManyToManyField(
+        "self",
+        verbose_name=_("vertegenwoordigde"),
+        help_text=_("'Partij' die een andere 'Partij' vertegenwoordigde."),
+        blank=True,
+        null=True,
+    )
     nummer = models.CharField(
-        _("Nummer"),
+        _("nummer"),
         help_text=_(
             "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
             "worden gebruikt om de specifieke partij aan te duiden."
@@ -42,8 +54,8 @@ class Partij(BezoekAdresMixin, CorrespondentieAdresMixin):
         validators=[validate_integer],
         max_length=10,
     )
-    interne_notitie = models.CharField(
-        _("Interne notitie"),
+    interne_notitie = models.TextField(
+        _("interne notitie"),
         help_text=_(
             "Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik."
         ),
@@ -51,36 +63,29 @@ class Partij(BezoekAdresMixin, CorrespondentieAdresMixin):
         blank=True,
     )
     soort_partij = models.CharField(
-        _("Soort partij"),
+        _("soort partij"),
         help_text=_("Geeft aan van welke specifieke soort partij sprake is."),
         max_length=14,
         choices=SoortPartij.choices,
     )
     indicatie_geheimhouding = models.BooleanField(
-        _("Indicatie geheimhouding"),
+        _("indicatie geheimhouding"),
         help_text=_(
             "Geeft aan of de verstrekker van partijgegevens heeft aangegeven dat "
             "deze gegevens als geheim beschouwd moeten worden."
         ),
     )
-    voorkeurskanaal = models.CharField(
-        _("Voorkeurskanaal"),
-        help_text=_(
-            "Kanaal dat de partij bij voorkeur gebruikt voor contact met de gemeente."
-        ),
-        max_length=50,
-        blank=True,
-    )
     voorkeurstaal = models.CharField(
-        _("Voorkeurstaal"),
+        _("voorkeurstaal"),
         help_text=_(
-            "Taal waarin de partij bij voorkeur contact heeft met de gemeente."
+            "Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur contact heeft "
+            "met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html"
         ),
-        max_length=255,
+        max_length=3,
         blank=True,
     )
     indicatie_actief = models.BooleanField(
-        _("Indicatie actief"),
+        _("indicatie actief"),
         help_text=_(
             "Geeft aan of de contactgegevens van de partij nog gebruikt morgen worden om contact op te nemen. "
             "Gegevens van niet-actieve partijen mogen hiervoor niet worden gebruikt."
@@ -96,12 +101,11 @@ class Organisatie(models.Model):
     partij = models.ForeignKey(
         Partij,
         on_delete=models.CASCADE,
-        verbose_name=_("Partij"),
-        related_name="organisatie",
-        null=True,
+        verbose_name=_("partij"),
+        unique=True,
     )
     naam = models.CharField(
-        _("Naam"),
+        _("naam"),
         help_text=_("Naam van de organisatie."),
         max_length=200,
         blank=True,
@@ -119,9 +123,8 @@ class Persoon(ContactNaamMixin):
     partij = models.ForeignKey(
         Partij,
         on_delete=models.CASCADE,
-        verbose_name=_("Partij"),
-        related_name="persoon",
-        null=True,
+        verbose_name=_("partij"),
+        unique=True,
     )
 
     class Meta:
@@ -136,15 +139,13 @@ class Contactpersoon(ContactNaamMixin):
     partij = models.ForeignKey(
         Partij,
         on_delete=models.CASCADE,
-        verbose_name=_("Partij"),
-        related_name="contact_persoon",
-        null=True,
+        verbose_name=_("partij"),
+        unique=True,
     )
     organisatie = models.ForeignKey(
         Organisatie,
         on_delete=models.CASCADE,
-        verbose_name=_("Organistatie"),
-        related_name="contact_personen",
+        verbose_name=_("organistatie"),
         help_text=_("De organisatie waar een contactpersoon voor werkt."),
         null=True,
     )
