@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.descriptors import GegevensGroepType
 
 
-class BezoekAdresMixin(models.Model):
+class BezoekadresMixin(models.Model):
     # TODO: Check if this is correct.
     bezoekadres_nummeraanduiding_id = models.CharField(
         _("nummeraanduiding id"),
@@ -67,7 +67,7 @@ class BezoekAdresMixin(models.Model):
         abstract = True
 
 
-class CorrespondentieAdresMixin(models.Model):
+class CorrespondentieadresMixin(models.Model):
     # TODO: Check if this is correct.
     correspondentieadres_nummeraanduiding_id = models.CharField(
         _("nummeraanduiding ID"),
@@ -129,7 +129,7 @@ class CorrespondentieAdresMixin(models.Model):
         abstract = True
 
 
-class ContactNaamMixin(models.Model):
+class ContactnaamMixin(models.Model):
     contactnaam_voorletters = models.CharField(
         _("voorletters"),
         help_text=_(
@@ -177,8 +177,8 @@ class ContactNaamMixin(models.Model):
         abstract = True
 
 
-class IdentificatorMixin(models.Model):
-    identificator_objecttype = models.CharField(
+class ObjectidentificatorMixin(models.Model):
+    objectidentificator_objecttype = models.CharField(
         _("objecttype"),
         help_text=_(
             "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
@@ -186,7 +186,7 @@ class IdentificatorMixin(models.Model):
         max_length=200,
         blank=False,
     )
-    identificator_soort_object_id = models.CharField(
+    objectidentificator_soort_object_id = models.CharField(
         _("soort object id"),
         help_text=_(
             "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
@@ -194,7 +194,7 @@ class IdentificatorMixin(models.Model):
         max_length=200,
         blank=False,
     )
-    identificator_object_id = models.CharField(
+    objectidentificator_object_id = models.CharField(
         _("object id"),
         help_text=_(
             "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
@@ -202,7 +202,7 @@ class IdentificatorMixin(models.Model):
         max_length=200,
         blank=False,
     )
-    identificator_register = models.CharField(
+    objectidentificator_register = models.CharField(
         _("register"),
         help_text=_(
             "Binnen het landschap van registers unieke omschrijving van het register waarin "
@@ -212,12 +212,12 @@ class IdentificatorMixin(models.Model):
         blank=False,
     )
 
-    identificator = GegevensGroepType(
+    objectidentificator = GegevensGroepType(
         {
-            "objecttype": identificator_objecttype,
-            "soort_object_id": identificator_soort_object_id,
-            "object_id": identificator_object_id,
-            "register": identificator_register,
+            "objecttype": objectidentificator_objecttype,
+            "soort_object_id": objectidentificator_soort_object_id,
+            "object_id": objectidentificator_object_id,
+            "register": objectidentificator_register,
         }
     )
 
