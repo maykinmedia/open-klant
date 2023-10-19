@@ -176,6 +176,15 @@ class ContactnaamMixin(models.Model):
     class Meta:
         abstract = True
 
+    def get_contactnaam(self):
+        initials = self.contactnaam_voorletters
+
+        if last_name := self.contactnaam_achternaam:
+            prefix = self.contactnaam_voorvoegsel_achternaam.lower()
+            return f"{initials}. {prefix} {last_name}"
+
+        return initials
+
 
 class ObjectidentificatorMixin(models.Model):
     objectidentificator_objecttype = models.CharField(

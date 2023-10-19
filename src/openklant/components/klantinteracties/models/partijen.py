@@ -117,8 +117,8 @@ class Organisatie(models.Model):
         verbose_name = _("organisatie")
         verbose_name_plural = _("organisaties")
 
-        def __str__(self) -> str:
-            return self.naam
+    def __str__(self):
+        return self.naam
 
 
 class Persoon(ContactnaamMixin):
@@ -133,8 +133,8 @@ class Persoon(ContactnaamMixin):
         verbose_name = _("persoon")
         verbose_name_plural = _("personen")
 
-        def __str__(self) -> str:
-            return self.contactnaam_voorletters
+    def __str__(self):
+        return self.contactnaam_voorletters
 
 
 class Contactpersoon(ContactnaamMixin):
@@ -156,8 +156,8 @@ class Contactpersoon(ContactnaamMixin):
         verbose_name = _("contact persoon")
         verbose_name_plural = _("contact personen")
 
-        def __str__(self) -> str:
-            return self.contactnaam_voorletters
+    def __str__(self):
+        return self.contactnaam_voorletters
 
 
 class PartijIdentificator(models.Model):

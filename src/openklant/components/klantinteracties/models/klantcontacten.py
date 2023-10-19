@@ -96,6 +96,9 @@ class Klantcontact(models.Model):
         verbose_name = _("klantcontact")
         verbose_name_plural = _("klantcontacten")
 
+    def __str__(self):
+        return self.nummer
+
 
 class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
     uuid = models.UUIDField(
@@ -141,6 +144,9 @@ class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
 
     class Meta:
         verbose_name = _("betrokkene bij klantcontact")
+
+    def __str__(self):
+        return self.get_contactnaam()
 
 
 class Onderwerpobject(ObjectidentificatorMixin):

@@ -34,5 +34,5 @@ class DigitaalAdres(models.Model):
     class Meta:
         verbose_name = _("digitaal adres")
 
-        def __str__(self):
-            return self.adres
+    def __str__(self):
+        return self.adres
