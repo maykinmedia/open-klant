@@ -137,6 +137,7 @@ INSTALLED_APPS = [
     "openklant.utils",
     "openklant.components.klanten",
     "openklant.components.contactmomenten",
+    "openklant.components.klantinteracties",
 ]
 
 MIDDLEWARE = [
