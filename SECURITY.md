@@ -1,18 +1,13 @@
-.. _security:
-
-Security policy
-===============
+# Security policy
 
 The development team is strongly committed to responsible reporting and 
 disclosure of security-related issues. As such, we've adopted and follow a set 
 of policies which conform to that ideal and are geared toward allowing us to 
 deliver timely security updates to the official distribution of Open Klant.
 
-Reporting security issues
--------------------------
+## Reporting security issues
 
-**Short version: please report security issues by emailing 
-security@maykinmedia.nl.**
+**Short version: Please report security issues by emailing security@maykinmedia.nl.**
 
 If you discover security issues in Open Klant or related projects under the 
 same organization, we request you to disclose these in a *responsible* way by 
@@ -29,11 +24,11 @@ Once you've submitted an issue via email, you should receive an acknowledgment
 from a member of the security team as soon as possible, and depending on the 
 action to be taken, you may receive further followup emails.
 
-Timeline of the process
------------------------
+## Timeline of the process
 
-Open Klant community support is provided by `Maykin`_. The community 
-support team is responsible for the handling of security issues.
+Open Klant community support is provided by 
+[Maykin](https://www.maykinmedia.nl). The community support team is responsible 
+for the handling of security issues.
 
 1. The recipients of the report first validate if there is indeed a (possible) 
    issue.
@@ -49,7 +44,8 @@ support team is responsible for the handling of security issues.
    visible to the repository administrators and community support team. 
    Severity and impact will be established here.
 
-5. If appropriate, we request a `CVE identifier`_ from Github.
+5. If appropriate, we request a 
+   [CVE identifier](https://cve.mitre.org/cve/identifiers/) from Github.
 
 6. A patch is implemented, reviewed and tested in a private fork.
 
@@ -58,9 +54,4 @@ support team is responsible for the handling of security issues.
    published. All managed instances should be updated.
 
 8. The release and security vulnerability are communicated to the community. 
-   This includes an announcement on `commonground.nl`_.
-
-
-.. _`CVE identifier`: https://cve.mitre.org/cve/identifiers/
-.. _`commonground.nl`: https://commonground.nl
-.. _`Maykin`: https://www.maykinmedia.nl
+   This includes an announcement on [commonground.nl](https://commonground.nl).
