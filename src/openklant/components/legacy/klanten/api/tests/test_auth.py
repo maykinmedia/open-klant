@@ -6,10 +6,10 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from vng_api_common.tests import AuthCheckMixin, JWTAuthMixin, reverse
 
-from openklant.components.klanten.api.scopes import SCOPE_KLANTEN_ALLES_LEZEN
-from openklant.components.klanten.models.constants import KlantType
-from openklant.components.klanten.models.klanten import Klant
-from openklant.components.klanten.models.tests.factories import KlantFactory
+from openklant.components.legacy.klanten.api.scopes import SCOPE_KLANTEN_ALLES_LEZEN
+from openklant.components.legacy.klanten.models.constants import KlantType
+from openklant.components.legacy.klanten.models.klanten import Klant
+from openklant.components.legacy.klanten.models.tests.factories import KlantFactory
 
 SUBJECT = "http://example.com/subject/1"
 

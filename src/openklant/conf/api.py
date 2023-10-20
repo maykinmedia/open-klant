@@ -11,14 +11,13 @@ REST_FRAMEWORK["PAGE_SIZE"] = 100
 REST_FRAMEWORK[
     "DEFAULT_PAGINATION_CLASS"
 ] = "rest_framework.pagination.PageNumberPagination"
-
 SECURITY_DEFINITION_NAME = "JWT-Claims"
 
 SWAGGER_SETTINGS = BASE_SWAGGER_SETTINGS.copy()
 
 SWAGGER_SETTINGS.update(
     {
-        "DEFAULT_INFO": "openklant.components.klanten.api.schema.info",
+        "DEFAULT_INFO": "openklant.components.legacy.klanten.api.schema.info",
         "SECURITY_DEFINITIONS": {
             SECURITY_DEFINITION_NAME: {
                 # OAS 3.0

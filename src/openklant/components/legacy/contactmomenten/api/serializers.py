@@ -8,8 +8,8 @@ from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from vng_api_common.serializers import add_choice_values_help_text
 from vng_api_common.validators import IsImmutableValidator, URLValidator
 
-from openklant.components.contactmomenten.models.constants import ObjectTypes
-from openklant.components.contactmomenten.models.contactmomenten import (
+from openklant.components.legacy.contactmomenten.models.constants import ObjectTypes
+from openklant.components.legacy.contactmomenten.models.contactmomenten import (
     ContactMoment,
     KlantContactMoment,
     Medewerker,

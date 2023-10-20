@@ -5,8 +5,10 @@ from rest_framework.test import APITestCase
 from vng_api_common.audittrails.models import AuditTrail
 from vng_api_common.tests import JWTAuthMixin, reverse
 
-from openklant.components.contactmomenten.models.constants import InitiatiefNemer
-from openklant.components.contactmomenten.models.contactmomenten import ContactMoment
+from openklant.components.legacy.contactmomenten.models.constants import InitiatiefNemer
+from openklant.components.legacy.contactmomenten.models.contactmomenten import (
+    ContactMoment,
+)
 
 KLANT = "http://some.klanten.nl/api/v1/klanten/951e4660-3835-4643-8f9c-e523e364a30f"
 MEDEWERKER = (

@@ -4,72 +4,6 @@
         "pk": 1,
         "fields": {
             "order": 3,
-            "name": "Klanten",
-            "slug": "klanten",
-            "models": [
-                [
-                    "klanten",
-                    "klant"
-                ],
-                [
-                    "klanten",
-                    "klantadres"
-                ],
-                [
-                    "klanten",
-                    "natuurlijkpersoon"
-                ],
-                [
-                    "klanten",
-                    "nietnatuurlijkpersoon"
-                ],
-                [
-                    "klanten",
-                    "subverblijfbuitenland"
-                ],
-                [
-                    "klanten",
-                    "verblijfsadres"
-                ],
-                [
-                    "klanten",
-                    "vestiging"
-                ]
-            ]
-        }
-    },
-    {
-        "model": "admin_index.appgroup",
-        "pk": 2,
-        "fields": {
-            "order": 4,
-            "name": "Contactmomenten",
-            "slug": "contactmomenten",
-            "models": [
-                [
-                    "contactmomenten",
-                    "contactmoment"
-                ],
-                [
-                    "contactmomenten",
-                    "klantcontactmoment"
-                ],
-                [
-                    "contactmomenten",
-                    "medewerker"
-                ],
-                [
-                    "contactmomenten",
-                    "objectcontactmoment"
-                ]
-            ]
-        }
-    },
-    {
-        "model": "admin_index.appgroup",
-        "pk": 3,
-        "fields": {
-            "order": 5,
             "name": "Configuratie",
             "slug": "configuratie",
             "models": [
@@ -98,9 +32,9 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 4,
+        "pk": 2,
         "fields": {
-            "order": 6,
+            "order": 4,
             "name": "Notificaties",
             "slug": "notificaties",
             "models": [
@@ -117,7 +51,7 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 5,
+        "pk": 3,
         "fields": {
             "order": 1,
             "name": "Accounts",
@@ -140,7 +74,7 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 6,
+        "pk": 4,
         "fields": {
             "order": 2,
             "name": "API autorisaties",
@@ -167,9 +101,9 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 7,
+        "pk": 5,
         "fields": {
-            "order": 7,
+            "order": 5,
             "name": "Logging",
             "slug": "logging",
             "models": [
@@ -184,6 +118,62 @@
                 [
                     "axes",
                     "accesslog"
+                ]
+            ]
+        }
+    },
+    {
+        "model": "admin_index.appgroup",
+        "pk": 6,
+        "fields": {
+            "order": 6,
+            "name": "Legacy",
+            "slug": "legacy",
+            "models": [
+                [
+                    "klanten",
+                    "klant"
+                ],
+                [
+                    "klanten",
+                    "klantadres"
+                ],
+                [
+                    "klanten",
+                    "natuurlijkpersoon"
+                ],
+                [
+                    "klanten",
+                    "nietnatuurlijkpersoon"
+                ],
+                [
+                    "klanten",
+                    "subverblijfbuitenland"
+                ],
+                [
+                    "klanten",
+                    "verblijfsadres"
+                ],
+                [
+                    "klanten",
+                    "vestiging"
+                ],
+
+                [
+                    "contactmomenten",
+                    "contactmoment"
+                ],
+                [
+                    "contactmomenten",
+                    "klantcontactmoment"
+                ],
+                [
+                    "contactmomenten",
+                    "medewerker"
+                ],
+                [
+                    "contactmomenten",
+                    "objectcontactmoment"
                 ]
             ]
         }

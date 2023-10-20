@@ -135,9 +135,9 @@ INSTALLED_APPS = [
     "openklant",
     "openklant.accounts",
     "openklant.utils",
-    "openklant.components.klanten",
-    "openklant.components.contactmomenten",
     "openklant.components.klantinteracties",
+    "openklant.components.legacy.klanten",
+    "openklant.components.legacy.contactmomenten",
 ]
 
 MIDDLEWARE = [
@@ -363,10 +363,22 @@ SHOW_ALERT = True
 # urls for OAS3 specifications
 SPEC_URL = {
     "klanten": os.path.join(
-        BASE_DIR, "src", "openklant", "components", "klanten", "openapi.yaml"
+        BASE_DIR,
+        "src",
+        "openklant",
+        "components",
+        "legacy",
+        "klanten",
+        "openapi.yaml",
     ),
     "contactmomenten": os.path.join(
-        BASE_DIR, "src", "openklant", "components", "contactmomenten", "openapi.yaml"
+        BASE_DIR,
+        "src",
+        "openklant",
+        "components",
+        "legacy",
+        "contactmomenten",
+        "openapi.yaml",
     ),
 }
 
