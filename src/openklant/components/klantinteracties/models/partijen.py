@@ -4,6 +4,8 @@ from django.core.validators import validate_integer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from vng_api_common.descriptors import GegevensGroepType
+
 from .constants import SoortPartij
 from .digitaal_adres import DigitaalAdres
 from .klantcontacten import Betrokkene
@@ -156,3 +158,77 @@ class Contactpersoon(ContactnaamMixin):
 
         def __str__(self) -> str:
             return self.contactnaam_voorletters
+
+
+class PartijIdentificator(models.Model):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_(
+            "Unieke (technische) identificatiecode van de partij-identificator."
+        ),
+    )
+    partij = models.ForeignKey(
+        Partij,
+        on_delete=models.CASCADE,
+        verbose_name=_("partij"),
+        help_text=_("'Partij' had 'PartijIdentificator'"),
+        null=True,
+    )
+    andere_partij_identificator = models.CharField(
+        _("andere partij indetificator"),
+        help_text=_(
+            "Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd objecttype, "
+            "soort objectID of Register vast te leggen. "
+        ),
+        max_length=200,
+        blank=True,
+    )
+
+    # Partij-identificator fields
+    partij_identificator_objecttype = models.CharField(
+        _("objecttype"),
+        help_text=_(
+            "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
+        ),
+        max_length=200,
+        blank=False,
+    )
+    partij_identificator_soort_object_id = models.CharField(
+        _("soort object id"),
+        help_text=_(
+            "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
+        ),
+        max_length=200,
+        blank=False,
+    )
+    partij_identificator_object_id = models.CharField(
+        _("object id"),
+        help_text=_(
+            "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
+        ),
+        max_length=200,
+        blank=False,
+    )
+    partij_identificator_register = models.CharField(
+        _("register"),
+        help_text=_(
+            "Binnen het landschap van registers unieke omschrijving van het register waarin "
+            "het object is geregistreerd, bijvoorbeeld: 'BRP'."
+        ),
+        max_length=200,
+        blank=False,
+    )
+
+    partij_identificator = GegevensGroepType(
+        {
+            "objecttype": partij_identificator_objecttype,
+            "soort_object_id": partij_identificator_soort_object_id,
+            "object_id": partij_identificator_object_id,
+            "register": partij_identificator_register,
+        }
+    )
+
+    class Meta:
+        verbose_name = _("partij identificator")
+        verbose_name_plural = _("partij identificatoren")
