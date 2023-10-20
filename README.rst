@@ -30,8 +30,6 @@ Open Klant als beproeving van de toekomstige API standaard.
 API specificatie
 ================
 
-|lint-oas| |generate-sdks| |generate-postman-collection|
-
 ==============  ==============  =============================
 Versie          Release datum   API specificatie
 ==============  ==============  =============================
@@ -117,13 +115,13 @@ Licensed under the EUPL_
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/open-klant
 
-.. |code-style| image:: https://github.com/maykinmedia/openklant/actions/workflows/code-style.yml/badge.svg?branch=master
+.. |code-style| image:: https://github.com/maykinmedia/open-klant/actions/workflows/code-style.yml/badge.svg?branch=master
     :alt: Code style
-    :target: https://github.com/maykinmedia/openklant/actions/workflows/code-style.yml
+    :target: https://github.com/maykinmedia/open-klant/actions/workflows/code-style.yml
 
-.. |codeql| image:: https://github.com/maykinmedia/openklant/actions/workflows/codeql.yml/badge.svg?branch=master
+.. |codeql| image:: https://github.com/maykinmedia/open-klant/actions/workflows/codeql.yml/badge.svg?branch=master
     :alt: CodeQL scan
-    :target: https://github.com/maykinmedia/openklant/actions/workflows/codeql.yml
+    :target: https://github.com/maykinmedia/open-klant/actions/workflows/codeql.yml
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :alt: Code style
