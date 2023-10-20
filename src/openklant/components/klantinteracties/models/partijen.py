@@ -7,10 +7,10 @@ from django.utils.translation import gettext_lazy as _
 from .constants import SoortPartij
 from .digitaal_adres import DigitaalAdres
 from .klantcontacten import Betrokkene
-from .mixins import BezoekAdresMixin, ContactNaamMixin, CorrespondentieAdresMixin
+from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
 
 
-class Partij(BezoekAdresMixin, CorrespondentieAdresMixin):
+class Partij(BezoekadresMixin, CorrespondentieadresMixin):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -119,7 +119,7 @@ class Organisatie(models.Model):
             return self.naam
 
 
-class Persoon(ContactNaamMixin):
+class Persoon(ContactnaamMixin):
     partij = models.ForeignKey(
         Partij,
         on_delete=models.CASCADE,
@@ -135,7 +135,7 @@ class Persoon(ContactNaamMixin):
             return self.contactnaam_voorletters
 
 
-class Contactpersoon(ContactNaamMixin):
+class Contactpersoon(ContactnaamMixin):
     partij = models.ForeignKey(
         Partij,
         on_delete=models.CASCADE,

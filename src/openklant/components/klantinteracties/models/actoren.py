@@ -4,10 +4,10 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .constants import SoortActor
-from .mixins import IdentificatorMixin
+from .mixins import ObjectidentificatorMixin
 
 
-class Actor(IdentificatorMixin):
+class Actor(ObjectidentificatorMixin):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,

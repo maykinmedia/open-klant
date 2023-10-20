@@ -8,7 +8,12 @@ from django.utils.translation import gettext_lazy as _
 from .actoren import Actor
 from .constants import Klantcontrol
 from .digitaal_adres import DigitaalAdres
-from .mixins import BezoekAdresMixin, ContactNaamMixin, CorrespondentieAdresMixin
+from .mixins import (
+    BezoekadresMixin,
+    ContactnaamMixin,
+    CorrespondentieadresMixin,
+    ObjectidentificatorMixin,
+)
 
 
 class Klantcontact(models.Model):
@@ -28,8 +33,6 @@ class Klantcontact(models.Model):
         ),
         blank=False,
     )
-    # TODO: add fk to Onderwerpobject
-    # TODO: add fk to Inhoudsobject
     nummer = models.CharField(
         _("nummer"),
         help_text=_(
@@ -77,7 +80,6 @@ class Klantcontact(models.Model):
             "Geeft aan of onderwerp, inhoud en kenmerken van het klantcontact vertrouwelijk moeten worden behandeld."
         ),
     )
-    # TODO: does this field require auto_now?
     plaatsgevonden_op = models.DateTimeField(
         _("plaatsgevonden op"),
         help_text=_(
@@ -95,7 +97,7 @@ class Klantcontact(models.Model):
         verbose_name_plural = _("klantcontacten")
 
 
-class Betrokkene(BezoekAdresMixin, CorrespondentieAdresMixin, ContactNaamMixin):
+class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -139,3 +141,49 @@ class Betrokkene(BezoekAdresMixin, CorrespondentieAdresMixin, ContactNaamMixin):
 
     class Meta:
         verbose_name = _("betrokkene bij klantcontact")
+
+
+class Onderwerpobject(ObjectidentificatorMixin):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van het onderwerpdeel."),
+    )
+    klantcontact = models.ForeignKey(
+        Klantcontact,
+        on_delete=models.CASCADE,
+        verbose_name=_("klantcontact"),
+        help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
+        null=True,
+    )
+    was_klantcontact = models.ForeignKey(
+        Klantcontact,
+        on_delete=models.CASCADE,
+        verbose_name=_("was klantcontact"),
+        related_name="was_onderwerpobject",
+        help_text=_("'Onderwerpobject' was 'Klantcontact'"),
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = _("onderwerpobject")
+        verbose_name_plural = _("onderwerpobjecten")
+
+
+class Bijlage(ObjectidentificatorMixin):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van het inhoudsdeel."),
+    )
+    klantcontact = models.ForeignKey(
+        Klantcontact,
+        on_delete=models.CASCADE,
+        verbose_name=_("klantcontact"),
+        help_text=_("'Klantcontact' omvatte 'Bijlage'"),
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = _("bijlage")
+        verbose_name_plural = _("bijlagen")
