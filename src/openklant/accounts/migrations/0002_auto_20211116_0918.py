@@ -22,7 +22,7 @@ def forward(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("accounts", "0001_initial"),
-        ("admin_index", "0003_auto_20200724_1516"),
+        ("admin_index", "0006_auto_20230503_1910"),
         ("contactmomenten", "0001_initial"),
         ("klanten", "0001_initial"),
     ]
