@@ -55,7 +55,7 @@ Zie: `Alle versies en wijzigingen <https://github.com/maykinmedia/open-klant/blo
 Ready-to-go implementatie
 =========================
 
-|build-status| |coverage| |code-quality| |black| |python-versions|
+|build-status| |coverage| |code-style| |codeql| |black| |python-versions|
 
 Deze implementatie is bedoeld als referentie implementatie van de API 
 specificaties maar tevens een productiewaardig component dat ingezet kan worden
@@ -116,6 +116,14 @@ Licensed under the EUPL_
 .. |coverage| image:: https://codecov.io/github/maykinmedia/open-klant/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/open-klant
+
+.. |code-style| image:: https://github.com/maykinmedia/openklant/actions/workflows/code-style.yml/badge.svg?branch=master
+    :alt: Code style
+    :target: https://github.com/maykinmedia/openklant/actions/workflows/code-style.yml
+
+.. |codeql| image:: https://github.com/maykinmedia/openklant/actions/workflows/codeql.yml/badge.svg?branch=master
+    :alt: CodeQL scan
+    :target: https://github.com/maykinmedia/openklant/actions/workflows/codeql.yml
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :alt: Code style
