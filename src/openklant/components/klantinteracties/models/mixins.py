@@ -179,7 +179,7 @@ class ContactnaamMixin(models.Model):
         blank=True,
     )
 
-    Contactnaam = GegevensGroepType(
+    contactnaam = GegevensGroepType(
         {
             "voorletters": contactnaam_voorletters,
             "voornaam": contactnaam_voornaam,
