@@ -1,0 +1,5939 @@
+openapi: 3.0.0
+info:
+  title: klantinteracties
+  description: '
+
+    Description WIP.
+
+    '
+  contact:
+    url: https://zaakgerichtwerken.vng.cloud
+    email: standaarden.ondersteuning@vng.nl
+  license:
+    name: EUPL 1.2
+    url: https://opensource.org/licenses/EUPL-1.2
+  version: 1.0.0
+security:
+- JWT-Claims: []
+paths:
+  /actoren:
+    get:
+      operationId: actor_list
+      summary: Alle actoren opvragen.
+      description: Alle actoren opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Actor'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - actoren
+    post:
+      operationId: actor_create
+      summary: Maak een actor aan.
+      description: Maak een actor aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Actor'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - actoren
+    parameters: []
+  /actoren/{uuid}:
+    get:
+      operationId: actor_read
+      summary: Een specifiek actor opvragen.
+      description: Een specifiek actor opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - actoren
+    put:
+      operationId: actor_update
+      summary: Werk een actor in zijn geheel bij.
+      description: Werk een actor in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Actor'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - actoren
+    patch:
+      operationId: actor_partial_update
+      summary: Werk een actor deels bij.
+      description: Werk een actor deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Actor'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - actoren
+    delete:
+      operationId: actor_delete
+      summary: Verwijder een actor.
+      description: Verwijder een actor.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - actoren
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke (technische) identificatiecode van de actor.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /betrokkene:
+    get:
+      operationId: betrokkene_list
+      summary: Alle betrokkeneen opvragen.
+      description: Alle betrokkeneen opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Betrokkene'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - betrokkene
+    post:
+      operationId: betrokkene_create
+      summary: Maak een betrokkene aan.
+      description: Maak een betrokkene aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Betrokkene'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Betrokkene'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - betrokkene
+    parameters: []
+  /betrokkene/{uuid}:
+    get:
+      operationId: betrokkene_read
+      summary: Een specifiek betrokkene opvragen.
+      description: Een specifiek betrokkene opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Betrokkene'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - betrokkene
+    put:
+      operationId: betrokkene_update
+      summary: Werk een betrokkene in zijn geheel bij.
+      description: Werk een betrokkene in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Betrokkene'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Betrokkene'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - betrokkene
+    patch:
+      operationId: betrokkene_partial_update
+      summary: Werk een betrokkene deels bij.
+      description: Werk een betrokkene deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Betrokkene'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Betrokkene'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - betrokkene
+    delete:
+      operationId: betrokkene_delete
+      summary: Verwijder een betrokkene.
+      description: Verwijder een betrokkene.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - betrokkene
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke (technische) identificatiecode van de betrokkene bij klantcontact.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /contact persoon:
+    get:
+      operationId: contactpersoon_list
+      summary: Alle contactpersonen opvragen.
+      description: Alle contactpersonen opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contactpersoon'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - contact persoon
+    post:
+      operationId: contactpersoon_create
+      summary: Maak een contactpersoon aan.
+      description: Maak een contactpersoon aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Contactpersoon'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contactpersoon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - contact persoon
+    parameters: []
+  /contact persoon/{id}:
+    get:
+      operationId: contactpersoon_read
+      summary: Een specifiek contactpersoon opvragen.
+      description: Een specifiek contactpersoon opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contactpersoon'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - contact persoon
+    put:
+      operationId: contactpersoon_update
+      summary: Werk een contactpersoon in zijn geheel bij.
+      description: Werk een contactpersoon in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Contactpersoon'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contactpersoon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - contact persoon
+    patch:
+      operationId: contactpersoon_partial_update
+      summary: Werk een contactpersoon deels bij.
+      description: Werk een contactpersoon deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Contactpersoon'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contactpersoon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - contact persoon
+    delete:
+      operationId: contactpersoon_delete
+      summary: Verwijder een contactpersoon.
+      description: Verwijder een contactpersoon.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - contact persoon
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this contact persoon.
+      required: true
+      schema:
+        type: integer
+  /digitaal adres:
+    get:
+      operationId: digitaaladres_list
+      summary: Alle digitale adressen opvragen.
+      description: Alle digitale adressen opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DigitaalAdres'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - digitaal adres
+    post:
+      operationId: digitaaladres_create
+      summary: Maak een digitaal adres aan.
+      description: Maak een digitaal adres aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/DigitaalAdres'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitaalAdres'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - digitaal adres
+    parameters: []
+  /digitaal adres/{uuid}:
+    get:
+      operationId: digitaaladres_read
+      summary: Een specifiek digitaal adres opvragen.
+      description: Een specifiek digitaal adres opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitaalAdres'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - digitaal adres
+    put:
+      operationId: digitaaladres_update
+      summary: Werk een digitaal adres in zijn geheel bij.
+      description: Werk een digitaal adres in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/DigitaalAdres'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitaalAdres'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - digitaal adres
+    patch:
+      operationId: digitaaladres_partial_update
+      summary: Werk een digitaal adres deels bij.
+      description: Werk een digitaal adres deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/DigitaalAdres'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitaalAdres'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - digitaal adres
+    delete:
+      operationId: digitaaladres_delete
+      summary: Verwijder een digitaal adres.
+      description: Verwijder een digitaal adres.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - digitaal adres
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke (technische) identificatiecode van het digitaal adres.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /geautomatiseerde actoren:
+    get:
+      operationId: geautomatiseerdeactor_list
+      summary: Alle geautomatiseerde actoren opvragen.
+      description: Alle geautomatiseerde actoren opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GeautomatiseerdeActor'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - geautomatiseerde actoren
+    post:
+      operationId: geautomatiseerdeactor_create
+      summary: Maak een geautomatiseerde actor aan.
+      description: Maak een geautomatiseerde actor aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/GeautomatiseerdeActor'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeautomatiseerdeActor'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - geautomatiseerde actoren
+    parameters: []
+  /geautomatiseerde actoren/{id}:
+    get:
+      operationId: geautomatiseerdeactor_read
+      summary: Een specifiek geautomatiseerde actor opvragen.
+      description: Een specifiek geautomatiseerde actor opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeautomatiseerdeActor'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - geautomatiseerde actoren
+    put:
+      operationId: geautomatiseerdeactor_update
+      summary: Werk een geautomatiseerde actor in zijn geheel bij.
+      description: Werk een geautomatiseerde actor in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/GeautomatiseerdeActor'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeautomatiseerdeActor'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - geautomatiseerde actoren
+    patch:
+      operationId: geautomatiseerdeactor_partial_update
+      summary: Werk een geautomatiseerde actor deels bij.
+      description: Werk een geautomatiseerde actor deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/GeautomatiseerdeActor'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeautomatiseerdeActor'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - geautomatiseerde actoren
+    delete:
+      operationId: geautomatiseerdeactor_delete
+      summary: Verwijder een geautomatiseerde actor.
+      description: Verwijder een geautomatiseerde actor.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - geautomatiseerde actoren
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this geautomatiseerde actor.
+      required: true
+      schema:
+        type: integer
+  /interne taak:
+    get:
+      operationId: internetaak_list
+      summary: Alle interne taken opvragen.
+      description: Alle interne taken opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InterneTaak'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - interne taak
+    post:
+      operationId: internetaak_create
+      summary: Maak een interne taak aan.
+      description: Maak een interne taak aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/InterneTaak'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterneTaak'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - interne taak
+    parameters: []
+  /interne taak/{uuid}:
+    get:
+      operationId: internetaak_read
+      summary: Een specifiek interne taak opvragen.
+      description: Een specifiek interne taak opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterneTaak'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - interne taak
+    put:
+      operationId: internetaak_update
+      summary: Werk een interne taak in zijn geheel bij.
+      description: Werk een interne taak in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/InterneTaak'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterneTaak'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - interne taak
+    patch:
+      operationId: internetaak_partial_update
+      summary: Werk een interne taak deels bij.
+      description: Werk een interne taak deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/InterneTaak'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterneTaak'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - interne taak
+    delete:
+      operationId: internetaak_delete
+      summary: Verwijder een interne taak.
+      description: Verwijder een interne taak.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - interne taak
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke (technische) identificatiecode van de interne taak.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /klantcontact:
+    get:
+      operationId: klantcontact_list
+      summary: Alle klanten contacten opvragen.
+      description: Alle klanten contacten opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Klantcontact'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontact
+    post:
+      operationId: klantcontact_create
+      summary: Maak een klant contact aan.
+      description: Maak een klant contact aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Klantcontact'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Klantcontact'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontact
+    parameters: []
+  /klantcontact/{uuid}:
+    get:
+      operationId: klantcontact_read
+      summary: Een specifiek klant contact opvragen.
+      description: Een specifiek klant contact opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Klantcontact'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontact
+    put:
+      operationId: klantcontact_update
+      summary: Werk een klant contact in zijn geheel bij.
+      description: Werk een klant contact in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Klantcontact'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Klantcontact'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontact
+    patch:
+      operationId: klantcontact_partial_update
+      summary: Werk een klant contact deels bij.
+      description: Werk een klant contact deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Klantcontact'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Klantcontact'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontact
+    delete:
+      operationId: klantcontact_delete
+      summary: Verwijder een klant contact.
+      description: Verwijder een klant contact.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - klantcontact
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke (technische) identificatiecode van de betrokkene bij klantcontact.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /medewerker:
+    get:
+      operationId: medewerker_list
+      summary: Alle medewerkers opvragen.
+      description: Alle medewerkers opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Medewerker'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - medewerker
+    post:
+      operationId: medewerker_create
+      summary: Maak een medewerker aan.
+      description: Maak een medewerker aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Medewerker'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medewerker'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - medewerker
+    parameters: []
+  /medewerker/{id}:
+    get:
+      operationId: medewerker_read
+      summary: Een specifiek medewerker opvragen.
+      description: Een specifiek medewerker opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medewerker'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - medewerker
+    put:
+      operationId: medewerker_update
+      summary: Werk een medewerker in zijn geheel bij.
+      description: Werk een medewerker in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Medewerker'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medewerker'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - medewerker
+    patch:
+      operationId: medewerker_partial_update
+      summary: Werk een medewerker deels bij.
+      description: Werk een medewerker deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Medewerker'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medewerker'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - medewerker
+    delete:
+      operationId: medewerker_delete
+      summary: Verwijder een medewerker.
+      description: Verwijder een medewerker.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - medewerker
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this medewerker.
+      required: true
+      schema:
+        type: integer
+  /organisatie:
+    get:
+      operationId: organisatie_list
+      summary: Alle organisaties opvragen.
+      description: Alle organisaties opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organisatie'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatie
+    post:
+      operationId: organisatie_create
+      summary: Maak een organisatie aan.
+      description: Maak een organisatie aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Organisatie'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisatie'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatie
+    parameters: []
+  /organisatie/{id}:
+    get:
+      operationId: organisatie_read
+      summary: Een specifiek organisatie opvragen.
+      description: Een specifiek organisatie opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisatie'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatie
+    put:
+      operationId: organisatie_update
+      summary: Werk een organisatie in zijn geheel bij.
+      description: Werk een organisatie in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Organisatie'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisatie'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatie
+    patch:
+      operationId: organisatie_partial_update
+      summary: Werk een organisatie deels bij.
+      description: Werk een organisatie deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Organisatie'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisatie'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatie
+    delete:
+      operationId: organisatie_delete
+      summary: Verwijder een organisatie.
+      description: Verwijder een organisatie.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatie
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this organisatie.
+      required: true
+      schema:
+        type: integer
+  /organisatorische-eenheid:
+    get:
+      operationId: organisatorischeeenheid_list
+      summary: Alle organisatorische eenheid opvragen.
+      description: Alle organisatorische eenheid opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrganisatorischeEenheid'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatorische-eenheid
+    post:
+      operationId: organisatorischeeenheid_create
+      summary: Maak een organisatorische eenheid aan.
+      description: Maak een organisatorische eenheid aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/OrganisatorischeEenheid'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganisatorischeEenheid'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatorische-eenheid
+    parameters: []
+  /organisatorische-eenheid/{id}:
+    get:
+      operationId: organisatorischeeenheid_read
+      summary: Een specifiek organisatorische eenheid opvragen.
+      description: Een specifiek organisatorische eenheid opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganisatorischeEenheid'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatorische-eenheid
+    put:
+      operationId: organisatorischeeenheid_update
+      summary: Werk een organisatorische eenheid in zijn geheel bij.
+      description: Werk een organisatorische eenheid in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/OrganisatorischeEenheid'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganisatorischeEenheid'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatorische-eenheid
+    patch:
+      operationId: organisatorischeeenheid_partial_update
+      summary: Werk een organisatorische eenheid deels bij.
+      description: Werk een organisatorische eenheid deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/OrganisatorischeEenheid'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganisatorischeEenheid'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatorische-eenheid
+    delete:
+      operationId: organisatorischeeenheid_delete
+      summary: Verwijder een organisatorische eenheid.
+      description: Verwijder een organisatorische eenheid.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - organisatorische-eenheid
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this organisatorische eenheid.
+      required: true
+      schema:
+        type: integer
+  /partij:
+    get:
+      operationId: partij_list
+      summary: Alle partijen opvragen.
+      description: Alle partijen opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Partij'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    post:
+      operationId: partij_create
+      summary: Maak een partij aan.
+      description: Maak een partij aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Partij'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partij'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    parameters: []
+  /partij identificator:
+    get:
+      operationId: partijidentificator_list
+      summary: Alle partij-identificatoren opvragen.
+      description: Alle partij-identificatoren opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PartijIdentificator'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij identificator
+    post:
+      operationId: partijidentificator_create
+      summary: Maak een partij-identificator aan.
+      description: Maak een partij-identificator aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/PartijIdentificator'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartijIdentificator'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij identificator
+    parameters: []
+  /partij identificator/{uuid}:
+    get:
+      operationId: partijidentificator_read
+      summary: Een specifiek partij-identificator opvragen.
+      description: Een specifiek partij-identificator opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartijIdentificator'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij identificator
+    put:
+      operationId: partijidentificator_update
+      summary: Werk een partij-identificator in zijn geheel bij.
+      description: Werk een partij-identificator in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/PartijIdentificator'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartijIdentificator'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij identificator
+    patch:
+      operationId: partijidentificator_partial_update
+      summary: Werk een partij-identificator deels bij.
+      description: Werk een partij-identificator deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/PartijIdentificator'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartijIdentificator'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij identificator
+    delete:
+      operationId: partijidentificator_delete
+      summary: Verwijder een partij-identificator.
+      description: Verwijder een partij-identificator.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij identificator
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke (technische) identificatiecode van de partij-identificator.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /partij/{uuid}:
+    get:
+      operationId: partij_read
+      summary: Een specifiek partij opvragen.
+      description: Een specifiek partij opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partij'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    put:
+      operationId: partij_update
+      summary: Werk een partij in zijn geheel bij.
+      description: Werk een partij in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Partij'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partij'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    patch:
+      operationId: partij_partial_update
+      summary: Werk een partij deels bij.
+      description: Werk een partij deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Partij'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partij'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    delete:
+      operationId: partij_delete
+      summary: Verwijder een partij.
+      description: Verwijder een partij.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke (technische) identificatiecode van de partij.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /persoon:
+    get:
+      operationId: persoon_list
+      summary: Alle personen opvragen.
+      description: Alle personen opvragen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                    nullable: true
+                  previous:
+                    type: string
+                    format: uri
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Persoon'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - persoon
+    post:
+      operationId: persoon_create
+      summary: Maak een persoon aan.
+      description: Maak een persoon aan.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Persoon'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persoon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - persoon
+    parameters: []
+  /persoon/{id}:
+    get:
+      operationId: persoon_read
+      summary: Een specifiek persoon opvragen.
+      description: Een specifiek persoon opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persoon'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - persoon
+    put:
+      operationId: persoon_update
+      summary: Werk een persoon in zijn geheel bij.
+      description: Werk een persoon in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Persoon'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persoon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - persoon
+    patch:
+      operationId: persoon_partial_update
+      summary: Werk een persoon deels bij.
+      description: Werk een persoon deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Persoon'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persoon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - persoon
+    delete:
+      operationId: persoon_delete
+      summary: Verwijder een persoon.
+      description: Verwijder een persoon.
+      parameters:
+      - name: X-NLX-Logrecord-ID
+        in: header
+        description: Identifier of the request, traceable throughout the network
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - persoon
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this persoon.
+      required: true
+      schema:
+        type: integer
+servers:
+- url: /klantinteracties/api/v1
+components:
+  responses:
+    '400':
+      description: Bad request
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ValidatieFout'
+    '401':
+      description: Unauthorized
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '403':
+      description: Forbidden
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '404':
+      description: Not found
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '406':
+      description: Not acceptable
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '409':
+      description: Conflict
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '410':
+      description: Gone
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '412':
+      description: Precondition failed
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '415':
+      description: Unsupported media type
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '429':
+      description: Too many requests
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '500':
+      description: Internal server error
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+  requestBodies:
+    Medewerker:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Medewerker'
+      required: true
+    PartijIdentificator:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartijIdentificator'
+      required: true
+    InterneTaak:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InterneTaak'
+      required: true
+    Betrokkene:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Betrokkene'
+      required: true
+    Actor:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Actor'
+      required: true
+    Contactpersoon:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Contactpersoon'
+      required: true
+    DigitaalAdres:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DigitaalAdres'
+      required: true
+    GeautomatiseerdeActor:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeautomatiseerdeActor'
+      required: true
+    Klantcontact:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Klantcontact'
+      required: true
+    Organisatie:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Organisatie'
+      required: true
+    OrganisatorischeEenheid:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisatorischeEenheid'
+      required: true
+    Partij:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Partij'
+      required: true
+    Persoon:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Persoon'
+      required: true
+  securitySchemes:
+    JWT-Claims:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Objectidentificator:
+      description: Gegevens die een onderwerpobject in een extern register uniek identificeren.
+      required:
+      - objecttype
+      - soortObjectId
+      - objectId
+      - register
+      type: object
+      properties:
+        objecttype:
+          title: Objecttype
+          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+            PERSOON''.'
+          type: string
+          maxLength: 200
+          minLength: 1
+        soortObjectId:
+          title: Soort object id
+          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''Burgerservicenummer''.'
+          type: string
+          maxLength: 200
+          minLength: 1
+        objectId:
+          title: Object-id
+          description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''123456788''.'
+          type: string
+          maxLength: 200
+          minLength: 1
+        register:
+          title: Register
+          description: 'Binnen het landschap van registers unieke omschrijving van
+            het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          type: string
+          maxLength: 200
+          minLength: 1
+      nullable: true
+    Actor:
+      required:
+      - naam
+      - soortActor
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de actor.
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        naam:
+          title: Naam
+          description: Naam van de actor.
+          type: string
+          maxLength: 200
+          minLength: 1
+        soortActor:
+          title: Soort actor
+          description: Geeft aan van welke specifieke soort actor sprake is.
+          type: string
+          enum:
+          - medewerker
+          - geautomatiseerde_actor
+          - organisatorische_eenheid
+        indicatieActief:
+          title: Indicatie actief
+          description: Geeft aan of aan de actor nog betrokken mag worden bij nieuwe
+            klantcontacten. Voor niet-actieve is dit niet toegestaan.
+          type: boolean
+        objectidentificator:
+          $ref: '#/components/schemas/Objectidentificator'
+    Fout:
+      required:
+      - code
+      - title
+      - status
+      - detail
+      - instance
+      type: object
+      properties:
+        type:
+          title: Type
+          description: URI referentie naar het type fout, bedoeld voor developers
+          type: string
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          minLength: 1
+        title:
+          title: Title
+          description: Generieke titel voor het type fout
+          type: string
+          minLength: 1
+        status:
+          title: Status
+          description: De HTTP status code
+          type: integer
+        detail:
+          title: Detail
+          description: Extra informatie bij de fout, indien beschikbaar
+          type: string
+          minLength: 1
+        instance:
+          title: Instance
+          description: URI met referentie naar dit specifiek voorkomen van de fout.
+            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
+          type: string
+          minLength: 1
+    FieldValidationError:
+      required:
+      - name
+      - code
+      - reason
+      type: object
+      properties:
+        name:
+          title: Name
+          description: Naam van het veld met ongeldige gegevens
+          type: string
+          minLength: 1
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          minLength: 1
+        reason:
+          title: Reason
+          description: Uitleg wat er precies fout is met de gegevens
+          type: string
+          minLength: 1
+    ValidatieFout:
+      required:
+      - code
+      - title
+      - status
+      - detail
+      - instance
+      - invalidParams
+      type: object
+      properties:
+        type:
+          title: Type
+          description: URI referentie naar het type fout, bedoeld voor developers
+          type: string
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          minLength: 1
+        title:
+          title: Title
+          description: Generieke titel voor het type fout
+          type: string
+          minLength: 1
+        status:
+          title: Status
+          description: De HTTP status code
+          type: integer
+        detail:
+          title: Detail
+          description: Extra informatie bij de fout, indien beschikbaar
+          type: string
+          minLength: 1
+        instance:
+          title: Instance
+          description: URI met referentie naar dit specifiek voorkomen van de fout.
+            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
+          type: string
+          minLength: 1
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldValidationError'
+    KlantcontactForeignKey:
+      description: Persoon of organisatie die betrokken was bij een klantcontact.
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de betrokkene bij
+            klantcontact.
+          type: string
+          format: uuid
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        nummer:
+          title: Nummer
+          description: Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+          type: string
+          readOnly: true
+          minLength: 1
+        kanaal:
+          title: Kanaal
+          description: Communicatiekanaal dat bij het klantcontact werd gebruikt.
+          type: string
+          readOnly: true
+          minLength: 1
+        onderwerp:
+          title: Onderwerp
+          description: Datgene waarover het klantcontact ging.
+          type: string
+          readOnly: true
+          minLength: 1
+    DigitaalAdresForeignKey:
+      description: Digitaal adres dat een betrokkene bij klantcontact verstrekte voor
+        gebruik bij opvolging van een klantcontact.
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van het digitaal adres.
+          type: string
+          format: uuid
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        adres:
+          title: Adres
+          description: Digitaal adres waarmee een persoon of organisatie bereikt kan
+            worden.
+          type: string
+          readOnly: true
+          minLength: 1
+      nullable: true
+    Bezoekadres:
+      description: Adres waarop de betrokkene bij klantcontact in naar aanleiding
+        van dat contact af te leggen bezoeken wil ontvangen. Dit mag afwijken van
+        voor de verstrekker eventueel in een basisregistratie bekende adressen.
+      required:
+      - nummeraanduidingId
+      - adresregel1
+      - adresregel2
+      - adresregel3
+      - land
+      type: object
+      properties:
+        nummeraanduidingId:
+          title: Nummeraanduiding id
+          description: Identificatie van het adres bij de Basisregistratie Adressen
+            en Gebouwen.
+          type: string
+          maxLength: 255
+          minLength: 1
+        adresregel1:
+          title: Adresregel 1
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        adresregel2:
+          title: Adresregel 2
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        adresregel3:
+          title: Adresregel 3
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        land:
+          title: Land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
+            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
+          type: string
+          maxLength: 4
+          minLength: 4
+      nullable: true
+    Contactnaam:
+      description: Naam die de betrokkene bij klantcontact tijdens vervolghandelingen
+        naar aanleiding van dat contact wil gebruiken. Deze mag afwijken van eventueel
+        in de Basisregistratie Personen (BRP) bekende naam van de betrokkene.
+      required:
+      - voorletters
+      - voornaam
+      - voorvoegselAchternaam
+      - achternaam
+      type: object
+      properties:
+        voorletters:
+          title: Voorletters
+          description: Een afkorting van de voornamen. Meestal de beginletter, maar
+            in sommige gevallen de beginletter gecombineerd met de tweede letter van
+            een voornaam.
+          type: string
+          maxLength: 10
+          minLength: 1
+        voornaam:
+          title: Voornaam
+          description: De voornaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+          minLength: 1
+        voorvoegselAchternaam:
+          title: Voorvoegsel achternaam
+          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
+            persoon wil gebruiken tijdens communicatie met de gemeente.
+          type: string
+          maxLength: 10
+          minLength: 1
+        achternaam:
+          title: Achternaam
+          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+          minLength: 1
+      nullable: true
+    Betrokkene:
+      required:
+      - klantcontact
+      - rol
+      - initiator
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de betrokkene bij
+            klantcontact.
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        klantcontact:
+          $ref: '#/components/schemas/KlantcontactForeignKey'
+        digitaalAdres:
+          $ref: '#/components/schemas/DigitaalAdresForeignKey'
+        bezoekadres:
+          $ref: '#/components/schemas/Bezoekadres'
+        correspondentieadres:
+          $ref: '#/components/schemas/betrokkene_correspondentieadres'
+        contactnaam:
+          $ref: '#/components/schemas/Contactnaam'
+        rol:
+          title: Rol
+          description: Rol die de betrokkene bij klantcontact tijdens dat contact
+            vervulde.
+          type: string
+          enum:
+          - vertegenwoordiger
+          - klant
+        organisatienaam:
+          title: Organisatienaam
+          description: Naam van de organisatie waarmee de betrokkene bij klantcontact
+            een relatie had.
+          type: string
+          maxLength: 200
+        initiator:
+          title: Initiator
+          type: boolean
+    PartijForeignKey:
+      description: Persoon of organisatie waarmee de gemeente een relatie heeft.
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de partij.
+          type: string
+          format: uuid
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        nummer:
+          title: Nummer
+          description: Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om de specifieke partij aan te duiden.
+          type: string
+          readOnly: true
+          minLength: 1
+        interneNotitie:
+          title: Interne notitie
+          description: Mededelingen, aantekeningen of bijzonderheden over de partij,
+            bedoeld voor intern gebruik.
+          type: string
+          readOnly: true
+          minLength: 1
+    OrganisatieForeignKey:
+      description: Organisatie waarvoor een contactpersoon werkte.
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        naam:
+          title: Naam
+          description: Naam van de organisatie.
+          type: string
+          readOnly: true
+          minLength: 1
+    ContactpersoonPersoon:
+      description: Naam die een contactpersoon wil gebruiken tijdens contact met de
+        gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen
+        (BRP) bekende naam van de contactpersoon.
+      required:
+      - voorletters
+      - voornaam
+      - voorvoegselAchternaam
+      - achternaam
+      type: object
+      properties:
+        voorletters:
+          title: Voorletters
+          description: Een afkorting van de voornamen. Meestal de beginletter, maar
+            in sommige gevallen de beginletter gecombineerd met de tweede letter van
+            een voornaam.
+          type: string
+          maxLength: 10
+          minLength: 1
+        voornaam:
+          title: Voornaam
+          description: De voornaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+          minLength: 1
+        voorvoegselAchternaam:
+          title: Voorvoegsel achternaam
+          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
+            persoon wil gebruiken tijdens communicatie met de gemeente.
+          type: string
+          maxLength: 10
+          minLength: 1
+        achternaam:
+          title: Achternaam
+          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+          minLength: 1
+      nullable: true
+    Contactpersoon:
+      required:
+      - partij
+      - organisatie
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        partij:
+          $ref: '#/components/schemas/PartijForeignKey'
+        organisatie:
+          $ref: '#/components/schemas/OrganisatieForeignKey'
+        contact:
+          $ref: '#/components/schemas/ContactpersoonPersoon'
+    DigitaalAdres:
+      required:
+      - adres
+      - soortDigitaalAdres
+      - omschrijving
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van het digitaal adres.
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        adres:
+          title: Adres
+          description: Digitaal adres waarmee een persoon of organisatie bereikt kan
+            worden.
+          type: string
+          maxLength: 80
+          minLength: 1
+        soortDigitaalAdres:
+          title: Soort digitaal adres
+          description: Typering van het digitale adres die aangeeft via welk(e) kanaal
+            of kanalen met dit adres contact kan worden opgenomen.
+          type: string
+          maxLength: 255
+          minLength: 1
+        omschrijving:
+          title: Omschrijving
+          description: Omschrijving van het digitaal adres.
+          type: string
+          maxLength: 40
+          minLength: 1
+    ActorForeignKey:
+      description: Iets dat of iemand die voor de gemeente werkzaamheden uitvoert.
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de actor.
+          type: string
+          format: uuid
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        naam:
+          title: Naam
+          description: Naam van de actor.
+          type: string
+          readOnly: true
+          minLength: 1
+    GeautomatiseerdeActor:
+      required:
+      - actor
+      - functie
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        actor:
+          $ref: '#/components/schemas/ActorForeignKey'
+        functie:
+          title: Functie
+          description: Functie van de geautomatiseerde actor of beschrijving van de
+            werkzaamheden die deze uitvoert.
+          type: string
+          maxLength: 40
+          minLength: 1
+        omschrijving:
+          title: Omschrijving
+          description: Omschrijving van de geautomatiseerde actor.
+          type: string
+          maxLength: 200
+    InterneTaak:
+      required:
+      - nummer
+      - gevraagdeHandeling
+      - actor
+      - klantcontact
+      - toelichting
+      - status
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de interne taak.
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        nummer:
+          title: Nummer
+          description: Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+          type: string
+          maxLength: 10
+          minLength: 1
+        gevraagdeHandeling:
+          title: Gevraagde handeling
+          description: Handeling die moet worden uitgevoerd om de taak af te ronden.
+          type: string
+          maxLength: 200
+          minLength: 1
+        actor:
+          $ref: '#/components/schemas/ActorForeignKey'
+        klantcontact:
+          $ref: '#/components/schemas/KlantcontactForeignKey'
+        toelichting:
+          title: Toelichting
+          description: Toelichting die, aanvullend bij de inhoud van het klantcontact
+            dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan
+            het kunnen afhandelen van de taak.
+          type: string
+          maxLength: 400
+          minLength: 1
+        status:
+          title: Status
+          description: Aanduiding van de vordering bij afhandeling van de interne
+            taak.
+          type: string
+          enum:
+          - te_verwerken
+          - verwerkt
+        toegewezenOp:
+          title: Toegewezen op
+          description: Datum en tijdstip waarop de interne taak aan een actor werd
+            toegewezen.
+          type: string
+          format: date-time
+          readOnly: true
+    Klantcontact:
+      required:
+      - nummer
+      - kanaal
+      - onderwerp
+      - actoren
+      - taal
+      - vertrouwelijk
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de betrokkene bij
+            klantcontact.
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        nummer:
+          title: Nummer
+          description: Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+          type: string
+          maxLength: 10
+          minLength: 1
+        kanaal:
+          title: Kanaal
+          description: Communicatiekanaal dat bij het klantcontact werd gebruikt.
+          type: string
+          maxLength: 50
+          minLength: 1
+        onderwerp:
+          title: Onderwerp
+          description: Datgene waarover het klantcontact ging.
+          type: string
+          maxLength: 200
+          minLength: 1
+        actoren:
+          $ref: '#/components/schemas/ActorForeignKey'
+        inhoud:
+          title: Inhoud
+          description: Informatie die tijdens het klantcontact werd overgebracht of
+            uitgewisseld, voor zover die voor betrokkenen of actoren relevant is.
+          type: string
+          maxLength: 1000
+        indicatieContactGelukt:
+          title: Indicatie contact gelukt
+          description: Geeft, indien bekend, aan of de poging contact tussen de gemeente
+            en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
+          type: boolean
+          nullable: true
+        taal:
+          title: Taal
+          description: Taal die bij het klantcontact werd gesproken of geschreven.
+          type: string
+          maxLength: 255
+          minLength: 1
+        vertrouwelijk:
+          title: Vertrouwelijk
+          description: Geeft aan of onderwerp, inhoud en kenmerken van het klantcontact
+            vertrouwelijk moeten worden behandeld.
+          type: boolean
+        plaatsgevondenOp:
+          title: Plaatsgevonden op
+          description: Datum en tijdstip waarop het klantontact plaatsvond. Als het
+            klantcontact een gesprek betrof, is dit het moment waarop het gesprek
+            begon. Als het klantcontact verzending of ontvangst van informatie betrof,
+            is dit bij benadering het moment waarop informatie door gemeente verzonden
+            of ontvangen werd.
+          type: string
+          format: date-time
+    Medewerker:
+      required:
+      - actor
+      - functie
+      - telefoonnummer
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        actor:
+          $ref: '#/components/schemas/ActorForeignKey'
+        functie:
+          title: Functie
+          description: Functie van de geautomatiseerde actor of beschrijving van de
+            werkzaamheden die deze uitvoert.
+          type: string
+          maxLength: 40
+          minLength: 1
+        emailadres:
+          title: E-mailadres
+          description: Elektronisch postadres waaronder de MEDEWERKER in de regel
+            bereikbaar is.
+          type: string
+          format: email
+          maxLength: 254
+        telefoonnummer:
+          title: Telefoonnummer
+          description: Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar
+            is.
+          type: string
+          maxLength: 20
+          minLength: 1
+    Organisatie:
+      required:
+      - partij
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        naam:
+          title: Naam
+          description: Naam van de organisatie.
+          type: string
+          maxLength: 200
+        partij:
+          $ref: '#/components/schemas/PartijForeignKey'
+    OrganisatorischeEenheid:
+      required:
+      - actor
+      - faxnummer
+      - telefoonnummer
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        actor:
+          $ref: '#/components/schemas/ActorForeignKey'
+        omschrijving:
+          title: Omschrijving
+          description: Omschrijving van de geautomatiseerde actor.
+          type: string
+          maxLength: 200
+        emailadres:
+          title: E-mailadres
+          description: Elektronisch postadres waaronder de MEDEWERKER in de regel
+            bereikbaar is.
+          type: string
+          format: email
+          maxLength: 254
+        faxnummer:
+          title: Faxnummer
+          description: Faxnummer waaronder de organisatorische eenheid in de regel
+            bereikbaar is.
+          type: string
+          maxLength: 20
+          minLength: 1
+        telefoonnummer:
+          title: Telefoonnummer
+          description: Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar
+            is.
+          type: string
+          maxLength: 20
+          minLength: 1
+    BetrokkeneForeignKey:
+      description: Betrokkene bij klantcontact die een partij was.
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de betrokkene bij
+            klantcontact.
+          type: string
+          format: uuid
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+    PartijBezoekadres:
+      description: Adres waarop de partij door gemeente bezocht wil worden. Dit mag
+        afwijken van voor de verstrekker eventueel in een basisregistratie bekende
+        adressen.
+      required:
+      - nummeraanduidingId
+      - adresregel1
+      - adresregel2
+      - adresregel3
+      - land
+      type: object
+      properties:
+        nummeraanduidingId:
+          title: Nummeraanduiding id
+          description: Identificatie van het adres bij de Basisregistratie Adressen
+            en Gebouwen.
+          type: string
+          maxLength: 255
+          minLength: 1
+        adresregel1:
+          title: Adresregel 1
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        adresregel2:
+          title: Adresregel 2
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        adresregel3:
+          title: Adresregel 3
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        land:
+          title: Land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
+            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
+          type: string
+          maxLength: 4
+          minLength: 4
+      nullable: true
+    Partij:
+      required:
+      - nummer
+      - betrokkene
+      - digitaalAdres
+      - voorkeursDigitaalAdres
+      - vertegenwoordigde
+      - soortPartij
+      - indicatieGeheimhouding
+      - indicatieActief
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de partij.
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        nummer:
+          title: Nummer
+          description: Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om de specifieke partij aan te duiden.
+          type: string
+          maxLength: 10
+          minLength: 1
+        interneNotitie:
+          title: Interne notitie
+          description: Mededelingen, aantekeningen of bijzonderheden over de partij,
+            bedoeld voor intern gebruik.
+          type: string
+          maxLength: 1000
+        betrokkene:
+          $ref: '#/components/schemas/BetrokkeneForeignKey'
+        digitaalAdres:
+          $ref: '#/components/schemas/DigitaalAdresForeignKey'
+        voorkeursDigitaalAdres:
+          $ref: '#/components/schemas/DigitaalAdresForeignKey'
+        vertegenwoordigde:
+          $ref: '#/components/schemas/PartijForeignKey'
+        soortPartij:
+          title: Soort partij
+          description: Geeft aan van welke specifieke soort partij sprake is.
+          type: string
+          enum:
+          - persoon
+          - organisatie
+          - contactpersoon
+        indicatieGeheimhouding:
+          title: Indicatie geheimhouding
+          description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
+            dat deze gegevens als geheim beschouwd moeten worden.
+          type: boolean
+        voorkeurstaal:
+          title: Voorkeurstaal
+          description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
+            contact heeft met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html'
+          type: string
+          maxLength: 3
+        indicatieActief:
+          title: Indicatie actief
+          description: Geeft aan of de contactgegevens van de partij nog gebruikt
+            morgen worden om contact op te nemen. Gegevens van niet-actieve partijen
+            mogen hiervoor niet worden gebruikt.
+          type: boolean
+        bezoekadres:
+          $ref: '#/components/schemas/PartijBezoekadres'
+        correspondentieadres:
+          $ref: '#/components/schemas/partij_correspondentieadres_serializer'
+    PartijIdentificatorGroepType:
+      description: Gegevens die een partij in een basisregistratie of ander extern
+        register uniek identificeren.
+      required:
+      - objecttype
+      - soortObjectId
+      - objectId
+      - register
+      type: object
+      properties:
+        objecttype:
+          title: Objecttype
+          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+            PERSOON''.'
+          type: string
+          maxLength: 200
+          minLength: 1
+        soortObjectId:
+          title: Soort object id
+          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''Burgerservicenummer''.'
+          type: string
+          maxLength: 200
+          minLength: 1
+        objectId:
+          title: Object-id
+          description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''123456788''.'
+          type: string
+          maxLength: 200
+          minLength: 1
+        register:
+          title: Register
+          description: 'Binnen het landschap van registers unieke omschrijving van
+            het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          type: string
+          maxLength: 200
+          minLength: 1
+      nullable: true
+    PartijIdentificator:
+      required:
+      - partij
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de partij-identificator.
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        partij:
+          $ref: '#/components/schemas/PartijForeignKey'
+        anderePartijIdentificator:
+          title: Andere partij indetificator
+          description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
+            objecttype, soort objectID of Register vast te leggen. '
+          type: string
+          maxLength: 200
+        partijIdentificator:
+          $ref: '#/components/schemas/PartijIdentificatorGroepType'
+    PersoonContact:
+      description: Naam die een persoon wil gebruiken tijdens contact met de gemeente.
+        Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende
+        naam van de persoon.
+      required:
+      - voorletters
+      - voornaam
+      - voorvoegselAchternaam
+      - achternaam
+      type: object
+      properties:
+        voorletters:
+          title: Voorletters
+          description: Een afkorting van de voornamen. Meestal de beginletter, maar
+            in sommige gevallen de beginletter gecombineerd met de tweede letter van
+            een voornaam.
+          type: string
+          maxLength: 10
+          minLength: 1
+        voornaam:
+          title: Voornaam
+          description: De voornaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+          minLength: 1
+        voorvoegselAchternaam:
+          title: Voorvoegsel achternaam
+          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
+            persoon wil gebruiken tijdens communicatie met de gemeente.
+          type: string
+          maxLength: 10
+          minLength: 1
+        achternaam:
+          title: Achternaam
+          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+          minLength: 1
+      nullable: true
+    Persoon:
+      required:
+      - partij
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
+        partij:
+          $ref: '#/components/schemas/PartijForeignKey'
+        contact:
+          $ref: '#/components/schemas/PersoonContact'
+    betrokkene_correspondentieadres:
+      description: Adres waarop de betrokkene bij klantcontact naar aanleiding van
+        dat contact te versturen post wil ontvangen. Dit mag afwijken van voor de
+        verstrekker eventueel in een basisregistratie bekende adressen.
+      required:
+      - nummeraanduidingId
+      - adresregel1
+      - adresregel2
+      - adresregel3
+      - land
+      type: object
+      properties:
+        nummeraanduidingId:
+          title: Nummeraanduiding ID
+          description: Identificatie van het adres bij de Basisregistratie Adressen
+            en Gebouwen.
+          type: string
+          maxLength: 255
+          minLength: 1
+        adresregel1:
+          title: Adresregel 1
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        adresregel2:
+          title: Adresregel 2
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        adresregel3:
+          title: Adresregel 3
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        land:
+          title: Land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
+            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
+          type: string
+          maxLength: 4
+          minLength: 4
+      nullable: true
+    partij_correspondentieadres_serializer:
+      description: Adres waarop de partij post van de gemeente wil ontvangen. Dit
+        mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende
+        adressen.
+      required:
+      - nummeraanduidingId
+      - adresregel1
+      - adresregel2
+      - adresregel3
+      - land
+      type: object
+      properties:
+        nummeraanduidingId:
+          title: Nummeraanduiding ID
+          description: Identificatie van het adres bij de Basisregistratie Adressen
+            en Gebouwen.
+          type: string
+          maxLength: 255
+          minLength: 1
+        adresregel1:
+          title: Adresregel 1
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        adresregel2:
+          title: Adresregel 2
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        adresregel3:
+          title: Adresregel 3
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          type: string
+          maxLength: 80
+          minLength: 1
+        land:
+          title: Land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
+            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
+          type: string
+          maxLength: 4
+          minLength: 4
+      nullable: true

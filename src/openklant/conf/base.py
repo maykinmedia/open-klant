@@ -380,6 +380,14 @@ SPEC_URL = {
         "contactmomenten",
         "openapi.yaml",
     ),
+    "klantinteracties": os.path.join(
+        BASE_DIR,
+        "src",
+        "openklant",
+        "components",
+        "klantinteracties",
+        "openapi.yaml",
+    ),
 }
 
 # settings for sending notifications
