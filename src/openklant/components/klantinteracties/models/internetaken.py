@@ -51,6 +51,7 @@ class InterneTaak(models.Model):
             "bijdraagt aan het kunnen afhandelen van de taak."
         ),
         max_length=400,
+        blank=True,
     )
     status = models.CharField(
         _("status"),

@@ -24,6 +24,7 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
         verbose_name=_("betrokkene"),
         help_text=_("'Betrokkene bij klantcontact' was 'Partij'"),
         null=True,
+        blank=True,
     )
     digitaal_adres = models.ForeignKey(
         DigitaalAdres,
@@ -31,6 +32,7 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
         verbose_name=_("digitaal adres"),
         help_text=_("'Digitaal Adres' was 'Partij'"),
         null=True,
+        blank=True,
     )
     voorkeurs_digitaal_adres = models.ForeignKey(
         DigitaalAdres,
@@ -39,6 +41,7 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
         verbose_name=_("voorkeurs digitaal adres"),
         help_text=_("'Partij' gaf voorkeur aan voor contact via 'Digitaal adres'"),
         null=True,
+        blank=True,
     )
     vertegenwoordigde = models.ManyToManyField(
         "self",
@@ -98,6 +101,9 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
         verbose_name = _("partij")
         verbose_name_plural = _("partijen")
 
+        def __str__(self):
+            return self.nummer
+
 
 class Organisatie(models.Model):
     partij = models.ForeignKey(
@@ -117,8 +123,8 @@ class Organisatie(models.Model):
         verbose_name = _("organisatie")
         verbose_name_plural = _("organisaties")
 
-        def __str__(self) -> str:
-            return self.naam
+    def __str__(self):
+        return self.naam
 
 
 class Persoon(ContactnaamMixin):
@@ -133,8 +139,8 @@ class Persoon(ContactnaamMixin):
         verbose_name = _("persoon")
         verbose_name_plural = _("personen")
 
-        def __str__(self) -> str:
-            return self.contactnaam_voorletters
+    def __str__(self):
+        return self.contactnaam_voorletters
 
 
 class Contactpersoon(ContactnaamMixin):
@@ -156,8 +162,8 @@ class Contactpersoon(ContactnaamMixin):
         verbose_name = _("contact persoon")
         verbose_name_plural = _("contact personen")
 
-        def __str__(self) -> str:
-            return self.contactnaam_voorletters
+    def __str__(self):
+        return self.contactnaam_voorletters
 
 
 class PartijIdentificator(models.Model):
@@ -192,23 +198,23 @@ class PartijIdentificator(models.Model):
             "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
         ),
         max_length=200,
-        blank=False,
+        blank=True,
     )
     partij_identificator_soort_object_id = models.CharField(
-        _("soort object id"),
+        _("soort object ID"),
         help_text=_(
             "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
         ),
         max_length=200,
-        blank=False,
+        blank=True,
     )
     partij_identificator_object_id = models.CharField(
-        _("object id"),
+        _("object ID"),
         help_text=_(
             "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
         ),
         max_length=200,
-        blank=False,
+        blank=True,
     )
     partij_identificator_register = models.CharField(
         _("register"),
@@ -217,7 +223,7 @@ class PartijIdentificator(models.Model):
             "het object is geregistreerd, bijvoorbeeld: 'BRP'."
         ),
         max_length=200,
-        blank=False,
+        blank=True,
     )
 
     partij_identificator = GegevensGroepType(
@@ -226,7 +232,13 @@ class PartijIdentificator(models.Model):
             "soort_object_id": partij_identificator_soort_object_id,
             "object_id": partij_identificator_object_id,
             "register": partij_identificator_register,
-        }
+        },
+        optional=(
+            "objecttype",
+            "soort_object_id",
+            "object_id",
+            "register",
+        ),
     )
 
     class Meta:

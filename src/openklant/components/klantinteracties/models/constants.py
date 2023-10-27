@@ -5,7 +5,7 @@ from djchoices import ChoiceItem, DjangoChoices
 
 class Taakstatus(DjangoChoices):
     te_verwerken = ChoiceItem("te_verwerken", _("Het verzoek is afgehandeld."))
-    verwerkt = ChoiceItem("verwerkt", _("Het verzoek id buiten behandeling gesteld."))
+    verwerkt = ChoiceItem("verwerkt", _("Het verzoek ID buiten behandeling gesteld."))
 
 
 class SoortBezoekadres(DjangoChoices):

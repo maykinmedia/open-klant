@@ -8,7 +8,7 @@ from vng_api_common.descriptors import GegevensGroepType
 class BezoekadresMixin(models.Model):
     # TODO: Check if this is correct.
     bezoekadres_nummeraanduiding_id = models.CharField(
-        _("nummeraanduiding id"),
+        _("nummeraanduiding ID"),
         help_text=_(
             "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
         ),
@@ -60,7 +60,14 @@ class BezoekadresMixin(models.Model):
             "adresregel_2": bezoekadres_adresregel2,
             "adresregel_3": bezoekadres_adresregel3,
             "land": bezoekadres_land,
-        }
+        },
+        optional=(
+            "nummeraanduiding_id",
+            "adresregel_1",
+            "adresregel_2",
+            "adresregel_3",
+            "land",
+        ),
     )
 
     class Meta:
@@ -123,6 +130,13 @@ class CorrespondentieadresMixin(models.Model):
             "adresregel_3": correspondentieadres_adresregel3,
             "land": correspondentieadres_land,
         },
+        optional=(
+            "nummeraanduiding_id",
+            "adresregel_1",
+            "adresregel_2",
+            "adresregel_3",
+            "land",
+        ),
     )
 
     class Meta:
@@ -137,6 +151,7 @@ class ContactnaamMixin(models.Model):
             "de beginletter gecombineerd met de tweede letter van een voornaam."
         ),
         max_length=10,
+        blank=True,
     )
     contactnaam_voornaam = models.CharField(
         _("voornaam"),
@@ -164,17 +179,32 @@ class ContactnaamMixin(models.Model):
         blank=True,
     )
 
-    Contactnaam = GegevensGroepType(
+    contactnaam = GegevensGroepType(
         {
             "voorletters": contactnaam_voorletters,
             "voornaam": contactnaam_voornaam,
             "voorvoegsel_achternaam": contactnaam_voorvoegsel_achternaam,
             "achternaam": contactnaam_achternaam,
-        }
+        },
+        optional=(
+            "voorletters",
+            "voornaam",
+            "voorvoegsel_achternaam",
+            "achternaam",
+        ),
     )
 
     class Meta:
         abstract = True
+
+    def get_contactnaam(self):
+        initials = self.contactnaam_voorletters
+
+        if last_name := self.contactnaam_achternaam:
+            prefix = self.contactnaam_voorvoegsel_achternaam.lower()
+            return f"{initials}. {prefix} {last_name}"
+
+        return initials
 
 
 class ObjectidentificatorMixin(models.Model):
@@ -184,23 +214,23 @@ class ObjectidentificatorMixin(models.Model):
             "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
         ),
         max_length=200,
-        blank=False,
+        blank=True,
     )
     objectidentificator_soort_object_id = models.CharField(
-        _("soort object id"),
+        _("soort object ID"),
         help_text=_(
             "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
         ),
         max_length=200,
-        blank=False,
+        blank=True,
     )
     objectidentificator_object_id = models.CharField(
-        _("object id"),
+        _("object ID"),
         help_text=_(
             "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
         ),
         max_length=200,
-        blank=False,
+        blank=True,
     )
     objectidentificator_register = models.CharField(
         _("register"),
@@ -209,7 +239,7 @@ class ObjectidentificatorMixin(models.Model):
             "het object is geregistreerd, bijvoorbeeld: 'BRP'."
         ),
         max_length=200,
-        blank=False,
+        blank=True,
     )
 
     objectidentificator = GegevensGroepType(
@@ -218,7 +248,13 @@ class ObjectidentificatorMixin(models.Model):
             "soort_object_id": objectidentificator_soort_object_id,
             "object_id": objectidentificator_object_id,
             "register": objectidentificator_register,
-        }
+        },
+        optional=(
+            "objecttype",
+            "soort_object_id",
+            "object_id",
+            "register",
+        ),
     )
 
     class Meta:

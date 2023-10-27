@@ -37,8 +37,8 @@ class Actor(ObjectidentificatorMixin):
         verbose_name = _("actor")
         verbose_name_plural = _("actoren")
 
-        def __str__(self):
-            return self.naam
+    def __str__(self):
+        return self.naam
 
 
 class GeautomatiseerdeActor(models.Model):
@@ -66,8 +66,8 @@ class GeautomatiseerdeActor(models.Model):
         verbose_name = _("geautomatiseerde actor")
         verbose_name_plural = _("geautomatiseerde actoren")
 
-        def __str__(self):
-            return self.functie
+    def __str__(self):
+        return self.functie
 
 
 class Medewerker(models.Model):
@@ -76,6 +76,8 @@ class Medewerker(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("actor"),
         help_text=_("'GeautomatiseerdeActor' was 'Actor'"),
+        related_name="medewerker",
+        unique=True,
     )
     functie = models.CharField(
         _("functie"),
@@ -103,8 +105,8 @@ class Medewerker(models.Model):
         verbose_name = _("medewerker")
         verbose_name_plural = _("mederwerkers")
 
-        def __str__(self):
-            return self.functie
+    def __str__(self):
+        return self.functie
 
 
 class OrganisatorischeEenheid(models.Model):
@@ -146,5 +148,5 @@ class OrganisatorischeEenheid(models.Model):
     class Meta:
         verbose_name = _("organisatorische eenheid")
 
-        def __str__(self):
-            return self.omschrijving
+    def __str__(self):
+        return self.omschrijving
