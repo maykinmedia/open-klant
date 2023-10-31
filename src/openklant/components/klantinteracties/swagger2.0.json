@@ -138,20 +138,6 @@
                         "schema": {
                             "$ref": "#/definitions/Actor"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -285,20 +271,6 @@
                         "schema": {
                             "$ref": "#/definitions/Actor"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -373,20 +345,6 @@
                         "schema": {
                             "$ref": "#/definitions/Actor"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -443,22 +401,7 @@
                 "operationId": "actor_delete",
                 "summary": "Verwijder een actor.",
                 "description": "Verwijder een actor.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -619,20 +562,6 @@
                         "schema": {
                             "$ref": "#/definitions/Betrokkene"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -766,20 +695,6 @@
                         "schema": {
                             "$ref": "#/definitions/Betrokkene"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -854,20 +769,6 @@
                         "schema": {
                             "$ref": "#/definitions/Betrokkene"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -924,22 +825,7 @@
                 "operationId": "betrokkene_delete",
                 "summary": "Verwijder een betrokkene.",
                 "description": "Verwijder een betrokkene.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -995,7 +881,7 @@
                 }
             ]
         },
-        "/contact persoon": {
+        "/contact_persoon": {
             "get": {
                 "operationId": "contactpersoon_list",
                 "summary": "Alle contactpersonen opvragen.",
@@ -1075,7 +961,7 @@
                     }
                 },
                 "tags": [
-                    "contact persoon"
+                    "contact_persoon"
                 ]
             },
             "post": {
@@ -1100,20 +986,6 @@
                         "schema": {
                             "$ref": "#/definitions/Contactpersoon"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1167,12 +1039,12 @@
                     }
                 },
                 "tags": [
-                    "contact persoon"
+                    "contact_persoon"
                 ]
             },
             "parameters": []
         },
-        "/contact persoon/{id}": {
+        "/contact_persoon/{id}": {
             "get": {
                 "operationId": "contactpersoon_read",
                 "summary": "Een specifiek contactpersoon opvragen.",
@@ -1222,7 +1094,7 @@
                     }
                 },
                 "tags": [
-                    "contact persoon"
+                    "contact_persoon"
                 ]
             },
             "put": {
@@ -1247,20 +1119,6 @@
                         "schema": {
                             "$ref": "#/definitions/Contactpersoon"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1310,7 +1168,7 @@
                     }
                 },
                 "tags": [
-                    "contact persoon"
+                    "contact_persoon"
                 ]
             },
             "patch": {
@@ -1335,20 +1193,6 @@
                         "schema": {
                             "$ref": "#/definitions/Contactpersoon"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1398,29 +1242,14 @@
                     }
                 },
                 "tags": [
-                    "contact persoon"
+                    "contact_persoon"
                 ]
             },
             "delete": {
                 "operationId": "contactpersoon_delete",
                 "summary": "Verwijder een contactpersoon.",
                 "description": "Verwijder een contactpersoon.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -1462,7 +1291,7 @@
                     }
                 },
                 "tags": [
-                    "contact persoon"
+                    "contact_persoon"
                 ]
             },
             "parameters": [
@@ -1475,7 +1304,7 @@
                 }
             ]
         },
-        "/digitaal adres": {
+        "/digitaal_adres": {
             "get": {
                 "operationId": "digitaaladres_list",
                 "summary": "Alle digitale adressen opvragen.",
@@ -1555,7 +1384,7 @@
                     }
                 },
                 "tags": [
-                    "digitaal adres"
+                    "digitaal_adres"
                 ]
             },
             "post": {
@@ -1580,20 +1409,6 @@
                         "schema": {
                             "$ref": "#/definitions/DigitaalAdres"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1647,12 +1462,12 @@
                     }
                 },
                 "tags": [
-                    "digitaal adres"
+                    "digitaal_adres"
                 ]
             },
             "parameters": []
         },
-        "/digitaal adres/{uuid}": {
+        "/digitaal_adres/{uuid}": {
             "get": {
                 "operationId": "digitaaladres_read",
                 "summary": "Een specifiek digitaal adres opvragen.",
@@ -1702,7 +1517,7 @@
                     }
                 },
                 "tags": [
-                    "digitaal adres"
+                    "digitaal_adres"
                 ]
             },
             "put": {
@@ -1727,20 +1542,6 @@
                         "schema": {
                             "$ref": "#/definitions/DigitaalAdres"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1790,7 +1591,7 @@
                     }
                 },
                 "tags": [
-                    "digitaal adres"
+                    "digitaal_adres"
                 ]
             },
             "patch": {
@@ -1815,20 +1616,6 @@
                         "schema": {
                             "$ref": "#/definitions/DigitaalAdres"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1878,29 +1665,14 @@
                     }
                 },
                 "tags": [
-                    "digitaal adres"
+                    "digitaal_adres"
                 ]
             },
             "delete": {
                 "operationId": "digitaaladres_delete",
                 "summary": "Verwijder een digitaal adres.",
                 "description": "Verwijder een digitaal adres.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -1942,7 +1714,7 @@
                     }
                 },
                 "tags": [
-                    "digitaal adres"
+                    "digitaal_adres"
                 ]
             },
             "parameters": [
@@ -1956,7 +1728,7 @@
                 }
             ]
         },
-        "/geautomatiseerde actoren": {
+        "/geautomatiseerde_actoren": {
             "get": {
                 "operationId": "geautomatiseerdeactor_list",
                 "summary": "Alle geautomatiseerde actoren opvragen.",
@@ -2036,7 +1808,7 @@
                     }
                 },
                 "tags": [
-                    "geautomatiseerde actoren"
+                    "geautomatiseerde_actoren"
                 ]
             },
             "post": {
@@ -2061,20 +1833,6 @@
                         "schema": {
                             "$ref": "#/definitions/GeautomatiseerdeActor"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2128,12 +1886,12 @@
                     }
                 },
                 "tags": [
-                    "geautomatiseerde actoren"
+                    "geautomatiseerde_actoren"
                 ]
             },
             "parameters": []
         },
-        "/geautomatiseerde actoren/{id}": {
+        "/geautomatiseerde_actoren/{id}": {
             "get": {
                 "operationId": "geautomatiseerdeactor_read",
                 "summary": "Een specifiek geautomatiseerde actor opvragen.",
@@ -2183,7 +1941,7 @@
                     }
                 },
                 "tags": [
-                    "geautomatiseerde actoren"
+                    "geautomatiseerde_actoren"
                 ]
             },
             "put": {
@@ -2208,20 +1966,6 @@
                         "schema": {
                             "$ref": "#/definitions/GeautomatiseerdeActor"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2271,7 +2015,7 @@
                     }
                 },
                 "tags": [
-                    "geautomatiseerde actoren"
+                    "geautomatiseerde_actoren"
                 ]
             },
             "patch": {
@@ -2296,20 +2040,6 @@
                         "schema": {
                             "$ref": "#/definitions/GeautomatiseerdeActor"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2359,29 +2089,14 @@
                     }
                 },
                 "tags": [
-                    "geautomatiseerde actoren"
+                    "geautomatiseerde_actoren"
                 ]
             },
             "delete": {
                 "operationId": "geautomatiseerdeactor_delete",
                 "summary": "Verwijder een geautomatiseerde actor.",
                 "description": "Verwijder een geautomatiseerde actor.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -2423,7 +2138,7 @@
                     }
                 },
                 "tags": [
-                    "geautomatiseerde actoren"
+                    "geautomatiseerde_actoren"
                 ]
             },
             "parameters": [
@@ -2436,7 +2151,7 @@
                 }
             ]
         },
-        "/interne taak": {
+        "/interne_taak": {
             "get": {
                 "operationId": "internetaak_list",
                 "summary": "Alle interne taken opvragen.",
@@ -2516,7 +2231,7 @@
                     }
                 },
                 "tags": [
-                    "interne taak"
+                    "interne_taak"
                 ]
             },
             "post": {
@@ -2541,20 +2256,6 @@
                         "schema": {
                             "$ref": "#/definitions/InterneTaak"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2608,12 +2309,12 @@
                     }
                 },
                 "tags": [
-                    "interne taak"
+                    "interne_taak"
                 ]
             },
             "parameters": []
         },
-        "/interne taak/{uuid}": {
+        "/interne_taak/{uuid}": {
             "get": {
                 "operationId": "internetaak_read",
                 "summary": "Een specifiek interne taak opvragen.",
@@ -2663,7 +2364,7 @@
                     }
                 },
                 "tags": [
-                    "interne taak"
+                    "interne_taak"
                 ]
             },
             "put": {
@@ -2688,20 +2389,6 @@
                         "schema": {
                             "$ref": "#/definitions/InterneTaak"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2751,7 +2438,7 @@
                     }
                 },
                 "tags": [
-                    "interne taak"
+                    "interne_taak"
                 ]
             },
             "patch": {
@@ -2776,20 +2463,6 @@
                         "schema": {
                             "$ref": "#/definitions/InterneTaak"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2839,29 +2512,14 @@
                     }
                 },
                 "tags": [
-                    "interne taak"
+                    "interne_taak"
                 ]
             },
             "delete": {
                 "operationId": "internetaak_delete",
                 "summary": "Verwijder een interne taak.",
                 "description": "Verwijder een interne taak.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -2903,7 +2561,7 @@
                     }
                 },
                 "tags": [
-                    "interne taak"
+                    "interne_taak"
                 ]
             },
             "parameters": [
@@ -3022,20 +2680,6 @@
                         "schema": {
                             "$ref": "#/definitions/Klantcontact"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -3169,20 +2813,6 @@
                         "schema": {
                             "$ref": "#/definitions/Klantcontact"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -3257,20 +2887,6 @@
                         "schema": {
                             "$ref": "#/definitions/Klantcontact"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -3327,22 +2943,7 @@
                 "operationId": "klantcontact_delete",
                 "summary": "Verwijder een klant contact.",
                 "description": "Verwijder een klant contact.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -3503,20 +3104,6 @@
                         "schema": {
                             "$ref": "#/definitions/Medewerker"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -3650,20 +3237,6 @@
                         "schema": {
                             "$ref": "#/definitions/Medewerker"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -3738,20 +3311,6 @@
                         "schema": {
                             "$ref": "#/definitions/Medewerker"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -3808,22 +3367,7 @@
                 "operationId": "medewerker_delete",
                 "summary": "Verwijder een medewerker.",
                 "description": "Verwijder een medewerker.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -3983,20 +3527,6 @@
                         "schema": {
                             "$ref": "#/definitions/Organisatie"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -4130,20 +3660,6 @@
                         "schema": {
                             "$ref": "#/definitions/Organisatie"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -4218,20 +3734,6 @@
                         "schema": {
                             "$ref": "#/definitions/Organisatie"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -4288,22 +3790,7 @@
                 "operationId": "organisatie_delete",
                 "summary": "Verwijder een organisatie.",
                 "description": "Verwijder een organisatie.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -4358,7 +3845,7 @@
                 }
             ]
         },
-        "/organisatorische-eenheid": {
+        "/organisatorische_eenheid": {
             "get": {
                 "operationId": "organisatorischeeenheid_list",
                 "summary": "Alle organisatorische eenheid opvragen.",
@@ -4438,7 +3925,7 @@
                     }
                 },
                 "tags": [
-                    "organisatorische-eenheid"
+                    "organisatorische_eenheid"
                 ]
             },
             "post": {
@@ -4463,20 +3950,6 @@
                         "schema": {
                             "$ref": "#/definitions/OrganisatorischeEenheid"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -4530,12 +4003,12 @@
                     }
                 },
                 "tags": [
-                    "organisatorische-eenheid"
+                    "organisatorische_eenheid"
                 ]
             },
             "parameters": []
         },
-        "/organisatorische-eenheid/{id}": {
+        "/organisatorische_eenheid/{id}": {
             "get": {
                 "operationId": "organisatorischeeenheid_read",
                 "summary": "Een specifiek organisatorische eenheid opvragen.",
@@ -4585,7 +4058,7 @@
                     }
                 },
                 "tags": [
-                    "organisatorische-eenheid"
+                    "organisatorische_eenheid"
                 ]
             },
             "put": {
@@ -4610,20 +4083,6 @@
                         "schema": {
                             "$ref": "#/definitions/OrganisatorischeEenheid"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -4673,7 +4132,7 @@
                     }
                 },
                 "tags": [
-                    "organisatorische-eenheid"
+                    "organisatorische_eenheid"
                 ]
             },
             "patch": {
@@ -4698,20 +4157,6 @@
                         "schema": {
                             "$ref": "#/definitions/OrganisatorischeEenheid"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -4761,29 +4206,14 @@
                     }
                 },
                 "tags": [
-                    "organisatorische-eenheid"
+                    "organisatorische_eenheid"
                 ]
             },
             "delete": {
                 "operationId": "organisatorischeeenheid_delete",
                 "summary": "Verwijder een organisatorische eenheid.",
                 "description": "Verwijder een organisatorische eenheid.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -4825,7 +4255,7 @@
                     }
                 },
                 "tags": [
-                    "organisatorische-eenheid"
+                    "organisatorische_eenheid"
                 ]
             },
             "parameters": [
@@ -4943,20 +4373,6 @@
                         "schema": {
                             "$ref": "#/definitions/Partij"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -5015,7 +4431,268 @@
             },
             "parameters": []
         },
-        "/partij identificator": {
+        "/partij/{uuid}": {
+            "get": {
+                "operationId": "partij_read",
+                "summary": "Een specifiek partij opvragen.",
+                "description": "Een specifiek partij opvragen.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Partij"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "partij"
+                ]
+            },
+            "put": {
+                "operationId": "partij_update",
+                "summary": "Werk een partij in zijn geheel bij.",
+                "description": "Werk een partij in zijn geheel bij.",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Partij"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Partij"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "partij"
+                ]
+            },
+            "patch": {
+                "operationId": "partij_partial_update",
+                "summary": "Werk een partij deels bij.",
+                "description": "Werk een partij deels bij.",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Partij"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Partij"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "partij"
+                ]
+            },
+            "delete": {
+                "operationId": "partij_delete",
+                "summary": "Verwijder een partij.",
+                "description": "Verwijder een partij.",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "partij"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "description": "Unieke (technische) identificatiecode van de partij.",
+                    "required": true,
+                    "type": "string",
+                    "format": "uuid"
+                }
+            ]
+        },
+        "/partij_identificator": {
             "get": {
                 "operationId": "partijidentificator_list",
                 "summary": "Alle partij-identificatoren opvragen.",
@@ -5095,7 +4772,7 @@
                     }
                 },
                 "tags": [
-                    "partij identificator"
+                    "partij_identificator"
                 ]
             },
             "post": {
@@ -5120,20 +4797,6 @@
                         "schema": {
                             "$ref": "#/definitions/PartijIdentificator"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -5187,12 +4850,12 @@
                     }
                 },
                 "tags": [
-                    "partij identificator"
+                    "partij_identificator"
                 ]
             },
             "parameters": []
         },
-        "/partij identificator/{uuid}": {
+        "/partij_identificator/{uuid}": {
             "get": {
                 "operationId": "partijidentificator_read",
                 "summary": "Een specifiek partij-identificator opvragen.",
@@ -5242,7 +4905,7 @@
                     }
                 },
                 "tags": [
-                    "partij identificator"
+                    "partij_identificator"
                 ]
             },
             "put": {
@@ -5267,20 +4930,6 @@
                         "schema": {
                             "$ref": "#/definitions/PartijIdentificator"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -5330,7 +4979,7 @@
                     }
                 },
                 "tags": [
-                    "partij identificator"
+                    "partij_identificator"
                 ]
             },
             "patch": {
@@ -5355,20 +5004,6 @@
                         "schema": {
                             "$ref": "#/definitions/PartijIdentificator"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -5418,29 +5053,14 @@
                     }
                 },
                 "tags": [
-                    "partij identificator"
+                    "partij_identificator"
                 ]
             },
             "delete": {
                 "operationId": "partijidentificator_delete",
                 "summary": "Verwijder een partij-identificator.",
                 "description": "Verwijder een partij-identificator.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -5482,7 +5102,7 @@
                     }
                 },
                 "tags": [
-                    "partij identificator"
+                    "partij_identificator"
                 ]
             },
             "parameters": [
@@ -5490,310 +5110,6 @@
                     "name": "uuid",
                     "in": "path",
                     "description": "Unieke (technische) identificatiecode van de partij-identificator.",
-                    "required": true,
-                    "type": "string",
-                    "format": "uuid"
-                }
-            ]
-        },
-        "/partij/{uuid}": {
-            "get": {
-                "operationId": "partij_read",
-                "summary": "Een specifiek partij opvragen.",
-                "description": "Een specifiek partij opvragen.",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Partij"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "partij"
-                ]
-            },
-            "put": {
-                "operationId": "partij_update",
-                "summary": "Werk een partij in zijn geheel bij.",
-                "description": "Werk een partij in zijn geheel bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Partij"
-                        }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Partij"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "partij"
-                ]
-            },
-            "patch": {
-                "operationId": "partij_partial_update",
-                "summary": "Werk een partij deels bij.",
-                "description": "Werk een partij deels bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Partij"
-                        }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Partij"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "partij"
-                ]
-            },
-            "delete": {
-                "operationId": "partij_delete",
-                "summary": "Verwijder een partij.",
-                "description": "Verwijder een partij.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No content",
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "partij"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "uuid",
-                    "in": "path",
-                    "description": "Unieke (technische) identificatiecode van de partij.",
                     "required": true,
                     "type": "string",
                     "format": "uuid"
@@ -5905,20 +5221,6 @@
                         "schema": {
                             "$ref": "#/definitions/Persoon"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -6052,20 +5354,6 @@
                         "schema": {
                             "$ref": "#/definitions/Persoon"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -6140,20 +5428,6 @@
                         "schema": {
                             "$ref": "#/definitions/Persoon"
                         }
-                    },
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -6210,22 +5484,7 @@
                 "operationId": "persoon_delete",
                 "summary": "Verwijder een persoon.",
                 "description": "Verwijder een persoon.",
-                "parameters": [
-                    {
-                        "name": "X-NLX-Logrecord-ID",
-                        "in": "header",
-                        "description": "Identifier of the request, traceable throughout the network",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "X-Audit-Toelichting",
-                        "in": "header",
-                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "204": {
                         "description": "No content",
@@ -6719,6 +5978,7 @@
         "Betrokkene": {
             "required": [
                 "klantcontact",
+                "digitaalAdres",
                 "rol",
                 "initiator"
             ],
@@ -6839,7 +6099,8 @@
                     "readOnly": true,
                     "minLength": 1
                 }
-            }
+            },
+            "x-nullable": true
         },
         "ContactpersoonPersoon": {
             "description": "Naam die een contactpersoon wil gebruiken tijdens contact met de gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende naam van de contactpersoon.",
@@ -6963,6 +6224,9 @@
         },
         "ActorForeignKey": {
             "description": "Iets dat of iemand die voor de gemeente werkzaamheden uitvoert.",
+            "required": [
+                "uuid"
+            ],
             "type": "object",
             "properties": {
                 "uuid": {
@@ -7149,7 +6413,11 @@
                     "minLength": 1
                 },
                 "actoren": {
-                    "$ref": "#/definitions/ActorForeignKey"
+                    "description": "Actor die bij een klantcontact betrokken was.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ActorForeignKey"
+                    }
                 },
                 "inhoud": {
                     "title": "Inhoud",
@@ -7338,7 +6606,8 @@
                     "maxLength": 1000,
                     "minLength": 1
                 }
-            }
+            },
+            "x-nullable": true
         },
         "PartijBezoekadres": {
             "description": "Adres waarop de partij door gemeente bezocht wil worden. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
@@ -7490,7 +6759,12 @@
                     "$ref": "#/definitions/DigitaalAdresForeignKey"
                 },
                 "vertegenwoordigde": {
-                    "$ref": "#/definitions/PartijForeignKey"
+                    "description": "Partij die een andere partij vertegenwoordigde.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PartijForeignKey"
+                    },
+                    "x-nullable": true
                 },
                 "soortPartij": {
                     "title": "Soort partij",
@@ -7569,7 +6843,8 @@
         },
         "PartijIdentificator": {
             "required": [
-                "partij"
+                "partij",
+                "partijIdentificator"
             ],
             "type": "object",
             "properties": {
@@ -7646,7 +6921,8 @@
         },
         "Persoon": {
             "required": [
-                "partij"
+                "partij",
+                "contact"
             ],
             "type": "object",
             "properties": {

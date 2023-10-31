@@ -85,6 +85,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | nummer | Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om het specifieke klantcontact aan te duiden. | string | ja | C​R​U​D |
 | kanaal | Communicatiekanaal dat bij het klantcontact werd gebruikt. | string | ja | C​R​U​D |
 | onderwerp | Datgene waarover het klantcontact ging. | string | ja | C​R​U​D |
+| actoren | Actor die bij een klantcontact betrokken was. | array | ja | C​R​U​D |
 | inhoud | Informatie die tijdens het klantcontact werd overgebracht of uitgewisseld, voor zover die voor betrokkenen of actoren relevant is. | string | nee | C​R​U​D |
 | indicatieContactGelukt | Geeft, indien bekend, aan of de poging contact tussen de gemeente en inwoner(s) of organisatie(s) tot stand te brengen succesvol was. | boolean | nee | C​R​U​D |
 | taal | Taal die bij het klantcontact werd gesproken of geschreven. | string | ja | C​R​U​D |
@@ -136,6 +137,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | nummer | Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden. | string | ja | C​R​U​D |
 | interneNotitie | Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik. | string | nee | C​R​U​D |
+| vertegenwoordigde | Partij die een andere partij vertegenwoordigde. | array | ja | C​R​U​D |
 | soortPartij | Geeft aan van welke specifieke soort partij sprake is. | string | ja | C​R​U​D |
 | indicatieGeheimhouding | Geeft aan of de verstrekker van partijgegevens heeft aangegeven dat deze gegevens als geheim beschouwd moeten worden. | boolean | ja | C​R​U​D |
 | voorkeurstaal | Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur contact heeft met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html | string | nee | C​R​U​D |

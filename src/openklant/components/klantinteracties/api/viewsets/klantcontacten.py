@@ -1,7 +1,5 @@
-from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from vng_api_common.audittrails.viewsets import AuditTrailViewsetMixin
 
 from openklant.components.klantinteracties.api.serializers.klantcontacten import (
     BetrokkeneSerializer,
@@ -13,9 +11,7 @@ from openklant.components.klantinteracties.models.klantcontacten import (
 )
 
 
-class KlantcontactViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class KlantcontactViewSet(viewsets.ModelViewSet):
     """
     Contact tussen een klant of een vertegenwoordiger van een
     klant en de gemeente over een onderwerp.
@@ -57,9 +53,7 @@ class KlantcontactViewSet(
     pagination_class = PageNumberPagination
 
 
-class BetrokkeneViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class BetrokkeneViewSet(viewsets.ModelViewSet):
     """
     Ofwel betrokkenheid van een partij bij een klantcontact, eventueel aangevuld met
     specifiek voor opvolging van dat klantcontact te gebruiken contactgegevens, ofwel

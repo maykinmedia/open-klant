@@ -90,18 +90,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Actor'
       responses:
@@ -194,18 +182,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Actor'
       responses:
@@ -256,18 +232,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Actor'
       responses:
@@ -309,19 +273,6 @@ paths:
       operationId: actor_delete
       summary: Verwijder een actor.
       description: Verwijder een actor.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -433,18 +384,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Betrokkene'
       responses:
@@ -537,18 +476,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Betrokkene'
       responses:
@@ -599,18 +526,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Betrokkene'
       responses:
@@ -652,19 +567,6 @@ paths:
       operationId: betrokkene_delete
       summary: Verwijder een betrokkene.
       description: Verwijder een betrokkene.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -702,7 +604,7 @@ paths:
       schema:
         type: string
         format: uuid
-  /contact persoon:
+  /contact_persoon:
     get:
       operationId: contactpersoon_list
       summary: Alle contactpersonen opvragen.
@@ -762,7 +664,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - contact persoon
+      - contact_persoon
     post:
       operationId: contactpersoon_create
       summary: Maak een contactpersoon aan.
@@ -776,18 +678,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Contactpersoon'
       responses:
@@ -827,9 +717,9 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - contact persoon
+      - contact_persoon
     parameters: []
-  /contact persoon/{id}:
+  /contact_persoon/{id}:
     get:
       operationId: contactpersoon_read
       summary: Een specifiek contactpersoon opvragen.
@@ -866,7 +756,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - contact persoon
+      - contact_persoon
     put:
       operationId: contactpersoon_update
       summary: Werk een contactpersoon in zijn geheel bij.
@@ -880,18 +770,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Contactpersoon'
       responses:
@@ -928,7 +806,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - contact persoon
+      - contact_persoon
     patch:
       operationId: contactpersoon_partial_update
       summary: Werk een contactpersoon deels bij.
@@ -942,18 +820,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Contactpersoon'
       responses:
@@ -990,24 +856,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - contact persoon
+      - contact_persoon
     delete:
       operationId: contactpersoon_delete
       summary: Verwijder een contactpersoon.
       description: Verwijder een contactpersoon.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -1036,7 +889,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - contact persoon
+      - contact_persoon
     parameters:
     - name: id
       in: path
@@ -1044,7 +897,7 @@ paths:
       required: true
       schema:
         type: integer
-  /digitaal adres:
+  /digitaal_adres:
     get:
       operationId: digitaaladres_list
       summary: Alle digitale adressen opvragen.
@@ -1104,7 +957,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - digitaal adres
+      - digitaal_adres
     post:
       operationId: digitaaladres_create
       summary: Maak een digitaal adres aan.
@@ -1118,18 +971,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/DigitaalAdres'
       responses:
@@ -1169,9 +1010,9 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - digitaal adres
+      - digitaal_adres
     parameters: []
-  /digitaal adres/{uuid}:
+  /digitaal_adres/{uuid}:
     get:
       operationId: digitaaladres_read
       summary: Een specifiek digitaal adres opvragen.
@@ -1208,7 +1049,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - digitaal adres
+      - digitaal_adres
     put:
       operationId: digitaaladres_update
       summary: Werk een digitaal adres in zijn geheel bij.
@@ -1222,18 +1063,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/DigitaalAdres'
       responses:
@@ -1270,7 +1099,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - digitaal adres
+      - digitaal_adres
     patch:
       operationId: digitaaladres_partial_update
       summary: Werk een digitaal adres deels bij.
@@ -1284,18 +1113,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/DigitaalAdres'
       responses:
@@ -1332,24 +1149,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - digitaal adres
+      - digitaal_adres
     delete:
       operationId: digitaaladres_delete
       summary: Verwijder een digitaal adres.
       description: Verwijder een digitaal adres.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -1378,7 +1182,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - digitaal adres
+      - digitaal_adres
     parameters:
     - name: uuid
       in: path
@@ -1387,7 +1191,7 @@ paths:
       schema:
         type: string
         format: uuid
-  /geautomatiseerde actoren:
+  /geautomatiseerde_actoren:
     get:
       operationId: geautomatiseerdeactor_list
       summary: Alle geautomatiseerde actoren opvragen.
@@ -1447,7 +1251,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - geautomatiseerde actoren
+      - geautomatiseerde_actoren
     post:
       operationId: geautomatiseerdeactor_create
       summary: Maak een geautomatiseerde actor aan.
@@ -1461,18 +1265,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/GeautomatiseerdeActor'
       responses:
@@ -1512,9 +1304,9 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - geautomatiseerde actoren
+      - geautomatiseerde_actoren
     parameters: []
-  /geautomatiseerde actoren/{id}:
+  /geautomatiseerde_actoren/{id}:
     get:
       operationId: geautomatiseerdeactor_read
       summary: Een specifiek geautomatiseerde actor opvragen.
@@ -1551,7 +1343,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - geautomatiseerde actoren
+      - geautomatiseerde_actoren
     put:
       operationId: geautomatiseerdeactor_update
       summary: Werk een geautomatiseerde actor in zijn geheel bij.
@@ -1565,18 +1357,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/GeautomatiseerdeActor'
       responses:
@@ -1613,7 +1393,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - geautomatiseerde actoren
+      - geautomatiseerde_actoren
     patch:
       operationId: geautomatiseerdeactor_partial_update
       summary: Werk een geautomatiseerde actor deels bij.
@@ -1627,18 +1407,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/GeautomatiseerdeActor'
       responses:
@@ -1675,24 +1443,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - geautomatiseerde actoren
+      - geautomatiseerde_actoren
     delete:
       operationId: geautomatiseerdeactor_delete
       summary: Verwijder een geautomatiseerde actor.
       description: Verwijder een geautomatiseerde actor.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -1721,7 +1476,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - geautomatiseerde actoren
+      - geautomatiseerde_actoren
     parameters:
     - name: id
       in: path
@@ -1729,7 +1484,7 @@ paths:
       required: true
       schema:
         type: integer
-  /interne taak:
+  /interne_taak:
     get:
       operationId: internetaak_list
       summary: Alle interne taken opvragen.
@@ -1789,7 +1544,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - interne taak
+      - interne_taak
     post:
       operationId: internetaak_create
       summary: Maak een interne taak aan.
@@ -1803,18 +1558,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/InterneTaak'
       responses:
@@ -1854,9 +1597,9 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - interne taak
+      - interne_taak
     parameters: []
-  /interne taak/{uuid}:
+  /interne_taak/{uuid}:
     get:
       operationId: internetaak_read
       summary: Een specifiek interne taak opvragen.
@@ -1893,7 +1636,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - interne taak
+      - interne_taak
     put:
       operationId: internetaak_update
       summary: Werk een interne taak in zijn geheel bij.
@@ -1907,18 +1650,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/InterneTaak'
       responses:
@@ -1955,7 +1686,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - interne taak
+      - interne_taak
     patch:
       operationId: internetaak_partial_update
       summary: Werk een interne taak deels bij.
@@ -1969,18 +1700,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/InterneTaak'
       responses:
@@ -2017,24 +1736,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - interne taak
+      - interne_taak
     delete:
       operationId: internetaak_delete
       summary: Verwijder een interne taak.
       description: Verwijder een interne taak.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -2063,7 +1769,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - interne taak
+      - interne_taak
     parameters:
     - name: uuid
       in: path
@@ -2146,18 +1852,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Klantcontact'
       responses:
@@ -2250,18 +1944,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Klantcontact'
       responses:
@@ -2312,18 +1994,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Klantcontact'
       responses:
@@ -2365,19 +2035,6 @@ paths:
       operationId: klantcontact_delete
       summary: Verwijder een klant contact.
       description: Verwijder een klant contact.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -2489,18 +2146,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Medewerker'
       responses:
@@ -2593,18 +2238,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Medewerker'
       responses:
@@ -2655,18 +2288,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Medewerker'
       responses:
@@ -2708,19 +2329,6 @@ paths:
       operationId: medewerker_delete
       summary: Verwijder een medewerker.
       description: Verwijder een medewerker.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -2831,18 +2439,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Organisatie'
       responses:
@@ -2935,18 +2531,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Organisatie'
       responses:
@@ -2997,18 +2581,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Organisatie'
       responses:
@@ -3050,19 +2622,6 @@ paths:
       operationId: organisatie_delete
       summary: Verwijder een organisatie.
       description: Verwijder een organisatie.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -3099,7 +2658,7 @@ paths:
       required: true
       schema:
         type: integer
-  /organisatorische-eenheid:
+  /organisatorische_eenheid:
     get:
       operationId: organisatorischeeenheid_list
       summary: Alle organisatorische eenheid opvragen.
@@ -3159,7 +2718,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - organisatorische-eenheid
+      - organisatorische_eenheid
     post:
       operationId: organisatorischeeenheid_create
       summary: Maak een organisatorische eenheid aan.
@@ -3173,18 +2732,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/OrganisatorischeEenheid'
       responses:
@@ -3224,9 +2771,9 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - organisatorische-eenheid
+      - organisatorische_eenheid
     parameters: []
-  /organisatorische-eenheid/{id}:
+  /organisatorische_eenheid/{id}:
     get:
       operationId: organisatorischeeenheid_read
       summary: Een specifiek organisatorische eenheid opvragen.
@@ -3263,7 +2810,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - organisatorische-eenheid
+      - organisatorische_eenheid
     put:
       operationId: organisatorischeeenheid_update
       summary: Werk een organisatorische eenheid in zijn geheel bij.
@@ -3277,18 +2824,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/OrganisatorischeEenheid'
       responses:
@@ -3325,7 +2860,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - organisatorische-eenheid
+      - organisatorische_eenheid
     patch:
       operationId: organisatorischeeenheid_partial_update
       summary: Werk een organisatorische eenheid deels bij.
@@ -3339,18 +2874,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/OrganisatorischeEenheid'
       responses:
@@ -3387,24 +2910,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - organisatorische-eenheid
+      - organisatorische_eenheid
     delete:
       operationId: organisatorischeeenheid_delete
       summary: Verwijder een organisatorische eenheid.
       description: Verwijder een organisatorische eenheid.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -3433,7 +2943,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - organisatorische-eenheid
+      - organisatorische_eenheid
     parameters:
     - name: id
       in: path
@@ -3515,18 +3025,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Partij'
       responses:
@@ -3568,7 +3066,186 @@ paths:
       tags:
       - partij
     parameters: []
-  /partij identificator:
+  /partij/{uuid}:
+    get:
+      operationId: partij_read
+      summary: Een specifiek partij opvragen.
+      description: Een specifiek partij opvragen.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partij'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    put:
+      operationId: partij_update
+      summary: Werk een partij in zijn geheel bij.
+      description: Werk een partij in zijn geheel bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Partij'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partij'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    patch:
+      operationId: partij_partial_update
+      summary: Werk een partij deels bij.
+      description: Werk een partij deels bij.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Partij'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partij'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    delete:
+      operationId: partij_delete
+      summary: Verwijder een partij.
+      description: Verwijder een partij.
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - partij
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke (technische) identificatiecode van de partij.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /partij_identificator:
     get:
       operationId: partijidentificator_list
       summary: Alle partij-identificatoren opvragen.
@@ -3628,7 +3305,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - partij identificator
+      - partij_identificator
     post:
       operationId: partijidentificator_create
       summary: Maak een partij-identificator aan.
@@ -3642,18 +3319,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/PartijIdentificator'
       responses:
@@ -3693,9 +3358,9 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - partij identificator
+      - partij_identificator
     parameters: []
-  /partij identificator/{uuid}:
+  /partij_identificator/{uuid}:
     get:
       operationId: partijidentificator_read
       summary: Een specifiek partij-identificator opvragen.
@@ -3732,7 +3397,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - partij identificator
+      - partij_identificator
     put:
       operationId: partijidentificator_update
       summary: Werk een partij-identificator in zijn geheel bij.
@@ -3746,18 +3411,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/PartijIdentificator'
       responses:
@@ -3794,7 +3447,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - partij identificator
+      - partij_identificator
     patch:
       operationId: partijidentificator_partial_update
       summary: Werk een partij-identificator deels bij.
@@ -3808,18 +3461,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/PartijIdentificator'
       responses:
@@ -3856,24 +3497,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - partij identificator
+      - partij_identificator
     delete:
       operationId: partijidentificator_delete
       summary: Verwijder een partij-identificator.
       description: Verwijder een partij-identificator.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -3902,227 +3530,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       tags:
-      - partij identificator
+      - partij_identificator
     parameters:
     - name: uuid
       in: path
       description: Unieke (technische) identificatiecode van de partij-identificator.
-      required: true
-      schema:
-        type: string
-        format: uuid
-  /partij/{uuid}:
-    get:
-      operationId: partij_read
-      summary: Een specifiek partij opvragen.
-      description: Een specifiek partij opvragen.
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Partij'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - partij
-    put:
-      operationId: partij_update
-      summary: Werk een partij in zijn geheel bij.
-      description: Werk een partij in zijn geheel bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
-      requestBody:
-        $ref: '#/components/requestBodies/Partij'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Partij'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - partij
-    patch:
-      operationId: partij_partial_update
-      summary: Werk een partij deels bij.
-      description: Werk een partij deels bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
-      requestBody:
-        $ref: '#/components/requestBodies/Partij'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Partij'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - partij
-    delete:
-      operationId: partij_delete
-      summary: Verwijder een partij.
-      description: Verwijder een partij.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - partij
-    parameters:
-    - name: uuid
-      in: path
-      description: Unieke (technische) identificatiecode van de partij.
       required: true
       schema:
         type: string
@@ -4201,18 +3613,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Persoon'
       responses:
@@ -4305,18 +3705,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Persoon'
       responses:
@@ -4367,18 +3755,6 @@ paths:
           type: string
           enum:
           - application/json
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       requestBody:
         $ref: '#/components/requestBodies/Persoon'
       responses:
@@ -4420,19 +3796,6 @@ paths:
       operationId: persoon_delete
       summary: Verwijder een persoon.
       description: Verwijder een persoon.
-      parameters:
-      - name: X-NLX-Logrecord-ID
-        in: header
-        description: Identifier of the request, traceable throughout the network
-        required: false
-        schema:
-          type: string
-      - name: X-Audit-Toelichting
-        in: header
-        description: Toelichting waarom een bepaald verzoek wordt gedaan
-        required: false
-        schema:
-          type: string
       responses:
         '204':
           description: No content
@@ -5034,6 +4397,7 @@ components:
     Betrokkene:
       required:
       - klantcontact
+      - digitaalAdres
       - rol
       - initiator
       type: object
@@ -5138,6 +4502,7 @@ components:
           type: string
           readOnly: true
           minLength: 1
+      nullable: true
     ContactpersoonPersoon:
       description: Naam die een contactpersoon wil gebruiken tijdens contact met de
         gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen
@@ -5248,6 +4613,8 @@ components:
           minLength: 1
     ActorForeignKey:
       description: Iets dat of iemand die voor de gemeente werkzaamheden uitvoert.
+      required:
+      - uuid
       type: object
       properties:
         uuid:
@@ -5414,7 +4781,10 @@ components:
           maxLength: 200
           minLength: 1
         actoren:
-          $ref: '#/components/schemas/ActorForeignKey'
+          description: Actor die bij een klantcontact betrokken was.
+          type: array
+          items:
+            $ref: '#/components/schemas/ActorForeignKey'
         inhoud:
           title: Inhoud
           description: Informatie die tijdens het klantcontact werd overgebracht of
@@ -5584,6 +4954,7 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
+      nullable: true
     PartijBezoekadres:
       description: Adres waarop de partij door gemeente bezocht wil worden. Dit mag
         afwijken van voor de verstrekker eventueel in een basisregistratie bekende
@@ -5679,7 +5050,11 @@ components:
         voorkeursDigitaalAdres:
           $ref: '#/components/schemas/DigitaalAdresForeignKey'
         vertegenwoordigde:
-          $ref: '#/components/schemas/PartijForeignKey'
+          description: Partij die een andere partij vertegenwoordigde.
+          type: array
+          items:
+            $ref: '#/components/schemas/PartijForeignKey'
+          nullable: true
         soortPartij:
           title: Soort partij
           description: Geeft aan van welke specifieke soort partij sprake is.
@@ -5751,6 +5126,7 @@ components:
     PartijIdentificator:
       required:
       - partij
+      - partijIdentificator
       type: object
       properties:
         uuid:
@@ -5822,6 +5198,7 @@ components:
     Persoon:
       required:
       - partij
+      - contact
       type: object
       properties:
         id:

@@ -1,7 +1,5 @@
-from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from vng_api_common.audittrails.viewsets import AuditTrailViewsetMixin
 
 from openklant.components.klantinteracties.api.serializers.partijen import (
     ContactpersoonSerializer,
@@ -19,9 +17,7 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 
 
-class PartijViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class PartijViewSet(viewsets.ModelViewSet):
     """
     Persoon of organisatie waarmee de gemeente een relatie heeft.
 
@@ -62,9 +58,7 @@ class PartijViewSet(
     pagination_class = PageNumberPagination
 
 
-class OrganisatieViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class OrganisatieViewSet(viewsets.ModelViewSet):
     """
     Geformaliseerde entiteit die geen natuurlijk persoon is
     en maatschappelijke activiteiten uitvoert.
@@ -106,9 +100,7 @@ class OrganisatieViewSet(
     pagination_class = PageNumberPagination
 
 
-class PersoonViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class PersoonViewSet(viewsets.ModelViewSet):
     """
     Natuurlijk persoon.
 
@@ -149,9 +141,7 @@ class PersoonViewSet(
     pagination_class = PageNumberPagination
 
 
-class ContactpersoonViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class ContactpersoonViewSet(viewsets.ModelViewSet):
     """
     Natuurlijk persoon die werkte voor een organisatie,
     of natuurlijk persoon die een andere persoon vertegenwoordigde.
@@ -193,9 +183,7 @@ class ContactpersoonViewSet(
     pagination_class = PageNumberPagination
 
 
-class PartijIdentificatorViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     """
     Gegevens die een partij in een basisregistratie of ander extern register uniek identificeren.
 
