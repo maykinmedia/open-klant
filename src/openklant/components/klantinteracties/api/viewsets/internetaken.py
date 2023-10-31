@@ -1,7 +1,5 @@
-from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from vng_api_common.audittrails.viewsets import AuditTrailViewsetMixin
 
 from openklant.components.klantinteracties.api.serializers.internetaken import (
     InterneTaakSerializer,
@@ -9,9 +7,7 @@ from openklant.components.klantinteracties.api.serializers.internetaken import (
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 
 
-class InterneTaakViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class InterneTaakViewSet(viewsets.ModelViewSet):
     """
     Iets dat door een actor moet worden gedaan om opvolging te geven aan een klantcontact.
 

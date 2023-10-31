@@ -33,22 +33,22 @@ from .schema import info
 
 router = routers.DefaultRouter()
 router.register("actoren", ActorViewSet)
-router.register("geautomatiseerde actoren", GeautomatiseerdeActorViewSet)
+router.register("geautomatiseerde_actoren", GeautomatiseerdeActorViewSet)
 router.register("medewerker", MedewerkerViewSet)
-router.register("organisatorische-eenheid", OrganisatorischeEenheidViewSet)
+router.register("organisatorische_eenheid", OrganisatorischeEenheidViewSet)
 
-router.register("digitaal adres", DigitaalAdresViewSet)
+router.register("digitaal_adres", DigitaalAdresViewSet)
 
 router.register("klantcontact", KlantcontactViewSet)
 router.register("betrokkene", BetrokkeneViewSet)
 
-router.register("interne taak", InterneTaakViewSet)
+router.register("interne_taak", InterneTaakViewSet)
 
 router.register("partij", PartijViewSet)
 router.register("organisatie", OrganisatieViewSet)
 router.register("persoon", PersoonViewSet)
-router.register("contact persoon", ContactpersoonViewSet)
-router.register("partij identificator", PartijIdentificatorViewSet)
+router.register("contact_persoon", ContactpersoonViewSet)
+router.register("partij_identificator", PartijIdentificatorViewSet)
 
 
 class SchemaView(_SchemaView):

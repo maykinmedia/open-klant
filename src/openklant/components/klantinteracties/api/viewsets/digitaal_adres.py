@@ -1,7 +1,5 @@
-from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from vng_api_common.audittrails.viewsets import AuditTrailViewsetMixin
 
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
     DigitaalAdresSerializer,
@@ -9,9 +7,7 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 
 
-class DigitaalAdresViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class DigitaalAdresViewSet(viewsets.ModelViewSet):
     """
     Digitaal adres dat een betrokkene bij klantcontact verstrekte
     voor gebruik bij opvolging van een klantcontact.

@@ -1,7 +1,11 @@
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
-from vng_api_common.serializers import GegevensGroepSerializer
+from vng_api_common.serializers import (
+    GegevensGroepSerializer,
+    NestedGegevensGroepMixin,
+)
 
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorForeignKeySerializer,
@@ -9,6 +13,12 @@ from openklant.components.klantinteracties.api.serializers.actoren import (
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
     DigitaalAdresForeignKeySerializer,
 )
+from openklant.components.klantinteracties.api.validators import (
+    betrokkene_exists,
+    klantcontact_exists,
+)
+from openklant.components.klantinteracties.models.actoren import Actor
+from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
@@ -31,7 +41,7 @@ class KlantcontactForeignKeySerializer(serializers.HyperlinkedModelSerializer):
             "onderwerp",
         )
         extra_kwargs = {
-            "uuid": {"required": True},
+            "uuid": {"required": True, "validators": [klantcontact_exists]},
             "url": {
                 "view_name": "klantcontact-detail",
                 "lookup_field": "uuid",
@@ -45,6 +55,7 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         required=True,
         allow_null=False,
         help_text=_("Actor die bij een klantcontact betrokken was."),
+        many=True,
     )
 
     class Meta:
@@ -71,6 +82,23 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
 
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        actoren = [
+            str(actor.get("uuid"))
+            for actor in validated_data.pop("actoren", instance.actoren)
+        ]
+        validated_data["actoren"] = Actor.objects.filter(uuid__in=actoren)
+
+        return super().update(instance, validated_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        actoren = [str(actor["uuid"]) for actor in validated_data.pop("actoren")]
+        validated_data["actoren"] = Actor.objects.filter(uuid__in=actoren)
+
+        return super().create(validated_data)
+
 
 class BetrokkeneForeignKeySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -80,7 +108,7 @@ class BetrokkeneForeignKeySerializer(serializers.HyperlinkedModelSerializer):
             "url",
         )
         extra_kwargs = {
-            "uuid": {"required": True},
+            "uuid": {"required": True, "validators": [betrokkene_exists]},
             "url": {
                 "view_name": "betrokkene-detail",
                 "lookup_field": "uuid",
@@ -108,14 +136,16 @@ class ContactnaamSerializer(GegevensGroepSerializer):
         gegevensgroep = "contactnaam"
 
 
-class BetrokkeneSerializer(serializers.HyperlinkedModelSerializer):
+class BetrokkeneSerializer(
+    NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
+):
     klantcontact = KlantcontactForeignKeySerializer(
         required=True,
         allow_null=False,
         help_text=_("Persoon of organisatie die betrokken was bij een klantcontact."),
     )
     digitaal_adres = DigitaalAdresForeignKeySerializer(
-        required=False,
+        required=True,
         allow_null=True,
         help_text=_(
             "Digitaal adres dat een betrokkene bij klantcontact verstrekte "
@@ -173,3 +203,31 @@ class BetrokkeneSerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": "De unieke URL van deze betrokkene binnen deze API.",
             },
         }
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        if klantcontact := validated_data.pop("klantcontact", None):
+            validated_data["klantcontact"] = Klantcontact.objects.get(
+                uuid=str(klantcontact.get("uuid"))
+            )
+
+        if digitaal_adres := validated_data.pop("digitaal_adres", None):
+            validated_data["digitaal_adres"] = Klantcontact.objects.get(
+                uuid=str(digitaal_adres.get("uuid"))
+            )
+
+        return super().update(instance, validated_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        klantcontact_uuid = str(validated_data.pop("klantcontact").get("uuid"))
+        digitaal_adres_uuid = str(validated_data.pop("digitaal_adres").get("uuid"))
+
+        validated_data["klantcontact"] = Klantcontact.objects.get(
+            uuid=klantcontact_uuid
+        )
+        validated_data["digitaal_adres"] = DigitaalAdres.objects.get(
+            uuid=digitaal_adres_uuid
+        )
+
+        return super().create(validated_data)

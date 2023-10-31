@@ -1,7 +1,13 @@
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
-from vng_api_common.serializers import GegevensGroepSerializer
+from vng_api_common.serializers import (
+    GegevensGroepSerializer,
+    NestedGegevensGroepMixin,
+)
+
+from openklant.components.klantinteracties.api.validators import actor_exists
 
 from openklant.components.klantinteracties.models.actoren import (
     Actor,
@@ -26,6 +32,7 @@ class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
             "naam",
         )
         extra_kwargs = {
+            "uuid": {"required": True, "validators": [actor_exists]},
             "url": {
                 "view_name": "actor-detail",
                 "lookup_field": "uuid",
@@ -35,7 +42,10 @@ class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class ActorSerializer(serializers.HyperlinkedModelSerializer):
+class ActorSerializer(
+    NestedGegevensGroepMixin,
+    serializers.HyperlinkedModelSerializer,
+):
     objectidentificator = ObjectidentificatorSerializer(
         required=False,
         allow_null=True,
@@ -89,6 +99,20 @@ class GeautomatiseerdeActorSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
 
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        if actor := validated_data.pop("actor", None):
+            validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
+
+        return super().update(instance, validated_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        actor_uuid = str(validated_data.pop("actor").get("uuid"))
+        validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
+
+        return super().create(validated_data)
+
 
 class MedewerkerSerializer(serializers.HyperlinkedModelSerializer):
     actor = ActorForeignKeySerializer(
@@ -115,6 +139,20 @@ class MedewerkerSerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": "De unieke URL van deze medewerker binnen deze API.",
             },
         }
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        if actor := validated_data.pop("actor", None):
+            validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
+
+        return super().update(instance, validated_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        actor_uuid = str(validated_data.pop("actor").get("uuid"))
+        validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
+
+        return super().create(validated_data)
 
 
 class OrganisatorischeEenheidSerializer(serializers.HyperlinkedModelSerializer):
@@ -143,3 +181,32 @@ class OrganisatorischeEenheidSerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": "De unieke URL van deze organisatorische eenheid binnen deze API.",
             },
         }
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        if actor := validated_data.pop("actor", None):
+            actor_uuid = str(actor.get("uuid"))
+            if actor_uuid != str(instance.actor.uuid):
+                actoren = OrganisatorischeEenheid.objects.filter(actor__uuid=actor_uuid)
+                if len(actoren) is not 0:
+                    raise serializers.ValidationError(
+                        {"actor.uuid": _("Er bestaat al een actor met eenzelfde uuid.")}
+                    )
+
+            validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
+
+        return super().update(instance, validated_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        actor_uuid = str(validated_data.pop("actor").get("uuid"))
+        actoren = OrganisatorischeEenheid.objects.filter(actor__uuid=actor_uuid)
+
+        if len(actoren) is not 0:
+            raise serializers.ValidationError(
+                {"actor.uuid": _("Er bestaat al een actor met eenzelfde uuid.")}
+            )
+
+        validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
+
+        return super().create(validated_data)

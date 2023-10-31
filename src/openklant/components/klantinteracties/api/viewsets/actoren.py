@@ -1,7 +1,5 @@
-from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from vng_api_common.audittrails.viewsets import AuditTrailViewsetMixin
 
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorSerializer,
@@ -17,9 +15,7 @@ from openklant.components.klantinteracties.models.actoren import (
 )
 
 
-class ActorViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class ActorViewSet(viewsets.ModelViewSet):
     """
     Iets dat of iemand die voor de gemeente werkzaamheden uitvoert.
 
@@ -60,9 +56,7 @@ class ActorViewSet(
     pagination_class = PageNumberPagination
 
 
-class GeautomatiseerdeActorViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class GeautomatiseerdeActorViewSet(viewsets.ModelViewSet):
     """
     Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert.
 
@@ -103,9 +97,7 @@ class GeautomatiseerdeActorViewSet(
     pagination_class = PageNumberPagination
 
 
-class MedewerkerViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class MedewerkerViewSet(viewsets.ModelViewSet):
     """
     Een MEDEWERKER van de organisatie die zaken behandelt uit hoofde van zijn of
     haar functie binnen een ORGANISATORISCHE EENHEID.
@@ -147,9 +139,7 @@ class MedewerkerViewSet(
     pagination_class = PageNumberPagination
 
 
-class OrganisatorischeEenheidViewSet(
-    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
-):
+class OrganisatorischeEenheidViewSet(viewsets.ModelViewSet):
     """
     Het deel van een functioneel afgebakend onderdeel binnen de organisatie dat
     haar activiteiten uitvoert binnen een VESTIGING VAN ZAAKBEHANDELENDE ORGANISATIE
