@@ -233,7 +233,7 @@ class PartijIdentificator(models.Model):
             "object_id": partij_identificator_object_id,
             "register": partij_identificator_register,
         },
-        required=(
+        optional=(
             "objecttype",
             "soort_object_id",
             "object_id",

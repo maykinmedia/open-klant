@@ -2,13 +2,9 @@ from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
-from vng_api_common.serializers import (
-    GegevensGroepSerializer,
-    NestedGegevensGroepMixin,
-)
+from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 
 from openklant.components.klantinteracties.api.validators import actor_exists
-
 from openklant.components.klantinteracties.models.actoren import (
     Actor,
     GeautomatiseerdeActor,
@@ -188,7 +184,7 @@ class OrganisatorischeEenheidSerializer(serializers.HyperlinkedModelSerializer):
             actor_uuid = str(actor.get("uuid"))
             if actor_uuid != str(instance.actor.uuid):
                 actoren = OrganisatorischeEenheid.objects.filter(actor__uuid=actor_uuid)
-                if len(actoren) is not 0:
+                if len(actoren) != 0:
                     raise serializers.ValidationError(
                         {"actor.uuid": _("Er bestaat al een actor met eenzelfde uuid.")}
                     )
@@ -202,7 +198,7 @@ class OrganisatorischeEenheidSerializer(serializers.HyperlinkedModelSerializer):
         actor_uuid = str(validated_data.pop("actor").get("uuid"))
         actoren = OrganisatorischeEenheid.objects.filter(actor__uuid=actor_uuid)
 
-        if len(actoren) is not 0:
+        if len(actoren) != 0:
             raise serializers.ValidationError(
                 {"actor.uuid": _("Er bestaat al een actor met eenzelfde uuid.")}
             )

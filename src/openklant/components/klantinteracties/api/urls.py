@@ -30,7 +30,6 @@ from openklant.components.klantinteracties.api.viewsets.partijen import (
 
 from .schema import info
 
-
 router = routers.DefaultRouter()
 router.register("actoren", ActorViewSet)
 router.register("geautomatiseerde_actoren", GeautomatiseerdeActorViewSet)

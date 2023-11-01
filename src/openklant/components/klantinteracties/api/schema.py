@@ -1,8 +1,9 @@
 from django.conf import settings
+
 from drf_yasg import openapi
 
 # TODO: write a propper description
-description = f"""
+description = """
 Description WIP.
 """
 

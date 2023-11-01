@@ -4055,11 +4055,6 @@ components:
   schemas:
     Objectidentificator:
       description: Gegevens die een onderwerpobject in een extern register uniek identificeren.
-      required:
-      - objecttype
-      - soortObjectId
-      - objectId
-      - register
       type: object
       properties:
         objecttype:
@@ -4068,28 +4063,24 @@ components:
             PERSOON''.'
           type: string
           maxLength: 200
-          minLength: 1
         soortObjectId:
           title: Soort object id
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''Burgerservicenummer''.'
           type: string
           maxLength: 200
-          minLength: 1
         objectId:
           title: Object-id
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
             ''123456788''.'
           type: string
           maxLength: 200
-          minLength: 1
         register:
           title: Register
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
           type: string
           maxLength: 200
-          minLength: 1
       nullable: true
     Actor:
       required:
@@ -4309,12 +4300,6 @@ components:
       description: Adres waarop de betrokkene bij klantcontact in naar aanleiding
         van dat contact af te leggen bezoeken wil ontvangen. Dit mag afwijken van
         voor de verstrekker eventueel in een basisregistratie bekende adressen.
-      required:
-      - nummeraanduidingId
-      - adresregel1
-      - adresregel2
-      - adresregel3
-      - land
       type: object
       properties:
         nummeraanduidingId:
@@ -4323,28 +4308,24 @@ components:
             en Gebouwen.
           type: string
           maxLength: 255
-          minLength: 1
         adresregel1:
           title: Adresregel 1
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         adresregel2:
           title: Adresregel 2
           description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         adresregel3:
           title: Adresregel 3
           description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         land:
           title: Land
           description: Een code, opgenomen in Tabel 34, Landentabel, die het land
@@ -4359,9 +4340,6 @@ components:
         in de Basisregistratie Personen (BRP) bekende naam van de betrokkene.
       required:
       - voorletters
-      - voornaam
-      - voorvoegselAchternaam
-      - achternaam
       type: object
       properties:
         voorletters:
@@ -4378,21 +4356,18 @@ components:
             met de gemeente.
           type: string
           maxLength: 200
-          minLength: 1
         voorvoegselAchternaam:
           title: Voorvoegsel achternaam
           description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
             persoon wil gebruiken tijdens communicatie met de gemeente.
           type: string
           maxLength: 10
-          minLength: 1
         achternaam:
           title: Achternaam
           description: Een achternaam die de persoon wil gebruiken tijdens communicatie
             met de gemeente.
           type: string
           maxLength: 200
-          minLength: 1
       nullable: true
     Betrokkene:
       required:
@@ -4509,9 +4484,6 @@ components:
         (BRP) bekende naam van de contactpersoon.
       required:
       - voorletters
-      - voornaam
-      - voorvoegselAchternaam
-      - achternaam
       type: object
       properties:
         voorletters:
@@ -4528,21 +4500,18 @@ components:
             met de gemeente.
           type: string
           maxLength: 200
-          minLength: 1
         voorvoegselAchternaam:
           title: Voorvoegsel achternaam
           description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
             persoon wil gebruiken tijdens communicatie met de gemeente.
           type: string
           maxLength: 10
-          minLength: 1
         achternaam:
           title: Achternaam
           description: Een achternaam die de persoon wil gebruiken tijdens communicatie
             met de gemeente.
           type: string
           maxLength: 200
-          minLength: 1
       nullable: true
     Contactpersoon:
       required:
@@ -4959,12 +4928,6 @@ components:
       description: Adres waarop de partij door gemeente bezocht wil worden. Dit mag
         afwijken van voor de verstrekker eventueel in een basisregistratie bekende
         adressen.
-      required:
-      - nummeraanduidingId
-      - adresregel1
-      - adresregel2
-      - adresregel3
-      - land
       type: object
       properties:
         nummeraanduidingId:
@@ -4973,28 +4936,24 @@ components:
             en Gebouwen.
           type: string
           maxLength: 255
-          minLength: 1
         adresregel1:
           title: Adresregel 1
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         adresregel2:
           title: Adresregel 2
           description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         adresregel3:
           title: Adresregel 3
           description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         land:
           title: Land
           description: Een code, opgenomen in Tabel 34, Landentabel, die het land
@@ -5087,11 +5046,6 @@ components:
     PartijIdentificatorGroepType:
       description: Gegevens die een partij in een basisregistratie of ander extern
         register uniek identificeren.
-      required:
-      - objecttype
-      - soortObjectId
-      - objectId
-      - register
       type: object
       properties:
         objecttype:
@@ -5100,28 +5054,24 @@ components:
             PERSOON''.'
           type: string
           maxLength: 200
-          minLength: 1
         soortObjectId:
           title: Soort object id
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''Burgerservicenummer''.'
           type: string
           maxLength: 200
-          minLength: 1
         objectId:
           title: Object-id
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
             ''123456788''.'
           type: string
           maxLength: 200
-          minLength: 1
         register:
           title: Register
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
           type: string
           maxLength: 200
-          minLength: 1
       nullable: true
     PartijIdentificator:
       required:
@@ -5160,9 +5110,6 @@ components:
         naam van de persoon.
       required:
       - voorletters
-      - voornaam
-      - voorvoegselAchternaam
-      - achternaam
       type: object
       properties:
         voorletters:
@@ -5179,26 +5126,23 @@ components:
             met de gemeente.
           type: string
           maxLength: 200
-          minLength: 1
         voorvoegselAchternaam:
           title: Voorvoegsel achternaam
           description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
             persoon wil gebruiken tijdens communicatie met de gemeente.
           type: string
           maxLength: 10
-          minLength: 1
         achternaam:
           title: Achternaam
           description: Een achternaam die de persoon wil gebruiken tijdens communicatie
             met de gemeente.
           type: string
           maxLength: 200
-          minLength: 1
       nullable: true
     Persoon:
       required:
       - partij
-      - contact
+      - contactnaam
       type: object
       properties:
         id:
@@ -5216,18 +5160,12 @@ components:
           minLength: 1
         partij:
           $ref: '#/components/schemas/PartijForeignKey'
-        contact:
+        contactnaam:
           $ref: '#/components/schemas/PersoonContact'
     betrokkene_correspondentieadres:
       description: Adres waarop de betrokkene bij klantcontact naar aanleiding van
         dat contact te versturen post wil ontvangen. Dit mag afwijken van voor de
         verstrekker eventueel in een basisregistratie bekende adressen.
-      required:
-      - nummeraanduidingId
-      - adresregel1
-      - adresregel2
-      - adresregel3
-      - land
       type: object
       properties:
         nummeraanduidingId:
@@ -5236,28 +5174,24 @@ components:
             en Gebouwen.
           type: string
           maxLength: 255
-          minLength: 1
         adresregel1:
           title: Adresregel 1
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         adresregel2:
           title: Adresregel 2
           description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         adresregel3:
           title: Adresregel 3
           description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         land:
           title: Land
           description: Een code, opgenomen in Tabel 34, Landentabel, die het land
@@ -5270,12 +5204,6 @@ components:
       description: Adres waarop de partij post van de gemeente wil ontvangen. Dit
         mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende
         adressen.
-      required:
-      - nummeraanduidingId
-      - adresregel1
-      - adresregel2
-      - adresregel3
-      - land
       type: object
       properties:
         nummeraanduidingId:
@@ -5284,28 +5212,24 @@ components:
             en Gebouwen.
           type: string
           maxLength: 255
-          minLength: 1
         adresregel1:
           title: Adresregel 1
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         adresregel2:
           title: Adresregel 2
           description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         adresregel3:
           title: Adresregel 3
           description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-          minLength: 1
         land:
           title: Land
           description: Een code, opgenomen in Tabel 34, Landentabel, die het land

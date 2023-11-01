@@ -186,8 +186,8 @@ class ContactnaamMixin(models.Model):
             "voorvoegsel_achternaam": contactnaam_voorvoegsel_achternaam,
             "achternaam": contactnaam_achternaam,
         },
-        required=("voorletters",),
         optional=(
+            "voorletters",
             "voornaam",
             "voorvoegsel_achternaam",
             "achternaam",
@@ -249,7 +249,7 @@ class ObjectidentificatorMixin(models.Model):
             "object_id": objectidentificator_object_id,
             "register": objectidentificator_register,
         },
-        required=(
+        optional=(
             "objecttype",
             "soort_object_id",
             "object_id",
