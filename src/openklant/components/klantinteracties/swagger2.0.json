@@ -5543,41 +5543,31 @@
     "definitions": {
         "Objectidentificator": {
             "description": "Gegevens die een onderwerpobject in een extern register uniek identificeren.",
-            "required": [
-                "objecttype",
-                "soortObjectId",
-                "objectId",
-                "register"
-            ],
             "type": "object",
             "properties": {
                 "objecttype": {
                     "title": "Objecttype",
                     "description": "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "soortObjectId": {
                     "title": "Soort object id",
                     "description": "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "objectId": {
                     "title": "Object-id",
                     "description": "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "register": {
                     "title": "Register",
                     "description": "Binnen het landschap van registers unieke omschrijving van het register waarin het object is geregistreerd, bijvoorbeeld: 'BRP'.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 }
             },
             "x-nullable": true
@@ -5838,42 +5828,31 @@
         },
         "Bezoekadres": {
             "description": "Adres waarop de betrokkene bij klantcontact in naar aanleiding van dat contact af te leggen bezoeken wil ontvangen. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
-            "required": [
-                "nummeraanduidingId",
-                "adresregel1",
-                "adresregel2",
-                "adresregel3",
-                "land"
-            ],
             "type": "object",
             "properties": {
                 "nummeraanduidingId": {
                     "title": "Nummeraanduiding id",
                     "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 255,
-                    "minLength": 1
+                    "maxLength": 255
                 },
                 "adresregel1": {
                     "title": "Adresregel 1",
                     "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "adresregel2": {
                     "title": "Adresregel 2",
                     "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "adresregel3": {
                     "title": "Adresregel 3",
                     "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "land": {
                     "title": "Land",
@@ -5887,42 +5866,31 @@
         },
         "betrokkene correspondentieadres": {
             "description": "Adres waarop de betrokkene bij klantcontact naar aanleiding van dat contact te versturen post wil ontvangen. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
-            "required": [
-                "nummeraanduidingId",
-                "adresregel1",
-                "adresregel2",
-                "adresregel3",
-                "land"
-            ],
             "type": "object",
             "properties": {
                 "nummeraanduidingId": {
                     "title": "Nummeraanduiding ID",
                     "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 255,
-                    "minLength": 1
+                    "maxLength": 255
                 },
                 "adresregel1": {
                     "title": "Adresregel 1",
                     "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "adresregel2": {
                     "title": "Adresregel 2",
                     "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "adresregel3": {
                     "title": "Adresregel 3",
                     "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "land": {
                     "title": "Land",
@@ -5937,10 +5905,7 @@
         "Contactnaam": {
             "description": "Naam die de betrokkene bij klantcontact tijdens vervolghandelingen naar aanleiding van dat contact wil gebruiken. Deze mag afwijken van eventueel in de Basisregistratie Personen (BRP) bekende naam van de betrokkene.",
             "required": [
-                "voorletters",
-                "voornaam",
-                "voorvoegselAchternaam",
-                "achternaam"
+                "voorletters"
             ],
             "type": "object",
             "properties": {
@@ -5955,22 +5920,19 @@
                     "title": "Voornaam",
                     "description": "De voornaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "voorvoegselAchternaam": {
                     "title": "Voorvoegsel achternaam",
                     "description": "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 10,
-                    "minLength": 1
+                    "maxLength": 10
                 },
                 "achternaam": {
                     "title": "Achternaam",
                     "description": "Een achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 }
             },
             "x-nullable": true
@@ -6105,10 +6067,7 @@
         "ContactpersoonPersoon": {
             "description": "Naam die een contactpersoon wil gebruiken tijdens contact met de gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende naam van de contactpersoon.",
             "required": [
-                "voorletters",
-                "voornaam",
-                "voorvoegselAchternaam",
-                "achternaam"
+                "voorletters"
             ],
             "type": "object",
             "properties": {
@@ -6123,22 +6082,19 @@
                     "title": "Voornaam",
                     "description": "De voornaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "voorvoegselAchternaam": {
                     "title": "Voorvoegsel achternaam",
                     "description": "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 10,
-                    "minLength": 1
+                    "maxLength": 10
                 },
                 "achternaam": {
                     "title": "Achternaam",
                     "description": "Een achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 }
             },
             "x-nullable": true
@@ -6611,42 +6567,31 @@
         },
         "PartijBezoekadres": {
             "description": "Adres waarop de partij door gemeente bezocht wil worden. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
-            "required": [
-                "nummeraanduidingId",
-                "adresregel1",
-                "adresregel2",
-                "adresregel3",
-                "land"
-            ],
             "type": "object",
             "properties": {
                 "nummeraanduidingId": {
                     "title": "Nummeraanduiding id",
                     "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 255,
-                    "minLength": 1
+                    "maxLength": 255
                 },
                 "adresregel1": {
                     "title": "Adresregel 1",
                     "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "adresregel2": {
                     "title": "Adresregel 2",
                     "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "adresregel3": {
                     "title": "Adresregel 3",
                     "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "land": {
                     "title": "Land",
@@ -6660,42 +6605,31 @@
         },
         "partij correspondentieadres serializer": {
             "description": "Adres waarop de partij post van de gemeente wil ontvangen. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
-            "required": [
-                "nummeraanduidingId",
-                "adresregel1",
-                "adresregel2",
-                "adresregel3",
-                "land"
-            ],
             "type": "object",
             "properties": {
                 "nummeraanduidingId": {
                     "title": "Nummeraanduiding ID",
                     "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 255,
-                    "minLength": 1
+                    "maxLength": 255
                 },
                 "adresregel1": {
                     "title": "Adresregel 1",
                     "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "adresregel2": {
                     "title": "Adresregel 2",
                     "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "adresregel3": {
                     "title": "Adresregel 3",
                     "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "land": {
                     "title": "Land",
@@ -6802,41 +6736,31 @@
         },
         "PartijIdentificatorGroepType": {
             "description": "Gegevens die een partij in een basisregistratie of ander extern register uniek identificeren.",
-            "required": [
-                "objecttype",
-                "soortObjectId",
-                "objectId",
-                "register"
-            ],
             "type": "object",
             "properties": {
                 "objecttype": {
                     "title": "Objecttype",
                     "description": "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "soortObjectId": {
                     "title": "Soort object id",
                     "description": "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "objectId": {
                     "title": "Object-id",
                     "description": "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "register": {
                     "title": "Register",
                     "description": "Binnen het landschap van registers unieke omschrijving van het register waarin het object is geregistreerd, bijvoorbeeld: 'BRP'.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 }
             },
             "x-nullable": true
@@ -6881,10 +6805,7 @@
         "PersoonContact": {
             "description": "Naam die een persoon wil gebruiken tijdens contact met de gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende naam van de persoon.",
             "required": [
-                "voorletters",
-                "voornaam",
-                "voorvoegselAchternaam",
-                "achternaam"
+                "voorletters"
             ],
             "type": "object",
             "properties": {
@@ -6899,22 +6820,19 @@
                     "title": "Voornaam",
                     "description": "De voornaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 },
                 "voorvoegselAchternaam": {
                     "title": "Voorvoegsel achternaam",
                     "description": "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 10,
-                    "minLength": 1
+                    "maxLength": 10
                 },
                 "achternaam": {
                     "title": "Achternaam",
                     "description": "Een achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
                     "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "maxLength": 200
                 }
             },
             "x-nullable": true
@@ -6922,7 +6840,7 @@
         "Persoon": {
             "required": [
                 "partij",
-                "contact"
+                "contactnaam"
             ],
             "type": "object",
             "properties": {
@@ -6943,7 +6861,7 @@
                 "partij": {
                     "$ref": "#/definitions/PartijForeignKey"
                 },
-                "contact": {
+                "contactnaam": {
                     "$ref": "#/definitions/PersoonContact"
                 }
             }

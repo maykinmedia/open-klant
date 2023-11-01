@@ -2,10 +2,7 @@ from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
-from vng_api_common.serializers import (
-    GegevensGroepSerializer,
-    NestedGegevensGroepMixin,
-)
+from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorForeignKeySerializer,
@@ -86,7 +83,9 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
         actoren = [
             str(actor.get("uuid"))
-            for actor in validated_data.pop("actoren", instance.actoren)
+            for actor in validated_data.pop(
+                "actoren", instance.actoren.all().values("uuid")
+            )
         ]
         validated_data["actoren"] = Actor.objects.filter(uuid__in=actoren)
 
@@ -211,10 +210,11 @@ class BetrokkeneSerializer(
                 uuid=str(klantcontact.get("uuid"))
             )
 
-        if digitaal_adres := validated_data.pop("digitaal_adres", None):
-            validated_data["digitaal_adres"] = Klantcontact.objects.get(
-                uuid=str(digitaal_adres.get("uuid"))
-            )
+        if validated_data.get("digitaal_adres"):
+            if digitaal_adres := validated_data.pop("digitaal_adres", None):
+                validated_data["digitaal_adres"] = DigitaalAdres.objects.get(
+                    uuid=str(digitaal_adres.get("uuid"))
+                )
 
         return super().update(instance, validated_data)
 

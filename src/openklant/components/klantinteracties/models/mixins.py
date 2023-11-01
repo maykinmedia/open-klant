@@ -60,7 +60,14 @@ class BezoekadresMixin(models.Model):
             "adresregel_2": bezoekadres_adresregel2,
             "adresregel_3": bezoekadres_adresregel3,
             "land": bezoekadres_land,
-        }
+        },
+        optional=(
+            "nummeraanduiding_id",
+            "adresregel_1",
+            "adresregel_2",
+            "adresregel_3",
+            "land",
+        ),
     )
 
     class Meta:
@@ -123,6 +130,13 @@ class CorrespondentieadresMixin(models.Model):
             "adresregel_3": correspondentieadres_adresregel3,
             "land": correspondentieadres_land,
         },
+        optional=(
+            "nummeraanduiding_id",
+            "adresregel_1",
+            "adresregel_2",
+            "adresregel_3",
+            "land",
+        ),
     )
 
     class Meta:
@@ -170,7 +184,12 @@ class ContactnaamMixin(models.Model):
             "voornaam": contactnaam_voornaam,
             "voorvoegsel_achternaam": contactnaam_voorvoegsel_achternaam,
             "achternaam": contactnaam_achternaam,
-        }
+        },
+        optional=(
+            "voornaam",
+            "voorvoegsel_achternaam",
+            "achternaam",
+        ),
     )
 
     class Meta:
@@ -218,7 +237,13 @@ class ObjectidentificatorMixin(models.Model):
             "soort_object_id": objectidentificator_soort_object_id,
             "object_id": objectidentificator_object_id,
             "register": objectidentificator_register,
-        }
+        },
+        optional=(
+            "objecttype",
+            "soort_object_id",
+            "object_id",
+            "register",
+        ),
     )
 
     class Meta:

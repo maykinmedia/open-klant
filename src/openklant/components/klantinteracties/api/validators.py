@@ -41,7 +41,7 @@ def klantcontact_exists(value):
 
 def organisatie_exists(value):
     try:
-        Organisatie.objects.get(id=str(value))
+        Organisatie.objects.get(id=int(value))
     except Organisatie.DoesNotExist:
         raise serializers.ValidationError(_("Organisatie object doesn't exist."))
 

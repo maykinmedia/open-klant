@@ -1,8 +1,6 @@
-from django.utils.translation import gettext_lazy as _
-
 from rest_framework import serializers
-from openklant.components.klantinteracties.api.validators import digitaal_adres_exists
 
+from openklant.components.klantinteracties.api.validators import digitaal_adres_exists
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 
 

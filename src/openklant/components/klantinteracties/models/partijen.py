@@ -226,7 +226,13 @@ class PartijIdentificator(models.Model):
             "soort_object_id": partij_identificator_soort_object_id,
             "object_id": partij_identificator_object_id,
             "register": partij_identificator_register,
-        }
+        },
+        optional=(
+            "objecttype",
+            "soort_object_id",
+            "object_id",
+            "register",
+        ),
     )
 
     class Meta:
