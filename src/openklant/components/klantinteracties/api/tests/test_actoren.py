@@ -230,7 +230,6 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["functie"], "functie")
@@ -255,7 +254,6 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["functie"], "functie")
@@ -278,7 +276,6 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor2.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                "naam": actor2.naam,
             },
         )
         self.assertEqual(data["functie"], "changed")
@@ -303,7 +300,6 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["functie"], "functie")
@@ -324,7 +320,6 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["functie"], "changed")
@@ -389,7 +384,6 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["functie"], "functie")
@@ -416,7 +410,6 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["functie"], "functie")
@@ -441,7 +434,6 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor2.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                "naam": actor2.naam,
             },
         )
         self.assertEqual(data["functie"], "changed")
@@ -468,7 +460,6 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["functie"], "functie")
@@ -490,7 +481,6 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["functie"], "changed")
@@ -557,7 +547,6 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["omschrijving"], "omschrijving")
@@ -588,7 +577,6 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["omschrijving"], "omschrijving")
@@ -615,7 +603,6 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor2.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                "naam": actor2.naam,
             },
         )
         self.assertEqual(data["omschrijving"], "changed")
@@ -646,7 +633,6 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["omschrijving"], "omschrijving")
@@ -669,7 +655,6 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
             {
                 "uuid": str(actor.uuid),
                 "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                "naam": actor.naam,
             },
         )
         self.assertEqual(data["omschrijving"], "changed")

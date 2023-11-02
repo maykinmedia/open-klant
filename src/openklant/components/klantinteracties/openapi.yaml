@@ -4248,25 +4248,6 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
-        nummer:
-          title: Nummer
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
-          type: string
-          readOnly: true
-          minLength: 1
-        kanaal:
-          title: Kanaal
-          description: Communicatiekanaal dat bij het klantcontact werd gebruikt.
-          type: string
-          readOnly: true
-          minLength: 1
-        onderwerp:
-          title: Onderwerp
-          description: Datgene waarover het klantcontact ging.
-          type: string
-          readOnly: true
-          minLength: 1
     DigitaalAdresForeignKey:
       description: Digitaal adres dat een betrokkene bij klantcontact verstrekte voor
         gebruik bij opvolging van een klantcontact.
@@ -4287,13 +4268,6 @@ components:
           format: uri
           readOnly: true
           maxLength: 1000
-          minLength: 1
-        adres:
-          title: Adres
-          description: Digitaal adres waarmee een persoon of organisatie bereikt kan
-            worden.
-          type: string
-          readOnly: true
           minLength: 1
       nullable: true
     Bezoekadres:
@@ -4440,28 +4414,15 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
-        nummer:
-          title: Nummer
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om de specifieke partij aan te duiden.
-          type: string
-          readOnly: true
-          minLength: 1
-        interneNotitie:
-          title: Interne notitie
-          description: Mededelingen, aantekeningen of bijzonderheden over de partij,
-            bedoeld voor intern gebruik.
-          type: string
-          readOnly: true
-          minLength: 1
     OrganisatieForeignKey:
       description: Organisatie waarvoor een contactpersoon werkte.
+      required:
+      - id
       type: object
       properties:
         id:
           title: ID
           type: integer
-          readOnly: true
         url:
           title: Url
           description: URL-referentie naar dit object. Dit is de unieke identificatie
@@ -4470,12 +4431,6 @@ components:
           format: uri
           readOnly: true
           maxLength: 1000
-          minLength: 1
-        naam:
-          title: Naam
-          description: Naam van de organisatie.
-          type: string
-          readOnly: true
           minLength: 1
       nullable: true
     ContactpersoonPersoon:
@@ -4536,7 +4491,7 @@ components:
           $ref: '#/components/schemas/PartijForeignKey'
         organisatie:
           $ref: '#/components/schemas/OrganisatieForeignKey'
-        contact:
+        contactnaam:
           $ref: '#/components/schemas/ContactpersoonPersoon'
     DigitaalAdres:
       required:
@@ -4599,12 +4554,6 @@ components:
           format: uri
           readOnly: true
           maxLength: 1000
-          minLength: 1
-        naam:
-          title: Naam
-          description: Naam van de actor.
-          type: string
-          readOnly: true
           minLength: 1
     GeautomatiseerdeActor:
       required:

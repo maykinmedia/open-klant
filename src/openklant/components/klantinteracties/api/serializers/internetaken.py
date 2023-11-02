@@ -17,12 +17,6 @@ class InterneTaakForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "uuid",
             "url",
-            "nummer",
-            "gevraagde_handeling",
-        )
-        read_only_fields = (
-            "nummer",
-            "gevraagde_handeling",
         )
         extra_kwargs = {
             "uuid": {"required": True},

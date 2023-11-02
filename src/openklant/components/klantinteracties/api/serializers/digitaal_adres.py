@@ -10,7 +10,6 @@ class DigitaalAdresForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "uuid",
             "url",
-            "adres",
         )
         extra_kwargs = {
             "uuid": {"required": True, "validators": [digitaal_adres_exists]},
@@ -19,7 +18,6 @@ class DigitaalAdresForeignKeySerializer(serializers.HyperlinkedModelSerializer):
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van dit digitaal adres binnen deze API.",
             },
-            "adres": {"read_only": True},
         }
 
 

@@ -5770,27 +5770,6 @@
                     "readOnly": true,
                     "maxLength": 1000,
                     "minLength": 1
-                },
-                "nummer": {
-                    "title": "Nummer",
-                    "description": "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.",
-                    "type": "string",
-                    "readOnly": true,
-                    "minLength": 1
-                },
-                "kanaal": {
-                    "title": "Kanaal",
-                    "description": "Communicatiekanaal dat bij het klantcontact werd gebruikt.",
-                    "type": "string",
-                    "readOnly": true,
-                    "minLength": 1
-                },
-                "onderwerp": {
-                    "title": "Onderwerp",
-                    "description": "Datgene waarover het klantcontact ging.",
-                    "type": "string",
-                    "readOnly": true,
-                    "minLength": 1
                 }
             }
         },
@@ -5814,13 +5793,6 @@
                     "format": "uri",
                     "readOnly": true,
                     "maxLength": 1000,
-                    "minLength": 1
-                },
-                "adres": {
-                    "title": "Adres",
-                    "description": "Digitaal adres waarmee een persoon of organisatie bereikt kan worden.",
-                    "type": "string",
-                    "readOnly": true,
                     "minLength": 1
                 }
             },
@@ -6019,31 +5991,19 @@
                     "readOnly": true,
                     "maxLength": 1000,
                     "minLength": 1
-                },
-                "nummer": {
-                    "title": "Nummer",
-                    "description": "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.",
-                    "type": "string",
-                    "readOnly": true,
-                    "minLength": 1
-                },
-                "interneNotitie": {
-                    "title": "Interne notitie",
-                    "description": "Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.",
-                    "type": "string",
-                    "readOnly": true,
-                    "minLength": 1
                 }
             }
         },
         "OrganisatieForeignKey": {
             "description": "Organisatie waarvoor een contactpersoon werkte.",
+            "required": [
+                "id"
+            ],
             "type": "object",
             "properties": {
                 "id": {
                     "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
+                    "type": "integer"
                 },
                 "url": {
                     "title": "Url",
@@ -6052,13 +6012,6 @@
                     "format": "uri",
                     "readOnly": true,
                     "maxLength": 1000,
-                    "minLength": 1
-                },
-                "naam": {
-                    "title": "Naam",
-                    "description": "Naam van de organisatie.",
-                    "type": "string",
-                    "readOnly": true,
                     "minLength": 1
                 }
             },
@@ -6126,7 +6079,7 @@
                 "organisatie": {
                     "$ref": "#/definitions/OrganisatieForeignKey"
                 },
-                "contact": {
+                "contactnaam": {
                     "$ref": "#/definitions/ContactpersoonPersoon"
                 }
             }
@@ -6198,13 +6151,6 @@
                     "format": "uri",
                     "readOnly": true,
                     "maxLength": 1000,
-                    "minLength": 1
-                },
-                "naam": {
-                    "title": "Naam",
-                    "description": "Naam van de actor.",
-                    "type": "string",
-                    "readOnly": true,
                     "minLength": 1
                 }
             }
