@@ -25,7 +25,6 @@ class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "uuid",
             "url",
-            "naam",
         )
         extra_kwargs = {
             "uuid": {"required": True, "validators": [actor_exists]},
@@ -34,7 +33,6 @@ class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze actor binnen deze API.",
             },
-            "naam": {"read_only": True},
         }
 
 

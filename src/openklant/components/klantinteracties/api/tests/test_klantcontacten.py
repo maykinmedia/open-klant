@@ -71,12 +71,10 @@ class KlantContactTests(JWTAuthMixin, APITestCase):
                 {
                     "uuid": str(actor.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                    "naam": str(actor.naam),
                 },
                 {
                     "uuid": str(actor2.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                    "naam": str(actor2.naam),
                 },
             ],
         )
@@ -114,12 +112,10 @@ class KlantContactTests(JWTAuthMixin, APITestCase):
                 {
                     "uuid": str(actor.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                    "naam": str(actor.naam),
                 },
                 {
                     "uuid": str(actor2.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                    "naam": str(actor2.naam),
                 },
             ],
         )
@@ -156,12 +152,10 @@ class KlantContactTests(JWTAuthMixin, APITestCase):
                 {
                     "uuid": str(actor3.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor3.uuid)}",
-                    "naam": str(actor3.naam),
                 },
                 {
                     "uuid": str(actor4.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor4.uuid)}",
-                    "naam": str(actor4.naam),
                 },
             ],
         )
@@ -199,12 +193,10 @@ class KlantContactTests(JWTAuthMixin, APITestCase):
                 {
                     "uuid": str(actor.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                    "naam": str(actor.naam),
                 },
                 {
                     "uuid": str(actor2.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                    "naam": str(actor2.naam),
                 },
             ],
         )
@@ -233,12 +225,10 @@ class KlantContactTests(JWTAuthMixin, APITestCase):
                 {
                     "uuid": str(actor.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                    "naam": str(actor.naam),
                 },
                 {
                     "uuid": str(actor2.uuid),
                     "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                    "naam": str(actor2.naam),
                 },
             ],
         )

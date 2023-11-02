@@ -28,14 +28,6 @@ class KlantcontactForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "uuid",
             "url",
-            "nummer",
-            "kanaal",
-            "onderwerp",
-        )
-        read_only_fields = (
-            "nummer",
-            "kanaal",
-            "onderwerp",
         )
         extra_kwargs = {
             "uuid": {"required": True, "validators": [klantcontact_exists]},

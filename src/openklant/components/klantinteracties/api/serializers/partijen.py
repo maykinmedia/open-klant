@@ -31,12 +31,6 @@ class PartijForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "uuid",
             "url",
-            "nummer",
-            "interne_notitie",
-        )
-        read_only_fields = (
-            "nummer",
-            "interne_notitie",
         )
         extra_kwargs = {
             "uuid": {"required": True, "validators": [partij_exists]},
@@ -199,7 +193,6 @@ class OrganisatieForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "id",
             "url",
-            "naam",
         )
         extra_kwargs = {
             "id": {
@@ -212,7 +205,6 @@ class OrganisatieForeignKeySerializer(serializers.HyperlinkedModelSerializer):
                 "lookup_field": "id",
                 "help_text": "De unieke URL van deze organisatie binnen deze API.",
             },
-            "naam": {"read_only": True},
         }
 
 
