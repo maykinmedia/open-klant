@@ -71,17 +71,62 @@ class BetrokkeneAdmin(admin.ModelAdmin):
         "contactnaam_voorvoegsel_achternaam",
         "contactnaam_achternaam",
     )
-
-
-class OnderwerpobjectInlineAdmin(admin.StackedInline):
-    model = Onderwerpobject
-    fk_name = "klantcontact"
-    extra = 0
+    raw_id_fields = ["digitaal_adres"]
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": [
+                    "klantcontact",
+                    "digitaal_adres",
+                    "rol",
+                    "organisatienaam",
+                    "initiator",
+                ]
+            },
+        ),
+        (
+            _("Persoonsgegevens"),
+            {
+                "fields": [
+                    "contactnaam_voorletters",
+                    "contactnaam_voornaam",
+                    "contactnaam_voorvoegsel_achternaam",
+                    "contactnaam_achternaam",
+                ]
+            },
+        ),
+        (
+            _("Bezoekadres"),
+            {
+                "fields": [
+                    "bezoekadres_nummeraanduiding_id",
+                    "bezoekadres_adresregel1",
+                    "bezoekadres_adresregel2",
+                    "bezoekadres_adresregel3",
+                    "bezoekadres_land",
+                ]
+            },
+        ),
+        (
+            _("Correspondentieadres"),
+            {
+                "fields": [
+                    "correspondentieadres_nummeraanduiding_id",
+                    "correspondentieadres_adresregel1",
+                    "correspondentieadres_adresregel2",
+                    "correspondentieadres_adresregel3",
+                    "correspondentieadres_land",
+                ]
+            },
+        ),
+    ]
 
 
 class WasOnderwerpobjectInlineAdmin(admin.StackedInline):
     model = Onderwerpobject
     fk_name = "was_klantcontact"
+    raw_id_field = ["was_klantcontact"]
     extra = 0
 
 
@@ -98,7 +143,6 @@ class KlantcontactAdmin(admin.ModelAdmin):
     ]
     inlines = [
         BetrokkeneInlineAdmin,
-        OnderwerpobjectInlineAdmin,
         WasOnderwerpobjectInlineAdmin,
         BijlageInlineAdmin,
         InterneTaakInlineAdmin,

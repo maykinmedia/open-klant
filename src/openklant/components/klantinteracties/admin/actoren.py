@@ -2,23 +2,51 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from ..admin.internezaken import InterneTaakInlineAdmin
-from ..models.actoren import Actor
+from ..models.actoren import (
+    Actor,
+    GeautomatiseerdeActor,
+    Medewerker,
+    OrganisatorischeEenheid,
+)
+
+
+class GeautomatiseerdeActorInlineAdmin(admin.StackedInline):
+    model = GeautomatiseerdeActor
+    fields = ("functie", "omschrijving")
+    extra = 0
+
+
+class MedewerkerInlineAdmin(admin.StackedInline):
+    model = Medewerker
+    fields = ("functie", "emailadres", "telefoonnummer")
+    extra = 0
+
+
+class OrganisatorischeEenheidInlineAdmin(admin.StackedInline):
+    model = OrganisatorischeEenheid
+    fields = ("omschrijving", "emailadres", "faxnummer", "telefoonnummer")
+    extra = 0
 
 
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
-    list_display = [
+    list_display = (
         "naam",
         "soort_actor",
         "indicatie_actief",
-    ]
-    list_filter = [
+    )
+    list_filter = (
         "soort_actor",
         "indicatie_actief",
-    ]
+    )
     search_fields = ("naam",)
-    inlines = [InterneTaakInlineAdmin]
-    fieldsets = [
+    inlines = (
+        GeautomatiseerdeActorInlineAdmin,
+        MedewerkerInlineAdmin,
+        OrganisatorischeEenheidInlineAdmin,
+        InterneTaakInlineAdmin,
+    )
+    fieldsets = (
         (
             None,
             {
@@ -40,4 +68,4 @@ class ActorAdmin(admin.ModelAdmin):
                 ]
             },
         ),
-    ]
+    )
