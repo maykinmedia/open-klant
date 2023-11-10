@@ -5,9 +5,10 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
+
 from .actoren import Actor
 from .constants import Klantcontrol
-from .digitaal_adres import DigitaalAdres
 from .mixins import (
     BezoekadresMixin,
     ContactnaamMixin,

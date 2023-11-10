@@ -95,8 +95,9 @@ class GeautomatiseerdeActorSerializer(serializers.HyperlinkedModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if actor := validated_data.pop("actor", None):
-            validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
+        if "actor" in validated_data:
+            if actor := validated_data.pop("actor", None):
+                validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
 
         return super().update(instance, validated_data)
 
@@ -136,8 +137,9 @@ class MedewerkerSerializer(serializers.HyperlinkedModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if actor := validated_data.pop("actor", None):
-            validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
+        if "actor" in validated_data:
+            if actor := validated_data.pop("actor", None):
+                validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
 
         return super().update(instance, validated_data)
 

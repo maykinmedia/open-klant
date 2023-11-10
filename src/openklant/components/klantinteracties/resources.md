@@ -24,9 +24,19 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | --- | --- | --- | --- | --- |
 | uuid | Unieke (technische) identificatiecode van de betrokkene bij klantcontact. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| partij | Betrokkene bij klantcontact die een partij was. | array | ja | C​R​U​D |
 | rol | Rol die de betrokkene bij klantcontact tijdens dat contact vervulde. | string | ja | C​R​U​D |
 | organisatienaam | Naam van de organisatie waarmee de betrokkene bij klantcontact een relatie had. | string | nee | C​R​U​D |
 | initiator |  | boolean | ja | C​R​U​D |
+
+## Bijlage
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/bijlage)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| uuid | Unieke (technische) identificatiecode van het inhoudsdeel. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## Contactpersoon
 
@@ -82,6 +92,10 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | --- | --- | --- | --- | --- |
 | uuid | Unieke (technische) identificatiecode van de betrokkene bij klantcontact. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| gingOverOnderwerpobject | Onderwerpobject dat tijdens een klantcontact aan de orde was. | array | ja | C​R​U​D |
+| omvatteBijlagen | Bijlage die (een deel van) de inhoud van het klantcontact beschrijft. | array | ja | C​R​U​D |
+| hadBetrokkene | Persoon of organisatie die betrokken was bij een klantcontact. | array | ja | C​R​U​D |
+| leideTotInterneTaken | Klantcontact dat leidde tot een interne taak. | array | ja | C​R​U​D |
 | nummer | Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om het specifieke klantcontact aan te duiden. | string | ja | C​R​U​D |
 | kanaal | Communicatiekanaal dat bij het klantcontact werd gebruikt. | string | ja | C​R​U​D |
 | onderwerp | Datgene waarover het klantcontact ging. | string | ja | C​R​U​D |
@@ -104,6 +118,15 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | emailadres | Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is. | string | nee | C​R​U​D |
 | telefoonnummer | Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is. | string | ja | C​R​U​D |
 
+## Onderwerpobject
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/onderwerpobject)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| uuid | Unieke (technische) identificatiecode van het onderwerpdeel. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+
 ## Organisatie
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/organisatie)
@@ -113,6 +136,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | id |  | integer | nee | ~~C~~​R​~~U~~​~~D~~ |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | naam | Naam van de organisatie. | string | nee | C​R​U​D |
+| contactpersoon | Organisatie waarvoor een contactpersoon werkte. | array | ja | C​R​U​D |
 
 ## OrganisatorischeEenheid
 

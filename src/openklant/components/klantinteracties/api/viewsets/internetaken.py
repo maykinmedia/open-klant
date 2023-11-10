@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
@@ -46,3 +47,11 @@ class InterneTaakViewSet(viewsets.ModelViewSet):
     serializer_class = InterneTaakSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [
+        "nummer",
+        "status",
+        "actor__naam",
+        "klantcontact__uuid",
+        "klantcontact__nummer",
+    ]
