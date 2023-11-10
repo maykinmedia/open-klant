@@ -63,8 +63,6 @@ class ActorTests(JWTAuthMixin, APITestCase):
             },
         )
 
-        # TODO: write subtest test to test if actor's unique is true validation works propperly
-
     def test_update_actor(self):
         actor = ActorFactory.create(
             naam="Phil",
@@ -122,8 +120,6 @@ class ActorTests(JWTAuthMixin, APITestCase):
                 "register": "changed",
             },
         )
-
-        # TODO: write subtest test to test if actor's unique is true validation works propperly
 
     def test_partial_update_actor(self):
         actor = ActorFactory.create(
@@ -554,7 +550,11 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["faxnummer"], "7762323")
         self.assertEqual(data["telefoonnummer"], "7762323")
 
-        # TODO: write subtest test to test if actor's unique is true validation works propperly
+        with self.subTest("check_if_actor_unique_validation_works"):
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(data["invalidParams"][0]["name"], "actor.uuid")
 
     def test_update_organisatorische_eenheid(self):
         actor, actor2 = ActorFactory.create_batch(2)
@@ -610,7 +610,16 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["faxnummer"], "5551212")
         self.assertEqual(data["telefoonnummer"], "5551212")
 
-        # TODO: write subtest test to test if actor's unique is true validation works propperly
+        with self.subTest("test_actor_unique"):
+            organisatorische_eenheid2 = OrganisatorischeEenheidFactory.create()
+            new_detail_url = reverse(
+                "organisatorischeeenheid-detail",
+                kwargs={"id": str(organisatorische_eenheid2.id)},
+            )
+            response = self.client.put(new_detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(data["invalidParams"][0]["name"], "actor.uuid")
 
     def test_partial_update_organisatorische_eenheid(self):
         actor = ActorFactory.create()

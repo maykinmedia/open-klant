@@ -18,7 +18,9 @@ from openklant.components.klantinteracties.api.viewsets.internetaken import (
 )
 from openklant.components.klantinteracties.api.viewsets.klantcontacten import (
     BetrokkeneViewSet,
+    BijlageViewSet,
     KlantcontactViewSet,
+    OnderwerpobjectViewSet,
 )
 from openklant.components.klantinteracties.api.viewsets.partijen import (
     ContactpersoonViewSet,
@@ -40,6 +42,8 @@ router.register("digitaal_adres", DigitaalAdresViewSet)
 
 router.register("klantcontact", KlantcontactViewSet)
 router.register("betrokkene", BetrokkeneViewSet)
+router.register("onderwerpobject", OnderwerpobjectViewSet)
+router.register("bijlage", BijlageViewSet)
 
 router.register("interne_taak", InterneTaakViewSet)
 

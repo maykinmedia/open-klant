@@ -76,6 +76,8 @@ class Medewerker(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("actor"),
         help_text=_("'GeautomatiseerdeActor' was 'Actor'"),
+        related_name="medewerker",
+        unique=True,
     )
     functie = models.CharField(
         _("functie"),

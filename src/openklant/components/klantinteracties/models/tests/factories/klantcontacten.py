@@ -3,12 +3,8 @@ import string
 
 import factory.fuzzy
 
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
-    DigitaalAdresFactory,
-)
-
 from ...constants import Klantcontrol
-from ...klantcontacten import Betrokkene, Klantcontact
+from ...klantcontacten import Betrokkene, Bijlage, Klantcontact, Onderwerpobject
 
 
 class KlantcontactFactory(factory.django.DjangoModelFactory):
@@ -37,7 +33,6 @@ class KlantcontactFactory(factory.django.DjangoModelFactory):
 class BetrokkeneFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
     klantcontact = factory.SubFactory(KlantcontactFactory)
-    digitaal_adres = factory.SubFactory(DigitaalAdresFactory)
     rol = factory.fuzzy.FuzzyChoice(Klantcontrol.values)
     organisatienaam = factory.Faker("word")
     initiator = factory.Faker("pybool")
@@ -45,3 +40,20 @@ class BetrokkeneFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Betrokkene
+
+
+class OnderwerpobjectFactory(factory.django.DjangoModelFactory):
+    uuid = factory.Faker("uuid4")
+    klantcontact = factory.SubFactory(KlantcontactFactory)
+    was_klantcontact = factory.SubFactory(KlantcontactFactory)
+
+    class Meta:
+        model = Onderwerpobject
+
+
+class BijlageFactory(factory.django.DjangoModelFactory):
+    uuid = factory.Faker("uuid4")
+    klantcontact = factory.SubFactory(KlantcontactFactory)
+
+    class Meta:
+        model = Bijlage

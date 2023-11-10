@@ -1,13 +1,22 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
+from openklant.components.klantinteracties.api.filterset.klantcontacten import (
+    BetrokkeneFilterSet,
+    KlantcontactFilterSet,
+)
 from openklant.components.klantinteracties.api.serializers.klantcontacten import (
     BetrokkeneSerializer,
+    BijlageSerializer,
     KlantcontactSerializer,
+    OnderwerpobjectSerializer,
 )
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
+    Bijlage,
     Klantcontact,
+    Onderwerpobject,
 )
 
 
@@ -51,6 +60,7 @@ class KlantcontactViewSet(viewsets.ModelViewSet):
     serializer_class = KlantcontactSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
+    filterset_class = KlantcontactFilterSet
 
 
 class BetrokkeneViewSet(viewsets.ModelViewSet):
@@ -95,3 +105,30 @@ class BetrokkeneViewSet(viewsets.ModelViewSet):
     serializer_class = BetrokkeneSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
+    filterset_class = BetrokkeneFilterSet
+
+
+class OnderwerpobjectViewSet(viewsets.ModelViewSet):
+    queryset = Onderwerpobject.objects.order_by("-pk")
+    serializer_class = OnderwerpobjectSerializer
+    lookup_field = "uuid"
+    pagination_class = PageNumberPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [
+        "objectidentificator_objecttype",
+        "objectidentificator_soort_object_id",
+        "objectidentificator_object_id",
+    ]
+
+
+class BijlageViewSet(viewsets.ModelViewSet):
+    queryset = Bijlage.objects.order_by("-pk")
+    serializer_class = BijlageSerializer
+    lookup_field = "uuid"
+    pagination_class = PageNumberPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [
+        "objectidentificator_objecttype",
+        "objectidentificator_soort_object_id",
+        "objectidentificator_object_id",
+    ]

@@ -40,6 +40,46 @@
                 "description": "Alle actoren opvragen.",
                 "parameters": [
                     {
+                        "name": "soortActor",
+                        "in": "query",
+                        "description": "Geeft aan van welke specifieke soort actor sprake is.",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "medewerker",
+                            "geautomatiseerde_actor",
+                            "organisatorische_eenheid"
+                        ]
+                    },
+                    {
+                        "name": "indicatieActief",
+                        "in": "query",
+                        "description": "Geeft aan of aan de actor nog betrokken mag worden bij nieuwe klantcontacten. Voor niet-actieve is dit niet toegestaan.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "objectidentificatorObjecttype",
+                        "in": "query",
+                        "description": "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "objectidentificatorSoortObjectId",
+                        "in": "query",
+                        "description": "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "objectidentificatorObjectId",
+                        "in": "query",
+                        "description": "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -86,6 +126,9 @@
                                 "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
                     },
                     "401": {
                         "$ref": "#/responses/401"
@@ -464,6 +507,69 @@
                 "description": "Alle betrokkeneen opvragen.",
                 "parameters": [
                     {
+                        "name": "klantcontact__nummer",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het klantcontact nummer",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "klantcontact__uuid",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het klantcontact uuid",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "klantcontact__url",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het klantcontact url",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "verstrektedigitaalAdres__adres",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het digitaaladres adres",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "verstrektedigitaalAdres__uuid",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het digitaaladres uuid",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "verstrektedigitaalAdres__url",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het digitaaladres url",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "wasPartij__nummer",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het partij nummer",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "wasPartij__url",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het partij url",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "wasPartij__uuid",
+                        "in": "query",
+                        "description": "Zoek betrokkene object op basis van het partij uuid",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -510,6 +616,9 @@
                                 "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
                     },
                     "401": {
                         "$ref": "#/responses/401"
@@ -875,6 +984,448 @@
                     "name": "uuid",
                     "in": "path",
                     "description": "Unieke (technische) identificatiecode van de betrokkene bij klantcontact.",
+                    "required": true,
+                    "type": "string",
+                    "format": "uuid"
+                }
+            ]
+        },
+        "/bijlage": {
+            "get": {
+                "operationId": "bijlage_list",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "objectidentificatorObjecttype",
+                        "in": "query",
+                        "description": "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "objectidentificatorSoortObjectId",
+                        "in": "query",
+                        "description": "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "objectidentificatorObjectId",
+                        "in": "query",
+                        "description": "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Bijlage"
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "bijlage"
+                ]
+            },
+            "post": {
+                "operationId": "bijlage_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Bijlage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/Bijlage"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            },
+                            "Location": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "description": "URL waar de resource leeft."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "bijlage"
+                ]
+            },
+            "parameters": []
+        },
+        "/bijlage/{uuid}": {
+            "get": {
+                "operationId": "bijlage_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Bijlage"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "bijlage"
+                ]
+            },
+            "put": {
+                "operationId": "bijlage_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Bijlage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Bijlage"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "bijlage"
+                ]
+            },
+            "patch": {
+                "operationId": "bijlage_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Bijlage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Bijlage"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "bijlage"
+                ]
+            },
+            "delete": {
+                "operationId": "bijlage_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "bijlage"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "description": "Unieke (technische) identificatiecode van het inhoudsdeel.",
                     "required": true,
                     "type": "string",
                     "format": "uuid"
@@ -1731,8 +2282,7 @@
         "/geautomatiseerde_actoren": {
             "get": {
                 "operationId": "geautomatiseerdeactor_list",
-                "summary": "Alle geautomatiseerde actoren opvragen.",
-                "description": "Alle geautomatiseerde actoren opvragen.",
+                "description": "Alle geautomatiseerde actoren opvragen.\nAlle geautomatiseerde actoren opvragen.",
                 "parameters": [
                     {
                         "name": "page",
@@ -1813,8 +2363,7 @@
             },
             "post": {
                 "operationId": "geautomatiseerdeactor_create",
-                "summary": "Maak een geautomatiseerde actor aan.",
-                "description": "Maak een geautomatiseerde actor aan.",
+                "description": "Maak een geautomatiseerde actor aan.\nMaak een geautomatiseerde actor aan.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -1894,8 +2443,7 @@
         "/geautomatiseerde_actoren/{id}": {
             "get": {
                 "operationId": "geautomatiseerdeactor_read",
-                "summary": "Een specifiek geautomatiseerde actor opvragen.",
-                "description": "Een specifiek geautomatiseerde actor opvragen.",
+                "description": "Een specifiek geautomatiseerde actor opvragen.\nEen specifiek geautomatiseerde actor opvragen.",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -1946,8 +2494,7 @@
             },
             "put": {
                 "operationId": "geautomatiseerdeactor_update",
-                "summary": "Werk een geautomatiseerde actor in zijn geheel bij.",
-                "description": "Werk een geautomatiseerde actor in zijn geheel bij.",
+                "description": "Werk een geautomatiseerde actor in zijn geheel bij.\nWerk een geautomatiseerde actor in zijn geheel bij.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -2020,8 +2567,7 @@
             },
             "patch": {
                 "operationId": "geautomatiseerdeactor_partial_update",
-                "summary": "Werk een geautomatiseerde actor deels bij.",
-                "description": "Werk een geautomatiseerde actor deels bij.",
+                "description": "Werk een geautomatiseerde actor deels bij.\nWerk een geautomatiseerde actor deels bij.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -2094,8 +2640,7 @@
             },
             "delete": {
                 "operationId": "geautomatiseerdeactor_delete",
-                "summary": "Verwijder een geautomatiseerde actor.",
-                "description": "Verwijder een geautomatiseerde actor.",
+                "description": "Verwijder een geautomatiseerde actor.\nVerwijder een geautomatiseerde actor.",
                 "parameters": [],
                 "responses": {
                     "204": {
@@ -2158,6 +2703,45 @@
                 "description": "Alle interne taken opvragen.",
                 "parameters": [
                     {
+                        "name": "nummer",
+                        "in": "query",
+                        "description": "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Aanduiding van de vordering bij afhandeling van de interne taak.",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "te_verwerken",
+                            "verwerkt"
+                        ]
+                    },
+                    {
+                        "name": "actor__naam",
+                        "in": "query",
+                        "description": "Naam van de actor.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "klantcontact__uuid",
+                        "in": "query",
+                        "description": "Unieke (technische) identificatiecode van de betrokkene bij klantcontact.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "klantcontact__nummer",
+                        "in": "query",
+                        "description": "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -2204,6 +2788,9 @@
                                 "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
                     },
                     "401": {
                         "$ref": "#/responses/401"
@@ -2582,6 +3169,48 @@
                 "description": "Alle klanten contacten opvragen.",
                 "parameters": [
                     {
+                        "name": "hadBetrokkene__url",
+                        "in": "query",
+                        "description": "Zoek klantcontract object op basis van het betrokkene url",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "hadBetrokkene__uuid",
+                        "in": "query",
+                        "description": "Zoek klantcontract object op basis van het betrokkene uuid",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "nummer",
+                        "in": "query",
+                        "description": "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "kanaal",
+                        "in": "query",
+                        "description": "Communicatiekanaal dat bij het klantcontact werd gebruikt.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "inhoud",
+                        "in": "query",
+                        "description": "Zoek klantcontacten met specifieke tekst in inhoud",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "onderwerp",
+                        "in": "query",
+                        "description": "Zoek klantcontacten met specifieke tekst in onderwerp",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -2628,6 +3257,9 @@
                                 "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
                     },
                     "401": {
                         "$ref": "#/responses/401"
@@ -3002,8 +3634,7 @@
         "/medewerker": {
             "get": {
                 "operationId": "medewerker_list",
-                "summary": "Alle medewerkers opvragen.",
-                "description": "Alle medewerkers opvragen.",
+                "description": "Alle medewerkers opvragen.\nAlle medewerkers opvragen.",
                 "parameters": [
                     {
                         "name": "page",
@@ -3084,8 +3715,7 @@
             },
             "post": {
                 "operationId": "medewerker_create",
-                "summary": "Maak een medewerker aan.",
-                "description": "Maak een medewerker aan.",
+                "description": "Maak een medewerker aan.\nMaak een medewerker aan.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -3165,8 +3795,7 @@
         "/medewerker/{id}": {
             "get": {
                 "operationId": "medewerker_read",
-                "summary": "Een specifiek medewerker opvragen.",
-                "description": "Een specifiek medewerker opvragen.",
+                "description": "Een specifiek medewerker opvragen.\nEen specifiek medewerker opvragen.",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -3217,8 +3846,7 @@
             },
             "put": {
                 "operationId": "medewerker_update",
-                "summary": "Werk een medewerker in zijn geheel bij.",
-                "description": "Werk een medewerker in zijn geheel bij.",
+                "description": "Werk een medewerker in zijn geheel bij.\nWerk een medewerker in zijn geheel bij.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -3291,8 +3919,7 @@
             },
             "patch": {
                 "operationId": "medewerker_partial_update",
-                "summary": "Werk een medewerker deels bij.",
-                "description": "Werk een medewerker deels bij.",
+                "description": "Werk een medewerker deels bij.\nWerk een medewerker deels bij.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -3365,8 +3992,7 @@
             },
             "delete": {
                 "operationId": "medewerker_delete",
-                "summary": "Verwijder een medewerker.",
-                "description": "Verwijder een medewerker.",
+                "description": "Verwijder een medewerker.\nVerwijder een medewerker.",
                 "parameters": [],
                 "responses": {
                     "204": {
@@ -3419,6 +4045,448 @@
                     "description": "A unique integer value identifying this medewerker.",
                     "required": true,
                     "type": "integer"
+                }
+            ]
+        },
+        "/onderwerpobject": {
+            "get": {
+                "operationId": "onderwerpobject_list",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "objectidentificatorObjecttype",
+                        "in": "query",
+                        "description": "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "objectidentificatorSoortObjectId",
+                        "in": "query",
+                        "description": "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "objectidentificatorObjectId",
+                        "in": "query",
+                        "description": "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Onderwerpobject"
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "onderwerpobject"
+                ]
+            },
+            "post": {
+                "operationId": "onderwerpobject_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Onderwerpobject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/Onderwerpobject"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            },
+                            "Location": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "description": "URL waar de resource leeft."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "onderwerpobject"
+                ]
+            },
+            "parameters": []
+        },
+        "/onderwerpobject/{uuid}": {
+            "get": {
+                "operationId": "onderwerpobject_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Onderwerpobject"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "onderwerpobject"
+                ]
+            },
+            "put": {
+                "operationId": "onderwerpobject_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Onderwerpobject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Onderwerpobject"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "onderwerpobject"
+                ]
+            },
+            "patch": {
+                "operationId": "onderwerpobject_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Onderwerpobject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Onderwerpobject"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "onderwerpobject"
+                ]
+            },
+            "delete": {
+                "operationId": "onderwerpobject_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/404"
+                    },
+                    "406": {
+                        "$ref": "#/responses/406"
+                    },
+                    "409": {
+                        "$ref": "#/responses/409"
+                    },
+                    "410": {
+                        "$ref": "#/responses/410"
+                    },
+                    "415": {
+                        "$ref": "#/responses/415"
+                    },
+                    "429": {
+                        "$ref": "#/responses/429"
+                    },
+                    "500": {
+                        "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "onderwerpobject"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "description": "Unieke (technische) identificatiecode van het onderwerpdeel.",
+                    "required": true,
+                    "type": "string",
+                    "format": "uuid"
                 }
             ]
         },
@@ -3848,8 +4916,7 @@
         "/organisatorische_eenheid": {
             "get": {
                 "operationId": "organisatorischeeenheid_list",
-                "summary": "Alle organisatorische eenheid opvragen.",
-                "description": "Alle organisatorische eenheid opvragen.",
+                "description": "Alle organisatorische eenheid opvragen.\nAlle organisatorische eenheid opvragen.",
                 "parameters": [
                     {
                         "name": "page",
@@ -3930,8 +4997,7 @@
             },
             "post": {
                 "operationId": "organisatorischeeenheid_create",
-                "summary": "Maak een organisatorische eenheid aan.",
-                "description": "Maak een organisatorische eenheid aan.",
+                "description": "Maak een organisatorische eenheid aan.\nMaak een organisatorische eenheid aan.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -4011,8 +5077,7 @@
         "/organisatorische_eenheid/{id}": {
             "get": {
                 "operationId": "organisatorischeeenheid_read",
-                "summary": "Een specifiek organisatorische eenheid opvragen.",
-                "description": "Een specifiek organisatorische eenheid opvragen.",
+                "description": "Een specifiek organisatorische eenheid opvragen.\nEen specifiek organisatorische eenheid opvragen.",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -4063,8 +5128,7 @@
             },
             "put": {
                 "operationId": "organisatorischeeenheid_update",
-                "summary": "Werk een organisatorische eenheid in zijn geheel bij.",
-                "description": "Werk een organisatorische eenheid in zijn geheel bij.",
+                "description": "Werk een organisatorische eenheid in zijn geheel bij.\nWerk een organisatorische eenheid in zijn geheel bij.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -4137,8 +5201,7 @@
             },
             "patch": {
                 "operationId": "organisatorischeeenheid_partial_update",
-                "summary": "Werk een organisatorische eenheid deels bij.",
-                "description": "Werk een organisatorische eenheid deels bij.",
+                "description": "Werk een organisatorische eenheid deels bij.\nWerk een organisatorische eenheid deels bij.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -4211,8 +5274,7 @@
             },
             "delete": {
                 "operationId": "organisatorischeeenheid_delete",
-                "summary": "Verwijder een organisatorische eenheid.",
-                "description": "Verwijder een organisatorische eenheid.",
+                "description": "Verwijder een organisatorische eenheid.\nVerwijder een organisatorische eenheid.",
                 "parameters": [],
                 "responses": {
                     "204": {
@@ -5749,8 +6811,8 @@
                 }
             }
         },
-        "KlantcontactForeignKey": {
-            "description": "Persoon of organisatie die betrokken was bij een klantcontact.",
+        "BetrokkeneForeignKey": {
+            "description": "Betrokkene bij klantcontact die een partij was.",
             "required": [
                 "uuid"
             ],
@@ -5771,10 +6833,11 @@
                     "maxLength": 1000,
                     "minLength": 1
                 }
-            }
+            },
+            "x-nullable": true
         },
         "DigitaalAdresForeignKey": {
-            "description": "Digitaal adres dat een betrokkene bij klantcontact verstrekte voor gebruik bij opvolging van een klantcontact.",
+            "description": "Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig contact met de gemeente.",
             "required": [
                 "uuid"
             ],
@@ -5794,6 +6857,201 @@
                     "readOnly": true,
                     "maxLength": 1000,
                     "minLength": 1
+                }
+            },
+            "x-nullable": true
+        },
+        "PartijForeignKey": {
+            "description": "Partij die een andere partij vertegenwoordigde.",
+            "required": [
+                "uuid"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van de partij.",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                }
+            },
+            "x-nullable": true
+        },
+        "PartijBezoekadres": {
+            "description": "Adres waarop de partij door gemeente bezocht wil worden. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
+            "type": "object",
+            "properties": {
+                "nummeraanduidingId": {
+                    "title": "Nummeraanduiding id",
+                    "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "adresregel1": {
+                    "title": "Adresregel 1",
+                    "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                    "type": "string",
+                    "maxLength": 80
+                },
+                "adresregel2": {
+                    "title": "Adresregel 2",
+                    "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                    "type": "string",
+                    "maxLength": 80
+                },
+                "adresregel3": {
+                    "title": "Adresregel 3",
+                    "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                    "type": "string",
+                    "maxLength": 80
+                },
+                "land": {
+                    "title": "Land",
+                    "description": "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.",
+                    "type": "string",
+                    "maxLength": 4,
+                    "minLength": 4
+                }
+            },
+            "x-nullable": true
+        },
+        "partij correspondentieadres serializer": {
+            "description": "Adres waarop de partij post van de gemeente wil ontvangen. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
+            "type": "object",
+            "properties": {
+                "nummeraanduidingId": {
+                    "title": "Nummeraanduiding ID",
+                    "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "adresregel1": {
+                    "title": "Adresregel 1",
+                    "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                    "type": "string",
+                    "maxLength": 80
+                },
+                "adresregel2": {
+                    "title": "Adresregel 2",
+                    "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                    "type": "string",
+                    "maxLength": 80
+                },
+                "adresregel3": {
+                    "title": "Adresregel 3",
+                    "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                    "type": "string",
+                    "maxLength": 80
+                },
+                "land": {
+                    "title": "Land",
+                    "description": "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.",
+                    "type": "string",
+                    "maxLength": 4,
+                    "minLength": 4
+                }
+            },
+            "x-nullable": true
+        },
+        "KlantcontactPartij": {
+            "description": "Betrokkene bij klantcontact die een partij was.",
+            "required": [
+                "nummer",
+                "digitaalAdres",
+                "voorkeursDigitaalAdres",
+                "vertegenwoordigde",
+                "soortPartij",
+                "indicatieGeheimhouding",
+                "indicatieActief"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van de partij.",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                },
+                "nummer": {
+                    "title": "Nummer",
+                    "description": "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.",
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 1
+                },
+                "interneNotitie": {
+                    "title": "Interne notitie",
+                    "description": "Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.",
+                    "type": "string",
+                    "maxLength": 1000
+                },
+                "betrokkene": {
+                    "$ref": "#/definitions/BetrokkeneForeignKey"
+                },
+                "digitaalAdres": {
+                    "$ref": "#/definitions/DigitaalAdresForeignKey"
+                },
+                "voorkeursDigitaalAdres": {
+                    "$ref": "#/definitions/DigitaalAdresForeignKey"
+                },
+                "vertegenwoordigde": {
+                    "description": "Partij die een andere partij vertegenwoordigde.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PartijForeignKey"
+                    },
+                    "x-nullable": true
+                },
+                "soortPartij": {
+                    "title": "Soort partij",
+                    "description": "Geeft aan van welke specifieke soort partij sprake is.",
+                    "type": "string",
+                    "enum": [
+                        "persoon",
+                        "organisatie",
+                        "contactpersoon"
+                    ]
+                },
+                "indicatieGeheimhouding": {
+                    "title": "Indicatie geheimhouding",
+                    "description": "Geeft aan of de verstrekker van partijgegevens heeft aangegeven dat deze gegevens als geheim beschouwd moeten worden.",
+                    "type": "boolean"
+                },
+                "voorkeurstaal": {
+                    "title": "Voorkeurstaal",
+                    "description": "Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur contact heeft met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html",
+                    "type": "string",
+                    "maxLength": 3
+                },
+                "indicatieActief": {
+                    "title": "Indicatie actief",
+                    "description": "Geeft aan of de contactgegevens van de partij nog gebruikt morgen worden om contact op te nemen. Gegevens van niet-actieve partijen mogen hiervoor niet worden gebruikt.",
+                    "type": "boolean"
+                },
+                "bezoekadres": {
+                    "$ref": "#/definitions/PartijBezoekadres"
+                },
+                "correspondentieadres": {
+                    "$ref": "#/definitions/partij correspondentieadres serializer"
                 }
             },
             "x-nullable": true
@@ -5909,12 +7167,36 @@
             },
             "x-nullable": true
         },
+        "KlantcontactForeignKey": {
+            "description": "Persoon of organisatie die betrokken was bij een klantcontact.",
+            "required": [
+                "uuid"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van de betrokkene bij klantcontact.",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                }
+            }
+        },
         "Betrokkene": {
             "required": [
-                "klantcontact",
-                "digitaalAdres",
+                "partij",
                 "rol",
-                "initiator"
+                "initiator",
+                "klantcontact"
             ],
             "type": "object",
             "properties": {
@@ -5934,11 +7216,13 @@
                     "maxLength": 1000,
                     "minLength": 1
                 },
-                "klantcontact": {
-                    "$ref": "#/definitions/KlantcontactForeignKey"
-                },
-                "digitaalAdres": {
-                    "$ref": "#/definitions/DigitaalAdresForeignKey"
+                "partij": {
+                    "description": "Betrokkene bij klantcontact die een partij was.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/KlantcontactPartij"
+                    },
+                    "x-nullable": true
                 },
                 "bezoekadres": {
                     "$ref": "#/definitions/Bezoekadres"
@@ -5967,21 +7251,55 @@
                 "initiator": {
                     "title": "Initiator",
                     "type": "boolean"
+                },
+                "klantcontact": {
+                    "$ref": "#/definitions/KlantcontactForeignKey"
                 }
             }
         },
-        "PartijForeignKey": {
-            "description": "Persoon of organisatie waarmee de gemeente een relatie heeft.",
+        "BijlageObjectidentificator": {
+            "description": "Gegevens die een inhoudsobject in een extern register uniek identificeren.",
+            "type": "object",
+            "properties": {
+                "objecttype": {
+                    "title": "Objecttype",
+                    "description": "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "soortObjectId": {
+                    "title": "Soort object id",
+                    "description": "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "objectId": {
+                    "title": "Object-id",
+                    "description": "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "register": {
+                    "title": "Register",
+                    "description": "Binnen het landschap van registers unieke omschrijving van het register waarin het object is geregistreerd, bijvoorbeeld: 'BRP'.",
+                    "type": "string",
+                    "maxLength": 200
+                }
+            },
+            "x-nullable": true
+        },
+        "Bijlage": {
             "required": [
-                "uuid"
+                "klantcontact"
             ],
             "type": "object",
             "properties": {
                 "uuid": {
                     "title": "Uuid",
-                    "description": "Unieke (technische) identificatiecode van de partij.",
+                    "description": "Unieke (technische) identificatiecode van het inhoudsdeel.",
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "readOnly": true
                 },
                 "url": {
                     "title": "Url",
@@ -5991,6 +7309,12 @@
                     "readOnly": true,
                     "maxLength": 1000,
                     "minLength": 1
+                },
+                "klantcontact": {
+                    "$ref": "#/definitions/KlantcontactForeignKey"
+                },
+                "objectidentificator": {
+                    "$ref": "#/definitions/BijlageObjectidentificator"
                 }
             }
         },
@@ -6055,7 +7379,7 @@
         "Contactpersoon": {
             "required": [
                 "partij",
-                "organisatie"
+                "werkteVoorOrganisatie"
             ],
             "type": "object",
             "properties": {
@@ -6076,7 +7400,7 @@
                 "partij": {
                     "$ref": "#/definitions/PartijForeignKey"
                 },
-                "organisatie": {
+                "werkteVoorOrganisatie": {
                     "$ref": "#/definitions/OrganisatieForeignKey"
                 },
                 "contactnaam": {
@@ -6086,6 +7410,7 @@
         },
         "DigitaalAdres": {
             "required": [
+                "betrokkene",
                 "adres",
                 "soortDigitaalAdres",
                 "omschrijving"
@@ -6107,6 +7432,9 @@
                     "readOnly": true,
                     "maxLength": 1000,
                     "minLength": 1
+                },
+                "betrokkene": {
+                    "$ref": "#/definitions/BetrokkeneForeignKey"
                 },
                 "adres": {
                     "title": "Adres",
@@ -6266,8 +7594,202 @@
                 }
             }
         },
+        "OnderwerpobjectForeignKey": {
+            "description": "Onderwerpobject dat tijdens een klantcontact aan de orde was.",
+            "required": [
+                "uuid"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van het onderwerpdeel.",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                }
+            },
+            "x-nullable": true
+        },
+        "BijlageForeignKey": {
+            "description": "Bijlage die (een deel van) de inhoud van het klantcontact beschrijft.",
+            "required": [
+                "uuid"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van het inhoudsdeel.",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                }
+            },
+            "x-nullable": true
+        },
+        "BetrokkeneKlantcontact": {
+            "description": "Persoon of organisatie die betrokken was bij een klantcontact.",
+            "required": [
+                "partij",
+                "rol",
+                "initiator"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van de betrokkene bij klantcontact.",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                },
+                "partij": {
+                    "description": "Betrokkene bij klantcontact die een partij was.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/KlantcontactPartij"
+                    },
+                    "x-nullable": true
+                },
+                "bezoekadres": {
+                    "$ref": "#/definitions/Bezoekadres"
+                },
+                "correspondentieadres": {
+                    "$ref": "#/definitions/betrokkene correspondentieadres"
+                },
+                "contactnaam": {
+                    "$ref": "#/definitions/Contactnaam"
+                },
+                "rol": {
+                    "title": "Rol",
+                    "description": "Rol die de betrokkene bij klantcontact tijdens dat contact vervulde.",
+                    "type": "string",
+                    "enum": [
+                        "vertegenwoordiger",
+                        "klant"
+                    ]
+                },
+                "organisatienaam": {
+                    "title": "Organisatienaam",
+                    "description": "Naam van de organisatie waarmee de betrokkene bij klantcontact een relatie had.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "initiator": {
+                    "title": "Initiator",
+                    "type": "boolean"
+                },
+                "klantcontact": {
+                    "$ref": "#/definitions/KlantcontactForeignKey"
+                }
+            },
+            "x-nullable": true
+        },
+        "KlantcontactInterneTaak": {
+            "description": "Klantcontact dat leidde tot een interne taak.",
+            "required": [
+                "nummer",
+                "gevraagdeHandeling",
+                "actor",
+                "toelichting",
+                "status"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van de interne taak.",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                },
+                "nummer": {
+                    "title": "Nummer",
+                    "description": "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.",
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 1
+                },
+                "gevraagdeHandeling": {
+                    "title": "Gevraagde handeling",
+                    "description": "Handeling die moet worden uitgevoerd om de taak af te ronden.",
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "actor": {
+                    "$ref": "#/definitions/ActorForeignKey"
+                },
+                "klantcontact": {
+                    "$ref": "#/definitions/KlantcontactForeignKey"
+                },
+                "toelichting": {
+                    "title": "Toelichting",
+                    "description": "Toelichting die, aanvullend bij de inhoud van het klantcontact dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan het kunnen afhandelen van de taak.",
+                    "type": "string",
+                    "maxLength": 400,
+                    "minLength": 1
+                },
+                "status": {
+                    "title": "Status",
+                    "description": "Aanduiding van de vordering bij afhandeling van de interne taak.",
+                    "type": "string",
+                    "enum": [
+                        "te_verwerken",
+                        "verwerkt"
+                    ]
+                },
+                "toegewezenOp": {
+                    "title": "Toegewezen op",
+                    "description": "Datum en tijdstip waarop de interne taak aan een actor werd toegewezen.",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                }
+            },
+            "x-nullable": true
+        },
         "Klantcontact": {
             "required": [
+                "gingOverOnderwerpobject",
+                "omvatteBijlagen",
+                "hadBetrokkene",
+                "leideTotInterneTaken",
                 "nummer",
                 "kanaal",
                 "onderwerp",
@@ -6292,6 +7814,38 @@
                     "readOnly": true,
                     "maxLength": 1000,
                     "minLength": 1
+                },
+                "gingOverOnderwerpobject": {
+                    "description": "Onderwerpobject dat tijdens een klantcontact aan de orde was.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/OnderwerpobjectForeignKey"
+                    },
+                    "x-nullable": true
+                },
+                "omvatteBijlagen": {
+                    "description": "Bijlage die (een deel van) de inhoud van het klantcontact beschrijft.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BijlageForeignKey"
+                    },
+                    "x-nullable": true
+                },
+                "hadBetrokkene": {
+                    "description": "Persoon of organisatie die betrokken was bij een klantcontact.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BetrokkeneKlantcontact"
+                    },
+                    "x-nullable": true
+                },
+                "leideTotInterneTaken": {
+                    "description": "Klantcontact dat leidde tot een interne taak.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/KlantcontactInterneTaak"
+                    },
+                    "x-nullable": true
                 },
                 "nummer": {
                     "title": "Nummer",
@@ -6401,9 +7955,101 @@
                 }
             }
         },
+        "OnderwerpobjectObjectidentificator": {
+            "description": "Gegevens die een onderwerpobject in een extern register uniek identificeren.",
+            "type": "object",
+            "properties": {
+                "objecttype": {
+                    "title": "Objecttype",
+                    "description": "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "soortObjectId": {
+                    "title": "Soort object id",
+                    "description": "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "objectId": {
+                    "title": "Object-id",
+                    "description": "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "register": {
+                    "title": "Register",
+                    "description": "Binnen het landschap van registers unieke omschrijving van het register waarin het object is geregistreerd, bijvoorbeeld: 'BRP'.",
+                    "type": "string",
+                    "maxLength": 200
+                }
+            },
+            "x-nullable": true
+        },
+        "Onderwerpobject": {
+            "required": [
+                "klantcontact",
+                "wasKlantcontact"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van het onderwerpdeel.",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                },
+                "klantcontact": {
+                    "$ref": "#/definitions/KlantcontactForeignKey"
+                },
+                "wasKlantcontact": {
+                    "$ref": "#/definitions/KlantcontactForeignKey"
+                },
+                "objectidentificator": {
+                    "$ref": "#/definitions/OnderwerpobjectObjectidentificator"
+                }
+            }
+        },
+        "ContactPersoonForeignkey": {
+            "description": "Organisatie waarvoor een contactpersoon werkte.",
+            "required": [
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer"
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                },
+                "partij": {
+                    "$ref": "#/definitions/PartijForeignKey"
+                }
+            },
+            "x-nullable": true
+        },
         "Organisatie": {
             "required": [
-                "partij"
+                "partij",
+                "contactpersoon"
             ],
             "type": "object",
             "properties": {
@@ -6429,6 +8075,14 @@
                 },
                 "partij": {
                     "$ref": "#/definitions/PartijForeignKey"
+                },
+                "contactpersoon": {
+                    "description": "Organisatie waarvoor een contactpersoon werkte.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ContactPersoonForeignkey"
+                    },
+                    "x-nullable": true
                 }
             }
         },
@@ -6485,107 +8139,6 @@
                     "minLength": 1
                 }
             }
-        },
-        "BetrokkeneForeignKey": {
-            "description": "Betrokkene bij klantcontact die een partij was.",
-            "required": [
-                "uuid"
-            ],
-            "type": "object",
-            "properties": {
-                "uuid": {
-                    "title": "Uuid",
-                    "description": "Unieke (technische) identificatiecode van de betrokkene bij klantcontact.",
-                    "type": "string",
-                    "format": "uuid"
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                }
-            },
-            "x-nullable": true
-        },
-        "PartijBezoekadres": {
-            "description": "Adres waarop de partij door gemeente bezocht wil worden. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
-            "type": "object",
-            "properties": {
-                "nummeraanduidingId": {
-                    "title": "Nummeraanduiding id",
-                    "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "adresregel1": {
-                    "title": "Adresregel 1",
-                    "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
-                    "type": "string",
-                    "maxLength": 80
-                },
-                "adresregel2": {
-                    "title": "Adresregel 2",
-                    "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
-                    "type": "string",
-                    "maxLength": 80
-                },
-                "adresregel3": {
-                    "title": "Adresregel 3",
-                    "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
-                    "type": "string",
-                    "maxLength": 80
-                },
-                "land": {
-                    "title": "Land",
-                    "description": "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.",
-                    "type": "string",
-                    "maxLength": 4,
-                    "minLength": 4
-                }
-            },
-            "x-nullable": true
-        },
-        "partij correspondentieadres serializer": {
-            "description": "Adres waarop de partij post van de gemeente wil ontvangen. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
-            "type": "object",
-            "properties": {
-                "nummeraanduidingId": {
-                    "title": "Nummeraanduiding ID",
-                    "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "adresregel1": {
-                    "title": "Adresregel 1",
-                    "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
-                    "type": "string",
-                    "maxLength": 80
-                },
-                "adresregel2": {
-                    "title": "Adresregel 2",
-                    "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
-                    "type": "string",
-                    "maxLength": 80
-                },
-                "adresregel3": {
-                    "title": "Adresregel 3",
-                    "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
-                    "type": "string",
-                    "maxLength": 80
-                },
-                "land": {
-                    "title": "Land",
-                    "description": "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.",
-                    "type": "string",
-                    "maxLength": 4,
-                    "minLength": 4
-                }
-            },
-            "x-nullable": true
         },
         "Partij": {
             "required": [

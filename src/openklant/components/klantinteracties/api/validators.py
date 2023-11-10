@@ -4,11 +4,18 @@ from rest_framework import serializers
 
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
+from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
+    Bijlage,
     Klantcontact,
+    Onderwerpobject,
 )
-from openklant.components.klantinteracties.models.partijen import Organisatie, Partij
+from openklant.components.klantinteracties.models.partijen import (
+    Contactpersoon,
+    Organisatie,
+    Partij,
+)
 
 
 def actor_exists(value):
@@ -25,6 +32,20 @@ def betrokkene_exists(value):
         raise serializers.ValidationError(_("Betrokkene object doesn't exist."))
 
 
+def bijlage_exists(value):
+    try:
+        Bijlage.objects.get(uuid=str(value))
+    except Bijlage.DoesNotExist:
+        raise serializers.ValidationError(_("Bijlage object doesn't exist."))
+
+
+def contactpersoon_exists(value):
+    try:
+        Contactpersoon.objects.get(id=int(value))
+    except Contactpersoon.DoesNotExist:
+        raise serializers.ValidationError(_("Contactpersoon object doesn't exist."))
+
+
 def digitaal_adres_exists(value):
     try:
         DigitaalAdres.objects.get(uuid=str(value))
@@ -32,11 +53,25 @@ def digitaal_adres_exists(value):
         raise serializers.ValidationError(_("DigitaalAdres object doesn't exist."))
 
 
+def internetaak_exists(value):
+    try:
+        InterneTaak.objects.get(uuid=str(value))
+    except InterneTaak.DoesNotExist:
+        raise serializers.ValidationError(_("InterneTaak object doesn't exist."))
+
+
 def klantcontact_exists(value):
     try:
         Klantcontact.objects.get(uuid=str(value))
     except Klantcontact.DoesNotExist:
         raise serializers.ValidationError(_("Klantcontact object doesn't exist."))
+
+
+def onderwerpobject_exists(value):
+    try:
+        Onderwerpobject.objects.get(uuid=(str(value)))
+    except Onderwerpobject.DoesNotExist:
+        raise serializers.ValidationError(_("Onderwerpobject object doesn't exist."))
 
 
 def organisatie_exists(value):

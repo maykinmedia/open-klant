@@ -3,12 +3,21 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from openklant.components.klantinteracties.models.klantcontacten import Betrokkene
+
 
 class DigitaalAdres(models.Model):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van het digitaal adres."),
+    )
+    betrokkene = models.ForeignKey(
+        Betrokkene,
+        on_delete=models.CASCADE,
+        verbose_name=_("betrokkene"),
+        help_text=_("'Digitaal Adres' had 'Betrokkene bij klantcontact'"),
+        null=True,
     )
     soort_digitaal_adres = models.CharField(
         _("soort digitaal adres"),

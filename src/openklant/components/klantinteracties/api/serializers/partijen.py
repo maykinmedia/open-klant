@@ -11,6 +11,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     BetrokkeneForeignKeySerializer,
 )
 from openklant.components.klantinteracties.api.validators import (
+    contactpersoon_exists,
     organisatie_exists,
     partij_exists,
 )
@@ -55,14 +56,9 @@ class CorrespondentieadresSerializer(GegevensGroepSerializer):
         ref_name = "partij correspondentieadres serializer"
 
 
-class PartijSerializer(
+class PartijBaseSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
-    betrokkene = BetrokkeneForeignKeySerializer(
-        required=True,
-        allow_null=True,
-        help_text=_("Betrokkene bij klantcontact die een partij was."),
-    )
     digitaal_adres = DigitaalAdresForeignKeySerializer(
         required=True,
         allow_null=True,
@@ -132,49 +128,53 @@ class PartijSerializer(
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if validated_data.get("betrokkene"):
+        if "betrokkene" in validated_data:
             if betrokkene := validated_data.pop("betrokkene", None):
-                validated_data["betrokkene"] = Betrokkene.objects.get(
-                    uuid=str(betrokkene.get("uuid"))
-                )
+                betrokkene = Betrokkene.objects.get(uuid=str(betrokkene.get("uuid")))
 
-        if validated_data.get("digitaal_adres"):
+            validated_data["betrokkene"] = betrokkene
+
+        if "digitaal_adres" in validated_data:
             if digitaal_adres := validated_data.pop("digitaal_adres", None):
-                validated_data["digitaal_adres"] = DigitaalAdres.objects.get(
+                digitaal_adres = DigitaalAdres.objects.get(
                     uuid=str(digitaal_adres.get("uuid"))
                 )
 
-        if validated_data.get("voorkeurs_digitaal_adres"):
+            validated_data["digitaal_adres"] = digitaal_adres
+
+        if "voorkeurs_digitaal_adres" in validated_data:
             if voorkeurs_digitaal_adres := validated_data.pop(
                 "voorkeurs_digitaal_adres", None
             ):
-                validated_data["voorkeurs_digitaal_adres"] = DigitaalAdres.objects.get(
+                voorkeurs_digitaal_adres = DigitaalAdres.objects.get(
                     uuid=str(voorkeurs_digitaal_adres.get("uuid"))
                 )
 
-        if validated_data.get("vertegenwoordigde"):
+            validated_data["voorkeurs_digitaal_adres"] = voorkeurs_digitaal_adres
+
+        if "vertegenwoordigde" in validated_data:
             if vertegenwoordigde := validated_data.pop("vertegenwoordigde", []):
                 partijen = [str(partij["uuid"]) for partij in vertegenwoordigde]
-                instance.vertegenwoordigde.set(Partij.objects.filter(uuid__in=partijen))
+                vertegenwoordigde = Partij.objects.filter(uuid__in=partijen)
+
+            instance.vertegenwoordigde.set(vertegenwoordigde)
 
         return super().update(instance, validated_data)
 
     @transaction.atomic
     def create(self, validated_data):
         if betrokkene := validated_data.pop("betrokkene", None):
-            validated_data["betrokkene"] = Betrokkene.objects.get(
-                uuid=str(betrokkene.get("uuid"))
-            )
+            betrokkene = Betrokkene.objects.get(uuid=str(betrokkene.get("uuid")))
 
         if digitaal_adres := validated_data.pop("digitaal_adres", None):
-            validated_data["digitaal_adres"] = DigitaalAdres.objects.get(
+            digitaal_adres = DigitaalAdres.objects.get(
                 uuid=str(digitaal_adres.get("uuid"))
             )
 
         if voorkeurs_digitaal_adres := validated_data.pop(
             "voorkeurs_digitaal_adres", None
         ):
-            validated_data["voorkeurs_digitaal_adres"] = DigitaalAdres.objects.get(
+            voorkeurs_digitaal_adres = DigitaalAdres.objects.get(
                 uuid=str(voorkeurs_digitaal_adres.get("uuid"))
             )
 
@@ -184,7 +184,60 @@ class PartijSerializer(
                 uuid__in=partijen
             )
 
+        validated_data["betrokkene"] = betrokkene
+        validated_data["digitaal_adres"] = digitaal_adres
+        validated_data["voorkeurs_digitaal_adres"] = voorkeurs_digitaal_adres
+
         return super().create(validated_data)
+
+
+class PartijSerializer(PartijBaseSerializer):
+    betrokkene = BetrokkeneForeignKeySerializer(
+        required=True,
+        allow_null=True,
+        help_text=_("Betrokkene bij klantcontact die een partij was."),
+    )
+
+    class Meta(PartijBaseSerializer.Meta):
+        fields = PartijBaseSerializer.Meta.fields + ("betrokkene",)
+
+
+class KlantcontactPartijSerializer(PartijBaseSerializer):
+    betrokkene = BetrokkeneForeignKeySerializer(
+        read_only=True,
+        allow_null=True,
+        help_text=_("Betrokkene bij klantcontact die een partij was."),
+    )
+
+    class Meta(PartijBaseSerializer.Meta):
+        fields = PartijBaseSerializer.Meta.fields + ("betrokkene",)
+
+
+class ContactPersoonForeignkeySerializer(serializers.HyperlinkedModelSerializer):
+    partij = PartijForeignKeySerializer(
+        read_only=True,
+        help_text=_("Persoon of organisatie waarmee de gemeente een relatie heeft."),
+    )
+
+    class Meta:
+        model = Contactpersoon
+        fields = (
+            "id",
+            "url",
+            "partij",
+        )
+        extra_kwargs = {
+            "id": {
+                "required": True,
+                "read_only": False,
+                "validators": [contactpersoon_exists],
+            },
+            "url": {
+                "view_name": "contactpersoon-detail",
+                "lookup_field": "id",
+                "help_text": "De unieke URL van dit contact persoon binnen deze API.",
+            },
+        }
 
 
 class OrganisatieForeignKeySerializer(serializers.HyperlinkedModelSerializer):
@@ -214,6 +267,13 @@ class OrganisatieSerializer(serializers.HyperlinkedModelSerializer):
         allow_null=False,
         help_text=_("Persoon of organisatie waarmee de gemeente een relatie heeft."),
     )
+    contactpersoon = ContactPersoonForeignkeySerializer(
+        required=True,
+        allow_null=True,
+        many=True,
+        source="contactpersoon_set",
+        help_text=_("Organisatie waarvoor een contactpersoon werkte."),
+    )
 
     class Meta:
         model = Organisatie
@@ -222,6 +282,7 @@ class OrganisatieSerializer(serializers.HyperlinkedModelSerializer):
             "url",
             "naam",
             "partij",
+            "contactpersoon",
         )
         extra_kwargs = {
             "id": {"read_only": True},
@@ -234,17 +295,78 @@ class OrganisatieSerializer(serializers.HyperlinkedModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if partij := validated_data.pop("partij", None):
-            validated_data["partij"] = Partij.objects.get(uuid=str(partij.get("uuid")))
+        if "partij" in validated_data:
+            if partij := validated_data.pop("partij", None):
+                partij_uuid = str(partij.get("uuid"))
+                if partij_uuid != str(instance.partij.uuid):
+                    if Organisatie.objects.filter(partij__uuid=partij_uuid):
+                        raise serializers.ValidationError(
+                            {
+                                "partij.uuid": _(
+                                    "Er bestaat al een organisatie met eenzelfde uuid."
+                                )
+                            }
+                        )
+
+                validated_data["partij"] = Partij.objects.get(
+                    uuid=str(partij.get("uuid"))
+                )
+
+        if "contactpersoon_set" in validated_data:
+            existing_contactpersonen = instance.contactpersoon_set.all()
+            contactpersonen_ids = [
+                contactpersoon["id"]
+                for contactpersoon in validated_data.pop("contactpersoon_set")
+            ]
+
+            # unset relation of contactpersoon that weren't given with the update
+            for contactpersoon in existing_contactpersonen:
+                if contactpersoon.id not in contactpersonen_ids:
+                    contactpersoon.organisatie = None
+                    contactpersoon.save()
+
+            # create relation between contactpersoon and organisatie of new entries
+            for contactpersoon_id in contactpersonen_ids:
+                if contactpersoon_id not in existing_contactpersonen.values_list(
+                    "id", flat=True
+                ):
+                    contactpersoon = Contactpersoon.objects.get(id=contactpersoon_id)
+                    contactpersoon.organisatie = instance
+                    contactpersoon.save()
 
         return super().update(instance, validated_data)
 
     @transaction.atomic
     def create(self, validated_data):
         partij_uuid = str(validated_data.pop("partij").get("uuid"))
+        if Organisatie.objects.filter(partij__uuid=partij_uuid):
+            raise serializers.ValidationError(
+                {"partij.uuid": _("Er bestaat al een organisatie met eenzelfde uuid.")}
+            )
+
+        contactpersonen = validated_data.pop("contactpersoon_set")
+
         validated_data["partij"] = Partij.objects.get(uuid=partij_uuid)
 
-        return super().create(validated_data)
+        oranisatie = super().create(validated_data)
+
+        if contactpersonen:
+            for index, contactpersoon in enumerate(contactpersonen):
+                contactpersoon = Contactpersoon.objects.get(
+                    id=str(contactpersoon["id"])
+                )
+                if contactpersoon.organisatie:
+                    raise serializers.ValidationError(
+                        {
+                            f"contactpersoon.{index}.id": _(
+                                "Contactpersoon object already is linked to a organisatie object."
+                            )
+                        }
+                    )
+                contactpersoon.organisatie = oranisatie
+                contactpersoon.save()
+
+        return oranisatie
 
 
 class PersoonContactSerializer(GegevensGroepSerializer):
@@ -291,19 +413,22 @@ class PersoonSerializer(
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if partij := validated_data.pop("partij", None):
-            partij_uuid = str(partij.get("uuid"))
-            if partij_uuid != str(instance.partij.uuid):
-                if Persoon.objects.filter(partij__uuid=partij_uuid):
-                    raise serializers.ValidationError(
-                        {
-                            "partij.uuid": _(
-                                "Er bestaat al een partij met eenzelfde uuid."
-                            )
-                        }
-                    )
+        if "partij" in validated_data:
+            if partij := validated_data.pop("partij", None):
+                partij_uuid = str(partij.get("uuid"))
+                if partij_uuid != str(instance.partij.uuid):
+                    if Persoon.objects.filter(partij__uuid=partij_uuid):
+                        raise serializers.ValidationError(
+                            {
+                                "partij.uuid": _(
+                                    "Er bestaat al een partij met eenzelfde uuid."
+                                )
+                            }
+                        )
 
-            validated_data["partij"] = Partij.objects.get(uuid=str(partij.get("uuid")))
+                validated_data["partij"] = Partij.objects.get(
+                    uuid=str(partij.get("uuid"))
+                )
 
         return super().update(instance, validated_data)
 
@@ -334,10 +459,11 @@ class ContactpersoonSerializer(
         allow_null=False,
         help_text=_("Persoon of organisatie waarmee de gemeente een relatie heeft."),
     )
-    organisatie = OrganisatieForeignKeySerializer(
+    werkte_voor_organisatie = OrganisatieForeignKeySerializer(
         required=True,
         allow_null=True,
         help_text=_("Organisatie waarvoor een contactpersoon werkte."),
+        source="organisatie",
     )
     contactnaam = ContactpersoonPersoonSerializer(
         required=False,
@@ -355,7 +481,7 @@ class ContactpersoonSerializer(
             "id",
             "url",
             "partij",
-            "organisatie",
+            "werkte_voor_organisatie",
             "contactnaam",
         )
 
@@ -383,25 +509,28 @@ class ContactpersoonSerializer(
 
             validated_data["partij"] = Partij.objects.get(uuid=str(partij.get("uuid")))
 
-        if validated_data.get("organisatie"):
+        if "organisatie" in validated_data:
             if organisatie := validated_data.pop("organisatie", None):
-                validated_data["organisatie"] = Organisatie.objects.get(
-                    id=organisatie.get("id")
-                )
+                organisatie = Organisatie.objects.get(id=organisatie.get("id"))
+
+            validated_data["organisatie"] = organisatie
 
         return super().update(instance, validated_data)
 
     @transaction.atomic
     def create(self, validated_data):
         partij_uuid = str(validated_data.pop("partij").get("uuid"))
-        organisatie_id = validated_data.pop("organisatie").get("id")
         if Contactpersoon.objects.filter(partij__uuid=partij_uuid):
             raise serializers.ValidationError(
                 {"partij.uuid": _("Er bestaat al een partij met eenzelfde uuid.")}
             )
 
         validated_data["partij"] = Partij.objects.get(uuid=partij_uuid)
-        validated_data["organisatie"] = Organisatie.objects.get(id=organisatie_id)
+
+        if organisatie := validated_data.pop("organisatie"):
+            organisatie = Organisatie.objects.get(id=organisatie.get("id"))
+
+        validated_data["organisatie"] = organisatie
 
         return super().create(validated_data)
 
@@ -450,7 +579,7 @@ class PartijIdentificatorSerializer(
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if validated_data.get("partij"):
+        if "partij" in validated_data:
             if partij := validated_data.pop("partij", None):
                 validated_data["partij"] = Partij.objects.get(
                     uuid=str(partij.get("uuid"))
