@@ -32,7 +32,7 @@ class BetrokkeneForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"required": True, "validators": [betrokkene_exists]},
             "url": {
-                "view_name": "betrokkene-detail",
+                "view_name": "klantinteracties:betrokkene-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze betrokkene binnen deze API.",
             },
@@ -68,7 +68,7 @@ class KlantcontactForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"required": True, "validators": [klantcontact_exists]},
             "url": {
-                "view_name": "klantcontact-detail",
+                "view_name": "klantinteracties:klantcontact-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van dit klantcontact binnen deze API.",
             },
@@ -133,7 +133,7 @@ class BetrokkeneBaseSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "betrokkene-detail",
+                "view_name": "klantinteracties:betrokkene-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze betrokkene binnen deze API.",
             },
@@ -221,7 +221,7 @@ class OnderwerpobjectForeignKeySerializer(serializers.HyperlinkedModelSerializer
         extra_kwargs = {
             "uuid": {"required": True, "validators": [onderwerpobject_exists]},
             "url": {
-                "view_name": "onderwerpobject-detail",
+                "view_name": "klantinteracties:onderwerpobject-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van dit onderwerp object binnen deze API.",
             },
@@ -239,7 +239,7 @@ class BijlageForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"required": True, "validators": [bijlage_exists]},
             "url": {
-                "view_name": "bijlage-detail",
+                "view_name": "klantinteracties:bijlage-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze bijlage binnen deze API.",
             },
@@ -313,7 +313,7 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "klantcontact-detail",
+                "view_name": "klantinteracties:klantcontact-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van dit klantcontact binnen deze API.",
             },
@@ -499,7 +499,7 @@ class OnderwerpobjectSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "klantcontact-detail",
+                "view_name": "klantinteracties:klantcontact-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van dit klantcontact binnen deze API.",
             },
@@ -576,7 +576,7 @@ class BijlageSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "klantcontact-detail",
+                "view_name": "klantinteracties:klantcontact-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van dit klantcontact binnen deze API.",
             },

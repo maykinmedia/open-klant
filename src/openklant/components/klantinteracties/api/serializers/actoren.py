@@ -29,7 +29,7 @@ class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"required": True, "validators": [actor_exists]},
             "url": {
-                "view_name": "actor-detail",
+                "view_name": "klantinteracties:actor-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze actor binnen deze API.",
             },
@@ -61,7 +61,7 @@ class ActorSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "actor-detail",
+                "view_name": "klantinteracties:actor-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze actor binnen deze API.",
             },
@@ -87,7 +87,7 @@ class GeautomatiseerdeActorSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
             "url": {
-                "view_name": "geautomatiseerdeactor-detail",
+                "view_name": "klantinteracties:geautomatiseerdeactor-detail",
                 "lookup_field": "id",
                 "help_text": "De unieke URL van deze geautomatiseerde actor binnen deze API.",
             },
@@ -129,7 +129,7 @@ class MedewerkerSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
             "url": {
-                "view_name": "medewerker-detail",
+                "view_name": "klantinteracties:medewerker-detail",
                 "lookup_field": "id",
                 "help_text": "De unieke URL van deze medewerker binnen deze API.",
             },
@@ -172,7 +172,7 @@ class OrganisatorischeEenheidSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
             "url": {
-                "view_name": "organisatorischeeenheid-detail",
+                "view_name": "klantinteracties:organisatorischeeenheid-detail",
                 "lookup_field": "id",
                 "help_text": "De unieke URL van deze organisatorische eenheid binnen deze API.",
             },

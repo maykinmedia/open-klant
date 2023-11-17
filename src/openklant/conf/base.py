@@ -136,6 +136,7 @@ INSTALLED_APPS = [
     "openklant.accounts",
     "openklant.utils",
     "openklant.components.klantinteracties",
+    "openklant.components.contactgegevens",
     "openklant.components.legacy.klanten",
     "openklant.components.legacy.contactmomenten",
 ]
@@ -380,6 +381,14 @@ SPEC_URL = {
         "contactmomenten",
         "openapi.yaml",
     ),
+    "contactgegevens": os.path.join(
+        BASE_DIR,
+        "src",
+        "openklant",
+        "components",
+        "contactgegevens",
+        "openapi.yaml",
+    ),
     "klantinteracties": os.path.join(
         BASE_DIR,
         "src",
@@ -490,3 +499,8 @@ if not ELASTIC_APM_SERVER_URL:
 OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
 MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
 MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
+
+#
+# dhabgi-loose-fk
+#
+DEFAULT_LOOSE_FK_LOADER = "django_loose_fk.loaders.RequestsLoader"
