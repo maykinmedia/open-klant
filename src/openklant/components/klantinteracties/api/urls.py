@@ -4,12 +4,7 @@ from django.urls import include, path, re_path
 from vng_api_common import routers
 from vng_api_common.schema import SchemaView as _SchemaView
 
-from openklant.components.klantinteracties.api.viewsets.actoren import (
-    ActorViewSet,
-    GeautomatiseerdeActorViewSet,
-    MedewerkerViewSet,
-    OrganisatorischeEenheidViewSet,
-)
+from openklant.components.klantinteracties.api.viewsets.actoren import ActorViewSet
 from openklant.components.klantinteracties.api.viewsets.digitaal_adres import (
     DigitaalAdresViewSet,
 )
@@ -34,10 +29,6 @@ from .schema import info
 
 router = routers.DefaultRouter()
 router.register("actoren", ActorViewSet)
-router.register("geautomatiseerde_actoren", GeautomatiseerdeActorViewSet)
-router.register("medewerker", MedewerkerViewSet)
-router.register("organisatorische_eenheid", OrganisatorischeEenheidViewSet)
-
 router.register("digitaal_adres", DigitaalAdresViewSet)
 
 router.register("klantcontact", KlantcontactViewSet)
