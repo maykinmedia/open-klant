@@ -19,7 +19,7 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
 
 class PartijTests(JWTAuthMixin, APITestCase):
     def test_list_partij(self):
-        list_url = reverse("partij-list")
+        list_url = reverse("klantinteracties:partij-list")
         PartijFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -31,7 +31,9 @@ class PartijTests(JWTAuthMixin, APITestCase):
 
     def test_read_partij(self):
         partij = PartijFactory.create()
-        detail_url = reverse("partij-detail", kwargs={"uuid": str(partij.uuid)})
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
 
         response = self.client.get(detail_url)
 
@@ -41,7 +43,7 @@ class PartijTests(JWTAuthMixin, APITestCase):
         vertegenwoordigde = PartijFactory.create()
         betrokkene = BetrokkeneFactory.create()
         digitaal_adres, digitaal_adres2 = DigitaalAdresFactory.create_batch(2)
-        list_url = reverse("partij-list")
+        list_url = reverse("klantinteracties:partij-list")
         data = {
             "nummer": "1298329191",
             "interneNotitie": "interneNotitie",
@@ -184,7 +186,9 @@ class PartijTests(JWTAuthMixin, APITestCase):
             correspondentieadres_land="6030",
         )
 
-        detail_url = reverse("partij-detail", kwargs={"uuid": str(partij.uuid)})
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
         response = self.client.get(detail_url)
         data = response.json()
 
@@ -382,7 +386,9 @@ class PartijTests(JWTAuthMixin, APITestCase):
             correspondentieadres_land="6030",
         )
 
-        detail_url = reverse("partij-detail", kwargs={"uuid": str(partij.uuid)})
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
         response = self.client.get(detail_url)
         data = response.json()
 
@@ -466,11 +472,13 @@ class PartijTests(JWTAuthMixin, APITestCase):
 
     def test_destroy_partij(self):
         partij = PartijFactory.create()
-        detail_url = reverse("partij-detail", kwargs={"uuid": str(partij.uuid)})
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("partij-list")
+        list_url = reverse("klantinteracties:partij-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
@@ -478,7 +486,7 @@ class PartijTests(JWTAuthMixin, APITestCase):
 
 class OrganisatieTests(JWTAuthMixin, APITestCase):
     def test_list_organisatie(self):
-        list_url = reverse("organisatie-list")
+        list_url = reverse("klantinteracties:organisatie-list")
         OrganisatieFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -490,7 +498,9 @@ class OrganisatieTests(JWTAuthMixin, APITestCase):
 
     def test_read_organisatie(self):
         organisatie = OrganisatieFactory.create()
-        detail_url = reverse("organisatie-detail", kwargs={"id": str(organisatie.id)})
+        detail_url = reverse(
+            "klantinteracties:organisatie-detail", kwargs={"id": str(organisatie.id)}
+        )
 
         response = self.client.get(detail_url)
 
@@ -498,7 +508,7 @@ class OrganisatieTests(JWTAuthMixin, APITestCase):
 
     def test_create_organisatie(self):
         partij = PartijFactory.create()
-        list_url = reverse("organisatie-list")
+        list_url = reverse("klantinteracties:organisatie-list")
         data = {
             "partij": {"uuid": str(partij.uuid)},
             "contactpersoon": [],
@@ -523,7 +533,7 @@ class OrganisatieTests(JWTAuthMixin, APITestCase):
         contactpersoon = ContactpersoonFactory.create(organisatie=None)
         partij = PartijFactory.create()
 
-        list_url = reverse("organisatie-list")
+        list_url = reverse("klantinteracties:organisatie-list")
         data = {
             "partij": {"uuid": str(partij.uuid)},
             "contactpersoon": [{"id": contactpersoon.id}],
@@ -565,7 +575,9 @@ class OrganisatieTests(JWTAuthMixin, APITestCase):
         partij, partij2 = PartijFactory.create_batch(2)
         contactpersoon = ContactpersoonFactory.create()
         organisatie = OrganisatieFactory.create(partij=partij, naam="whitechapel")
-        detail_url = reverse("organisatie-detail", kwargs={"id": organisatie.id})
+        detail_url = reverse(
+            "klantinteracties:organisatie-detail", kwargs={"id": organisatie.id}
+        )
 
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -612,7 +624,9 @@ class OrganisatieTests(JWTAuthMixin, APITestCase):
     def test_partial_update_organisatie(self):
         partij = PartijFactory.create()
         organisatie = OrganisatieFactory.create(partij=partij, naam="whitechapel")
-        detail_url = reverse("organisatie-detail", kwargs={"id": str(organisatie.id)})
+        detail_url = reverse(
+            "klantinteracties:organisatie-detail", kwargs={"id": str(organisatie.id)}
+        )
 
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -634,11 +648,13 @@ class OrganisatieTests(JWTAuthMixin, APITestCase):
 
     def test_destroy_organisatie(self):
         organisatie = OrganisatieFactory.create()
-        detail_url = reverse("organisatie-detail", kwargs={"id": str(organisatie.id)})
+        detail_url = reverse(
+            "klantinteracties:organisatie-detail", kwargs={"id": str(organisatie.id)}
+        )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("organisatie-list")
+        list_url = reverse("klantinteracties:organisatie-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
@@ -646,7 +662,7 @@ class OrganisatieTests(JWTAuthMixin, APITestCase):
 
 class PersoonTests(JWTAuthMixin, APITestCase):
     def test_list_persoon(self):
-        list_url = reverse("persoon-list")
+        list_url = reverse("klantinteracties:persoon-list")
         PersoonFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -658,7 +674,9 @@ class PersoonTests(JWTAuthMixin, APITestCase):
 
     def test_read_persoon(self):
         persoon = PersoonFactory.create()
-        detail_url = reverse("persoon-detail", kwargs={"id": str(persoon.id)})
+        detail_url = reverse(
+            "klantinteracties:persoon-detail", kwargs={"id": str(persoon.id)}
+        )
 
         response = self.client.get(detail_url)
 
@@ -666,7 +684,7 @@ class PersoonTests(JWTAuthMixin, APITestCase):
 
     def test_create_persoon(self):
         partij = PartijFactory.create()
-        list_url = reverse("persoon-list")
+        list_url = reverse("klantinteracties:persoon-list")
         data = {
             "partij": {"uuid": str(partij.uuid)},
             "contactnaam": {
@@ -707,7 +725,9 @@ class PersoonTests(JWTAuthMixin, APITestCase):
             contactnaam_voorvoegsel_achternaam="",
             contactnaam_achternaam="Bozeman",
         )
-        detail_url = reverse("persoon-detail", kwargs={"id": persoon.id})
+        detail_url = reverse(
+            "klantinteracties:persoon-detail", kwargs={"id": persoon.id}
+        )
 
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -751,7 +771,9 @@ class PersoonTests(JWTAuthMixin, APITestCase):
 
         with self.subTest("check_if_partij_unique_validation_works"):
             persoon2 = PersoonFactory.create()
-            new_detail_url = reverse("persoon-detail", kwargs={"id": persoon2.id})
+            new_detail_url = reverse(
+                "klantinteracties:persoon-detail", kwargs={"id": persoon2.id}
+            )
             response = self.client.put(new_detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             data = response.json()
@@ -766,7 +788,9 @@ class PersoonTests(JWTAuthMixin, APITestCase):
             contactnaam_voorvoegsel_achternaam="",
             contactnaam_achternaam="Bozeman",
         )
-        detail_url = reverse("persoon-detail", kwargs={"id": persoon.id})
+        detail_url = reverse(
+            "klantinteracties:persoon-detail", kwargs={"id": persoon.id}
+        )
 
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -809,11 +833,13 @@ class PersoonTests(JWTAuthMixin, APITestCase):
 
     def test_destroy_persoon(self):
         persoon = PersoonFactory.create()
-        detail_url = reverse("persoon-detail", kwargs={"id": str(persoon.id)})
+        detail_url = reverse(
+            "klantinteracties:persoon-detail", kwargs={"id": str(persoon.id)}
+        )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("persoon-list")
+        list_url = reverse("klantinteracties:persoon-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
@@ -821,7 +847,7 @@ class PersoonTests(JWTAuthMixin, APITestCase):
 
 class ContactpersoonTests(JWTAuthMixin, APITestCase):
     def test_list_contact_persoon(self):
-        list_url = reverse("contactpersoon-list")
+        list_url = reverse("klantinteracties:contactpersoon-list")
         ContactpersoonFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -834,7 +860,8 @@ class ContactpersoonTests(JWTAuthMixin, APITestCase):
     def test_read_contact_persoon(self):
         contact_persoon = ContactpersoonFactory.create()
         detail_url = reverse(
-            "contactpersoon-detail", kwargs={"id": str(contact_persoon.id)}
+            "klantinteracties:contactpersoon-detail",
+            kwargs={"id": str(contact_persoon.id)},
         )
 
         response = self.client.get(detail_url)
@@ -844,7 +871,7 @@ class ContactpersoonTests(JWTAuthMixin, APITestCase):
     def test_create_contact_persoon(self):
         partij = PartijFactory.create()
         organisatie = OrganisatieFactory.create()
-        list_url = reverse("contactpersoon-list")
+        list_url = reverse("klantinteracties:contactpersoon-list")
         data = {
             "partij": {"uuid": str(partij.uuid)},
             "werkte_voor_organisatie": {"id": str(organisatie.id)},
@@ -889,7 +916,9 @@ class ContactpersoonTests(JWTAuthMixin, APITestCase):
             contactnaam_voorvoegsel_achternaam="",
             contactnaam_achternaam="Bozeman",
         )
-        detail_url = reverse("contactpersoon-detail", kwargs={"id": contact_persoon.id})
+        detail_url = reverse(
+            "klantinteracties:contactpersoon-detail", kwargs={"id": contact_persoon.id}
+        )
 
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -937,7 +966,8 @@ class ContactpersoonTests(JWTAuthMixin, APITestCase):
         with self.subTest("check_if_partij_unique_validation_works"):
             contact_persoon2 = ContactpersoonFactory.create()
             new_detail_url = reverse(
-                "contactpersoon-detail", kwargs={"id": contact_persoon2.id}
+                "klantinteracties:contactpersoon-detail",
+                kwargs={"id": contact_persoon2.id},
             )
             response = self.client.put(new_detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -955,7 +985,9 @@ class ContactpersoonTests(JWTAuthMixin, APITestCase):
             contactnaam_voorvoegsel_achternaam="",
             contactnaam_achternaam="Bozeman",
         )
-        detail_url = reverse("contactpersoon-detail", kwargs={"id": contact_persoon.id})
+        detail_url = reverse(
+            "klantinteracties:contactpersoon-detail", kwargs={"id": contact_persoon.id}
+        )
 
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -1001,12 +1033,13 @@ class ContactpersoonTests(JWTAuthMixin, APITestCase):
     def test_destroy_contact_persoon(self):
         contact_persoon = ContactpersoonFactory.create()
         detail_url = reverse(
-            "contactpersoon-detail", kwargs={"id": str(contact_persoon.id)}
+            "klantinteracties:contactpersoon-detail",
+            kwargs={"id": str(contact_persoon.id)},
         )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("contactpersoon-list")
+        list_url = reverse("klantinteracties:contactpersoon-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
@@ -1014,7 +1047,7 @@ class ContactpersoonTests(JWTAuthMixin, APITestCase):
 
 class PartijIdentificatorTests(JWTAuthMixin, APITestCase):
     def test_list_partij_indetificator(self):
-        list_url = reverse("partijidentificator-list")
+        list_url = reverse("klantinteracties:partijidentificator-list")
         PartijIdentificatorFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -1027,7 +1060,7 @@ class PartijIdentificatorTests(JWTAuthMixin, APITestCase):
     def test_read_partij_identificator(self):
         partij_identificator = PartijIdentificatorFactory.create()
         detail_url = reverse(
-            "partijidentificator-detail",
+            "klantinteracties:partijidentificator-detail",
             kwargs={"uuid": str(partij_identificator.uuid)},
         )
 
@@ -1036,7 +1069,7 @@ class PartijIdentificatorTests(JWTAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_partij_indetificator(self):
-        list_url = reverse("partijidentificator-list")
+        list_url = reverse("klantinteracties:partijidentificator-list")
         partij = PartijFactory.create()
         data = {
             "partij": {"uuid": str(partij.uuid)},
@@ -1077,7 +1110,7 @@ class PartijIdentificatorTests(JWTAuthMixin, APITestCase):
         )
 
         detail_url = reverse(
-            "partijidentificator-detail",
+            "klantinteracties:partijidentificator-detail",
             kwargs={"uuid": str(partij_identificator.uuid)},
         )
         response = self.client.get(detail_url)
@@ -1134,7 +1167,7 @@ class PartijIdentificatorTests(JWTAuthMixin, APITestCase):
         )
 
         detail_url = reverse(
-            "partijidentificator-detail",
+            "klantinteracties:partijidentificator-detail",
             kwargs={"uuid": str(partij_identificator.uuid)},
         )
         response = self.client.get(detail_url)
@@ -1175,13 +1208,13 @@ class PartijIdentificatorTests(JWTAuthMixin, APITestCase):
     def test_destroy_partij_identificator(self):
         partij_identificator = PartijIdentificatorFactory.create()
         detail_url = reverse(
-            "partijidentificator-detail",
+            "klantinteracties:partijidentificator-detail",
             kwargs={"uuid": str(partij_identificator.uuid)},
         )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("partijidentificator-list")
+        list_url = reverse("klantinteracties:partijidentificator-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)

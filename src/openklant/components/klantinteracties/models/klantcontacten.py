@@ -5,8 +5,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
-
 from .actoren import Actor
 from .constants import Klantcontrol
 from .mixins import (
@@ -117,14 +115,6 @@ class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
         on_delete=models.CASCADE,
         verbose_name=_("klantcontact"),
         help_text=_("'Klantcontact' had 'Betrokkene bij klantcontact'"),
-    )
-    digitaal_adres = models.ForeignKey(
-        DigitaalAdres,
-        on_delete=models.CASCADE,
-        verbose_name=_("digitaal adres"),
-        help_text=_("'Digitaal Adres' had 'Betrokkene bij klantcontact'"),
-        null=True,
-        blank=True,
     )
     rol = models.CharField(
         _("rol"),

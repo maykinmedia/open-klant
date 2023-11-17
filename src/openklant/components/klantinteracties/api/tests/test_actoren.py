@@ -12,7 +12,7 @@ from openklant.components.klantinteracties.models.tests.factories.actoren import
 
 class ActorTests(JWTAuthMixin, APITestCase):
     def test_list_actor(self):
-        list_url = reverse("actor-list")
+        list_url = reverse("klantinteracties:actor-list")
         ActorFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -24,14 +24,16 @@ class ActorTests(JWTAuthMixin, APITestCase):
 
     def test_read_actor(self):
         actor = ActorFactory.create()
-        detail_url = reverse("actor-detail", kwargs={"uuid": str(actor.uuid)})
+        detail_url = reverse(
+            "klantinteracties:actor-detail", kwargs={"uuid": str(actor.uuid)}
+        )
 
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_actor(self):
-        list_url = reverse("actor-list")
+        list_url = reverse("klantinteracties:actor-list")
         data = {
             "naam": "Phil",
             "soortActor": "medewerker",
@@ -73,7 +75,9 @@ class ActorTests(JWTAuthMixin, APITestCase):
             objectidentificator_object_id="objectId",
             objectidentificator_register="register",
         )
-        detail_url = reverse("actor-detail", kwargs={"uuid": str(actor.uuid)})
+        detail_url = reverse(
+            "klantinteracties:actor-detail", kwargs={"uuid": str(actor.uuid)}
+        )
         response = self.client.get(detail_url)
         data = response.json()
 
@@ -131,7 +135,9 @@ class ActorTests(JWTAuthMixin, APITestCase):
             objectidentificator_object_id="objectId",
             objectidentificator_register="register",
         )
-        detail_url = reverse("actor-detail", kwargs={"uuid": str(actor.uuid)})
+        detail_url = reverse(
+            "klantinteracties:actor-detail", kwargs={"uuid": str(actor.uuid)}
+        )
         response = self.client.get(detail_url)
         data = response.json()
 
@@ -173,11 +179,13 @@ class ActorTests(JWTAuthMixin, APITestCase):
 
     def test_destroy_actor(self):
         actor = ActorFactory.create()
-        detail_url = reverse("actor-detail", kwargs={"uuid": str(actor.uuid)})
+        detail_url = reverse(
+            "klantinteracties:actor-detail", kwargs={"uuid": str(actor.uuid)}
+        )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("actor-list")
+        list_url = reverse("klantinteracties:actor-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
@@ -185,7 +193,7 @@ class ActorTests(JWTAuthMixin, APITestCase):
 
 class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
     def test_list_geatomatiseerde_actor(self):
-        list_url = reverse("geautomatiseerdeactor-list")
+        list_url = reverse("klantinteracties:geautomatiseerdeactor-list")
         GeautomatiseerdeActorFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -198,7 +206,7 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
     def test_read_geatomatiseerde_actor(self):
         geautomatiseerde_actor = GeautomatiseerdeActorFactory.create()
         detail_url = reverse(
-            "geautomatiseerdeactor-detail",
+            "klantinteracties:geautomatiseerdeactor-detail",
             kwargs={"id": str(geautomatiseerde_actor.id)},
         )
 
@@ -208,7 +216,7 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
 
     def test_create_geatomatiseerde_actor(self):
         actor = ActorFactory.create()
-        list_url = reverse("geautomatiseerdeactor-list")
+        list_url = reverse("klantinteracties:geautomatiseerdeactor-list")
         data = {
             "actor": {"uuid": str(actor.uuid)},
             "functie": "functie",
@@ -239,7 +247,7 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
             omschrijving="omschrijving",
         )
         detail_url = reverse(
-            "geautomatiseerdeactor-detail",
+            "klantinteracties:geautomatiseerdeactor-detail",
             kwargs={"id": str(geatomatiseerde_actor.id)},
         )
         response = self.client.get(detail_url)
@@ -285,7 +293,7 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
             omschrijving="omschrijving",
         )
         detail_url = reverse(
-            "geautomatiseerdeactor-detail",
+            "klantinteracties:geautomatiseerdeactor-detail",
             kwargs={"id": str(geatomatiseerde_actor.id)},
         )
         response = self.client.get(detail_url)
@@ -324,13 +332,13 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
     def test_destroy_geatomatiseerde_actor(self):
         geautomatiseerde_actor = GeautomatiseerdeActorFactory.create()
         detail_url = reverse(
-            "geautomatiseerdeactor-detail",
+            "klantinteracties:geautomatiseerdeactor-detail",
             kwargs={"id": str(geautomatiseerde_actor.id)},
         )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("geautomatiseerdeactor-list")
+        list_url = reverse("klantinteracties:geautomatiseerdeactor-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
@@ -338,7 +346,7 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
 
 class MedewerkerTests(JWTAuthMixin, APITestCase):
     def test_list_medewerker(self):
-        list_url = reverse("medewerker-list")
+        list_url = reverse("klantinteracties:medewerker-list")
         MedewerkerFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -351,7 +359,7 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
     def test_read_medewerker(self):
         medewerker = MedewerkerFactory.create()
         detail_url = reverse(
-            "medewerker-detail",
+            "klantinteracties:medewerker-detail",
             kwargs={"id": str(medewerker.id)},
         )
 
@@ -361,7 +369,7 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
 
     def test_create_medewerker(self):
         actor = ActorFactory.create()
-        list_url = reverse("medewerker-list")
+        list_url = reverse("klantinteracties:medewerker-list")
         data = {
             "actor": {"uuid": str(actor.uuid)},
             "functie": "functie",
@@ -395,7 +403,7 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
             telefoonnummer="7762323",
         )
         detail_url = reverse(
-            "medewerker-detail",
+            "klantinteracties:medewerker-detail",
             kwargs={"id": str(medewerker.id)},
         )
         response = self.client.get(detail_url)
@@ -445,7 +453,7 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
             telefoonnummer="7762323",
         )
         detail_url = reverse(
-            "medewerker-detail",
+            "klantinteracties:medewerker-detail",
             kwargs={"id": str(medewerker.id)},
         )
         response = self.client.get(detail_url)
@@ -486,13 +494,13 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
     def test_destroy_medewerker(self):
         medewerker = MedewerkerFactory.create()
         detail_url = reverse(
-            "medewerker-detail",
+            "klantinteracties:medewerker-detail",
             kwargs={"id": str(medewerker.id)},
         )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("medewerker-list")
+        list_url = reverse("klantinteracties:medewerker-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
@@ -500,7 +508,7 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
 
 class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
     def test_list_organisatorische_eenheid(self):
-        list_url = reverse("organisatorischeeenheid-list")
+        list_url = reverse("klantinteracties:organisatorischeeenheid-list")
         OrganisatorischeEenheidFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -513,7 +521,7 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
     def test_read_organisatorische_eenheid(self):
         organisatorische_eenheid = OrganisatorischeEenheidFactory.create()
         detail_url = reverse(
-            "organisatorischeeenheid-detail",
+            "klantinteracties:organisatorischeeenheid-detail",
             kwargs={"id": str(organisatorische_eenheid.id)},
         )
 
@@ -523,7 +531,7 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
 
     def test_create_organisatorische_eenheid(self):
         actor = ActorFactory.create()
-        list_url = reverse("organisatorischeeenheid-list")
+        list_url = reverse("klantinteracties:organisatorischeeenheid-list")
         data = {
             "actor": {"uuid": str(actor.uuid)},
             "omschrijving": "omschrijving",
@@ -566,7 +574,7 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
             telefoonnummer="7762323",
         )
         detail_url = reverse(
-            "organisatorischeeenheid-detail",
+            "klantinteracties:organisatorischeeenheid-detail",
             kwargs={"id": str(organisatorische_eenheid.id)},
         )
         response = self.client.get(detail_url)
@@ -613,7 +621,7 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
         with self.subTest("test_actor_unique"):
             organisatorische_eenheid2 = OrganisatorischeEenheidFactory.create()
             new_detail_url = reverse(
-                "organisatorischeeenheid-detail",
+                "klantinteracties:organisatorischeeenheid-detail",
                 kwargs={"id": str(organisatorische_eenheid2.id)},
             )
             response = self.client.put(new_detail_url, data)
@@ -631,7 +639,7 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
             telefoonnummer="7762323",
         )
         detail_url = reverse(
-            "organisatorischeeenheid-detail",
+            "klantinteracties:organisatorischeeenheid-detail",
             kwargs={"id": str(organisatorische_eenheid.id)},
         )
         response = self.client.get(detail_url)
@@ -674,13 +682,13 @@ class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
     def test_destroy_organisatorische_eenheid(self):
         organisatorische_eenheid = OrganisatorischeEenheidFactory.create()
         detail_url = reverse(
-            "organisatorischeeenheid-detail",
+            "klantinteracties:organisatorischeeenheid-detail",
             kwargs={"id": str(organisatorische_eenheid.id)},
         )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("organisatorischeeenheid-list")
+        list_url = reverse("klantinteracties:organisatorischeeenheid-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)

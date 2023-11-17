@@ -12,7 +12,7 @@ from openklant.components.klantinteracties.models.tests.factories.klantcontacten
 
 class DigitaalAdresTests(JWTAuthMixin, APITestCase):
     def test_list_digitaal_adres(self):
-        list_url = reverse("digitaaladres-list")
+        list_url = reverse("klantinteracties:digitaaladres-list")
         DigitaalAdresFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -25,7 +25,8 @@ class DigitaalAdresTests(JWTAuthMixin, APITestCase):
     def test_read_digitaal_adres(self):
         digitaal_adres = DigitaalAdresFactory.create()
         detail_url = reverse(
-            "digitaaladres-detail", kwargs={"uuid": str(digitaal_adres.uuid)}
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
         )
 
         response = self.client.get(detail_url)
@@ -33,7 +34,7 @@ class DigitaalAdresTests(JWTAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_digitaal_adres(self):
-        list_url = reverse("digitaaladres-list")
+        list_url = reverse("klantinteracties:digitaaladres-list")
         data = {
             "betrokkene": None,
             "soortDigitaalAdres": "soortDigitaalAdres",
@@ -79,7 +80,8 @@ class DigitaalAdresTests(JWTAuthMixin, APITestCase):
             omschrijving="omschrijving",
         )
         detail_url = reverse(
-            "digitaaladres-detail", kwargs={"uuid": str(digitaal_adres.uuid)}
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
         )
         response = self.client.get(detail_url)
         data = response.json()
@@ -135,7 +137,8 @@ class DigitaalAdresTests(JWTAuthMixin, APITestCase):
             omschrijving="omschrijving",
         )
         detail_url = reverse(
-            "digitaaladres-detail", kwargs={"uuid": str(digitaal_adres.uuid)}
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
         )
         response = self.client.get(detail_url)
         data = response.json()
@@ -163,12 +166,13 @@ class DigitaalAdresTests(JWTAuthMixin, APITestCase):
     def test_destroy_digitaal_adres(self):
         digitaal_adres = DigitaalAdresFactory.create()
         detail_url = reverse(
-            "digitaaladres-detail", kwargs={"uuid": str(digitaal_adres.uuid)}
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
         )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("digitaaladres-list")
+        list_url = reverse("klantinteracties:digitaaladres-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)

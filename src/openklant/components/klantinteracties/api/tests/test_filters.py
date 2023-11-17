@@ -17,7 +17,7 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
 
 
 class KlantcontactFilterTests(JWTAuthMixin, APITestCase):
-    url = reverse("klantcontact-list")
+    url = reverse("klantinteracties:klantcontact-list")
 
     def setUp(self):
         super().setUp()
@@ -93,7 +93,7 @@ class KlantcontactFilterTests(JWTAuthMixin, APITestCase):
 
 
 class BetrokkeneFilterTests(JWTAuthMixin, APITestCase):
-    url = reverse("betrokkene-list")
+    url = reverse("klantinteracties:betrokkene-list")
 
     def setUp(self):
         super().setUp()

@@ -2,7 +2,13 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from ..models.constants import SoortPartij
-from ..models.partijen import Contactpersoon, Organisatie, Partij, Persoon
+from ..models.partijen import (
+    Contactpersoon,
+    Organisatie,
+    Partij,
+    PartijIdentificator,
+    Persoon,
+)
 
 
 class PersoonInlineAdmin(admin.StackedInline):
@@ -105,3 +111,36 @@ class PartijAdmin(admin.ModelAdmin):
     def get_organisaties(self, obj):
         if organisaties := obj.organisatie_set.all():
             return [organisatie.naam for organisatie in organisaties]
+
+
+@admin.register(PartijIdentificator)
+class PartijIndentificatorAdmin(admin.ModelAdmin):
+    list_display = (
+        "uuid",
+        "andere_partij_identificator",
+    )
+    raw_id_fields = ("partij",)
+    readonly_fields = ("uuid",)
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": [
+                    "uuid",
+                    "partij",
+                    "andere_partij_identificator",
+                ]
+            },
+        ),
+        (
+            _("Partij identificator velden"),
+            {
+                "fields": [
+                    "partij_identificator_objecttype",
+                    "partij_identificator_soort_object_id",
+                    "partij_identificator_object_id",
+                    "partij_identificator_register",
+                ]
+            },
+        ),
+    ]

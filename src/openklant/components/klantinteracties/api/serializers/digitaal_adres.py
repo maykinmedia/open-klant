@@ -17,7 +17,7 @@ class DigitaalAdresForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"required": True, "validators": [digitaal_adres_exists]},
             "url": {
-                "view_name": "digitaaladres-detail",
+                "view_name": "klantinteracties:digitaaladres-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van dit digitaal adres binnen deze API.",
             },
@@ -51,7 +51,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "digitaaladres-detail",
+                "view_name": "klantinteracties:digitaaladres-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van dit digitaal adres binnen deze API.",
             },

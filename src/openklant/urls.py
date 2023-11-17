@@ -51,6 +51,10 @@ urlpatterns = [
         include("openklant.components.klantinteracties.api.urls"),
     ),
     path(
+        "contactgegevens/api/",
+        include("openklant.components.contactgegevens.api.urls"),
+    ),
+    path(
         "contactmomenten/api/",
         include("openklant.components.legacy.contactmomenten.api.urls"),
     ),

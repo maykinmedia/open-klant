@@ -25,7 +25,7 @@ class InterneTaakForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"required": True, "validators": [internetaak_exists]},
             "url": {
-                "view_name": "internetaak-detail",
+                "view_name": "klantinteracties:internetaak-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze interne taak binnen deze API.",
             },
@@ -60,7 +60,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "internetaak-detail",
+                "view_name": "klantinteracties:internetaak-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze interne taak binnen deze API.",
             },
@@ -121,7 +121,7 @@ class KlantcontactInterneTaakSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "internetaak-detail",
+                "view_name": "klantinteracties:internetaak-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze interne taak binnen deze API.",
             },

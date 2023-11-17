@@ -18,7 +18,6 @@ class BetrokkeneInlineAdmin(admin.StackedInline):
             {
                 "fields": [
                     "klantcontact",
-                    "digitaal_adres",
                     "rol",
                     "organisatienaam",
                     "initiator",
@@ -71,14 +70,12 @@ class BetrokkeneAdmin(admin.ModelAdmin):
         "contactnaam_voorvoegsel_achternaam",
         "contactnaam_achternaam",
     )
-    raw_id_fields = ["digitaal_adres"]
     fieldsets = [
         (
             None,
             {
                 "fields": [
                     "klantcontact",
-                    "digitaal_adres",
                     "rol",
                     "organisatienaam",
                     "initiator",

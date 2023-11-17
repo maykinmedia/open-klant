@@ -6,7 +6,7 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("klantinteracties", "0003_partijidentificator"),
+        ("klantinteracties", "0004_auto_20231109_1209"),
     ]
 
     operations = [

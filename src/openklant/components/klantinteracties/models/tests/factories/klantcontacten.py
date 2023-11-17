@@ -10,10 +10,11 @@ from ...klantcontacten import Betrokkene, Bijlage, Klantcontact, Onderwerpobject
 class KlantcontactFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
     kanaal = factory.Faker("word")
+    nummer = "".join(random.choice("0123456789") for i in range(10))
     onderwerp = factory.Faker("word")
     inhoud = factory.Faker("word")
     indicatie_contact_gelukt = factory.Faker("pybool")
-    taal = factory.Faker("word")
+    taal = factory.fuzzy.FuzzyText(length=3, chars=string.ascii_uppercase)
     vertrouwelijk = factory.Faker("pybool")
 
     class Meta:

@@ -15,7 +15,7 @@ from openklant.components.klantinteracties.models.tests.factories.klantcontacten
 
 class InterneTaakTests(JWTAuthMixin, APITestCase):
     def test_list_internetaak(self):
-        list_url = reverse("internetaak-list")
+        list_url = reverse("klantinteracties:internetaak-list")
         InterneTaakFactory.create_batch(2)
 
         response = self.client.get(list_url)
@@ -28,7 +28,8 @@ class InterneTaakTests(JWTAuthMixin, APITestCase):
     def test_read_internetaak(self):
         internetaak = InterneTaakFactory.create()
         detail_url = reverse(
-            "internetaak-detail", kwargs={"uuid": str(internetaak.uuid)}
+            "klantinteracties:internetaak-detail",
+            kwargs={"uuid": str(internetaak.uuid)},
         )
 
         response = self.client.get(detail_url)
@@ -39,7 +40,7 @@ class InterneTaakTests(JWTAuthMixin, APITestCase):
         actor = ActorFactory.create()
         klantcontact = KlantcontactFactory.create()
 
-        list_url = reverse("internetaak-list")
+        list_url = reverse("klantinteracties:internetaak-list")
         data = {
             "actor": {"uuid": str(actor.uuid)},
             "klantcontact": {"uuid": str(klantcontact.uuid)},
@@ -74,7 +75,8 @@ class InterneTaakTests(JWTAuthMixin, APITestCase):
             status="verwerkt",
         )
         detail_url = reverse(
-            "internetaak-detail", kwargs={"uuid": str(internetaak.uuid)}
+            "klantinteracties:internetaak-detail",
+            kwargs={"uuid": str(internetaak.uuid)},
         )
         response = self.client.get(detail_url)
         data = response.json()
@@ -120,7 +122,8 @@ class InterneTaakTests(JWTAuthMixin, APITestCase):
             status="verwerkt",
         )
         detail_url = reverse(
-            "internetaak-detail", kwargs={"uuid": str(internetaak.uuid)}
+            "klantinteracties:internetaak-detail",
+            kwargs={"uuid": str(internetaak.uuid)},
         )
         response = self.client.get(detail_url)
         data = response.json()
@@ -150,12 +153,13 @@ class InterneTaakTests(JWTAuthMixin, APITestCase):
     def test_destroy_internetaak(self):
         internetaak = InterneTaakFactory.create()
         detail_url = reverse(
-            "internetaak-detail", kwargs={"uuid": str(internetaak.uuid)}
+            "klantinteracties:internetaak-detail",
+            kwargs={"uuid": str(internetaak.uuid)},
         )
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("internetaak-list")
+        list_url = reverse("klantinteracties:internetaak-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)

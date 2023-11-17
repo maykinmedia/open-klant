@@ -43,7 +43,9 @@ click-plugins==1.1.1
 click-repl==0.2.0
     # via celery
 coreapi==2.3.3
-    # via drf-yasg
+    # via
+    #   django-loose-fk
+    #   drf-yasg
 coreschema==0.0.4
     # via
     #   coreapi
@@ -61,6 +63,7 @@ django==3.2.18
     #   django-axes
     #   django-choices
     #   django-filter
+    #   django-loose-fk
     #   django-markup
     #   django-privates
     #   django-redis
@@ -96,9 +99,12 @@ django-cors-middleware==1.5.0
 django-filter==2.4.0
     # via
     #   -r requirements/base.in
+    #   django-loose-fk
     #   vng-api-common
 django-ipware==5.0.0
     # via django-axes
+django-loose-fk==1.0.3
+    # via -r requirements/base.in
 django-markup==1.3
     # via vng-api-common
 django-ordered-model==3.7.4
@@ -128,6 +134,7 @@ django-solo==2.0.0
 djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
+    #   django-loose-fk
     #   drf-nested-routers
     #   drf-yasg
     #   notifications-api-common
@@ -275,4 +282,7 @@ zgw-consumers==0.25.0
     #   notifications-api-common
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools
+setuptools==69.0.2
+    # via
+    #   django-axes
+    #   josepy

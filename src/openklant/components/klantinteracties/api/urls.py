@@ -32,6 +32,8 @@ from openklant.components.klantinteracties.api.viewsets.partijen import (
 
 from .schema import info
 
+app_name = "klantinteracties"
+
 router = routers.DefaultRouter()
 router.register("actoren", ActorViewSet)
 router.register("geautomatiseerde_actoren", GeautomatiseerdeActorViewSet)
@@ -70,17 +72,19 @@ urlpatterns = [
                 re_path(
                     r"^schema/openapi(?P<format>\.json|\.yaml)$",
                     SchemaView.without_ui(cache_timeout=None),
-                    name="schema-json-contactmomenten",
+                    name="schema-json-klantinteracties",
                 ),
                 re_path(
                     r"^schema/$",
                     SchemaView.with_ui("redoc", cache_timeout=None),
-                    name="schema-redoc-contactmomenten",
+                    name="schema-redoc-klantinteracties",
                 ),
                 # actual API
                 re_path(r"^", include(router.urls)),
                 # should not be picked up by drf-yasg
-                path("", router.APIRootView.as_view(), name="api-root-contactmomenten"),
+                path(
+                    "", router.APIRootView.as_view(), name="api-root-klantinteracties"
+                ),
                 path("", include("vng_api_common.api.urls")),
             ]
         ),

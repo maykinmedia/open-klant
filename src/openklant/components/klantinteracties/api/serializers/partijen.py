@@ -36,7 +36,7 @@ class PartijForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"required": True, "validators": [partij_exists]},
             "url": {
-                "view_name": "partij-detail",
+                "view_name": "klantinteracties:partij-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze partij binnen deze API.",
             },
@@ -120,7 +120,7 @@ class PartijBaseSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "partij-detail",
+                "view_name": "klantinteracties:partij-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze partij binnen deze API.",
             },
@@ -233,7 +233,7 @@ class ContactPersoonForeignkeySerializer(serializers.HyperlinkedModelSerializer)
                 "validators": [contactpersoon_exists],
             },
             "url": {
-                "view_name": "contactpersoon-detail",
+                "view_name": "klantinteracties:contactpersoon-detail",
                 "lookup_field": "id",
                 "help_text": "De unieke URL van dit contact persoon binnen deze API.",
             },
@@ -254,7 +254,7 @@ class OrganisatieForeignKeySerializer(serializers.HyperlinkedModelSerializer):
                 "validators": [organisatie_exists],
             },
             "url": {
-                "view_name": "organisatie-detail",
+                "view_name": "klantinteracties:organisatie-detail",
                 "lookup_field": "id",
                 "help_text": "De unieke URL van deze organisatie binnen deze API.",
             },
@@ -287,7 +287,7 @@ class OrganisatieSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
             "url": {
-                "view_name": "organisatie-detail",
+                "view_name": "klantinteracties:organisatie-detail",
                 "lookup_field": "id",
                 "help_text": "De unieke URL van deze organisatie binnen deze API.",
             },
@@ -405,7 +405,7 @@ class PersoonSerializer(
         extra_kwargs = {
             "id": {"read_only": True},
             "url": {
-                "view_name": "persoon-detail",
+                "view_name": "klantinteracties:persoon-detail",
                 "lookup_field": "id",
                 "help_text": "De unieke URL van dit persoon binnen deze API.",
             },
@@ -488,7 +488,7 @@ class ContactpersoonSerializer(
         extra_kwargs = {
             "id": {"read_only": True},
             "url": {
-                "view_name": "contactpersoon-detail",
+                "view_name": "klantinteracties:contactpersoon-detail",
                 "lookup_field": "id",
                 "help_text": "De unieke URL van dit contact persoon binnen deze API.",
             },
@@ -571,7 +571,7 @@ class PartijIdentificatorSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "partijidentificator-detail",
+                "view_name": "klantinteracties:partijidentificator-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze partij indentificator binnen deze API.",
             },
