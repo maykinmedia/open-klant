@@ -71,8 +71,11 @@ class Klantcontact(models.Model):
     )
     taal = models.CharField(
         _("taal"),
-        help_text=_("Taal die bij het klantcontact werd gesproken of geschreven."),
-        max_length=255,
+        help_text=_(
+            "Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur contact heeft "
+            "met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html"
+        ),
+        max_length=3,
     )
     vertrouwelijk = models.BooleanField(
         _("vertrouwelijk"),
@@ -96,6 +99,9 @@ class Klantcontact(models.Model):
         verbose_name = _("klantcontact")
         verbose_name_plural = _("klantcontacten")
 
+    def __str__(self):
+        return self.nummer
+
 
 class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
     uuid = models.UUIDField(
@@ -117,6 +123,7 @@ class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
         verbose_name=_("digitaal adres"),
         help_text=_("'Digitaal Adres' had 'Betrokkene bij klantcontact'"),
         null=True,
+        blank=True,
     )
     rol = models.CharField(
         _("rol"),
@@ -141,6 +148,10 @@ class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
 
     class Meta:
         verbose_name = _("betrokkene bij klantcontact")
+        verbose_name_plural = _("betrokkenen bij klantcontact")
+
+    def __str__(self):
+        return self.get_contactnaam()
 
 
 class Onderwerpobject(ObjectidentificatorMixin):
@@ -163,6 +174,7 @@ class Onderwerpobject(ObjectidentificatorMixin):
         related_name="was_onderwerpobject",
         help_text=_("'Onderwerpobject' was 'Klantcontact'"),
         null=True,
+        blank=True,
     )
 
     class Meta:

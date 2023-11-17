@@ -3,6 +3,33 @@
         "model": "admin_index.appgroup",
         "pk": 1,
         "fields": {
+            "order": 2,
+            "name": "Klantinteracties",
+            "slug": "klantinteracties",
+            "models": [
+                [
+                    "klantinteracties",
+                    "partij"
+                ],
+                [
+                    "klantinteracties",
+                    "klantcontact"
+                ],
+                [
+                    "klantinteracties",
+                    "actor"
+                ],
+                [
+                    "klantinteracties",
+                    "internetaak"
+                ]
+            ]
+        }
+    },
+    {
+        "model": "admin_index.appgroup",
+        "pk": 2,
+        "fields": {
             "order": 3,
             "name": "Configuratie",
             "slug": "configuratie",
@@ -32,7 +59,7 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 2,
+        "pk": 3,
         "fields": {
             "order": 4,
             "name": "Notificaties",
@@ -51,7 +78,7 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 3,
+        "pk": 4,
         "fields": {
             "order": 1,
             "name": "Accounts",
@@ -74,7 +101,7 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 4,
+        "pk": 5,
         "fields": {
             "order": 2,
             "name": "API autorisaties",
@@ -101,7 +128,7 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 5,
+        "pk": 6,
         "fields": {
             "order": 5,
             "name": "Logging",
@@ -124,7 +151,7 @@
     },
     {
         "model": "admin_index.appgroup",
-        "pk": 6,
+        "pk": 7,
         "fields": {
             "order": 6,
             "name": "Legacy",
