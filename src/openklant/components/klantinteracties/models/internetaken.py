@@ -50,7 +50,7 @@ class InterneTaak(models.Model):
             "aanleiding gaf tot de taak en de gevraagde handeling, "
             "bijdraagt aan het kunnen afhandelen van de taak."
         ),
-        max_length=400,
+        max_length=1000,
         blank=True,
     )
     status = models.CharField(

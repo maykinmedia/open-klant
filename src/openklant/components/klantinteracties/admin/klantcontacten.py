@@ -12,13 +12,14 @@ class BetrokkeneInlineAdmin(admin.StackedInline):
         "contactnaam_voorvoegsel_achternaam",
         "contactnaam_achternaam",
     )
+    autocomplete_fields = ("partij",)
     fieldsets = [
         (
             None,
             {
                 "fields": [
+                    "partij",
                     "klantcontact",
-                    "digitaal_adres",
                     "rol",
                     "organisatienaam",
                     "initiator",
@@ -71,14 +72,14 @@ class BetrokkeneAdmin(admin.ModelAdmin):
         "contactnaam_voorvoegsel_achternaam",
         "contactnaam_achternaam",
     )
-    raw_id_fields = ["digitaal_adres"]
+    autocomplete_fields = ("partij",)
     fieldsets = [
         (
             None,
             {
                 "fields": [
+                    "partij",
                     "klantcontact",
-                    "digitaal_adres",
                     "rol",
                     "organisatienaam",
                     "initiator",
