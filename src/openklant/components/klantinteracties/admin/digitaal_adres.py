@@ -6,3 +6,4 @@ from ..models.digitaal_adres import DigitaalAdres
 @admin.register(DigitaalAdres)
 class DigitaalAdresAdmin(admin.ModelAdmin):
     search_fields = ("adres",)
+    autocomplete_fields = ("partij",)

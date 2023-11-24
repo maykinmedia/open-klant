@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 
 from .actoren import Actor
 from .constants import Klantcontrol
-from .digitaal_adres import DigitaalAdres
 from .mixins import (
     BezoekadresMixin,
     ContactnaamMixin,
@@ -111,19 +110,19 @@ class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
             "Unieke (technische) identificatiecode van de betrokkene bij klantcontact."
         ),
     )
+    partij = models.ForeignKey(
+        "klantinteracties.Partij",
+        on_delete=models.CASCADE,
+        verbose_name=_("partij"),
+        help_text=_("'Betrokkene bij klantcontact' was 'Partij'"),
+        null=True,
+        blank=True,
+    )
     klantcontact = models.ForeignKey(
         Klantcontact,
         on_delete=models.CASCADE,
         verbose_name=_("klantcontact"),
         help_text=_("'Klantcontact' had 'Betrokkene bij klantcontact'"),
-    )
-    digitaal_adres = models.ForeignKey(
-        DigitaalAdres,
-        on_delete=models.CASCADE,
-        verbose_name=_("digitaal adres"),
-        help_text=_("'Digitaal Adres' had 'Betrokkene bij klantcontact'"),
-        null=True,
-        blank=True,
     )
     rol = models.CharField(
         _("rol"),

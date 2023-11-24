@@ -2,7 +2,19 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from ..models.constants import SoortPartij
+from ..models.digitaal_adres import DigitaalAdres
+from ..models.klantcontacten import Betrokkene
 from ..models.partijen import Contactpersoon, Organisatie, Partij, Persoon
+
+
+class DigitaalAdresInlineAdmin(admin.StackedInline):
+    model = DigitaalAdres
+    extra = 0
+
+
+class BetrokkeneInlineAdmin(admin.StackedInline):
+    model = Betrokkene
+    extra = 0
 
 
 class PersoonInlineAdmin(admin.StackedInline):
@@ -32,19 +44,20 @@ class PartijAdmin(admin.ModelAdmin):
         "soort_partij",
         "indicatie_actief",
     )
-    inlines = (PersoonInlineAdmin, ContactpersoonInlineAdmin, OrganisatieInlineAdmin)
-    autocomplete_fields = (
-        "betrokkene",
-        "digitaal_adres",
-        "voorkeurs_digitaal_adres",
+    inlines = (
+        PersoonInlineAdmin,
+        ContactpersoonInlineAdmin,
+        OrganisatieInlineAdmin,
+        DigitaalAdresInlineAdmin,
+        BetrokkeneInlineAdmin,
     )
+    search_fields = ("partij",)
+    autocomplete_fields = ("voorkeurs_digitaal_adres",)
     fieldsets = [
         (
             None,
             {
                 "fields": [
-                    "betrokkene",
-                    "digitaal_adres",
                     "voorkeurs_digitaal_adres",
                     "vertegenwoordigde",
                     "nummer",
@@ -81,6 +94,15 @@ class PartijAdmin(admin.ModelAdmin):
             },
         ),
     ]
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .select_related(
+                "voorkeurs_digitaal_adres",
+            )
+        )
 
     @admin.display(empty_value="---")
     def get_name(self, obj):

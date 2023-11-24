@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.core.validators import validate_integer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -7,8 +8,6 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.descriptors import GegevensGroepType
 
 from .constants import SoortPartij
-from .digitaal_adres import DigitaalAdres
-from .klantcontacten import Betrokkene
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
 
 
@@ -18,24 +17,8 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van de partij."),
     )
-    betrokkene = models.ForeignKey(
-        Betrokkene,
-        on_delete=models.CASCADE,
-        verbose_name=_("betrokkene"),
-        help_text=_("'Betrokkene bij klantcontact' was 'Partij'"),
-        null=True,
-        blank=True,
-    )
-    digitaal_adres = models.ForeignKey(
-        DigitaalAdres,
-        on_delete=models.CASCADE,
-        verbose_name=_("digitaal adres"),
-        help_text=_("'Digitaal Adres' was 'Partij'"),
-        null=True,
-        blank=True,
-    )
     voorkeurs_digitaal_adres = models.ForeignKey(
-        DigitaalAdres,
+        "klantinteracties.DigitaalAdres",
         on_delete=models.CASCADE,
         related_name="voorkeurs_partij",
         verbose_name=_("voorkeurs digitaal adres"),
@@ -103,6 +86,15 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
 
         def __str__(self):
             return self.nummer
+
+    def clean(self):
+        super().clean()
+
+        if self.voorkeurs_digitaal_adres:
+            if self.voorkeurs_digitaal_adres not in self.digitaaladres_set.all():
+                raise ValidationError(
+                    _("Het voorkeurs adres moet een gelinkte digitaal adres zijn.")
+                )
 
 
 class Organisatie(models.Model):
@@ -233,7 +225,7 @@ class PartijIdentificator(models.Model):
             "object_id": partij_identificator_object_id,
             "register": partij_identificator_register,
         },
-        required=(
+        optional=(
             "objecttype",
             "soort_object_id",
             "object_id",
