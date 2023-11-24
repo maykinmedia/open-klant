@@ -132,12 +132,14 @@ INSTALLED_APPS = [
     "django_markup",
     "solo",
     "django_better_admin_arrayfield",
+    "django_loose_fk",
     # Project applications.
     "openklant",
     "openklant.accounts",
     "openklant.utils",
-    "openklant.components.klantinteracties",
     "openklant.components.token",
+    "openklant.components.klantinteracties",
+    "openklant.components.contactgegevens",
     "openklant.components.legacy.klanten",
     "openklant.components.legacy.contactmomenten",
 ]
@@ -390,6 +392,14 @@ SPEC_URL = {
         "klantinteracties",
         "openapi.yaml",
     ),
+    "contactgegevens": os.path.join(
+        BASE_DIR,
+        "src",
+        "openklant",
+        "components",
+        "contactgegevens",
+        "openapi.yaml",
+    ),
 }
 
 # settings for sending notifications
@@ -510,3 +520,9 @@ if not ELASTIC_APM_SERVER_URL:
 OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
 MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
 MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
+
+
+#
+# django-loose-fk
+#
+DEFAULT_LOOSE_FK_LOADER = "django_loose_fk.loaders.RequestsLoader"
