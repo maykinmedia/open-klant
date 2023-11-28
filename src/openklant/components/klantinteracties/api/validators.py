@@ -19,6 +19,11 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 
 
+def actor_is_valid_instance(value):
+    if not isinstance(value, Actor):
+        raise serializers.ValidationError(_("Actor object doesn't exist."))
+
+
 def actor_exists(value):
     try:
         Actor.objects.get(uuid=str(value))

@@ -42,7 +42,7 @@ class Actor(ObjectidentificatorMixin):
 
 
 class GeautomatiseerdeActor(models.Model):
-    actor = models.ForeignKey(
+    actor = models.OneToOneField(
         Actor,
         on_delete=models.CASCADE,
         verbose_name=_("Actor"),
@@ -71,13 +71,11 @@ class GeautomatiseerdeActor(models.Model):
 
 
 class Medewerker(models.Model):
-    actor = models.ForeignKey(
+    actor = models.OneToOneField(
         Actor,
         on_delete=models.CASCADE,
         verbose_name=_("actor"),
         help_text=_("'GeautomatiseerdeActor' was 'Actor'"),
-        related_name="medewerker",
-        unique=True,
     )
     functie = models.CharField(
         _("functie"),
@@ -110,12 +108,11 @@ class Medewerker(models.Model):
 
 
 class OrganisatorischeEenheid(models.Model):
-    actor = models.ForeignKey(
+    actor = models.OneToOneField(
         Actor,
         on_delete=models.CASCADE,
         verbose_name=_("actor"),
         help_text=_("'GeautomatiseerdeActor' was 'Actor'"),
-        unique=True,
     )
     omschrijving = models.CharField(
         _("omschrijving"),

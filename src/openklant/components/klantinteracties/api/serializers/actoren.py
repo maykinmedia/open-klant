@@ -2,15 +2,21 @@ from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
+from vng_api_common.polymorphism import PolymorphicSerializer
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 
-from openklant.components.klantinteracties.api.validators import actor_exists
+from openklant.components.klantinteracties.api.polymorphism import Discriminator
+from openklant.components.klantinteracties.api.validators import (
+    actor_exists,
+    actor_is_valid_instance,
+)
 from openklant.components.klantinteracties.models.actoren import (
     Actor,
     GeautomatiseerdeActor,
     Medewerker,
     OrganisatorischeEenheid,
 )
+from openklant.components.klantinteracties.models.constants import SoortActor
 
 
 class ObjectidentificatorSerializer(GegevensGroepSerializer):
@@ -36,9 +42,63 @@ class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
+class GeautomatiseerdeActorBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GeautomatiseerdeActor
+        fields = (
+            "functie",
+            "omschrijving",
+        )
+
+
+class GeautomatiseerdeActorSerializer(GeautomatiseerdeActorBaseSerializer):
+    class Meta(GeautomatiseerdeActorBaseSerializer.Meta):
+        fields = GeautomatiseerdeActorBaseSerializer.Meta.fields + ("actor",)
+        extra_kwargs = {
+            "actor": {"required": True, "validators": [actor_is_valid_instance]},
+        }
+
+
+class OrganisatorischeEenheidBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrganisatorischeEenheid
+        fields = (
+            "omschrijving",
+            "emailadres",
+            "faxnummer",
+            "telefoonnummer",
+        )
+
+
+class OrganisatorischeEenheidSerializer(OrganisatorischeEenheidBaseSerializer):
+    class Meta(OrganisatorischeEenheidBaseSerializer.Meta):
+        fields = OrganisatorischeEenheidBaseSerializer.Meta.fields + ("actor",)
+        extra_kwargs = {
+            "actor": {"required": True, "validators": [actor_is_valid_instance]},
+        }
+
+
+class MedewerkerBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Medewerker
+        fields = (
+            "functie",
+            "emailadres",
+            "telefoonnummer",
+        )
+
+
+class MedewerkerSerializer(MedewerkerBaseSerializer):
+    class Meta(MedewerkerBaseSerializer.Meta):
+        fields = MedewerkerBaseSerializer.Meta.fields + ("actor",)
+        extra_kwargs = {
+            "actor": {"required": True, "validators": [actor_is_valid_instance]},
+        }
+
+
 class ActorSerializer(
     NestedGegevensGroepMixin,
-    serializers.HyperlinkedModelSerializer,
+    PolymorphicSerializer,
 ):
     objectidentificator = ObjectidentificatorSerializer(
         required=False,
@@ -46,6 +106,16 @@ class ActorSerializer(
         help_text=_(
             "Gegevens die een onderwerpobject in een extern register uniek identificeren."
         ),
+    )
+    discriminator = Discriminator(
+        discriminator_field="soort_actor",
+        mapping={
+            SoortActor.medewerker: MedewerkerBaseSerializer(),
+            SoortActor.geautomatiseerde_actor: GeautomatiseerdeActorBaseSerializer(),
+            SoortActor.organisatorische_eenheid: OrganisatorischeEenheidBaseSerializer(),
+        },
+        same_model=False,
+        group_field="actor_identificatie",
     )
 
     class Meta:
@@ -67,142 +137,58 @@ class ActorSerializer(
             },
         }
 
-
-class GeautomatiseerdeActorSerializer(serializers.HyperlinkedModelSerializer):
-    actor = ActorForeignKeySerializer(
-        required=True,
-        allow_null=False,
-        help_text=_("Iets dat of iemand die voor de gemeente werkzaamheden uitvoert."),
-    )
-
-    class Meta:
-        model = GeautomatiseerdeActor
-        fields = (
-            "id",
-            "url",
-            "actor",
-            "functie",
-            "omschrijving",
-        )
-        extra_kwargs = {
-            "id": {"read_only": True},
-            "url": {
-                "view_name": "klantinteracties:geautomatiseerdeactor-detail",
-                "lookup_field": "id",
-                "help_text": "De unieke URL van deze geautomatiseerde actor binnen deze API.",
-            },
-        }
-
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        if "actor" in validated_data:
-            if actor := validated_data.pop("actor", None):
-                validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
-
-        return super().update(instance, validated_data)
+    create_and_update_mapping = {
+        SoortActor.medewerker: MedewerkerSerializer,
+        SoortActor.geautomatiseerde_actor: GeautomatiseerdeActorSerializer,
+        SoortActor.organisatorische_eenheid: OrganisatorischeEenheidSerializer,
+    }
 
     @transaction.atomic
     def create(self, validated_data):
-        actor_uuid = str(validated_data.pop("actor").get("uuid"))
-        validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
+        actor_identificatie = validated_data.pop("actor_identificatie")
+        actor = super().create(validated_data)
 
-        return super().create(validated_data)
+        serializer_class = self.create_and_update_mapping[
+            validated_data.get("soort_actor")
+        ]
+        actor_identificatie["actor"] = actor.pk
 
-
-class MedewerkerSerializer(serializers.HyperlinkedModelSerializer):
-    actor = ActorForeignKeySerializer(
-        required=True,
-        allow_null=False,
-        help_text=_("Iets dat of iemand die voor de gemeente werkzaamheden uitvoert."),
-    )
-
-    class Meta:
-        model = Medewerker
-        fields = (
-            "id",
-            "url",
-            "actor",
-            "functie",
-            "emailadres",
-            "telefoonnummer",
+        serializer = serializer_class(
+            data=actor_identificatie, context=self.context, many=False
         )
-        extra_kwargs = {
-            "id": {"read_only": True},
-            "url": {
-                "view_name": "klantinteracties:medewerker-detail",
-                "lookup_field": "id",
-                "help_text": "De unieke URL van deze medewerker binnen deze API.",
-            },
-        }
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return actor
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if "actor" in validated_data:
-            if actor := validated_data.pop("actor", None):
-                validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
+        if "actor_identificatie" in validated_data:
+            actor_identificatie = validated_data.pop("actor_identificatie")
+            serializer_class = self.create_and_update_mapping[
+                validated_data.get("soort_actor")
+            ]
+            actor_identificatie["actor"] = instance.pk
+
+            try:
+                polymoprhic_instance = serializer_class.Meta.model.objects.get(
+                    actor=instance
+                )
+                serializer = serializer_class(
+                    data=actor_identificatie,
+                    context=self.context,
+                    instance=polymoprhic_instance,
+                    many=False,
+                )
+            except serializer_class.Meta.model.DoesNotExist:
+                self.context["request"].method = "POST"
+                serializer = serializer_class(
+                    data=actor_identificatie,
+                    context=self.context,
+                    many=False,
+                )
+
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
 
         return super().update(instance, validated_data)
-
-    @transaction.atomic
-    def create(self, validated_data):
-        actor_uuid = str(validated_data.pop("actor").get("uuid"))
-        validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
-
-        return super().create(validated_data)
-
-
-class OrganisatorischeEenheidSerializer(serializers.HyperlinkedModelSerializer):
-    actor = ActorForeignKeySerializer(
-        required=True,
-        allow_null=False,
-        help_text=_("Iets dat of iemand die voor de gemeente werkzaamheden uitvoert."),
-    )
-
-    class Meta:
-        model = OrganisatorischeEenheid
-        fields = (
-            "id",
-            "url",
-            "actor",
-            "omschrijving",
-            "emailadres",
-            "faxnummer",
-            "telefoonnummer",
-        )
-        extra_kwargs = {
-            "id": {"read_only": True},
-            "url": {
-                "view_name": "klantinteracties:organisatorischeeenheid-detail",
-                "lookup_field": "id",
-                "help_text": "De unieke URL van deze organisatorische eenheid binnen deze API.",
-            },
-        }
-
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        if actor := validated_data.pop("actor", None):
-            actor_uuid = str(actor.get("uuid"))
-            if actor_uuid != str(instance.actor.uuid):
-                actoren = OrganisatorischeEenheid.objects.filter(actor__uuid=actor_uuid)
-                if len(actoren) != 0:
-                    raise serializers.ValidationError(
-                        {"actor.uuid": _("Er bestaat al een actor met eenzelfde uuid.")}
-                    )
-
-            validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
-
-        return super().update(instance, validated_data)
-
-    @transaction.atomic
-    def create(self, validated_data):
-        actor_uuid = str(validated_data.pop("actor").get("uuid"))
-        actoren = OrganisatorischeEenheid.objects.filter(actor__uuid=actor_uuid)
-
-        if len(actoren) != 0:
-            raise serializers.ValidationError(
-                {"actor.uuid": _("Er bestaat al een actor met eenzelfde uuid.")}
-            )
-
-        validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
-
-        return super().create(validated_data)
