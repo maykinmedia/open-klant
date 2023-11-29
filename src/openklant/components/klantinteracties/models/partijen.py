@@ -98,11 +98,10 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
 
 
 class Organisatie(models.Model):
-    partij = models.ForeignKey(
+    partij = models.OneToOneField(
         Partij,
         on_delete=models.CASCADE,
         verbose_name=_("partij"),
-        unique=True,
     )
     naam = models.CharField(
         _("naam"),
@@ -120,11 +119,10 @@ class Organisatie(models.Model):
 
 
 class Persoon(ContactnaamMixin):
-    partij = models.ForeignKey(
+    partij = models.OneToOneField(
         Partij,
         on_delete=models.CASCADE,
         verbose_name=_("partij"),
-        unique=True,
     )
 
     class Meta:
@@ -136,11 +134,10 @@ class Persoon(ContactnaamMixin):
 
 
 class Contactpersoon(ContactnaamMixin):
-    partij = models.ForeignKey(
+    partij = models.OneToOneField(
         Partij,
         on_delete=models.CASCADE,
         verbose_name=_("partij"),
-        unique=True,
     )
     organisatie = models.ForeignKey(
         Organisatie,

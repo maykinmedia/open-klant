@@ -24,6 +24,11 @@ def actor_is_valid_instance(value):
         raise serializers.ValidationError(_("Actor object doesn't exist."))
 
 
+def partij_is_valid_instance(value):
+    if not isinstance(value, Partij):
+        raise serializers.ValidationError(_("Partij object doesn't exist."))
+
+
 def actor_exists(value):
     try:
         Actor.objects.get(uuid=str(value))

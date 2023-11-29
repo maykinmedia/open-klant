@@ -18,11 +18,9 @@ from openklant.components.klantinteracties.api.viewsets.klantcontacten import (
     OnderwerpobjectViewSet,
 )
 from openklant.components.klantinteracties.api.viewsets.partijen import (
-    ContactpersoonViewSet,
     OrganisatieViewSet,
     PartijIdentificatorViewSet,
     PartijViewSet,
-    PersoonViewSet,
 )
 
 from .schema import info
@@ -41,10 +39,8 @@ router.register("bijlagen", BijlageViewSet)
 
 router.register("internetaken", InterneTaakViewSet)
 
-router.register("partijen", PartijViewSet)
 router.register("organisaties", OrganisatieViewSet)
-router.register("persoon", PersoonViewSet)
-router.register("contact-persoon", ContactpersoonViewSet)
+router.register("partijen", PartijViewSet)
 router.register("partij-identificatoren", PartijIdentificatorViewSet)
 
 

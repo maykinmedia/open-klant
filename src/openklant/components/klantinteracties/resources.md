@@ -37,15 +37,6 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | uuid | Unieke (technische) identificatiecode van het inhoudsdeel. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 
-## Contactpersoon
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/contactpersoon)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| id |  | integer | nee | ~~C~~​R​~~U~~​~~D~~ |
-| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-
 ## DigitaalAdres
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/digitaaladres)
@@ -103,17 +94,6 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | uuid | Unieke (technische) identificatiecode van het onderwerpdeel. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 
-## Organisatie
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/organisatie)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| id |  | integer | nee | ~~C~~​R​~~U~~​~~D~~ |
-| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| naam | Naam van de organisatie. | string | nee | C​R​U​D |
-| contactpersoon | Organisatie waarvoor een contactpersoon werkte. | array | ja | C​R​U​D |
-
 ## PartijIdentificator
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/partijidentificator)
@@ -142,15 +122,6 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | indicatieGeheimhouding | Geeft aan of de verstrekker van partijgegevens heeft aangegeven dat deze gegevens als geheim beschouwd moeten worden. | boolean | ja | C​R​U​D |
 | voorkeurstaal | Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur contact heeft met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html | string | nee | C​R​U​D |
 | indicatieActief | Geeft aan of de contactgegevens van de partij nog gebruikt morgen worden om contact op te nemen. Gegevens van niet-actieve partijen mogen hiervoor niet worden gebruikt. | boolean | ja | C​R​U​D |
-
-## Persoon
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/persoon)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| id |  | integer | nee | ~~C~~​R​~~U~~​~~D~~ |
-| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 
 * Create, Read, Update, Delete

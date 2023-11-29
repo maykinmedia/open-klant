@@ -1023,299 +1023,6 @@ paths:
       schema:
         type: string
         format: uuid
-  /contact-persoon:
-    get:
-      operationId: contactpersoon_list
-      summary: Alle contactpersonen opvragen.
-      description: Alle contactpersonen opvragen.
-      parameters:
-      - name: page
-        in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
-        required: false
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                required:
-                - count
-                - results
-                type: object
-                properties:
-                  count:
-                    type: integer
-                  next:
-                    type: string
-                    format: uri
-                    nullable: true
-                  previous:
-                    type: string
-                    format: uri
-                    nullable: true
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Contactpersoon'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contact-persoon
-    post:
-      operationId: contactpersoon_create
-      summary: Maak een contactpersoon aan.
-      description: Maak een contactpersoon aan.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Contactpersoon'
-      responses:
-        '201':
-          description: Created
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-            Location:
-              schema:
-                type: string
-                format: uri
-              description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contactpersoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contact-persoon
-    parameters: []
-  /contact-persoon/{id}:
-    get:
-      operationId: contactpersoon_read
-      summary: Een specifiek contactpersoon opvragen.
-      description: Een specifiek contactpersoon opvragen.
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contactpersoon'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contact-persoon
-    put:
-      operationId: contactpersoon_update
-      summary: Werk een contactpersoon in zijn geheel bij.
-      description: Werk een contactpersoon in zijn geheel bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Contactpersoon'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contactpersoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contact-persoon
-    patch:
-      operationId: contactpersoon_partial_update
-      summary: Werk een contactpersoon deels bij.
-      description: Werk een contactpersoon deels bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Contactpersoon'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contactpersoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contact-persoon
-    delete:
-      operationId: contactpersoon_delete
-      summary: Verwijder een contactpersoon.
-      description: Verwijder een contactpersoon.
-      responses:
-        '204':
-          description: No content
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contact-persoon
-    parameters:
-    - name: id
-      in: path
-      description: A unique integer value identifying this contact persoon.
-      required: true
-      schema:
-        type: integer
   /digitaleadressen:
     get:
       operationId: digitaaladres_list
@@ -2594,8 +2301,9 @@ paths:
   /organisaties:
     get:
       operationId: organisatie_list
-      summary: Alle organisaties opvragen.
-      description: Alle organisaties opvragen.
+      description: 'Alle organisaties opvragen.
+
+        Alle organisaties opvragen.'
       parameters:
       - name: page
         in: query
@@ -2633,60 +2341,7 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Organisatie'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisaties
-    post:
-      operationId: organisatie_create
-      summary: Maak een organisatie aan.
-      description: Maak een organisatie aan.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Organisatie'
-      responses:
-        '201':
-          description: Created
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-            Location:
-              schema:
-                type: string
-                format: uri
-              description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organisatie'
-        '400':
-          $ref: '#/components/responses/400'
+                      $ref: '#/components/schemas/OrganisatieRetrieve'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -2709,8 +2364,9 @@ paths:
   /organisaties/{id}:
     get:
       operationId: organisatie_read
-      summary: Een specifiek organisatie opvragen.
-      description: Een specifiek organisatie opvragen.
+      description: 'Een specifiek organisatie opvragen.
+
+        Een specifiek organisatie opvragen.'
       responses:
         '200':
           description: OK
@@ -2723,140 +2379,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Organisatie'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisaties
-    put:
-      operationId: organisatie_update
-      summary: Werk een organisatie in zijn geheel bij.
-      description: Werk een organisatie in zijn geheel bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Organisatie'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organisatie'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisaties
-    patch:
-      operationId: organisatie_partial_update
-      summary: Werk een organisatie deels bij.
-      description: Werk een organisatie deels bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Organisatie'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organisatie'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisaties
-    delete:
-      operationId: organisatie_delete
-      summary: Verwijder een organisatie.
-      description: Verwijder een organisatie.
-      responses:
-        '204':
-          description: No content
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
+                $ref: '#/components/schemas/OrganisatieRetrieve'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -3553,299 +3076,6 @@ paths:
       schema:
         type: string
         format: uuid
-  /persoon:
-    get:
-      operationId: persoon_list
-      summary: Alle personen opvragen.
-      description: Alle personen opvragen.
-      parameters:
-      - name: page
-        in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
-        required: false
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                required:
-                - count
-                - results
-                type: object
-                properties:
-                  count:
-                    type: integer
-                  next:
-                    type: string
-                    format: uri
-                    nullable: true
-                  previous:
-                    type: string
-                    format: uri
-                    nullable: true
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Persoon'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    post:
-      operationId: persoon_create
-      summary: Maak een persoon aan.
-      description: Maak een persoon aan.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Persoon'
-      responses:
-        '201':
-          description: Created
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-            Location:
-              schema:
-                type: string
-                format: uri
-              description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Persoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    parameters: []
-  /persoon/{id}:
-    get:
-      operationId: persoon_read
-      summary: Een specifiek persoon opvragen.
-      description: Een specifiek persoon opvragen.
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Persoon'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    put:
-      operationId: persoon_update
-      summary: Werk een persoon in zijn geheel bij.
-      description: Werk een persoon in zijn geheel bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Persoon'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Persoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    patch:
-      operationId: persoon_partial_update
-      summary: Werk een persoon deels bij.
-      description: Werk een persoon deels bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Persoon'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Persoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    delete:
-      operationId: persoon_delete
-      summary: Verwijder een persoon.
-      description: Verwijder een persoon.
-      responses:
-        '204':
-          description: No content
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    parameters:
-    - name: id
-      in: path
-      description: A unique integer value identifying this persoon.
-      required: true
-      schema:
-        type: integer
 servers:
 - url: /klantinteracties/api/v1
 components:
@@ -4019,12 +3249,6 @@ components:
           schema:
             $ref: '#/components/schemas/Bijlage'
       required: true
-    Contactpersoon:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Contactpersoon'
-      required: true
     DigitaalAdres:
       content:
         application/json:
@@ -4037,23 +3261,11 @@ components:
           schema:
             $ref: '#/components/schemas/Klantcontact'
       required: true
-    Organisatie:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Organisatie'
-      required: true
     Partij:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Partij'
-      required: true
-    Persoon:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Persoon'
       required: true
   securitySchemes:
     JWT-Claims:
@@ -4559,82 +3771,6 @@ components:
           $ref: '#/components/schemas/KlantcontactForeignKey'
         objectidentificator:
           $ref: '#/components/schemas/BijlageObjectidentificator'
-    OrganisatieForeignKey:
-      description: Organisatie waarvoor een contactpersoon werkte.
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          title: ID
-          type: integer
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-      nullable: true
-    ContactpersoonPersoon:
-      description: Naam die een contactpersoon wil gebruiken tijdens contact met de
-        gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen
-        (BRP) bekende naam van de contactpersoon.
-      type: object
-      properties:
-        voorletters:
-          title: Voorletters
-          description: Een afkorting van de voornamen. Meestal de beginletter, maar
-            in sommige gevallen de beginletter gecombineerd met de tweede letter van
-            een voornaam.
-          type: string
-          maxLength: 10
-        voornaam:
-          title: Voornaam
-          description: De voornaam die de persoon wil gebruiken tijdens communicatie
-            met de gemeente.
-          type: string
-          maxLength: 200
-        voorvoegselAchternaam:
-          title: Voorvoegsel achternaam
-          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
-            persoon wil gebruiken tijdens communicatie met de gemeente.
-          type: string
-          maxLength: 10
-        achternaam:
-          title: Achternaam
-          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
-            met de gemeente.
-          type: string
-          maxLength: 200
-      nullable: true
-    Contactpersoon:
-      required:
-      - partij
-      - werkteVoorOrganisatie
-      type: object
-      properties:
-        id:
-          title: ID
-          type: integer
-          readOnly: true
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-        partij:
-          $ref: '#/components/schemas/PartijForeignKey'
-        werkteVoorOrganisatie:
-          $ref: '#/components/schemas/OrganisatieForeignKey'
-        contactnaam:
-          $ref: '#/components/schemas/ContactpersoonPersoon'
     BetrokkeneForeignKey:
       description: Digitaal adres dat een betrokkene bij klantcontact verstrekte voor
         gebruik bij opvolging van een klantcontact.
@@ -5041,6 +4177,64 @@ components:
           $ref: '#/components/schemas/KlantcontactForeignKey'
         objectidentificator:
           $ref: '#/components/schemas/OnderwerpobjectObjectidentificator'
+    PartijPolymorphicForeignkey:
+      description: Persoon of organisatie waarmee de gemeente een relatie heeft.
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de partij.
+          type: string
+          format: uuid
+          readOnly: true
+        nummer:
+          title: Nummer
+          description: Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om de specifieke partij aan te duiden.
+          type: string
+          readOnly: true
+          minLength: 1
+        soortPartij:
+          title: Soort partij
+          description: Geeft aan van welke specifieke soort partij sprake is.
+          type: string
+          enum:
+          - persoon
+          - organisatie
+          - contactpersoon
+          readOnly: true
+    ContactpersoonPersoon:
+      description: Naam die een contactpersoon wil gebruiken tijdens contact met de
+        gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen
+        (BRP) bekende naam van de contactpersoon.
+      type: object
+      properties:
+        voorletters:
+          title: Voorletters
+          description: Een afkorting van de voornamen. Meestal de beginletter, maar
+            in sommige gevallen de beginletter gecombineerd met de tweede letter van
+            een voornaam.
+          type: string
+          maxLength: 10
+        voornaam:
+          title: Voornaam
+          description: De voornaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+        voorvoegselAchternaam:
+          title: Voorvoegsel achternaam
+          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
+            persoon wil gebruiken tijdens communicatie met de gemeente.
+          type: string
+          maxLength: 10
+        achternaam:
+          title: Achternaam
+          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+      nullable: true
     ContactPersoonForeignkey:
       description: Organisatie waarvoor een contactpersoon werkte.
       required:
@@ -5050,22 +4244,11 @@ components:
         id:
           title: ID
           type: integer
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
         partij:
-          $ref: '#/components/schemas/PartijForeignKey'
-      nullable: true
-    Organisatie:
-      required:
-      - partij
-      - contactpersoon
+          $ref: '#/components/schemas/PartijPolymorphicForeignkey'
+        contactnaam:
+          $ref: '#/components/schemas/ContactpersoonPersoon'
+    OrganisatieRetrieve:
       type: object
       properties:
         id:
@@ -5093,7 +4276,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContactPersoonForeignkey'
-          nullable: true
+          readOnly: true
     PartijIdentificatorGroepType:
       description: Gegevens die een partij in een basisregistratie of ander extern
         register uniek identificeren.
@@ -5333,6 +4516,45 @@ components:
           $ref: '#/components/schemas/PartijBezoekadres'
         correspondentieadres:
           $ref: '#/components/schemas/partij_correspondentieadres_serializer'
+      discriminator:
+        propertyName: soortPartij
+    OrganisatieForeignKey:
+      description: Organisatie waarvoor een contactpersoon werkte.
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+        partij:
+          $ref: '#/components/schemas/PartijPolymorphicForeignkey'
+        naam:
+          title: Naam
+          description: Naam van de organisatie.
+          type: string
+          readOnly: true
+          minLength: 1
+      nullable: true
+    ContactpersoonBase:
+      required:
+      - werkteVoorOrganisatie
+      type: object
+      properties:
+        werkteVoorOrganisatie:
+          $ref: '#/components/schemas/OrganisatieForeignKey'
+        contactnaam:
+          $ref: '#/components/schemas/ContactpersoonPersoon'
+    partij_identificatie_ContactpersoonBase:
+      type: object
+      properties:
+        partijIdentificatie:
+          $ref: '#/components/schemas/ContactpersoonBase'
+    contactpersoon:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Partij'
+      - $ref: '#/components/schemas/partij_identificatie_ContactpersoonBase'
     PersoonContact:
       description: Naam die een persoon wil gebruiken tijdens contact met de gemeente.
         Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende
@@ -5365,29 +4587,49 @@ components:
           type: string
           maxLength: 200
       nullable: true
-    Persoon:
+    PersoonBase:
       required:
-      - partij
       - contactnaam
       type: object
       properties:
-        id:
-          title: ID
-          type: integer
-          readOnly: true
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-        partij:
-          $ref: '#/components/schemas/PartijForeignKey'
         contactnaam:
           $ref: '#/components/schemas/PersoonContact'
+    partij_identificatie_PersoonBase:
+      type: object
+      properties:
+        partijIdentificatie:
+          $ref: '#/components/schemas/PersoonBase'
+    persoon:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Partij'
+      - $ref: '#/components/schemas/partij_identificatie_PersoonBase'
+    OrganisatieBase:
+      required:
+      - contactpersonen
+      type: object
+      properties:
+        naam:
+          title: Naam
+          description: Naam van de organisatie.
+          type: string
+          maxLength: 200
+        contactpersonen:
+          description: Organisatie waarvoor een contactpersoon werkte.
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPersoonForeignkey'
+          nullable: true
+    partij_identificatie_OrganisatieBase:
+      type: object
+      properties:
+        partijIdentificatie:
+          $ref: '#/components/schemas/OrganisatieBase'
+    organisatie:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Partij'
+      - $ref: '#/components/schemas/partij_identificatie_OrganisatieBase'
     betrokkene_correspondentieadres:
       description: Adres waarop de betrokkene bij klantcontact naar aanleiding van
         dat contact te versturen post wil ontvangen. Dit mag afwijken van voor de
