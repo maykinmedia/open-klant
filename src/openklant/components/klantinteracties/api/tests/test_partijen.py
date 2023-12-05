@@ -1,6 +1,5 @@
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, reverse
+from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
@@ -15,9 +14,10 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
     PartijIdentificatorFactory,
     PersoonFactory,
 )
+from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class PartijTests(JWTAuthMixin, APITestCase):
+class PartijTests(APITestCase):
     def test_list_partij(self):
         list_url = reverse("klantinteracties:partij-list")
         PartijFactory.create_batch(2)
@@ -579,7 +579,7 @@ class PartijTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class OrganisatieTests(JWTAuthMixin, APITestCase):
+class OrganisatieTests(APITestCase):
     def test_list_organisatie(self):
         list_url = reverse("klantinteracties:organisatie-list")
         OrganisatieFactory.create_batch(2)
@@ -755,7 +755,7 @@ class OrganisatieTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class PersoonTests(JWTAuthMixin, APITestCase):
+class PersoonTests(APITestCase):
     def test_list_persoon(self):
         list_url = reverse("klantinteracties:persoon-list")
         PersoonFactory.create_batch(2)
@@ -940,7 +940,7 @@ class PersoonTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class ContactpersoonTests(JWTAuthMixin, APITestCase):
+class ContactpersoonTests(APITestCase):
     def test_list_contact_persoon(self):
         list_url = reverse("klantinteracties:contactpersoon-list")
         ContactpersoonFactory.create_batch(2)
@@ -1140,7 +1140,7 @@ class ContactpersoonTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class PartijIdentificatorTests(JWTAuthMixin, APITestCase):
+class PartijIdentificatorTests(APITestCase):
     def test_list_partij_indetificator(self):
         list_url = reverse("klantinteracties:partijidentificator-list")
         PartijIdentificatorFactory.create_batch(2)

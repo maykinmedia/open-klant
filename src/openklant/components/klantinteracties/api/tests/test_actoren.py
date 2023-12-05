@@ -1,6 +1,5 @@
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, reverse
+from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
@@ -8,9 +7,10 @@ from openklant.components.klantinteracties.models.tests.factories.actoren import
     MedewerkerFactory,
     OrganisatorischeEenheidFactory,
 )
+from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class ActorTests(JWTAuthMixin, APITestCase):
+class ActorTests(APITestCase):
     def test_list_actor(self):
         list_url = reverse("klantinteracties:actor-list")
         ActorFactory.create_batch(2)
@@ -191,7 +191,7 @@ class ActorTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
+class GeautomatiseerdeActorTests(APITestCase):
     def test_list_geatomatiseerde_actor(self):
         list_url = reverse("klantinteracties:geautomatiseerdeactor-list")
         GeautomatiseerdeActorFactory.create_batch(2)
@@ -344,7 +344,7 @@ class GeautomatiseerdeActorTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class MedewerkerTests(JWTAuthMixin, APITestCase):
+class MedewerkerTests(APITestCase):
     def test_list_medewerker(self):
         list_url = reverse("klantinteracties:medewerker-list")
         MedewerkerFactory.create_batch(2)
@@ -506,7 +506,7 @@ class MedewerkerTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class OrganisatorischeEenheidTests(JWTAuthMixin, APITestCase):
+class OrganisatorischeEenheidTests(APITestCase):
     def test_list_organisatorische_eenheid(self):
         list_url = reverse("klantinteracties:organisatorischeeenheid-list")
         OrganisatorischeEenheidFactory.create_batch(2)

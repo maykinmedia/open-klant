@@ -1,6 +1,5 @@
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, reverse
+from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
@@ -11,9 +10,10 @@ from openklant.components.klantinteracties.models.tests.factories.internetaken i
 from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     KlantcontactFactory,
 )
+from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class InterneTaakTests(JWTAuthMixin, APITestCase):
+class InterneTaakTests(APITestCase):
     def test_list_internetaak(self):
         list_url = reverse("klantinteracties:internetaak-list")
         InterneTaakFactory.create_batch(2)

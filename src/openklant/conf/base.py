@@ -136,6 +136,7 @@ INSTALLED_APPS = [
     "openklant.accounts",
     "openklant.utils",
     "openklant.components.klantinteracties",
+    "openklant.components.token",
     "openklant.components.legacy.klanten",
     "openklant.components.legacy.contactmomenten",
 ]

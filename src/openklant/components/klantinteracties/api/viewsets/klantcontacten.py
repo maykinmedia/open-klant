@@ -18,6 +18,8 @@ from openklant.components.klantinteracties.models.klantcontacten import (
     Klantcontact,
     Onderwerpobject,
 )
+from openklant.components.token.authentication import TokenAuthentication
+from openklant.components.token.permission import TokenPermissions
 
 
 class KlantcontactViewSet(viewsets.ModelViewSet):
@@ -61,6 +63,8 @@ class KlantcontactViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
     filterset_class = KlantcontactFilterSet
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class BetrokkeneViewSet(viewsets.ModelViewSet):
@@ -106,6 +110,8 @@ class BetrokkeneViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
     filterset_class = BetrokkeneFilterSet
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class OnderwerpobjectViewSet(viewsets.ModelViewSet):
@@ -151,6 +157,8 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
         "objectidentificator_soort_object_id",
         "objectidentificator_object_id",
     ]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class BijlageViewSet(viewsets.ModelViewSet):
@@ -196,3 +204,5 @@ class BijlageViewSet(viewsets.ModelViewSet):
         "objectidentificator_soort_object_id",
         "objectidentificator_object_id",
     ]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
