@@ -2,14 +2,13 @@ from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
-from vng_api_common.polymorphism import PolymorphicSerializer
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 
-from openklant.components.klantinteracties.api.polymorphism import Discriminator
-from openklant.components.klantinteracties.api.validators import (
-    actor_exists,
-    actor_is_valid_instance,
+from openklant.components.klantinteracties.api.polymorphism import (
+    Discriminator,
+    PolymorphicSerializer,
 )
+from openklant.components.klantinteracties.api.validators import actor_exists
 from openklant.components.klantinteracties.models.actoren import (
     Actor,
     GeautomatiseerdeActor,
@@ -42,7 +41,7 @@ class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class GeautomatiseerdeActorBaseSerializer(serializers.ModelSerializer):
+class GeautomatiseerdeActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = GeautomatiseerdeActor
         fields = (
@@ -51,15 +50,7 @@ class GeautomatiseerdeActorBaseSerializer(serializers.ModelSerializer):
         )
 
 
-class GeautomatiseerdeActorSerializer(GeautomatiseerdeActorBaseSerializer):
-    class Meta(GeautomatiseerdeActorBaseSerializer.Meta):
-        fields = GeautomatiseerdeActorBaseSerializer.Meta.fields + ("actor",)
-        extra_kwargs = {
-            "actor": {"required": True, "validators": [actor_is_valid_instance]},
-        }
-
-
-class OrganisatorischeEenheidBaseSerializer(serializers.ModelSerializer):
+class OrganisatorischeEenheidSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganisatorischeEenheid
         fields = (
@@ -70,15 +61,7 @@ class OrganisatorischeEenheidBaseSerializer(serializers.ModelSerializer):
         )
 
 
-class OrganisatorischeEenheidSerializer(OrganisatorischeEenheidBaseSerializer):
-    class Meta(OrganisatorischeEenheidBaseSerializer.Meta):
-        fields = OrganisatorischeEenheidBaseSerializer.Meta.fields + ("actor",)
-        extra_kwargs = {
-            "actor": {"required": True, "validators": [actor_is_valid_instance]},
-        }
-
-
-class MedewerkerBaseSerializer(serializers.ModelSerializer):
+class MedewerkerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medewerker
         fields = (
@@ -86,14 +69,6 @@ class MedewerkerBaseSerializer(serializers.ModelSerializer):
             "emailadres",
             "telefoonnummer",
         )
-
-
-class MedewerkerSerializer(MedewerkerBaseSerializer):
-    class Meta(MedewerkerBaseSerializer.Meta):
-        fields = MedewerkerBaseSerializer.Meta.fields + ("actor",)
-        extra_kwargs = {
-            "actor": {"required": True, "validators": [actor_is_valid_instance]},
-        }
 
 
 class ActorSerializer(
@@ -110,9 +85,9 @@ class ActorSerializer(
     discriminator = Discriminator(
         discriminator_field="soort_actor",
         mapping={
-            SoortActor.medewerker: MedewerkerBaseSerializer(),
-            SoortActor.geautomatiseerde_actor: GeautomatiseerdeActorBaseSerializer(),
-            SoortActor.organisatorische_eenheid: OrganisatorischeEenheidBaseSerializer(),
+            SoortActor.medewerker: MedewerkerSerializer(),
+            SoortActor.geautomatiseerde_actor: GeautomatiseerdeActorSerializer(),
+            SoortActor.organisatorische_eenheid: OrganisatorischeEenheidSerializer(),
         },
         same_model=False,
         group_field="actor_identificatie",
@@ -137,58 +112,35 @@ class ActorSerializer(
             },
         }
 
-    create_and_update_mapping = {
-        SoortActor.medewerker: MedewerkerSerializer,
-        SoortActor.geautomatiseerde_actor: GeautomatiseerdeActorSerializer,
-        SoortActor.organisatorische_eenheid: OrganisatorischeEenheidSerializer,
-    }
-
     @transaction.atomic
     def create(self, validated_data):
-        actor_identificatie = validated_data.pop("actor_identificatie")
+        actor_identificatie = validated_data.pop("actor_identificatie", None)
         actor = super().create(validated_data)
 
-        serializer_class = self.create_and_update_mapping[
-            validated_data.get("soort_actor")
-        ]
-        actor_identificatie["actor"] = actor.pk
-
-        serializer = serializer_class(
-            data=actor_identificatie, context=self.context, many=False
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        if actor_identificatie:
+            serializer_class = self.discriminator.mapping[validated_data["soort_actor"]]
+            serializer = serializer_class.get_fields()["actor_identificatie"]
+            actor_identificatie["actor"] = actor
+            serializer.create(actor_identificatie)
 
         return actor
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if "actor_identificatie" in validated_data:
-            actor_identificatie = validated_data.pop("actor_identificatie")
-            serializer_class = self.create_and_update_mapping[
+        actor_identificatie = validated_data.pop("actor_identificatie", None)
+        actor = super().update(instance, validated_data)
+
+        if actor_identificatie:
+            serializer_class = self.discriminator.mapping[
                 validated_data.get("soort_actor")
             ]
-            actor_identificatie["actor"] = instance.pk
+            serializer = serializer_class.get_fields()["actor_identificatie"]
 
-            try:
-                polymoprhic_instance = serializer_class.Meta.model.objects.get(
-                    actor=instance
-                )
-                serializer = serializer_class(
-                    data=actor_identificatie,
-                    context=self.context,
-                    instance=polymoprhic_instance,
-                    many=False,
-                )
-            except serializer_class.Meta.model.DoesNotExist:
-                self.context["request"].method = "POST"
-                serializer = serializer_class(
-                    data=actor_identificatie,
-                    context=self.context,
-                    many=False,
-                )
+            # remove the previous data
+            model = serializer.Meta.model
+            model.objects.filter(actor=actor).delete()
 
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+            actor_identificatie["actor"] = actor
+            serializer.create(actor_identificatie)
 
-        return super().update(instance, validated_data)
+        return actor

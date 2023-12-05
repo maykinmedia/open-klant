@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 from openklant.components.klantinteracties.api.validators import (
     actor_exists,
+    actor_is_valid_instance,
     betrokkene_exists,
     bijlage_exists,
     contactpersoon_exists,
@@ -16,6 +17,8 @@ from openklant.components.klantinteracties.api.validators import (
     organisatie_exists,
     partij_exists,
     partij_identificator_exists,
+    partij_is_organisatie,
+    partij_is_valid_instance,
 )
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
@@ -41,6 +44,16 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
 
 
 class FieldValidatorsTests(TestCase):
+    def test_actor_is_valid_instance(self):
+        actor = ActorFactory.create()
+        betrokkene = BetrokkeneFactory.create()
+
+        with self.subTest("actor_is_correct_instance"):
+            self.assertIsNone(actor_is_valid_instance(actor))
+        with self.subTest("doesn'actor_is_wrong_instance"):
+            with self.assertRaises(serializers.ValidationError):
+                self.assertIsNone(actor_is_valid_instance(betrokkene))
+
     def test_actor(self):
         actor = ActorFactory.create()
         with self.subTest("exists"):
@@ -112,6 +125,26 @@ class FieldValidatorsTests(TestCase):
         with self.subTest("doesn't_exist"):
             with self.assertRaises(serializers.ValidationError):
                 organisatie_exists(organisatie.id + 1)
+
+    def test_partij_is_valid_instance(self):
+        partij = PartijFactory.create()
+        betrokkene = BetrokkeneFactory.create()
+
+        with self.subTest("partij_is_correct_instance"):
+            self.assertIsNone(partij_is_valid_instance(partij))
+        with self.subTest("doesn'partij_is_wrong_instance"):
+            with self.assertRaises(serializers.ValidationError):
+                self.assertIsNone(partij_is_valid_instance(betrokkene))
+
+    def test_partij_is_organisatie(self):
+        organisatie = PartijFactory.create(soort_partij="organisatie")
+        persoon = PartijFactory.create(soort_partij="persoon")
+
+        with self.subTest("partij_is_correct_soort"):
+            self.assertIsNone(partij_is_organisatie(organisatie.uuid))
+        with self.subTest("partij_is_wrong_soort"):
+            with self.assertRaises(serializers.ValidationError):
+                self.assertIsNone(partij_is_organisatie(persoon.uuid))
 
     def test_partij(self):
         partij = PartijFactory.create()

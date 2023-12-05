@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from openklant.components.klantinteracties.models.actoren import Actor
+from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import (
@@ -22,11 +23,6 @@ from openklant.components.klantinteracties.models.partijen import (
 def actor_is_valid_instance(value):
     if not isinstance(value, Actor):
         raise serializers.ValidationError(_("Actor object doesn't exist."))
-
-
-def partij_is_valid_instance(value):
-    if not isinstance(value, Partij):
-        raise serializers.ValidationError(_("Partij object doesn't exist."))
 
 
 def actor_exists(value):
@@ -90,6 +86,22 @@ def organisatie_exists(value):
         Organisatie.objects.get(id=int(value))
     except Organisatie.DoesNotExist:
         raise serializers.ValidationError(_("Organisatie object doesn't exist."))
+
+
+def partij_is_valid_instance(value):
+    if not isinstance(value, Partij):
+        raise serializers.ValidationError(_("Partij object doesn't exist."))
+
+
+def partij_is_organisatie(value):
+    # Validate if partij intance exists.
+    partij_exists(value)
+
+    partij = Partij.objects.get(uuid=str(value))
+    if partij.soort_partij != SoortPartij.organisatie:
+        raise serializers.ValidationError(
+            _("Partij object moet het soort 'organisatie' hebben.")
+        )
 
 
 def partij_exists(value):

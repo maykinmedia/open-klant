@@ -24,6 +24,8 @@ class PersoonInlineAdmin(admin.StackedInline):
 
 class ContactpersoonInlineAdmin(admin.StackedInline):
     model = Contactpersoon
+    fk_name = "partij"
+    raw_id_field = ["partij"]
     extra = 0
 
 

@@ -3,37 +3,15 @@ from rest_framework.pagination import PageNumberPagination
 
 from openklant.components.klantinteracties.api.filterset.partijen import PartijFilterSet
 from openklant.components.klantinteracties.api.serializers.partijen import (
-    OrganisatieRetrieveSerializer,
     PartijIdentificatorSerializer,
     PartijSerializer,
 )
 from openklant.components.klantinteracties.models.partijen import (
-    Organisatie,
     Partij,
     PartijIdentificator,
 )
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
-
-
-class OrganisatieViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    Geformaliseerde entiteit die geen natuurlijk persoon is
-    en maatschappelijke activiteiten uitvoert.
-
-    list:
-    Alle organisaties opvragen.
-    Alle organisaties opvragen.
-    retrieve:
-
-    Een specifiek organisatie opvragen.
-    Een specifiek organisatie opvragen.
-    """
-
-    queryset = Organisatie.objects.order_by("-pk")
-    serializer_class = OrganisatieRetrieveSerializer
-    lookup_field = "id"
-    pagination_class = PageNumberPagination
 
 
 class PartijViewSet(viewsets.ModelViewSet):

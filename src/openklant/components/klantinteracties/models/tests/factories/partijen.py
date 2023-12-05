@@ -55,7 +55,6 @@ class PersoonFactory(factory.django.DjangoModelFactory):
 
 class ContactpersoonFactory(factory.django.DjangoModelFactory):
     partij = factory.SubFactory(PartijFactory)
-    organisatie = factory.SubFactory(OrganisatieFactory)
     contactnaam_voorletters = ".".join(random.choices(string.ascii_uppercase, k=2))
 
     class Meta:

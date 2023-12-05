@@ -5,9 +5,9 @@ from openklant.components.klantinteracties.api.filterset.actoren import ActorenF
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorSerializer,
 )
+from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
-from openklant.components.klantinteracties.models.actoren import Actor
 
 
 class ActorViewSet(viewsets.ModelViewSet):

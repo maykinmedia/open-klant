@@ -2298,115 +2298,6 @@ paths:
       schema:
         type: string
         format: uuid
-  /organisaties:
-    get:
-      operationId: organisatie_list
-      description: 'Alle organisaties opvragen.
-
-        Alle organisaties opvragen.'
-      parameters:
-      - name: page
-        in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
-        required: false
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                required:
-                - count
-                - results
-                type: object
-                properties:
-                  count:
-                    type: integer
-                  next:
-                    type: string
-                    format: uri
-                    nullable: true
-                  previous:
-                    type: string
-                    format: uri
-                    nullable: true
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OrganisatieRetrieve'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisaties
-    parameters: []
-  /organisaties/{id}:
-    get:
-      operationId: organisatie_read
-      description: 'Een specifiek organisatie opvragen.
-
-        Een specifiek organisatie opvragen.'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrganisatieRetrieve'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisaties
-    parameters:
-    - name: id
-      in: path
-      description: A unique integer value identifying this organisatie.
-      required: true
-      schema:
-        type: integer
   /partij-identificatoren:
     get:
       operationId: partijidentificator_list
@@ -2786,6 +2677,76 @@ paths:
           - persoon
           - organisatie
           - contactpersoon
+      - name: bezoekadresNummeraanduidingId
+        in: query
+        description: Identificatie van het adres bij de Basisregistratie Adressen
+          en Gebouwen.
+        required: false
+        schema:
+          type: string
+      - name: bezoekadresAdresregel1
+        in: query
+        description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
+        required: false
+        schema:
+          type: string
+      - name: bezoekadresAdresregel2
+        in: query
+        description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
+        required: false
+        schema:
+          type: string
+      - name: bezoekadresAdresregel3
+        in: query
+        description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
+        required: false
+        schema:
+          type: string
+      - name: bezoekadresLand
+        in: query
+        description: Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten
+          Nederland) aangeeft alwaar de ingeschrevene verblijft.
+        required: false
+        schema:
+          type: string
+      - name: correspondentieadresNummeraanduidingId
+        in: query
+        description: Identificatie van het adres bij de Basisregistratie Adressen
+          en Gebouwen.
+        required: false
+        schema:
+          type: string
+      - name: correspondentieadresAdresregel1
+        in: query
+        description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
+        required: false
+        schema:
+          type: string
+      - name: correspondentieadresAdresregel2
+        in: query
+        description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
+        required: false
+        schema:
+          type: string
+      - name: correspondentieadresAdresregel3
+        in: query
+        description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
+        required: false
+        schema:
+          type: string
+      - name: correspondentieadresLand
+        in: query
+        description: Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten
+          Nederland) aangeeft alwaar de ingeschrevene verblijft.
+        required: false
+        schema:
+          type: string
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -4177,106 +4138,6 @@ components:
           $ref: '#/components/schemas/KlantcontactForeignKey'
         objectidentificator:
           $ref: '#/components/schemas/OnderwerpobjectObjectidentificator'
-    PartijPolymorphicForeignkey:
-      description: Persoon of organisatie waarmee de gemeente een relatie heeft.
-      type: object
-      properties:
-        uuid:
-          title: Uuid
-          description: Unieke (technische) identificatiecode van de partij.
-          type: string
-          format: uuid
-          readOnly: true
-        nummer:
-          title: Nummer
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om de specifieke partij aan te duiden.
-          type: string
-          readOnly: true
-          minLength: 1
-        soortPartij:
-          title: Soort partij
-          description: Geeft aan van welke specifieke soort partij sprake is.
-          type: string
-          enum:
-          - persoon
-          - organisatie
-          - contactpersoon
-          readOnly: true
-    ContactpersoonPersoon:
-      description: Naam die een contactpersoon wil gebruiken tijdens contact met de
-        gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen
-        (BRP) bekende naam van de contactpersoon.
-      type: object
-      properties:
-        voorletters:
-          title: Voorletters
-          description: Een afkorting van de voornamen. Meestal de beginletter, maar
-            in sommige gevallen de beginletter gecombineerd met de tweede letter van
-            een voornaam.
-          type: string
-          maxLength: 10
-        voornaam:
-          title: Voornaam
-          description: De voornaam die de persoon wil gebruiken tijdens communicatie
-            met de gemeente.
-          type: string
-          maxLength: 200
-        voorvoegselAchternaam:
-          title: Voorvoegsel achternaam
-          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
-            persoon wil gebruiken tijdens communicatie met de gemeente.
-          type: string
-          maxLength: 10
-        achternaam:
-          title: Achternaam
-          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
-            met de gemeente.
-          type: string
-          maxLength: 200
-      nullable: true
-    ContactPersoonForeignkey:
-      description: Organisatie waarvoor een contactpersoon werkte.
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          title: ID
-          type: integer
-        partij:
-          $ref: '#/components/schemas/PartijPolymorphicForeignkey'
-        contactnaam:
-          $ref: '#/components/schemas/ContactpersoonPersoon'
-    OrganisatieRetrieve:
-      type: object
-      properties:
-        id:
-          title: ID
-          type: integer
-          readOnly: true
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-        naam:
-          title: Naam
-          description: Naam van de organisatie.
-          type: string
-          maxLength: 200
-        partij:
-          $ref: '#/components/schemas/PartijForeignKey'
-        contactpersoon:
-          description: Organisatie waarvoor een contactpersoon werkte.
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactPersoonForeignkey'
-          readOnly: true
     PartijIdentificatorGroepType:
       description: Gegevens die een partij in een basisregistratie of ander extern
         register uniek identificeren.
@@ -4518,31 +4379,71 @@ components:
           $ref: '#/components/schemas/partij_correspondentieadres_serializer'
       discriminator:
         propertyName: soortPartij
-    OrganisatieForeignKey:
+    PartijPolymorphic:
       description: Organisatie waarvoor een contactpersoon werkte.
       required:
-      - id
+      - uuid
       type: object
       properties:
-        id:
-          title: ID
-          type: integer
-        partij:
-          $ref: '#/components/schemas/PartijPolymorphicForeignkey'
-        naam:
-          title: Naam
-          description: Naam van de organisatie.
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de partij.
           type: string
+          format: uuid
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
           readOnly: true
+          maxLength: 1000
           minLength: 1
+      nullable: true
+    ContactpersoonPersoon:
+      description: Naam die een contactpersoon wil gebruiken tijdens contact met de
+        gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen
+        (BRP) bekende naam van de contactpersoon.
+      type: object
+      properties:
+        voorletters:
+          title: Voorletters
+          description: Een afkorting van de voornamen. Meestal de beginletter, maar
+            in sommige gevallen de beginletter gecombineerd met de tweede letter van
+            een voornaam.
+          type: string
+          maxLength: 10
+        voornaam:
+          title: Voornaam
+          description: De voornaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
+        voorvoegselAchternaam:
+          title: Voorvoegsel achternaam
+          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
+            persoon wil gebruiken tijdens communicatie met de gemeente.
+          type: string
+          maxLength: 10
+        achternaam:
+          title: Achternaam
+          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          type: string
+          maxLength: 200
       nullable: true
     ContactpersoonBase:
       required:
-      - werkteVoorOrganisatie
+      - werkteVoorPartij
       type: object
       properties:
-        werkteVoorOrganisatie:
-          $ref: '#/components/schemas/OrganisatieForeignKey'
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van de contactpersoon.
+          type: string
+          format: uuid
+        werkteVoorPartij:
+          $ref: '#/components/schemas/PartijPolymorphic'
         contactnaam:
           $ref: '#/components/schemas/ContactpersoonPersoon'
     partij_identificatie_ContactpersoonBase:
@@ -4605,8 +4506,6 @@ components:
       - $ref: '#/components/schemas/Partij'
       - $ref: '#/components/schemas/partij_identificatie_PersoonBase'
     OrganisatieBase:
-      required:
-      - contactpersonen
       type: object
       properties:
         naam:
@@ -4614,12 +4513,6 @@ components:
           description: Naam van de organisatie.
           type: string
           maxLength: 200
-        contactpersonen:
-          description: Organisatie waarvoor een contactpersoon werkte.
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactPersoonForeignkey'
-          nullable: true
     partij_identificatie_OrganisatieBase:
       type: object
       properties:

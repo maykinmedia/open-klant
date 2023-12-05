@@ -378,29 +378,11 @@ class PartijTests(APITestCase):
         )
         self.assertEqual(
             response_data["partijIdentificatie"],
-            {
-                "naam": "Whitechapel",
-                "contactpersonen": [
-                    {
-                        "id": contactpersoon.id,
-                        "partij": {
-                            "uuid": str(contactpersoon.partij.uuid),
-                            "nummer": contactpersoon.partij.nummer,
-                            "soortPartij": contactpersoon.partij.soort_partij,
-                        },
-                        "contactnaam": {
-                            "voorletters": "P",
-                            "voornaam": "Phil",
-                            "voorvoegselAchternaam": "",
-                            "achternaam": "Bozeman",
-                        },
-                    }
-                ],
-            },
+            {"naam": "Whitechapel"},
         )
 
     def test_create_contactpersoon(self):
-        organisatie = OrganisatieFactory.create(naam="Whitechapel")
+        organisatie = PartijFactory.create(soort_partij="organisatie")
         list_url = reverse("klantinteracties:partij-list")
         data = {
             "nummer": "1298329191",
@@ -429,9 +411,8 @@ class PartijTests(APITestCase):
             },
             "soortPartij": "contactpersoon",
             "partijIdentificatie": {
-                "werkteVoorOrganisatie": {
-                    "id": organisatie.id,
-                    "naam": "Whitechapel",
+                "werkteVoorPartij": {
+                    "uuid": organisatie.uuid,
                 },
                 "contactnaam": {
                     "voorletters": "P",
@@ -480,23 +461,19 @@ class PartijTests(APITestCase):
             },
         )
         self.assertEqual(
-            response_data["partijIdentificatie"],
+            response_data["partijIdentificatie"]["werkteVoorPartij"],
             {
-                "werkteVoorOrganisatie": {
-                    "id": organisatie.id,
-                    "partij": {
-                        "uuid": str(organisatie.partij.uuid),
-                        "nummer": organisatie.partij.nummer,
-                        "soortPartij": organisatie.partij.soort_partij,
-                    },
-                    "naam": "Whitechapel",
-                },
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                },
+                "uuid": str(organisatie.uuid),
+                "url": f"http://testserver/klantinteracties/api/v1/partijen/{str(organisatie.uuid)}",
+            },
+        )
+        self.assertEqual(
+            response_data["partijIdentificatie"]["contactnaam"],
+            {
+                "voorletters": "P",
+                "voornaam": "Phil",
+                "voorvoegselAchternaam": "",
+                "achternaam": "Bozeman",
             },
         )
 
@@ -525,6 +502,13 @@ class PartijTests(APITestCase):
             correspondentieadres_land="6030",
         )
         betrokkene2 = BetrokkeneFactory.create(partij=partij)
+        PersoonFactory.create(
+            partij=partij,
+            contactnaam_voorletters="P",
+            contactnaam_voornaam="Phil",
+            contactnaam_voorvoegsel_achternaam="",
+            contactnaam_achternaam="Bozeman",
+        )
 
         digitaal_adres = DigitaalAdresFactory.create(partij=partij)
         digitaal_adres2 = DigitaalAdresFactory.create()
@@ -582,6 +566,17 @@ class PartijTests(APITestCase):
                 "land": "6030",
             },
         )
+        self.assertEqual(
+            data["partijIdentificatie"],
+            {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            },
+        )
 
         data = {
             "nummer": "6427834668",
@@ -611,10 +606,10 @@ class PartijTests(APITestCase):
             },
             "partijIdentificatie": {
                 "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
+                    "voorletters": "V",
+                    "voornaam": "Vincent",
                     "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
+                    "achternaam": "Bennette",
                 }
             },
         }
@@ -675,10 +670,10 @@ class PartijTests(APITestCase):
             data["partijIdentificatie"],
             {
                 "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
+                    "voorletters": "V",
+                    "voornaam": "Vincent",
                     "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
+                    "achternaam": "Bennette",
                 }
             },
         )
@@ -965,21 +960,7 @@ class PartijTests(APITestCase):
             correspondentieadres_adresregel3="adres3",
             correspondentieadres_land="6030",
         )
-        organisatie = OrganisatieFactory.create(partij=partij, naam="Whitechapel")
-        contactpersoon = ContactpersoonFactory.create(
-            organisatie=organisatie,
-            contactnaam_voorletters="P",
-            contactnaam_voornaam="Phil",
-            contactnaam_voorvoegsel_achternaam="",
-            contactnaam_achternaam="Bozeman",
-        )
-        contactpersoon2 = ContactpersoonFactory.create(
-            organisatie=None,
-            contactnaam_voorletters="V",
-            contactnaam_voornaam="Vincent",
-            contactnaam_voorvoegsel_achternaam="",
-            contactnaam_achternaam="Bennett",
-        )
+        OrganisatieFactory(partij=partij, naam="Whitechapel")
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -1017,28 +998,7 @@ class PartijTests(APITestCase):
                 "land": "6030",
             },
         )
-        self.assertEqual(
-            data["partijIdentificatie"],
-            {
-                "naam": "Whitechapel",
-                "contactpersonen": [
-                    {
-                        "id": contactpersoon.id,
-                        "partij": {
-                            "uuid": str(contactpersoon.partij.uuid),
-                            "nummer": contactpersoon.partij.nummer,
-                            "soortPartij": contactpersoon.partij.soort_partij,
-                        },
-                        "contactnaam": {
-                            "voorletters": "P",
-                            "voornaam": "Phil",
-                            "voorvoegselAchternaam": "",
-                            "achternaam": "Bozeman",
-                        },
-                    }
-                ],
-            },
-        )
+        self.assertEqual(data["partijIdentificatie"], {"naam": "Whitechapel"})
 
         data = {
             "nummer": "6427834668",
@@ -1068,7 +1028,6 @@ class PartijTests(APITestCase):
             },
             "partijIdentificatie": {
                 "naam": "The Acacia Strain",
-                "contactpersonen": [{"id": contactpersoon2.id}],
             },
         }
 
@@ -1109,25 +1068,7 @@ class PartijTests(APITestCase):
         )
         self.assertEqual(
             data["partijIdentificatie"],
-            {
-                "naam": "The Acacia Strain",
-                "contactpersonen": [
-                    {
-                        "id": contactpersoon2.id,
-                        "partij": {
-                            "uuid": str(contactpersoon2.partij.uuid),
-                            "nummer": contactpersoon2.partij.nummer,
-                            "soortPartij": contactpersoon2.partij.soort_partij,
-                        },
-                        "contactnaam": {
-                            "voorletters": "V",
-                            "voornaam": "Vincent",
-                            "voorvoegselAchternaam": "",
-                            "achternaam": "Bennett",
-                        },
-                    }
-                ],
-            },
+            {"naam": "The Acacia Strain"},
         )
 
     def test_update_partij_contactpersoon(self):
@@ -1151,15 +1092,22 @@ class PartijTests(APITestCase):
             correspondentieadres_adresregel3="adres3",
             correspondentieadres_land="6030",
         )
-        organisatie = OrganisatieFactory.create(partij=partij, naam="Whitechapel")
-        organisatie2 = OrganisatieFactory.create(naam="The Acacia Strain")
+        organisatie = PartijFactory.create(soort_partij="organisatie")
         ContactpersoonFactory.create(
             partij=partij,
-            organisatie=organisatie,
+            werkte_voor_partij=organisatie,
             contactnaam_voorletters="P",
             contactnaam_voornaam="Phil",
             contactnaam_voorvoegsel_achternaam="",
             contactnaam_achternaam="Bozeman",
+        )
+        organisatie2 = PartijFactory.create(soort_partij="organisatie")
+        ContactpersoonFactory.create(
+            werkte_voor_partij=organisatie2,
+            contactnaam_voorletters="V",
+            contactnaam_voornaam="Vincent",
+            contactnaam_voorvoegsel_achternaam="",
+            contactnaam_achternaam="Benette",
         )
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
@@ -1199,23 +1147,19 @@ class PartijTests(APITestCase):
             },
         )
         self.assertEqual(
-            data["partijIdentificatie"],
+            data["partijIdentificatie"]["werkteVoorPartij"],
             {
-                "werkteVoorOrganisatie": {
-                    "id": organisatie.id,
-                    "partij": {
-                        "uuid": str(organisatie.partij.uuid),
-                        "nummer": organisatie.partij.nummer,
-                        "soortPartij": organisatie.partij.soort_partij,
-                    },
-                    "naam": "Whitechapel",
-                },
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                },
+                "uuid": str(organisatie.uuid),
+                "url": f"http://testserver/klantinteracties/api/v1/partijen/{str(organisatie.uuid)}",
+            },
+        )
+        self.assertEqual(
+            data["partijIdentificatie"]["contactnaam"],
+            {
+                "voorletters": "P",
+                "voornaam": "Phil",
+                "voorvoegselAchternaam": "",
+                "achternaam": "Bozeman",
             },
         )
 
@@ -1246,7 +1190,7 @@ class PartijTests(APITestCase):
                 "land": "3060",
             },
             "partijIdentificatie": {
-                "werkteVoorOrganisatie": {"id": organisatie2.id},
+                "werkteVoorPartij": {"uuid": str(organisatie2.uuid)},
                 "contactnaam": {
                     "voorletters": "V",
                     "voornaam": "Vincent",
@@ -1292,23 +1236,19 @@ class PartijTests(APITestCase):
             },
         )
         self.assertEqual(
-            data["partijIdentificatie"],
+            data["partijIdentificatie"]["werkteVoorPartij"],
             {
-                "werkteVoorOrganisatie": {
-                    "id": organisatie2.id,
-                    "partij": {
-                        "uuid": str(organisatie2.partij.uuid),
-                        "nummer": organisatie2.partij.nummer,
-                        "soortPartij": organisatie2.partij.soort_partij,
-                    },
-                    "naam": "The Acacia Strain",
-                },
-                "contactnaam": {
-                    "voorletters": "V",
-                    "voornaam": "Vincent",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bennett",
-                },
+                "uuid": str(organisatie2.uuid),
+                "url": f"http://testserver/klantinteracties/api/v1/partijen/{str(organisatie2.uuid)}",
+            },
+        )
+        self.assertEqual(
+            data["partijIdentificatie"]["contactnaam"],
+            {
+                "voorletters": "V",
+                "voornaam": "Vincent",
+                "voorvoegselAchternaam": "",
+                "achternaam": "Bennett",
             },
         )
 
@@ -1333,10 +1273,10 @@ class PartijTests(APITestCase):
             correspondentieadres_adresregel3="adres3",
             correspondentieadres_land="6030",
         )
-        organisatie = OrganisatieFactory.create(partij=partij, naam="Whitechapel")
+        organisatie = PartijFactory.create(soort_partij="organisatie")
         ContactpersoonFactory.create(
             partij=partij,
-            organisatie=organisatie,
+            werkte_voor_partij=organisatie,
             contactnaam_voorletters="P",
             contactnaam_voornaam="Phil",
             contactnaam_voorvoegsel_achternaam="",
@@ -1380,23 +1320,19 @@ class PartijTests(APITestCase):
             },
         )
         self.assertEqual(
-            data["partijIdentificatie"],
+            data["partijIdentificatie"]["werkteVoorPartij"],
             {
-                "werkteVoorOrganisatie": {
-                    "id": organisatie.id,
-                    "partij": {
-                        "uuid": str(organisatie.partij.uuid),
-                        "nummer": organisatie.partij.nummer,
-                        "soortPartij": organisatie.partij.soort_partij,
-                    },
-                    "naam": "Whitechapel",
-                },
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                },
+                "uuid": str(organisatie.uuid),
+                "url": f"http://testserver/klantinteracties/api/v1/partijen/{str(organisatie.uuid)}",
+            },
+        )
+        self.assertEqual(
+            data["partijIdentificatie"]["contactnaam"],
+            {
+                "voorletters": "P",
+                "voornaam": "Phil",
+                "voorvoegselAchternaam": "",
+                "achternaam": "Bozeman",
             },
         )
 
@@ -1507,6 +1443,7 @@ class PartijTests(APITestCase):
         )
         betrokkene = BetrokkeneFactory.create(partij=partij)
         digitaal_adres = DigitaalAdresFactory.create(partij=partij)
+        digitaal_adres2 = DigitaalAdresFactory.create(partij=None)
         partij_identificator = PartijIdentificatorFactory.create(partij=partij)
         PersoonFactory.create(
             partij=partij,
@@ -1632,6 +1569,23 @@ class PartijTests(APITestCase):
                 }
             },
         )
+
+        with self.subTest("voorkeurs_adres_must_be_given_digitaal_adres_validation"):
+            data["voorkeursDigitaalAdres"] = {"uuid": str(digitaal_adres2.uuid)}
+            response = self.client.patch(detail_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"],
+                [
+                    {
+                        "name": "voorkeursDigitaalAdres",
+                        "code": "invalid",
+                        "reason": "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
+                    }
+                ],
+            )
 
     def test_destroy_partij(self):
         partij = PartijFactory.create()
