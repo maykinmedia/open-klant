@@ -1,0 +1,257 @@
+/*
+ Project/app specific overrides, coupled to the data model.
+
+ Generic overrides should go in _admin_theme.scss
+ */
+@import '~microscope-sass/lib/responsive';
+@import '~microscope-sass/lib/util';
+
+@import '../vars';
+
+/**
+ * DJANGO ADMIN INDEX
+ */
+body {
+  --djai-tab-bg: var(--primary); // no fallback to default admin vars
+  --djai-tab-bg--active: var(--breadcrumbs-bg);
+  --djai-tab-bg--hover: #{$color-primary-dark};
+  --djai-tab-fg--active: var(--secondary);
+  --djai-dropdown-bg--active: #{$color-primary-dark};
+  --djai-dropdown-bg--hover: #{$color-primary-dark};
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    --djai-tab-bg--hover: #{$color-primary};
+    --djai-tab-fg--active: #{$color-lightest};
+    --djai-dropdown-bg--hover: #{$color-primary};
+  }
+}
+
+$djai-padding: 40px;
+$djai-padding--mobile: 15px;
+$djai-padding--tablet: 30px;
+$djai-border-width: 8px;
+
+.djai-dropdown-menu {
+  // by default, the header has 40px padding on both sides. To make the border stretch
+  // full width, set negative margins and positive paddings. On mobile and tablet these
+  // values are 15px and 30px respectively.
+  @include responsive(
+    (margin-left, margin-right),
+    -$djai-padding--mobile,
+    -$djai-padding--tablet,
+    -$djai-padding
+  );
+  @include responsive(
+    (padding-left, padding-right),
+    $djai-padding--mobile,
+    $djai-padding--tablet,
+    $djai-padding
+  );
+
+  // use full width on mobile & tablet
+  width: 100%;
+
+  /* Added to attach to body/breadcrumbs */
+  border-bottom: $djai-border-width solid $color_secondary;
+
+  & &__drop {
+    min-width: 250px !important;
+  }
+
+  // remove the header padding on mobile and tablet
+  @at-root #header {
+    padding-bottom: 0 !important;
+
+    // remove the border height from the breadcrumbs padding
+    & + .breadcrumbs {
+      padding-top: 10px - $djai-border-width; // 10px is original django value
+    }
+
+    // overwrite admin '#header a:link' rule which is otherwise more specific
+    .djai-dropdown-menu .djai-dropdown-menu__item--active:link,
+    .djai-dropdown-menu .djai-dropdown-menu__item--active:visited {
+      color: var(--djai-tab-fg--active);
+
+      &:hover {
+        color: var(--djai-tab-fg--hover);
+      }
+    }
+  }
+
+  @at-root body.login #header {
+    padding-bottom: 15px !important;
+  }
+}
+
+/* Secondary submit row */
+.submit-row {
+  position: sticky;
+  bottom: 0px;
+  /* the toolbar in the text editor has z-index: 1; */
+  z-index: 2;
+
+  &.submit-row-extended {
+    position: relative;
+    z-index: 3;
+    margin-top: -24px;
+    border-top: 0;
+    padding-top: 0;
+
+    & .button {
+      height: 35px;
+      line-height: 15px;
+      margin: 0 0 0 5px;
+      padding: 10px 15px;
+    }
+  }
+}
+
+.signature-image {
+  max-width: 350px;
+}
+
+/* Extra login links in admin login screen */
+.admin-login-option {
+  text-align: center;
+  clear: both;
+  padding-top: 1em;
+}
+
+/* Styling for react-jsonschema-form */
+.rjsf {
+  legend {
+    font-size: 13px;
+  }
+
+  input,
+  select,
+  .btn-group {
+    height: 30px;
+  }
+
+  input[type='button'] {
+    height: auto;
+  }
+
+  .array-item {
+    min-width: 170px;
+    margin-bottom: 2px;
+    display: flex;
+  }
+
+  .array-item-add {
+    text-align: left !important;
+  }
+
+  .btn-add {
+    height: 35px;
+    margin-top: 10px;
+  }
+
+  .btn-danger,
+  .btn-danger:hover {
+    color: unset;
+    background-color: unset;
+    border: unset;
+  }
+
+  .form-group:not(.field-object) {
+    margin-bottom: unset;
+    clear: both;
+  }
+
+  .glyphicon {
+    display: block;
+    font-weight: 900;
+    font-family: 'Font Awesome 6 Free';
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    font-size: 16px;
+  }
+
+  .glyphicon-plus:before {
+    content: var(--of-add-another-text, 'Add another');
+    font-family: 'Roboto', 'Lucida Grande', Verdana, Arial, sans-serif;
+    font-size: 13px;
+  }
+
+  .glyphicon-remove:before {
+    content: '\f00d';
+  }
+
+  .glyphicon-arrow-down:before {
+    content: '\f107';
+  }
+
+  .glyphicon-arrow-up:before {
+    content: '\f106';
+  }
+
+  .row {
+    flex-direction: column;
+    padding-left: 13px;
+  }
+
+  .field-description {
+    color: #999; // same color as django forms.css
+  }
+
+  select.form-control {
+    $properties: display, width, font-size, font-weight, line-height, color, background-clip,
+      transition;
+
+    @each $property in $properties {
+      #{$property}: inherit;
+    }
+
+    // re-apply django admin styles
+    background-color: var(--form-input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 5px 6px;
+    margin-top: 0;
+
+    &:focus {
+      color: inherit;
+      background-color: var(--form-input-bg);
+      border-color: var(--border-color);
+      box-shadow: none;
+      outline: initial;
+    }
+  }
+}
+
+/**
+ * django-treebeard headers padding/markup is inconsistent
+ */
+body.app-forms.model-category.change-list {
+  #changelist table thead th {
+    padding: 8px 10px;
+  }
+}
+
+/**
+ * Django-log-outgoing-requests
+ */
+body.app-log_outgoing_requests.model-outgoingrequestslog {
+  .field-request_body,
+  .field-response_body {
+    & > div {
+      display: flex;
+    }
+
+    .readonly {
+      white-space: pre-wrap !important;
+      max-width: 88ch;
+      overflow: unset !important;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+    }
+  }
+}
