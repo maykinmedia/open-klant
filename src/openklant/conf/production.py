@@ -29,8 +29,6 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = [
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Production logging facility.
-
-# Production logging facility.
 handlers = ["console"] if LOG_STDOUT else ["django"]
 
 LOGGING["loggers"].update(

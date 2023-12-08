@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from django.urls import reverse_lazy
@@ -5,7 +6,7 @@ from django.urls import reverse_lazy
 import sentry_sdk
 
 from .api import *  # noqa
-from .utils import config, get_current_version, get_git_sha, get_sentry_integrations
+from .includes.environ import config, get_sentry_integrations
 
 # Build paths inside the project, so further paths can be defined relative to
 # the code root.
@@ -402,6 +403,28 @@ if subpath:
         subpath = f"/{subpath}"
     SUBPATH = subpath
 
+if "GIT_SHA" in os.environ:
+    GIT_SHA = config("GIT_SHA", "")
+# in docker (build) context, there is no .git directory
+elif os.path.exists(os.path.join(BASE_DIR, ".git")):
+    try:
+        import git
+    except ImportError:
+        GIT_SHA = None
+    else:
+        repo = git.Repo(search_parent_directories=True)
+        GIT_SHA = repo.head.object.hexsha
+else:
+    GIT_SHA = None
+
+RELEASE = config("RELEASE", GIT_SHA)
+
+NUM_PROXIES = config(  # TODO: this also is relevant for DRF settings if/when we have rate-limited endpoints
+    "NUM_PROXIES",
+    default=1,
+    cast=lambda val: int(val) if val is not None else None,
+)
+
 ##############################
 #                            #
 # 3RD PARTY LIBRARY SETTINGS #
@@ -416,27 +439,26 @@ ADMIN_INDEX_AUTO_CREATE_APP_GROUP = False
 ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 
 #
-# DJANGO-AXES (4.0+)
+# DJANGO-AXES
 #
 AXES_CACHE = "axes"  # refers to CACHES setting
-# The number of login attempts allowed before a record is created for the
-# failed logins. Default: 3
-AXES_FAILURE_LIMIT = 10
-# If set, defines a period of inactivity after which old failed login attempts
-# will be forgotten. Can be set to a python timedelta object or an integer. If
-# an integer, will be interpreted as a number of hours. Default: None
-AXES_COOLOFF_TIME = 1
-# If True only locks based on user id and never locks by IP if attempts limit
-# exceed, otherwise utilize the existing IP and user locking logic Default:
-# False
-AXES_ONLY_USER_FAILURES = True
-# If set, specifies a template to render when a user is locked out. Template
-# receives cooloff_time and failure_limit as context variables. Default: None
-AXES_LOCKOUT_TEMPLATE = "account_blocked.html"
-AXES_USE_USER_AGENT = True  # Default: False
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True  # Default: False
-AXES_BEHIND_REVERSE_PROXY = IS_HTTPS
-
+AXES_FAILURE_LIMIT = 5  # Default: 3
+AXES_LOCK_OUT_AT_FAILURE = True  # Default: True
+AXES_USE_USER_AGENT = False  # Default: False
+AXES_COOLOFF_TIME = datetime.timedelta(minutes=5)
+# after testing, the REMOTE_ADDR does not appear to be included with nginx (so single
+# reverse proxy) and the ipware detection didn't properly work. On K8s you typically have
+# ingress (load balancer) and then an additional nginx container for private file serving,
+# bringing the total of reverse proxies to 2 - meaning HTTP_X_FORWARDED_FOR basically
+# looks like ``$realIp,$ingressIp``. -> to get to $realIp, there is only 1 extra reverse
+# proxy included.
+AXES_PROXY_COUNT = NUM_PROXIES - 1 if NUM_PROXIES else None
+AXES_ONLY_USER_FAILURES = (
+    False  # Default: False (you might want to block on username rather than IP)
+)
+AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = (
+    False  # Default: False (you might want to block on username and IP)
+)
 # The default meta precedence order
 IPWARE_META_PRECEDENCE_ORDER = (
     "HTTP_X_FORWARDED_FOR",
@@ -452,24 +474,21 @@ IPWARE_META_PRECEDENCE_ORDER = (
 )
 
 #
-# SENTRY - error monitoring
+# RAVEN/SENTRY - error monitoring
 #
 SENTRY_DSN = config("SENTRY_DSN", None)
-RELEASE = get_current_version()
-GIT_SHA = get_git_sha()
-
-# Two factor auth
-# LOGIN_URL = "two_factor:login"
 
 if SENTRY_DSN:
     SENTRY_CONFIG = {
         "dsn": SENTRY_DSN,
+        "release": RELEASE or "RELEASE not set",
         "environment": ENVIRONMENT,
-        "release": RELEASE,
     }
 
     sentry_sdk.init(
-        **SENTRY_CONFIG, integrations=get_sentry_integrations(), send_default_pii=True
+        **SENTRY_CONFIG,
+        integrations=get_sentry_integrations(),
+        send_default_pii=True,
     )
 
 # Elastic APM

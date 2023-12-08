@@ -1,6 +1,5 @@
 from django.conf import settings
-from django.conf.urls import url
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from vng_api_common import routers
 from vng_api_common.schema import SchemaView as _SchemaView
@@ -24,23 +23,23 @@ class SchemaView(_SchemaView):
 # TODO: the EndpointEnumerator seems to choke on path and re_path
 
 urlpatterns = [
-    url(
+    re_path(
         r"^v(?P<version>\d+)/",
         include(
             [
                 # API documentation
-                url(
+                re_path(
                     r"^schema/openapi(?P<format>\.json|\.yaml)$",
                     SchemaView.without_ui(cache_timeout=None),
                     name="schema-json-klanten",
                 ),
-                url(
+                re_path(
                     r"^schema/$",
                     SchemaView.with_ui("redoc", cache_timeout=None),
                     name="schema-redoc-klanten",
                 ),
                 # actual API
-                url(r"^", include(router.urls)),
+                re_path(r"^", include(router.urls)),
                 # should not be picked up by drf-yasg
                 path("", router.APIRootView.as_view(), name="api-root-klanten"),
                 path("", include("vng_api_common.api.urls")),

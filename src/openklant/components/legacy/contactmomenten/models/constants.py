@@ -1,17 +1,16 @@
+from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
 
-from djchoices import ChoiceItem, DjangoChoices
+
+class InitiatiefNemer(TextChoices):
+    gemeente = "gemeente", _("gemeente")
+    klant = "klant", _("klant")
 
 
-class InitiatiefNemer(DjangoChoices):
-    gemeente = ChoiceItem("gemeente", _("gemeente"))
-    klant = ChoiceItem("klant", _("klant"))
+class ObjectTypes(TextChoices):
+    zaak = "zaak", _("Zaak")
 
 
-class ObjectTypes(DjangoChoices):
-    zaak = ChoiceItem("zaak", _("Zaak"))
-
-
-class Rol(DjangoChoices):
-    belanghebbende = ChoiceItem("belanghebbende", "Belanghebbende")
-    gesprekspartner = ChoiceItem("gesprekspartner", "Gesprekspartner")
+class Rol(TextChoices):
+    belanghebbende = "belanghebbende", _("Belanghebbende")
+    gesprekspartner = "gesprekspartner", _("Gesprekspartner")
