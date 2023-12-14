@@ -45,11 +45,15 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-    path("klanten/api/", include("openklant.components.legacy.klanten.api.urls")),
     path(
         "klantinteracties/api/",
         include("openklant.components.klantinteracties.api.urls"),
     ),
+    path(
+        "contactgegevens/api/",
+        include("openklant.components.contactgegevens.api.urls"),
+    ),
+    path("klanten/api/", include("openklant.components.legacy.klanten.api.urls")),
     path(
         "contactmomenten/api/",
         include("openklant.components.legacy.contactmomenten.api.urls"),

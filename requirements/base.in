@@ -45,6 +45,7 @@ commonground-api-common
 notifications-api-common
 humanize
 djangorestframework-inclusions
+django-loose-fk
 
 # WSGI servers & monitoring - production oriented
 uwsgi
