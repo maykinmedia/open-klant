@@ -16,6 +16,8 @@ from openklant.components.klantinteracties.models.partijen import (
     PartijIdentificator,
     Persoon,
 )
+from openklant.components.token.authentication import TokenAuthentication
+from openklant.components.token.permission import TokenPermissions
 
 
 class PartijViewSet(viewsets.ModelViewSet):
@@ -58,6 +60,8 @@ class PartijViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
     filterset_class = PartijFilterSet
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class OrganisatieViewSet(viewsets.ModelViewSet):
@@ -100,6 +104,8 @@ class OrganisatieViewSet(viewsets.ModelViewSet):
     serializer_class = OrganisatieSerializer
     lookup_field = "id"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class PersoonViewSet(viewsets.ModelViewSet):
@@ -141,6 +147,8 @@ class PersoonViewSet(viewsets.ModelViewSet):
     serializer_class = PersoonSerializer
     lookup_field = "id"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class ContactpersoonViewSet(viewsets.ModelViewSet):
@@ -183,6 +191,8 @@ class ContactpersoonViewSet(viewsets.ModelViewSet):
     serializer_class = ContactpersoonSerializer
     lookup_field = "id"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class PartijIdentificatorViewSet(viewsets.ModelViewSet):
@@ -224,3 +234,5 @@ class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     serializer_class = PartijIdentificatorSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)

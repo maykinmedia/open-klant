@@ -1,8 +1,7 @@
 from uuid import uuid4
 
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, reverse
+from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
@@ -15,9 +14,10 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
     PartijFactory,
     PartijIdentificatorFactory,
 )
+from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class KlantcontactFilterTests(JWTAuthMixin, APITestCase):
+class KlantcontactFilterTests(APITestCase):
     url = reverse("klantinteracties:klantcontact-list")
 
     def setUp(self):
@@ -93,12 +93,11 @@ class KlantcontactFilterTests(JWTAuthMixin, APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
 
-class BetrokkeneFilterTests(JWTAuthMixin, APITestCase):
+class BetrokkeneFilterTests(APITestCase):
     url = reverse("klantinteracties:betrokkene-list")
 
     def setUp(self):
         super().setUp()
-
         self.klantcontact = KlantcontactFactory.create(nummer="6237172371")
         self.partij = PartijFactory.create(nummer="8123973457")
         self.betrokkene = BetrokkeneFactory.create(
@@ -364,12 +363,11 @@ class BetrokkeneFilterTests(JWTAuthMixin, APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
 
-class TestPartijFilterset(JWTAuthMixin, APITestCase):
+class TestPartijFilterset(APITestCase):
     url = reverse("klantinteracties:partij-list")
 
     def setUp(self):
         super().setUp()
-
         self.partij = PartijFactory.create(nummer="1111111111")
         self.partij2 = PartijFactory.create(
             vertegenwoordigde=(self.partij,), nummer="2222222222"
@@ -404,6 +402,7 @@ class TestPartijFilterset(JWTAuthMixin, APITestCase):
         response = self.client.get(
             self.url,
             {"werkt_voor_partij__url": werkt_voor_partij_url},
+            content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

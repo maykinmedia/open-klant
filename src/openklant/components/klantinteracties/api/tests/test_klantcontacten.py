@@ -1,6 +1,5 @@
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, reverse
+from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
@@ -17,9 +16,10 @@ from openklant.components.klantinteracties.models.tests.factories.klantcontacten
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
     PartijFactory,
 )
+from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class KlantContactTests(JWTAuthMixin, APITestCase):
+class KlantContactTests(APITestCase):
     def test_list_klantcontact(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         KlantcontactFactory.create_batch(2)
@@ -605,7 +605,7 @@ class KlantContactTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class BetrokkeneTests(JWTAuthMixin, APITestCase):
+class BetrokkeneTests(APITestCase):
     def test_list_betrokkene(self):
         list_url = reverse("klantinteracties:betrokkene-list")
         BetrokkeneFactory.create_batch(2)
@@ -1037,7 +1037,7 @@ class BetrokkeneTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class BijlageTests(JWTAuthMixin, APITestCase):
+class BijlageTests(APITestCase):
     def test_list_bijlage(self):
         list_url = reverse("klantinteracties:bijlage-list")
         BijlageFactory.create_batch(2)
@@ -1273,7 +1273,7 @@ class BijlageTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class OnderwerpobjectTests(JWTAuthMixin, APITestCase):
+class OnderwerpobjectTests(APITestCase):
     def test_list_onderwerpobject(self):
         list_url = reverse("klantinteracties:onderwerpobject-list")
         OnderwerpobjectFactory.create_batch(2)

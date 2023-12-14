@@ -1,6 +1,5 @@
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, reverse
+from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
@@ -11,9 +10,10 @@ from openklant.components.klantinteracties.models.tests.factories.klantcontacten
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
     PartijFactory,
 )
+from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class DigitaalAdresTests(JWTAuthMixin, APITestCase):
+class DigitaalAdresTests(APITestCase):
     def test_list_digitaal_adres(self):
         list_url = reverse("klantinteracties:digitaaladres-list")
         DigitaalAdresFactory.create_batch(2)

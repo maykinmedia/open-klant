@@ -14,6 +14,8 @@ from openklant.components.klantinteracties.models.actoren import (
     Medewerker,
     OrganisatorischeEenheid,
 )
+from openklant.components.token.authentication import TokenAuthentication
+from openklant.components.token.permission import TokenPermissions
 
 
 class ActorViewSet(viewsets.ModelViewSet):
@@ -56,6 +58,8 @@ class ActorViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
     filterset_class = ActorenFilterSet
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class GeautomatiseerdeActorViewSet(viewsets.ModelViewSet):
@@ -85,6 +89,8 @@ class GeautomatiseerdeActorViewSet(viewsets.ModelViewSet):
     serializer_class = GeautomatiseerdeActorSerializer
     lookup_field = "id"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class MedewerkerViewSet(viewsets.ModelViewSet):
@@ -115,6 +121,8 @@ class MedewerkerViewSet(viewsets.ModelViewSet):
     serializer_class = MedewerkerSerializer
     lookup_field = "id"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class OrganisatorischeEenheidViewSet(viewsets.ModelViewSet):
@@ -146,3 +154,5 @@ class OrganisatorischeEenheidViewSet(viewsets.ModelViewSet):
     serializer_class = OrganisatorischeEenheidSerializer
     lookup_field = "id"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)

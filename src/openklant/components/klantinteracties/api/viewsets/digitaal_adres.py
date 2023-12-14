@@ -5,6 +5,8 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
     DigitaalAdresSerializer,
 )
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
+from openklant.components.token.authentication import TokenAuthentication
+from openklant.components.token.permission import TokenPermissions
 
 
 class DigitaalAdresViewSet(viewsets.ModelViewSet):
@@ -47,3 +49,5 @@ class DigitaalAdresViewSet(viewsets.ModelViewSet):
     serializer_class = DigitaalAdresSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)

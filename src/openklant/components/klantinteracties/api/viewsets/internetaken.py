@@ -6,6 +6,8 @@ from openklant.components.klantinteracties.api.serializers.internetaken import (
     InterneTaakSerializer,
 )
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
+from openklant.components.token.authentication import TokenAuthentication
+from openklant.components.token.permission import TokenPermissions
 
 
 class InterneTaakViewSet(viewsets.ModelViewSet):
@@ -55,3 +57,5 @@ class InterneTaakViewSet(viewsets.ModelViewSet):
         "klantcontact__uuid",
         "klantcontact__nummer",
     ]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
