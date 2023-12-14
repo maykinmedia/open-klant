@@ -1,17 +1,17 @@
 from uuid import uuid4
 
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, reverse
+from vng_api_common.tests import reverse
 
 from openklant.components.contactgegevens.api.tests.factories import (
     ContactgegevensFactory,
     OrganisatieFactory,
     PersoonFactory,
 )
+from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class OrganisatieFilterTests(JWTAuthMixin, APITestCase):
+class OrganisatieFilterTests(APITestCase):
     url = reverse("contactgegevens:organisatie-list")
 
     def setUp(self):
@@ -88,7 +88,7 @@ class OrganisatieFilterTests(JWTAuthMixin, APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
 
-class PersoonFilterTests(JWTAuthMixin, APITestCase):
+class PersoonFilterTests(APITestCase):
     url = reverse("contactgegevens:persoon-list")
 
     def setUp(self):

@@ -15,6 +15,8 @@ from openklant.components.contactgegevens.models import (
     Organisatie,
     Persoon,
 )
+from openklant.components.token.authentication import TokenAuthentication
+from openklant.components.token.permission import TokenPermissions
 
 
 class OrganisatieViewSet(viewsets.ModelViewSet):
@@ -57,6 +59,8 @@ class OrganisatieViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
     filterset_class = OrganisatieFilterSet
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class PersoonViewSet(viewsets.ModelViewSet):
@@ -99,6 +103,8 @@ class PersoonViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
     filterset_class = PersoonFilterSet
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
 
 
 class ContactgegevensViewSet(viewsets.ModelViewSet):
@@ -140,3 +146,5 @@ class ContactgegevensViewSet(viewsets.ModelViewSet):
     serializer_class = ContactgegevensSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)

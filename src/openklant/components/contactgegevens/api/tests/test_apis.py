@@ -1,6 +1,5 @@
 from rest_framework import status
-from rest_framework.test import APITestCase
-from vng_api_common.tests import JWTAuthMixin, reverse
+from vng_api_common.tests import reverse
 
 from openklant.components.contactgegevens.api.tests.factories import (
     ContactgegevensFactory,
@@ -10,9 +9,10 @@ from openklant.components.contactgegevens.api.tests.factories import (
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
     PartijIdentificatorFactory,
 )
+from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class ContactgegevensTests(JWTAuthMixin, APITestCase):
+class ContactgegevensTests(APITestCase):
     def test_list_contactgegevens(self):
         list_url = reverse("contactgegevens:contactgegevens-list")
         ContactgegevensFactory.create_batch(2)
@@ -125,7 +125,7 @@ class ContactgegevensTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class PersoonTests(JWTAuthMixin, APITestCase):
+class PersoonTests(APITestCase):
     def test_create_persoon(self):
         list_url = reverse("contactgegevens:persoon-list")
         contactgegevens = ContactgegevensFactory.create()
@@ -320,7 +320,7 @@ class PersoonTests(JWTAuthMixin, APITestCase):
         self.assertEqual(data["land"], "5001")
 
 
-class OrganisatiesTests(JWTAuthMixin, APITestCase):
+class OrganisatiesTests(APITestCase):
     def test_create_organisatie(self):
         list_url = reverse("contactgegevens:organisatie-list")
         contactgegevens = ContactgegevensFactory.create()
