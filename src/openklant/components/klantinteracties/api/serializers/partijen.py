@@ -21,7 +21,6 @@ from openklant.components.klantinteracties.api.validators import (
 )
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
-from openklant.components.klantinteracties.models.klantcontacten import Betrokkene
 from openklant.components.klantinteracties.models.partijen import (
     Contactpersoon,
     Organisatie,
@@ -29,12 +28,6 @@ from openklant.components.klantinteracties.models.partijen import (
     PartijIdentificator,
     Persoon,
 )
-
-
-class ContactpersoonPersoonSerializer(GegevensGroepSerializer):
-    class Meta:
-        model = Contactpersoon
-        gegevensgroep = "contactnaam"
 
 
 class PartijForeignkeyBaseSerializer(serializers.HyperlinkedModelSerializer):
@@ -48,7 +41,7 @@ class PartijForeignkeyBaseSerializer(serializers.HyperlinkedModelSerializer):
             "url": {
                 "view_name": "klantinteracties:partij-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van deze partij binnen deze API.",
+                "help_text": _("De unieke URL van deze partij binnen deze API."),
             },
         }
 
@@ -58,17 +51,6 @@ class PartijForeignKeySerializer(PartijForeignkeyBaseSerializer):
         extra_kwargs = {
             **PartijForeignkeyBaseSerializer.Meta.extra_kwargs,
             "uuid": {"required": True, "validators": [partij_exists]},
-        }
-
-
-class PartijPolymorphicSerializer(PartijForeignkeyBaseSerializer):
-    class Meta(PartijForeignkeyBaseSerializer.Meta):
-        extra_kwargs = {
-            **PartijForeignkeyBaseSerializer.Meta.extra_kwargs,
-            "uuid": {
-                "required": True,
-                "validators": [partij_is_organisatie],
-            },
         }
 
 
@@ -85,26 +67,28 @@ class PartijIdentificatorForeignkeySerializer(serializers.HyperlinkedModelSerial
             "url": {
                 "view_name": "klantinteracties:partijidentificator-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van deze partij indentificator binnen deze API.",
+                "help_text": _(
+                    "De unieke URL van deze partij indentificator binnen deze API."
+                ),
             },
         }
 
 
-class ContactPersoonForeignkeySerializer(
-    NestedGegevensGroepMixin, serializers.ModelSerializer
-):
-    contactnaam = ContactpersoonPersoonSerializer(
-        read_only=True,
-        help_text=_(
-            "Naam die een contactpersoon wil gebruiken tijdens contact met de gemeente. "
-            "Deze mag afwijken van de eventueel in de Basisregistratie Personen "
-            "(BRP) bekende naam van de contactpersoon."
-        ),
-    )
+class PartijPolymorphicSerializer(PartijForeignkeyBaseSerializer):
+    class Meta(PartijForeignkeyBaseSerializer.Meta):
+        extra_kwargs = {
+            **PartijForeignkeyBaseSerializer.Meta.extra_kwargs,
+            "uuid": {
+                "required": True,
+                "validators": [partij_is_organisatie],
+            },
+        }
 
+
+class ContactpersoonPersoonSerializer(GegevensGroepSerializer):
     class Meta:
         model = Contactpersoon
-        fields = ("contactnaam",)
+        gegevensgroep = "contactnaam"
 
 
 class PartijBezoekadresSerializer(GegevensGroepSerializer):
@@ -265,8 +249,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         group_field="partij_identificatie",
     )
     betrokkenen = BetrokkeneForeignKeySerializer(
-        required=True,
-        allow_null=True,
+        read_only=True,
         help_text=_("Betrokkene bij klantcontact die een partij was."),
         many=True,
         source="betrokkene_set",
@@ -295,8 +278,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         help_text=_("Partij die een andere partij vertegenwoordigde."),
     )
     partij_identificatoren = PartijIdentificatorForeignkeySerializer(
-        required=True,
-        allow_null=True,
+        read_only=True,
         many=True,
         source="partijidentificator_set",
         help_text=_("Partij-identificatoren die hoorde bij deze partij."),
@@ -344,7 +326,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             "url": {
                 "view_name": "klantinteracties:partij-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van deze partij binnen deze API.",
+                "help_text": _("De unieke URL van deze partij binnen deze API."),
             },
         }
 
@@ -352,56 +334,6 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     def update(self, instance, validated_data):
         method = self.context.get("request").method
         partij_identificatie = validated_data.pop("partij_identificatie", None)
-
-        if "betrokkene_set" in validated_data:
-            existing_betrokkenen = instance.betrokkene_set.all()
-            betrokkene_uuids = [
-                betrokkene["uuid"]
-                for betrokkene in validated_data.pop("betrokkene_set")
-            ]
-
-            # unset relation of betrokkenen that weren't given with the update
-            for betrokkene in existing_betrokkenen:
-                if betrokkene.uuid not in betrokkene_uuids:
-                    betrokkene.partij = None
-                    betrokkene.save()
-
-            # create relation between betrokkene and partij of new entries
-            for betrokkene_uuid in betrokkene_uuids:
-                if betrokkene_uuid not in existing_betrokkenen.values_list(
-                    "uuid", flat=True
-                ):
-                    betrokkene = Betrokkene.objects.get(uuid=betrokkene_uuid)
-                    betrokkene.partij = instance
-                    betrokkene.save()
-
-        if "partijidentificator_set" in validated_data:
-            existing_partij_identificatoren = instance.partijidentificator_set.all()
-            partij_identificator_uuids = [
-                partij_identificator["uuid"]
-                for partij_identificator in validated_data.pop(
-                    "partijidentificator_set"
-                )
-            ]
-
-            # delete relation of partij identificator that weren't given with the update
-            for partij_identificator in existing_partij_identificatoren:
-                if partij_identificator.uuid not in partij_identificator_uuids:
-                    partij_identificator.delete()
-
-            # create relation between partij identificator and partij of new entries
-            for partij_identificator_uuid in partij_identificator_uuids:
-                if (
-                    partij_identificator_uuid
-                    not in existing_partij_identificatoren.values_list(
-                        "uuid", flat=True
-                    )
-                ):
-                    partij_identificator = PartijIdentificator.objects.get(
-                        uuid=partij_identificator_uuid
-                    )
-                    partij_identificator.partij = instance
-                    partij_identificator.save()
 
         if "digitaaladres_set" in validated_data:
             existing_digitale_adressen = instance.digitaaladres_set.all()
@@ -498,8 +430,6 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     def create(self, validated_data):
         partij_identificatie = validated_data.pop("partij_identificatie")
         digitale_adressen = validated_data.pop("digitaaladres_set")
-        partij_identificatoren = validated_data.pop("partijidentificator_set")
-        betrokkenen = validated_data.pop("betrokkene_set")
 
         if voorkeurs_digitaal_adres := validated_data.pop(
             "voorkeurs_digitaal_adres", None
@@ -549,19 +479,5 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 )
                 digitaal_adres.partij = partij
                 digitaal_adres.save()
-
-        if partij_identificatoren:
-            for partij_identificator in partij_identificatoren:
-                partij_identificator = PartijIdentificator.objects.get(
-                    uuid=str(partij_identificator["uuid"])
-                )
-                partij_identificator.partij = partij
-                partij_identificator.save()
-
-        if betrokkenen:
-            for betrokkene in betrokkenen:
-                betrokkene = Betrokkene.objects.get(uuid=str(betrokkene["uuid"]))
-                betrokkene.partij = partij
-                betrokkene.save()
 
         return partij

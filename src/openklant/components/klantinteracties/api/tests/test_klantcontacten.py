@@ -4,9 +4,6 @@ from vng_api_common.tests import reverse
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
 )
-from openklant.components.klantinteracties.models.tests.factories.internetaken import (
-    InterneTaakFactory,
-)
 from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     BetrokkeneFactory,
     BijlageFactory,
@@ -46,10 +43,6 @@ class KlantContactTests(APITestCase):
         actor, actor2 = ActorFactory.create_batch(2)
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
-            "gingOverOnderwerpobjecten": [],
-            "omvatteBijlagen": [],
-            "hadBetrokkenen": [],
-            "leiddeTotInterneTaken": [],
             "nummer": "1234567890",
             "kanaal": "kanaal",
             "onderwerp": "onderwerp",
@@ -70,10 +63,6 @@ class KlantContactTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["gingOverOnderwerpobjecten"], [])
-        self.assertEqual(data["omvatteBijlagen"], [])
-        self.assertEqual(data["hadBetrokkenen"], [])
-        self.assertEqual(data["leiddeTotInterneTaken"], [])
         self.assertEqual(data["nummer"], "1234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
@@ -98,16 +87,8 @@ class KlantContactTests(APITestCase):
 
     def test_create_klantcontact_with_reverse_lookup_fields(self):
         actor, actor2 = ActorFactory.create_batch(2)
-        betrokkene = BetrokkeneFactory.create()
-        internetaak = InterneTaakFactory.create()
-        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=None)
-        bijlage = BijlageFactory.create(klantcontact=None)
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
-            "gingOverOnderwerpobjecten": [{"uuid": str(onderwerpobject.uuid)}],
-            "omvatteBijlagen": [{"uuid": str(bijlage.uuid)}],
-            "hadBetrokkenen": [{"uuid": str(betrokkene.uuid)}],
-            "leiddeTotInterneTaken": [{"uuid": str(internetaak.uuid)}],
             "nummer": "1234567890",
             "kanaal": "kanaal",
             "onderwerp": "onderwerp",
@@ -128,44 +109,6 @@ class KlantContactTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(
-            data["gingOverOnderwerpobjecten"],
-            [
-                {
-                    "uuid": str(onderwerpobject.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/onderwerpobjecten/{str(onderwerpobject.uuid)}",
-                }
-            ],
-        )
-        self.assertEqual(
-            data["omvatteBijlagen"],
-            [
-                {
-                    "uuid": str(bijlage.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/bijlagen/{str(bijlage.uuid)}",
-                },
-            ],
-        )
-        self.assertEqual(
-            data["hadBetrokkenen"],
-            [
-                {
-                    "uuid": str(betrokkene.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/betrokkenen/{str(betrokkene.uuid)}",
-                }
-            ],
-        )
-        self.assertEqual(
-            data["leiddeTotInterneTaken"],
-            [
-                {
-                    "uuid": str(internetaak.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/internetaken/{str(internetaak.uuid)}",
-                },
-            ],
-        )
-        self.assertTrue(data["hadBetrokkenen"])
-        self.assertTrue(data["leiddeTotInterneTaken"])
         self.assertEqual(data["nummer"], "1234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
@@ -187,54 +130,6 @@ class KlantContactTests(APITestCase):
                 },
             ],
         )
-
-        with self.subTest("test_ging_over_onderwerp_unique"):
-            data = {
-                "gingOverOnderwerpobjecten": [
-                    {"uuid": str(onderwerpobject.uuid)},
-                ],
-                "omvatteBijlagen": [],
-                "hadBetrokkenen": [],
-                "leiddeTotInterneTaken": [],
-                "nummer": "1234567890",
-                "kanaal": "kanaal",
-                "onderwerp": "onderwerp",
-                "hadBetrokkenActoren": [],
-                "inhoud": "inhoud",
-                "indicatieContactGelukt": True,
-                "taal": "ndl",
-                "vertrouwelijk": True,
-                "plaatsgevondenOp": "2019-08-24T14:15:22Z",
-            }
-            response = self.client.post(list_url, data)
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            data = response.json()
-            self.assertEqual(
-                data["invalidParams"][0]["name"], "gingOverOnderwerpobjecten.0.uuid"
-            )
-
-        with self.subTest("test_bijlage_unique"):
-            data = {
-                "gingOverOnderwerpobjecten": [],
-                "omvatteBijlagen": [
-                    {"uuid": str(bijlage.uuid)},
-                ],
-                "hadBetrokkenen": [],
-                "leiddeTotInterneTaken": [],
-                "nummer": "1234567890",
-                "kanaal": "kanaal",
-                "onderwerp": "onderwerp",
-                "hadBetrokkenActoren": [],
-                "inhoud": "inhoud",
-                "indicatieContactGelukt": True,
-                "taal": "ndl",
-                "vertrouwelijk": True,
-                "plaatsgevondenOp": "2019-08-24T14:15:22Z",
-            }
-            response = self.client.post(list_url, data)
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            data = response.json()
-            self.assertEqual(data["invalidParams"][0]["name"], "omvatteBijlagen.0.uuid")
 
     def test_update_klantcontact(self):
         actor, actor2, actor3, actor4 = ActorFactory.create_batch(4)
@@ -256,10 +151,6 @@ class KlantContactTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["gingOverOnderwerpobjecten"], [])
-        self.assertEqual(data["omvatteBijlagen"], [])
-        self.assertEqual(data["hadBetrokkenen"], [])
-        self.assertEqual(data["leiddeTotInterneTaken"], [])
         self.assertEqual(data["nummer"], "1234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
@@ -283,10 +174,6 @@ class KlantContactTests(APITestCase):
         )
 
         data = {
-            "gingOverOnderwerpobjecten": [],
-            "omvatteBijlagen": [],
-            "hadBetrokkenen": [],
-            "leiddeTotInterneTaken": [],
             "nummer": "7948723947",
             "kanaal": "changed",
             "onderwerp": "changed",
@@ -305,10 +192,6 @@ class KlantContactTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
 
-        self.assertEqual(data["gingOverOnderwerpobjecten"], [])
-        self.assertEqual(data["omvatteBijlagen"], [])
-        self.assertEqual(data["hadBetrokkenen"], [])
-        self.assertEqual(data["leiddeTotInterneTaken"], [])
         self.assertEqual(data["nummer"], "7948723947")
         self.assertEqual(data["kanaal"], "changed")
         self.assertEqual(data["onderwerp"], "changed")
@@ -344,18 +227,6 @@ class KlantContactTests(APITestCase):
             vertrouwelijk=True,
             plaatsgevonden_op="2019-08-24T14:15:22Z",
         )
-        klantcontact2 = KlantcontactFactory.create()
-        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
-        onderwerpobject2 = OnderwerpobjectFactory.create(klantcontact=None)
-
-        bijlage = BijlageFactory.create(klantcontact=klantcontact)
-        bijlage2 = BijlageFactory.create(klantcontact=None)
-
-        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
-        betrokkene2 = BetrokkeneFactory.create(klantcontact=klantcontact2)
-
-        internetaak = InterneTaakFactory.create(klantcontact=klantcontact)
-        internetaak2 = InterneTaakFactory.create(klantcontact=klantcontact2)
 
         detail_url = reverse(
             "klantinteracties:klantcontact-detail",
@@ -364,14 +235,6 @@ class KlantContactTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["hadBetrokkenen"][0]["uuid"], str(betrokkene.uuid))
-        self.assertEqual(
-            data["leiddeTotInterneTaken"][0]["uuid"], str(internetaak.uuid)
-        )
-        self.assertEqual(
-            data["gingOverOnderwerpobjecten"][0]["uuid"], str(onderwerpobject.uuid)
-        )
-        self.assertEqual(data["omvatteBijlagen"][0]["uuid"], str(bijlage.uuid))
         self.assertEqual(data["nummer"], "1234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
@@ -395,10 +258,6 @@ class KlantContactTests(APITestCase):
         )
 
         data = {
-            "gingOverOnderwerpobjecten": [{"uuid": str(onderwerpobject2.uuid)}],
-            "omvatteBijlagen": [{"uuid": str(bijlage2.uuid)}],
-            "hadBetrokkenen": [{"uuid": str(betrokkene2.uuid)}],
-            "leiddeTotInterneTaken": [{"uuid": str(internetaak2.uuid)}],
             "nummer": "7948723947",
             "kanaal": "changed",
             "onderwerp": "changed",
@@ -419,42 +278,6 @@ class KlantContactTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(
-            data["gingOverOnderwerpobjecten"],
-            [
-                {
-                    "uuid": str(onderwerpobject2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/onderwerpobjecten/{str(onderwerpobject2.uuid)}",
-                }
-            ],
-        )
-        self.assertEqual(
-            data["omvatteBijlagen"],
-            [
-                {
-                    "uuid": str(bijlage2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/bijlagen/{str(bijlage2.uuid)}",
-                },
-            ],
-        )
-        self.assertEqual(
-            data["hadBetrokkenen"],
-            [
-                {
-                    "uuid": str(betrokkene2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/betrokkenen/{str(betrokkene2.uuid)}",
-                }
-            ],
-        )
-        self.assertEqual(
-            data["leiddeTotInterneTaken"],
-            [
-                {
-                    "uuid": str(internetaak2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/internetaken/{str(internetaak2.uuid)}",
-                },
-            ],
-        )
         self.assertEqual(data["nummer"], "7948723947")
         self.assertEqual(data["kanaal"], "changed")
         self.assertEqual(data["onderwerp"], "changed")
@@ -496,10 +319,6 @@ class KlantContactTests(APITestCase):
         )
         response = self.client.get(detail_url)
         data = response.json()
-        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
-        bijlage = BijlageFactory.create(klantcontact=klantcontact)
-        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
-        internetaak = InterneTaakFactory.create(klantcontact=klantcontact)
 
         detail_url = reverse(
             "klantinteracties:klantcontact-detail",
@@ -507,20 +326,6 @@ class KlantContactTests(APITestCase):
         )
         response = self.client.get(detail_url)
         data = response.json()
-
-        self.assertEqual(len(data["gingOverOnderwerpobjecten"]), 1)
-        self.assertEqual(len(data["omvatteBijlagen"]), 1)
-        self.assertEqual(len(data["hadBetrokkenen"]), 1)
-        self.assertEqual(len(data["leiddeTotInterneTaken"]), 1)
-
-        self.assertEqual(
-            data["gingOverOnderwerpobjecten"][0]["uuid"], str(onderwerpobject.uuid)
-        )
-        self.assertEqual(data["omvatteBijlagen"][0]["uuid"], str(bijlage.uuid))
-        self.assertEqual(data["hadBetrokkenen"][0]["uuid"], str(betrokkene.uuid))
-        self.assertEqual(
-            data["leiddeTotInterneTaken"][0]["uuid"], str(internetaak.uuid)
-        )
 
         self.assertEqual(data["nummer"], "1234567890")
         self.assertEqual(data["kanaal"], "kanaal")
@@ -553,20 +358,6 @@ class KlantContactTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
-
-        self.assertEqual(len(data["gingOverOnderwerpobjecten"]), 1)
-        self.assertEqual(len(data["omvatteBijlagen"]), 1)
-        self.assertEqual(len(data["hadBetrokkenen"]), 1)
-        self.assertEqual(len(data["leiddeTotInterneTaken"]), 1)
-
-        self.assertEqual(
-            data["gingOverOnderwerpobjecten"][0]["uuid"], str(onderwerpobject.uuid)
-        )
-        self.assertEqual(data["omvatteBijlagen"][0]["uuid"], str(bijlage.uuid))
-        self.assertEqual(data["hadBetrokkenen"][0]["uuid"], str(betrokkene.uuid))
-        self.assertEqual(
-            data["leiddeTotInterneTaken"][0]["uuid"], str(internetaak.uuid)
-        )
 
         self.assertEqual(data["nummer"], "7948723947")
         self.assertEqual(data["kanaal"], "kanaal")
