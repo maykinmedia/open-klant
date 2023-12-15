@@ -64,6 +64,16 @@ class PartijFilterSet(FilterSet):
             "indicatie_geheimhouding",
             "indicatie_actief",
             "soort_partij",
+            "bezoekadres_nummeraanduiding_id",
+            "bezoekadres_adresregel1",
+            "bezoekadres_adresregel2",
+            "bezoekadres_adresregel3",
+            "bezoekadres_land",
+            "correspondentieadres_nummeraanduiding_id",
+            "correspondentieadres_adresregel1",
+            "correspondentieadres_adresregel2",
+            "correspondentieadres_adresregel3",
+            "correspondentieadres_land",
         )
 
     def filter_werkt_voor_partij_uuid(self, queryset, name, value):

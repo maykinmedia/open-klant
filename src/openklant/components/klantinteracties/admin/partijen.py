@@ -24,6 +24,8 @@ class PersoonInlineAdmin(admin.StackedInline):
 
 class ContactpersoonInlineAdmin(admin.StackedInline):
     model = Contactpersoon
+    fk_name = "partij"
+    raw_id_field = ["partij"]
     extra = 0
 
 
@@ -117,13 +119,13 @@ class PartijAdmin(admin.ModelAdmin):
     get_name.short_description = _("naam")
 
     def get_personen(self, obj):
-        if people := obj.persoon_set.all():
-            return [person.get_contactnaam() for person in people]
+        if persoon := obj.persoon:
+            return persoon.get_contactnaam()
 
     def get_contactpersonen(self, obj):
-        if people := obj.contactpersoon_set.all():
-            return [person.get_contactnaam() for person in people]
+        if contactpersoon := obj.contactpersoon:
+            return contactpersoon.get_contactnaam()
 
     def get_organisaties(self, obj):
-        if organisaties := obj.organisatie_set.all():
-            return [organisatie.naam for organisatie in organisaties]
+        if organisatie := obj.organisatie:
+            return organisatie.naam

@@ -21,7 +21,7 @@ class DigitaalAdresForeignKeySerializer(serializers.HyperlinkedModelSerializer):
             "url": {
                 "view_name": "klantinteracties:digitaaladres-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van dit digitaal adres binnen deze API.",
+                "help_text": _("De unieke URL van dit digitaal adres binnen deze API."),
             },
         }
 
@@ -69,7 +69,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
             "url": {
                 "view_name": "klantinteracties:digitaaladres-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van dit digitaal adres binnen deze API.",
+                "help_text": _("De unieke URL van dit digitaal adres binnen deze API."),
             },
         }
 

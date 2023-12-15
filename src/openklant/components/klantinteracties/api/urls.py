@@ -4,12 +4,7 @@ from django.urls import include, path, re_path
 from vng_api_common import routers
 from vng_api_common.schema import SchemaView as _SchemaView
 
-from openklant.components.klantinteracties.api.viewsets.actoren import (
-    ActorViewSet,
-    GeautomatiseerdeActorViewSet,
-    MedewerkerViewSet,
-    OrganisatorischeEenheidViewSet,
-)
+from openklant.components.klantinteracties.api.viewsets.actoren import ActorViewSet
 from openklant.components.klantinteracties.api.viewsets.digitaal_adres import (
     DigitaalAdresViewSet,
 )
@@ -23,11 +18,8 @@ from openklant.components.klantinteracties.api.viewsets.klantcontacten import (
     OnderwerpobjectViewSet,
 )
 from openklant.components.klantinteracties.api.viewsets.partijen import (
-    ContactpersoonViewSet,
-    OrganisatieViewSet,
     PartijIdentificatorViewSet,
     PartijViewSet,
-    PersoonViewSet,
 )
 
 from .schema import info
@@ -36,9 +28,6 @@ app_name = "klantinteracties"
 
 router = routers.DefaultRouter()
 router.register("actoren", ActorViewSet)
-router.register("geautomatiseerde-actoren", GeautomatiseerdeActorViewSet)
-router.register("medewerker", MedewerkerViewSet)
-router.register("organisatorische-eenheid", OrganisatorischeEenheidViewSet)
 
 router.register("digitaleadressen", DigitaalAdresViewSet)
 
@@ -50,9 +39,6 @@ router.register("bijlagen", BijlageViewSet)
 router.register("internetaken", InterneTaakViewSet)
 
 router.register("partijen", PartijViewSet)
-router.register("organisaties", OrganisatieViewSet)
-router.register("persoon", PersoonViewSet)
-router.register("contact-persoon", ContactpersoonViewSet)
 router.register("partij-identificatoren", PartijIdentificatorViewSet)
 
 

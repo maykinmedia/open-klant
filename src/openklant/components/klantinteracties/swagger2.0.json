@@ -1445,429 +1445,6 @@
                 }
             ]
         },
-        "/contact-persoon": {
-            "get": {
-                "operationId": "contactpersoon_list",
-                "summary": "Alle contactpersonen opvragen.",
-                "description": "Alle contactpersonen opvragen.",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Een pagina binnen de gepagineerde set resultaten.",
-                        "required": false,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "required": [
-                                "count",
-                                "results"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                },
-                                "next": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "previous": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "results": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/Contactpersoon"
-                                    }
-                                }
-                            }
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "contact-persoon"
-                ]
-            },
-            "post": {
-                "operationId": "contactpersoon_create",
-                "summary": "Maak een contactpersoon aan.",
-                "description": "Maak een contactpersoon aan.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Contactpersoon"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/Contactpersoon"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
-                                "schema": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "description": "URL waar de resource leeft."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "contact-persoon"
-                ]
-            },
-            "parameters": []
-        },
-        "/contact-persoon/{id}": {
-            "get": {
-                "operationId": "contactpersoon_read",
-                "summary": "Een specifiek contactpersoon opvragen.",
-                "description": "Een specifiek contactpersoon opvragen.",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Contactpersoon"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "contact-persoon"
-                ]
-            },
-            "put": {
-                "operationId": "contactpersoon_update",
-                "summary": "Werk een contactpersoon in zijn geheel bij.",
-                "description": "Werk een contactpersoon in zijn geheel bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Contactpersoon"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Contactpersoon"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "contact-persoon"
-                ]
-            },
-            "patch": {
-                "operationId": "contactpersoon_partial_update",
-                "summary": "Werk een contactpersoon deels bij.",
-                "description": "Werk een contactpersoon deels bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Contactpersoon"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Contactpersoon"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "contact-persoon"
-                ]
-            },
-            "delete": {
-                "operationId": "contactpersoon_delete",
-                "summary": "Verwijder een contactpersoon.",
-                "description": "Verwijder een contactpersoon.",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": "No content",
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "contact-persoon"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this contact persoon.",
-                    "required": true,
-                    "type": "integer"
-                }
-            ]
-        },
         "/digitaleadressen": {
             "get": {
                 "operationId": "digitaaladres_list",
@@ -2289,423 +1866,6 @@
                     "required": true,
                     "type": "string",
                     "format": "uuid"
-                }
-            ]
-        },
-        "/geautomatiseerde-actoren": {
-            "get": {
-                "operationId": "geautomatiseerdeactor_list",
-                "description": "Alle geautomatiseerde actoren opvragen.\nAlle geautomatiseerde actoren opvragen.",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Een pagina binnen de gepagineerde set resultaten.",
-                        "required": false,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "required": [
-                                "count",
-                                "results"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                },
-                                "next": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "previous": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "results": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/GeautomatiseerdeActor"
-                                    }
-                                }
-                            }
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "geautomatiseerde-actoren"
-                ]
-            },
-            "post": {
-                "operationId": "geautomatiseerdeactor_create",
-                "description": "Maak een geautomatiseerde actor aan.\nMaak een geautomatiseerde actor aan.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/GeautomatiseerdeActor"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/GeautomatiseerdeActor"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
-                                "schema": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "description": "URL waar de resource leeft."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "geautomatiseerde-actoren"
-                ]
-            },
-            "parameters": []
-        },
-        "/geautomatiseerde-actoren/{id}": {
-            "get": {
-                "operationId": "geautomatiseerdeactor_read",
-                "description": "Een specifiek geautomatiseerde actor opvragen.\nEen specifiek geautomatiseerde actor opvragen.",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/GeautomatiseerdeActor"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "geautomatiseerde-actoren"
-                ]
-            },
-            "put": {
-                "operationId": "geautomatiseerdeactor_update",
-                "description": "Werk een geautomatiseerde actor in zijn geheel bij.\nWerk een geautomatiseerde actor in zijn geheel bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/GeautomatiseerdeActor"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/GeautomatiseerdeActor"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "geautomatiseerde-actoren"
-                ]
-            },
-            "patch": {
-                "operationId": "geautomatiseerdeactor_partial_update",
-                "description": "Werk een geautomatiseerde actor deels bij.\nWerk een geautomatiseerde actor deels bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/GeautomatiseerdeActor"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/GeautomatiseerdeActor"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "geautomatiseerde-actoren"
-                ]
-            },
-            "delete": {
-                "operationId": "geautomatiseerdeactor_delete",
-                "description": "Verwijder een geautomatiseerde actor.\nVerwijder een geautomatiseerde actor.",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": "No content",
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "geautomatiseerde-actoren"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this geautomatiseerde actor.",
-                    "required": true,
-                    "type": "integer"
                 }
             ]
         },
@@ -3644,423 +2804,6 @@
                 }
             ]
         },
-        "/medewerker": {
-            "get": {
-                "operationId": "medewerker_list",
-                "description": "Alle medewerkers opvragen.\nAlle medewerkers opvragen.",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Een pagina binnen de gepagineerde set resultaten.",
-                        "required": false,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "required": [
-                                "count",
-                                "results"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                },
-                                "next": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "previous": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "results": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/Medewerker"
-                                    }
-                                }
-                            }
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "medewerker"
-                ]
-            },
-            "post": {
-                "operationId": "medewerker_create",
-                "description": "Maak een medewerker aan.\nMaak een medewerker aan.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Medewerker"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/Medewerker"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
-                                "schema": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "description": "URL waar de resource leeft."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "medewerker"
-                ]
-            },
-            "parameters": []
-        },
-        "/medewerker/{id}": {
-            "get": {
-                "operationId": "medewerker_read",
-                "description": "Een specifiek medewerker opvragen.\nEen specifiek medewerker opvragen.",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Medewerker"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "medewerker"
-                ]
-            },
-            "put": {
-                "operationId": "medewerker_update",
-                "description": "Werk een medewerker in zijn geheel bij.\nWerk een medewerker in zijn geheel bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Medewerker"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Medewerker"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "medewerker"
-                ]
-            },
-            "patch": {
-                "operationId": "medewerker_partial_update",
-                "description": "Werk een medewerker deels bij.\nWerk een medewerker deels bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Medewerker"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Medewerker"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "medewerker"
-                ]
-            },
-            "delete": {
-                "operationId": "medewerker_delete",
-                "description": "Verwijder een medewerker.\nVerwijder een medewerker.",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": "No content",
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "medewerker"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this medewerker.",
-                    "required": true,
-                    "type": "integer"
-                }
-            ]
-        },
         "/onderwerpobjecten": {
             "get": {
                 "operationId": "onderwerpobject_list",
@@ -4506,846 +3249,6 @@
                     "required": true,
                     "type": "string",
                     "format": "uuid"
-                }
-            ]
-        },
-        "/organisaties": {
-            "get": {
-                "operationId": "organisatie_list",
-                "summary": "Alle organisaties opvragen.",
-                "description": "Alle organisaties opvragen.",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Een pagina binnen de gepagineerde set resultaten.",
-                        "required": false,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "required": [
-                                "count",
-                                "results"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                },
-                                "next": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "previous": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "results": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/Organisatie"
-                                    }
-                                }
-                            }
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisaties"
-                ]
-            },
-            "post": {
-                "operationId": "organisatie_create",
-                "summary": "Maak een organisatie aan.",
-                "description": "Maak een organisatie aan.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Organisatie"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/Organisatie"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
-                                "schema": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "description": "URL waar de resource leeft."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisaties"
-                ]
-            },
-            "parameters": []
-        },
-        "/organisaties/{id}": {
-            "get": {
-                "operationId": "organisatie_read",
-                "summary": "Een specifiek organisatie opvragen.",
-                "description": "Een specifiek organisatie opvragen.",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Organisatie"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisaties"
-                ]
-            },
-            "put": {
-                "operationId": "organisatie_update",
-                "summary": "Werk een organisatie in zijn geheel bij.",
-                "description": "Werk een organisatie in zijn geheel bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Organisatie"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Organisatie"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisaties"
-                ]
-            },
-            "patch": {
-                "operationId": "organisatie_partial_update",
-                "summary": "Werk een organisatie deels bij.",
-                "description": "Werk een organisatie deels bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Organisatie"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Organisatie"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisaties"
-                ]
-            },
-            "delete": {
-                "operationId": "organisatie_delete",
-                "summary": "Verwijder een organisatie.",
-                "description": "Verwijder een organisatie.",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": "No content",
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisaties"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this organisatie.",
-                    "required": true,
-                    "type": "integer"
-                }
-            ]
-        },
-        "/organisatorische-eenheid": {
-            "get": {
-                "operationId": "organisatorischeeenheid_list",
-                "description": "Alle organisatorische eenheid opvragen.\nAlle organisatorische eenheid opvragen.",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Een pagina binnen de gepagineerde set resultaten.",
-                        "required": false,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "required": [
-                                "count",
-                                "results"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                },
-                                "next": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "previous": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "results": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/OrganisatorischeEenheid"
-                                    }
-                                }
-                            }
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisatorische-eenheid"
-                ]
-            },
-            "post": {
-                "operationId": "organisatorischeeenheid_create",
-                "description": "Maak een organisatorische eenheid aan.\nMaak een organisatorische eenheid aan.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/OrganisatorischeEenheid"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/OrganisatorischeEenheid"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
-                                "schema": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "description": "URL waar de resource leeft."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisatorische-eenheid"
-                ]
-            },
-            "parameters": []
-        },
-        "/organisatorische-eenheid/{id}": {
-            "get": {
-                "operationId": "organisatorischeeenheid_read",
-                "description": "Een specifiek organisatorische eenheid opvragen.\nEen specifiek organisatorische eenheid opvragen.",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/OrganisatorischeEenheid"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisatorische-eenheid"
-                ]
-            },
-            "put": {
-                "operationId": "organisatorischeeenheid_update",
-                "description": "Werk een organisatorische eenheid in zijn geheel bij.\nWerk een organisatorische eenheid in zijn geheel bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/OrganisatorischeEenheid"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/OrganisatorischeEenheid"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisatorische-eenheid"
-                ]
-            },
-            "patch": {
-                "operationId": "organisatorischeeenheid_partial_update",
-                "description": "Werk een organisatorische eenheid deels bij.\nWerk een organisatorische eenheid deels bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/OrganisatorischeEenheid"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/OrganisatorischeEenheid"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisatorische-eenheid"
-                ]
-            },
-            "delete": {
-                "operationId": "organisatorischeeenheid_delete",
-                "description": "Verwijder een organisatorische eenheid.\nVerwijder een organisatorische eenheid.",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": "No content",
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "organisatorische-eenheid"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this organisatorische eenheid.",
-                    "required": true,
-                    "type": "integer"
                 }
             ]
         },
@@ -5862,6 +3765,76 @@
                         ]
                     },
                     {
+                        "name": "bezoekadresNummeraanduidingId",
+                        "in": "query",
+                        "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bezoekadresAdresregel1",
+                        "in": "query",
+                        "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bezoekadresAdresregel2",
+                        "in": "query",
+                        "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bezoekadresAdresregel3",
+                        "in": "query",
+                        "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bezoekadresLand",
+                        "in": "query",
+                        "description": "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "correspondentieadresNummeraanduidingId",
+                        "in": "query",
+                        "description": "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "correspondentieadresAdresregel1",
+                        "in": "query",
+                        "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "correspondentieadresAdresregel2",
+                        "in": "query",
+                        "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "correspondentieadresAdresregel3",
+                        "in": "query",
+                        "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "correspondentieadresLand",
+                        "in": "query",
+                        "description": "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -6281,429 +4254,6 @@
                     "format": "uuid"
                 }
             ]
-        },
-        "/persoon": {
-            "get": {
-                "operationId": "persoon_list",
-                "summary": "Alle personen opvragen.",
-                "description": "Alle personen opvragen.",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Een pagina binnen de gepagineerde set resultaten.",
-                        "required": false,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "required": [
-                                "count",
-                                "results"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                },
-                                "next": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "previous": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "x-nullable": true
-                                },
-                                "results": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/Persoon"
-                                    }
-                                }
-                            }
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "persoon"
-                ]
-            },
-            "post": {
-                "operationId": "persoon_create",
-                "summary": "Maak een persoon aan.",
-                "description": "Maak een persoon aan.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Persoon"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/Persoon"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
-                                "schema": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "description": "URL waar de resource leeft."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "persoon"
-                ]
-            },
-            "parameters": []
-        },
-        "/persoon/{id}": {
-            "get": {
-                "operationId": "persoon_read",
-                "summary": "Een specifiek persoon opvragen.",
-                "description": "Een specifiek persoon opvragen.",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Persoon"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "persoon"
-                ]
-            },
-            "put": {
-                "operationId": "persoon_update",
-                "summary": "Werk een persoon in zijn geheel bij.",
-                "description": "Werk een persoon in zijn geheel bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Persoon"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Persoon"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "persoon"
-                ]
-            },
-            "patch": {
-                "operationId": "persoon_partial_update",
-                "summary": "Werk een persoon deels bij.",
-                "description": "Werk een persoon deels bij.",
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "Content type van de verzoekinhoud.",
-                        "required": true,
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Persoon"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Persoon"
-                        },
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/responses/400"
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "persoon"
-                ]
-            },
-            "delete": {
-                "operationId": "persoon_delete",
-                "summary": "Verwijder een persoon.",
-                "description": "Verwijder een persoon.",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": "No content",
-                        "headers": {
-                            "API-version": {
-                                "schema": {
-                                    "type": "string"
-                                },
-                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/responses/401"
-                    },
-                    "403": {
-                        "$ref": "#/responses/403"
-                    },
-                    "404": {
-                        "$ref": "#/responses/404"
-                    },
-                    "406": {
-                        "$ref": "#/responses/406"
-                    },
-                    "409": {
-                        "$ref": "#/responses/409"
-                    },
-                    "410": {
-                        "$ref": "#/responses/410"
-                    },
-                    "415": {
-                        "$ref": "#/responses/415"
-                    },
-                    "429": {
-                        "$ref": "#/responses/429"
-                    },
-                    "500": {
-                        "$ref": "#/responses/500"
-                    }
-                },
-                "tags": [
-                    "persoon"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this persoon.",
-                    "required": true,
-                    "type": "integer"
-                }
-            ]
         }
     },
     "definitions": {
@@ -6786,7 +4336,152 @@
                 "objectidentificator": {
                     "$ref": "#/definitions/Objectidentificator"
                 }
+            },
+            "discriminator": "soortActor"
+        },
+        "MedewerkerBase": {
+            "required": [
+                "functie",
+                "telefoonnummer"
+            ],
+            "type": "object",
+            "properties": {
+                "functie": {
+                    "title": "Functie",
+                    "description": "Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert.",
+                    "type": "string",
+                    "maxLength": 40,
+                    "minLength": 1
+                },
+                "emailadres": {
+                    "title": "E-mailadres",
+                    "description": "Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is.",
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254
+                },
+                "telefoonnummer": {
+                    "title": "Telefoonnummer",
+                    "description": "Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is.",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 1
+                }
             }
+        },
+        "actor_identificatie_MedewerkerBase": {
+            "type": "object",
+            "properties": {
+                "actorIdentificatie": {
+                    "$ref": "#/definitions/MedewerkerBase"
+                }
+            }
+        },
+        "medewerker": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Actor"
+                },
+                {
+                    "$ref": "#/definitions/actor_identificatie_MedewerkerBase"
+                }
+            ]
+        },
+        "GeautomatiseerdeActorBase": {
+            "required": [
+                "functie"
+            ],
+            "type": "object",
+            "properties": {
+                "functie": {
+                    "title": "Functie",
+                    "description": "Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert.",
+                    "type": "string",
+                    "maxLength": 40,
+                    "minLength": 1
+                },
+                "omschrijving": {
+                    "title": "Omschrijving",
+                    "description": "Omschrijving van de geautomatiseerde actor.",
+                    "type": "string",
+                    "maxLength": 200
+                }
+            }
+        },
+        "actor_identificatie_GeautomatiseerdeActorBase": {
+            "type": "object",
+            "properties": {
+                "actorIdentificatie": {
+                    "$ref": "#/definitions/GeautomatiseerdeActorBase"
+                }
+            }
+        },
+        "geautomatiseerde_actor": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Actor"
+                },
+                {
+                    "$ref": "#/definitions/actor_identificatie_GeautomatiseerdeActorBase"
+                }
+            ]
+        },
+        "OrganisatorischeEenheidBase": {
+            "required": [
+                "faxnummer",
+                "telefoonnummer"
+            ],
+            "type": "object",
+            "properties": {
+                "omschrijving": {
+                    "title": "Omschrijving",
+                    "description": "Omschrijving van de geautomatiseerde actor.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "emailadres": {
+                    "title": "E-mailadres",
+                    "description": "Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is.",
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254
+                },
+                "faxnummer": {
+                    "title": "Faxnummer",
+                    "description": "Faxnummer waaronder de organisatorische eenheid in de regel bereikbaar is.",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 1
+                },
+                "telefoonnummer": {
+                    "title": "Telefoonnummer",
+                    "description": "Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is.",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 1
+                }
+            }
+        },
+        "actor_identificatie_OrganisatorischeEenheidBase": {
+            "type": "object",
+            "properties": {
+                "actorIdentificatie": {
+                    "$ref": "#/definitions/OrganisatorischeEenheidBase"
+                }
+            }
+        },
+        "organisatorische_eenheid": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Actor"
+                },
+                {
+                    "$ref": "#/definitions/actor_identificatie_OrganisatorischeEenheidBase"
+                }
+            ]
         },
         "Fout": {
             "required": [
@@ -7193,92 +4888,6 @@
                 }
             }
         },
-        "OrganisatieForeignKey": {
-            "description": "Organisatie waarvoor een contactpersoon werkte.",
-            "required": [
-                "id"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer"
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                }
-            },
-            "x-nullable": true
-        },
-        "ContactpersoonPersoon": {
-            "description": "Naam die een contactpersoon wil gebruiken tijdens contact met de gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende naam van de contactpersoon.",
-            "type": "object",
-            "properties": {
-                "voorletters": {
-                    "title": "Voorletters",
-                    "description": "Een afkorting van de voornamen. Meestal de beginletter, maar in sommige gevallen de beginletter gecombineerd met de tweede letter van een voornaam.",
-                    "type": "string",
-                    "maxLength": 10
-                },
-                "voornaam": {
-                    "title": "Voornaam",
-                    "description": "De voornaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
-                    "type": "string",
-                    "maxLength": 200
-                },
-                "voorvoegselAchternaam": {
-                    "title": "Voorvoegsel achternaam",
-                    "description": "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
-                    "type": "string",
-                    "maxLength": 10
-                },
-                "achternaam": {
-                    "title": "Achternaam",
-                    "description": "Een achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
-                    "type": "string",
-                    "maxLength": 200
-                }
-            },
-            "x-nullable": true
-        },
-        "Contactpersoon": {
-            "required": [
-                "partij",
-                "werkteVoorOrganisatie"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                },
-                "partij": {
-                    "$ref": "#/definitions/PartijForeignKey"
-                },
-                "werkteVoorOrganisatie": {
-                    "$ref": "#/definitions/OrganisatieForeignKey"
-                },
-                "contactnaam": {
-                    "$ref": "#/definitions/ContactpersoonPersoon"
-                }
-            }
-        },
         "BetrokkeneForeignKey": {
             "description": "Digitaal adres dat een betrokkene bij klantcontact verstrekte voor gebruik bij opvolging van een klantcontact.",
             "required": [
@@ -7360,7 +4969,7 @@
             }
         },
         "ActorForeignKey": {
-            "description": "Iets dat of iemand die voor de gemeente werkzaamheden uitvoert.",
+            "description": "Actor die een interne taak toegewezen kreeg.",
             "required": [
                 "uuid"
             ],
@@ -7380,45 +4989,6 @@
                     "readOnly": true,
                     "maxLength": 1000,
                     "minLength": 1
-                }
-            }
-        },
-        "GeautomatiseerdeActor": {
-            "required": [
-                "actor",
-                "functie"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                },
-                "actor": {
-                    "$ref": "#/definitions/ActorForeignKey"
-                },
-                "functie": {
-                    "title": "Functie",
-                    "description": "Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert.",
-                    "type": "string",
-                    "maxLength": 40,
-                    "minLength": 1
-                },
-                "omschrijving": {
-                    "title": "Omschrijving",
-                    "description": "Omschrijving van de geautomatiseerde actor.",
-                    "type": "string",
-                    "maxLength": 200
                 }
             }
         },
@@ -7715,54 +5285,6 @@
                 }
             }
         },
-        "Medewerker": {
-            "required": [
-                "actor",
-                "functie",
-                "telefoonnummer"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                },
-                "actor": {
-                    "$ref": "#/definitions/ActorForeignKey"
-                },
-                "functie": {
-                    "title": "Functie",
-                    "description": "Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert.",
-                    "type": "string",
-                    "maxLength": 40,
-                    "minLength": 1
-                },
-                "emailadres": {
-                    "title": "E-mailadres",
-                    "description": "Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is.",
-                    "type": "string",
-                    "format": "email",
-                    "maxLength": 254
-                },
-                "telefoonnummer": {
-                    "title": "Telefoonnummer",
-                    "description": "Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is.",
-                    "type": "string",
-                    "maxLength": 20,
-                    "minLength": 1
-                }
-            }
-        },
         "OnderwerpobjectObjectidentificator": {
             "description": "Gegevens die een onderwerpobject in een extern register uniek identificeren.",
             "type": "object",
@@ -7825,126 +5347,6 @@
                 },
                 "objectidentificator": {
                     "$ref": "#/definitions/OnderwerpobjectObjectidentificator"
-                }
-            }
-        },
-        "ContactPersoonForeignkey": {
-            "description": "Organisatie waarvoor een contactpersoon werkte.",
-            "required": [
-                "id"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer"
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                },
-                "partij": {
-                    "$ref": "#/definitions/PartijForeignKey"
-                }
-            },
-            "x-nullable": true
-        },
-        "Organisatie": {
-            "required": [
-                "partij",
-                "contactpersoon"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                },
-                "naam": {
-                    "title": "Naam",
-                    "description": "Naam van de organisatie.",
-                    "type": "string",
-                    "maxLength": 200
-                },
-                "partij": {
-                    "$ref": "#/definitions/PartijForeignKey"
-                },
-                "contactpersoon": {
-                    "description": "Organisatie waarvoor een contactpersoon werkte.",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ContactPersoonForeignkey"
-                    },
-                    "x-nullable": true
-                }
-            }
-        },
-        "OrganisatorischeEenheid": {
-            "required": [
-                "actor",
-                "faxnummer",
-                "telefoonnummer"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                },
-                "actor": {
-                    "$ref": "#/definitions/ActorForeignKey"
-                },
-                "omschrijving": {
-                    "title": "Omschrijving",
-                    "description": "Omschrijving van de geautomatiseerde actor.",
-                    "type": "string",
-                    "maxLength": 200
-                },
-                "emailadres": {
-                    "title": "E-mailadres",
-                    "description": "Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is.",
-                    "type": "string",
-                    "format": "email",
-                    "maxLength": 254
-                },
-                "faxnummer": {
-                    "title": "Faxnummer",
-                    "description": "Faxnummer waaronder de organisatorische eenheid in de regel bereikbaar is.",
-                    "type": "string",
-                    "maxLength": 20,
-                    "minLength": 1
-                },
-                "telefoonnummer": {
-                    "title": "Telefoonnummer",
-                    "description": "Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is.",
-                    "type": "string",
-                    "maxLength": 20,
-                    "minLength": 1
                 }
             }
         },
@@ -8252,7 +5654,103 @@
                 "correspondentieadres": {
                     "$ref": "#/definitions/partij correspondentieadres serializer"
                 }
+            },
+            "discriminator": "soortPartij"
+        },
+        "PartijPolymorphic": {
+            "description": "Organisatie waarvoor een contactpersoon werkte.",
+            "required": [
+                "uuid"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van de partij.",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                }
+            },
+            "x-nullable": true
+        },
+        "ContactpersoonPersoon": {
+            "description": "Naam die een contactpersoon wil gebruiken tijdens contact met de gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende naam van de contactpersoon.",
+            "type": "object",
+            "properties": {
+                "voorletters": {
+                    "title": "Voorletters",
+                    "description": "Een afkorting van de voornamen. Meestal de beginletter, maar in sommige gevallen de beginletter gecombineerd met de tweede letter van een voornaam.",
+                    "type": "string",
+                    "maxLength": 10
+                },
+                "voornaam": {
+                    "title": "Voornaam",
+                    "description": "De voornaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "voorvoegselAchternaam": {
+                    "title": "Voorvoegsel achternaam",
+                    "description": "Een eventueel voorvoegsel dat hoort bij de achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
+                    "type": "string",
+                    "maxLength": 10
+                },
+                "achternaam": {
+                    "title": "Achternaam",
+                    "description": "Een achternaam die de persoon wil gebruiken tijdens communicatie met de gemeente.",
+                    "type": "string",
+                    "maxLength": 200
+                }
+            },
+            "x-nullable": true
+        },
+        "ContactpersoonBase": {
+            "required": [
+                "werkteVoorPartij"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van de contactpersoon.",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "werkteVoorPartij": {
+                    "$ref": "#/definitions/PartijPolymorphic"
+                },
+                "contactnaam": {
+                    "$ref": "#/definitions/ContactpersoonPersoon"
+                }
             }
+        },
+        "partij_identificatie_ContactpersoonBase": {
+            "type": "object",
+            "properties": {
+                "partijIdentificatie": {
+                    "$ref": "#/definitions/ContactpersoonBase"
+                }
+            }
+        },
+        "contactpersoon": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Partij"
+                },
+                {
+                    "$ref": "#/definitions/partij_identificatie_ContactpersoonBase"
+                }
+            ]
         },
         "PersoonContact": {
             "description": "Naam die een persoon wil gebruiken tijdens contact met de gemeente. Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende naam van de persoon.",
@@ -8285,34 +5783,65 @@
             },
             "x-nullable": true
         },
-        "Persoon": {
+        "PersoonBase": {
             "required": [
-                "partij",
                 "contactnaam"
             ],
             "type": "object",
             "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                },
-                "partij": {
-                    "$ref": "#/definitions/PartijForeignKey"
-                },
                 "contactnaam": {
                     "$ref": "#/definitions/PersoonContact"
                 }
             }
+        },
+        "partij_identificatie_PersoonBase": {
+            "type": "object",
+            "properties": {
+                "partijIdentificatie": {
+                    "$ref": "#/definitions/PersoonBase"
+                }
+            }
+        },
+        "persoon": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Partij"
+                },
+                {
+                    "$ref": "#/definitions/partij_identificatie_PersoonBase"
+                }
+            ]
+        },
+        "OrganisatieBase": {
+            "type": "object",
+            "properties": {
+                "naam": {
+                    "title": "Naam",
+                    "description": "Naam van de organisatie.",
+                    "type": "string",
+                    "maxLength": 200
+                }
+            }
+        },
+        "partij_identificatie_OrganisatieBase": {
+            "type": "object",
+            "properties": {
+                "partijIdentificatie": {
+                    "$ref": "#/definitions/OrganisatieBase"
+                }
+            }
+        },
+        "organisatie": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Partij"
+                },
+                {
+                    "$ref": "#/definitions/partij_identificatie_OrganisatieBase"
+                }
+            ]
         }
     },
     "responses": {

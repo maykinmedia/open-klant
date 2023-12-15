@@ -98,11 +98,10 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
 
 
 class Organisatie(models.Model):
-    partij = models.ForeignKey(
+    partij = models.OneToOneField(
         Partij,
         on_delete=models.CASCADE,
         verbose_name=_("partij"),
-        unique=True,
     )
     naam = models.CharField(
         _("naam"),
@@ -120,11 +119,10 @@ class Organisatie(models.Model):
 
 
 class Persoon(ContactnaamMixin):
-    partij = models.ForeignKey(
+    partij = models.OneToOneField(
         Partij,
         on_delete=models.CASCADE,
         verbose_name=_("partij"),
-        unique=True,
     )
 
     class Meta:
@@ -136,16 +134,21 @@ class Persoon(ContactnaamMixin):
 
 
 class Contactpersoon(ContactnaamMixin):
-    partij = models.ForeignKey(
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van de contactpersoon."),
+    )
+    partij = models.OneToOneField(
         Partij,
         on_delete=models.CASCADE,
         verbose_name=_("partij"),
-        unique=True,
     )
-    organisatie = models.ForeignKey(
-        Organisatie,
+    werkte_voor_partij = models.ForeignKey(
+        Partij,
         on_delete=models.CASCADE,
-        verbose_name=_("organistatie"),
+        verbose_name=_("werkte voor partij"),
+        related_name="werkte_voor_partij",
         help_text=_("De organisatie waar een contactpersoon voor werkt."),
         null=True,
     )
@@ -153,6 +156,15 @@ class Contactpersoon(ContactnaamMixin):
     class Meta:
         verbose_name = _("contact persoon")
         verbose_name_plural = _("contact personen")
+
+    def clean(self):
+        super().clean()
+
+        if self.werkte_voor_partij:
+            if self.werkte_voor_partij.soort_partij != SoortPartij.organisatie:
+                raise ValidationError(
+                    _("Partij object moet het soort 'organisatie' hebben.")
+                )
 
     def __str__(self):
         return self.contactnaam_voorletters
