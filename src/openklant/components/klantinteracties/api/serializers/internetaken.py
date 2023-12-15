@@ -27,7 +27,7 @@ class InterneTaakForeignKeySerializer(serializers.HyperlinkedModelSerializer):
             "url": {
                 "view_name": "klantinteracties:internetaak-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van deze interne taak binnen deze API.",
+                "help_text": _("De unieke URL van deze interne taak binnen deze API."),
             },
         }
 
@@ -64,7 +64,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             "url": {
                 "view_name": "klantinteracties:internetaak-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van deze interne taak binnen deze API.",
+                "help_text": _("De unieke URL van deze interne taak binnen deze API."),
             },
         }
 
@@ -125,6 +125,6 @@ class KlantcontactInterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             "url": {
                 "view_name": "klantinteracties:internetaak-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van deze interne taak binnen deze API.",
+                "help_text": _("De unieke URL van deze interne taak binnen deze API."),
             },
         }

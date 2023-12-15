@@ -18,12 +18,6 @@ from openklant.components.klantinteracties.models.actoren import (
 from openklant.components.klantinteracties.models.constants import SoortActor
 
 
-class ObjectidentificatorSerializer(GegevensGroepSerializer):
-    class Meta:
-        model = Actor
-        gegevensgroep = "objectidentificator"
-
-
 class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Actor
@@ -36,7 +30,7 @@ class ActorForeignKeySerializer(serializers.HyperlinkedModelSerializer):
             "url": {
                 "view_name": "klantinteracties:actor-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van deze actor binnen deze API.",
+                "help_text": _("De unieke URL van deze actor binnen deze API."),
             },
         }
 
@@ -69,6 +63,12 @@ class MedewerkerSerializer(serializers.ModelSerializer):
             "emailadres",
             "telefoonnummer",
         )
+
+
+class ObjectidentificatorSerializer(GegevensGroepSerializer):
+    class Meta:
+        model = Actor
+        gegevensgroep = "objectidentificator"
 
 
 class ActorSerializer(
@@ -108,7 +108,7 @@ class ActorSerializer(
             "url": {
                 "view_name": "klantinteracties:actor-detail",
                 "lookup_field": "uuid",
-                "help_text": "De unieke URL van deze actor binnen deze API.",
+                "help_text": _("De unieke URL van deze actor binnen deze API."),
             },
         }
 
