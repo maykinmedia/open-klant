@@ -1,0 +1,2423 @@
+openapi: 3.0.0
+info:
+  title: Klantinteracties Referentielijsten
+  description: Een API om de referentielijsten in het domein klantinteracties te raadplegen
+    en beheren.
+  contact:
+    url: https://vng-realisatie.github.io/klantinteracties/
+    email: standaarden.ondersteuning@vng.nl
+  license:
+    name: EUPL 1.2
+    url: https://opensource.org/licenses/EUPL-1.2
+  version: 00.00.06
+security:
+- JWT-Claims: []
+paths:
+  /externeregisters:
+    get:
+      operationId: externregister_list
+      description: 'Registers buiten het domein van klantinteracties
+
+        waarin objecten zijn geregistreerd die binnen het domein van klantinteracties
+        een rol (kunnen) spelen.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExternRegister'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - externeregisters
+    post:
+      operationId: externregister_create
+      description: 'Registers buiten het domein van klantinteracties
+
+        waarin objecten zijn geregistreerd die binnen het domein van klantinteracties
+        een rol (kunnen) spelen.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/ExternRegister'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternRegister'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - externeregisters
+    parameters: []
+  /externeregisters/{code}:
+    get:
+      operationId: externregister_read
+      description: 'Registers buiten het domein van klantinteracties
+
+        waarin objecten zijn geregistreerd die binnen het domein van klantinteracties
+        een rol (kunnen) spelen.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternRegister'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - externeregisters
+    put:
+      operationId: externregister_update
+      description: 'Registers buiten het domein van klantinteracties
+
+        waarin objecten zijn geregistreerd die binnen het domein van klantinteracties
+        een rol (kunnen) spelen.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/ExternRegister'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternRegister'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - externeregisters
+    patch:
+      operationId: externregister_partial_update
+      description: 'Registers buiten het domein van klantinteracties
+
+        waarin objecten zijn geregistreerd die binnen het domein van klantinteracties
+        een rol (kunnen) spelen.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/ExternRegister'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternRegister'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - externeregisters
+    delete:
+      operationId: externregister_delete
+      description: 'Registers buiten het domein van klantinteracties
+
+        waarin objecten zijn geregistreerd die binnen het domein van klantinteracties
+        een rol (kunnen) spelen.'
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - externeregisters
+    parameters:
+    - name: code
+      in: path
+      description: Unieke technische identificerende code, primair bedoeld voor gebruik
+        bij interacties tussen IT-systemen.
+      required: true
+      schema:
+        type: string
+  /kanalen:
+    get:
+      operationId: kanaal_list
+      description: 'Kanalen die personen en organisaties kunnen gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Kanaal'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - kanalen
+    post:
+      operationId: kanaal_create
+      description: 'Kanalen die personen en organisaties kunnen gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Kanaal'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kanaal'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - kanalen
+    parameters: []
+  /kanalen/{code}:
+    get:
+      operationId: kanaal_read
+      description: 'Kanalen die personen en organisaties kunnen gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kanaal'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - kanalen
+    put:
+      operationId: kanaal_update
+      description: 'Kanalen die personen en organisaties kunnen gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Kanaal'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kanaal'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - kanalen
+    patch:
+      operationId: kanaal_partial_update
+      description: 'Kanalen die personen en organisaties kunnen gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Kanaal'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kanaal'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - kanalen
+    delete:
+      operationId: kanaal_delete
+      description: 'Kanalen die personen en organisaties kunnen gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - kanalen
+    parameters:
+    - name: code
+      in: path
+      description: Unieke technische identificerende code, primair bedoeld voor gebruik
+        bij interacties tussen IT-systemen.
+      required: true
+      schema:
+        type: string
+  /landen:
+    get:
+      operationId: land_list
+      description: Alle huidige en voormalige landen met hun codes, namen en geldigheidsinformatie.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Land'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - landen
+    post:
+      operationId: land_create
+      description: Alle huidige en voormalige landen met hun codes, namen en geldigheidsinformatie.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Land'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Land'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - landen
+    parameters: []
+  /landen/{landcode}:
+    get:
+      operationId: land_read
+      description: Alle huidige en voormalige landen met hun codes, namen en geldigheidsinformatie.
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Land'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - landen
+    put:
+      operationId: land_update
+      description: Alle huidige en voormalige landen met hun codes, namen en geldigheidsinformatie.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Land'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Land'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - landen
+    patch:
+      operationId: land_partial_update
+      description: Alle huidige en voormalige landen met hun codes, namen en geldigheidsinformatie.
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Land'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Land'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - landen
+    delete:
+      operationId: land_delete
+      description: Alle huidige en voormalige landen met hun codes, namen en geldigheidsinformatie.
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - landen
+    parameters:
+    - name: landcode
+      in: path
+      description: Unieke technische identificerende code, primair bedoeld voor gebruik
+        bij interacties tussen IT-systemen.
+      required: true
+      schema:
+        type: string
+  /soortendigitaaladres:
+    get:
+      operationId: soortdigitaaladres_list
+      description: 'Soorten digitale adressen die personen en organisaties kunnen
+        gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SoortDigitaalAdres'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortendigitaaladres
+    post:
+      operationId: soortdigitaaladres_create
+      description: 'Soorten digitale adressen die personen en organisaties kunnen
+        gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortDigitaalAdres'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortDigitaalAdres'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortendigitaaladres
+    parameters: []
+  /soortendigitaaladres/{code}:
+    get:
+      operationId: soortdigitaaladres_read
+      description: 'Soorten digitale adressen die personen en organisaties kunnen
+        gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortDigitaalAdres'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortendigitaaladres
+    put:
+      operationId: soortdigitaaladres_update
+      description: 'Soorten digitale adressen die personen en organisaties kunnen
+        gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortDigitaalAdres'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortDigitaalAdres'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortendigitaaladres
+    patch:
+      operationId: soortdigitaaladres_partial_update
+      description: 'Soorten digitale adressen die personen en organisaties kunnen
+        gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortDigitaalAdres'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortDigitaalAdres'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortendigitaaladres
+    delete:
+      operationId: soortdigitaaladres_delete
+      description: 'Soorten digitale adressen die personen en organisaties kunnen
+        gebruiken
+
+        voor contact met de gemeente en vice versa.'
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortendigitaaladres
+    parameters:
+    - name: code
+      in: path
+      description: Unieke technische identificerende code, primair bedoeld voor gebruik
+        bij interacties tussen IT-systemen.
+      required: true
+      schema:
+        type: string
+  /soortenobject:
+    get:
+      operationId: soortobject_list
+      description: 'Typen objecten waarnaar vanuit het klantinteractiesregister
+
+        relaties kunnen worden gelegd.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SoortObject'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobject
+    post:
+      operationId: soortobject_create
+      description: 'Typen objecten waarnaar vanuit het klantinteractiesregister
+
+        relaties kunnen worden gelegd.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortObject'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortObject'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobject
+    parameters: []
+  /soortenobject/{code}:
+    get:
+      operationId: soortobject_read
+      description: 'Typen objecten waarnaar vanuit het klantinteractiesregister
+
+        relaties kunnen worden gelegd.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortObject'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobject
+    put:
+      operationId: soortobject_update
+      description: 'Typen objecten waarnaar vanuit het klantinteractiesregister
+
+        relaties kunnen worden gelegd.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortObject'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortObject'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobject
+    patch:
+      operationId: soortobject_partial_update
+      description: 'Typen objecten waarnaar vanuit het klantinteractiesregister
+
+        relaties kunnen worden gelegd.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortObject'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortObject'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobject
+    delete:
+      operationId: soortobject_delete
+      description: 'Typen objecten waarnaar vanuit het klantinteractiesregister
+
+        relaties kunnen worden gelegd.'
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobject
+    parameters:
+    - name: code
+      in: path
+      description: Unieke technische identificerende code, primair bedoeld voor gebruik
+        bij interacties tussen IT-systemen.
+      required: true
+      schema:
+        type: string
+  /soortenobjectid:
+    get:
+      operationId: soortobjectid_list
+      description: 'Identificatiesystemen en de registers waarin volgens deze systemen
+
+        te identificeren objecten gevonden kunnen worden.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SoortObjectid'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobjectid
+    post:
+      operationId: soortobjectid_create
+      description: 'Identificatiesystemen en de registers waarin volgens deze systemen
+
+        te identificeren objecten gevonden kunnen worden.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortObjectid'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortObjectid'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobjectid
+    parameters: []
+  /soortenobjectid/{code}:
+    get:
+      operationId: soortobjectid_read
+      description: 'Identificatiesystemen en de registers waarin volgens deze systemen
+
+        te identificeren objecten gevonden kunnen worden.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortObjectid'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobjectid
+    put:
+      operationId: soortobjectid_update
+      description: 'Identificatiesystemen en de registers waarin volgens deze systemen
+
+        te identificeren objecten gevonden kunnen worden.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortObjectid'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortObjectid'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobjectid
+    patch:
+      operationId: soortobjectid_partial_update
+      description: 'Identificatiesystemen en de registers waarin volgens deze systemen
+
+        te identificeren objecten gevonden kunnen worden.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/SoortObjectid'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoortObjectid'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobjectid
+    delete:
+      operationId: soortobjectid_delete
+      description: 'Identificatiesystemen en de registers waarin volgens deze systemen
+
+        te identificeren objecten gevonden kunnen worden.'
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - soortenobjectid
+    parameters:
+    - name: code
+      in: path
+      description: Unieke technische identificerende code, primair bedoeld voor gebruik
+        bij interacties tussen IT-systemen.
+      required: true
+      schema:
+        type: string
+  /talen:
+    get:
+      operationId: taal_list
+      description: 'Talen die personen en organisaties kunnen gebruiken
+
+        bij contact met de gemeente en vice versa.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Taal'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - talen
+    post:
+      operationId: taal_create
+      description: 'Talen die personen en organisaties kunnen gebruiken
+
+        bij contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Taal'
+      responses:
+        '201':
+          description: Created
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taal'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - talen
+    parameters: []
+  /talen/{code}:
+    get:
+      operationId: taal_read
+      description: 'Talen die personen en organisaties kunnen gebruiken
+
+        bij contact met de gemeente en vice versa.'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taal'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - talen
+    put:
+      operationId: taal_update
+      description: 'Talen die personen en organisaties kunnen gebruiken
+
+        bij contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Taal'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taal'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - talen
+    patch:
+      operationId: taal_partial_update
+      description: 'Talen die personen en organisaties kunnen gebruiken
+
+        bij contact met de gemeente en vice versa.'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Taal'
+      responses:
+        '200':
+          description: OK
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taal'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - talen
+    delete:
+      operationId: taal_delete
+      description: 'Talen die personen en organisaties kunnen gebruiken
+
+        bij contact met de gemeente en vice versa.'
+      responses:
+        '204':
+          description: No content
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+      - talen
+    parameters:
+    - name: code
+      in: path
+      description: Unieke technische identificerende code, primair bedoeld voor gebruik
+        bij interacties tussen IT-systemen.
+      required: true
+      schema:
+        type: string
+servers:
+- url: /referentielijsten/api/v00
+components:
+  responses:
+    '400':
+      description: Bad request
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ValidatieFout'
+    '401':
+      description: Unauthorized
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '403':
+      description: Forbidden
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '404':
+      description: Not found
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '406':
+      description: Not acceptable
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '409':
+      description: Conflict
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '410':
+      description: Gone
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '412':
+      description: Precondition failed
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '415':
+      description: Unsupported media type
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '429':
+      description: Too many requests
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+    '500':
+      description: Internal server error
+      headers:
+        API-version:
+          schema:
+            type: string
+          description: 'Geeft een specifieke API-versie aan in de context van een
+            specifieke aanroep. Voorbeeld: 1.2.1.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Fout'
+  requestBodies:
+    SoortObject:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoortObject'
+      required: true
+    Taal:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Taal'
+      required: true
+    SoortDigitaalAdres:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoortDigitaalAdres'
+      required: true
+    ExternRegister:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExternRegister'
+      required: true
+    Kanaal:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Kanaal'
+      required: true
+    Land:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Land'
+      required: true
+    SoortObjectid:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoortObjectid'
+      required: true
+  securitySchemes:
+    JWT-Claims:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ExternRegister:
+      required:
+      - code
+      - locatie
+      - naam
+      type: object
+      properties:
+        code:
+          title: Code
+          description: Unieke technische identificerende code, primair bedoeld voor
+            gebruik bij interacties tussen IT-systemen.
+          type: string
+          maxLength: 40
+          minLength: 1
+        locatie:
+          title: Locatie
+          description: Kort (40 karakters) tekstveld voor een omschrijving.
+          type: string
+          maxLength: 40
+          minLength: 1
+        naam:
+          title: Naam
+          description: Kort (80 karakters) tekstveld voor een naam.
+          type: string
+          maxLength: 80
+          minLength: 1
+    Fout:
+      required:
+      - code
+      - title
+      - status
+      - detail
+      - instance
+      type: object
+      properties:
+        type:
+          title: Type
+          description: URI referentie naar het type fout, bedoeld voor developers
+          type: string
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          minLength: 1
+        title:
+          title: Title
+          description: Generieke titel voor het type fout
+          type: string
+          minLength: 1
+        status:
+          title: Status
+          description: De HTTP status code
+          type: integer
+        detail:
+          title: Detail
+          description: Extra informatie bij de fout, indien beschikbaar
+          type: string
+          minLength: 1
+        instance:
+          title: Instance
+          description: URI met referentie naar dit specifiek voorkomen van de fout.
+            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
+          type: string
+          minLength: 1
+    FieldValidationError:
+      required:
+      - name
+      - code
+      - reason
+      type: object
+      properties:
+        name:
+          title: Name
+          description: Naam van het veld met ongeldige gegevens
+          type: string
+          minLength: 1
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          minLength: 1
+        reason:
+          title: Reason
+          description: Uitleg wat er precies fout is met de gegevens
+          type: string
+          minLength: 1
+    ValidatieFout:
+      required:
+      - code
+      - title
+      - status
+      - detail
+      - instance
+      - invalidParams
+      type: object
+      properties:
+        type:
+          title: Type
+          description: URI referentie naar het type fout, bedoeld voor developers
+          type: string
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          minLength: 1
+        title:
+          title: Title
+          description: Generieke titel voor het type fout
+          type: string
+          minLength: 1
+        status:
+          title: Status
+          description: De HTTP status code
+          type: integer
+        detail:
+          title: Detail
+          description: Extra informatie bij de fout, indien beschikbaar
+          type: string
+          minLength: 1
+        instance:
+          title: Instance
+          description: URI met referentie naar dit specifiek voorkomen van de fout.
+            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
+          type: string
+          minLength: 1
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldValidationError'
+    Kanaal:
+      required:
+      - code
+      - indicatieActief
+      - naam
+      type: object
+      properties:
+        code:
+          title: Code
+          description: Unieke technische identificerende code, primair bedoeld voor
+            gebruik bij interacties tussen IT-systemen.
+          type: string
+          maxLength: 40
+          minLength: 1
+        indicatieActief:
+          title: Indicatie actief
+          description: Indicatie voor een waarde `Ja` of een waarde `Nee`.
+          type: boolean
+        naam:
+          title: Naam
+          description: Kort (80 karakters) tekstveld voor een naam.
+          type: string
+          maxLength: 80
+          minLength: 1
+    Land:
+      required:
+      - landcode
+      - landnaam
+      - ingangsdatumLand
+      - einddatumLand
+      type: object
+      properties:
+        landcode:
+          title: Landcode
+          description: Unieke technische identificerende code, primair bedoeld voor
+            gebruik bij interacties tussen IT-systemen.
+          type: string
+          maxLength: 40
+          minLength: 1
+        landnaam:
+          title: Landnaam
+          description: Kort (80 karakters) tekstveld voor een naam.
+          type: string
+          maxLength: 80
+          minLength: 1
+        ingangsdatumLand:
+          title: Ingangsdatum land
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21 representeert 21 februari 2022.'
+          type: string
+          format: date
+        einddatumLand:
+          title: Einddatum land
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21 representeert 21 februari 2022.'
+          type: string
+          format: date
+    SoortDigitaalAdres:
+      required:
+      - code
+      - indicatieActief
+      - naam
+      type: object
+      properties:
+        code:
+          title: Code
+          description: Unieke technische identificerende code, primair bedoeld voor
+            gebruik bij interacties tussen IT-systemen.
+          type: string
+          maxLength: 40
+          minLength: 1
+        indicatieActief:
+          title: Indicatie actief
+          description: Indicatie voor een waarde `Ja` of een waarde `Nee`.
+          type: boolean
+        naam:
+          title: Naam
+          description: Kort (80 karakters) tekstveld voor een naam.
+          type: string
+          maxLength: 80
+          minLength: 1
+    SoortObject:
+      required:
+      - code
+      - indicatieActief
+      - naam
+      type: object
+      properties:
+        code:
+          title: Code
+          description: Unieke technische identificerende code, primair bedoeld voor
+            gebruik bij interacties tussen IT-systemen.
+          type: string
+          maxLength: 40
+          minLength: 1
+        indicatieActief:
+          title: Indicatie actief
+          description: Indicatie voor een waarde `Ja` of een waarde `Nee`.
+          type: boolean
+        naam:
+          title: Naam
+          description: Kort (80 karakters) tekstveld voor een naam.
+          type: string
+          maxLength: 80
+          minLength: 1
+    SoortObjectid:
+      required:
+      - code
+      - indicatieActief
+      - naam
+      type: object
+      properties:
+        code:
+          title: Code
+          description: Unieke technische identificerende code, primair bedoeld voor
+            gebruik bij interacties tussen IT-systemen.
+          type: string
+          maxLength: 40
+          minLength: 1
+        indicatieActief:
+          title: Indicatie actief
+          description: Indicatie voor een waarde `Ja` of een waarde `Nee`.
+          type: boolean
+        naam:
+          title: Naam
+          description: Kort (80 karakters) tekstveld voor een naam.
+          type: string
+          maxLength: 80
+          minLength: 1
+    Taal:
+      required:
+      - code
+      - indicatieActief
+      - naam
+      type: object
+      properties:
+        code:
+          title: Code
+          description: Unieke technische identificerende code, primair bedoeld voor
+            gebruik bij interacties tussen IT-systemen.
+          type: string
+          maxLength: 40
+          minLength: 1
+        indicatieActief:
+          title: Indicatie actief
+          description: Indicatie voor een waarde `Ja` of een waarde `Nee`.
+          type: boolean
+        naam:
+          title: Naam
+          description: Kort (80 karakters) tekstveld voor een naam.
+          type: string
+          maxLength: 80
+          minLength: 1
