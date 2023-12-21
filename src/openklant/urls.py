@@ -58,6 +58,10 @@ urlpatterns = [
         "contactmomenten/api/",
         include("openklant.components.legacy.contactmomenten.api.urls"),
     ),
+    path(
+        "referentielijsten/api/",
+        include("openklant.components.referentielijsten.api.urls"),
+    ),
     # Simply show the master template.
     path("", TemplateView.as_view(template_name="main.html")),
     # separate apps

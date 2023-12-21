@@ -142,6 +142,7 @@ INSTALLED_APPS = [
     "openklant.components.contactgegevens",
     "openklant.components.legacy.klanten",
     "openklant.components.legacy.contactmomenten",
+    "openklant.components.referentielijsten",
 ]
 
 MIDDLEWARE = [
