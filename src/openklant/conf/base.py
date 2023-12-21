@@ -401,6 +401,14 @@ SPEC_URL = {
         "contactgegevens",
         "openapi.yaml",
     ),
+    "referentielijsten": os.path.join(
+        BASE_DIR,
+        "src",
+        "openklant",
+        "components",
+        "referentielijsten",
+        "openapi.yaml",
+    ),
 }
 
 # settings for sending notifications

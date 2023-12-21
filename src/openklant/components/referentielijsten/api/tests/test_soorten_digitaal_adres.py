@@ -13,7 +13,7 @@ class SoortenDigitaalAdresTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
-        self.assertEqual(response_data["count"], 6)
+        self.assertEqual(len(response_data), 6)
 
     def test_postsoortdigitaaladres(self):
         url = reverse("referentielijsten:soortdigitaaladres-list")
