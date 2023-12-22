@@ -1706,6 +1706,7 @@ paths:
             - ging_over_onderwerpobjecten
             - omvatte_bijlagen
             - had_betrokkenen.was_partij
+            - had_betrokkenen.digitale_adressen
         style: form
         explode: false
       - name: page
@@ -3622,6 +3623,26 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
+    DigitaalAdresForeignKey:
+      description: Digitale adressen van de betrokkene bij klantcontact.
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van het digitaal adres.
+          type: string
+          format: uuid
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
     Bezoekadres:
       description: Adres waarop de betrokkene bij klantcontact in naar aanleiding
         van dat contact af te leggen bezoeken wil ontvangen. Dit mag afwijken van
@@ -3720,6 +3741,12 @@ components:
           $ref: '#/components/schemas/PartijForeignKey'
         hadKlantcontact:
           $ref: '#/components/schemas/KlantcontactForeignKey'
+        digitaleAdressen:
+          description: Digitale adressen van de betrokkene bij klantcontact.
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitaalAdresForeignKey'
+          readOnly: true
         bezoekadres:
           $ref: '#/components/schemas/Bezoekadres'
         correspondentieadres:
@@ -4256,28 +4283,6 @@ components:
           maxLength: 200
         partijIdentificator:
           $ref: '#/components/schemas/PartijIdentificatorGroepType'
-    DigitaalAdresForeignKey:
-      description: Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig
-        contact met de gemeente.
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          title: Uuid
-          description: Unieke (technische) identificatiecode van het digitaal adres.
-          type: string
-          format: uuid
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-      nullable: true
     PartijIdentificatorForeignkey:
       description: Partij-identificatoren die hoorde bij deze partij.
       required:

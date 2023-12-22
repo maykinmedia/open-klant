@@ -50,7 +50,18 @@ class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
     Verwijder een partij.
     """
 
-    queryset = Partij.objects.order_by("-pk")
+    queryset = (
+        Partij.objects.order_by("-pk")
+        .select_related(
+            "organisatie",
+            "persoon",
+            "contactpersoon",
+        )
+        .prefetch_related(
+            "betrokkene_set",
+            "digitaaladres_set",
+        )
+    )
     serializer_class = PartijSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
@@ -94,7 +105,7 @@ class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     Verwijder een partij-identificator.
     """
 
-    queryset = PartijIdentificator.objects.order_by("-pk")
+    queryset = PartijIdentificator.objects.order_by("-pk").select_related("partij")
     serializer_class = PartijIdentificatorSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination

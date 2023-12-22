@@ -57,7 +57,7 @@ class PartijFilterSet(FilterSet):
     expand = ExpandFilter(
         serializer_class=PartijSerializer,
         help_text=_(
-            "Sluit de gespecifieerde gerelateerde resources in in het antwoord. "
+            "Sluit de gespecifieerde gerelateerde resources in in het antwoord."
         ),
     )
 

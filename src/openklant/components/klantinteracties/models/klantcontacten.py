@@ -103,10 +103,6 @@ class Klantcontact(APIMixin, models.Model):
     def __str__(self):
         return self.nummer
 
-    def get_absolute_api_url(self, request=None, **kwargs) -> str:
-        kwargs["version"] = "1"
-        return super().get_absolute_api_url(request=request, **kwargs)
-
 
 class Betrokkene(
     APIMixin, BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin
@@ -158,11 +154,10 @@ class Betrokkene(
         verbose_name_plural = _("betrokkenen bij klantcontact")
 
     def __str__(self):
-        return self.get_contactnaam()
+        if self.get_contactnaam():
+            return self.get_contactnaam()
 
-    def get_absolute_api_url(self, request=None, **kwargs) -> str:
-        kwargs["version"] = "1"
-        return super().get_absolute_api_url(request=request, **kwargs)
+        return str(self.uuid)
 
 
 class Onderwerpobject(ObjectidentificatorMixin):
@@ -210,7 +205,3 @@ class Bijlage(APIMixin, ObjectidentificatorMixin):
     class Meta:
         verbose_name = _("bijlage")
         verbose_name_plural = _("bijlagen")
-
-    def get_absolute_api_url(self, request=None, **kwargs) -> str:
-        kwargs["version"] = "1"
-        return super().get_absolute_api_url(request=request, **kwargs)

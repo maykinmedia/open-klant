@@ -98,10 +98,6 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
                     _("Het voorkeurs adres moet een gelinkte digitaal adres zijn.")
                 )
 
-    def get_absolute_api_url(self, request=None, **kwargs) -> str:
-        kwargs["version"] = "1"
-        return super().get_absolute_api_url(request=request, **kwargs)
-
 
 class Organisatie(models.Model):
     partij = models.OneToOneField(

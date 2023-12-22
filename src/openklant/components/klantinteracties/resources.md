@@ -54,6 +54,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | --- | --- | --- | --- | --- |
 | uuid | Unieke (technische) identificatiecode van de betrokkene bij klantcontact. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| digitaleAdressen | Digitale adressen van de betrokkene bij klantcontact. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | rol | Rol die de betrokkene bij klantcontact tijdens dat contact vervulde. | string | ja | C​R​U​D |
 | organisatienaam | Naam van de organisatie waarmee de betrokkene bij klantcontact een relatie had. | string | nee | C​R​U​D |
 | initiator |  | boolean | ja | C​R​U​D |

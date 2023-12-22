@@ -7,6 +7,12 @@ from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGr
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorForeignKeySerializer,
 )
+from openklant.components.klantinteracties.api.serializers.constants import (
+    SERIALIZER_PATH,
+)
+from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
+    DigitaalAdresForeignKeySerializer,
+)
 from openklant.components.klantinteracties.api.validators import (
     betrokkene_exists,
     bijlage_exists,
@@ -150,6 +156,12 @@ class BetrokkeneSerializer(
         help_text=_("Persoon of organisatie die betrokken was bij een klantcontact."),
         source="klantcontact",
     )
+    digitale_adressen = DigitaalAdresForeignKeySerializer(
+        read_only=True,
+        help_text=_("Digitale adressen van de betrokkene bij klantcontact."),
+        source="digitaaladres_set",
+        many=True,
+    )
     bezoekadres = BezoekadresSerializer(
         required=False,
         allow_null=True,
@@ -185,6 +197,7 @@ class BetrokkeneSerializer(
             "url",
             "was_partij",
             "had_klantcontact",
+            "digitale_adressen",
             "bezoekadres",
             "correspondentieadres",
             "contactnaam",
@@ -273,13 +286,14 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
 
     inclusion_serializers = {
         # 1 level
-        "had_betrokkenen": "openklant.components.klantinteracties.api.serializers.klantcontacten.BetrokkeneSerializer",
-        "had_betrokken_actoren": "openklant.components.klantinteracties.api.serializers.actoren.ActorSerializer",
-        "leidde_tot_interne_taken": "openklant.components.klantinteracties.api.serializers.internetaken.InterneTaakSerializer",
-        "ging_over_onderwerpobjecten": "openklant.components.klantinteracties.api.serializers.klantcontacten.OnderwerpobjectSerializer",
-        "omvatte_bijlagen": "openklant.components.klantinteracties.api.serializers.klantcontacten.BijlageSerializer",
+        "had_betrokkenen": f"{SERIALIZER_PATH}.klantcontacten.BetrokkeneSerializer",
+        "had_betrokken_actoren": f"{SERIALIZER_PATH}.actoren.ActorSerializer",
+        "leidde_tot_interne_taken": f"{SERIALIZER_PATH}.internetaken.InterneTaakSerializer",
+        "ging_over_onderwerpobjecten": f"{SERIALIZER_PATH}.klantcontacten.OnderwerpobjectSerializer",
+        "omvatte_bijlagen": f"{SERIALIZER_PATH}.klantcontacten.BijlageSerializer",
         # 2 levels
-        "had_betrokkenen.was_partij": "openklant.components.klantinteracties.api.serializers.partijen.PartijSerializer",
+        "had_betrokkenen.was_partij": f"{SERIALIZER_PATH}.partijen.PartijSerializer",
+        "had_betrokkenen.digitale_adressen": f"{SERIALIZER_PATH}.digitaal_adres.DigitaalAdresSerializer",
     }
 
     class Meta:

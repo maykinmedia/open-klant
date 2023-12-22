@@ -45,7 +45,10 @@ class DigitaalAdresViewSet(viewsets.ModelViewSet):
     Verwijder een digitaal adres.
     """
 
-    queryset = DigitaalAdres.objects.order_by("-pk")
+    queryset = DigitaalAdres.objects.order_by("-pk").select_related(
+        "partij",
+        "betrokkene",
+    )
     serializer_class = DigitaalAdresSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination

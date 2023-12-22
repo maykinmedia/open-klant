@@ -8,6 +8,9 @@ from openklant.components.klantinteracties.api.polymorphism import (
     Discriminator,
     PolymorphicSerializer,
 )
+from openklant.components.klantinteracties.api.serializers.constants import (
+    SERIALIZER_PATH,
+)
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
     DigitaalAdresForeignKeySerializer,
 )
@@ -304,12 +307,12 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
     inclusion_serializers = {
         # 1 level
-        "digitale_adressen": "openklant.components.klantinteracties.api.serializers.digitaal_adres.DigitaalAdresSerializer",
-        "betrokkenen": "openklant.components.klantinteracties.api.serializers.klantcontacten.BetrokkeneSerializer",
+        "digitale_adressen": f"{SERIALIZER_PATH}.digitaal_adres.DigitaalAdresSerializer",
+        "betrokkenen": f"{SERIALIZER_PATH}.klantcontacten.BetrokkeneSerializer",
         # 2 levels
-        "betrokkenen.had_klantcontact": "openklant.components.klantinteracties.api.serializers.klantcontacten.KlantcontactSerializer",
+        "betrokkenen.had_klantcontact": f"{SERIALIZER_PATH}.klantcontacten.KlantcontactSerializer",
         # 3 levels
-        "betrokkenen.had_klantcontact.had_betrokken_actoren": "openklant.components.klantinteracties.api.serializers.actoren.ActorSerializer",
+        "betrokkenen.had_klantcontact.had_betrokken_actoren": f"{SERIALIZER_PATH}.actoren.ActorSerializer",
     }
 
     class Meta:
