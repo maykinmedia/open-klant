@@ -7,7 +7,13 @@ from django.db import models
 from django.utils.module_loading import import_string
 
 from django_loose_fk.virtual_models import ProxyMixin
-from rest_framework.serializers import BaseSerializer, Field, Serializer
+from rest_framework.serializers import (
+    BaseSerializer,
+    Field,
+    HyperlinkedModelSerializer,
+    ListSerializer,
+    Serializer,
+)
 from rest_framework_inclusions.core import InclusionLoader
 from rest_framework_inclusions.renderer import (
     InclusionJSONRenderer,
@@ -15,14 +21,7 @@ from rest_framework_inclusions.renderer import (
     should_skip_inclusions,
 )
 
-from rest_framework.serializers import (
-    BaseSerializer,
-    ListSerializer,
-    HyperlinkedModelSerializer,
-)
-
 from .camilize import CamelCaseJSONRenderer
-
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,5 @@
-from vng_api_common.conf.api import *  # noqa - imports white-listed
 from djangorestframework_camel_case.settings import api_settings
+from vng_api_common.conf.api import *  # noqa - imports white-listed
 
 # Remove the reference - we don't have a single API version.
 del API_VERSION  # noqa

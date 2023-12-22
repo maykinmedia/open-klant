@@ -1,5 +1,4 @@
 from .expansion import ExpandJSONRenderer
-from vng_api_common.models import APIMixin as _APIMixin
 
 
 class APIMixin:

@@ -2783,6 +2783,21 @@ paths:
         required: false
         schema:
           type: string
+      - name: expand
+        in: query
+        description: 'Sluit de gespecifieerde gerelateerde resources in in het antwoord. '
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - digitale_adressen
+            - betrokkenen
+            - betrokkenen.had_klantcontact
+            - betrokkenen.had_klantcontact.had_betrokken_actoren
+        style: form
+        explode: false
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -2819,7 +2834,20 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Partij'
+                      type: object
+                      allOf:
+                      - $ref: '#/components/schemas/Partij'
+                      - type: object
+                        properties:
+                          _expand:
+                            description: Display details of the linked resources requested
+                              in the `expand` parameter
+                            type: object
+                            properties:
+                              digitale_adressen:
+                                $ref: '#/components/schemas/DigitaalAdres'
+                              betrokkenen:
+                                $ref: '#/components/schemas/Betrokkene'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -3606,19 +3634,19 @@ components:
             en Gebouwen.
           type: string
           maxLength: 255
-        adresregel_1:
+        adresregel1:
           title: Adresregel 1
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-        adresregel_2:
+        adresregel2:
           title: Adresregel 2
           description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-        adresregel_3:
+        adresregel3:
           title: Adresregel 3
           description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
@@ -4282,19 +4310,19 @@ components:
             en Gebouwen.
           type: string
           maxLength: 255
-        adresregel_1:
+        adresregel1:
           title: Adresregel 1
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-        adresregel_2:
+        adresregel2:
           title: Adresregel 2
           description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-        adresregel_3:
+        adresregel3:
           title: Adresregel 3
           description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
@@ -4561,19 +4589,19 @@ components:
             en Gebouwen.
           type: string
           maxLength: 255
-        adresregel_1:
+        adresregel1:
           title: Adresregel 1
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-        adresregel_2:
+        adresregel2:
           title: Adresregel 2
           description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-        adresregel_3:
+        adresregel3:
           title: Adresregel 3
           description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
@@ -4599,19 +4627,19 @@ components:
             en Gebouwen.
           type: string
           maxLength: 255
-        adresregel_1:
+        adresregel1:
           title: Adresregel 1
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-        adresregel_2:
+        adresregel2:
           title: Adresregel 2
           description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           type: string
           maxLength: 80
-        adresregel_3:
+        adresregel3:
           title: Adresregel 3
           description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.

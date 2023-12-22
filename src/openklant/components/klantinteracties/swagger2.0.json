@@ -3889,6 +3889,27 @@
                         "type": "string"
                     },
                     {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "Sluit de gespecifieerde gerelateerde resources in in het antwoord. ",
+                        "required": false,
+                        "type": "array",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "digitale_adressen",
+                                    "betrokkenen",
+                                    "betrokkenen.had_klantcontact",
+                                    "betrokkenen.had_klantcontact.had_betrokken_actoren"
+                                ]
+                            }
+                        },
+                        "style": "form",
+                        "explode": false
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -3922,7 +3943,29 @@
                                 "results": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/definitions/Partij"
+                                        "type": "object",
+                                        "allOf": [
+                                            {
+                                                "$ref": "#/definitions/Partij"
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "_expand": {
+                                                        "description": "Display details of the linked resources requested in the `expand` parameter",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "digitale_adressen": {
+                                                                "$ref": "#/definitions/DigitaalAdres"
+                                                            },
+                                                            "betrokkenen": {
+                                                                "$ref": "#/definitions/Betrokkene"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
                                     }
                                 }
                             }
@@ -4723,19 +4766,19 @@
                     "type": "string",
                     "maxLength": 255
                 },
-                "adresregel_1": {
+                "adresregel1": {
                     "title": "Adresregel 1",
                     "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
                     "maxLength": 80
                 },
-                "adresregel_2": {
+                "adresregel2": {
                     "title": "Adresregel 2",
                     "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
                     "maxLength": 80
                 },
-                "adresregel_3": {
+                "adresregel3": {
                     "title": "Adresregel 3",
                     "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
@@ -4761,19 +4804,19 @@
                     "type": "string",
                     "maxLength": 255
                 },
-                "adresregel_1": {
+                "adresregel1": {
                     "title": "Adresregel 1",
                     "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
                     "maxLength": 80
                 },
-                "adresregel_2": {
+                "adresregel2": {
                     "title": "Adresregel 2",
                     "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
                     "maxLength": 80
                 },
-                "adresregel_3": {
+                "adresregel3": {
                     "title": "Adresregel 3",
                     "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
@@ -5524,19 +5567,19 @@
                     "type": "string",
                     "maxLength": 255
                 },
-                "adresregel_1": {
+                "adresregel1": {
                     "title": "Adresregel 1",
                     "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
                     "maxLength": 80
                 },
-                "adresregel_2": {
+                "adresregel2": {
                     "title": "Adresregel 2",
                     "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
                     "maxLength": 80
                 },
-                "adresregel_3": {
+                "adresregel3": {
                     "title": "Adresregel 3",
                     "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
@@ -5562,19 +5605,19 @@
                     "type": "string",
                     "maxLength": 255
                 },
-                "adresregel_1": {
+                "adresregel1": {
                     "title": "Adresregel 1",
                     "description": "Eerste deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
                     "maxLength": 80
                 },
-                "adresregel_2": {
+                "adresregel2": {
                     "title": "Adresregel 2",
                     "description": "Tweede deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",
                     "maxLength": 80
                 },
-                "adresregel_3": {
+                "adresregel3": {
                     "title": "Adresregel 3",
                     "description": "Derde deel van het adres dat niet voorkomt in de Basisregistratie Adressen en Gebouwen.",
                     "type": "string",

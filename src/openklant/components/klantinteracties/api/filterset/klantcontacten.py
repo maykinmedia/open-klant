@@ -3,17 +3,15 @@ import uuid
 from django.utils.translation import gettext_lazy as _
 
 from django_filters.rest_framework import FilterSet, filters
+
 from openklant.components.klantinteracties.api.serializers.klantcontacten import (
     KlantcontactSerializer,
 )
-from openklant.components.utils.filters import (
-    ExpandFilter,
-)
-
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
 )
+from openklant.components.utils.filters import ExpandFilter
 
 
 class KlantcontactFilterSet(FilterSet):

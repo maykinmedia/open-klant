@@ -2,8 +2,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
-from openklant.components.utils.mixins import ExpandMixin
-
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
     BetrokkeneFilterSet,
     KlantcontactFilterSet,
@@ -22,9 +20,13 @@ from openklant.components.klantinteracties.models.klantcontacten import (
 )
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.mixins import ExpandMixin
 
 
-class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
+class KlantcontactViewSet(
+    ExpandMixin,
+    viewsets.ModelViewSet,
+):
     """
     Contact tussen een klant of een vertegenwoordiger van een
     klant en de gemeente over een onderwerp.

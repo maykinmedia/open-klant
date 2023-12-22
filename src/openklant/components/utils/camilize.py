@@ -1,21 +1,12 @@
 import re
 from collections import OrderedDict
 
-from django.core.files import File
-from django.http import QueryDict
-from django.utils.datastructures import MultiValueDict
 from django.utils.encoding import force_text
 from django.utils.functional import Promise
 
-from rest_framework.utils.serializer_helpers import ReturnDict
-from djangorestframework_camel_case.util import (
-    underscore_to_camel,
-    is_iterable,
-)
 from djangorestframework_camel_case.settings import api_settings
-from djangorestframework_camel_case.render import (
-    CamelCaseJSONRenderer as DRFCamelCaseJSONRenderer,
-)
+from djangorestframework_camel_case.util import is_iterable, underscore_to_camel
+from rest_framework.utils.serializer_helpers import ReturnDict
 
 camelize_re = re.compile(r"[a-z0-9]?_[a-z0-9]")
 

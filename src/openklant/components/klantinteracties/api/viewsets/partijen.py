@@ -12,9 +12,10 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.mixins import ExpandMixin
 
 
-class PartijViewSet(viewsets.ModelViewSet):
+class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
     """
     Persoon of organisatie waarmee de gemeente een relatie heeft.
 

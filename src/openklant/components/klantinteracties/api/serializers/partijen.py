@@ -302,6 +302,16 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         ),
     )
 
+    inclusion_serializers = {
+        # 1 level
+        "digitale_adressen": "openklant.components.klantinteracties.api.serializers.digitaal_adres.DigitaalAdresSerializer",
+        "betrokkenen": "openklant.components.klantinteracties.api.serializers.klantcontacten.BetrokkeneSerializer",
+        # 2 levels
+        "betrokkenen.had_klantcontact": "openklant.components.klantinteracties.api.serializers.klantcontacten.KlantcontactSerializer",
+        # 3 levels
+        "betrokkenen.had_klantcontact.had_betrokken_actoren": "openklant.components.klantinteracties.api.serializers.actoren.ActorSerializer",
+    }
+
     class Meta:
         model = Partij
         fields = (

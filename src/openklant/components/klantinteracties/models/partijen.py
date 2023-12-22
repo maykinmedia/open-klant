@@ -7,11 +7,13 @@ from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
 
+from openklant.components.utils.mixins import APIMixin
+
 from .constants import SoortPartij
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
 
 
-class Partij(BezoekadresMixin, CorrespondentieadresMixin):
+class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -95,6 +97,10 @@ class Partij(BezoekadresMixin, CorrespondentieadresMixin):
                 raise ValidationError(
                     _("Het voorkeurs adres moet een gelinkte digitaal adres zijn.")
                 )
+
+    def get_absolute_api_url(self, request=None, **kwargs) -> str:
+        kwargs["version"] = "1"
+        return super().get_absolute_api_url(request=request, **kwargs)
 
 
 class Organisatie(models.Model):
