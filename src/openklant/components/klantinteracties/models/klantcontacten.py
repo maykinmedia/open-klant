@@ -6,6 +6,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from .actoren import Actor
+from openklant.components.utils.mixins import APIMixin
+
 from .constants import Klantcontrol
 from .mixins import (
     BezoekadresMixin,
@@ -15,7 +17,7 @@ from .mixins import (
 )
 
 
-class Klantcontact(models.Model):
+class Klantcontact(APIMixin, models.Model):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -101,8 +103,14 @@ class Klantcontact(models.Model):
     def __str__(self):
         return self.nummer
 
+    def get_absolute_api_url(self, request=None, **kwargs) -> str:
+        kwargs["version"] = "1"
+        return super().get_absolute_api_url(request=request, **kwargs)
 
-class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
+
+class Betrokkene(
+    APIMixin, BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin
+):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -152,6 +160,10 @@ class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
     def __str__(self):
         return self.get_contactnaam()
 
+    def get_absolute_api_url(self, request=None, **kwargs) -> str:
+        kwargs["version"] = "1"
+        return super().get_absolute_api_url(request=request, **kwargs)
+
 
 class Onderwerpobject(ObjectidentificatorMixin):
     uuid = models.UUIDField(
@@ -181,7 +193,7 @@ class Onderwerpobject(ObjectidentificatorMixin):
         verbose_name_plural = _("onderwerpobjecten")
 
 
-class Bijlage(ObjectidentificatorMixin):
+class Bijlage(APIMixin, ObjectidentificatorMixin):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -198,3 +210,7 @@ class Bijlage(ObjectidentificatorMixin):
     class Meta:
         verbose_name = _("bijlage")
         verbose_name_plural = _("bijlagen")
+
+    def get_absolute_api_url(self, request=None, **kwargs) -> str:
+        kwargs["version"] = "1"
+        return super().get_absolute_api_url(request=request, **kwargs)

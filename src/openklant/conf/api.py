@@ -37,6 +37,7 @@ SWAGGER_SETTINGS.update(
         "DEFAULT_FIELD_INSPECTORS": (
             "vng_api_common.inspectors.fields.HyperlinkedIdentityFieldInspector",
             "vng_api_common.inspectors.fields.HyperlinkedRelatedFieldInspector",
+            "openklant.components.utils.inspectors.ExpandSerializerInspector",
         )
         + BASE_SWAGGER_SETTINGS["DEFAULT_FIELD_INSPECTORS"],
     }

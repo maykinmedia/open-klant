@@ -271,6 +271,17 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         many=True,
     )
 
+    inclusion_serializers = {
+        # 1 level
+        "had_betrokkenen": "openklant.components.klantinteracties.api.serializers.klantcontacten.BetrokkeneSerializer",
+        "had_betrokken_actoren": "openklant.components.klantinteracties.api.serializers.actoren.ActorSerializer",
+        "leidde_tot_interne_taken": "openklant.components.klantinteracties.api.serializers.internetaken.InterneTaakSerializer",
+        "ging_over_onderwerpobjecten": "openklant.components.klantinteracties.api.serializers.klantcontacten.OnderwerpobjectSerializer",
+        "omvatte_bijlagen": "openklant.components.klantinteracties.api.serializers.klantcontacten.BijlageSerializer",
+        # 2 levels
+        "had_betrokkenen.was_partij": "openklant.components.klantinteracties.api.serializers.partijen.PartijSerializer",
+    }
+
     class Meta:
         model = Klantcontact
         fields = (

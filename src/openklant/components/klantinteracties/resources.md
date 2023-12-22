@@ -16,6 +16,36 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | soortActor | Geeft aan van welke specifieke soort actor sprake is. | string | ja | C​R​U​D |
 | indicatieActief | Geeft aan of aan de actor nog betrokken mag worden bij nieuwe klantcontacten. Voor niet-actieve is dit niet toegestaan. | boolean | nee | C​R​U​D |
 
+## Medewerker
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/medewerker)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| functie | Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert. | string | ja | C​R​U​D |
+| emailadres | Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is. | string | nee | C​R​U​D |
+| telefoonnummer | Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is. | string | ja | C​R​U​D |
+
+## GeautomatiseerdeActor
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/geautomatiseerdeactor)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| functie | Functie van de geautomatiseerde actor of beschrijving van de werkzaamheden die deze uitvoert. | string | ja | C​R​U​D |
+| omschrijving | Omschrijving van de geautomatiseerde actor. | string | nee | C​R​U​D |
+
+## OrganisatorischeEenheid
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/organisatorischeeenheid)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| omschrijving | Omschrijving van de geautomatiseerde actor. | string | nee | C​R​U​D |
+| emailadres | Elektronisch postadres waaronder de MEDEWERKER in de regel bereikbaar is. | string | nee | C​R​U​D |
+| faxnummer | Faxnummer waaronder de organisatorische eenheid in de regel bereikbaar is. | string | ja | C​R​U​D |
+| telefoonnummer | Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is. | string | ja | C​R​U​D |
+
 ## Betrokkene
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/betrokkene)
@@ -71,10 +101,10 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | --- | --- | --- | --- | --- |
 | uuid | Unieke (technische) identificatiecode van de betrokkene bij klantcontact. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| gingOverOnderwerpobjecten | Onderwerpobject dat tijdens een klantcontact aan de orde was. | array | ja | C​R​U​D |
-| omvatteBijlagen | Bijlage die (een deel van) de inhoud van het klantcontact beschrijft. | array | ja | C​R​U​D |
-| hadBetrokkenen | Persoon of organisatie die betrokken was bij een klantcontact. | array | ja | C​R​U​D |
-| leiddeTotInterneTaken | Klantcontact dat leidde tot een interne taak. | array | ja | C​R​U​D |
+| gingOverOnderwerpobjecten | Onderwerpobject dat tijdens een klantcontact aan de orde was. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| omvatteBijlagen | Bijlage die (een deel van) de inhoud van het klantcontact beschrijft. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| hadBetrokkenen | Persoon of organisatie die betrokken was bij een klantcontact. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| leiddeTotInterneTaken | Klantcontact dat leidde tot een interne taak. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | nummer | Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om het specifieke klantcontact aan te duiden. | string | ja | C​R​U​D |
 | kanaal | Communicatiekanaal dat bij het klantcontact werd gebruikt. | string | ja | C​R​U​D |
 | onderwerp | Datgene waarover het klantcontact ging. | string | ja | C​R​U​D |
@@ -114,14 +144,37 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | nummer | Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden. | string | ja | C​R​U​D |
 | interneNotitie | Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik. | string | nee | C​R​U​D |
-| betrokkenen | Betrokkene bij klantcontact die een partij was. | array | ja | C​R​U​D |
+| betrokkenen | Betrokkene bij klantcontact die een partij was. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | digitaleAdressen | Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig contact met de gemeente. | array | ja | C​R​U​D |
 | vertegenwoordigde | Partij die een andere partij vertegenwoordigde. | array | ja | C​R​U​D |
-| partijIdentificatoren | Partij-identificatoren die hoorde bij deze partij. | array | ja | C​R​U​D |
+| partijIdentificatoren | Partij-identificatoren die hoorde bij deze partij. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | soortPartij | Geeft aan van welke specifieke soort partij sprake is. | string | ja | C​R​U​D |
 | indicatieGeheimhouding | Geeft aan of de verstrekker van partijgegevens heeft aangegeven dat deze gegevens als geheim beschouwd moeten worden. | boolean | ja | C​R​U​D |
 | voorkeurstaal | Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur contact heeft met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html | string | nee | C​R​U​D |
 | indicatieActief | Geeft aan of de contactgegevens van de partij nog gebruikt morgen worden om contact op te nemen. Gegevens van niet-actieve partijen mogen hiervoor niet worden gebruikt. | boolean | ja | C​R​U​D |
+
+## Contactpersoon
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/contactpersoon)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| uuid | Unieke (technische) identificatiecode van de contactpersoon. | string | nee | C​R​U​D |
+
+## Persoon
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/persoon)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+
+## Organisatie
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/organisatie)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| naam | Naam van de organisatie. | string | nee | C​R​U​D |
 
 
 * Create, Read, Update, Delete

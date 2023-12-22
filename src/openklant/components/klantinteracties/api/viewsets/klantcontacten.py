@@ -2,6 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
+from openklant.components.utils.mixins import ExpandMixin
+
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
     BetrokkeneFilterSet,
     KlantcontactFilterSet,
@@ -22,7 +24,7 @@ from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
 
 
-class KlantcontactViewSet(viewsets.ModelViewSet):
+class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     """
     Contact tussen een klant of een vertegenwoordiger van een
     klant en de gemeente over een onderwerp.
@@ -58,7 +60,7 @@ class KlantcontactViewSet(viewsets.ModelViewSet):
     Verwijder een klant contact.
     """
 
-    queryset = Klantcontact.objects.order_by("-pk")
+    queryset = Klantcontact.objects.order_by("-pk").prefetch_related("bijlage_set")
     serializer_class = KlantcontactSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
