@@ -772,9 +772,9 @@ class PartijTests(APITestCase):
             data["bezoekadres"],
             {
                 "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
-                "adresregel_1": "adres1",
-                "adresregel_2": "adres2",
-                "adresregel_3": "adres3",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
                 "land": "6030",
             },
         )

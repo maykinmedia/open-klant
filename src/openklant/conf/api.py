@@ -1,4 +1,5 @@
 from vng_api_common.conf.api import *  # noqa - imports white-listed
+from djangorestframework_camel_case.settings import api_settings
 
 # Remove the reference - we don't have a single API version.
 del API_VERSION  # noqa
@@ -54,3 +55,5 @@ GEMMA_URL_INFORMATIEMODEL_VERSIE = "1.0"
 zrc_repo = "vng-realisatie/zaken-api"
 zrc_commit = "7b0a036e5f0e89afef6cb6df986549b1199d904e"
 ZRC_API_SPEC = f"https://raw.githubusercontent.com/{zrc_repo}/{zrc_commit}/src/openapi.yaml"  # noqa
+
+api_settings.JSON_UNDERSCOREIZE["ignore_keys"] = ("_expand",)
