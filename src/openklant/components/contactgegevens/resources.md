@@ -4,18 +4,6 @@ Dit document beschrijft de (RGBZ-)objecttypen die als resources ontsloten
 worden met de beschikbare attributen.
 
 
-## Contactgegevens
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/contactgegevens)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| uuid | Unieke (technische) identificatiecode van de contact gegevens. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| organisaties | De gekoppelde organisaties | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-| personen | De gekoppelde personen | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-| partijIdentificator | URL-referentie naar de PartijIdentificator (in de Contactgegevens API). | string | ja | C​R​U​D |
-
 ## Organisatie
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/organisatie)

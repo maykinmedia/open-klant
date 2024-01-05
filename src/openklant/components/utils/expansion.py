@@ -6,7 +6,6 @@ from typing import Dict, Iterator, List, Optional, Tuple, Type, Union
 from django.db import models
 from django.utils.module_loading import import_string
 
-from django_loose_fk.virtual_models import ProxyMixin
 from rest_framework.serializers import (
     BaseSerializer,
     Field,
@@ -125,8 +124,6 @@ class ExpandLoader(InclusionLoader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._seen_external: Dict[str, ProxyMixin] = {}
-
     def inclusions_dict(self, serializer: Serializer) -> dict:
         """
         The method is used by the renderer.
@@ -168,11 +165,7 @@ class ExpandLoader(InclusionLoader):
         entries = self._inclusions((), serializer, serializer.instance)
 
         for obj, inclusion_serializer, parent, path, many in entries:
-            data = (
-                obj._initial_data
-                if isinstance(obj, ProxyMixin)
-                else inclusion_serializer(instance=obj, context=serializer.context).data
-            )
+            data = inclusion_serializer(instance=obj, context=serializer.context).data
             tree.add_node(
                 id=data["url"],
                 value=data,

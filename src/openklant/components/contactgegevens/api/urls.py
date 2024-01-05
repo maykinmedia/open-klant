@@ -5,7 +5,6 @@ from vng_api_common import routers
 from vng_api_common.schema import SchemaView as _SchemaView
 
 from openklant.components.contactgegevens.api.viewset import (
-    ContactgegevensViewSet,
     OrganisatieViewSet,
     PersoonViewSet,
 )
@@ -17,7 +16,6 @@ app_name = "contactgegevens"
 router = routers.DefaultRouter()
 router.register("organisatie", OrganisatieViewSet)
 router.register("persoon", PersoonViewSet)
-router.register("contactgegevens", ContactgegevensViewSet)
 
 
 class SchemaView(_SchemaView):

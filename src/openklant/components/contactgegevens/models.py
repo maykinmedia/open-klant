@@ -4,36 +4,8 @@ from django.core.validators import MinLengthValidator, validate_integer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from django_loose_fk.fields import FkOrURLField
-from django_loose_fk.loaders import RequestsLoader
-
 from openklant.components.contactgegevens.constants import GeslachtChoices
 from openklant.components.contactgegevens.mixins import AdresMixin
-from openklant.components.klantinteracties.models.partijen import PartijIdentificator
-
-
-class Contactgegevens(models.Model):
-    uuid = models.UUIDField(
-        unique=True,
-        default=uuid.uuid4,
-        help_text=_("Unieke (technische) identificatiecode van de contact gegevens."),
-    )
-    _partij_identificator = models.ForeignKey(
-        PartijIdentificator,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-    )
-    _partij_identificator_url = models.URLField(blank=True)
-    partij_identificator = FkOrURLField(
-        fk_field="_partij_identificator",
-        url_field="_partij_identificator_url",
-        loader=RequestsLoader(),
-    )
-
-    class Meta:
-        verbose_name = _("contactgegevens")
-        verbose_name_plural = _("contactgegevens")
 
 
 class Organisatie(AdresMixin):
@@ -41,12 +13,6 @@ class Organisatie(AdresMixin):
         unique=True,
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van de organisatie."),
-    )
-    contactgegevens = models.ForeignKey(
-        Contactgegevens,
-        verbose_name=_("contactgegevens"),
-        help_text=_("De contact gegevens van de huidige organisatie."),
-        on_delete=models.CASCADE,
     )
     handelsnaam = models.CharField(
         _("handelsnaam"),
@@ -100,12 +66,6 @@ class Persoon(AdresMixin):
         unique=True,
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van het persoon."),
-    )
-    contactgegevens = models.ForeignKey(
-        Contactgegevens,
-        verbose_name=_("contactgegevens"),
-        help_text=_("De contact gegevens van het huidige persoon."),
-        on_delete=models.CASCADE,
     )
     geboortedatum = models.DateField(
         _("geboortedatum"),
