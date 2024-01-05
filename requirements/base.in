@@ -27,13 +27,12 @@ django-markup
 django-redis
 django-rosetta
 django-sniplates
-django-markup
 mozilla-django-oidc-db
 
 # Admin and UI libraries
 django-admin-index
 django-sniplates
-django-better-admin-arrayfield
+django-jsonform
 
 # API libraries
 djangorestframework

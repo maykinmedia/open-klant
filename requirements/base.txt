@@ -85,6 +85,7 @@ django==3.2.23
     #   django-db-logger
     #   django-extra-views
     #   django-filter
+    #   django-jsonform
     #   django-log-outgoing-requests
     #   django-loose-fk
     #   django-markup
@@ -111,10 +112,6 @@ django-appconf==1.0.6
     # via django-log-outgoing-requests
 django-axes==6.2.0
     # via -r requirements/base.in
-django-better-admin-arrayfield==1.4.2
-    # via
-    #   -r requirements/base.in
-    #   mozilla-django-oidc-db
 django-cors-headers==4.3.1
     # via -r requirements/base.in
 django-db-logger==0.1.13
@@ -125,6 +122,10 @@ django-filter==23.5
     # via
     #   commonground-api-common
     #   django-loose-fk
+django-jsonform==2.21.2
+    # via
+    #   -r requirements/base.in
+    #   mozilla-django-oidc-db
 django-log-outgoing-requests==0.6.0
     # via -r requirements/base.in
 django-loose-fk==1.0.3
@@ -225,7 +226,7 @@ markupsafe==2.1.3
     # via jinja2
 mozilla-django-oidc==2.0.0
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==0.12.0
+mozilla-django-oidc-db==0.14.0
     # via -r requirements/base.in
 notifications-api-common==0.2.2
     # via commonground-api-common
