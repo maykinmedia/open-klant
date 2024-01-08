@@ -8,7 +8,7 @@ Description WIP.
 """
 
 info = openapi.Info(
-    title="klantinteracties",
+    title="Klantinteracties API",
     default_version=settings.KLANTINTERACTIES_API_VERSION,
     description=description,
     contact=openapi.Contact(

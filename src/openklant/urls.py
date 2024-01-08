@@ -63,6 +63,11 @@ urlpatterns = [
     # separate apps
     re_path(
         r"^(?P<component>klanten|contactmomenten)/$",
+        TemplateView.as_view(template_name="legacy_index.html"),
+        name="main",
+    ),
+    re_path(
+        r"^(?P<component>klantinteracties|contactgegevens)/$",
         TemplateView.as_view(template_name="index.html"),
         name="main",
     ),
