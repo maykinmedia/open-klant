@@ -2384,6 +2384,30 @@
                         "type": "string"
                     },
                     {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "Sluit de gespecifieerde gerelateerde resources in in het antwoord. ",
+                        "required": false,
+                        "type": "array",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "had_betrokkenen",
+                                    "had_betrokken_actoren",
+                                    "leidde_tot_interne_taken",
+                                    "ging_over_onderwerpobjecten",
+                                    "omvatte_bijlagen",
+                                    "had_betrokkenen.was_partij",
+                                    "had_betrokkenen.digitale_adressen"
+                                ]
+                            }
+                        },
+                        "style": "form",
+                        "explode": false
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -2417,7 +2441,38 @@
                                 "results": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/definitions/Klantcontact"
+                                        "type": "object",
+                                        "allOf": [
+                                            {
+                                                "$ref": "#/definitions/Klantcontact"
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "_expand": {
+                                                        "description": "Display details of the linked resources requested in the `expand` parameter",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "had_betrokkenen": {
+                                                                "$ref": "#/definitions/Betrokkene"
+                                                            },
+                                                            "had_betrokken_actoren": {
+                                                                "$ref": "#/definitions/Actor"
+                                                            },
+                                                            "leidde_tot_interne_taken": {
+                                                                "$ref": "#/definitions/InterneTaak"
+                                                            },
+                                                            "ging_over_onderwerpobjecten": {
+                                                                "$ref": "#/definitions/Onderwerpobject"
+                                                            },
+                                                            "omvatte_bijlagen": {
+                                                                "$ref": "#/definitions/Bijlage"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
                                     }
                                 }
                             }
@@ -3835,6 +3890,27 @@
                         "type": "string"
                     },
                     {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "Sluit de gespecifieerde gerelateerde resources in in het antwoord. ",
+                        "required": false,
+                        "type": "array",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "digitale_adressen",
+                                    "betrokkenen",
+                                    "betrokkenen.had_klantcontact",
+                                    "betrokkenen.had_klantcontact.had_betrokken_actoren"
+                                ]
+                            }
+                        },
+                        "style": "form",
+                        "explode": false
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -3868,7 +3944,29 @@
                                 "results": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/definitions/Partij"
+                                        "type": "object",
+                                        "allOf": [
+                                            {
+                                                "$ref": "#/definitions/Partij"
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "_expand": {
+                                                        "description": "Display details of the linked resources requested in the `expand` parameter",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "digitale_adressen": {
+                                                                "$ref": "#/definitions/DigitaalAdres"
+                                                            },
+                                                            "betrokkenen": {
+                                                                "$ref": "#/definitions/Betrokkene"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
                                     }
                                 }
                             }
@@ -4339,7 +4437,7 @@
             },
             "discriminator": "soortActor"
         },
-        "MedewerkerBase": {
+        "Medewerker": {
             "required": [
                 "functie",
                 "telefoonnummer"
@@ -4369,11 +4467,11 @@
                 }
             }
         },
-        "actor_identificatie_MedewerkerBase": {
+        "actor_identificatie_Medewerker": {
             "type": "object",
             "properties": {
                 "actorIdentificatie": {
-                    "$ref": "#/definitions/MedewerkerBase"
+                    "$ref": "#/definitions/Medewerker"
                 }
             }
         },
@@ -4384,11 +4482,11 @@
                     "$ref": "#/definitions/Actor"
                 },
                 {
-                    "$ref": "#/definitions/actor_identificatie_MedewerkerBase"
+                    "$ref": "#/definitions/actor_identificatie_Medewerker"
                 }
             ]
         },
-        "GeautomatiseerdeActorBase": {
+        "GeautomatiseerdeActor": {
             "required": [
                 "functie"
             ],
@@ -4409,11 +4507,11 @@
                 }
             }
         },
-        "actor_identificatie_GeautomatiseerdeActorBase": {
+        "actor_identificatie_GeautomatiseerdeActor": {
             "type": "object",
             "properties": {
                 "actorIdentificatie": {
-                    "$ref": "#/definitions/GeautomatiseerdeActorBase"
+                    "$ref": "#/definitions/GeautomatiseerdeActor"
                 }
             }
         },
@@ -4424,11 +4522,11 @@
                     "$ref": "#/definitions/Actor"
                 },
                 {
-                    "$ref": "#/definitions/actor_identificatie_GeautomatiseerdeActorBase"
+                    "$ref": "#/definitions/actor_identificatie_GeautomatiseerdeActor"
                 }
             ]
         },
-        "OrganisatorischeEenheidBase": {
+        "OrganisatorischeEenheid": {
             "required": [
                 "faxnummer",
                 "telefoonnummer"
@@ -4464,11 +4562,11 @@
                 }
             }
         },
-        "actor_identificatie_OrganisatorischeEenheidBase": {
+        "actor_identificatie_OrganisatorischeEenheid": {
             "type": "object",
             "properties": {
                 "actorIdentificatie": {
-                    "$ref": "#/definitions/OrganisatorischeEenheidBase"
+                    "$ref": "#/definitions/OrganisatorischeEenheid"
                 }
             }
         },
@@ -4479,7 +4577,7 @@
                     "$ref": "#/definitions/Actor"
                 },
                 {
-                    "$ref": "#/definitions/actor_identificatie_OrganisatorischeEenheidBase"
+                    "$ref": "#/definitions/actor_identificatie_OrganisatorischeEenheid"
                 }
             ]
         },
@@ -4659,6 +4757,30 @@
                 }
             }
         },
+        "DigitaalAdresForeignKey": {
+            "description": "Digitale adressen van de betrokkene bij klantcontact.",
+            "required": [
+                "uuid"
+            ],
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "title": "Uuid",
+                    "description": "Unieke (technische) identificatiecode van het digitaal adres.",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "url": {
+                    "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
+                }
+            }
+        },
         "Bezoekadres": {
             "description": "Adres waarop de betrokkene bij klantcontact in naar aanleiding van dat contact af te leggen bezoeken wil ontvangen. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
             "type": "object",
@@ -4796,6 +4918,14 @@
                 },
                 "hadKlantcontact": {
                     "$ref": "#/definitions/KlantcontactForeignKey"
+                },
+                "digitaleAdressen": {
+                    "description": "Digitale adressen van de betrokkene bij klantcontact.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DigitaalAdresForeignKey"
+                    },
+                    "readOnly": true
                 },
                 "bezoekadres": {
                     "$ref": "#/definitions/Bezoekadres"
@@ -5084,8 +5214,7 @@
                     "maxLength": 1000,
                     "minLength": 1
                 }
-            },
-            "x-nullable": true
+            }
         },
         "BijlageForeignKey": {
             "description": "Bijlage die (een deel van) de inhoud van het klantcontact beschrijft.",
@@ -5109,8 +5238,7 @@
                     "maxLength": 1000,
                     "minLength": 1
                 }
-            },
-            "x-nullable": true
+            }
         },
         "BetrokkeneForeignkey": {
             "description": "Persoon of organisatie die betrokken was bij een klantcontact.",
@@ -5134,8 +5262,7 @@
                     "maxLength": 1000,
                     "minLength": 1
                 }
-            },
-            "x-nullable": true
+            }
         },
         "InterneTaakForeignKey": {
             "description": "Klantcontact dat leidde tot een interne taak.",
@@ -5159,15 +5286,10 @@
                     "maxLength": 1000,
                     "minLength": 1
                 }
-            },
-            "x-nullable": true
+            }
         },
         "Klantcontact": {
             "required": [
-                "gingOverOnderwerpobjecten",
-                "omvatteBijlagen",
-                "hadBetrokkenen",
-                "leiddeTotInterneTaken",
                 "nummer",
                 "kanaal",
                 "onderwerp",
@@ -5199,7 +5321,7 @@
                     "items": {
                         "$ref": "#/definitions/OnderwerpobjectForeignKey"
                     },
-                    "x-nullable": true
+                    "readOnly": true
                 },
                 "omvatteBijlagen": {
                     "description": "Bijlage die (een deel van) de inhoud van het klantcontact beschrijft.",
@@ -5207,7 +5329,7 @@
                     "items": {
                         "$ref": "#/definitions/BijlageForeignKey"
                     },
-                    "x-nullable": true
+                    "readOnly": true
                 },
                 "hadBetrokkenen": {
                     "description": "Persoon of organisatie die betrokken was bij een klantcontact.",
@@ -5215,7 +5337,7 @@
                     "items": {
                         "$ref": "#/definitions/BetrokkeneForeignkey"
                     },
-                    "x-nullable": true
+                    "readOnly": true
                 },
                 "leiddeTotInterneTaken": {
                     "description": "Klantcontact dat leidde tot een interne taak.",
@@ -5223,7 +5345,7 @@
                     "items": {
                         "$ref": "#/definitions/InterneTaakForeignKey"
                     },
-                    "x-nullable": true
+                    "readOnly": true
                 },
                 "nummer": {
                     "title": "Nummer",
@@ -5348,7 +5470,8 @@
                 "objectidentificator": {
                     "$ref": "#/definitions/OnderwerpobjectObjectidentificator"
                 }
-            }
+            },
+            "insideInclusion": true
         },
         "PartijIdentificatorGroepType": {
             "description": "Gegevens die een partij in een basisregistratie of ander extern register uniek identificeren.",
@@ -5418,31 +5541,6 @@
                 }
             }
         },
-        "DigitaalAdresForeignKey": {
-            "description": "Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig contact met de gemeente.",
-            "required": [
-                "uuid"
-            ],
-            "type": "object",
-            "properties": {
-                "uuid": {
-                    "title": "Uuid",
-                    "description": "Unieke (technische) identificatiecode van het digitaal adres.",
-                    "type": "string",
-                    "format": "uuid"
-                },
-                "url": {
-                    "title": "Url",
-                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
-                    "type": "string",
-                    "format": "uri",
-                    "readOnly": true,
-                    "maxLength": 1000,
-                    "minLength": 1
-                }
-            },
-            "x-nullable": true
-        },
         "PartijIdentificatorForeignkey": {
             "description": "Partij-identificatoren die hoorde bij deze partij.",
             "required": [
@@ -5465,8 +5563,7 @@
                     "maxLength": 1000,
                     "minLength": 1
                 }
-            },
-            "x-nullable": true
+            }
         },
         "PartijBezoekadres": {
             "description": "Adres waarop de partij door gemeente bezocht wil worden. Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie bekende adressen.",
@@ -5547,11 +5644,9 @@
         "Partij": {
             "required": [
                 "nummer",
-                "betrokkenen",
                 "digitaleAdressen",
                 "voorkeursDigitaalAdres",
                 "vertegenwoordigde",
-                "partijIdentificatoren",
                 "soortPartij",
                 "indicatieGeheimhouding",
                 "indicatieActief"
@@ -5593,7 +5688,7 @@
                     "items": {
                         "$ref": "#/definitions/BetrokkeneForeignKey"
                     },
-                    "x-nullable": true
+                    "readOnly": true
                 },
                 "digitaleAdressen": {
                     "description": "Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig contact met de gemeente.",
@@ -5620,7 +5715,7 @@
                     "items": {
                         "$ref": "#/definitions/PartijIdentificatorForeignkey"
                     },
-                    "x-nullable": true
+                    "readOnly": true
                 },
                 "soortPartij": {
                     "title": "Soort partij",
@@ -5713,7 +5808,7 @@
             },
             "x-nullable": true
         },
-        "ContactpersoonBase": {
+        "Contactpersoon": {
             "required": [
                 "werkteVoorPartij"
             ],
@@ -5733,11 +5828,11 @@
                 }
             }
         },
-        "partij_identificatie_ContactpersoonBase": {
+        "partij_identificatie_Contactpersoon": {
             "type": "object",
             "properties": {
                 "partijIdentificatie": {
-                    "$ref": "#/definitions/ContactpersoonBase"
+                    "$ref": "#/definitions/Contactpersoon"
                 }
             }
         },
@@ -5748,7 +5843,7 @@
                     "$ref": "#/definitions/Partij"
                 },
                 {
-                    "$ref": "#/definitions/partij_identificatie_ContactpersoonBase"
+                    "$ref": "#/definitions/partij_identificatie_Contactpersoon"
                 }
             ]
         },
@@ -5783,7 +5878,7 @@
             },
             "x-nullable": true
         },
-        "PersoonBase": {
+        "Persoon": {
             "required": [
                 "contactnaam"
             ],
@@ -5794,11 +5889,11 @@
                 }
             }
         },
-        "partij_identificatie_PersoonBase": {
+        "partij_identificatie_Persoon": {
             "type": "object",
             "properties": {
                 "partijIdentificatie": {
-                    "$ref": "#/definitions/PersoonBase"
+                    "$ref": "#/definitions/Persoon"
                 }
             }
         },
@@ -5809,11 +5904,11 @@
                     "$ref": "#/definitions/Partij"
                 },
                 {
-                    "$ref": "#/definitions/partij_identificatie_PersoonBase"
+                    "$ref": "#/definitions/partij_identificatie_Persoon"
                 }
             ]
         },
-        "OrganisatieBase": {
+        "Organisatie": {
             "type": "object",
             "properties": {
                 "naam": {
@@ -5824,11 +5919,11 @@
                 }
             }
         },
-        "partij_identificatie_OrganisatieBase": {
+        "partij_identificatie_Organisatie": {
             "type": "object",
             "properties": {
                 "partijIdentificatie": {
-                    "$ref": "#/definitions/OrganisatieBase"
+                    "$ref": "#/definitions/Organisatie"
                 }
             }
         },
@@ -5839,7 +5934,7 @@
                     "$ref": "#/definitions/Partij"
                 },
                 {
-                    "$ref": "#/definitions/partij_identificatie_OrganisatieBase"
+                    "$ref": "#/definitions/partij_identificatie_Organisatie"
                 }
             ]
         }

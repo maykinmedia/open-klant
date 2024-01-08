@@ -4,10 +4,14 @@ from django.utils.translation import gettext_lazy as _
 
 from django_filters.rest_framework import FilterSet, filters
 
+from openklant.components.klantinteracties.api.serializers.klantcontacten import (
+    KlantcontactSerializer,
+)
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
 )
+from openklant.components.utils.filters import ExpandFilter
 
 
 class KlantcontactFilterSet(FilterSet):
@@ -26,6 +30,13 @@ class KlantcontactFilterSet(FilterSet):
     onderwerp = filters.CharFilter(
         lookup_expr="icontains",
         help_text=_("Zoek klantcontacten met specifieke tekst in onderwerp"),
+    )
+
+    expand = ExpandFilter(
+        serializer_class=KlantcontactSerializer,
+        help_text=_(
+            "Sluit de gespecifieerde gerelateerde resources in in het antwoord."
+        ),
     )
 
     class Meta:

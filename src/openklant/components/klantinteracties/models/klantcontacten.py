@@ -5,6 +5,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from openklant.components.utils.mixins import APIMixin
+
 from .actoren import Actor
 from .constants import Klantcontrol
 from .mixins import (
@@ -15,7 +17,7 @@ from .mixins import (
 )
 
 
-class Klantcontact(models.Model):
+class Klantcontact(APIMixin, models.Model):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -102,7 +104,9 @@ class Klantcontact(models.Model):
         return self.nummer
 
 
-class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
+class Betrokkene(
+    APIMixin, BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin
+):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -150,7 +154,10 @@ class Betrokkene(BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin):
         verbose_name_plural = _("betrokkenen bij klantcontact")
 
     def __str__(self):
-        return self.get_contactnaam()
+        if self.get_contactnaam():
+            return self.get_contactnaam()
+
+        return str(self.uuid)
 
 
 class Onderwerpobject(ObjectidentificatorMixin):
@@ -181,7 +188,7 @@ class Onderwerpobject(ObjectidentificatorMixin):
         verbose_name_plural = _("onderwerpobjecten")
 
 
-class Bijlage(ObjectidentificatorMixin):
+class Bijlage(APIMixin, ObjectidentificatorMixin):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,

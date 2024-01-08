@@ -45,7 +45,11 @@ class ActorViewSet(viewsets.ModelViewSet):
     Verwijder een actor.
     """
 
-    queryset = Actor.objects.order_by("-pk")
+    queryset = Actor.objects.order_by("-pk").select_related(
+        "geautomatiseerdeactor",
+        "medewerker",
+        "organisatorischeeenheid",
+    )
     serializer_class = ActorSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination

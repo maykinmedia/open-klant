@@ -12,9 +12,10 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.mixins import ExpandMixin
 
 
-class PartijViewSet(viewsets.ModelViewSet):
+class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
     """
     Persoon of organisatie waarmee de gemeente een relatie heeft.
 
@@ -49,7 +50,18 @@ class PartijViewSet(viewsets.ModelViewSet):
     Verwijder een partij.
     """
 
-    queryset = Partij.objects.order_by("-pk")
+    queryset = (
+        Partij.objects.order_by("-pk")
+        .select_related(
+            "organisatie",
+            "persoon",
+            "contactpersoon",
+        )
+        .prefetch_related(
+            "betrokkene_set",
+            "digitaaladres_set",
+        )
+    )
     serializer_class = PartijSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
@@ -93,7 +105,7 @@ class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     Verwijder een partij-identificator.
     """
 
-    queryset = PartijIdentificator.objects.order_by("-pk")
+    queryset = PartijIdentificator.objects.order_by("-pk").select_related("partij")
     serializer_class = PartijIdentificatorSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination

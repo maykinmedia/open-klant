@@ -5,9 +5,10 @@ from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.klantcontacten import Betrokkene
 from openklant.components.klantinteracties.models.partijen import Partij
+from openklant.components.utils.mixins import APIMixin
 
 
-class DigitaalAdres(models.Model):
+class DigitaalAdres(APIMixin, models.Model):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,

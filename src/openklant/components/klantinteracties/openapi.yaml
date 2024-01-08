@@ -1691,6 +1691,24 @@ paths:
         required: false
         schema:
           type: string
+      - name: expand
+        in: query
+        description: 'Sluit de gespecifieerde gerelateerde resources in in het antwoord. '
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - had_betrokkenen
+            - had_betrokken_actoren
+            - leidde_tot_interne_taken
+            - ging_over_onderwerpobjecten
+            - omvatte_bijlagen
+            - had_betrokkenen.was_partij
+            - had_betrokkenen.digitale_adressen
+        style: form
+        explode: false
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -1727,7 +1745,26 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Klantcontact'
+                      type: object
+                      allOf:
+                      - $ref: '#/components/schemas/Klantcontact'
+                      - type: object
+                        properties:
+                          _expand:
+                            description: Display details of the linked resources requested
+                              in the `expand` parameter
+                            type: object
+                            properties:
+                              had_betrokkenen:
+                                $ref: '#/components/schemas/Betrokkene'
+                              had_betrokken_actoren:
+                                $ref: '#/components/schemas/Actor'
+                              leidde_tot_interne_taken:
+                                $ref: '#/components/schemas/InterneTaak'
+                              ging_over_onderwerpobjecten:
+                                $ref: '#/components/schemas/Onderwerpobject'
+                              omvatte_bijlagen:
+                                $ref: '#/components/schemas/Bijlage'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -2747,6 +2784,21 @@ paths:
         required: false
         schema:
           type: string
+      - name: expand
+        in: query
+        description: 'Sluit de gespecifieerde gerelateerde resources in in het antwoord. '
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - digitale_adressen
+            - betrokkenen
+            - betrokkenen.had_klantcontact
+            - betrokkenen.had_klantcontact.had_betrokken_actoren
+        style: form
+        explode: false
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -2783,7 +2835,20 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Partij'
+                      type: object
+                      allOf:
+                      - $ref: '#/components/schemas/Partij'
+                      - type: object
+                        properties:
+                          _expand:
+                            description: Display details of the linked resources requested
+                              in the `expand` parameter
+                            type: object
+                            properties:
+                              digitale_adressen:
+                                $ref: '#/components/schemas/DigitaalAdres'
+                              betrokkenen:
+                                $ref: '#/components/schemas/Betrokkene'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -3307,7 +3372,7 @@ components:
           $ref: '#/components/schemas/Objectidentificator'
       discriminator:
         propertyName: soortActor
-    MedewerkerBase:
+    Medewerker:
       required:
       - functie
       - telefoonnummer
@@ -3334,17 +3399,17 @@ components:
           type: string
           maxLength: 20
           minLength: 1
-    actor_identificatie_MedewerkerBase:
+    actor_identificatie_Medewerker:
       type: object
       properties:
         actorIdentificatie:
-          $ref: '#/components/schemas/MedewerkerBase'
+          $ref: '#/components/schemas/Medewerker'
     medewerker:
       type: object
       allOf:
       - $ref: '#/components/schemas/Actor'
-      - $ref: '#/components/schemas/actor_identificatie_MedewerkerBase'
-    GeautomatiseerdeActorBase:
+      - $ref: '#/components/schemas/actor_identificatie_Medewerker'
+    GeautomatiseerdeActor:
       required:
       - functie
       type: object
@@ -3361,17 +3426,17 @@ components:
           description: Omschrijving van de geautomatiseerde actor.
           type: string
           maxLength: 200
-    actor_identificatie_GeautomatiseerdeActorBase:
+    actor_identificatie_GeautomatiseerdeActor:
       type: object
       properties:
         actorIdentificatie:
-          $ref: '#/components/schemas/GeautomatiseerdeActorBase'
+          $ref: '#/components/schemas/GeautomatiseerdeActor'
     geautomatiseerde_actor:
       type: object
       allOf:
       - $ref: '#/components/schemas/Actor'
-      - $ref: '#/components/schemas/actor_identificatie_GeautomatiseerdeActorBase'
-    OrganisatorischeEenheidBase:
+      - $ref: '#/components/schemas/actor_identificatie_GeautomatiseerdeActor'
+    OrganisatorischeEenheid:
       required:
       - faxnummer
       - telefoonnummer
@@ -3403,16 +3468,16 @@ components:
           type: string
           maxLength: 20
           minLength: 1
-    actor_identificatie_OrganisatorischeEenheidBase:
+    actor_identificatie_OrganisatorischeEenheid:
       type: object
       properties:
         actorIdentificatie:
-          $ref: '#/components/schemas/OrganisatorischeEenheidBase'
+          $ref: '#/components/schemas/OrganisatorischeEenheid'
     organisatorische_eenheid:
       type: object
       allOf:
       - $ref: '#/components/schemas/Actor'
-      - $ref: '#/components/schemas/actor_identificatie_OrganisatorischeEenheidBase'
+      - $ref: '#/components/schemas/actor_identificatie_OrganisatorischeEenheid'
     Fout:
       required:
       - code
@@ -3558,6 +3623,26 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
+    DigitaalAdresForeignKey:
+      description: Digitale adressen van de betrokkene bij klantcontact.
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          title: Uuid
+          description: Unieke (technische) identificatiecode van het digitaal adres.
+          type: string
+          format: uuid
+        url:
+          title: Url
+          description: URL-referentie naar dit object. Dit is de unieke identificatie
+            en locatie van dit object.
+          type: string
+          format: uri
+          readOnly: true
+          maxLength: 1000
+          minLength: 1
     Bezoekadres:
       description: Adres waarop de betrokkene bij klantcontact in naar aanleiding
         van dat contact af te leggen bezoeken wil ontvangen. Dit mag afwijken van
@@ -3656,6 +3741,12 @@ components:
           $ref: '#/components/schemas/PartijForeignKey'
         hadKlantcontact:
           $ref: '#/components/schemas/KlantcontactForeignKey'
+        digitaleAdressen:
+          description: Digitale adressen van de betrokkene bij klantcontact.
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitaalAdresForeignKey'
+          readOnly: true
         bezoekadres:
           $ref: '#/components/schemas/Bezoekadres'
         correspondentieadres:
@@ -3906,7 +3997,6 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
-      nullable: true
     BijlageForeignKey:
       description: Bijlage die (een deel van) de inhoud van het klantcontact beschrijft.
       required:
@@ -3927,7 +4017,6 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
-      nullable: true
     BetrokkeneForeignkey:
       description: Persoon of organisatie die betrokken was bij een klantcontact.
       required:
@@ -3949,7 +4038,6 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
-      nullable: true
     InterneTaakForeignKey:
       description: Klantcontact dat leidde tot een interne taak.
       required:
@@ -3970,13 +4058,8 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
-      nullable: true
     Klantcontact:
       required:
-      - gingOverOnderwerpobjecten
-      - omvatteBijlagen
-      - hadBetrokkenen
-      - leiddeTotInterneTaken
       - nummer
       - kanaal
       - onderwerp
@@ -4006,25 +4089,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OnderwerpobjectForeignKey'
-          nullable: true
+          readOnly: true
         omvatteBijlagen:
           description: Bijlage die (een deel van) de inhoud van het klantcontact beschrijft.
           type: array
           items:
             $ref: '#/components/schemas/BijlageForeignKey'
-          nullable: true
+          readOnly: true
         hadBetrokkenen:
           description: Persoon of organisatie die betrokken was bij een klantcontact.
           type: array
           items:
             $ref: '#/components/schemas/BetrokkeneForeignkey'
-          nullable: true
+          readOnly: true
         leiddeTotInterneTaken:
           description: Klantcontact dat leidde tot een interne taak.
           type: array
           items:
             $ref: '#/components/schemas/InterneTaakForeignKey'
-          nullable: true
+          readOnly: true
         nummer:
           title: Nummer
           description: Uniek identificerend nummer dat tijdens communicatie tussen
@@ -4138,6 +4221,7 @@ components:
           $ref: '#/components/schemas/KlantcontactForeignKey'
         objectidentificator:
           $ref: '#/components/schemas/OnderwerpobjectObjectidentificator'
+      insideInclusion: true
     PartijIdentificatorGroepType:
       description: Gegevens die een partij in een basisregistratie of ander extern
         register uniek identificeren.
@@ -4199,28 +4283,6 @@ components:
           maxLength: 200
         partijIdentificator:
           $ref: '#/components/schemas/PartijIdentificatorGroepType'
-    DigitaalAdresForeignKey:
-      description: Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig
-        contact met de gemeente.
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          title: Uuid
-          description: Unieke (technische) identificatiecode van het digitaal adres.
-          type: string
-          format: uuid
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-      nullable: true
     PartijIdentificatorForeignkey:
       description: Partij-identificatoren die hoorde bij deze partij.
       required:
@@ -4241,7 +4303,6 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
-      nullable: true
     PartijBezoekadres:
       description: Adres waarop de partij door gemeente bezocht wil worden. Dit mag
         afwijken van voor de verstrekker eventueel in een basisregistratie bekende
@@ -4283,11 +4344,9 @@ components:
     Partij:
       required:
       - nummer
-      - betrokkenen
       - digitaleAdressen
       - voorkeursDigitaalAdres
       - vertegenwoordigde
-      - partijIdentificatoren
       - soortPartij
       - indicatieGeheimhouding
       - indicatieActief
@@ -4326,7 +4385,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BetrokkeneForeignKey'
-          nullable: true
+          readOnly: true
         digitaleAdressen:
           description: Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig
             contact met de gemeente.
@@ -4347,7 +4406,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PartijIdentificatorForeignkey'
-          nullable: true
+          readOnly: true
         soortPartij:
           title: Soort partij
           description: Geeft aan van welke specifieke soort partij sprake is.
@@ -4432,7 +4491,7 @@ components:
           type: string
           maxLength: 200
       nullable: true
-    ContactpersoonBase:
+    Contactpersoon:
       required:
       - werkteVoorPartij
       type: object
@@ -4446,16 +4505,16 @@ components:
           $ref: '#/components/schemas/PartijPolymorphic'
         contactnaam:
           $ref: '#/components/schemas/ContactpersoonPersoon'
-    partij_identificatie_ContactpersoonBase:
+    partij_identificatie_Contactpersoon:
       type: object
       properties:
         partijIdentificatie:
-          $ref: '#/components/schemas/ContactpersoonBase'
+          $ref: '#/components/schemas/Contactpersoon'
     contactpersoon:
       type: object
       allOf:
       - $ref: '#/components/schemas/Partij'
-      - $ref: '#/components/schemas/partij_identificatie_ContactpersoonBase'
+      - $ref: '#/components/schemas/partij_identificatie_Contactpersoon'
     PersoonContact:
       description: Naam die een persoon wil gebruiken tijdens contact met de gemeente.
         Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP) bekende
@@ -4488,24 +4547,24 @@ components:
           type: string
           maxLength: 200
       nullable: true
-    PersoonBase:
+    Persoon:
       required:
       - contactnaam
       type: object
       properties:
         contactnaam:
           $ref: '#/components/schemas/PersoonContact'
-    partij_identificatie_PersoonBase:
+    partij_identificatie_Persoon:
       type: object
       properties:
         partijIdentificatie:
-          $ref: '#/components/schemas/PersoonBase'
+          $ref: '#/components/schemas/Persoon'
     persoon:
       type: object
       allOf:
       - $ref: '#/components/schemas/Partij'
-      - $ref: '#/components/schemas/partij_identificatie_PersoonBase'
-    OrganisatieBase:
+      - $ref: '#/components/schemas/partij_identificatie_Persoon'
+    Organisatie:
       type: object
       properties:
         naam:
@@ -4513,16 +4572,16 @@ components:
           description: Naam van de organisatie.
           type: string
           maxLength: 200
-    partij_identificatie_OrganisatieBase:
+    partij_identificatie_Organisatie:
       type: object
       properties:
         partijIdentificatie:
-          $ref: '#/components/schemas/OrganisatieBase'
+          $ref: '#/components/schemas/Organisatie'
     organisatie:
       type: object
       allOf:
       - $ref: '#/components/schemas/Partij'
-      - $ref: '#/components/schemas/partij_identificatie_OrganisatieBase'
+      - $ref: '#/components/schemas/partij_identificatie_Organisatie'
     betrokkene_correspondentieadres:
       description: Adres waarop de betrokkene bij klantcontact naar aanleiding van
         dat contact te versturen post wil ontvangen. Dit mag afwijken van voor de

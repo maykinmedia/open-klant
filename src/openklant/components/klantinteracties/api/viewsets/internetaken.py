@@ -45,7 +45,10 @@ class InterneTaakViewSet(viewsets.ModelViewSet):
     Verwijder een interne taak.
     """
 
-    queryset = InterneTaak.objects.order_by("-pk")
+    queryset = InterneTaak.objects.order_by("-pk").select_related(
+        "actor",
+        "klantcontact",
+    )
     serializer_class = InterneTaakSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination

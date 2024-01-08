@@ -7,11 +7,13 @@ from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
 
+from openklant.components.utils.mixins import APIMixin
+
 from .constants import SoortPartij
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
 
 
-class Partij(BezoekadresMixin, CorrespondentieadresMixin):
+class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,

@@ -4,7 +4,11 @@ from django.utils.translation import gettext_lazy as _
 
 from django_filters.rest_framework import FilterSet, filters
 
+from openklant.components.klantinteracties.api.serializers.partijen import (
+    PartijSerializer,
+)
 from openklant.components.klantinteracties.models.partijen import Partij
+from openklant.components.utils.filters import ExpandFilter
 
 
 class PartijFilterSet(FilterSet):
@@ -48,6 +52,13 @@ class PartijFilterSet(FilterSet):
             "Zoek partij object op basis van het partij identificator register"
         ),
         method="filter_identificator_register",
+    )
+
+    expand = ExpandFilter(
+        serializer_class=PartijSerializer,
+        help_text=_(
+            "Sluit de gespecifieerde gerelateerde resources in in het antwoord."
+        ),
     )
 
     class Meta:

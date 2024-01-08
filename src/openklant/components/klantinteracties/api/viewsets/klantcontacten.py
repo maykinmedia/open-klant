@@ -20,9 +20,13 @@ from openklant.components.klantinteracties.models.klantcontacten import (
 )
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.mixins import ExpandMixin
 
 
-class KlantcontactViewSet(viewsets.ModelViewSet):
+class KlantcontactViewSet(
+    ExpandMixin,
+    viewsets.ModelViewSet,
+):
     """
     Contact tussen een klant of een vertegenwoordiger van een
     klant en de gemeente over een onderwerp.
@@ -58,7 +62,12 @@ class KlantcontactViewSet(viewsets.ModelViewSet):
     Verwijder een klant contact.
     """
 
-    queryset = Klantcontact.objects.order_by("-pk")
+    queryset = Klantcontact.objects.order_by("-pk").prefetch_related(
+        "actoren",
+        "bijlage_set",
+        "betrokkene_set",
+        "internetaak_set",
+    )
     serializer_class = KlantcontactSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
@@ -105,7 +114,14 @@ class BetrokkeneViewSet(viewsets.ModelViewSet):
     Verwijder een betrokkene.
     """
 
-    queryset = Betrokkene.objects.order_by("-pk")
+    queryset = (
+        Betrokkene.objects.order_by("-pk")
+        .select_related(
+            "partij",
+            "klantcontact",
+        )
+        .prefetch_related("digitaaladres_set")
+    )
     serializer_class = BetrokkeneSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
@@ -147,7 +163,10 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
     Verwijder een onderwerpobject.
     """
 
-    queryset = Onderwerpobject.objects.order_by("-pk")
+    queryset = Onderwerpobject.objects.order_by("-pk").select_related(
+        "klantcontact",
+        "was_klantcontact",
+    )
     serializer_class = OnderwerpobjectSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
@@ -194,7 +213,7 @@ class BijlageViewSet(viewsets.ModelViewSet):
     Verwijder een bijlage.
     """
 
-    queryset = Bijlage.objects.order_by("-pk")
+    queryset = Bijlage.objects.order_by("-pk").select_related("klantcontact")
     serializer_class = BijlageSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
