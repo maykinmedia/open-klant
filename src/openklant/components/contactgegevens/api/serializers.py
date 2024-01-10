@@ -11,6 +11,19 @@ class OrganisatieAdresSerializer(GegevensGroepSerializer):
         model = Organisatie
         gegevensgroep = "adres"
 
+    def validate(self, attrs):
+        if any(attrs.values()):
+            if not attrs.get("nummeraanduiding_id"):
+                raise serializers.ValidationError(
+                    {
+                        "nummeraanduiding_id": _(
+                            "nummeraanduiding_id is verplicht wanneer het adres ingevuld is."
+                        ),
+                    }
+                )
+
+        return super().validate(attrs)
+
 
 class OrganisatieSerializer(
     NestedGegevensGroepMixin,
@@ -47,6 +60,19 @@ class PersoonAdresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Persoon
         gegevensgroep = "adres"
+
+    def validate(self, attrs):
+        if any(attrs.values()):
+            if not attrs.get("nummeraanduiding_id"):
+                raise serializers.ValidationError(
+                    {
+                        "nummeraanduiding_id": _(
+                            "nummeraanduiding_id is verplicht wanneer het adres ingevuld is."
+                        ),
+                    }
+                )
+
+        return super().validate(attrs)
 
 
 class PersoonSerializer(

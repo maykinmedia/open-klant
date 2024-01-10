@@ -123,12 +123,38 @@ class BezoekadresSerializer(GegevensGroepSerializer):
         model = Betrokkene
         gegevensgroep = "bezoekadres"
 
+    def validate(self, attrs):
+        if any(attrs.values()):
+            if not attrs.get("nummeraanduiding_id"):
+                raise serializers.ValidationError(
+                    {
+                        "nummeraanduiding_id": _(
+                            "nummeraanduiding_id is verplicht wanneer het bezoekadres ingevuld is."
+                        ),
+                    }
+                )
+
+        return super().validate(attrs)
+
 
 class CorrespondentieadresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Betrokkene
         gegevensgroep = "correspondentieadres"
         ref_name = "BetrokkeneCorrespondentieadres"
+
+    def validate(self, attrs):
+        if any(attrs.values()):
+            if not attrs.get("nummeraanduiding_id"):
+                raise serializers.ValidationError(
+                    {
+                        "nummeraanduiding_id": _(
+                            "nummeraanduiding_id is verplicht wanneer het correspondentieadres ingevuld is."
+                        ),
+                    }
+                )
+
+        return super().validate(attrs)
 
 
 class ContactnaamSerializer(GegevensGroepSerializer):

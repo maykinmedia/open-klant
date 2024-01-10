@@ -99,12 +99,38 @@ class PartijBezoekadresSerializer(GegevensGroepSerializer):
         model = Partij
         gegevensgroep = "bezoekadres"
 
+    def validate(self, attrs):
+        if any(attrs.values()):
+            if not attrs.get("nummeraanduiding_id"):
+                raise serializers.ValidationError(
+                    {
+                        "nummeraanduiding_id": _(
+                            "nummeraanduiding_id is verplicht wanneer het bezoekadres ingevuld is."
+                        ),
+                    }
+                )
+
+        return super().validate(attrs)
+
 
 class CorrespondentieadresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Partij
         gegevensgroep = "correspondentieadres"
         ref_name = "PartijCorrespondentieadres"
+
+    def validate(self, attrs):
+        if any(attrs.values()):
+            if not attrs.get("nummeraanduiding_id"):
+                raise serializers.ValidationError(
+                    {
+                        "nummeraanduiding_id": _(
+                            "nummeraanduiding_id is verplicht wanneer het correspondentieadres ingevuld is."
+                        ),
+                    }
+                )
+
+        return super().validate(attrs)
 
 
 class OrganisatieSerializer(serializers.ModelSerializer):
