@@ -173,6 +173,7 @@ django==3.2.23
     #   django-sniplates
     #   django-solo
     #   djangorestframework
+    #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-yasg
     #   mozilla-django-oidc
@@ -288,6 +289,7 @@ djangorestframework==3.12.4
     #   -r requirements/base.txt
     #   commonground-api-common
     #   django-loose-fk
+    #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-yasg
     #   notifications-api-common
@@ -297,6 +299,10 @@ djangorestframework-camel-case==1.4.2
     #   -r requirements/base.txt
     #   commonground-api-common
     #   notifications-api-common
+djangorestframework-inclusions==1.2.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 docutils==0.18.1
     # via
     #   recommonmark
