@@ -23,16 +23,20 @@
   "dependencies": {
     "microscope-sass": "^2.0.0"
   },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
+  },
   "devDependencies": {
     "@babel/core": "latest",
     "@babel/polyfill": "latest",
     "@babel/preset-env": "latest",
     "autoprefixer": "latest",
     "babel-loader": "latest",
+    "babel-plugin-istanbul": "^6.1.1",
     "chai": "latest",
     "css-loader": "latest",
     "cssnano": "latest",
-    "istanbul-instrumenter-loader": "latest",
     "karma": "^6.3.14",
     "karma-chrome-launcher": "latest",
     "karma-coverage": "latest",

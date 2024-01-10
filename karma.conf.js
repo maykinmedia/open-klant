@@ -4,18 +4,6 @@ const webpackConfig = require('./webpack.config.js');
 // Prevent testing infrastructure from crashing (MIGHT REQUIRE --production --sourcemap NOT TO BE SET!
 webpackConfig.output.library = undefined;
 
-// Add istanbul-instrumenter to webpack configuration
-webpackConfig.module.rules.push({
-    test: /\.js$/,
-    include: __dirname + '/' + paths.jsSrcDir,
-    loader: 'istanbul-instrumenter-loader',
-    enforce: 'post',
-
-    options: {
-        esModules: true
-    }
-});
-
 
 // The preprocessor config
 const preprocessors = {};
