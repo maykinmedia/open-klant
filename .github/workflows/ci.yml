@@ -167,11 +167,11 @@ jobs:
       - name: Download built image
         uses: actions/download-artifact@v3
         with:
-          name: docker-image-all-extensions-${{ steps.vars.outputs.tag }}
+          name: ${{ steps.vars.outputs.tag }}
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          input: /github/workspace/image.tar  # from download-artifact
+          image-ref: ${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.tag }}
           format: 'sarif'
           output: 'trivy-results-docker.sarif'
           ignore-unfixed: true
