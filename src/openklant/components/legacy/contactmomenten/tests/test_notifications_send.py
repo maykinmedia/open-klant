@@ -6,14 +6,13 @@ from freezegun import freeze_time
 from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
+from vng_api_common.tests import reverse
 
 from openklant.components.legacy.contactmomenten.models.constants import InitiatiefNemer
 from openklant.components.legacy.contactmomenten.models.tests.factories import (
     ContactMomentFactory,
 )
 from openklant.utils.tests.mixins import JWTAuthTransactionMixin
-
-from .utils import get_operation_url
 
 KLANT = "http://some.klanten.nl/api/v1/klanten/951e4660-3835-4643-8f9c-e523e364a30f"
 MEDEWERKER = (
@@ -32,7 +31,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
         """
         Check if notifications will be send when ContactMoment is created
         """
-        url = get_operation_url("contactmoment_create")
+        url = reverse("contactmoment-list")
         data = {
             "bronorganisatie": "423182687",
             "klant": KLANT,
@@ -69,9 +68,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
         contactmoment = ContactMomentFactory.create(
             bronorganisatie=423182687, kanaal="telephone"
         )
-        contactmoment_url = get_operation_url(
-            "contactmoment_delete", uuid=contactmoment.uuid
-        )
+        contactmoment_url = reverse(contactmoment)
 
         response = self.client.delete(contactmoment_url)
 

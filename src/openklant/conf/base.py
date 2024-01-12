@@ -116,7 +116,6 @@ INSTALLED_APPS = [
     # 'django.contrib.sitemaps',
     # External applications.
     "axes",
-    "django_filters",
     "corsheaders",
     "vng_api_common",  # before drf_yasg to override the management command
     "vng_api_common.notifications",
@@ -125,7 +124,7 @@ INSTALLED_APPS = [
     "simple_certmanager",
     "zgw_consumers",
     "notifications_api_common",
-    "drf_yasg",
+    "drf_spectacular",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
     "rest_framework",
@@ -363,44 +362,6 @@ PROJECT_NAME = "Open Klant"
 SITE_TITLE = "API dashboard"
 ENVIRONMENT = config("ENVIRONMENT", "")
 SHOW_ALERT = True
-
-# urls for OAS3 specifications
-SPEC_URL = {
-    "klanten": os.path.join(
-        BASE_DIR,
-        "src",
-        "openklant",
-        "components",
-        "legacy",
-        "klanten",
-        "openapi.yaml",
-    ),
-    "contactmomenten": os.path.join(
-        BASE_DIR,
-        "src",
-        "openklant",
-        "components",
-        "legacy",
-        "contactmomenten",
-        "openapi.yaml",
-    ),
-    "klantinteracties": os.path.join(
-        BASE_DIR,
-        "src",
-        "openklant",
-        "components",
-        "klantinteracties",
-        "openapi.yaml",
-    ),
-    "contactgegevens": os.path.join(
-        BASE_DIR,
-        "src",
-        "openklant",
-        "components",
-        "contactgegevens",
-        "openapi.yaml",
-    ),
-}
 
 # settings for sending notifications
 KLANTEN_NOTIFICATIONS_KANAAL = "klanten"

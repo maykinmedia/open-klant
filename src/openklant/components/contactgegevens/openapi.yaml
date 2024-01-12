@@ -1,1500 +1,997 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: contactgegevens
-  description: '
+  version: 1.0.0
+  description: |2
 
     Description WIP.
-
-    '
   contact:
-    url: https://zaakgerichtwerken.vng.cloud
     email: standaarden.ondersteuning@vng.nl
+    url: https://zaakgerichtwerken.vng.cloud
   license:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
-  version: 1.0.0
-security:
-- JWT-Claims: []
 paths:
-  /contactgegevens:
+  /v1/contactgegevens:
     get:
-      operationId: contactgegevens_list
-      summary: Alle personen opvragen.
-      description: Alle personen opvragen.
+      operationId: v1ContactgegevensList
+      description: Alle contactgegevens opvragen.
+      summary: Alle contactgegevens opvragen.
       parameters:
       - name: page
+        required: false
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
-        required: false
         schema:
           type: integer
+      tags:
+      - contactgegevens
+      security:
+      - tokenAuth: []
       responses:
         '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
           content:
             application/json:
               schema:
-                required:
-                - count
-                - results
-                type: object
-                properties:
-                  count:
-                    type: integer
-                  next:
-                    type: string
-                    format: uri
-                    nullable: true
-                  previous:
-                    type: string
-                    format: uri
-                    nullable: true
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Contactgegevens'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+                $ref: '#/components/schemas/PaginatedContactgegevensList'
+          description: ''
+    post:
+      operationId: v1ContactgegevensCreate
+      description: Maak contactgegevens aan.
+      summary: Maak contactgegevens aan.
       tags:
       - contactgegevens
-    post:
-      operationId: contactgegevens_create
-      summary: Maak een persoon aan.
-      description: Maak een persoon aan.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
       requestBody:
-        $ref: '#/components/requestBodies/Contactgegevens'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contactgegevens'
+        required: true
+      security:
+      - tokenAuth: []
       responses:
         '201':
-          description: Created
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-            Location:
-              schema:
-                type: string
-                format: uri
-              description: URL waar de resource leeft.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contactgegevens'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contactgegevens
-    parameters: []
-  /contactgegevens/{uuid}:
+          description: ''
+  /v1/contactgegevens/{uuid}:
     get:
-      operationId: contactgegevens_read
-      summary: Een specifiek persoon opvragen.
-      description: Een specifiek persoon opvragen.
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contactgegevens'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contactgegevens
-    put:
-      operationId: contactgegevens_update
-      summary: Werk een persoon in zijn geheel bij.
-      description: Werk een persoon in zijn geheel bij.
+      operationId: v1ContactgegevensRetrieve
+      description: Specifiek contactgegevens opvragen.
+      summary: Specifiek contactgegevens opvragen.
       parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
+      - in: path
+        name: uuid
         schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Contactgegevens'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contactgegevens'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contactgegevens
-    patch:
-      operationId: contactgegevens_partial_update
-      summary: Werk een persoon deels bij.
-      description: Werk een persoon deels bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Contactgegevens'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contactgegevens'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contactgegevens
-    delete:
-      operationId: contactgegevens_delete
-      summary: Verwijder een persoon.
-      description: Verwijder een persoon.
-      responses:
-        '204':
-          description: No content
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - contactgegevens
-    parameters:
-    - name: uuid
-      in: path
-      description: Unieke (technische) identificatiecode van de contact gegevens.
-      required: true
-      schema:
-        type: string
-        format: uuid
-  /organisatie:
-    get:
-      operationId: organisatie_list
-      summary: Alle organisaties opvragen.
-      description: Alle organisaties opvragen.
-      parameters:
-      - name: contactgegevens__url
-        in: query
-        description: Zoek organisatie object op basis van de contactgegevens url.
-        required: false
-        schema:
-          type: string
-      - name: contactgegevens__uuid
-        in: query
-        description: Zoek organisatie object op basis van de contactgegevens ID.
-        required: false
-        schema:
-          type: string
-      - name: page
-        in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
-        required: false
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                required:
-                - count
-                - results
-                type: object
-                properties:
-                  count:
-                    type: integer
-                  next:
-                    type: string
-                    format: uri
-                    nullable: true
-                  previous:
-                    type: string
-                    format: uri
-                    nullable: true
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Organisatie'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisatie
-    post:
-      operationId: organisatie_create
-      summary: Maak een organisatie aan.
-      description: Maak een organisatie aan.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Organisatie'
-      responses:
-        '201':
-          description: Created
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-            Location:
-              schema:
-                type: string
-                format: uri
-              description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organisatie'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisatie
-    parameters: []
-  /organisatie/{uuid}:
-    get:
-      operationId: organisatie_read
-      summary: Een specifiek organisatie opvragen.
-      description: Een specifiek organisatie opvragen.
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organisatie'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisatie
-    put:
-      operationId: organisatie_update
-      summary: Werk een organisatie in zijn geheel bij.
-      description: Werk een organisatie in zijn geheel bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Organisatie'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organisatie'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisatie
-    patch:
-      operationId: organisatie_partial_update
-      summary: Werk een organisatie deels bij.
-      description: Werk een organisatie deels bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Organisatie'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organisatie'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisatie
-    delete:
-      operationId: organisatie_delete
-      summary: Verwijder een organisatie.
-      description: Verwijder een organisatie.
-      responses:
-        '204':
-          description: No content
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - organisatie
-    parameters:
-    - name: uuid
-      in: path
-      description: Unieke (technische) identificatiecode van de organisatie.
-      required: true
-      schema:
-        type: string
-        format: uuid
-  /persoon:
-    get:
-      operationId: persoon_list
-      summary: Alle personen opvragen.
-      description: Alle personen opvragen.
-      parameters:
-      - name: contactgegevens__url
-        in: query
-        description: Zoek persoon object op basis van de contactgegevens url.
-        required: false
-        schema:
-          type: string
-      - name: contactgegevens__uuid
-        in: query
-        description: Zoek persoon object op basis van de contactgegevens ID.
-        required: false
-        schema:
-          type: string
-      - name: page
-        in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
-        required: false
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                required:
-                - count
-                - results
-                type: object
-                properties:
-                  count:
-                    type: integer
-                  next:
-                    type: string
-                    format: uri
-                    nullable: true
-                  previous:
-                    type: string
-                    format: uri
-                    nullable: true
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Persoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    post:
-      operationId: persoon_create
-      summary: Maak een persoon aan.
-      description: Maak een persoon aan.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Persoon'
-      responses:
-        '201':
-          description: Created
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-            Location:
-              schema:
-                type: string
-                format: uri
-              description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Persoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    parameters: []
-  /persoon/{uuid}:
-    get:
-      operationId: persoon_read
-      summary: Een specifiek persoon opvragen.
-      description: Een specifiek persoon opvragen.
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Persoon'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    put:
-      operationId: persoon_update
-      summary: Werk een persoon in zijn geheel bij.
-      description: Werk een persoon in zijn geheel bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Persoon'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Persoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    patch:
-      operationId: persoon_partial_update
-      summary: Werk een persoon deels bij.
-      description: Werk een persoon deels bij.
-      parameters:
-      - name: Content-Type
-        in: header
-        description: Content type van de verzoekinhoud.
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Persoon'
-      responses:
-        '200':
-          description: OK
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Persoon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    delete:
-      operationId: persoon_delete
-      summary: Verwijder een persoon.
-      description: Verwijder een persoon.
-      responses:
-        '204':
-          description: No content
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-      tags:
-      - persoon
-    parameters:
-    - name: uuid
-      in: path
-      description: Unieke (technische) identificatiecode van het persoon.
-      required: true
-      schema:
-        type: string
-        format: uuid
-servers:
-- url: /contactgegevens/api/v1
-components:
-  responses:
-    '400':
-      description: Bad request
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ValidatieFout'
-    '401':
-      description: Unauthorized
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '403':
-      description: Forbidden
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '404':
-      description: Not found
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '406':
-      description: Not acceptable
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '409':
-      description: Conflict
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '410':
-      description: Gone
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '412':
-      description: Precondition failed
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '415':
-      description: Unsupported media type
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '429':
-      description: Too many requests
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-    '500':
-      description: Internal server error
-      headers:
-        API-version:
-          schema:
-            type: string
-          description: 'Geeft een specifieke API-versie aan in de context van een
-            specifieke aanroep. Voorbeeld: 1.2.1.'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Fout'
-  requestBodies:
-    Contactgegevens:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Contactgegevens'
-      required: true
-    Organisatie:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Organisatie'
-      required: true
-    Persoon:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Persoon'
-      required: true
-  securitySchemes:
-    JWT-Claims:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-  schemas:
-    OrganisatieForeignkey:
-      description: De gekoppelde organisaties
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          title: Uuid
-          description: Unieke (technische) identificatiecode van de organisatie.
           type: string
           format: uuid
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-    PersoonForeignkey:
-      description: De gekoppelde personen
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          title: Uuid
-          description: Unieke (technische) identificatiecode van het persoon.
-          type: string
-          format: uuid
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-    Contactgegevens:
-      required:
-      - partijIdentificator
-      type: object
-      properties:
-        uuid:
-          title: Uuid
           description: Unieke (technische) identificatiecode van de contact gegevens.
+        required: true
+      tags:
+      - contactgegevens
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contactgegevens'
+          description: ''
+    put:
+      operationId: v1ContactgegevensUpdate
+      description: Werk contactgegevens in zijn geheel bij.
+      summary: Werk contactgegevens in zijn geheel bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de contact gegevens.
+        required: true
+      tags:
+      - contactgegevens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contactgegevens'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contactgegevens'
+          description: ''
+    patch:
+      operationId: v1ContactgegevensPartialUpdate
+      description: Werk contactgegevens deels bij.
+      summary: Werk contactgegevens deels bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de contact gegevens.
+        required: true
+      tags:
+      - contactgegevens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContactgegevens'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contactgegevens'
+          description: ''
+    delete:
+      operationId: v1ContactgegevensDestroy
+      description: Verwijder contactgegevens.
+      summary: Verwijder contactgegevens.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de contact gegevens.
+        required: true
+      tags:
+      - contactgegevens
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /v1/organisatie:
+    get:
+      operationId: v1OrganisatieList
+      description: Alle organisaties opvragen.
+      summary: Alle organisaties opvragen.
+      parameters:
+      - in: query
+        name: contactgegevens__url
+        schema:
+          type: string
+        description: Zoek organisatie object op basis van de contactgegevens url.
+      - in: query
+        name: contactgegevens__uuid
+        schema:
+          type: string
+        description: Zoek organisatie object op basis van de contactgegevens ID.
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      tags:
+      - organisaties
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrganisatieList'
+          description: ''
+    post:
+      operationId: v1OrganisatieCreate
+      description: Maak een organisatie aan.
+      summary: Maak een organisatie aan.
+      tags:
+      - organisaties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organisatie'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisatie'
+          description: ''
+  /v1/organisatie/{uuid}:
+    get:
+      operationId: v1OrganisatieRetrieve
+      description: Een specifiek organisatie opvragen.
+      summary: Een specifiek organisatie opvragen.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        required: true
+      tags:
+      - organisaties
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisatie'
+          description: ''
+    put:
+      operationId: v1OrganisatieUpdate
+      description: Werk een organisatie in zijn geheel bij.
+      summary: Werk een organisatie in zijn geheel bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        required: true
+      tags:
+      - organisaties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organisatie'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisatie'
+          description: ''
+    patch:
+      operationId: v1OrganisatiePartialUpdate
+      description: Werk een organisatie deels bij.
+      summary: Werk een organisatie deels bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        required: true
+      tags:
+      - organisaties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrganisatie'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisatie'
+          description: ''
+    delete:
+      operationId: v1OrganisatieDestroy
+      description: Verwijder een organisatie.
+      summary: Verwijder een organisatie.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        required: true
+      tags:
+      - organisaties
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /v1/persoon:
+    get:
+      operationId: v1PersoonList
+      description: Alle personen opvragen.
+      summary: Alle personen opvragen.
+      parameters:
+      - in: query
+        name: contactgegevens__url
+        schema:
+          type: string
+        description: Zoek persoon object op basis van de contactgegevens url.
+      - in: query
+        name: contactgegevens__uuid
+        schema:
+          type: string
+        description: Zoek persoon object op basis van de contactgegevens ID.
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      tags:
+      - personen
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPersoonList'
+          description: ''
+    post:
+      operationId: v1PersoonCreate
+      description: Maak een persoon aan.
+      summary: Maak een persoon aan.
+      tags:
+      - personen
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Persoon'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persoon'
+          description: ''
+  /v1/persoon/{uuid}:
+    get:
+      operationId: v1PersoonRetrieve
+      description: Een specifiek persoon opvragen.
+      summary: Een specifiek persoon opvragen.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het persoon.
+        required: true
+      tags:
+      - personen
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persoon'
+          description: ''
+    put:
+      operationId: v1PersoonUpdate
+      description: Werk een persoon in zijn geheel bij.
+      summary: Werk een persoon in zijn geheel bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het persoon.
+        required: true
+      tags:
+      - personen
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Persoon'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persoon'
+          description: ''
+    patch:
+      operationId: v1PersoonPartialUpdate
+      description: Werk een persoon deels bij.
+      summary: Werk een persoon deels bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het persoon.
+        required: true
+      tags:
+      - personen
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPersoon'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persoon'
+          description: ''
+    delete:
+      operationId: v1PersoonDestroy
+      description: Verwijder een persoon.
+      summary: Verwijder een persoon.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het persoon.
+        required: true
+      tags:
+      - personen
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    BlankEnum:
+      enum:
+      - ''
+    Contactgegevens:
+      type: object
+      properties:
+        uuid:
           type: string
           format: uuid
           readOnly: true
+          description: Unieke (technische) identificatiecode van de contact gegevens.
         url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
           type: string
           format: uri
           readOnly: true
-          maxLength: 1000
-          minLength: 1
+          description: De unieke URL van deze contactgegevens binnen deze API.
         organisaties:
-          description: De gekoppelde organisaties
           type: array
           items:
             $ref: '#/components/schemas/OrganisatieForeignkey'
           readOnly: true
+          description: De gekoppelde organisaties
         personen:
-          description: De gekoppelde personen
           type: array
           items:
             $ref: '#/components/schemas/PersoonForeignkey'
           readOnly: true
+          description: De gekoppelde personen
         partijIdentificator:
-          title: Partij identificator
+          type: string
           description: URL-referentie naar de PartijIdentificator (in de Contactgegevens
             API).
-          type: string
-          format: uri
           maxLength: 200
           minLength: 1
-    Fout:
       required:
-      - code
-      - title
-      - status
-      - detail
-      - instance
-      type: object
-      properties:
-        type:
-          title: Type
-          description: URI referentie naar het type fout, bedoeld voor developers
-          type: string
-        code:
-          title: Code
-          description: Systeemcode die het type fout aangeeft
-          type: string
-          minLength: 1
-        title:
-          title: Title
-          description: Generieke titel voor het type fout
-          type: string
-          minLength: 1
-        status:
-          title: Status
-          description: De HTTP status code
-          type: integer
-        detail:
-          title: Detail
-          description: Extra informatie bij de fout, indien beschikbaar
-          type: string
-          minLength: 1
-        instance:
-          title: Instance
-          description: URI met referentie naar dit specifiek voorkomen van de fout.
-            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
-          type: string
-          minLength: 1
-    FieldValidationError:
-      required:
-      - name
-      - code
-      - reason
-      type: object
-      properties:
-        name:
-          title: Name
-          description: Naam van het veld met ongeldige gegevens
-          type: string
-          minLength: 1
-        code:
-          title: Code
-          description: Systeemcode die het type fout aangeeft
-          type: string
-          minLength: 1
-        reason:
-          title: Reason
-          description: Uitleg wat er precies fout is met de gegevens
-          type: string
-          minLength: 1
-    ValidatieFout:
-      required:
-      - code
-      - title
-      - status
-      - detail
-      - instance
-      - invalidParams
-      type: object
-      properties:
-        type:
-          title: Type
-          description: URI referentie naar het type fout, bedoeld voor developers
-          type: string
-        code:
-          title: Code
-          description: Systeemcode die het type fout aangeeft
-          type: string
-          minLength: 1
-        title:
-          title: Title
-          description: Generieke titel voor het type fout
-          type: string
-          minLength: 1
-        status:
-          title: Status
-          description: De HTTP status code
-          type: integer
-        detail:
-          title: Detail
-          description: Extra informatie bij de fout, indien beschikbaar
-          type: string
-          minLength: 1
-        instance:
-          title: Instance
-          description: URI met referentie naar dit specifiek voorkomen van de fout.
-            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
-          type: string
-          minLength: 1
-        invalidParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldValidationError'
-    ContactgegevensForeignkey:
-      description: De contact gegevens van de huidige organisatie.
-      required:
+      - organisaties
+      - partijIdentificator
+      - personen
+      - url
       - uuid
+    ContactgegevensForeignkey:
       type: object
       properties:
         uuid:
-          title: Uuid
-          description: Unieke (technische) identificatiecode van de contact gegevens.
           type: string
           format: uuid
+          description: Unieke (technische) identificatiecode van de contact gegevens.
         url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
           type: string
           format: uri
           readOnly: true
-          maxLength: 1000
-          minLength: 1
-    OrganisatieAdres:
-      description: De adres gegevens van een organisatie.
+          description: De unieke URL van deze contactgegevens binnen deze API.
       required:
-      - adresregel1
-      - adresregel2
-      - adresregel3
-      - land
+      - url
+      - uuid
+    GeslachtEnum:
+      enum:
+      - m
+      - v
+      - o
+      type: string
+      description: |-
+        * `m` - Man
+        * `v` - Vrouw
+        * `o` - Overig
+    Organisatie:
       type: object
+      description: |-
+        Set gegevensgroepdata from validated nested data.
+
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
       properties:
-        adresregel1:
-          title: Adresregel 1
-          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
+        uuid:
           type: string
-          maxLength: 80
-          minLength: 1
-        adresregel2:
-          title: Adresregel 2
-          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de organisatie.
+        url:
           type: string
-          maxLength: 80
-          minLength: 1
-        adresregel3:
-          title: Adresregel 3
-          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze actor binnen deze API.
+        contactgegevens:
+          allOf:
+          - $ref: '#/components/schemas/ContactgegevensForeignkey'
+          description: De contact gegevens van de huidige organisatie.
+        handelsnaam:
           type: string
-          maxLength: 80
-          minLength: 1
+          description: De naam waaronder een bedrijf of vestiging handelt.
+          maxLength: 255
+        oprichtingsdatum:
+          type: string
+          format: date
+          nullable: true
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        opheffingsdatum:
+          type: string
+          format: date
+          nullable: true
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        adres:
+          allOf:
+          - $ref: '#/components/schemas/OrganisatieAdres'
+          nullable: true
+          description: De adres gegevens van een organisatie.
         land:
-          title: Land
+          type: string
           description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          type: string
           maxLength: 4
           minLength: 4
-      nullable: true
-    Organisatie:
       required:
       - contactgegevens
       - handelsnaam
+      - url
+      - uuid
+    OrganisatieAdres:
       type: object
+      description: |-
+        Generate a serializer out of a GegevensGroepType.
+
+        Usage::
+
+        >>> class VerlengingSerializer(GegevensGroepSerializer):
+        ...     class Meta:
+        ...         model = Zaak
+        ...         gegevensgroep = 'verlenging'
+        >>>
+
+        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
-        uuid:
-          title: Uuid
-          description: Unieke (technische) identificatiecode van de organisatie.
+        adresregel1:
           type: string
-          format: uuid
-          readOnly: true
-        url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
+        adresregel2:
           type: string
-          format: uri
-          readOnly: true
-          maxLength: 1000
-          minLength: 1
-        contactgegevens:
-          $ref: '#/components/schemas/ContactgegevensForeignkey'
-        handelsnaam:
-          title: Handelsnaam
-          description: De naam waaronder een bedrijf of vestiging handelt.
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
+        adresregel3:
           type: string
-          maxLength: 255
-          minLength: 1
-        oprichtingsdatum:
-          title: Oprichtingsdatum
-          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
-            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21'
-          type: string
-          format: date
-          nullable: true
-        opheffingsdatum:
-          title: Opheffingsdatum
-          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
-            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21'
-          type: string
-          format: date
-          nullable: true
-        adres:
-          $ref: '#/components/schemas/OrganisatieAdres'
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
         land:
-          title: Land
+          type: string
           description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          type: string
           maxLength: 4
           minLength: 4
-    PersoonAdres:
-      description: De adres gegevens van een organisatie.
       required:
       - adresregel1
       - adresregel2
       - adresregel3
       - land
+    OrganisatieForeignkey:
       type: object
       properties:
-        adresregel1:
-          title: Adresregel 1
-          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
+        uuid:
           type: string
-          maxLength: 80
-          minLength: 1
-        adresregel2:
-          title: Adresregel 2
-          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        url:
           type: string
-          maxLength: 80
-          minLength: 1
-        adresregel3:
-          title: Adresregel 3
-          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze actor binnen deze API.
+      required:
+      - url
+      - uuid
+    PaginatedContactgegevensList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
           type: string
-          maxLength: 80
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contactgegevens'
+    PaginatedOrganisatieList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisatie'
+    PaginatedPersoonList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Persoon'
+    PatchedContactgegevens:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de contact gegevens.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze contactgegevens binnen deze API.
+        organisaties:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisatieForeignkey'
+          readOnly: true
+          description: De gekoppelde organisaties
+        personen:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersoonForeignkey'
+          readOnly: true
+          description: De gekoppelde personen
+        partijIdentificator:
+          type: string
+          description: URL-referentie naar de PartijIdentificator (in de Contactgegevens
+            API).
+          maxLength: 200
           minLength: 1
+    PatchedOrganisatie:
+      type: object
+      description: |-
+        Set gegevensgroepdata from validated nested data.
+
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de organisatie.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze actor binnen deze API.
+        contactgegevens:
+          allOf:
+          - $ref: '#/components/schemas/ContactgegevensForeignkey'
+          description: De contact gegevens van de huidige organisatie.
+        handelsnaam:
+          type: string
+          description: De naam waaronder een bedrijf of vestiging handelt.
+          maxLength: 255
+        oprichtingsdatum:
+          type: string
+          format: date
+          nullable: true
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        opheffingsdatum:
+          type: string
+          format: date
+          nullable: true
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        adres:
+          allOf:
+          - $ref: '#/components/schemas/OrganisatieAdres'
+          nullable: true
+          description: De adres gegevens van een organisatie.
         land:
-          title: Land
+          type: string
           description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          type: string
           maxLength: 4
           minLength: 4
-      nullable: true
+    PatchedPersoon:
+      type: object
+      description: |-
+        Set gegevensgroepdata from validated nested data.
+
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van het persoon.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze organisatie binnen deze API.
+        contactgegevens:
+          allOf:
+          - $ref: '#/components/schemas/ContactgegevensForeignkey'
+          description: De contact gegevens van het huidige persoon.
+        geboortedatum:
+          type: string
+          format: date
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        overlijdensdatum:
+          type: string
+          format: date
+          nullable: true
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        geslachtsnaam:
+          type: string
+          description: De (geslachts)naam waarvan de eventueel aanwezige voorvoegsels
+            zijn afgesplitst. Gebruik van de wildcard is toegestaan bij invoer van
+            ten minste 3 letters. Zoeken met tekstvelden is case-insensitive.
+          maxLength: 200
+        geslacht:
+          description: |-
+            Geeft aan dat de persoon een man of een vrouw is, of dat het geslacht (nog) onbekend is.
+
+            * `m` - Man
+            * `v` - Vrouw
+            * `o` - Overig
+          oneOf:
+          - $ref: '#/components/schemas/GeslachtEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        voorvoegsel:
+          type: string
+          description: Deel van de geslachtsnaam dat vooraf gaat aan de rest van de
+            geslachtsnaam. Zoeken met tekstvelden is case-insensitive.
+          maxLength: 10
+        voornamen:
+          type: string
+          description: De verzameling namen die, gescheiden door spaties, aan de geslachtsnaam
+            voorafgaat. Gebruik van de wildcard is toegestaan. Zoeken met tekstvelden
+            is case-insensitive.
+          maxLength: 200
+        adres:
+          allOf:
+          - $ref: '#/components/schemas/PersoonAdres'
+          nullable: true
+          description: De adres gegevens van een organisatie.
+        land:
+          type: string
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
+            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
+          maxLength: 4
+          minLength: 4
     Persoon:
+      type: object
+      description: |-
+        Set gegevensgroepdata from validated nested data.
+
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van het persoon.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze organisatie binnen deze API.
+        contactgegevens:
+          allOf:
+          - $ref: '#/components/schemas/ContactgegevensForeignkey'
+          description: De contact gegevens van het huidige persoon.
+        geboortedatum:
+          type: string
+          format: date
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        overlijdensdatum:
+          type: string
+          format: date
+          nullable: true
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        geslachtsnaam:
+          type: string
+          description: De (geslachts)naam waarvan de eventueel aanwezige voorvoegsels
+            zijn afgesplitst. Gebruik van de wildcard is toegestaan bij invoer van
+            ten minste 3 letters. Zoeken met tekstvelden is case-insensitive.
+          maxLength: 200
+        geslacht:
+          description: |-
+            Geeft aan dat de persoon een man of een vrouw is, of dat het geslacht (nog) onbekend is.
+
+            * `m` - Man
+            * `v` - Vrouw
+            * `o` - Overig
+          oneOf:
+          - $ref: '#/components/schemas/GeslachtEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        voorvoegsel:
+          type: string
+          description: Deel van de geslachtsnaam dat vooraf gaat aan de rest van de
+            geslachtsnaam. Zoeken met tekstvelden is case-insensitive.
+          maxLength: 10
+        voornamen:
+          type: string
+          description: De verzameling namen die, gescheiden door spaties, aan de geslachtsnaam
+            voorafgaat. Gebruik van de wildcard is toegestaan. Zoeken met tekstvelden
+            is case-insensitive.
+          maxLength: 200
+        adres:
+          allOf:
+          - $ref: '#/components/schemas/PersoonAdres'
+          nullable: true
+          description: De adres gegevens van een organisatie.
+        land:
+          type: string
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
+            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
+          maxLength: 4
+          minLength: 4
       required:
       - contactgegevens
       - geboortedatum
       - geslachtsnaam
+      - url
+      - uuid
+    PersoonAdres:
+      type: object
+      description: |-
+        Generate a serializer out of a GegevensGroepType.
+
+        Usage::
+
+        >>> class VerlengingSerializer(GegevensGroepSerializer):
+        ...     class Meta:
+        ...         model = Zaak
+        ...         gegevensgroep = 'verlenging'
+        >>>
+
+        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
+      properties:
+        adresregel1:
+          type: string
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
+        adresregel2:
+          type: string
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
+        adresregel3:
+          type: string
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
+        land:
+          type: string
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
+            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
+          maxLength: 4
+          minLength: 4
+      required:
+      - adresregel1
+      - adresregel2
+      - adresregel3
+      - land
+    PersoonForeignkey:
       type: object
       properties:
         uuid:
-          title: Uuid
-          description: Unieke (technische) identificatiecode van het persoon.
           type: string
           format: uuid
-          readOnly: true
+          description: Unieke (technische) identificatiecode van het persoon.
         url:
-          title: Url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
           type: string
           format: uri
           readOnly: true
-          maxLength: 1000
-          minLength: 1
-        contactgegevens:
-          $ref: '#/components/schemas/ContactgegevensForeignkey'
-        geboortedatum:
-          title: Geboortedatum
-          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
-            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21'
-          type: string
-          format: date
-        overlijdensdatum:
-          title: Overlijdensdatum
-          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
-            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21'
-          type: string
-          format: date
-          nullable: true
-        geslachtsnaam:
-          title: Geslachtsnaam
-          description: De (geslachts)naam waarvan de eventueel aanwezige voorvoegsels
-            zijn afgesplitst. Gebruik van de wildcard is toegestaan bij invoer van
-            ten minste 3 letters. Zoeken met tekstvelden is case-insensitive.
-          type: string
-          maxLength: 200
-          minLength: 1
-        geslacht:
-          title: Geslacht
-          description: Geeft aan dat de persoon een man of een vrouw is, of dat het
-            geslacht (nog) onbekend is.
-          type: string
-          enum:
-          - m
-          - v
-          - o
-        voorvoegsel:
-          title: Voorvoegsel
-          description: Deel van de geslachtsnaam dat vooraf gaat aan de rest van de
-            geslachtsnaam. Zoeken met tekstvelden is case-insensitive.
-          type: string
-          maxLength: 10
-        voornamen:
-          title: Voornamen
-          description: De verzameling namen die, gescheiden door spaties, aan de geslachtsnaam
-            voorafgaat. Gebruik van de wildcard is toegestaan. Zoeken met tekstvelden
-            is case-insensitive.
-          type: string
-          maxLength: 200
-        adres:
-          $ref: '#/components/schemas/PersoonAdres'
-        land:
-          title: Land
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          type: string
-          maxLength: 4
-          minLength: 4
+          description: De unieke URL van deze persoon binnen deze API.
+      required:
+      - url
+      - uuid
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
