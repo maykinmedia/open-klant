@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
@@ -10,40 +11,35 @@ from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
 
 
+@extend_schema(tags=["organisaties"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle organisaties opvragen.",
+        description="Alle organisaties opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek organisatie opvragen.",
+        description="Een specifiek organisatie opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een organisatie aan.",
+        description="Maak een organisatie aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een organisatie in zijn geheel bij.",
+        description="Werk een organisatie in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een organisatie deels bij.",
+        description="Werk een organisatie deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een organisatie.",
+        description="Verwijder een organisatie.",
+    ),
+)
 class OrganisatieViewSet(viewsets.ModelViewSet):
-    """
-    De contact gegevens van een specifieke organisatie
-
-    create:
-    Maak een organisatie aan.
-
-    Maak een organisatie aan.
-
-    list:
-    Alle organisaties opvragen.
-
-    Alle organisaties opvragen.
-
-    retrieve:
-    Een specifiek organisatie opvragen.
-
-    Een specifiek organisatie opvragen.
-
-    update:
-    Werk een organisatie in zijn geheel bij.
-
-    Werk een organisatie in zijn geheel bij.
-
-    partial_update:
-    Werk een organisatie deels bij.
-
-    Werk een organisatie deels bij.
-
-    destroy:
-    Verwijder een organisatie.
-
-    Verwijder een organisatie.
-    """
+    """De contact gegevens van een specifieke organisatie"""
 
     queryset = Organisatie.objects.order_by("-pk")
     serializer_class = OrganisatieSerializer
@@ -53,40 +49,35 @@ class OrganisatieViewSet(viewsets.ModelViewSet):
     permission_classes = (TokenPermissions,)
 
 
+@extend_schema(tags=["personen"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle personen opvragen.",
+        description="Alle personen opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek persoon opvragen.",
+        description="Een specifiek persoon opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een persoon aan.",
+        description="Maak een persoon aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een persoon in zijn geheel bij.",
+        description="Werk een persoon in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een persoon deels bij.",
+        description="Werk een persoon deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een persoon.",
+        description="Verwijder een persoon.",
+    ),
+)
 class PersoonViewSet(viewsets.ModelViewSet):
-    """
-    De contact gegevens van een specifieke persoon
-
-    create:
-    Maak een persoon aan.
-
-    Maak een persoon aan.
-
-    list:
-    Alle personen opvragen.
-
-    Alle personen opvragen.
-
-    retrieve:
-    Een specifiek persoon opvragen.
-
-    Een specifiek persoon opvragen.
-
-    update:
-    Werk een persoon in zijn geheel bij.
-
-    Werk een persoon in zijn geheel bij.
-
-    partial_update:
-    Werk een persoon deels bij.
-
-    Werk een persoon deels bij.
-
-    destroy:
-    Verwijder een persoon.
-
-    Verwijder een persoon.
-    """
+    """De contact gegevens van een specifieke persoon"""
 
     queryset = Persoon.objects.order_by("-pk")
     serializer_class = PersoonSerializer

@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
@@ -23,43 +24,37 @@ from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.mixins import ExpandMixin
 
 
-class KlantcontactViewSet(
-    ExpandMixin,
-    viewsets.ModelViewSet,
-):
+@extend_schema(tags=["klanten contacten"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle klanten contacten opvragen.",
+        description="Alle klanten contacten opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek klant contact opvragen.",
+        description="Een specifiek klant contact opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een klant contact aan.",
+        description="Maak een klant contact aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een klant contact in zijn geheel bij.",
+        description="Werk een klant contact in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een klant contact deels bij.",
+        description="Werk een klant contact deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een klant contact.",
+        description="Verwijder een klant contact.",
+    ),
+)
+class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     """
     Contact tussen een klant of een vertegenwoordiger van een
     klant en de gemeente over een onderwerp.
-
-    create:
-    Maak een klant contact aan.
-
-    Maak een klant contact aan.
-
-    list:
-    Alle klanten contacten opvragen.
-
-    Alle klanten contacten opvragen.
-
-    retrieve:
-    Een specifiek klant contact opvragen.
-
-    Een specifiek klant contact opvragen.
-
-    update:
-    Werk een klant contact in zijn geheel bij.
-
-    Werk een klant contact in zijn geheel bij.
-
-    partial_update:
-    Werk een klant contact deels bij.
-
-    Werk een klant contact deels bij.
-
-    destroy:
-    Verwijder een klant contact.
-
-    Verwijder een klant contact.
     """
 
     queryset = Klantcontact.objects.order_by("-pk").prefetch_related(
@@ -76,42 +71,39 @@ class KlantcontactViewSet(
     permission_classes = (TokenPermissions,)
 
 
+@extend_schema(tags=["betrokkenen"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle betrokkenen opvragen.",
+        description="Alle betrokkenen opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek betrokkene opvragen.",
+        description="Een specifiek betrokkene opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een betrokkene aan.",
+        description="Maak een betrokkene aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een betrokkene in zijn geheel bij.",
+        description="Werk een betrokkene in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een betrokkene deels bij.",
+        description="Werk een betrokkene deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een betrokkene.",
+        description="Verwijder een betrokkene.",
+    ),
+)
 class BetrokkeneViewSet(viewsets.ModelViewSet):
     """
     Ofwel betrokkenheid van een partij bij een klantcontact, eventueel aangevuld met
     specifiek voor opvolging van dat klantcontact te gebruiken contactgegevens, ofwel
     voor opvolging van een klantcontact te gebruiken contactgegevens van een tijdens
     dat klantcontact niet als partij gekende persoon.
-
-    create:
-    Maak een betrokkene aan.
-
-    Maak een betrokkene aan.
-
-    list:
-    Alle betrokkeneen opvragen.
-
-    Alle betrokkeneen opvragen.
-
-    retrieve:
-    Een specifiek betrokkene opvragen.
-
-    Een specifiek betrokkene opvragen.
-
-    update:
-    Werk een betrokkene in zijn geheel bij.
-
-    Werk een betrokkene in zijn geheel bij.
-
-    partial_update:
-    Werk een betrokkene deels bij.
-
-    Werk een betrokkene deels bij.
-
-    destroy:
-    Verwijder een betrokkene.
-
-    Verwijder een betrokkene.
     """
 
     queryset = (
@@ -130,39 +122,34 @@ class BetrokkeneViewSet(viewsets.ModelViewSet):
     permission_classes = (TokenPermissions,)
 
 
+@extend_schema(tags=["onderwerpobjecten"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle onderwerpobject opvragen.",
+        description="Alle onderwerpobject opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek onderwerpobject opvragen.",
+        description="Een specifiek onderwerpobject opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een onderwerpobject aan.",
+        description="Maak een onderwerpobject aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een onderwerpobject in zijn geheel bij.",
+        description="Werk een onderwerpobject in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een onderwerpobject deels bij.",
+        description="Werk een onderwerpobject deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een onderwerpobject.",
+        description="Verwijder een onderwerpobject.",
+    ),
+)
 class OnderwerpobjectViewSet(viewsets.ModelViewSet):
-    """
-    create:
-    Maak een onderwerpobject aan.
-
-    Maak een onderwerpobject aan.
-
-    list:
-    Alle onderwerpobjecten opvragen.
-
-    Alle onderwerpobjecten opvragen.
-
-    retrieve:
-    Een specifiek onderwerpobject opvragen.
-
-    Een specifiek onderwerpobject opvragen.
-
-    update:
-    Werk een onderwerpobject in zijn geheel bij.
-
-    Werk een onderwerpobject in zijn geheel bij.
-
-    partial_update:
-    Werk een onderwerpobject deels bij.
-
-    Werk een onderwerpobject deels bij.
-
-    destroy:
-    Verwijder een onderwerpobject.
-
-    Verwijder een onderwerpobject.
-    """
-
     queryset = Onderwerpobject.objects.order_by("-pk").select_related(
         "klantcontact",
         "was_klantcontact",
@@ -180,39 +167,34 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
     permission_classes = (TokenPermissions,)
 
 
+@extend_schema(tags=["bijlagen"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle bijlagen opvragen.",
+        description="Alle bijlagen opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek bijlage opvragen.",
+        description="Een specifiek bijlage opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een bijlage aan.",
+        description="Maak een bijlage aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een bijlage in zijn geheel bij.",
+        description="Werk een bijlage in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een bijlage deels bij.",
+        description="Werk een bijlage deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een bijlage.",
+        description="Verwijder een bijlage.",
+    ),
+)
 class BijlageViewSet(viewsets.ModelViewSet):
-    """
-    create:
-    Maak een bijlage aan.
-
-    Maak een bijlage aan.
-
-    list:
-    Alle bijlagen opvragen.
-
-    Alle bijlagen opvragen.
-
-    retrieve:
-    Een specifiek bijlage opvragen.
-
-    Een specifiek bijlage opvragen.
-
-    update:
-    Werk een bijlage in zijn geheel bij.
-
-    Werk een bijlage in zijn geheel bij.
-
-    partial_update:
-    Werk een bijlage deels bij.
-
-    Werk een bijlage deels bij.
-
-    destroy:
-    Verwijder een bijlage.
-
-    Verwijder een bijlage.
-    """
-
     queryset = Bijlage.objects.order_by("-pk").select_related("klantcontact")
     serializer_class = BijlageSerializer
     lookup_field = "uuid"

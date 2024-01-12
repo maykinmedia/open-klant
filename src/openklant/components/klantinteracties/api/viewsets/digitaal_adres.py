@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
@@ -9,40 +10,37 @@ from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
 
 
+@extend_schema(tags=["digitale adressen"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle digitale adressen opvragen.",
+        description="Alle digitale adressen opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek digitaal adres opvragen.",
+        description="Een specifiek digitaal adres opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een digitaal adres aan.",
+        description="Maak een digitaal adres aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een digitaal adres in zijn geheel bij.",
+        description="Werk een digitaal adres in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een digitaal adres deels bij.",
+        description="Werk een digitaal adres deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een digitaal adres.",
+        description="Verwijder een digitaal adres.",
+    ),
+)
 class DigitaalAdresViewSet(viewsets.ModelViewSet):
     """
     Digitaal adres dat een betrokkene bij klantcontact verstrekte
     voor gebruik bij opvolging van een klantcontact.
-
-    create:
-    Maak een digitaal adres aan.
-
-    Maak een digitaal adres aan.
-
-    list:
-    Alle digitale adressen opvragen.
-
-    Alle digitale adressen opvragen.
-
-    retrieve:
-    Een specifiek digitaal adres opvragen.
-
-    Een specifiek digitaal adres opvragen.
-
-    update:
-    Werk een digitaal adres in zijn geheel bij.
-
-    Werk een digitaal adres in zijn geheel bij.
-
-    partial_update:
-    Werk een digitaal adres deels bij.
-
-    Werk een digitaal adres deels bij.
-
-    destroy:
-    Verwijder een digitaal adres.
-
-    Verwijder een digitaal adres.
     """
 
     queryset = DigitaalAdres.objects.order_by("-pk").select_related(
