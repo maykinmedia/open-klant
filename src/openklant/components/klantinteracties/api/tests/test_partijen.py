@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import status
 from vng_api_common.tests import reverse
 
@@ -5,6 +7,7 @@ from openklant.components.klantinteracties.models.tests.factories.digitaal_adres
     DigitaalAdresFactory,
 )
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
+    CategorieFactory,
     ContactpersoonFactory,
     OrganisatieFactory,
     PartijFactory,
@@ -1721,6 +1724,139 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         list_url = reverse("klantinteracties:partijidentificator-list")
+        response = self.client.get(list_url)
+        data = response.json()
+        self.assertEqual(data["count"], 0)
+
+
+class CategorieTests(APITestCase):
+    def test_list_categorie(self):
+        list_url = reverse("klantinteracties:categorie-list")
+        CategorieFactory.create_batch(2)
+
+        response = self.client.get(list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+        self.assertEqual(len(data["results"]), 2)
+
+    def test_read_categorie(self):
+        partij_identificator = CategorieFactory.create()
+        detail_url = reverse(
+            "klantinteracties:categorie-detail",
+            kwargs={"uuid": str(partij_identificator.uuid)},
+        )
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_categorie(self):
+        list_url = reverse("klantinteracties:categorie-list")
+        partij = PartijFactory.create()
+        data = {
+            "partij": {"uuid": str(partij.uuid)},
+            "naam": "naam",
+            "beginDatum": "2024-01-11",
+            "eindDatum": "2024-01-12",
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+
+        self.assertEqual(data["partij"]["uuid"], str(partij.uuid))
+        self.assertEqual(data["naam"], "naam")
+        self.assertEqual(data["beginDatum"], "2024-01-11")
+        self.assertEqual(data["eindDatum"], "2024-01-12")
+
+        with self.subTest("fill_begin_datum_when_empty_with_todays_date"):
+            today = datetime.datetime.today().strftime("%Y-%m-%d")
+            data["beginDatum"] = None
+
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            data = response.json()
+
+            self.assertEqual(data["beginDatum"], today)
+
+    def test_update_categorie(self):
+        partij, partij2 = PartijFactory.create_batch(2)
+        categorie = CategorieFactory.create(
+            partij=partij, naam="naam", begin_datum="2024-01-10", eind_datum=None
+        )
+
+        detail_url = reverse(
+            "klantinteracties:categorie-detail",
+            kwargs={"uuid": str(categorie.uuid)},
+        )
+        response = self.client.get(detail_url)
+        data = response.json()
+
+        self.assertEqual(data["partij"]["uuid"], str(partij.uuid))
+        self.assertEqual(data["naam"], "naam")
+        self.assertEqual(data["beginDatum"], "2024-01-10")
+        self.assertIsNone(data["eindDatum"])
+
+        data = {
+            "partij": {"uuid": str(partij2.uuid)},
+            "naam": "changed",
+            "beginDatum": "2024-01-11",
+            "eindDatum": "2024-01-12",
+        }
+
+        response = self.client.put(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        self.assertEqual(data["partij"]["uuid"], str(partij2.uuid))
+        self.assertEqual(data["naam"], "changed")
+        self.assertEqual(data["beginDatum"], "2024-01-11")
+        self.assertEqual(data["eindDatum"], "2024-01-12")
+
+    def test_partial_update_categorie(self):
+        partij = PartijFactory.create()
+        categorie = CategorieFactory.create(
+            partij=partij,
+            naam="naam",
+            begin_datum="2024-01-10",
+            eind_datum=None,
+        )
+
+        detail_url = reverse(
+            "klantinteracties:categorie-detail",
+            kwargs={"uuid": str(categorie.uuid)},
+        )
+        response = self.client.get(detail_url)
+        data = response.json()
+
+        self.assertEqual(data["partij"]["uuid"], str(partij.uuid))
+        self.assertEqual(data["naam"], "naam")
+        self.assertEqual(data["beginDatum"], "2024-01-10")
+        self.assertIsNone(data["eindDatum"])
+
+        data = {"naam": "changed"}
+
+        response = self.client.patch(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        self.assertEqual(data["partij"]["uuid"], str(partij.uuid))
+        self.assertEqual(data["naam"], "changed")
+        self.assertEqual(data["beginDatum"], "2024-01-10")
+        self.assertIsNone(data["eindDatum"])
+
+    def test_destroy_partij_identificator(self):
+        categorie = CategorieFactory.create()
+        detail_url = reverse(
+            "klantinteracties:categorie-detail",
+            kwargs={"uuid": str(categorie.uuid)},
+        )
+        response = self.client.delete(detail_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        list_url = reverse("klantinteracties:categorie-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)

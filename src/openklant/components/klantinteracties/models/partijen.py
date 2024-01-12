@@ -106,6 +106,57 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         return super().save(*args, **kwargs)
 
 
+class Categorie(models.Model):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van de Categorie."),
+    )
+    partij = models.ForeignKey(
+        "klantinteracties.Partij",
+        on_delete=models.CASCADE,
+        verbose_name=_("partij"),
+        help_text=_("De 'Categorie' van een 'Partij'."),
+        null=True,
+        blank=True,
+    )
+    naam = models.CharField(
+        _("naam"),
+        help_text=_("Naam van de categorie."),
+        max_length=80,
+        blank=True,
+    )
+    begin_datum = models.DateField(
+        _("begin datum"),
+        editable=True,
+        null=True,
+        blank=True,
+        help_text=_(
+            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard. "
+            "Een datum wordt genoteerd van het meest naar het minst "
+            "significante onderdeel. Een voorbeeld: 2022-02-21"
+        ),
+    )
+    eind_datum = models.DateField(
+        _("eind datum"),
+        editable=True,
+        null=True,
+        blank=True,
+        help_text=_(
+            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard. "
+            "Een datum wordt genoteerd van het meest naar het minst "
+            "significante onderdeel. Een voorbeeld: 2022-02-21"
+        ),
+    )
+
+    class Meta:
+        verbose_name = _("categorie")
+        verbose_name_plural = _("categorieën")
+
+    def __str__(self):
+        return self.naam
+
+
 class Organisatie(models.Model):
     partij = models.OneToOneField(
         Partij,

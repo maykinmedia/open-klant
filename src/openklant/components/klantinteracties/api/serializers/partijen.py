@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
@@ -18,6 +20,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     BetrokkeneForeignKeySerializer,
 )
 from openklant.components.klantinteracties.api.validators import (
+    categorie_exists,
     partij_exists,
     partij_identificator_exists,
     partij_is_organisatie,
@@ -25,6 +28,7 @@ from openklant.components.klantinteracties.api.validators import (
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.partijen import (
+    Categorie,
     Contactpersoon,
     Organisatie,
     Partij,
@@ -41,6 +45,7 @@ class PartijForeignkeyBaseSerializer(serializers.HyperlinkedModelSerializer):
             "url",
         )
         extra_kwargs = {
+            "uuid": {"required": True, "validators": [partij_exists]},
             "url": {
                 "view_name": "klantinteracties:partij-detail",
                 "lookup_field": "uuid",
@@ -54,6 +59,22 @@ class PartijForeignKeySerializer(PartijForeignkeyBaseSerializer):
         extra_kwargs = {
             **PartijForeignkeyBaseSerializer.Meta.extra_kwargs,
             "uuid": {"required": True, "validators": [partij_exists]},
+        }
+
+
+class CategorieForeignKeySerializer(serializers.HyperlinkedModelSerializer):
+    """Let op: Dit attribuut is EXPERIMENTEEL."""
+
+    class Meta:
+        model = Categorie
+        fields = ("uuid", "url")
+        extra_kwargs = {
+            "uuid": {"required": True, "validators": [categorie_exists]},
+            "url": {
+                "view_name": "klantinteracties:categorie-detail",
+                "lookup_field": "uuid",
+                "help_text": _("De unieke URL van deze categorie binnen deze API."),
+            },
         }
 
 
@@ -105,6 +126,67 @@ class CorrespondentieadresSerializer(GegevensGroepSerializer):
         model = Partij
         gegevensgroep = "correspondentieadres"
         ref_name = "PartijCorrespondentieadres"
+
+
+class CategorieSerializer(serializers.HyperlinkedModelSerializer):
+    """Let op: Dit endpoint is EXPERIMENTEEL."""
+
+    partij = PartijForeignkeyBaseSerializer(
+        required=True,
+        allow_null=True,
+        help_text=_("De partij waar de categorie aan gelinkt is."),
+    )
+    begin_datum = serializers.DateField(
+        allow_null=True,
+        help_text=_(
+            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard. "
+            "Een datum wordt genoteerd van het meest naar het minst "
+            "significante onderdeel. Een voorbeeld: 2022-02-21"
+        ),
+    )
+
+    class Meta:
+        model = Categorie
+        fields = (
+            "uuid",
+            "url",
+            "partij",
+            "naam",
+            "begin_datum",
+            "eind_datum",
+        )
+        extra_kwargs = {
+            "uuid": {"read_only": True},
+            "url": {
+                "view_name": "klantinteracties:categorie-detail",
+                "lookup_field": "uuid",
+                "help_text": _("De unieke URL van deze categorie binnen deze API."),
+            },
+        }
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        if "partij" in validated_data:
+            if partij := validated_data.pop("partij", None):
+                partij = Partij.objects.get(uuid=str(partij.get("uuid")))
+
+            validated_data["partij"] = partij
+
+        return super().update(instance, validated_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        if not validated_data.get("begin_datum"):
+            validated_data["begin_datum"] = datetime.datetime.today().strftime(
+                "%Y-%m-%d"
+            )
+
+        if partij := validated_data.pop("partij"):
+            partij = Partij.objects.get(uuid=str(partij.get("uuid")))
+
+        validated_data["partij"] = partij
+
+        return super().create(validated_data)
 
 
 class OrganisatieSerializer(serializers.ModelSerializer):
@@ -273,6 +355,14 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         many=True,
         source="betrokkene_set",
     )
+    categorieen = CategorieForeignKeySerializer(
+        read_only=True,
+        help_text=_(
+            "De Categorieën van een partij: Let op: Dit attribuut is EXPERIMENTEEL."
+        ),
+        many=True,
+        source="categorie_set",
+    )
     digitale_adressen = DigitaalAdresForeignKeySerializer(
         required=True,
         allow_null=True,
@@ -325,6 +415,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         # 1 level
         "digitale_adressen": f"{SERIALIZER_PATH}.digitaal_adres.DigitaalAdresSerializer",
         "betrokkenen": f"{SERIALIZER_PATH}.klantcontacten.BetrokkeneSerializer",
+        "categorieen": f"{SERIALIZER_PATH}.partijen.CategorieSerializer",
         # 2 levels
         "betrokkenen.had_klantcontact": f"{SERIALIZER_PATH}.klantcontacten.KlantcontactSerializer",
         # 3 levels
@@ -339,6 +430,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             "nummer",
             "interne_notitie",
             "betrokkenen",
+            "categorieen",
             "digitale_adressen",
             "voorkeurs_digitaal_adres",
             "vertegenwoordigde",

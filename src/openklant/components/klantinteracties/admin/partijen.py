@@ -4,16 +4,21 @@ from django.utils.translation import gettext_lazy as _
 from ..models.constants import SoortPartij
 from ..models.digitaal_adres import DigitaalAdres
 from ..models.klantcontacten import Betrokkene
-from ..models.partijen import Contactpersoon, Organisatie, Partij, Persoon
+from ..models.partijen import Categorie, Contactpersoon, Organisatie, Partij, Persoon
 
 
-class DigitaalAdresInlineAdmin(admin.StackedInline):
-    model = DigitaalAdres
+class CategorieInlineAdmin(admin.StackedInline):
+    model = Categorie
     extra = 0
 
 
 class BetrokkeneInlineAdmin(admin.StackedInline):
     model = Betrokkene
+    extra = 0
+
+
+class DigitaalAdresInlineAdmin(admin.StackedInline):
+    model = DigitaalAdres
     extra = 0
 
 
@@ -48,6 +53,7 @@ class PartijAdmin(admin.ModelAdmin):
     )
     inlines = (
         PersoonInlineAdmin,
+        CategorieInlineAdmin,
         ContactpersoonInlineAdmin,
         OrganisatieInlineAdmin,
         DigitaalAdresInlineAdmin,

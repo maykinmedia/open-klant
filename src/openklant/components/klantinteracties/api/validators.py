@@ -13,6 +13,7 @@ from openklant.components.klantinteracties.models.klantcontacten import (
     Onderwerpobject,
 )
 from openklant.components.klantinteracties.models.partijen import (
+    Categorie,
     Contactpersoon,
     Organisatie,
     Partij,
@@ -44,6 +45,13 @@ def bijlage_exists(value):
         Bijlage.objects.get(uuid=str(value))
     except Bijlage.DoesNotExist:
         raise serializers.ValidationError(_("Bijlage object bestaat niet."))
+
+
+def categorie_exists(value):
+    try:
+        Categorie.objects.get(uuid=str(value))
+    except Categorie.DoesNotExist:
+        raise serializers.ValidationError(_("Categorie object bestaat niet."))
 
 
 def contactpersoon_exists(value):
