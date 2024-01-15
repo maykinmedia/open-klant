@@ -12,3 +12,5 @@ class LandSerializer(serializers.ModelSerializer):
             "ingangsdatum_land",
             "einddatum_land",
         ]
+
+    __doc__ = Meta.model.__doc__

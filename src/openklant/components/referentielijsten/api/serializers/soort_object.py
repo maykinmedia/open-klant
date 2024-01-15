@@ -11,3 +11,5 @@ class SoortObjectSerializer(serializers.ModelSerializer):
             "indicatie_actief",
             "naam",
         ]
+
+    __doc__ = Meta.model.__doc__

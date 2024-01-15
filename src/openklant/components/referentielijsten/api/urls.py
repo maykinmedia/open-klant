@@ -1,10 +1,14 @@
-from django.conf import settings
-from django.urls import include, path, re_path
+from django.urls import include, path
 
-from vng_api_common import routers, schema
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularJSONAPIView,
+    SpectacularRedocView,
+)
+from vng_api_common import routers
 
 from . import viewsets
-from .schema import info
+from .schema import custom_settings
 
 app_name = "referentielijsten"
 
@@ -18,26 +22,34 @@ router.register("soortenobjectid", viewsets.SoortObjectidViewSet)
 router.register("talen", viewsets.TaalViewSet)
 
 
-class SchemaView(schema.SchemaView):
-    schema_path = settings.SPEC_URL["referentielijsten"]
-    info = info
-
-
 urlpatterns = [
     path(
-        "v<version>/",
+        "v0/",
         include(
             [
                 # API documentation
-                re_path(
-                    r"^schema/openapi(?P<format>\.json|\.yaml)$",
-                    SchemaView.without_ui(cache_timeout=None),
+                path(
+                    "schema/",
+                    SpectacularRedocView.as_view(
+                        url_name=f"{app_name}:schema-yaml-referentielijsten",
+                    ),
+                    name="schema-redoc-klantinteracties",
+                ),
+                path(
+                    "schema/openapi.json",
+                    SpectacularJSONAPIView.as_view(
+                        urlconf="openklant.components.referentielijsten.api.urls",
+                        custom_settings=custom_settings,
+                    ),
                     name="schema-json-referentielijsten",
                 ),
                 path(
-                    "schema/",
-                    SchemaView.with_ui("redoc", cache_timeout=None),
-                    name="schema-redoc-klantinteracties",
+                    "schema/openapi.yaml",
+                    SpectacularAPIView.as_view(
+                        urlconf="openklant.components.referentielijsten.api.urls",
+                        custom_settings=custom_settings,
+                    ),
+                    name="schema-yaml-referentielijsten",
                 ),
                 path("", include(router.urls)),
             ]

@@ -11,3 +11,5 @@ class ExternRegisterSerializer(serializers.ModelSerializer):
             "locatie",
             "naam",
         ]
+
+    __doc__ = Meta.model.__doc__
