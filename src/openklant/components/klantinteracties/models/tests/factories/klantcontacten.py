@@ -11,7 +11,7 @@ from ...klantcontacten import Betrokkene, Bijlage, Klantcontact, Onderwerpobject
 
 class KlantcontactFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
-    nummer = "".join(random.choice("0123456789") for i in range(10))
+    nummer = factory.Sequence(lambda n: str(n))
     kanaal = factory.Faker("word")
     onderwerp = factory.Faker("word")
     inhoud = factory.Faker("word")

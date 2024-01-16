@@ -1,5 +1,3 @@
-import random
-
 import factory.fuzzy
 
 from openklant.components.klantinteracties.models.constants import Taakstatus
@@ -16,7 +14,7 @@ class InterneTaakFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
     actor = factory.SubFactory(ActorFactory)
     klantcontact = factory.SubFactory(KlantcontactFactory)
-    nummer = "".join(random.choice("0123456789") for i in range(10))
+    nummer = factory.Sequence(lambda n: str(n))
     gevraagde_handeling = factory.Faker("word")
     toelichting = factory.Faker("word")
     status = factory.fuzzy.FuzzyChoice(Taakstatus.values)

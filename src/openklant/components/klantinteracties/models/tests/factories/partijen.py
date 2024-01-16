@@ -20,7 +20,7 @@ from ...constants import SoortPartij
 class PartijFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
     voorkeurs_digitaal_adres = factory.SubFactory(DigitaalAdresFactory)
-    nummer = "".join(random.choice("0123456789") for i in range(10))
+    nummer = factory.Sequence(lambda n: str(n))
     soort_partij = factory.fuzzy.FuzzyChoice(SoortPartij.values)
     indicatie_geheimhouding = factory.Faker("pybool")
     indicatie_actief = factory.Faker("pybool")

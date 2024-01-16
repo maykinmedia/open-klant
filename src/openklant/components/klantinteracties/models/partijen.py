@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
+from vng_api_common.exceptions import Conflict
 
 from openklant.components.utils.mixins import APIMixin
 
@@ -43,6 +44,8 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         ),
         validators=[validate_integer],
         max_length=10,
+        unique=True,
+        blank=True,
     )
     interne_notitie = models.TextField(
         _("interne notitie"),
@@ -97,6 +100,17 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
                 raise ValidationError(
                     _("Het voorkeurs adres moet een gelinkte digitaal adres zijn.")
                 )
+
+    def save(self, *args, **kwargs):
+        if not self.nummer:
+            max_nummer = (
+                int(Partij.objects.aggregate(models.Max("nummer"))["nummer__max"]) or 0
+            )
+            self.nummer = str(max_nummer + 1).rjust(10, "0")
+            if len(self.nummer) > 10:
+                raise Conflict(_("Nummer mag maximaal 10 characters bevatten."))
+
+        return super().save(*args, **kwargs)
 
 
 class Organisatie(models.Model):

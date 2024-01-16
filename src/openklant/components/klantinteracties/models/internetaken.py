@@ -4,6 +4,8 @@ from django.core.validators import validate_integer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from vng_api_common.exceptions import Conflict
+
 from .actoren import Actor
 from .constants import Taakstatus
 from .klantcontacten import Klantcontact
@@ -37,6 +39,8 @@ class InterneTaak(models.Model):
         ),
         validators=[validate_integer],
         max_length=10,
+        unique=True,
+        blank=True,
     )
     gevraagde_handeling = models.CharField(
         _("gevraagde handeling"),
@@ -71,3 +75,15 @@ class InterneTaak(models.Model):
     class Meta:
         verbose_name = _("interne taak")
         verbose_name_plural = _("interne taken")
+
+    def save(self, *args, **kwargs):
+        if not self.nummer:
+            max_nummer = (
+                int(InterneTaak.objects.aggregate(models.Max("nummer"))["nummer__max"])
+                or 0
+            )
+            self.nummer = str(max_nummer + 1).rjust(10, "0")
+            if len(self.nummer) > 10:
+                raise Conflict(_("Nummer mag maximaal 10 characters bevatten."))
+
+        return super().save(*args, **kwargs)
