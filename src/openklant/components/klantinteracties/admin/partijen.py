@@ -120,11 +120,11 @@ class PartijAdmin(admin.ModelAdmin):
 
     def get_personen(self, obj):
         if persoon := obj.persoon:
-            return persoon.get_contactnaam()
+            return persoon.get_full_name()
 
     def get_contactpersonen(self, obj):
         if contactpersoon := obj.contactpersoon:
-            return contactpersoon.get_contactnaam()
+            return contactpersoon.get_full_name()
 
     def get_organisaties(self, obj):
         if organisatie := obj.organisatie:

@@ -129,10 +129,19 @@ class PersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
             "(BRP) bekende naam van de persoon."
         ),
     )
+    volledige_naam = serializers.SerializerMethodField(
+        help_text="De voledige naam van het persoon.",
+    )
 
     class Meta:
         model = Persoon
-        fields = ("contactnaam",)
+        fields = (
+            "contactnaam",
+            "volledige_naam",
+        )
+
+    def get_volledige_naam(self, obj):
+        return obj.get_full_name()
 
 
 class ContactpersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
@@ -150,6 +159,9 @@ class ContactpersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerial
             "(BRP) bekende naam van de contactpersoon."
         ),
     )
+    volledige_naam = serializers.SerializerMethodField(
+        help_text="De voledige naam van het constact persoon.",
+    )
 
     class Meta:
         model = Contactpersoon
@@ -157,7 +169,11 @@ class ContactpersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerial
             "uuid",
             "werkte_voor_partij",
             "contactnaam",
+            "volledige_naam",
         )
+
+    def get_volledige_naam(self, obj):
+        return obj.get_full_name()
 
     @transaction.atomic
     def update(self, instance, validated_data):

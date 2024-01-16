@@ -487,6 +487,7 @@ class BetrokkeneTests(APITestCase):
                 "achternaam": "Bozeman",
             },
         )
+        self.assertEqual(data["volledigeNaam"], "Phil Bozeman")
         self.assertEqual(data["rol"], "vertegenwoordiger")
         self.assertEqual(data["organisatienaam"], "Whitechapel")
         self.assertTrue(data["initiator"])
@@ -559,6 +560,7 @@ class BetrokkeneTests(APITestCase):
                 "achternaam": "Bozeman",
             },
         )
+        self.assertEqual(data["volledigeNaam"], "Phil Bozeman")
         self.assertEqual(data["rol"], "vertegenwoordiger")
         self.assertEqual(data["organisatienaam"], "Whitechapel")
         self.assertTrue(data["initiator"])
@@ -625,6 +627,7 @@ class BetrokkeneTests(APITestCase):
                 "achternaam": "Bozeman",
             },
         )
+        self.assertEqual(data["volledigeNaam"], "Phil Bozeman")
         self.assertEqual(data["rol"], "vertegenwoordiger")
         self.assertEqual(data["organisatienaam"], "Whitechapel")
         self.assertTrue(data["initiator"])
@@ -694,6 +697,7 @@ class BetrokkeneTests(APITestCase):
                 "achternaam": "changed",
             },
         )
+        self.assertEqual(data["volledigeNaam"], "changed changed changed")
         self.assertEqual(data["rol"], "klant")
         self.assertEqual(data["organisatienaam"], "changed")
         self.assertFalse(data["initiator"])
@@ -760,6 +764,7 @@ class BetrokkeneTests(APITestCase):
                 "achternaam": "Bozeman",
             },
         )
+        self.assertEqual(data["volledigeNaam"], "Phil Bozeman")
         self.assertEqual(data["rol"], "vertegenwoordiger")
         self.assertEqual(data["organisatienaam"], "Whitechapel")
         self.assertTrue(data["initiator"])
@@ -809,6 +814,7 @@ class BetrokkeneTests(APITestCase):
                 "achternaam": "Bozeman",
             },
         )
+        self.assertEqual(data["volledigeNaam"], "Phil Bozeman")
         self.assertEqual(data["rol"], "vertegenwoordiger")
         self.assertEqual(data["organisatienaam"], "Whitechapel")
         self.assertTrue(data["initiator"])
