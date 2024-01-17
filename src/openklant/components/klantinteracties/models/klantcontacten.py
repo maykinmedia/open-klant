@@ -5,9 +5,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from vng_api_common.exceptions import Conflict
-
 from openklant.components.utils.mixins import APIMixin
+from openklant.components.utils.number_generator import number_generator
 
 from .actoren import Actor
 from .constants import Klantcontrol
@@ -105,15 +104,7 @@ class Klantcontact(APIMixin, models.Model):
         verbose_name_plural = _("klantcontacten")
 
     def save(self, *args, **kwargs):
-        if not self.nummer:
-            max_nummer = (
-                int(Klantcontact.objects.aggregate(models.Max("nummer"))["nummer__max"])
-                or 0
-            )
-            self.nummer = str(max_nummer + 1).rjust(10, "0")
-            if len(self.nummer) > 10:
-                raise Conflict(_("Nummer mag maximaal 10 characters bevatten."))
-
+        number_generator(self, Klantcontact)
         return super().save(*args, **kwargs)
 
     def __str__(self):

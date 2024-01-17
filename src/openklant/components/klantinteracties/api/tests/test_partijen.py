@@ -125,24 +125,6 @@ class PartijTests(APITestCase):
             },
         )
 
-        with self.subTest("voorkeurs_adres_must_be_given_digitaal_adres_validation"):
-            data["nummer"] = "1298329192"
-            data["voorkeursDigitaalAdres"] = {"uuid": str(digitaal_adres2.uuid)}
-            response = self.client.post(list_url, data)
-
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            response_data = response.json()
-            self.assertEqual(
-                response_data["invalidParams"],
-                [
-                    {
-                        "name": "voorkeursDigitaalAdres",
-                        "code": "invalid",
-                        "reason": "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
-                    }
-                ],
-            )
-
         with self.subTest("create_partij_without_foreignkey_relations"):
             data["nummer"] = "1298329192"
             data["digitaleAdressen"] = []
@@ -224,7 +206,26 @@ class PartijTests(APITestCase):
             response_data = response.json()
             self.assertEqual(
                 response_data["detail"],
-                "Nummer mag maximaal 10 characters bevatten.",
+                "Er kon niet automatisch een opvolgend nummer worden gegenereerd. "
+                "Het maximaal aantal tekens is bereikt.",
+            )
+
+        with self.subTest("voorkeurs_adres_must_be_given_digitaal_adres_validation"):
+            data["nummer"] = "1298329194"
+            data["voorkeursDigitaalAdres"] = {"uuid": str(digitaal_adres2.uuid)}
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"],
+                [
+                    {
+                        "name": "voorkeursDigitaalAdres",
+                        "code": "invalid",
+                        "reason": "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
+                    }
+                ],
             )
 
     def test_create_persoon(self):

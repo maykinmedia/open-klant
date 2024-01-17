@@ -113,7 +113,8 @@ class KlantContactTests(APITestCase):
             response_data = response.json()
             self.assertEqual(
                 response_data["detail"],
-                "Nummer mag maximaal 10 characters bevatten.",
+                "Er kon niet automatisch een opvolgend nummer worden gegenereerd. "
+                "Het maximaal aantal tekens is bereikt.",
             )
 
     def test_create_klantcontact_with_reverse_lookup_fields(self):

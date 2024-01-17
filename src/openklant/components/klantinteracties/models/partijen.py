@@ -6,9 +6,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
-from vng_api_common.exceptions import Conflict
 
 from openklant.components.utils.mixins import APIMixin
+from openklant.components.utils.number_generator import number_generator
 
 from .constants import SoortPartij
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
@@ -102,14 +102,7 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
                 )
 
     def save(self, *args, **kwargs):
-        if not self.nummer:
-            max_nummer = (
-                int(Partij.objects.aggregate(models.Max("nummer"))["nummer__max"]) or 0
-            )
-            self.nummer = str(max_nummer + 1).rjust(10, "0")
-            if len(self.nummer) > 10:
-                raise Conflict(_("Nummer mag maximaal 10 characters bevatten."))
-
+        number_generator(self, Partij)
         return super().save(*args, **kwargs)
 
 
