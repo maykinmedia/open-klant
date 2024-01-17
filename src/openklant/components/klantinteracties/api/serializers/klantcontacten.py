@@ -189,6 +189,9 @@ class BetrokkeneSerializer(
             "in de Basisregistratie Personen (BRP) bekende naam van de betrokkene."
         ),
     )
+    volledige_naam = serializers.SerializerMethodField(
+        help_text="De voledige naam van de betrokkene.",
+    )
 
     class Meta:
         model = Betrokkene
@@ -201,6 +204,7 @@ class BetrokkeneSerializer(
             "bezoekadres",
             "correspondentieadres",
             "contactnaam",
+            "volledige_naam",
             "rol",
             "organisatienaam",
             "initiator",
@@ -213,6 +217,9 @@ class BetrokkeneSerializer(
                 "help_text": _("De unieke URL van deze betrokkene binnen deze API."),
             },
         }
+
+    def get_volledige_naam(self, obj):
+        return obj.get_full_name()
 
     @transaction.atomic
     def update(self, instance, validated_data):

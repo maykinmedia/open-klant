@@ -155,6 +155,6 @@ class KlantcontactAdmin(admin.ModelAdmin):
     @admin.display(empty_value="---")
     def betrokkene_namen(self, obj):
         if betrokkene := obj.betrokkene_set.all():
-            return [person.get_contactnaam() for person in betrokkene]
+            return [person.get_full_name() for person in betrokkene]
 
     betrokkene_namen.short_description = _("betrokkene namen")

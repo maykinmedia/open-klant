@@ -116,12 +116,13 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["partijIdentificatie"],
             {
+                "volledigeNaam": "Phil Bozeman",
                 "contactnaam": {
                     "voorletters": "P",
                     "voornaam": "Phil",
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bozeman",
-                }
+                },
             },
         )
 
@@ -185,12 +186,13 @@ class PartijTests(APITestCase):
             self.assertEqual(
                 data["partijIdentificatie"],
                 {
+                    "volledigeNaam": "Phil Bozeman",
                     "contactnaam": {
                         "voorletters": "P",
                         "voornaam": "Phil",
                         "voorvoegselAchternaam": "",
                         "achternaam": "Bozeman",
-                    }
+                    },
                 },
             )
 
@@ -268,12 +270,13 @@ class PartijTests(APITestCase):
         self.assertEqual(
             response_data["partijIdentificatie"],
             {
+                "volledigeNaam": "Phil Bozeman",
                 "contactnaam": {
                     "voorletters": "P",
                     "voornaam": "Phil",
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bozeman",
-                }
+                },
             },
         )
 
@@ -528,12 +531,13 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["partijIdentificatie"],
             {
+                "volledigeNaam": "Phil Bozeman",
                 "contactnaam": {
                     "voorletters": "P",
                     "voornaam": "Phil",
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bozeman",
-                }
+                },
             },
         )
 
@@ -619,12 +623,13 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["partijIdentificatie"],
             {
+                "volledigeNaam": "Vincent Bennette",
                 "contactnaam": {
                     "voorletters": "V",
                     "voornaam": "Vincent",
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bennette",
-                }
+                },
             },
         )
 
@@ -791,12 +796,13 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["partijIdentificatie"],
             {
+                "volledigeNaam": "Phil Bozeman",
                 "contactnaam": {
                     "voorletters": "P",
                     "voornaam": "Phil",
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bozeman",
-                }
+                },
             },
         )
 
@@ -870,12 +876,13 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["partijIdentificatie"],
             {
+                "volledigeNaam": "Vincent Bennett",
                 "contactnaam": {
                     "voorletters": "V",
                     "voornaam": "Vincent",
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bennett",
-                }
+                },
             },
         )
 
@@ -1332,6 +1339,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["partijIdentificatie"],
             {
+                "volledigeNaam": "Vincent Bennett",
                 "contactnaam": {
                     "voorletters": "V",
                     "voornaam": "Vincent",
@@ -1413,12 +1421,13 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["partijIdentificatie"],
             {
+                "volledigeNaam": "Phil Bozeman",
                 "contactnaam": {
                     "voorletters": "P",
                     "voornaam": "Phil",
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bozeman",
-                }
+                },
             },
         )
 
@@ -1467,12 +1476,13 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["partijIdentificatie"],
             {
+                "volledigeNaam": "Phil Bozeman",
                 "contactnaam": {
                     "voorletters": "P",
                     "voornaam": "Phil",
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bozeman",
-                }
+                },
             },
         )
 

@@ -197,14 +197,14 @@ class ContactnaamMixin(models.Model):
     class Meta:
         abstract = True
 
-    def get_contactnaam(self):
-        initials = self.contactnaam_voorletters
+    def get_full_name(self):
+        name_components = [
+            self.contactnaam_voornaam,
+            self.contactnaam_voorvoegsel_achternaam,
+            self.contactnaam_achternaam,
+        ]
 
-        if last_name := self.contactnaam_achternaam:
-            prefix = self.contactnaam_voorvoegsel_achternaam.lower()
-            return f"{initials}. {prefix} {last_name}"
-
-        return initials
+        return " ".join(component for component in name_components if component)
 
 
 class ObjectidentificatorMixin(models.Model):

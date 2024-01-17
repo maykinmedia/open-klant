@@ -154,8 +154,8 @@ class Betrokkene(
         verbose_name_plural = _("betrokkenen bij klantcontact")
 
     def __str__(self):
-        if self.get_contactnaam():
-            return self.get_contactnaam()
+        if self.get_full_name():
+            return self.get_full_name()
 
         return str(self.uuid)
 
