@@ -131,7 +131,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_markup",
     "solo",
-    "django_better_admin_arrayfield",
+    "django_jsonform",
     "django_loose_fk",
     # Project applications.
     "openklant",

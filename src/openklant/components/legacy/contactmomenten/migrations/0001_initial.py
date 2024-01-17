@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-import django_better_admin_arrayfield.models.fields
+import django_jsonform.models.fields
 import uuid
 import vng_api_common.fields
 import vng_api_common.models
@@ -99,7 +99,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "onderwerp_links",
-                    django_better_admin_arrayfield.models.fields.ArrayField(
+                    django_jsonform.models.fields.ArrayField(
                         base_field=models.URLField(
                             help_text="URL naar een product, webpagina of andere entiteit zodat contactmomenten gegroepeerd kunnen worden.",
                             max_length=1000,

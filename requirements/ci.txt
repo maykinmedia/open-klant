@@ -160,6 +160,7 @@ django==3.2.23
     #   django-extra-views
     #   django-filter
     #   django-jenkins
+    #   django-jsonform
     #   django-log-outgoing-requests
     #   django-loose-fk
     #   django-markup
@@ -193,11 +194,6 @@ django-axes==6.2.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-django-better-admin-arrayfield==1.4.2
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   mozilla-django-oidc-db
 django-cors-headers==4.3.1
     # via
     #   -c requirements/base.txt
@@ -218,6 +214,11 @@ django-filter==23.5
     #   django-loose-fk
 django-jenkins==0.110.0
     # via -r requirements/test-tools.in
+django-jsonform==2.21.2
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   mozilla-django-oidc-db
 django-log-outgoing-requests==0.6.0
     # via
     #   -c requirements/base.txt
@@ -455,7 +456,7 @@ mozilla-django-oidc==2.0.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
-mozilla-django-oidc-db==0.12.0
+mozilla-django-oidc-db==0.14.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

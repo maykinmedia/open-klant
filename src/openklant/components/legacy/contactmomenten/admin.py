@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
-
 from .models.contactmomenten import (
     ContactMoment,
     KlantContactMoment,
@@ -11,7 +9,7 @@ from .models.contactmomenten import (
 
 
 @admin.register(ContactMoment)
-class ContactMomentAdmin(DynamicArrayMixin, admin.ModelAdmin):
+class ContactMomentAdmin(admin.ModelAdmin):
     list_display = ["kanaal"]
 
 
