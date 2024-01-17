@@ -109,14 +109,12 @@ jobs:
 
   docker:
     needs: tests
-
-    name: Build (and push) Docker image
+    name: Docker image build
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set tag
+      - uses: actions/checkout@v3
+      - name: Determine tag/commit hash
         id: vars
         run: |
           # Strip git ref prefix from version
@@ -125,21 +123,22 @@ jobs:
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
-          echo ::set-output name=tag::${VERSION}
+          echo "tag=${VERSION}" >> $GITHUB_OUTPUT
+          echo "git_hash=${GITHUB_SHA}" >> $GITHUB_OUTPUT
       - name: Build the Docker image
-        env:
-          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-        run: docker build . --tag $IMAGE_NAME:$RELEASE_VERSION
-
-      - name: Log into registry
-        if: github.event_name == 'push'  # exclude PRs
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-
-      - name: Push the Docker image
-        if: github.event_name == 'push' && github.repository_owner == 'maykinmedia' # exclude PRs/forks
-        env:
-          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-        run: docker push $IMAGE_NAME:$RELEASE_VERSION
+        run: |
+          docker build \
+            --tag $IMAGE_NAME:${{ steps.vars.outputs.tag }} \
+            --build-arg COMMIT_HASH=${{ steps.vars.outputs.git_hash }} \
+            --build-arg RELEASE=${{ steps.vars.outputs.tag }} \
+            .
+      - run: docker image save -o image.tar $IMAGE_NAME:${{ steps.vars.outputs.tag }}
+      - name: Store image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-image
+          path: image.tar
+          retention-days: 1
 
   image_scan:
     runs-on: ubuntu-latest
@@ -167,7 +166,7 @@ jobs:
       - name: Download built image
         uses: actions/download-artifact@v3
         with:
-          name: docker-image-all-extensions-${{ steps.vars.outputs.tag }}
+          name: docker-image
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
@@ -180,3 +179,42 @@ jobs:
         with:
           sarif_file: 'trivy-results-docker.sarif'
 
+  publish:
+    needs:
+      - tests
+      - docker
+
+    name: Push Docker image
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.repository_owner == 'open-klant'  # exclude PRs/forks
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download built image
+        uses: actions/download-artifact@v3
+        with:
+          name: docker-image
+
+      - name: Determine tag/commit hash
+        id: vars
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name (if present at all)
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "main" ] && VERSION=latest
+
+          echo "tag=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Load image
+        run: |
+          docker image load -i image.tar
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Push the Docker image
+        run: docker push $IMAGE_NAME:${{ steps.vars.outputs.tag }}
