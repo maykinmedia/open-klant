@@ -106,24 +106,26 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         return super().save(*args, **kwargs)
 
 
-class Categorie(models.Model):
+class CategorieRelatie(models.Model):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
-        help_text=_("Unieke (technische) identificatiecode van de Categorie."),
+        help_text=_("Unieke (technische) identificatiecode van de Categorie Relatie."),
     )
     partij = models.ForeignKey(
         "klantinteracties.Partij",
         on_delete=models.CASCADE,
         verbose_name=_("partij"),
-        help_text=_("De 'Categorie' van een 'Partij'."),
+        help_text=_("De 'categorie relatie' van een 'Partij'."),
         null=True,
         blank=True,
     )
-    naam = models.CharField(
-        _("naam"),
-        help_text=_("Naam van de categorie."),
-        max_length=80,
+    categorie = models.ForeignKey(
+        "klantinteracties.Categorie",
+        on_delete=models.CASCADE,
+        verbose_name=_("categorie"),
+        help_text=_("De 'categorie' van deze 'categorie relatie'."),
+        null=True,
         blank=True,
     )
     begin_datum = models.DateField(
@@ -147,6 +149,32 @@ class Categorie(models.Model):
             "Een datum wordt genoteerd van het meest naar het minst "
             "significante onderdeel. Een voorbeeld: 2022-02-21"
         ),
+    )
+
+    class Meta:
+        verbose_name = _("categorie relatie")
+        verbose_name_plural = _("categorieën relatie")
+
+    def __str__(self):
+        if self.categorie and self.partij:
+            return f"{self.categorie} - ({self.partij.nummer})"
+        elif self.categorie:
+            return self.categorie.naam
+
+        return str(self.uuid)
+
+
+class Categorie(models.Model):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van de Categorie."),
+    )
+    naam = models.CharField(
+        _("naam"),
+        help_text=_("Naam van de categorie."),
+        max_length=80,
+        blank=True,
     )
 
     class Meta:

@@ -540,6 +540,153 @@ paths:
       responses:
         '204':
           description: No response body
+  /categorie-relaties:
+    get:
+      operationId: categorieRelatiesList
+      description: 'Alle categorie relaties opvragen, Let op: Dit endpoint is EXPERIMENTEEL.'
+      summary: Alle categorie relaties opvragen.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      tags:
+      - categorie relaties
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCategorieRelatieList'
+          description: ''
+    post:
+      operationId: categorieRelatiesCreate
+      description: 'Maak een categorie relatie aan, Let op: Dit endpoint is EXPERIMENTEEL.'
+      summary: Maak een categorie relatie aan.
+      tags:
+      - categorie relaties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategorieRelatie'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategorieRelatie'
+          description: ''
+  /categorie-relaties/{uuid}:
+    get:
+      operationId: categorieRelatiesRetrieve
+      description: 'Een specifiek categorie relatie opvragen, Let op: Dit endpoint
+        is EXPERIMENTEEL.'
+      summary: Een specifiek categorie relatie opvragen..
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de Categorie Relatie.
+        required: true
+      tags:
+      - categorie relaties
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategorieRelatie'
+          description: ''
+    put:
+      operationId: categorieRelatiesUpdate
+      description: 'Werk een categorie relatie deels bij, Let op: Dit endpoint is
+        EXPERIMENTEEL.'
+      summary: Werk een categorie relatie in zijn geheel bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de Categorie Relatie.
+        required: true
+      tags:
+      - categorie relaties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategorieRelatie'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategorieRelatie'
+          description: ''
+    patch:
+      operationId: categorieRelatiesPartialUpdate
+      description: 'Werk een categorie relatie deels bij, Let op: Dit endpoint is
+        EXPERIMENTEEL.'
+      summary: Werk een categorie relatie deels bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de Categorie Relatie.
+        required: true
+      tags:
+      - categorie relaties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCategorieRelatie'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategorieRelatie'
+          description: ''
+    delete:
+      operationId: categorieRelatiesDestroy
+      description: 'Verwijder een categorie relatie, Let op: Dit endpoint is EXPERIMENTEEL.'
+      summary: Verwijder een categorie relatie.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de Categorie Relatie.
+        required: true
+      tags:
+      - categorie relaties
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /categorieen:
     get:
       operationId: categorieenList
@@ -574,7 +721,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Categorie'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -627,7 +773,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Categorie'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -1559,14 +1704,14 @@ paths:
             - betrokkenen
             - betrokkenen.had_klantcontact
             - betrokkenen.had_klantcontact.had_betrokken_actoren
-            - categorieen
+            - categorie_relaties
             - digitale_adressen
         description: |-
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
           * `digitale_adressen` - digitale_adressen
           * `betrokkenen` - betrokkenen
-          * `categorieen` - categorieen
+          * `categorie_relaties` - categorie_relaties
           * `betrokkenen.had_klantcontact` - betrokkenen.had_klantcontact
           * `betrokkenen.had_klantcontact.had_betrokken_actoren` - betrokkenen.had_klantcontact.had_betrokken_actoren
         explode: false
@@ -2129,15 +2274,58 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
-        partij:
-          allOf:
-          - $ref: '#/components/schemas/PartijForeignkeyBase'
-          nullable: true
-          description: De partij waar de categorie aan gelinkt is.
         naam:
           type: string
           description: Naam van de categorie.
           maxLength: 80
+      required:
+      - url
+      - uuid
+    CategorieForeignKey:
+      type: object
+      description: 'Let op: Dit attribuut is EXPERIMENTEEL.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de Categorie.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze categorie binnen deze API.
+        naam:
+          type: string
+          readOnly: true
+          description: Naam van de categorie.
+      required:
+      - naam
+      - url
+      - uuid
+    CategorieRelatie:
+      type: object
+      description: 'Let op: Dit endpoint is EXPERIMENTEEL.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de Categorie Relatie.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze categorie binnen deze API.
+        partij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignkeyBase'
+          nullable: true
+          description: De partij waar de categorie relatie aan gelinkt is.
+        categorie:
+          allOf:
+          - $ref: '#/components/schemas/CategorieForeignKey'
+          nullable: true
+          description: De categorie waar de categorie relatie aan gelinkt is.
         beginDatum:
           type: string
           format: date
@@ -2154,10 +2342,11 @@ components:
             Een voorbeeld: 2022-02-21'
       required:
       - beginDatum
+      - categorie
       - partij
       - url
       - uuid
-    CategorieForeignKey:
+    CategorieRelatieForeignKey:
       type: object
       description: 'Let op: Dit attribuut is EXPERIMENTEEL.'
       properties:
@@ -2170,7 +2359,12 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
+        categorieNaam:
+          type: string
+          readOnly: true
+          description: De naam van de gelinkte categorie.
       required:
+      - categorieNaam
       - url
       - uuid
     Contactnaam:
@@ -2658,6 +2852,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Categorie'
+    PaginatedCategorieRelatieList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategorieRelatie'
     PaginatedDigitaalAdresList:
       type: object
       properties:
@@ -2811,12 +3025,13 @@ components:
             $ref: '#/components/schemas/BetrokkeneForeignKey'
           readOnly: true
           description: Betrokkene bij klantcontact die een partij was.
-        categorieen:
+        categorieRelaties:
           type: array
           items:
-            $ref: '#/components/schemas/CategorieForeignKey'
+            $ref: '#/components/schemas/CategorieRelatieForeignKey'
           readOnly: true
-          description: 'De Categorieën van een partij: Let op: Dit attribuut is EXPERIMENTEEL.'
+          description: 'De Categorie relaties van een partij: Let op: Dit attribuut
+            is EXPERIMENTEEL.'
         digitaleAdressen:
           type: array
           items:
@@ -2881,7 +3096,7 @@ components:
             bekende adressen.
       required:
       - betrokkenen
-      - categorieen
+      - categorieRelaties
       - digitaleAdressen
       - indicatieActief
       - indicatieGeheimhouding
@@ -3247,15 +3462,34 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
-        partij:
-          allOf:
-          - $ref: '#/components/schemas/PartijForeignkeyBase'
-          nullable: true
-          description: De partij waar de categorie aan gelinkt is.
         naam:
           type: string
           description: Naam van de categorie.
           maxLength: 80
+    PatchedCategorieRelatie:
+      type: object
+      description: 'Let op: Dit endpoint is EXPERIMENTEEL.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de Categorie Relatie.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze categorie binnen deze API.
+        partij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignkeyBase'
+          nullable: true
+          description: De partij waar de categorie relatie aan gelinkt is.
+        categorie:
+          allOf:
+          - $ref: '#/components/schemas/CategorieForeignKey'
+          nullable: true
+          description: De categorie waar de categorie relatie aan gelinkt is.
         beginDatum:
           type: string
           format: date
@@ -3508,12 +3742,13 @@ components:
             $ref: '#/components/schemas/BetrokkeneForeignKey'
           readOnly: true
           description: Betrokkene bij klantcontact die een partij was.
-        categorieen:
+        categorieRelaties:
           type: array
           items:
-            $ref: '#/components/schemas/CategorieForeignKey'
+            $ref: '#/components/schemas/CategorieRelatieForeignKey'
           readOnly: true
-          description: 'De Categorieën van een partij: Let op: Dit attribuut is EXPERIMENTEEL.'
+          description: 'De Categorie relaties van een partij: Let op: Dit attribuut
+            is EXPERIMENTEEL.'
         digitaleAdressen:
           type: array
           items:

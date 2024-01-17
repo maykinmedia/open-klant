@@ -29,6 +29,7 @@ from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.partijen import (
     Categorie,
+    CategorieRelatie,
     Contactpersoon,
     Organisatie,
     Partij,
@@ -67,7 +68,36 @@ class CategorieForeignKeySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Categorie
-        fields = ("uuid", "url")
+        fields = (
+            "uuid",
+            "url",
+            "naam",
+        )
+        extra_kwargs = {
+            "uuid": {"required": True, "validators": [categorie_exists]},
+            "url": {
+                "view_name": "klantinteracties:categorie-detail",
+                "lookup_field": "uuid",
+                "help_text": _("De unieke URL van deze categorie binnen deze API."),
+            },
+            "naam": {"read_only": True},
+        }
+
+
+class CategorieRelatieForeignKeySerializer(serializers.HyperlinkedModelSerializer):
+    """Let op: Dit attribuut is EXPERIMENTEEL."""
+
+    categorie_naam = serializers.SerializerMethodField(
+        help_text=_("De naam van de gelinkte categorie.")
+    )
+
+    class Meta:
+        model = Categorie
+        fields = (
+            "uuid",
+            "url",
+            "categorie_naam",
+        )
         extra_kwargs = {
             "uuid": {"required": True, "validators": [categorie_exists]},
             "url": {
@@ -76,6 +106,10 @@ class CategorieForeignKeySerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": _("De unieke URL van deze categorie binnen deze API."),
             },
         }
+
+    def get_categorie_naam(self, obj):
+        if obj.categorie:
+            return obj.categorie.naam
 
 
 class PartijIdentificatorForeignkeySerializer(serializers.HyperlinkedModelSerializer):
@@ -131,10 +165,35 @@ class CorrespondentieadresSerializer(GegevensGroepSerializer):
 class CategorieSerializer(serializers.HyperlinkedModelSerializer):
     """Let op: Dit endpoint is EXPERIMENTEEL."""
 
+    class Meta:
+        model = Categorie
+        fields = (
+            "uuid",
+            "url",
+            "naam",
+        )
+        extra_kwargs = {
+            "uuid": {"read_only": True},
+            "url": {
+                "view_name": "klantinteracties:categorie-detail",
+                "lookup_field": "uuid",
+                "help_text": _("De unieke URL van deze categorie binnen deze API."),
+            },
+        }
+
+
+class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
+    """Let op: Dit endpoint is EXPERIMENTEEL."""
+
     partij = PartijForeignkeyBaseSerializer(
         required=True,
         allow_null=True,
-        help_text=_("De partij waar de categorie aan gelinkt is."),
+        help_text=_("De partij waar de categorie relatie aan gelinkt is."),
+    )
+    categorie = CategorieForeignKeySerializer(
+        required=True,
+        allow_null=True,
+        help_text=_("De categorie waar de categorie relatie aan gelinkt is."),
     )
     begin_datum = serializers.DateField(
         allow_null=True,
@@ -146,12 +205,12 @@ class CategorieSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     class Meta:
-        model = Categorie
+        model = CategorieRelatie
         fields = (
             "uuid",
             "url",
             "partij",
-            "naam",
+            "categorie",
             "begin_datum",
             "eind_datum",
         )
@@ -172,6 +231,12 @@ class CategorieSerializer(serializers.HyperlinkedModelSerializer):
 
             validated_data["partij"] = partij
 
+        if "categorie" in validated_data:
+            if categorie := validated_data.pop("categorie", None):
+                categorie = Categorie.objects.get(uuid=str(categorie.get("uuid")))
+
+            validated_data["categorie"] = categorie
+
         return super().update(instance, validated_data)
 
     @transaction.atomic
@@ -184,7 +249,11 @@ class CategorieSerializer(serializers.HyperlinkedModelSerializer):
         if partij := validated_data.pop("partij"):
             partij = Partij.objects.get(uuid=str(partij.get("uuid")))
 
+        if categorie := validated_data.pop("categorie"):
+            categorie = Categorie.objects.get(uuid=str(categorie.get("uuid")))
+
         validated_data["partij"] = partij
+        validated_data["categorie"] = categorie
 
         return super().create(validated_data)
 
@@ -355,13 +424,13 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         many=True,
         source="betrokkene_set",
     )
-    categorieen = CategorieForeignKeySerializer(
+    categorie_relaties = CategorieRelatieForeignKeySerializer(
         read_only=True,
         help_text=_(
-            "De Categorieën van een partij: Let op: Dit attribuut is EXPERIMENTEEL."
+            "De Categorie relaties van een partij: Let op: Dit attribuut is EXPERIMENTEEL."
         ),
         many=True,
-        source="categorie_set",
+        source="categorierelatie_set",
     )
     digitale_adressen = DigitaalAdresForeignKeySerializer(
         required=True,
@@ -415,7 +484,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         # 1 level
         "digitale_adressen": f"{SERIALIZER_PATH}.digitaal_adres.DigitaalAdresSerializer",
         "betrokkenen": f"{SERIALIZER_PATH}.klantcontacten.BetrokkeneSerializer",
-        "categorieen": f"{SERIALIZER_PATH}.partijen.CategorieSerializer",
+        "categorie_relaties": f"{SERIALIZER_PATH}.partijen.CategorieRelatieSerializer",
         # 2 levels
         "betrokkenen.had_klantcontact": f"{SERIALIZER_PATH}.klantcontacten.KlantcontactSerializer",
         # 3 levels
@@ -430,7 +499,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             "nummer",
             "interne_notitie",
             "betrokkenen",
-            "categorieen",
+            "categorie_relaties",
             "digitale_adressen",
             "voorkeurs_digitaal_adres",
             "vertegenwoordigde",
