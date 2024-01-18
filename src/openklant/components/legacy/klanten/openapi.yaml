@@ -59,9 +59,9 @@ info:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
 paths:
-  /v1/klanten:
+  /klanten:
     get:
-      operationId: v1KlantenList
+      operationId: klantenList
       description: Alle KLANTen opvragen.
       summary: Alle KLANTen opvragen.
       parameters:
@@ -206,7 +206,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedKlantList'
           description: ''
     post:
-      operationId: v1KlantenCreate
+      operationId: klantenCreate
       description: Maak een KLANT aan.
       summary: Maak een KLANT aan.
       tags:
@@ -227,9 +227,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Klant'
           description: ''
-  /v1/klanten/{klantUuid}/audittrail:
+  /klanten/{klantUuid}/audittrail:
     get:
-      operationId: v1KlantenAudittrailList
+      operationId: klantenAudittrailList
       description: Alle audit trail regels behorend bij de KLANT.
       summary: Alle audit trail regels behorend bij de KLANT.
       parameters:
@@ -256,9 +256,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditTrailList'
           description: ''
-  /v1/klanten/{klantUuid}/audittrail/{uuid}:
+  /klanten/{klantUuid}/audittrail/{uuid}:
     get:
-      operationId: v1KlantenAudittrailRetrieve
+      operationId: klantenAudittrailRetrieve
       description: Een specifieke audit trail regel opvragen.
       summary: Een specifieke audit trail regel opvragen.
       parameters:
@@ -286,9 +286,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuditTrail'
           description: ''
-  /v1/klanten/{uuid}:
+  /klanten/{uuid}:
     get:
-      operationId: v1KlantenRetrieve
+      operationId: klantenRetrieve
       description: Een specifiek KLANT opvragen.
       summary: Een specifiek KLANT opvragen.
       parameters:
@@ -312,7 +312,7 @@ paths:
                 $ref: '#/components/schemas/Klant'
           description: ''
     put:
-      operationId: v1KlantenUpdate
+      operationId: klantenUpdate
       description: Werk een KLANT in zijn geheel bij.
       summary: Werk een KLANT in zijn geheel bij.
       parameters:
@@ -342,7 +342,7 @@ paths:
                 $ref: '#/components/schemas/Klant'
           description: ''
     patch:
-      operationId: v1KlantenPartialUpdate
+      operationId: klantenPartialUpdate
       description: Werk een KLANT deels bij.
       summary: Werk een KLANT deels bij.
       parameters:
@@ -371,7 +371,7 @@ paths:
                 $ref: '#/components/schemas/Klant'
           description: ''
     delete:
-      operationId: v1KlantenDestroy
+      operationId: klantenDestroy
       description: Verwijder een KLANT.
       summary: Verwijder een KLANT.
       parameters:

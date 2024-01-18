@@ -12,9 +12,9 @@ info:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
 paths:
-  /v1/actoren:
+  /actoren:
     get:
-      operationId: v1ActorenList
+      operationId: actorenList
       description: Alle actoren opvragen.
       summary: Alle actoren opvragen.
       parameters:
@@ -71,7 +71,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedActorList'
           description: ''
     post:
-      operationId: v1ActorenCreate
+      operationId: actorenCreate
       description: Maak een actor aan.
       summary: Maak een actor aan.
       tags:
@@ -91,9 +91,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actor'
           description: ''
-  /v1/actoren/{uuid}:
+  /actoren/{uuid}:
     get:
-      operationId: v1ActorenRetrieve
+      operationId: actorenRetrieve
       description: Een specifiek actor opvragen.
       summary: Een specifiek actor opvragen.
       parameters:
@@ -116,7 +116,7 @@ paths:
                 $ref: '#/components/schemas/Actor'
           description: ''
     put:
-      operationId: v1ActorenUpdate
+      operationId: actorenUpdate
       description: Werk een actor in zijn geheel bij.
       summary: Werk een actor in zijn geheel bij.
       parameters:
@@ -145,7 +145,7 @@ paths:
                 $ref: '#/components/schemas/Actor'
           description: ''
     patch:
-      operationId: v1ActorenPartialUpdate
+      operationId: actorenPartialUpdate
       description: Werk een actor deels bij.
       summary: Werk een actor deels bij.
       parameters:
@@ -173,7 +173,7 @@ paths:
                 $ref: '#/components/schemas/Actor'
           description: ''
     delete:
-      operationId: v1ActorenDestroy
+      operationId: actorenDestroy
       description: Verwijder een actor.
       summary: Verwijder een actor.
       parameters:
@@ -191,9 +191,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/betrokkenen:
+  /betrokkenen:
     get:
-      operationId: v1BetrokkenenList
+      operationId: betrokkenenList
       description: Alle betrokkenen opvragen.
       summary: Alle betrokkenen opvragen.
       parameters:
@@ -260,7 +260,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedBetrokkeneList'
           description: ''
     post:
-      operationId: v1BetrokkenenCreate
+      operationId: betrokkenenCreate
       description: Maak een betrokkene aan.
       summary: Maak een betrokkene aan.
       tags:
@@ -280,9 +280,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Betrokkene'
           description: ''
-  /v1/betrokkenen/{uuid}:
+  /betrokkenen/{uuid}:
     get:
-      operationId: v1BetrokkenenRetrieve
+      operationId: betrokkenenRetrieve
       description: Een specifiek betrokkene opvragen.
       summary: Een specifiek betrokkene opvragen.
       parameters:
@@ -306,7 +306,7 @@ paths:
                 $ref: '#/components/schemas/Betrokkene'
           description: ''
     put:
-      operationId: v1BetrokkenenUpdate
+      operationId: betrokkenenUpdate
       description: Werk een betrokkene in zijn geheel bij.
       summary: Werk een betrokkene in zijn geheel bij.
       parameters:
@@ -336,7 +336,7 @@ paths:
                 $ref: '#/components/schemas/Betrokkene'
           description: ''
     patch:
-      operationId: v1BetrokkenenPartialUpdate
+      operationId: betrokkenenPartialUpdate
       description: Werk een betrokkene deels bij.
       summary: Werk een betrokkene deels bij.
       parameters:
@@ -365,7 +365,7 @@ paths:
                 $ref: '#/components/schemas/Betrokkene'
           description: ''
     delete:
-      operationId: v1BetrokkenenDestroy
+      operationId: betrokkenenDestroy
       description: Verwijder een betrokkene.
       summary: Verwijder een betrokkene.
       parameters:
@@ -384,9 +384,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/bijlagen:
+  /bijlagen:
     get:
-      operationId: v1BijlagenList
+      operationId: bijlagenList
       description: Alle bijlagen opvragen.
       summary: Alle bijlagen opvragen.
       parameters:
@@ -420,7 +420,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedBijlageList'
           description: ''
     post:
-      operationId: v1BijlagenCreate
+      operationId: bijlagenCreate
       description: Maak een bijlage aan.
       summary: Maak een bijlage aan.
       tags:
@@ -440,9 +440,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bijlage'
           description: ''
-  /v1/bijlagen/{uuid}:
+  /bijlagen/{uuid}:
     get:
-      operationId: v1BijlagenRetrieve
+      operationId: bijlagenRetrieve
       description: Een specifiek bijlage opvragen.
       summary: Een specifiek bijlage opvragen.
       parameters:
@@ -465,7 +465,7 @@ paths:
                 $ref: '#/components/schemas/Bijlage'
           description: ''
     put:
-      operationId: v1BijlagenUpdate
+      operationId: bijlagenUpdate
       description: Werk een bijlage in zijn geheel bij.
       summary: Werk een bijlage in zijn geheel bij.
       parameters:
@@ -494,7 +494,7 @@ paths:
                 $ref: '#/components/schemas/Bijlage'
           description: ''
     patch:
-      operationId: v1BijlagenPartialUpdate
+      operationId: bijlagenPartialUpdate
       description: Werk een bijlage deels bij.
       summary: Werk een bijlage deels bij.
       parameters:
@@ -522,7 +522,7 @@ paths:
                 $ref: '#/components/schemas/Bijlage'
           description: ''
     delete:
-      operationId: v1BijlagenDestroy
+      operationId: bijlagenDestroy
       description: Verwijder een bijlage.
       summary: Verwijder een bijlage.
       parameters:
@@ -540,9 +540,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/digitaleadressen:
+  /digitaleadressen:
     get:
-      operationId: v1DigitaleadressenList
+      operationId: digitaleadressenList
       description: Alle digitale adressen opvragen.
       summary: Alle digitale adressen opvragen.
       parameters:
@@ -564,7 +564,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedDigitaalAdresList'
           description: ''
     post:
-      operationId: v1DigitaleadressenCreate
+      operationId: digitaleadressenCreate
       description: Maak een digitaal adres aan.
       summary: Maak een digitaal adres aan.
       tags:
@@ -584,9 +584,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/DigitaalAdres'
           description: ''
-  /v1/digitaleadressen/{uuid}:
+  /digitaleadressen/{uuid}:
     get:
-      operationId: v1DigitaleadressenRetrieve
+      operationId: digitaleadressenRetrieve
       description: Een specifiek digitaal adres opvragen.
       summary: Een specifiek digitaal adres opvragen.
       parameters:
@@ -609,7 +609,7 @@ paths:
                 $ref: '#/components/schemas/DigitaalAdres'
           description: ''
     put:
-      operationId: v1DigitaleadressenUpdate
+      operationId: digitaleadressenUpdate
       description: Werk een digitaal adres in zijn geheel bij.
       summary: Werk een digitaal adres in zijn geheel bij.
       parameters:
@@ -638,7 +638,7 @@ paths:
                 $ref: '#/components/schemas/DigitaalAdres'
           description: ''
     patch:
-      operationId: v1DigitaleadressenPartialUpdate
+      operationId: digitaleadressenPartialUpdate
       description: Werk een digitaal adres deels bij.
       summary: Werk een digitaal adres deels bij.
       parameters:
@@ -666,7 +666,7 @@ paths:
                 $ref: '#/components/schemas/DigitaalAdres'
           description: ''
     delete:
-      operationId: v1DigitaleadressenDestroy
+      operationId: digitaleadressenDestroy
       description: Verwijder een digitaal adres.
       summary: Verwijder een digitaal adres.
       parameters:
@@ -684,9 +684,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/internetaken:
+  /internetaken:
     get:
-      operationId: v1InternetakenList
+      operationId: internetakenList
       description: Alle interne taken opvragen.
       summary: Alle interne taken opvragen.
       parameters:
@@ -737,7 +737,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedInterneTaakList'
           description: ''
     post:
-      operationId: v1InternetakenCreate
+      operationId: internetakenCreate
       description: Maak een interne taak aan.
       summary: Maak een interne taak aan.
       tags:
@@ -757,9 +757,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InterneTaak'
           description: ''
-  /v1/internetaken/{uuid}:
+  /internetaken/{uuid}:
     get:
-      operationId: v1InternetakenRetrieve
+      operationId: internetakenRetrieve
       description: Een specifiek interne taak opvragen.
       summary: Een specifiek interne taak opvragen.
       parameters:
@@ -782,7 +782,7 @@ paths:
                 $ref: '#/components/schemas/InterneTaak'
           description: ''
     put:
-      operationId: v1InternetakenUpdate
+      operationId: internetakenUpdate
       description: Werk een interne taak in zijn geheel bij.
       summary: Werk een interne taak in zijn geheel bij.
       parameters:
@@ -811,7 +811,7 @@ paths:
                 $ref: '#/components/schemas/InterneTaak'
           description: ''
     patch:
-      operationId: v1InternetakenPartialUpdate
+      operationId: internetakenPartialUpdate
       description: Werk een interne taak deels bij.
       summary: Werk een interne taak deels bij.
       parameters:
@@ -839,7 +839,7 @@ paths:
                 $ref: '#/components/schemas/InterneTaak'
           description: ''
     delete:
-      operationId: v1InternetakenDestroy
+      operationId: internetakenDestroy
       description: Verwijder een interne taak.
       summary: Verwijder een interne taak.
       parameters:
@@ -857,9 +857,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/klantcontacten:
+  /klantcontacten:
     get:
-      operationId: v1KlantcontactenList
+      operationId: klantcontactenList
       description: Alle klanten contacten opvragen.
       summary: Alle klanten contacten opvragen.
       parameters:
@@ -935,7 +935,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedKlantcontactList'
           description: ''
     post:
-      operationId: v1KlantcontactenCreate
+      operationId: klantcontactenCreate
       description: Maak een klant contact aan.
       summary: Maak een klant contact aan.
       tags:
@@ -955,9 +955,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Klantcontact'
           description: ''
-  /v1/klantcontacten/{uuid}:
+  /klantcontacten/{uuid}:
     get:
-      operationId: v1KlantcontactenRetrieve
+      operationId: klantcontactenRetrieve
       description: Een specifiek klant contact opvragen.
       summary: Een specifiek klant contact opvragen.
       parameters:
@@ -981,7 +981,7 @@ paths:
                 $ref: '#/components/schemas/Klantcontact'
           description: ''
     put:
-      operationId: v1KlantcontactenUpdate
+      operationId: klantcontactenUpdate
       description: Werk een klant contact in zijn geheel bij.
       summary: Werk een klant contact in zijn geheel bij.
       parameters:
@@ -1011,7 +1011,7 @@ paths:
                 $ref: '#/components/schemas/Klantcontact'
           description: ''
     patch:
-      operationId: v1KlantcontactenPartialUpdate
+      operationId: klantcontactenPartialUpdate
       description: Werk een klant contact deels bij.
       summary: Werk een klant contact deels bij.
       parameters:
@@ -1040,7 +1040,7 @@ paths:
                 $ref: '#/components/schemas/Klantcontact'
           description: ''
     delete:
-      operationId: v1KlantcontactenDestroy
+      operationId: klantcontactenDestroy
       description: Verwijder een klant contact.
       summary: Verwijder een klant contact.
       parameters:
@@ -1059,9 +1059,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/onderwerpobjecten:
+  /onderwerpobjecten:
     get:
-      operationId: v1OnderwerpobjectenList
+      operationId: onderwerpobjectenList
       description: Alle onderwerpobject opvragen.
       summary: Alle onderwerpobject opvragen.
       parameters:
@@ -1095,7 +1095,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedOnderwerpobjectList'
           description: ''
     post:
-      operationId: v1OnderwerpobjectenCreate
+      operationId: onderwerpobjectenCreate
       description: Maak een onderwerpobject aan.
       summary: Maak een onderwerpobject aan.
       tags:
@@ -1115,9 +1115,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Onderwerpobject'
           description: ''
-  /v1/onderwerpobjecten/{uuid}:
+  /onderwerpobjecten/{uuid}:
     get:
-      operationId: v1OnderwerpobjectenRetrieve
+      operationId: onderwerpobjectenRetrieve
       description: Een specifiek onderwerpobject opvragen.
       summary: Een specifiek onderwerpobject opvragen.
       parameters:
@@ -1140,7 +1140,7 @@ paths:
                 $ref: '#/components/schemas/Onderwerpobject'
           description: ''
     put:
-      operationId: v1OnderwerpobjectenUpdate
+      operationId: onderwerpobjectenUpdate
       description: Werk een onderwerpobject in zijn geheel bij.
       summary: Werk een onderwerpobject in zijn geheel bij.
       parameters:
@@ -1169,7 +1169,7 @@ paths:
                 $ref: '#/components/schemas/Onderwerpobject'
           description: ''
     patch:
-      operationId: v1OnderwerpobjectenPartialUpdate
+      operationId: onderwerpobjectenPartialUpdate
       description: Werk een onderwerpobject deels bij.
       summary: Werk een onderwerpobject deels bij.
       parameters:
@@ -1197,7 +1197,7 @@ paths:
                 $ref: '#/components/schemas/Onderwerpobject'
           description: ''
     delete:
-      operationId: v1OnderwerpobjectenDestroy
+      operationId: onderwerpobjectenDestroy
       description: Verwijder een onderwerpobject.
       summary: Verwijder een onderwerpobject.
       parameters:
@@ -1215,9 +1215,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/partij-identificatoren:
+  /partij-identificatoren:
     get:
-      operationId: v1PartijIdentificatorenList
+      operationId: partijIdentificatorenList
       description: Alle partij-identificatoren opvragen.
       summary: Alle partij-identificatoren opvragen.
       parameters:
@@ -1239,7 +1239,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedPartijIdentificatorList'
           description: ''
     post:
-      operationId: v1PartijIdentificatorenCreate
+      operationId: partijIdentificatorenCreate
       description: Maak een partij-identificator aan.
       summary: Maak een partij-identificator aan.
       tags:
@@ -1259,9 +1259,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/PartijIdentificator'
           description: ''
-  /v1/partij-identificatoren/{uuid}:
+  /partij-identificatoren/{uuid}:
     get:
-      operationId: v1PartijIdentificatorenRetrieve
+      operationId: partijIdentificatorenRetrieve
       description: Een specifiek partij-identificator opvragen.
       summary: Een specifiek partij-identificator opvragen.
       parameters:
@@ -1284,7 +1284,7 @@ paths:
                 $ref: '#/components/schemas/PartijIdentificator'
           description: ''
     put:
-      operationId: v1PartijIdentificatorenUpdate
+      operationId: partijIdentificatorenUpdate
       description: Werk een partij-identificator in zijn geheel bij.
       summary: Werk een partij-identificator in zijn geheel bij.
       parameters:
@@ -1313,7 +1313,7 @@ paths:
                 $ref: '#/components/schemas/PartijIdentificator'
           description: ''
     patch:
-      operationId: v1PartijIdentificatorenPartialUpdate
+      operationId: partijIdentificatorenPartialUpdate
       description: Werk een partij-identificator deels bij.
       summary: Werk een partij-identificator deels bij.
       parameters:
@@ -1341,7 +1341,7 @@ paths:
                 $ref: '#/components/schemas/PartijIdentificator'
           description: ''
     delete:
-      operationId: v1PartijIdentificatorenDestroy
+      operationId: partijIdentificatorenDestroy
       description: Verwijder een partij-identificator.
       summary: Verwijder een partij-identificator.
       parameters:
@@ -1359,9 +1359,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/partijen:
+  /partijen:
     get:
-      operationId: v1PartijenList
+      operationId: partijenList
       description: Alle partijen opvragen.
       summary: Alle partijen opvragen.
       parameters:
@@ -1509,7 +1509,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedPartijList'
           description: ''
     post:
-      operationId: v1PartijenCreate
+      operationId: partijenCreate
       description: Maak een partij aan.
       summary: Maak een partij aan.
       tags:
@@ -1529,9 +1529,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Partij'
           description: ''
-  /v1/partijen/{uuid}:
+  /partijen/{uuid}:
     get:
-      operationId: v1PartijenRetrieve
+      operationId: partijenRetrieve
       description: Een specifiek partij opvragen.
       summary: Een specifiek partij opvragen.
       parameters:
@@ -1554,7 +1554,7 @@ paths:
                 $ref: '#/components/schemas/Partij'
           description: ''
     put:
-      operationId: v1PartijenUpdate
+      operationId: partijenUpdate
       description: Werk een partij in zijn geheel bij.
       summary: Werk een partij in zijn geheel bij.
       parameters:
@@ -1583,7 +1583,7 @@ paths:
                 $ref: '#/components/schemas/Partij'
           description: ''
     patch:
-      operationId: v1PartijenPartialUpdate
+      operationId: partijenPartialUpdate
       description: Werk een partij deels bij.
       summary: Werk een partij deels bij.
       parameters:
@@ -1611,7 +1611,7 @@ paths:
                 $ref: '#/components/schemas/Partij'
           description: ''
     delete:
-      operationId: v1PartijenDestroy
+      operationId: partijenDestroy
       description: Verwijder een partij.
       summary: Verwijder een partij.
       parameters:

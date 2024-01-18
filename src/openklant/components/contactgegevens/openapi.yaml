@@ -12,9 +12,9 @@ info:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
 paths:
-  /v1/organisatie:
+  /organisatie:
     get:
-      operationId: v1OrganisatieList
+      operationId: organisatieList
       description: Alle organisaties opvragen.
       summary: Alle organisaties opvragen.
       parameters:
@@ -36,7 +36,7 @@ paths:
                 $ref: "#/components/schemas/PaginatedOrganisatieList"
           description: ""
     post:
-      operationId: v1OrganisatieCreate
+      operationId: organisatieCreate
       description: Maak een organisatie aan.
       summary: Maak een organisatie aan.
       tags:
@@ -56,9 +56,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/Organisatie"
           description: ""
-  /v1/organisatie/{uuid}:
+  /organisatie/{uuid}:
     get:
-      operationId: v1OrganisatieRetrieve
+      operationId: organisatieRetrieve
       description: Een specifiek organisatie opvragen.
       summary: Een specifiek organisatie opvragen.
       parameters:
@@ -81,7 +81,7 @@ paths:
                 $ref: "#/components/schemas/Organisatie"
           description: ""
     put:
-      operationId: v1OrganisatieUpdate
+      operationId: organisatieUpdate
       description: Werk een organisatie in zijn geheel bij.
       summary: Werk een organisatie in zijn geheel bij.
       parameters:
@@ -110,7 +110,7 @@ paths:
                 $ref: "#/components/schemas/Organisatie"
           description: ""
     patch:
-      operationId: v1OrganisatiePartialUpdate
+      operationId: organisatiePartialUpdate
       description: Werk een organisatie deels bij.
       summary: Werk een organisatie deels bij.
       parameters:
@@ -138,7 +138,7 @@ paths:
                 $ref: "#/components/schemas/Organisatie"
           description: ""
     delete:
-      operationId: v1OrganisatieDestroy
+      operationId: organisatieDestroy
       description: Verwijder een organisatie.
       summary: Verwijder een organisatie.
       parameters:
@@ -156,9 +156,9 @@ paths:
       responses:
         "204":
           description: No response body
-  /v1/persoon:
+  /persoon:
     get:
-      operationId: v1PersoonList
+      operationId: persoonList
       description: Alle personen opvragen.
       summary: Alle personen opvragen.
       parameters:
@@ -180,7 +180,7 @@ paths:
                 $ref: "#/components/schemas/PaginatedPersoonList"
           description: ""
     post:
-      operationId: v1PersoonCreate
+      operationId: persoonCreate
       description: Maak een persoon aan.
       summary: Maak een persoon aan.
       tags:
@@ -200,9 +200,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/Persoon"
           description: ""
-  /v1/persoon/{uuid}:
+  /persoon/{uuid}:
     get:
-      operationId: v1PersoonRetrieve
+      operationId: persoonRetrieve
       description: Een specifiek persoon opvragen.
       summary: Een specifiek persoon opvragen.
       parameters:
@@ -225,7 +225,7 @@ paths:
                 $ref: "#/components/schemas/Persoon"
           description: ""
     put:
-      operationId: v1PersoonUpdate
+      operationId: persoonUpdate
       description: Werk een persoon in zijn geheel bij.
       summary: Werk een persoon in zijn geheel bij.
       parameters:
@@ -254,7 +254,7 @@ paths:
                 $ref: "#/components/schemas/Persoon"
           description: ""
     patch:
-      operationId: v1PersoonPartialUpdate
+      operationId: persoonPartialUpdate
       description: Werk een persoon deels bij.
       summary: Werk een persoon deels bij.
       parameters:
@@ -282,7 +282,7 @@ paths:
                 $ref: "#/components/schemas/Persoon"
           description: ""
     delete:
-      operationId: v1PersoonDestroy
+      operationId: persoonDestroy
       description: Verwijder een persoon.
       summary: Verwijder een persoon.
       parameters:

@@ -57,9 +57,9 @@ info:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
 paths:
-  /v1/contactmomenten:
+  /contactmomenten:
     get:
-      operationId: v1ContactmomentenList
+      operationId: contactmomentenList
       description: Alle CONTACTMOMENTen opvragen.
       summary: Alle CONTACTMOMENTen opvragen.
       parameters:
@@ -180,27 +180,27 @@ paths:
           Het veld waarop de resultaten geordend worden.
 
           * `url` - Url
-          * `-url` - Url (aflopend)
+          * `-url` - Url (descending)
           * `bronorganisatie` - Bronorganisatie
-          * `-bronorganisatie` - Bronorganisatie (aflopend)
+          * `-bronorganisatie` - Bronorganisatie (descending)
           * `klant` - Klant
-          * `-klant` - Klant (aflopend)
+          * `-klant` - Klant (descending)
           * `registratiedatum` - Registratiedatum
-          * `-registratiedatum` - Registratiedatum (aflopend)
+          * `-registratiedatum` - Registratiedatum (descending)
           * `kanaal` - Kanaal
-          * `-kanaal` - Kanaal (aflopend)
+          * `-kanaal` - Kanaal (descending)
           * `voorkeurskanaal` - Voorkeurskanaal
-          * `-voorkeurskanaal` - Voorkeurskanaal (aflopend)
+          * `-voorkeurskanaal` - Voorkeurskanaal (descending)
           * `tekst` - Tekst
-          * `-tekst` - Tekst (aflopend)
+          * `-tekst` - Tekst (descending)
           * `onderwerp_links` - Onderwerp links
-          * `-onderwerp_links` - Onderwerp links (aflopend)
+          * `-onderwerp_links` - Onderwerp links (descending)
           * `initiatiefnemer` - Initiatiefnemer
-          * `-initiatiefnemer` - Initiatiefnemer (aflopend)
+          * `-initiatiefnemer` - Initiatiefnemer (descending)
           * `medewerker` - Medewerker
-          * `-medewerker` - Medewerker (aflopend)
+          * `-medewerker` - Medewerker (descending)
           * `medewerker_identificatie` - Medewerker identificatie
-          * `-medewerker_identificatie` - Medewerker identificatie (aflopend)
+          * `-medewerker_identificatie` - Medewerker identificatie (descending)
         explode: false
         style: form
       - name: page
@@ -264,7 +264,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedContactMomentList'
           description: ''
     post:
-      operationId: v1ContactmomentenCreate
+      operationId: contactmomentenCreate
       description: Maak een CONTACTMOMENT aan.
       summary: Maak een CONTACTMOMENT aan.
       tags:
@@ -285,9 +285,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ContactMoment'
           description: ''
-  /v1/contactmomenten/{contactmomentUuid}/audittrail:
+  /contactmomenten/{contactmomentUuid}/audittrail:
     get:
-      operationId: v1ContactmomentenAudittrailList
+      operationId: contactmomentenAudittrailList
       description: Alle audit trail regels behorend bij de CONTACTMOMENT.
       summary: Alle audit trail regels behorend bij de CONTACTMOMENT.
       parameters:
@@ -314,9 +314,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditTrailList'
           description: ''
-  /v1/contactmomenten/{contactmomentUuid}/audittrail/{uuid}:
+  /contactmomenten/{contactmomentUuid}/audittrail/{uuid}:
     get:
-      operationId: v1ContactmomentenAudittrailRetrieve
+      operationId: contactmomentenAudittrailRetrieve
       description: Een specifieke audit trail regel opvragen
       summary: 'Een specifieke audit trail regel opvragen. '
       parameters:
@@ -344,9 +344,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuditTrail'
           description: ''
-  /v1/contactmomenten/{uuid}:
+  /contactmomenten/{uuid}:
     get:
-      operationId: v1ContactmomentenRetrieve
+      operationId: contactmomentenRetrieve
       description: Een specifiek CONTACTMOMENT opvragen.
       summary: Een specifiek CONTACTMOMENT opvragen.
       parameters:
@@ -378,7 +378,7 @@ paths:
                 $ref: '#/components/schemas/ContactMoment'
           description: ''
     put:
-      operationId: v1ContactmomentenUpdate
+      operationId: contactmomentenUpdate
       description: Werk een CONTACTMOMENT in zijn geheel bij.
       summary: Werk een CONTACTMOMENT in zijn geheel bij.
       parameters:
@@ -408,7 +408,7 @@ paths:
                 $ref: '#/components/schemas/ContactMoment'
           description: ''
     patch:
-      operationId: v1ContactmomentenPartialUpdate
+      operationId: contactmomentenPartialUpdate
       description: Werk een CONTACTMOMENT deels bij.
       summary: Werk een CONTACTMOMENT deels bij.
       parameters:
@@ -437,7 +437,7 @@ paths:
                 $ref: '#/components/schemas/ContactMoment'
           description: ''
     delete:
-      operationId: v1ContactmomentenDestroy
+      operationId: contactmomentenDestroy
       description: Verwijder een CONTACTMOMENT.
       summary: Verwijder een CONTACTMOMENT.
       parameters:
@@ -456,9 +456,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/klantcontactmomenten:
+  /klantcontactmomenten:
     get:
-      operationId: v1KlantcontactmomentenList
+      operationId: klantcontactmomentenList
       description: |-
         Alle KLANT-CONTACTMOMENT relaties opvragen.
 
@@ -504,7 +504,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedKlantContactMomentList'
           description: ''
     post:
-      operationId: v1KlantcontactmomentenCreate
+      operationId: klantcontactmomentenCreate
       description: |-
         Maak een KLANT-CONTACTMOMENT relatie aan.
 
@@ -534,9 +534,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/KlantContactMoment'
           description: ''
-  /v1/klantcontactmomenten/{uuid}:
+  /klantcontactmomenten/{uuid}:
     get:
-      operationId: v1KlantcontactmomentenRetrieve
+      operationId: klantcontactmomentenRetrieve
       description: Een specifieke KLANT-CONTACTMOMENT relatie opvragen.
       summary: Een specifieke KLANT-CONTACTMOMENT relatie opvragen.
       parameters:
@@ -560,7 +560,7 @@ paths:
                 $ref: '#/components/schemas/KlantContactMoment'
           description: ''
     put:
-      operationId: v1KlantcontactmomentenUpdate
+      operationId: klantcontactmomentenUpdate
       description: |-
         Werk een KLANT-CONTACTMOMENT in zijn geheel bij.
 
@@ -593,7 +593,7 @@ paths:
                 $ref: '#/components/schemas/KlantContactMoment'
           description: ''
     patch:
-      operationId: v1KlantcontactmomentenPartialUpdate
+      operationId: klantcontactmomentenPartialUpdate
       description: |-
         Werk een KLANT-CONTACTMOMENT deels bij.
 
@@ -625,7 +625,7 @@ paths:
                 $ref: '#/components/schemas/KlantContactMoment'
           description: ''
     delete:
-      operationId: v1KlantcontactmomentenDestroy
+      operationId: klantcontactmomentenDestroy
       description: Verwijder een KLANT-CONTACTMOMENT relatie.
       summary: Verwijder een KLANT-CONTACTMOMENT relatie.
       parameters:
@@ -644,9 +644,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/objectcontactmomenten:
+  /objectcontactmomenten:
     get:
-      operationId: v1ObjectcontactmomentenList
+      operationId: objectcontactmomentenList
       description: Alle OBJECT-CONTACTMOMENT relaties opvragen.
       summary: Alle OBJECT-CONTACTMOMENT relaties opvragen.
       parameters:
@@ -688,7 +688,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedObjectContactMomentList'
           description: ''
     post:
-      operationId: v1ObjectcontactmomentenCreate
+      operationId: objectcontactmomentenCreate
       description: |-
         Maak een OBJECT-CONTACTMOMENT relatie aan.
 
@@ -715,9 +715,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ObjectContactMoment'
           description: ''
-  /v1/objectcontactmomenten/{uuid}:
+  /objectcontactmomenten/{uuid}:
     get:
-      operationId: v1ObjectcontactmomentenRetrieve
+      operationId: objectcontactmomentenRetrieve
       description: Een specifiek OBJECT-CONTACTMOMENT relatie opvragen.
       summary: Een specifiek OBJECT-CONTACTMOMENT relatie opvragen.
       parameters:
@@ -741,7 +741,7 @@ paths:
                 $ref: '#/components/schemas/ObjectContactMoment'
           description: ''
     delete:
-      operationId: v1ObjectcontactmomentenDestroy
+      operationId: objectcontactmomentenDestroy
       description: |-
         Verwijder een OBJECT-CONTACTMOMENT relatie.
 

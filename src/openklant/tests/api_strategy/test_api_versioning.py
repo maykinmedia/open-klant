@@ -3,6 +3,7 @@ from unittest.mock import patch
 from django.test import override_settings
 
 import yaml
+from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
 from vng_api_common.tests import reverse
 
@@ -19,7 +20,7 @@ EXPECTED_VERSIONS = (
 
 class APILegacyVersioningTests(APITestCase):
     def test_api_19_documentation_version_json(self):
-        for component, _ in EXPECTED_LEGACY_VERSIONS:
+        for component, version in EXPECTED_LEGACY_VERSIONS:
             with self.subTest(component=component):
                 url = reverse(f"schema-json-{component}")
 
@@ -31,9 +32,13 @@ class APILegacyVersioningTests(APITestCase):
                 )
                 doc = response.json()
                 self.assertGreaterEqual(doc["openapi"], "3.0.0")
+                self.assertEqual(
+                    doc["info"]["version"],
+                    f"{version} ({api_settings.DEFAULT_VERSION})",
+                )
 
     def test_api_19_documentation_version_yaml(self):
-        for component, _ in EXPECTED_LEGACY_VERSIONS:
+        for component, version in EXPECTED_LEGACY_VERSIONS:
             with self.subTest(component=component):
                 url = reverse(f"schema-yaml-{component}")
 
@@ -45,6 +50,10 @@ class APILegacyVersioningTests(APITestCase):
                 )
                 doc = yaml.safe_load(response.content)
                 self.assertGreaterEqual(doc["openapi"], "3.0.0")
+                self.assertEqual(
+                    doc["info"]["version"],
+                    f"{version} ({api_settings.DEFAULT_VERSION})",
+                )
 
     @patch(
         "openklant.utils.middleware.get_version_mapping", return_value={"/": "1.0.0"}
@@ -58,7 +67,7 @@ class APILegacyVersioningTests(APITestCase):
 
 class APIVersioningTests(APITestCase):
     def test_api_19_documentation_version_json(self):
-        for component, _ in EXPECTED_VERSIONS:
+        for component, version in EXPECTED_VERSIONS:
             with self.subTest(component=component):
                 url = reverse(f"{component}:schema-json-{component}")
 
@@ -70,9 +79,13 @@ class APIVersioningTests(APITestCase):
                 )
                 doc = response.json()
                 self.assertGreaterEqual(doc["openapi"], "3.0.0")
+                self.assertEqual(
+                    doc["info"]["version"],
+                    f"{version} ({api_settings.DEFAULT_VERSION})",
+                )
 
     def test_api_19_documentation_version_yaml(self):
-        for component, _ in EXPECTED_VERSIONS:
+        for component, version in EXPECTED_VERSIONS:
             with self.subTest(component=component):
                 url = reverse(f"{component}:schema-yaml-{component}")
 
@@ -84,6 +97,10 @@ class APIVersioningTests(APITestCase):
                 )
                 doc = yaml.safe_load(response.content)
                 self.assertGreaterEqual(doc["openapi"], "3.0.0")
+                self.assertEqual(
+                    doc["info"]["version"],
+                    f"{version} ({api_settings.DEFAULT_VERSION})",
+                )
 
     @patch(
         "openklant.utils.middleware.get_version_mapping", return_value={"/": "1.0.0"}
