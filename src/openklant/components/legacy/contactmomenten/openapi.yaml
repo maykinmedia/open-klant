@@ -584,7 +584,7 @@ paths:
         required: true
       security:
       - JWT-Claims:
-        - contactmomenten.aanmaken
+        - contactmomenten.bijwerken
       responses:
         '200':
           content:
@@ -616,7 +616,7 @@ paths:
               $ref: '#/components/schemas/PatchedKlantContactMoment'
       security:
       - JWT-Claims:
-        - contactmomenten.aanmaken
+        - contactmomenten.bijwerken
       responses:
         '200':
           content:

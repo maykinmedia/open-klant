@@ -43,8 +43,17 @@ genereren.
 """
 
 
-info = {
+custom_settings = {
     "TITLE": "Klanten API",
     "DESCRIPTION": description,
     "VERSION": settings.KLANTEN_API_VERSION,
+    "APPEND_COMPONENTS": {
+        "securitySchemes": {
+            "JWT-Claims": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        },
+    },
 }

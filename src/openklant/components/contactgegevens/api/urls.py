@@ -12,7 +12,7 @@ from openklant.components.contactgegevens.api.viewset import (
     PersoonViewSet,
 )
 
-from .schema import info
+from .schema import custom_settings
 
 app_name = "contactgegevens"
 
@@ -31,7 +31,7 @@ urlpatterns = [
                     "schema/openapi.json",
                     SpectacularJSONAPIView.as_view(
                         urlconf="openklant.components.contactgegevens.api.urls",
-                        custom_settings=info,
+                        custom_settings=custom_settings,
                     ),
                     name="schema-json-contactgegevens",
                 ),
@@ -39,7 +39,7 @@ urlpatterns = [
                     "schema/openapi.yaml",
                     SpectacularYAMLAPIView.as_view(
                         urlconf="openklant.components.contactgegevens.api.urls",
-                        custom_settings=info,
+                        custom_settings=custom_settings,
                     ),
                     name="schema-yaml-contactgegevens",
                 ),

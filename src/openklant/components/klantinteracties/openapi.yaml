@@ -1745,6 +1745,10 @@ components:
           description: Naam die de betrokkene bij klantcontact tijdens vervolghandelingen
             naar aanleiding van dat contact wil gebruiken. Deze mag afwijken van eventueel
             in de Basisregistratie Personen (BRP) bekende naam van de betrokkene.
+        volledigeNaam:
+          type: string
+          readOnly: true
+          description: De voledige naam van de betrokkene.
         rol:
           allOf:
           - $ref: '#/components/schemas/RolEnum'
@@ -1767,6 +1771,7 @@ components:
       - rol
       - url
       - uuid
+      - volledigeNaam
       - wasPartij
     BetrokkeneCorrespondentieadres:
       type: object
@@ -2938,6 +2943,10 @@ components:
           description: Naam die de betrokkene bij klantcontact tijdens vervolghandelingen
             naar aanleiding van dat contact wil gebruiken. Deze mag afwijken van eventueel
             in de Basisregistratie Personen (BRP) bekende naam van de betrokkene.
+        volledigeNaam:
+          type: string
+          readOnly: true
+          description: De voledige naam van de betrokkene.
         rol:
           allOf:
           - $ref: '#/components/schemas/RolEnum'

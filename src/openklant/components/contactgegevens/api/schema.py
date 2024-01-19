@@ -5,7 +5,7 @@ description = """
 Description WIP.
 """
 
-info = {
+custom_settings = {
     "TITLE": "contactgegevens",
     "DESCRIPTION": description,
     "VERSION": settings.CONTACTGEGEVENS_API_VERSION,

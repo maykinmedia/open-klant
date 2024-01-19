@@ -5,7 +5,7 @@ description = """
 Description WIP.
 """
 
-info = {
+custom_settings = {
     "TITLE": "klantinteracties",
     "DESCRIPTION": description,
     "VERSION": settings.KLANTINTERACTIES_API_VERSION,

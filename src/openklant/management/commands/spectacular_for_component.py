@@ -3,7 +3,7 @@
 from drf_spectacular.management.commands import spectacular
 
 SCHEMA_MAPPING = {
-    "custom_settings": "openklant.components.{}.api.schema.info",
+    "custom_settings": "openklant.components.{}.api.schema.custom_settings",
     "urlconf": "openklant.components.{}.api.urls",
 }
 

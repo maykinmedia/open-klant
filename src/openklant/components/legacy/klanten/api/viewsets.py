@@ -11,7 +11,6 @@ from vng_api_common.audittrails.viewsets import (
 )
 from vng_api_common.permissions import AuthScopesRequired
 
-from openklant.components.legacy.authorization import JWTDummyAuthentication
 from openklant.components.legacy.klanten.models.klanten import Klant
 
 from .audits import AUDIT_KLANTEN
@@ -33,26 +32,32 @@ logger = logging.getLogger(__name__)
     list=extend_schema(
         summary="Alle KLANTen opvragen.",
         description="Alle KLANTen opvragen.",
+        auth=[{"JWT-Claims": ["klanten.lezen"]}],
     ),
     retrieve=extend_schema(
         summary="Een specifiek KLANT opvragen.",
         description="Een specifiek KLANT opvragen.",
+        auth=[{"JWT-Claims": ["klanten.lezen"]}],
     ),
     update=extend_schema(
         summary="Werk een KLANT in zijn geheel bij.",
         description="Werk een KLANT in zijn geheel bij.",
+        auth=[{"JWT-Claims": ["klanten.bijwerken"]}],
     ),
     partial_update=extend_schema(
         summary="Werk een KLANT deels bij.",
         description="Werk een KLANT deels bij.",
+        auth=[{"JWT-Claims": ["klanten.bijwerken"]}],
     ),
     create=extend_schema(
         summary="Maak een KLANT aan.",
         description="Maak een KLANT aan.",
+        auth=[{"JWT-Claims": ["klanten.aanmaken"]}],
     ),
     destroy=extend_schema(
         summary="Verwijder een KLANT.",
         description="Verwijder een KLANT.",
+        auth=[{"JWT-Claims": ["klanten.verwijderen"]}],
     ),
 )
 class KlantViewSet(
@@ -75,7 +80,6 @@ class KlantViewSet(
     serializer_class = KlantSerializer
     lookup_field = "uuid"
     permission_classes = (AuthScopesRequired,)
-    authentication_classes = (JWTDummyAuthentication,)
     filterset_class = KlantFilter
     pagination_class = PageNumberPagination
     required_scopes = {
@@ -95,17 +99,18 @@ class KlantViewSet(
     list=extend_schema(
         summary="Alle audit trail regels behorend bij de KLANT.",
         description="Alle audit trail regels behorend bij de KLANT.",
+        auth=[{"JWT-Claims": ["audittrails.lezen"]}],
     ),
     retrieve=extend_schema(
         summary="Een specifieke audit trail regel opvragen.",
         description="Een specifieke audit trail regel opvragen.",
+        auth=[{"JWT-Claims": ["audittrails.lezen"]}],
     ),
 )
 class KlantAuditTrailViewSet(AuditTrailViewSet):
     """Opvragen van de audit trail regels."""
 
     main_resource_lookup_field = "klant_uuid"
-    authentication_classes = (JWTDummyAuthentication,)
 
     def initialize_request(self, request, *args, **kwargs):
         # workaround for drf-nested-viewset injecting the URL kwarg into request.data

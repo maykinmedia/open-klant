@@ -16,8 +16,6 @@ from vng_api_common.audittrails.viewsets import (
 from vng_api_common.permissions import AuthScopesRequired
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from openklant.components.legacy.authorization import JWTDummyAuthentication
-
 from ..models.contactmomenten import (
     ContactMoment,
     KlantContactMoment,
@@ -53,6 +51,7 @@ logger = logging.getLogger(__name__)
     list=extend_schema(
         summary="Alle CONTACTMOMENTen opvragen.",
         description="Alle CONTACTMOMENTen opvragen.",
+        auth=[{"JWT-Claims": ["contactmomenten.lezen"]}],
     ),
     retrieve=extend_schema(
         summary="Een specifiek CONTACTMOMENT opvragen.",
@@ -65,22 +64,27 @@ logger = logging.getLogger(__name__)
                 enum=ContactMomentSerializer.Meta.expandable_fields,
             ),
         ],
+        auth=[{"JWT-Claims": ["contactmomenten.lezen"]}],
     ),
     update=extend_schema(
         summary="Werk een CONTACTMOMENT in zijn geheel bij.",
         description="Werk een CONTACTMOMENT in zijn geheel bij.",
+        auth=[{"JWT-Claims": ["contactmomenten.bijwerken"]}],
     ),
     partial_update=extend_schema(
         summary="Werk een CONTACTMOMENT deels bij.",
         description="Werk een CONTACTMOMENT deels bij.",
+        auth=[{"JWT-Claims": ["contactmomenten.bijwerken"]}],
     ),
     create=extend_schema(
         summary="Maak een CONTACTMOMENT aan.",
         description="Maak een CONTACTMOMENT aan.",
+        auth=[{"JWT-Claims": ["contactmomenten.aanmaken"]}],
     ),
     destroy=extend_schema(
         summary="Verwijder een CONTACTMOMENT.",
         description="Verwijder een CONTACTMOMENT.",
+        auth=[{"JWT-Claims": ["contactmomenten.verwijderen"]}],
     ),
 )
 class ContactMomentViewSet(
@@ -111,7 +115,6 @@ class ContactMomentViewSet(
     filterset_class = ContactMomentFilter
     lookup_field = "uuid"
     permission_classes = (AuthScopesRequired,)
-    authentication_classes = (JWTDummyAuthentication,)
     pagination_class = PageNumberPagination
     required_scopes = {
         "list": SCOPE_CONTACTMOMENTEN_ALLES_LEZEN,
@@ -133,10 +136,12 @@ class ContactMomentViewSet(
     list=extend_schema(
         summary="Alle OBJECT-CONTACTMOMENT relaties opvragen.",
         description="Alle OBJECT-CONTACTMOMENT relaties opvragen.",
+        auth=[{"JWT-Claims": ["contactmomenten.lezen"]}],
     ),
     retrieve=extend_schema(
         summary="Een specifiek OBJECT-CONTACTMOMENT relatie opvragen.",
         description="Een specifiek OBJECT-CONTACTMOMENT relatie opvragen.",
+        auth=[{"JWT-Claims": ["contactmomenten.lezen"]}],
     ),
     create=extend_schema(
         summary="Maak een OBJECT-CONTACTMOMENT relatie aan.",
@@ -146,6 +151,7 @@ class ContactMomentViewSet(
 
 Andere API's, zoals de Zaken API, gebruiken dit
 endpoint bij het synchroniseren van relaties.""",
+        auth=[{"JWT-Claims": ["contactmomenten.aanmaken"]}],
     ),
     destroy=extend_schema(
         summary="Verwijder een OBJECT-CONTACTMOMENT relatie.",
@@ -155,6 +161,7 @@ endpoint bij het synchroniseren van relaties.""",
 
 Andere API's, zoals de Zaken API, gebruiken dit
 endpoint bij het synchroniseren van relaties.""",
+        auth=[{"JWT-Claims": ["contactmomenten.verwijderen"]}],
     ),
 )
 class ObjectContactMomentViewSet(
@@ -175,7 +182,6 @@ class ObjectContactMomentViewSet(
     filterset_class = ObjectContactMomentFilter
     lookup_field = "uuid"
     permission_classes = (AuthScopesRequired,)
-    authentication_classes = (JWTDummyAuthentication,)
     pagination_class = PageNumberPagination
     required_scopes = {
         "list": SCOPE_CONTACTMOMENTEN_ALLES_LEZEN,
@@ -203,17 +209,18 @@ class ObjectContactMomentViewSet(
     list=extend_schema(
         summary="Alle audit trail regels behorend bij de CONTACTMOMENT.",
         description="Alle audit trail regels behorend bij de CONTACTMOMENT.",
+        auth=[{"JWT-Claims": ["audittrails.lezen"]}],
     ),
     retrieve=extend_schema(
         summary="Een specifieke audit trail regel opvragen. ",
         description="Een specifieke audit trail regel opvragen",
+        auth=[{"JWT-Claims": ["audittrails.lezen"]}],
     ),
 )
 class ContactMomentAuditTrailViewSet(AuditTrailViewSet):
     """Opvragen van de audit trail regels."""
 
     main_resource_lookup_field = "contactmoment_uuid"
-    authentication_classes = (JWTDummyAuthentication,)
 
     def initialize_request(self, request, *args, **kwargs):
         # workaround for drf-nested-viewset injecting the URL kwarg into request.data
@@ -229,22 +236,26 @@ class ContactMomentAuditTrailViewSet(AuditTrailViewSet):
         description="""Alle KLANT-CONTACTMOMENT relaties opvragen.
 
  Deze lijst kan gefilterd wordt met query-string parameters.""",
+        auth=[{"JWT-Claims": ["contactmomenten.lezen"]}],
     ),
     retrieve=extend_schema(
         summary="Een specifieke KLANT-CONTACTMOMENT relatie opvragen.",
         description="Een specifieke KLANT-CONTACTMOMENT relatie opvragen.",
+        auth=[{"JWT-Claims": ["contactmomenten.lezen"]}],
     ),
     update=extend_schema(
         summary="Werk een KLANT-CONTACTMOMENT in zijn geheel bij.",
         description="""Werk een KLANT-CONTACTMOMENT in zijn geheel bij.
 
 *AFWIJKING: Werk een KLANT-CONTACTMOMENT in zijn geheel bij.""",
+        auth=[{"JWT-Claims": ["contactmomenten.bijwerken"]}],
     ),
     partial_update=extend_schema(
         summary="Werk een KLANT-CONTACTMOMENT deels bij. ",
         description="""Werk een KLANT-CONTACTMOMENT deels bij.
 
 *AFWIJKING: Werk een KLANT-CONTACTMOMENT deels bij.""",
+        auth=[{"JWT-Claims": ["contactmomenten.bijwerken"]}],
     ),
     create=extend_schema(
         summary="Maak een KLANT-CONTACTMOMENT relatie aan.",
@@ -257,10 +268,12 @@ Registreer een CONTACTMOMENT bij een KLANT.
 * geldigheid `contactmoment` URL
 * geldigheid `klant` URL
 * de combinatie `contactmoment` en `klant` moet uniek zijn""",
+        auth=[{"JWT-Claims": ["contactmomenten.aanmaken"]}],
     ),
     destroy=extend_schema(
         summary="Verwijder een KLANT-CONTACTMOMENT relatie.",
         description="Verwijder een KLANT-CONTACTMOMENT relatie.",
+        auth=[{"JWT-Claims": ["contactmomenten.verwijderen"]}],
     ),
 )
 class KlantContactMomentViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
@@ -276,7 +289,6 @@ class KlantContactMomentViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     lookup_field = "uuid"
     permission_classes = (AuthScopesRequired,)
-    authentication_classes = (JWTDummyAuthentication,)
     required_scopes = {
         "list": SCOPE_CONTACTMOMENTEN_ALLES_LEZEN,
         "retrieve": SCOPE_CONTACTMOMENTEN_ALLES_LEZEN,

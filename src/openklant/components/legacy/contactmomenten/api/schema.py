@@ -40,8 +40,17 @@ genereren.
 * [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)
 """
 
-info = {
+custom_settings = {
     "TITLE": "Contactmomenten API",
     "DESCRIPTION": description,
     "VERSION": settings.CONTACTMOMENTEN_API_VERSION,
+    "APPEND_COMPONENTS": {
+        "securitySchemes": {
+            "JWT-Claims": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        },
+    },
 }

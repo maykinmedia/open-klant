@@ -25,7 +25,7 @@ from openklant.components.klantinteracties.api.viewsets.partijen import (
     PartijViewSet,
 )
 
-from .schema import info
+from .schema import custom_settings
 
 app_name = "klantinteracties"
 
@@ -57,7 +57,7 @@ urlpatterns = [
                     "schema/openapi.json",
                     SpectacularJSONAPIView.as_view(
                         urlconf="openklant.components.klantinteracties.api.urls",
-                        custom_settings=info,
+                        custom_settings=custom_settings,
                     ),
                     name="schema-json-klantinteracties",
                 ),
@@ -65,7 +65,7 @@ urlpatterns = [
                     "schema/openapi.yaml",
                     SpectacularYAMLAPIView.as_view(
                         urlconf="openklant.components.klantinteracties.api.urls",
-                        custom_settings=info,
+                        custom_settings=custom_settings,
                     ),
                     name="schema-yaml-klantinteracties",
                 ),

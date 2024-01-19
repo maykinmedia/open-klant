@@ -7,7 +7,7 @@ from drf_spectacular.views import (
 )
 from vng_api_common import routers
 
-from .schema import info
+from .schema import custom_settings
 from .viewsets import (
     ContactMomentAuditTrailViewSet,
     ContactMomentViewSet,
@@ -39,7 +39,7 @@ urlpatterns = [
                     "schema/openapi.json",
                     SpectacularJSONAPIView.as_view(
                         urlconf="openklant.components.legacy.contactmomenten.api.urls",
-                        custom_settings=info,
+                        custom_settings=custom_settings,
                     ),
                     name="schema-json-contactmomenten",
                 ),
@@ -47,7 +47,7 @@ urlpatterns = [
                     "schema/openapi.yaml",
                     SpectacularYAMLAPIView.as_view(
                         urlconf="openklant.components.legacy.contactmomenten.api.urls",
-                        custom_settings=info,
+                        custom_settings=custom_settings,
                     ),
                     name="schema-yaml-contactmomenten",
                 ),
