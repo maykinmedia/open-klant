@@ -36,7 +36,7 @@ class ExpandMixin:
     expand_param = "expand"
 
     def include_allowed(self):
-        return self.action in ["list"]
+        return self.action in ["list", "retrieve"]
 
     def get_requested_inclusions(self, request):
         # Pull expand parameter from request body in case of _zoek operation
