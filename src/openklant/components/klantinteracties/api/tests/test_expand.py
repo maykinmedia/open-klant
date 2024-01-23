@@ -55,7 +55,7 @@ class ExpandTests(APITestCase):
             klantcontact["hadBetrokkenen"][0]["uuid"], str(self.betrokkene.uuid)
         )
         self.assertTrue(klantcontact["_expand"])
-        expand = klantcontact["_expand"]["hadBetrokkenen"]
+        expand = klantcontact["_expand"]["hadBetrokkenen"][0]
 
         self.assertEqual(
             expand["bezoekadres"],
@@ -107,7 +107,7 @@ class ExpandTests(APITestCase):
             klantcontact["hadBetrokkenen"][0]["uuid"], str(self.betrokkene.uuid)
         )
         self.assertTrue(klantcontact["_expand"])
-        expand = klantcontact["_expand"]["hadBetrokkenen"]
+        expand = klantcontact["_expand"]["hadBetrokkenen"][0]
 
         self.assertEqual(
             expand["bezoekadres"],
@@ -193,7 +193,7 @@ class ExpandTests(APITestCase):
 
         self.assertEqual(data["hadBetrokkenen"][0]["uuid"], str(self.betrokkene.uuid))
         self.assertTrue(data["_expand"])
-        expand = data["_expand"]["hadBetrokkenen"]
+        expand = data["_expand"]["hadBetrokkenen"][0]
 
         self.assertEqual(
             expand["bezoekadres"],
@@ -244,7 +244,7 @@ class ExpandTests(APITestCase):
 
         self.assertEqual(data["hadBetrokkenen"][0]["uuid"], str(self.betrokkene.uuid))
         self.assertTrue(data["_expand"])
-        expand = data["_expand"]["hadBetrokkenen"]
+        expand = data["_expand"]["hadBetrokkenen"][0]
 
         self.assertEqual(
             expand["bezoekadres"],
