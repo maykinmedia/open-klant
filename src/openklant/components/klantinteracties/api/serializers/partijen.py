@@ -21,6 +21,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
 )
 from openklant.components.klantinteracties.api.validators import (
     categorie_exists,
+    categorie_relatie_exists,
     partij_exists,
     partij_identificator_exists,
     partij_is_organisatie,
@@ -92,16 +93,18 @@ class CategorieRelatieForeignKeySerializer(serializers.HyperlinkedModelSerialize
     )
 
     class Meta:
-        model = Categorie
+        model = CategorieRelatie
         fields = (
             "uuid",
             "url",
             "categorie_naam",
+            "begin_datum",
+            "eind_datum",
         )
         extra_kwargs = {
-            "uuid": {"required": True, "validators": [categorie_exists]},
+            "uuid": {"required": True, "validators": [categorie_relatie_exists]},
             "url": {
-                "view_name": "klantinteracties:categorie-detail",
+                "view_name": "klantinteracties:categorierelatie-detail",
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van deze categorie binnen deze API."),
             },
@@ -193,7 +196,9 @@ class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
     categorie = CategorieForeignKeySerializer(
         required=True,
         allow_null=True,
-        help_text=_("De categorie waar de categorie relatie aan gelinkt is."),
+        help_text=_(
+            "De categorie waar de categorie relatie aan gelinkt is: Let op: Dit attribuut is EXPERIMENTEEL."
+        ),
     )
     begin_datum = serializers.DateField(
         allow_null=True,

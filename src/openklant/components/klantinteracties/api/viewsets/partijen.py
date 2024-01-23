@@ -2,7 +2,10 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
-from openklant.components.klantinteracties.api.filterset.partijen import PartijFilterSet
+from openklant.components.klantinteracties.api.filterset.partijen import (
+    CategorieRelatieFilterSet,
+    PartijFilterSet,
+)
 from openklant.components.klantinteracties.api.serializers.partijen import (
     CategorieRelatieSerializer,
     CategorieSerializer,
@@ -106,6 +109,7 @@ class CategorieRelatieViewSet(viewsets.ModelViewSet):
     )
     serializer_class = CategorieRelatieSerializer
     lookup_field = "uuid"
+    filterset_class = CategorieRelatieFilterSet
     pagination_class = PageNumberPagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)

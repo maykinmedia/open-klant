@@ -546,12 +546,52 @@ paths:
       description: 'Alle categorie relaties opvragen, Let op: Dit endpoint is EXPERIMENTEEL.'
       summary: Alle categorie relaties opvragen.
       parameters:
+      - in: query
+        name: begin_datum
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: categorie__naam
+        schema:
+          type: string
+        description: Zoek categorie relatie object op basis van de categorie naam.
+      - in: query
+        name: categorie__url
+        schema:
+          type: string
+        description: Zoek categorie relatie object op basis van de categorie url.
+      - in: query
+        name: categorie__uuid
+        schema:
+          type: string
+        description: Zoek categorie relatie object op basis van de categorie uuid.
+      - in: query
+        name: eind_datum
+        schema:
+          type: string
+          format: date
       - name: page
         required: false
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
+      - in: query
+        name: partij__nummer
+        schema:
+          type: string
+        description: Zoek categorie relatie object op basis van het partij nummer
+      - in: query
+        name: partij__url
+        schema:
+          type: string
+        description: Zoek categorie relatie object op basis van de partij url
+      - in: query
+        name: partij__uuid
+        schema:
+          type: string
+        description: Zoek categorie relatie object op basis van de partij uuid
       tags:
       - categorie relaties
       security:
@@ -2325,7 +2365,8 @@ components:
           allOf:
           - $ref: '#/components/schemas/CategorieForeignKey'
           nullable: true
-          description: De categorie waar de categorie relatie aan gelinkt is.
+          description: 'De categorie waar de categorie relatie aan gelinkt is: Let
+            op: Dit attribuut is EXPERIMENTEEL.'
         beginDatum:
           type: string
           format: date
@@ -2353,7 +2394,7 @@ components:
         uuid:
           type: string
           format: uuid
-          description: Unieke (technische) identificatiecode van de Categorie.
+          description: Unieke (technische) identificatiecode van de Categorie Relatie.
         url:
           type: string
           format: uri
@@ -2363,6 +2404,20 @@ components:
           type: string
           readOnly: true
           description: De naam van de gelinkte categorie.
+        beginDatum:
+          type: string
+          format: date
+          nullable: true
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
+        eindDatum:
+          type: string
+          format: date
+          nullable: true
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+            Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+            Een voorbeeld: 2022-02-21'
       required:
       - categorieNaam
       - url
@@ -3489,7 +3544,8 @@ components:
           allOf:
           - $ref: '#/components/schemas/CategorieForeignKey'
           nullable: true
-          description: De categorie waar de categorie relatie aan gelinkt is.
+          description: 'De categorie waar de categorie relatie aan gelinkt is: Let
+            op: Dit attribuut is EXPERIMENTEEL.'
         beginDatum:
           type: string
           format: date

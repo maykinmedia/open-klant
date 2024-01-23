@@ -7,7 +7,10 @@ from django_filters.rest_framework import FilterSet, filters
 from openklant.components.klantinteracties.api.serializers.partijen import (
     PartijSerializer,
 )
-from openklant.components.klantinteracties.models.partijen import Partij
+from openklant.components.klantinteracties.models.partijen import (
+    CategorieRelatie,
+    Partij,
+)
 from openklant.components.utils.filters import ExpandFilter
 
 
@@ -136,5 +139,85 @@ class PartijFilterSet(FilterSet):
             return queryset.filter(
                 partijidentificator__partij_identificator_register=value
             )
+        except ValueError:
+            return queryset.none()
+
+
+class CategorieRelatieFilterSet(FilterSet):
+    partij__url = filters.CharFilter(
+        help_text=_("Zoek categorie relatie object op basis van de partij url"),
+        method="filter_partij_url",
+    )
+    partij__uuid = filters.CharFilter(
+        help_text=_("Zoek categorie relatie object op basis van de partij uuid"),
+        method="filter_partij_uuid",
+    )
+    partij__nummer = filters.CharFilter(
+        help_text=_("Zoek categorie relatie object op basis van het partij nummer"),
+        method="filter_partij_nummer",
+    )
+    categorie__naam = filters.CharFilter(
+        help_text=_("Zoek categorie relatie object op basis van de categorie naam."),
+        method="filter_categorie_naam",
+    )
+    categorie__uuid = filters.CharFilter(
+        help_text=_("Zoek categorie relatie object op basis van de categorie uuid."),
+        method="filter_categorie_uuid",
+    )
+    categorie__url = filters.CharFilter(
+        help_text=_("Zoek categorie relatie object op basis van de categorie url."),
+        method="filter_categorie_url",
+    )
+
+    class Meta:
+        model = CategorieRelatie
+        fields = (
+            "partij__url",
+            "partij__uuid",
+            "partij__nummer",
+            "categorie__url",
+            "categorie__uuid",
+            "categorie__naam",
+            "begin_datum",
+            "eind_datum",
+        )
+
+    def filter_partij_uuid(self, queryset, name, value):
+        try:
+            partij_uuid = uuid.UUID(value)
+            return queryset.filter(partij__uuid=partij_uuid)
+        except ValueError:
+            return queryset.none()
+
+    def filter_partij_url(self, queryset, name, value):
+        try:
+            url_uuid = uuid.UUID(value.split("/")[-1])
+            return queryset.filter(partij__uuid=url_uuid)
+        except ValueError:
+            return queryset.none()
+
+    def filter_partij_nummer(self, queryset, name, value):
+        try:
+            return queryset.filter(partij__nummer=value)
+        except ValueError:
+            return queryset.none()
+
+    def filter_categorie_uuid(self, queryset, name, value):
+        try:
+            categorie_uuid = uuid.UUID(value)
+            return queryset.filter(categorie__uuid=categorie_uuid)
+        except ValueError:
+            return queryset.none()
+
+    def filter_categorie_url(self, queryset, name, value):
+        try:
+            url_uuid = uuid.UUID(value.split("/")[-1])
+            return queryset.filter(categorie__uuid=url_uuid)
+        except ValueError:
+            return queryset.none()
+
+    def filter_categorie_naam(self, queryset, name, value):
+        try:
+            return queryset.filter(categorie__naam=value)
         except ValueError:
             return queryset.none()
