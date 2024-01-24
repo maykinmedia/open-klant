@@ -10,9 +10,9 @@ os.environ.setdefault(
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("VERSION_TAG", "dev")
 
-os.environ.setdefault("DB_NAME", "openklant"),
-os.environ.setdefault("DB_USER", "openklant"),
-os.environ.setdefault("DB_PASSWORD", "openklant"),
+os.environ.setdefault("DB_NAME", "openklant")
+os.environ.setdefault("DB_USER", "openklant")
+os.environ.setdefault("DB_PASSWORD", "openklant")
 
 os.environ.setdefault("ENVIRONMENT", "development")
 
@@ -75,7 +75,11 @@ CACHES = {
 ELASTIC_APM["DEBUG"] = True
 
 # Django debug toolbar
-INSTALLED_APPS += ["debug_toolbar", "ddt_api_calls"]
+INSTALLED_APPS += [
+    "debug_toolbar",
+    "ddt_api_calls",
+    "django_extensions",
+]
 MIDDLEWARE += [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]

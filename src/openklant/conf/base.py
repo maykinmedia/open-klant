@@ -141,6 +141,7 @@ INSTALLED_APPS = [
     "openklant.components.contactgegevens",
     "openklant.components.legacy.klanten",
     "openklant.components.legacy.contactmomenten",
+    "openklant.components.referentielijsten",
 ]
 
 MIDDLEWARE = [
@@ -397,6 +398,14 @@ SPEC_URL = {
         "openklant",
         "components",
         "contactgegevens",
+        "openapi.yaml",
+    ),
+    "referentielijsten": os.path.join(
+        BASE_DIR,
+        "src",
+        "openklant",
+        "components",
+        "referentielijsten",
         "openapi.yaml",
     ),
 }
