@@ -3,27 +3,11 @@ import string
 import factory.fuzzy
 
 from openklant.components.contactgegevens.constants import GeslachtChoices
-from openklant.components.contactgegevens.models import (
-    Contactgegevens,
-    Organisatie,
-    Persoon,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
-    PartijIdentificatorFactory,
-)
-
-
-class ContactgegevensFactory(factory.django.DjangoModelFactory):
-    uuid = factory.Faker("uuid4")
-    partij_identificator = factory.SubFactory(PartijIdentificatorFactory)
-
-    class Meta:
-        model = Contactgegevens
+from openklant.components.contactgegevens.models import Organisatie, Persoon
 
 
 class OrganisatieFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
-    contactgegevens = factory.SubFactory(ContactgegevensFactory)
     handelsnaam = factory.Faker("word")
     oprichtingsdatum = factory.Faker("date")
     opheffingsdatum = factory.Faker("date")
@@ -34,7 +18,6 @@ class OrganisatieFactory(factory.django.DjangoModelFactory):
 
 class PersoonFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
-    contactgegevens = factory.SubFactory(ContactgegevensFactory)
     geboortedatum = factory.Faker("date")
     overlijdensdatum = factory.Faker("date")
     geslachtsnaam = factory.Faker("word")

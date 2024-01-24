@@ -12,7 +12,7 @@ asgiref==3.7.2
     #   django-cors-headers
 async-timeout==4.0.3
     # via redis
-attrs==23.1.0
+attrs==23.2.0
     # via
     #   cattrs
     #   glom
@@ -58,12 +58,10 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==1.12.0
+commonground-api-common==1.12.1
     # via -r requirements/base.in
 coreapi==2.3.3
-    # via
-    #   commonground-api-common
-    #   django-loose-fk
+    # via commonground-api-common
 coreschema==0.0.4
     # via coreapi
 cryptography==41.0.7
@@ -87,7 +85,6 @@ django==3.2.23
     #   django-filter
     #   django-jsonform
     #   django-log-outgoing-requests
-    #   django-loose-fk
     #   django-markup
     #   django-privates
     #   django-redis
@@ -110,7 +107,7 @@ django-admin-index==3.1.0
     # via -r requirements/base.in
 django-appconf==1.0.6
     # via django-log-outgoing-requests
-django-axes==6.2.0
+django-axes==6.3.0
     # via -r requirements/base.in
 django-cors-headers==4.3.1
     # via -r requirements/base.in
@@ -119,16 +116,12 @@ django-db-logger==0.1.13
 django-extra-views==0.14.0
     # via -r requirements/base.in
 django-filter==23.5
-    # via
-    #   commonground-api-common
-    #   django-loose-fk
-django-jsonform==2.21.2
+    # via commonground-api-common
+django-jsonform==2.21.4
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
 django-log-outgoing-requests==0.6.0
-    # via -r requirements/base.in
-django-loose-fk==1.0.3
     # via -r requirements/base.in
 django-markup==1.8.1
     # via -r requirements/base.in
@@ -150,7 +143,7 @@ django-simple-certmanager==1.4.1
     # via zgw-consumers
 django-sniplates==0.7.2
     # via -r requirements/base.in
-django-solo==2.1.0
+django-solo==2.2.0
     # via
     #   commonground-api-common
     #   django-log-outgoing-requests
@@ -161,7 +154,6 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-    #   django-loose-fk
     #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-yasg
@@ -178,13 +170,13 @@ drf-yasg==1.21.7
     # via commonground-api-common
 ecs-logging==2.1.0
     # via elastic-apm
-elastic-apm==6.19.0
+elastic-apm==6.20.0
     # via -r requirements/base.in
 exceptiongroup==1.2.0
     # via cattrs
 face==20.1.1
     # via glom
-faker==21.0.0
+faker==22.2.0
     # via zgw-consumers
 flower==2.0.1
     # via -r requirements/base.in
@@ -208,25 +200,25 @@ isodate==0.6.1
     # via commonground-api-common
 itypes==1.2.0
     # via coreapi
-jinja2==3.1.2
+jinja2==3.1.3
     # via coreschema
 josepy==1.14.0
     # via mozilla-django-oidc
 jq==1.6.0
     # via -r requirements/base.in
-jsonschema==4.20.0
+jsonschema==4.21.0
     # via -r requirements/base.in
-jsonschema-specifications==2023.11.2
+jsonschema-specifications==2023.12.1
     # via jsonschema
-kombu==5.3.4
+kombu==5.3.5
     # via celery
-markdown==3.5.1
+markdown==3.5.2
     # via -r requirements/base.in
 markupsafe==2.1.3
     # via jinja2
-mozilla-django-oidc==2.0.0
+mozilla-django-oidc==4.0.0
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==0.14.0
+mozilla-django-oidc-db==0.14.1
     # via -r requirements/base.in
 notifications-api-common==0.2.2
     # via commonground-api-common
@@ -278,7 +270,7 @@ pyyaml==6.0.1
     #   oyaml
 redis==5.0.1
     # via django-redis
-referencing==0.32.0
+referencing==0.32.1
     # via
     #   jsonschema
     #   jsonschema-specifications
@@ -298,13 +290,13 @@ requests-cache==1.1.1
     # via -r requirements/base.in
 requests-mock==1.11.0
     # via zgw-consumers
-rpds-py==0.13.2
+rpds-py==0.17.1
     # via
     #   jsonschema
     #   referencing
 self-certifi==1.0.0
     # via -r requirements/base.in
-sentry-sdk==1.39.1
+sentry-sdk==1.39.2
     # via -r requirements/base.in
 six==1.16.0
     # via
@@ -341,7 +333,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.12
+wcwidth==0.2.13
     # via prompt-toolkit
 webencodings==0.5.1
     # via bleach

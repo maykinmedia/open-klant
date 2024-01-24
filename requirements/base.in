@@ -22,7 +22,6 @@ django-cors-headers
 django-db-logger
 django-extra-views
 django-log-outgoing-requests
-django-loose-fk
 django-markup
 django-redis
 django-rosetta
