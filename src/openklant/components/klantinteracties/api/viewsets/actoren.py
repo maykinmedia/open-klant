@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
@@ -10,40 +11,35 @@ from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
 
 
+@extend_schema(tags=["actoren"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle actoren opvragen.",
+        description="Alle actoren opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek actor opvragen.",
+        description="Een specifiek actor opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een actor aan.",
+        description="Maak een actor aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een actor in zijn geheel bij.",
+        description="Werk een actor in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een actor deels bij.",
+        description="Werk een actor deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een actor.",
+        description="Verwijder een actor.",
+    ),
+)
 class ActorViewSet(viewsets.ModelViewSet):
-    """
-    Iets dat of iemand die voor de gemeente werkzaamheden uitvoert.
-
-    create:
-    Maak een actor aan.
-
-    Maak een actor aan.
-
-    list:
-    Alle actoren opvragen.
-
-    Alle actoren opvragen.
-
-    retrieve:
-    Een specifiek actor opvragen.
-
-    Een specifiek actor opvragen.
-
-    update:
-    Werk een actor in zijn geheel bij.
-
-    Werk een actor in zijn geheel bij.
-
-    partial_update:
-    Werk een actor deels bij.
-
-    Werk een actor deels bij.
-
-    destroy:
-    Verwijder een actor.
-
-    Verwijder een actor.
-    """
+    """Iets dat of iemand die voor de gemeente werkzaamheden uitvoert."""
 
     queryset = Actor.objects.order_by("-pk").select_related(
         "geautomatiseerdeactor",

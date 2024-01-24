@@ -7,12 +7,12 @@ from freezegun import freeze_time
 from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
+from vng_api_common.tests import reverse
 
 from openklant.utils.tests.mixins import JWTAuthTransactionMixin
 
 from ..models.constants import KlantType
 from ..models.tests.factories import KlantFactory
-from .utils import get_operation_url
 
 SUBJECT = "http://example.com/subject/1"
 
@@ -28,7 +28,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
         """
         Check if notifications will be send when Klant is created
         """
-        url = get_operation_url("klant_create")
+        url = reverse("klant-list")
         data = {
             "bronorganisatie": "950428139",
             "klantnummer": "1111",
@@ -68,7 +68,7 @@ class SendNotifTestCase(JWTAuthTransactionMixin, APITransactionTestCase):
         Check if notifications will be send when Klant is deleted
         """
         klant = KlantFactory.create(subject_type=KlantType.natuurlijk_persoon)
-        klant_url = get_operation_url("klant_delete", uuid=klant.uuid)
+        klant_url = reverse(klant)
 
         response = self.client.delete(klant_url)
 

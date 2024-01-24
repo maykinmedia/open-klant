@@ -36,9 +36,7 @@ django-jsonform
 # API libraries
 djangorestframework
 djangorestframework-inclusions
-# django-extra-fields
-# django-filter
-# drf-yasg  # api documentation
+drf-spectacular
 
 commonground-api-common
 gemma-zds-client<2.0.0  # lots of breaking changes in 2.0.0

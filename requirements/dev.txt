@@ -198,6 +198,7 @@ django==3.2.23
     #   djangorestframework
     #   djangorestframework-inclusions
     #   drf-nested-routers
+    #   drf-spectacular
     #   drf-yasg
     #   mozilla-django-oidc
     #   mozilla-django-oidc-db
@@ -316,9 +317,10 @@ djangorestframework==3.12.4
     #   commonground-api-common
     #   djangorestframework-inclusions
     #   drf-nested-routers
+    #   drf-spectacular
     #   drf-yasg
     #   notifications-api-common
-djangorestframework-camel-case==1.4.2
+djangorestframework-camel-case==1.2.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -341,6 +343,10 @@ drf-nested-routers==0.93.4
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
+drf-spectacular==0.27.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 drf-yasg==1.21.7
     # via
     #   -c requirements/ci.txt
@@ -418,6 +424,7 @@ inflection==0.5.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   drf-spectacular
     #   drf-yasg
 iso-639==0.4.5
     # via
@@ -621,6 +628,7 @@ pyyaml==6.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
+    #   drf-spectacular
     #   drf-yasg
     #   gemma-zds-client
     #   oyaml
@@ -797,6 +805,7 @@ uritemplate==4.1.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   coreapi
+    #   drf-spectacular
     #   drf-yasg
 url-normalize==1.4.3
     # via

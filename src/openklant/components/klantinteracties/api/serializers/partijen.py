@@ -104,7 +104,7 @@ class CorrespondentieadresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Partij
         gegevensgroep = "correspondentieadres"
-        ref_name = "partij correspondentieadres serializer"
+        ref_name = "PartijCorrespondentieadres"
 
 
 class OrganisatieSerializer(serializers.ModelSerializer):

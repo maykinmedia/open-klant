@@ -1,6 +1,5 @@
 from django.conf import settings
 
-from drf_yasg import openapi
 from notifications_api_common.utils import notification_documentation
 
 from .kanalen import KANAAL_KLANTEN
@@ -43,15 +42,18 @@ genereren.
 * [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)
 """
 
-info = openapi.Info(
-    title="Klanten API",
-    default_version=settings.KLANTEN_API_VERSION,
-    description=description,
-    contact=openapi.Contact(
-        email="standaarden.ondersteuning@vng.nl",
-        url="https://zaakgerichtwerken.vng.cloud",
-    ),
-    license=openapi.License(
-        name="EUPL 1.2", url="https://opensource.org/licenses/EUPL-1.2"
-    ),
-)
+
+custom_settings = {
+    "TITLE": "Klanten API",
+    "DESCRIPTION": description,
+    "VERSION": settings.KLANTEN_API_VERSION,
+    "APPEND_COMPONENTS": {
+        "securitySchemes": {
+            "JWT-Claims": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        },
+    },
+}

@@ -1,8 +1,10 @@
 import logging
 
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
+from vng_api_common.api.views import CreateJWTSecretView as VNGCreateJWTSecretView
 from vng_api_common.audittrails.viewsets import (
     AuditTrailViewSet,
     AuditTrailViewsetMixin,
@@ -25,6 +27,39 @@ from .serializers import KlantSerializer
 logger = logging.getLogger(__name__)
 
 
+@extend_schema(tags=["klanten"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle KLANTen opvragen.",
+        description="Alle KLANTen opvragen.",
+        auth=[{"JWT-Claims": ["klanten.lezen"]}],
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek KLANT opvragen.",
+        description="Een specifiek KLANT opvragen.",
+        auth=[{"JWT-Claims": ["klanten.lezen"]}],
+    ),
+    update=extend_schema(
+        summary="Werk een KLANT in zijn geheel bij.",
+        description="Werk een KLANT in zijn geheel bij.",
+        auth=[{"JWT-Claims": ["klanten.bijwerken"]}],
+    ),
+    partial_update=extend_schema(
+        summary="Werk een KLANT deels bij.",
+        description="Werk een KLANT deels bij.",
+        auth=[{"JWT-Claims": ["klanten.bijwerken"]}],
+    ),
+    create=extend_schema(
+        summary="Maak een KLANT aan.",
+        description="Maak een KLANT aan.",
+        auth=[{"JWT-Claims": ["klanten.aanmaken"]}],
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een KLANT.",
+        description="Verwijder een KLANT.",
+        auth=[{"JWT-Claims": ["klanten.verwijderen"]}],
+    ),
+)
 class KlantViewSet(
     NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
 ):
@@ -39,36 +74,6 @@ class KlantViewSet(
     NATUURLIJK PERSOON of VESTIGING  middels het attribuut `subject` of, indien
     er geen API beschikbaar is voor deze objecten, middels
     `subjectIdentificatie`.
-
-    create:
-    Maak een KLANT aan.
-
-    Maak een KLANT aan.
-
-    list:
-    Alle KLANTen opvragen.
-
-    Alle KLANTen opvragen.
-
-    retrieve:
-    Een specifiek KLANT opvragen.
-
-    Een specifiek KLANT opvragen.
-
-    update:
-    Werk een KLANT in zijn geheel bij.
-
-    Werk een KLANT in zijn geheel bij.
-
-    partial_update:
-    Werk een KLANT deels bij.
-
-    Werk een KLANT deels bij.
-
-    destroy:
-    Verwijder een KLANT.
-
-    Verwijder een KLANT.
     """
 
     queryset = Klant.objects.order_by("-pk")
@@ -89,19 +94,31 @@ class KlantViewSet(
     audit = AUDIT_KLANTEN
 
 
+@extend_schema(tags=["klanten"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle audit trail regels behorend bij de KLANT.",
+        description="Alle audit trail regels behorend bij de KLANT.",
+        auth=[{"JWT-Claims": ["audittrails.lezen"]}],
+    ),
+    retrieve=extend_schema(
+        summary="Een specifieke audit trail regel opvragen.",
+        description="Een specifieke audit trail regel opvragen.",
+        auth=[{"JWT-Claims": ["audittrails.lezen"]}],
+    ),
+)
 class KlantAuditTrailViewSet(AuditTrailViewSet):
-    """
-    Opvragen van de audit trail regels.
-
-    list:
-    Alle audit trail regels behorend bij de KLANT.
-
-    Alle audit trail regels behorend bij de KLANT.
-
-    retrieve:
-    Een specifieke audit trail regel opvragen.
-
-    Een specifieke audit trail regel opvragen.
-    """
+    """Opvragen van de audit trail regels."""
 
     main_resource_lookup_field = "klant_uuid"
+
+    def initialize_request(self, request, *args, **kwargs):
+        # workaround for drf-nested-viewset injecting the URL kwarg into request.data
+        return super(viewsets.GenericViewSet, self).initialize_request(
+            request, *args, **kwargs
+        )
+
+
+@extend_schema(exclude=True)
+class CreateJWTSecretView(VNGCreateJWTSecretView):
+    pass

@@ -1,15 +1,18 @@
-from django.conf import settings
 from django.urls import include, path, re_path
 
+from drf_spectacular.views import (
+    SpectacularJSONAPIView,
+    SpectacularRedocView,
+    SpectacularYAMLAPIView,
+)
 from vng_api_common import routers
-from vng_api_common.schema import SchemaView as _SchemaView
 
 from openklant.components.contactgegevens.api.viewset import (
     OrganisatieViewSet,
     PersoonViewSet,
 )
 
-from .schema import info
+from .schema import custom_settings
 
 app_name = "contactgegevens"
 
@@ -17,36 +20,37 @@ router = routers.DefaultRouter()
 router.register("organisatie", OrganisatieViewSet)
 router.register("persoon", PersoonViewSet)
 
-
-class SchemaView(_SchemaView):
-    schema_path = settings.SPEC_URL["contactgegevens"]
-    info = info
-
-
-# TODO: the EndpointEnumerator seems to choke on path and re_path
-
 urlpatterns = [
     re_path(
         r"^v(?P<version>\d+)/",
         include(
             [
-                # API documentation
-                re_path(
-                    r"^schema/openapi(?P<format>\.json|\.yaml)$",
-                    SchemaView.without_ui(cache_timeout=None),
+                re_path(r"^", include(router.urls)),
+                path("", router.APIRootView.as_view(), name="api-root-contactgegevens"),
+                path(
+                    "schema/openapi.json",
+                    SpectacularJSONAPIView.as_view(
+                        urlconf="openklant.components.contactgegevens.api.urls",
+                        custom_settings=custom_settings,
+                    ),
                     name="schema-json-contactgegevens",
                 ),
-                re_path(
-                    r"^schema/$",
-                    SchemaView.with_ui("redoc", cache_timeout=None),
+                path(
+                    "schema/openapi.yaml",
+                    SpectacularYAMLAPIView.as_view(
+                        urlconf="openklant.components.contactgegevens.api.urls",
+                        custom_settings=custom_settings,
+                    ),
+                    name="schema-yaml-contactgegevens",
+                ),
+                path(
+                    "schema/",
+                    SpectacularRedocView.as_view(
+                        url_name="contactgegevens:schema-yaml-contactgegevens"
+                    ),
                     name="schema-redoc-contactgegevens",
                 ),
-                # actual API
-                re_path(r"^", include(router.urls)),
-                # should not be picked up by drf-yasg
-                path("", router.APIRootView.as_view(), name="api-root-contactgegevens"),
-                path("", include("vng_api_common.api.urls")),
             ]
         ),
-    )
+    ),
 ]

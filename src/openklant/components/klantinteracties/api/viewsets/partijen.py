@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
@@ -15,40 +16,35 @@ from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.mixins import ExpandMixin
 
 
+@extend_schema(tags=["partijen"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle partijen opvragen.",
+        description="Alle partijen opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek partij opvragen.",
+        description="Een specifiek partij opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een partij aan.",
+        description="Maak een partij aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een partij in zijn geheel bij.",
+        description="Werk een partij in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een partij deels bij.",
+        description="Werk een partij deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een partij.",
+        description="Verwijder een partij.",
+    ),
+)
 class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
-    """
-    Persoon of organisatie waarmee de gemeente een relatie heeft.
-
-    create:
-    Maak een partij aan.
-
-    Maak een partij aan.
-
-    list:
-    Alle partijen opvragen.
-
-    Alle partijen opvragen.
-
-    retrieve:
-    Een specifiek partij opvragen.
-
-    Een specifiek partij opvragen.
-
-    update:
-    Werk een partij in zijn geheel bij.
-
-    Werk een partij in zijn geheel bij.
-
-    partial_update:
-    Werk een partij deels bij.
-
-    Werk een partij deels bij.
-
-    destroy:
-    Verwijder een partij.
-
-    Verwijder een partij.
-    """
+    """Persoon of organisatie waarmee de gemeente een relatie heeft."""
 
     queryset = (
         Partij.objects.order_by("-pk")
@@ -70,40 +66,35 @@ class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
     permission_classes = (TokenPermissions,)
 
 
+@extend_schema(tags=["partij-identificatoren"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle partij-identificatoren opvragen.",
+        description="Alle partij-identificatoren opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek partij-identificator opvragen.",
+        description="Een specifiek partij-identificator opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een partij-identificator aan.",
+        description="Maak een partij-identificator aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een partij-identificator in zijn geheel bij.",
+        description="Werk een partij-identificator in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een partij-identificator deels bij.",
+        description="Werk een partij-identificator deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een partij-identificator.",
+        description="Verwijder een partij-identificator.",
+    ),
+)
 class PartijIdentificatorViewSet(viewsets.ModelViewSet):
-    """
-    Gegevens die een partij in een basisregistratie of ander extern register uniek identificeren.
-
-    create:
-    Maak een partij-identificator aan.
-
-    Maak een partij-identificator aan.
-
-    list:
-    Alle partij-identificatoren opvragen.
-
-    Alle partij-identificatoren opvragen.
-
-    retrieve:
-    Een specifiek partij-identificator opvragen.
-
-    Een specifiek partij-identificator opvragen.
-
-    update:
-    Werk een partij-identificator in zijn geheel bij.
-
-    Werk een partij-identificator in zijn geheel bij.
-
-    partial_update:
-    Werk een partij-identificator deels bij.
-
-    Werk een partij-identificator deels bij.
-
-    destroy:
-    Verwijder een partij-identificator.
-
-    Verwijder een partij-identificator.
-    """
+    """Gegevens die een partij in een basisregistratie of ander extern register uniek identificeren."""
 
     queryset = PartijIdentificator.objects.order_by("-pk").select_related("partij")
     serializer_class = PartijIdentificatorSerializer

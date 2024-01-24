@@ -1,9 +1,11 @@
-from django.conf import settings
-from django.conf.urls import url
-from django.urls import include, path
+from django.urls import include, path, re_path
 
+from drf_spectacular.views import (
+    SpectacularJSONAPIView,
+    SpectacularRedocView,
+    SpectacularYAMLAPIView,
+)
 from vng_api_common import routers
-from vng_api_common.schema import SchemaView as _SchemaView
 
 from openklant.components.klantinteracties.api.viewsets.actoren import ActorViewSet
 from openklant.components.klantinteracties.api.viewsets.digitaal_adres import (
@@ -23,7 +25,7 @@ from openklant.components.klantinteracties.api.viewsets.partijen import (
     PartijViewSet,
 )
 
-from .schema import info
+from .schema import custom_settings
 
 app_name = "klantinteracties"
 
@@ -42,36 +44,38 @@ router.register("internetaken", InterneTaakViewSet)
 router.register("partijen", PartijViewSet)
 router.register("partij-identificatoren", PartijIdentificatorViewSet)
 
-
-class SchemaView(_SchemaView):
-    schema_path = settings.SPEC_URL["klantinteracties"]
-    info = info
-
-
-# TODO: the EndpointEnumerator seems to choke on path and re_path
-
 urlpatterns = [
-    url(
+    re_path(
         r"^v(?P<version>\d+)/",
         include(
             [
-                # should not be picked up by drf-yasgs
-                url(
-                    r"^schema/openapi(?P<format>\.json|\.yaml)$",
-                    SchemaView.without_ui(cache_timeout=None),
-                    name="schema-json-klantinteracties",
-                ),
-                url(
-                    r"^schema/$",
-                    SchemaView.with_ui("redoc", cache_timeout=None),
-                    name="schema-redoc-klantinteracties",
-                ),
-                # actual API
-                url(r"^", include(router.urls)),
+                re_path(r"^", include(router.urls)),
                 path(
                     "", router.APIRootView.as_view(), name="api-root-klantinteracties"
                 ),
-                path("", include("vng_api_common.api.urls")),
+                path(
+                    "schema/openapi.json",
+                    SpectacularJSONAPIView.as_view(
+                        urlconf="openklant.components.klantinteracties.api.urls",
+                        custom_settings=custom_settings,
+                    ),
+                    name="schema-json-klantinteracties",
+                ),
+                path(
+                    "schema/openapi.yaml",
+                    SpectacularYAMLAPIView.as_view(
+                        urlconf="openklant.components.klantinteracties.api.urls",
+                        custom_settings=custom_settings,
+                    ),
+                    name="schema-yaml-klantinteracties",
+                ),
+                path(
+                    "schema/",
+                    SpectacularRedocView.as_view(
+                        url_name="klantinteracties:schema-yaml-klantinteracties"
+                    ),
+                    name="schema-redoc-klantinteracties",
+                ),
             ]
         ),
     ),

@@ -128,7 +128,7 @@ class CorrespondentieadresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Betrokkene
         gegevensgroep = "correspondentieadres"
-        ref_name = "betrokkene correspondentieadres"
+        ref_name = "BetrokkeneCorrespondentieadres"
 
 
 class ContactnaamSerializer(GegevensGroepSerializer):
