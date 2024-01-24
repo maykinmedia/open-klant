@@ -1,0 +1,257 @@
+[
+{
+    "model": "klantinteracties.actor",
+    "pk": 1,
+    "fields": {
+        "objectidentificator_objecttype": "",
+        "objectidentificator_soort_object_id": "",
+        "objectidentificator_object_id": "",
+        "objectidentificator_register": "",
+        "uuid": "f4b553a0-7d65-4999-81b8-ff5e545da41d",
+        "naam": "Judy Ekhart",
+        "soort_actor": "medewerker",
+        "indicatie_actief": true
+    }
+},
+{
+    "model": "klantinteracties.klantcontact",
+    "pk": 1,
+    "fields": {
+        "uuid": "79288e86-3432-474c-926b-e4c06dd6b9c6",
+        "nummer": "8124384823",
+        "kanaal": "Email",
+        "onderwerp": "Lorum Ipsum",
+        "inhoud": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet viverra ex, nec molestie erat. Fusce viverra velit id viverra rutrum. Vestibulum non malesuada purus. Ut luctus volutpat quam, quis ultricies nunc semper non. Vivamus sed malesuada justo, eget ornare enim. Morbi vitae dui at magna scelerisque scelerisque. In quis ante imperdiet, cursus nulla id, porttitor enim. Integer sit amet turpis ac libero viverra gravida. Cras vitae ullamcorper est. Nam mollis metus eget dolor imperdiet, eu consequat felis luctus. Maecenas interdum varius ligula nec volutpat.",
+        "indicatie_contact_gelukt": true,
+        "taal": "nld",
+        "vertrouwelijk": true,
+        "plaatsgevonden_op": "2024-01-24T14:27:36Z",
+        "actoren": [
+            1
+        ]
+    }
+},
+{
+    "model": "klantinteracties.klantcontact",
+    "pk": 2,
+    "fields": {
+        "uuid": "badf32df-b753-49d7-82f3-6e1869217c4d",
+        "nummer": "7293492792",
+        "kanaal": "Email",
+        "onderwerp": "Lorem Ipsum",
+        "inhoud": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae pellentesque velit. Nullam diam felis, tempor vitae quam at, efficitur tristique urna. Praesent a elit in ligula fermentum consequat id in massa. Vestibulum sed nisl quis eros fringilla rutrum scelerisque vitae arcu. Suspendisse potenti. Pellentesque et pretium enim. Duis aliquam pretium neque, id posuere mi fermentum nec. Mauris justo sem, facilisis ac suscipit ut, feugiat vel sapien. Vivamus consequat dolor in ligula vehicula dignissim. In elit arcu, mattis ut faucibus non, cursus eget massa. Quisque quis mauris nec ipsum egestas tempus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+        "indicatie_contact_gelukt": true,
+        "taal": "ndl",
+        "vertrouwelijk": true,
+        "plaatsgevonden_op": "2024-01-24T14:39:48Z",
+        "actoren": [
+            1
+        ]
+    }
+},
+{
+    "model": "klantinteracties.betrokkene",
+    "pk": 1,
+    "fields": {
+        "bezoekadres_nummeraanduiding_id": "cb456a47-847c-4afc-921f-40f2506769d8",
+        "bezoekadres_adresregel1": "Keizersgracht 117",
+        "bezoekadres_adresregel2": "1015 CJ Amsterdam",
+        "bezoekadres_adresregel3": "Noord-Holland",
+        "bezoekadres_land": "6030",
+        "correspondentieadres_nummeraanduiding_id": "cb456a47-847c-4afc-921f-40f2506769d8",
+        "correspondentieadres_adresregel1": "Keizersgracht 117",
+        "correspondentieadres_adresregel2": "1015 CJ Amsterdam",
+        "correspondentieadres_adresregel3": "Noord-Holland",
+        "correspondentieadres_land": "6030",
+        "contactnaam_voorletters": "J",
+        "contactnaam_voornaam": "Janiek",
+        "contactnaam_voorvoegsel_achternaam": "",
+        "contactnaam_achternaam": "Tammer",
+        "uuid": "d064c0f8-0431-4bb1-b433-8a1eab63f1d8",
+        "partij": 1,
+        "klantcontact": 2,
+        "rol": "klant",
+        "organisatienaam": "Maykin Media",
+        "initiator": true
+    }
+},
+{
+    "model": "klantinteracties.betrokkene",
+    "pk": 2,
+    "fields": {
+        "bezoekadres_nummeraanduiding_id": "1cda95d7-bbcc-4bc2-bb6d-0793591c9983",
+        "bezoekadres_adresregel1": "Keizersgracht 117",
+        "bezoekadres_adresregel2": "1015 CJ Amsterdam",
+        "bezoekadres_adresregel3": "Noord-Holland",
+        "bezoekadres_land": "6030",
+        "correspondentieadres_nummeraanduiding_id": "f88597fa-0cee-4dce-abc6-9983dad74feb",
+        "correspondentieadres_adresregel1": "Keizersgracht 117",
+        "correspondentieadres_adresregel2": "1015 CJ Amsterdam",
+        "correspondentieadres_adresregel3": "Noord-Holland",
+        "correspondentieadres_land": "6030",
+        "contactnaam_voorletters": "F",
+        "contactnaam_voornaam": "Flavia",
+        "contactnaam_voorvoegsel_achternaam": "",
+        "contactnaam_achternaam": "Hol",
+        "uuid": "2ba87b23-5822-4bf4-ac74-9712a457ea4a",
+        "partij": 2,
+        "klantcontact": 2,
+        "rol": "klant",
+        "organisatienaam": "Maykin Media",
+        "initiator": true
+    }
+},
+{
+    "model": "klantinteracties.onderwerpobject",
+    "pk": 1,
+    "fields": {
+        "objectidentificator_objecttype": "INGESCHREVEN NATUURLIJK PERSOON",
+        "objectidentificator_soort_object_id": "Burgerservicenummer",
+        "objectidentificator_object_id": "123456788",
+        "objectidentificator_register": "BRP",
+        "uuid": "d6f1f8b1-c73e-4751-b0c9-39da52c0a307",
+        "klantcontact": 1,
+        "was_klantcontact": 2
+    }
+},
+{
+    "model": "klantinteracties.bijlage",
+    "pk": 1,
+    "fields": {
+        "objectidentificator_objecttype": "INGESCHREVEN NATUURLIJK PERSOON",
+        "objectidentificator_soort_object_id": "Burgerservicenummer",
+        "objectidentificator_object_id": "123456688",
+        "objectidentificator_register": "BRP",
+        "uuid": "8d6f82d0-7524-4dcb-ab30-b8ca4c8e4b97",
+        "klantcontact": 2
+    }
+},
+{
+    "model": "klantinteracties.partij",
+    "pk": 1,
+    "fields": {
+        "bezoekadres_nummeraanduiding_id": "d049c30f-b7d1-4602-894d-a7f7e2ae1ec7",
+        "bezoekadres_adresregel1": "Keizersgracht 117",
+        "bezoekadres_adresregel2": "1015 CJ Amsterdam",
+        "bezoekadres_adresregel3": "Noord-Holland",
+        "bezoekadres_land": "6030",
+        "correspondentieadres_nummeraanduiding_id": "cb456a47-847c-4afc-921f-40f2506769d8",
+        "correspondentieadres_adresregel1": "Keizersgracht 117",
+        "correspondentieadres_adresregel2": "1015 CJ Amsterdam",
+        "correspondentieadres_adresregel3": "Noord-Holland",
+        "correspondentieadres_land": "6030",
+        "uuid": "19e1a8cb-bcfb-4f78-b145-e87a0e62d1c6",
+        "voorkeurs_digitaal_adres": 1,
+        "nummer": "2372193526",
+        "interne_notitie": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tristique, nulla mollis cursus mollis, urna nisl vestibulum turpis, placerat sollicitudin velit nisi eu ex. Maecenas imperdiet tortor augue, a elementum erat pretium tempus. Donec quis condimentum est, quis elementum urna. Phasellus vel dapibus urna, a iaculis nisl. Donec elementum at nunc sit amet scelerisque. Curabitur imperdiet dolor consectetur commodo sollicitudin. Proin sed mi rhoncus, feugiat magna a, bibendum velit. Nullam venenatis lobortis erat ut egestas. Nulla rhoncus feugiat odio, vitae maximus neque congue ut. Suspendisse vitae faucibus neque, eget imperdiet magna. Suspendisse augue lorem, laoreet nec ullamcorper sed, euismod vel augue. Proin vestibulum diam sem, et fringilla nibh ultricies vel.",
+        "soort_partij": "organisatie",
+        "indicatie_geheimhouding": true,
+        "voorkeurstaal": "nld",
+        "indicatie_actief": true,
+        "vertegenwoordigde": [
+            2
+        ]
+    }
+},
+{
+    "model": "klantinteracties.partij",
+    "pk": 2,
+    "fields": {
+        "bezoekadres_nummeraanduiding_id": "db698489-2a68-4eac-936d-0ecd5c3606b8",
+        "bezoekadres_adresregel1": "Keizersgracht 117",
+        "bezoekadres_adresregel2": "1015 CJ Amsterdam",
+        "bezoekadres_adresregel3": "Noord-Holland",
+        "bezoekadres_land": "6030",
+        "correspondentieadres_nummeraanduiding_id": "be01355b-12be-4699-b976-d5ea5606f675",
+        "correspondentieadres_adresregel1": "Keizersgracht 117",
+        "correspondentieadres_adresregel2": "1015 CJ Amsterdam",
+        "correspondentieadres_adresregel3": "Noord-Holland",
+        "correspondentieadres_land": "6030",
+        "uuid": "9db125f3-5dfb-4fc8-9aed-3cca4b2d7e60",
+        "voorkeurs_digitaal_adres": null,
+        "nummer": "2783648628",
+        "interne_notitie": "Nunc tincidunt fringilla auctor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam convallis molestie tellus sed viverra. Donec eget nunc vel odio tempus rhoncus. Fusce scelerisque a velit quis aliquam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Quisque ut mauris eu nulla fermentum auctor. Pellentesque id lacus sollicitudin lorem interdum molestie nec in nisl. Ut facilisis condimentum sem, sed aliquet nibh mattis in. Cras gravida tellus neque.",
+        "soort_partij": "contactpersoon",
+        "indicatie_geheimhouding": true,
+        "voorkeurstaal": "ndl",
+        "indicatie_actief": true,
+        "vertegenwoordigde": [
+            1
+        ]
+    }
+},
+{
+    "model": "klantinteracties.organisatie",
+    "pk": 1,
+    "fields": {
+        "partij": 1,
+        "naam": "Maykin Media"
+    }
+},
+{
+    "model": "klantinteracties.contactpersoon",
+    "pk": 1,
+    "fields": {
+        "contactnaam_voorletters": "R",
+        "contactnaam_voornaam": "Reimer",
+        "contactnaam_voorvoegsel_achternaam": "",
+        "contactnaam_achternaam": "Scheerhoorn",
+        "uuid": "bd7c3842-1998-4c64-b297-4cb45d5a7812",
+        "partij": 2,
+        "werkte_voor_partij": 1
+    }
+},
+{
+    "model": "klantinteracties.partijidentificator",
+    "pk": 1,
+    "fields": {
+        "uuid": "abfaf000-249c-4f49-a029-607873c359ec",
+        "partij": 2,
+        "andere_partij_identificator": "",
+        "partij_identificator_objecttype": "INGESCHREVEN NATUURLIJK PERSOON",
+        "partij_identificator_soort_object_id": "Burgerservicenummer",
+        "partij_identificator_object_id": "123446688",
+        "partij_identificator_register": "BRP"
+    }
+},
+{
+    "model": "klantinteracties.digitaaladres",
+    "pk": 1,
+    "fields": {
+        "uuid": "045ddf97-8e3c-45b5-9be8-3e5a84a1e697",
+        "partij": 1,
+        "betrokkene": 1,
+        "soort_digitaal_adres": "Email",
+        "adres": "janiek.tammer@maykinmedia.nl",
+        "omschrijving": "Bedrijfs Emaill"
+    }
+},
+{
+    "model": "klantinteracties.internetaak",
+    "pk": 1,
+    "fields": {
+        "uuid": "64da8210-ff49-4be9-855f-4f531d001350",
+        "actor": 1,
+        "klantcontact": 1,
+        "nummer": "6781234792",
+        "gevraagde_handeling": "Lorum Ipsum",
+        "toelichting": "Nullam ultricies et tellus eu hendrerit. Cras dictum eros massa. Vestibulum sollicitudin vehicula egestas. Morbi vel nulla eget velit scelerisque placerat. Donec dictum ultricies lacinia. Pellentesque faucibus lorem id orci tincidunt dapibus. Sed venenatis metus enim, at semper ligula porttitor et. Pellentesque tempus cursus lectus, in sollicitudin sapien pretium at. Donec varius gravida ante nec congue. Aenean facilisis lacus quis mollis suscipit.",
+        "status": "te_verwerken",
+        "toegewezen_op": "2024-01-24T14:35:20.356Z"
+    }
+},
+{
+    "model": "klantinteracties.internetaak",
+    "pk": 2,
+    "fields": {
+        "uuid": "7524d9a3-d364-47d1-809d-fc64689d293e",
+        "actor": 1,
+        "klantcontact": 2,
+        "nummer": "9234726345",
+        "gevraagde_handeling": "Lorem Ipsum",
+        "toelichting": "Suspendisse fringilla rhoncus tortor, at gravida justo vestibulum a. Nullam imperdiet sapien eu ante venenatis, at porta mauris ullamcorper. Vestibulum aliquet venenatis odio, sed suscipit lectus vulputate nec. Duis sed purus magna. Cras leo lacus, mollis facilisis leo sit amet, ornare congue augue. Nullam scelerisque mauris turpis, ac gravida ligula suscipit at. Nulla congue lacus vel vehicula varius. Fusce a nunc laoreet, suscipit tortor nec, tristique diam. Praesent ligula massa, bibendum ut sodales quis, interdum eu magna. Vestibulum dignissim eleifend mauris, nec feugiat dui iaculis sit amet. Integer aliquet pellentesque euismod. Fusce nec nunc sagittis, dictum est quis, faucibus odio. Maecenas finibus consequat lorem vel consequat.",
+        "status": "te_verwerken",
+        "toegewezen_op": "2024-01-24T14:43:38.852Z"
+    }
+}
+]
