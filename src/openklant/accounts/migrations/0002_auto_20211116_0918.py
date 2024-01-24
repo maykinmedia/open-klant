@@ -23,8 +23,8 @@ class Migration(migrations.Migration):
     dependencies = [
         ("accounts", "0001_initial"),
         ("admin_index", "0006_auto_20230503_1910"),
-        ("contactmomenten", "0001_initial"),
-        ("klanten", "0001_initial"),
+        ("contactgegevens", "0001_initial"),
+        ("klantinteracties", "0001_initial"),
     ]
 
     operations = [migrations.RunPython(forward, migrations.RunPython.noop)]

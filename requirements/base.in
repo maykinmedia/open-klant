@@ -3,7 +3,6 @@ celery
 click<8.1.0  # click>=8.1.0 causes issues with black https://github.com/psf/black/issues/2964
 jq
 jsonschema
-dictdiffer # Used to show diffs for audittrails in admin
 markdown  # used to render some markdown in code to html
 psycopg2
 python-dateutil
