@@ -1,0 +1,37 @@
+[
+{
+    "model": "contactgegevens.organisatie",
+    "pk": 1,
+    "fields": {
+        "adres_nummeraanduiding_id": "e25988cd-daa7-43f7-ba8b-f226c5a3ec76",
+        "adres_adresregel1": "Keizersgracht 117",
+        "adres_adresregel2": "1015 CJ Amsterdam",
+        "adres_adresregel3": "Noord-Holland",
+        "adres_land": "6030",
+        "uuid": "9df246f7-027b-4305-bf43-043b3b926ed3",
+        "handelsnaam": "Maykin Media",
+        "oprichtingsdatum": "2008-01-01",
+        "opheffingsdatum": null,
+        "land": "6030"
+    }
+},
+{
+    "model": "contactgegevens.persoon",
+    "pk": 1,
+    "fields": {
+        "adres_nummeraanduiding_id": "ed28d31b-8831-48c4-bf5b-ec312d149f72",
+        "adres_adresregel1": "Keizersgracht 117",
+        "adres_adresregel2": "1015 CJ Amsterdam",
+        "adres_adresregel3": "Noord-Holland",
+        "adres_land": "6030",
+        "uuid": "729ff687-e6ab-4627-9a0b-5eca4098b746",
+        "geboortedatum": "2000-01-01",
+        "overlijdensdatum": null,
+        "geslachtsnaam": "Schalkwijk",
+        "geslacht": "v",
+        "voorvoegsel": "van",
+        "voornamen": "Nagihan",
+        "land": "6030"
+    }
+}
+]
