@@ -19,7 +19,7 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
 from openklant.components.token.tests.api_testcase import APITestCase
 
 
-class KlantcontactFilterTests(APITestCase):
+class KlantcontactFilterSetTests(APITestCase):
     url = reverse("klantinteracties:klantcontact-list")
 
     def setUp(self):
@@ -95,7 +95,7 @@ class KlantcontactFilterTests(APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
 
-class BetrokkeneFilterTests(APITestCase):
+class BetrokkeneFilterSetTests(APITestCase):
     url = reverse("klantinteracties:betrokkene-list")
 
     def setUp(self):
@@ -365,7 +365,7 @@ class BetrokkeneFilterTests(APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
 
-class TestPartijFilterset(APITestCase):
+class PartijFilterSetTests(APITestCase):
     url = reverse("klantinteracties:partij-list")
 
     def setUp(self):
@@ -398,6 +398,28 @@ class TestPartijFilterset(APITestCase):
                 partij_identificator_object_id=f"object-id-{partij_obj.nummer}",
                 partij_identificator_register=f"register-{partij_obj.nummer}",
             )
+
+        self.categorie = CategorieFactory.create(naam="een")
+        self.categorie2 = CategorieFactory.create(naam="twee")
+        self.categorie3 = CategorieFactory.create(naam="drie")
+        self.categorie4 = CategorieFactory.create(naam="vier")
+        self.categorie5 = CategorieFactory.create(naam="vijf")
+
+        self.categorie_relatie = CategorieRelatieFactory.create(
+            partij=self.partij, categorie=self.categorie
+        )
+        self.categorie_relatie2 = CategorieRelatieFactory.create(
+            partij=self.partij2, categorie=self.categorie2
+        )
+        self.categorie_relatie3 = CategorieRelatieFactory.create(
+            partij=self.partij3, categorie=self.categorie3
+        )
+        self.categorie_relatie4 = CategorieRelatieFactory.create(
+            partij=self.partij4, categorie=self.categorie4
+        )
+        self.categorie_relatie5 = CategorieRelatieFactory.create(
+            partij=self.partij5, categorie=self.categorie5
+        )
 
     def test_filter_werkt_voor_partij_url(self):
         werkt_voor_partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij4.uuid)}"
@@ -571,8 +593,44 @@ class TestPartijFilterset(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_categorie_relaties_categorie_naam(self):
+        response = self.client.get(
+            self.url,
+            {"categorierelatie__categorie__naam": self.categorie5.naam},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-class TestCategorieRelatieFilterset(APITestCase):
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.partij5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"categorierelatie__categorie__naam": "zes"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("search_based_on_multiple_categorie_namen"):
+            response = self.client.get(
+                self.url,
+                {
+                    "categorierelatie__categorie__naam": f"{self.categorie.naam},{self.categorie2.naam}"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(2, len(data))
+            self.assertEqual(str(self.partij2.uuid), data[0]["uuid"])
+            self.assertEqual(str(self.partij.uuid), data[1]["uuid"])
+
+
+class CategorieRelatieFiltersetTests(APITestCase):
     url = reverse("klantinteracties:categorierelatie-list")
 
     def setUp(self):
