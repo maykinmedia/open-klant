@@ -230,7 +230,9 @@ class ExpandLoader(InclusionLoader):
         if isinstance(inclusion_serializer, str):
             inclusion_serializer = import_string(inclusion_serializer)
 
-        many = True if hasattr(field, "child_relation") else False
+        many = (
+            True if hasattr(field, "child_relation") else getattr(field, "many", False)
+        )
 
         for obj in self._some_related_field_inclusions(
             new_path, field, instance, inclusion_serializer
