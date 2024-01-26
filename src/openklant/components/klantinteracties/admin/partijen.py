@@ -4,16 +4,38 @@ from django.utils.translation import gettext_lazy as _
 from ..models.constants import SoortPartij
 from ..models.digitaal_adres import DigitaalAdres
 from ..models.klantcontacten import Betrokkene
-from ..models.partijen import Contactpersoon, Organisatie, Partij, Persoon
+from ..models.partijen import (
+    Categorie,
+    CategorieRelatie,
+    Contactpersoon,
+    Organisatie,
+    Partij,
+    Persoon,
+)
 
 
-class DigitaalAdresInlineAdmin(admin.StackedInline):
-    model = DigitaalAdres
+class CategorieRelatieInlineAdmin(admin.StackedInline):
+    model = CategorieRelatie
+    readonly_fields = ("uuid",)
+    autocomplete_fields = ("categorie",)
+    fields = (
+        "uuid",
+        "categorie",
+        "begin_datum",
+        "eind_datum",
+    )
     extra = 0
 
 
 class BetrokkeneInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
     model = Betrokkene
+    extra = 0
+
+
+class DigitaalAdresInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
+    model = DigitaalAdres
     extra = 0
 
 
@@ -23,6 +45,7 @@ class PersoonInlineAdmin(admin.StackedInline):
 
 
 class ContactpersoonInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
     model = Contactpersoon
     fk_name = "partij"
     raw_id_field = ["partij"]
@@ -48,6 +71,7 @@ class PartijAdmin(admin.ModelAdmin):
     )
     inlines = (
         PersoonInlineAdmin,
+        CategorieRelatieInlineAdmin,
         ContactpersoonInlineAdmin,
         OrganisatieInlineAdmin,
         DigitaalAdresInlineAdmin,
@@ -129,3 +153,13 @@ class PartijAdmin(admin.ModelAdmin):
     def get_organisaties(self, obj):
         if organisatie := obj.organisatie:
             return organisatie.naam
+
+
+@admin.register(Categorie)
+class CategorieAdmin(admin.ModelAdmin):
+    readonly_fields = ("uuid",)
+    search_fields = ("naam",)
+    fields = (
+        "uuid",
+        "naam",
+    )

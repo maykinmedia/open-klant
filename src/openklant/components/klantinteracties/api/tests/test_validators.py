@@ -9,6 +9,8 @@ from openklant.components.klantinteracties.api.validators import (
     actor_is_valid_instance,
     betrokkene_exists,
     bijlage_exists,
+    categorie_exists,
+    categorie_relatie_exists,
     contactpersoon_exists,
     digitaal_adres_exists,
     internetaak_exists,
@@ -36,6 +38,8 @@ from openklant.components.klantinteracties.models.tests.factories.klantcontacten
     OnderwerpobjectFactory,
 )
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
+    CategorieFactory,
+    CategorieRelatieFactory,
     ContactpersoonFactory,
     OrganisatieFactory,
     PartijFactory,
@@ -77,6 +81,22 @@ class FieldValidatorsTests(TestCase):
         with self.subTest("doesn't_exist"):
             with self.assertRaises(serializers.ValidationError):
                 bijlage_exists(str(uuid4()))
+
+    def test_categorie(self):
+        categorie = CategorieFactory.create()
+        with self.subTest("exists"):
+            self.assertIsNone(categorie_exists(categorie.uuid))
+        with self.subTest("doesn't_exist"):
+            with self.assertRaises(serializers.ValidationError):
+                categorie_exists(str(uuid4()))
+
+    def test_categorie_relatie(self):
+        categorie_relatie = CategorieRelatieFactory.create()
+        with self.subTest("exists"):
+            self.assertIsNone(categorie_relatie_exists(categorie_relatie.uuid))
+        with self.subTest("doesn't_exist"):
+            with self.assertRaises(serializers.ValidationError):
+                categorie_relatie_exists(str(uuid4()))
 
     def test_contactpersoon(self):
         contactpersoon = ContactpersoonFactory.create()

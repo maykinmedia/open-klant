@@ -4,6 +4,8 @@ import string
 import factory.fuzzy
 
 from openklant.components.klantinteracties.models.partijen import (
+    Categorie,
+    CategorieRelatie,
     Contactpersoon,
     Organisatie,
     Partij,
@@ -35,6 +37,21 @@ class PartijFactory(factory.django.DjangoModelFactory):
             return
 
         self.vertegenwoordigde.add(*extracted)
+
+
+class CategorieRelatieFactory(factory.django.DjangoModelFactory):
+    uuid = factory.Faker("uuid4")
+
+    class Meta:
+        model = CategorieRelatie
+
+
+class CategorieFactory(factory.django.DjangoModelFactory):
+    uuid = factory.Faker("uuid4")
+    naam = factory.Faker("word")
+
+    class Meta:
+        model = Categorie
 
 
 class OrganisatieFactory(factory.django.DjangoModelFactory):

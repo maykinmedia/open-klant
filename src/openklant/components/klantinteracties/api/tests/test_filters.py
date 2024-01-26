@@ -11,6 +11,8 @@ from openklant.components.klantinteracties.models.tests.factories.klantcontacten
     KlantcontactFactory,
 )
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
+    CategorieFactory,
+    CategorieRelatieFactory,
     PartijFactory,
     PartijIdentificatorFactory,
 )
@@ -564,6 +566,198 @@ class TestPartijFilterset(APITestCase):
             response = self.client.get(
                 self.url,
                 {"partij_identificator__register": "register-8584395394"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+
+class TestCategorieRelatieFilterset(APITestCase):
+    url = reverse("klantinteracties:categorierelatie-list")
+
+    def setUp(self):
+        super().setUp()
+        self.partij = PartijFactory.create(nummer="1111111111")
+        self.partij2 = PartijFactory.create(nummer="2222222222")
+        self.partij3 = PartijFactory.create(nummer="3333333333")
+        self.partij4 = PartijFactory.create(nummer="4444444444")
+        self.partij5 = PartijFactory.create(nummer="5555555555")
+
+        self.categorie = CategorieFactory.create(naam="een")
+        self.categorie2 = CategorieFactory.create(naam="twee")
+        self.categorie3 = CategorieFactory.create(naam="drie")
+        self.categorie4 = CategorieFactory.create(naam="vier")
+        self.categorie5 = CategorieFactory.create(naam="vijf")
+
+        self.categorie_relatie = CategorieRelatieFactory.create(
+            partij=self.partij, categorie=self.categorie
+        )
+        self.categorie_relatie2 = CategorieRelatieFactory.create(
+            partij=self.partij2, categorie=self.categorie2
+        )
+        self.categorie_relatie3 = CategorieRelatieFactory.create(
+            partij=self.partij3, categorie=self.categorie3
+        )
+        self.categorie_relatie4 = CategorieRelatieFactory.create(
+            partij=self.partij4, categorie=self.categorie4
+        )
+        self.categorie_relatie5 = CategorieRelatieFactory.create(
+            partij=self.partij5, categorie=self.categorie5
+        )
+
+    def test_filter_partij_url(self):
+        partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
+        response = self.client.get(
+            self.url,
+            {"partij__url": partij_url},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "partij__url": f"http://testserver/klantinteracties/api/v1/partijen/{str(uuid4())}"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(self.url, {"partij__url": "ValueError"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_partij_uuid(self):
+        response = self.client.get(
+            self.url,
+            {"partij__uuid": str(self.partij5.uuid)},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"partij__uuid": str(uuid4())},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(self.url, {"partij__uuid": "ValueError"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_partij_nummer(self):
+        response = self.client.get(
+            self.url,
+            {"partij__nummer": "5555555555"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"partij__nummer": "8584395394"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_categorie_url(self):
+        categorie_url = f"http://testserver/klantinteracties/api/v1/categorieen/{str(self.categorie5.uuid)}"
+        response = self.client.get(
+            self.url,
+            {"categorie__url": categorie_url},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "categorie__url": f"http://testserver/klantinteracties/api/v1/categorieen/{str(uuid4())}"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(self.url, {"categorie__url": "ValueError"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_categorie_uuid(self):
+        response = self.client.get(
+            self.url,
+            {"categorie__uuid": str(self.categorie5.uuid)},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"categorie__uuid": str(uuid4())},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(self.url, {"categorie__uuid": "ValueError"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_categorie_naam(self):
+        response = self.client.get(
+            self.url,
+            {"categorie__naam": "vijf"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"categorie__naam": "zes"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
