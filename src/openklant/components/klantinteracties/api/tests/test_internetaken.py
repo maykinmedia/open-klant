@@ -54,16 +54,49 @@ class InterneTaakTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        data = response.json()
+        response_data = response.json()
 
-        self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor.uuid))
+        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor.uuid))
         self.assertEqual(
-            data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact.uuid)
+            response_data["aanleidinggevendKlantcontact"]["uuid"],
+            str(klantcontact.uuid),
         )
-        self.assertEqual(data["nummer"], "1312312312")
-        self.assertEqual(data["gevraagdeHandeling"], "gevraagdeHandeling")
-        self.assertEqual(data["toelichting"], "toelichting")
-        self.assertEqual(data["status"], "verwerkt")
+        self.assertEqual(response_data["nummer"], "1312312312")
+        self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
+        self.assertEqual(response_data["toelichting"], "toelichting")
+        self.assertEqual(response_data["status"], "verwerkt")
+
+        with self.subTest("auto_generate_max_nummer_plus_one"):
+            data["nummer"] = ""
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            response_data = response.json()
+            self.assertEqual(response_data["nummer"], "1312312313")
+
+        with self.subTest("auto_generate_nummer_unique_validation"):
+            data["nummer"] = "1312312313"
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"][0]["reason"],
+                "Er bestaat al een interne taak met eenzelfde nummer.",
+            )
+
+        with self.subTest("auto_generate_nummer_over_10_characters_error_message"):
+            InterneTaakFactory.create(nummer="9999999999")
+            data["nummer"] = ""
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["detail"],
+                "Er kon niet automatisch een opvolgend nummer worden gegenereerd. "
+                "Het maximaal aantal tekens is bereikt.",
+            )
 
     def test_update_internetaak(self):
         actor, actor2 = ActorFactory.create_batch(2)

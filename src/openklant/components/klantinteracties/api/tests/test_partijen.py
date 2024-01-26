@@ -126,24 +126,8 @@ class PartijTests(APITestCase):
             },
         )
 
-        with self.subTest("voorkeurs_adres_must_be_given_digitaal_adres_validation"):
-            data["voorkeursDigitaalAdres"] = {"uuid": str(digitaal_adres2.uuid)}
-            response = self.client.post(list_url, data)
-
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            response_data = response.json()
-            self.assertEqual(
-                response_data["invalidParams"],
-                [
-                    {
-                        "name": "voorkeursDigitaalAdres",
-                        "code": "invalid",
-                        "reason": "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
-                    }
-                ],
-            )
-
         with self.subTest("create_partij_without_foreignkey_relations"):
+            data["nummer"] = "1298329192"
             data["digitaleAdressen"] = []
             data["voorkeursDigitaalAdres"] = None
             data["vertegenwoordigde"] = []
@@ -154,7 +138,7 @@ class PartijTests(APITestCase):
 
             response_data = response.json()
 
-            self.assertEqual(response_data["nummer"], "1298329191")
+            self.assertEqual(response_data["nummer"], "1298329192")
             self.assertEqual(response_data["interneNotitie"], "interneNotitie")
             self.assertEqual(response_data["digitaleAdressen"], [])
             self.assertIsNone(response_data["voorkeursDigitaalAdres"])
@@ -194,6 +178,56 @@ class PartijTests(APITestCase):
                         "achternaam": "Bozeman",
                     },
                 },
+            )
+
+        with self.subTest("auto_generate_max_nummer_plus_one"):
+            data["nummer"] = ""
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            response_data = response.json()
+            self.assertEqual(response_data["nummer"], "1298329193")
+
+        with self.subTest("auto_generate_nummer_unique_validation"):
+            data["nummer"] = "1298329193"
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"][0]["reason"],
+                "Er bestaat al een partij met eenzelfde nummer.",
+            )
+
+        with self.subTest("auto_generate_nummer_over_10_characters_error_message"):
+            PartijFactory.create(nummer="9999999999")
+            data["nummer"] = ""
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["detail"],
+                "Er kon niet automatisch een opvolgend nummer worden gegenereerd. "
+                "Het maximaal aantal tekens is bereikt.",
+            )
+
+        with self.subTest("voorkeurs_adres_must_be_given_digitaal_adres_validation"):
+            data["nummer"] = "1298329194"
+            data["voorkeursDigitaalAdres"] = {"uuid": str(digitaal_adres2.uuid)}
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"],
+                [
+                    {
+                        "name": "voorkeursDigitaalAdres",
+                        "code": "invalid",
+                        "reason": "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
+                    }
+                ],
             )
 
     def test_create_persoon(self):

@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.descriptors import GegevensGroepType
 
 from openklant.components.utils.mixins import APIMixin
+from openklant.components.utils.number_generator import number_generator
 
 from .constants import SoortPartij
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
@@ -43,6 +44,8 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         ),
         validators=[validate_integer],
         max_length=10,
+        unique=True,
+        blank=True,
     )
     interne_notitie = models.TextField(
         _("interne notitie"),
@@ -97,6 +100,10 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
                 raise ValidationError(
                     _("Het voorkeurs adres moet een gelinkte digitaal adres zijn.")
                 )
+
+    def save(self, *args, **kwargs):
+        number_generator(self, Partij)
+        return super().save(*args, **kwargs)
 
 
 class Organisatie(models.Model):

@@ -4,6 +4,8 @@ from django.core.validators import validate_integer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from openklant.components.utils.number_generator import number_generator
+
 from .actoren import Actor
 from .constants import Taakstatus
 from .klantcontacten import Klantcontact
@@ -37,6 +39,8 @@ class InterneTaak(models.Model):
         ),
         validators=[validate_integer],
         max_length=10,
+        unique=True,
+        blank=True,
     )
     gevraagde_handeling = models.CharField(
         _("gevraagde handeling"),
@@ -71,3 +75,7 @@ class InterneTaak(models.Model):
     class Meta:
         verbose_name = _("interne taak")
         verbose_name_plural = _("interne taken")
+
+    def save(self, *args, **kwargs):
+        number_generator(self, InterneTaak)
+        return super().save(*args, **kwargs)

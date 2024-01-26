@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.utils.mixins import APIMixin
+from openklant.components.utils.number_generator import number_generator
 
 from .actoren import Actor
 from .constants import Klantcontrol
@@ -42,6 +43,8 @@ class Klantcontact(APIMixin, models.Model):
         ),
         validators=[validate_integer],
         max_length=10,
+        unique=True,
+        blank=True,
     )
     kanaal = models.CharField(
         _("kanaal"),
@@ -99,6 +102,10 @@ class Klantcontact(APIMixin, models.Model):
     class Meta:
         verbose_name = _("klantcontact")
         verbose_name_plural = _("klantcontacten")
+
+    def save(self, *args, **kwargs):
+        number_generator(self, Klantcontact)
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nummer
