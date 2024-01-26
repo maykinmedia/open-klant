@@ -6,6 +6,14 @@ from vng_api_common.descriptors import GegevensGroepType
 
 
 class AdresMixin(models.Model):
+    adres_nummeraanduiding_id = models.CharField(
+        _("nummeraanduiding ID"),
+        help_text=_(
+            "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
+        ),
+        max_length=255,
+        blank=True,
+    )
     adres_adresregel1 = models.CharField(
         _("adresregel 1"),
         help_text=_(
@@ -46,11 +54,19 @@ class AdresMixin(models.Model):
 
     adres = GegevensGroepType(
         {
+            "nummeraanduiding_id": adres_nummeraanduiding_id,
             "adresregel_1": adres_adresregel1,
             "adresregel_2": adres_adresregel2,
             "adresregel_3": adres_adresregel3,
             "land": adres_land,
         },
+        optional=(
+            "nummeraanduiding_id",
+            "adresregel_1",
+            "adresregel_2",
+            "adresregel_3",
+            "land",
+        ),
     )
 
     class Meta:
