@@ -18,14 +18,13 @@ attrs==23.2.0
 billiard==3.6.4.0
     # via celery
 bleach==6.1.0
-    # via -r requirements/base.in
+    # via open-api-framework
 boltons==23.1.1
     # via
     #   face
     #   glom
 celery==5.2.7
     # via
-    #   -r requirements/base.in
     #   flower
     #   notifications-api-common
     #   open-api-framework
@@ -94,15 +93,17 @@ django-admin-index==3.1.0
 django-axes==6.3.0
     # via open-api-framework
 django-cors-headers==4.3.1
-    # via -r requirements/base.in
+    # via open-api-framework
 django-filter==23.5
-    # via commonground-api-common
+    # via
+    #   commonground-api-common
+    #   open-api-framework
 django-jsonform==2.21.4
     # via
-    #   -r requirements/base.in
     #   mozilla-django-oidc-db
+    #   open-api-framework
 django-markup==1.8.1
-    # via -r requirements/base.in
+    # via open-api-framework
 django-ordered-model==3.7.4
     # via django-admin-index
 django-privates==2.0.0.post0
@@ -126,6 +127,7 @@ django-solo==2.2.0
 djangorestframework==3.12.4
     # via
     #   commonground-api-common
+    #   djangorestframework-gis
     #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-spectacular
@@ -136,8 +138,10 @@ djangorestframework-camel-case==1.2.0
     # via
     #   commonground-api-common
     #   notifications-api-common
+djangorestframework-gis==1.0
+    # via open-api-framework
 djangorestframework-inclusions==1.2.0
-    # via -r requirements/base.in
+    # via open-api-framework
 drf-nested-routers==0.93.4
     # via commonground-api-common
 drf-spectacular==0.27.0
@@ -153,10 +157,9 @@ face==20.1.1
 faker==22.2.0
     # via zgw-consumers
 flower==2.0.1
-    # via -r requirements/base.in
+    # via open-api-framework
 gemma-zds-client==1.0.1
     # via
-    #   -r requirements/base.in
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
@@ -194,7 +197,7 @@ mozilla-django-oidc-db==0.14.1
     # via open-api-framework
 notifications-api-common==0.2.2
     # via commonground-api-common
-open-api-framework @ git+https://github.com/maykinmedia/open-api-framework@bada78b0ad5c7479ab42a1377c046c7d7b176b5a
+open-api-framework==0.1.0
     # via -r requirements/base.in
 oyaml==1.0
     # via commonground-api-common

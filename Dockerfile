@@ -5,7 +5,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         pkg-config \
         build-essential \
         libpq-dev \
-        git \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
