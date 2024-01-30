@@ -1,5 +1,4 @@
 # Core python libraries
-click<8.1.0  # click>=8.1.0 causes issues with black https://github.com/psf/black/issues/2964
 psycopg2
 python-dotenv  # environment variables for secrets
 python-decouple  # processing of envvar configs
