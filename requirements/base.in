@@ -1,30 +1,16 @@
-# Core python libraries
-psycopg2
-python-dotenv  # environment variables for secrets
-python-decouple  # processing of envvar configs
-requests
+git+https://github.com/maykinmedia/open-api-framework@bada78b0ad5c7479ab42a1377c046c7d7b176b5a
 
 # Framework libraries
-django~=3.2.23
-django-axes
 django-cors-headers
-django-log-outgoing-requests  # currently unused
 django-markup
-django-redis
-mozilla-django-oidc-db
 
 # Admin and UI libraries
-django-admin-index
 django-jsonform
 
 # API libraries
-djangorestframework
 djangorestframework-inclusions
-drf-spectacular
 
-commonground-api-common
 gemma-zds-client<2.0.0  # lots of breaking changes in 2.0.0
-zgw-consumers>=0.25.0  # newest with simple cert manager
 
 # task queue
 celery
@@ -33,7 +19,4 @@ celery
 bleach
 
 # WSGI servers & monitoring - production oriented
-uwsgi
-sentry_sdk # error monitoring sentry
 flower # task monitoring
-elastic-apm  # Elastic APM integration
