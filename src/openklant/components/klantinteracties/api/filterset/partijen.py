@@ -57,6 +57,11 @@ class PartijFilterSet(FilterSet):
         method="filter_identificator_register",
     )
 
+    categorierelatie__categorie__naam = filters.CharFilter(
+        help_text=_("Zoek partij object op basis van categorie namen."),
+        method="filter_categorierelatie_categorie_naam",
+    )
+
     expand = ExpandFilter(
         serializer_class=PartijSerializer,
         help_text=_(
@@ -74,6 +79,7 @@ class PartijFilterSet(FilterSet):
             "partij_identificator__soort_object_id",
             "partij_identificator__object_id",
             "partij_identificator__register",
+            "categorierelatie__categorie__naam",
             "nummer",
             "indicatie_geheimhouding",
             "indicatie_actief",
@@ -138,6 +144,15 @@ class PartijFilterSet(FilterSet):
         try:
             return queryset.filter(
                 partijidentificator__partij_identificator_register=value
+            )
+        except ValueError:
+            return queryset.none()
+
+    def filter_categorierelatie_categorie_naam(self, queryset, name, value):
+        categorie_namen = value.split(",")
+        try:
+            return queryset.filter(
+                categorierelatie__categorie__naam__in=categorie_namen
             )
         except ValueError:
             return queryset.none()
