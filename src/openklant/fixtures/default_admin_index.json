@@ -34,6 +34,28 @@
     "fields": {
         "order": 4,
         "translations": {
+            "en": "Contact Details",
+            "nl": "Contactgegevens"
+        },
+        "name": "Contactgegevens",
+        "slug": "contactgegevens",
+        "models": [
+            [
+                "contactgegevens",
+                "organisatie"
+            ],
+            [
+                "contactgegevens",
+                "persoon"
+            ]
+        ]
+    }
+},
+{
+    "model": "admin_index.appgroup",
+    "fields": {
+        "order": 5,
+        "translations": {
             "en": "Configuration",
             "nl": "Configuratie"
         },
@@ -43,18 +65,6 @@
             [
                 "admin_index",
                 "appgroup"
-            ],
-            [
-                "authorizations",
-                "authorizationsconfig"
-            ],
-            [
-                "notifications",
-                "notificationsconfig"
-            ],
-            [
-                "notifications_api_common",
-                "notificationsconfig"
             ],
             [
                 "simple_certmanager",
@@ -82,28 +92,6 @@
 {
     "model": "admin_index.appgroup",
     "fields": {
-        "order": 5,
-        "translations": {
-            "en": "Notifications",
-            "nl": "Notificaties"
-        },
-        "name": "Notificaties",
-        "slug": "notificaties",
-        "models": [
-            [
-                "notifications",
-                "subscription"
-            ],
-            [
-                "notifications_api_common",
-                "subscription"
-            ]
-        ]
-    }
-},
-{
-    "model": "admin_index.appgroup",
-    "fields": {
         "order": 1,
         "translations": {
             "en": "Accounts",
@@ -121,38 +109,12 @@
                 "group"
             ],
             [
+                "token",
+                "tokenauth"
+            ],
+            [
                 "mozilla_django_oidc_db",
                 "openidconnectconfig"
-            ]
-        ]
-    }
-},
-{
-    "model": "admin_index.appgroup",
-    "fields": {
-        "order": 2,
-        "translations": {
-            "en": "API authorizations",
-            "nl": "API autorisaties"
-        },
-        "name": "API autorisaties",
-        "slug": "api-autorisaties",
-        "models": [
-            [
-                "authorizations",
-                "applicatie"
-            ],
-            [
-                "authorizations",
-                "autorisatie"
-            ],
-            [
-                "vng_api_common",
-                "apicredential"
-            ],
-            [
-                "vng_api_common",
-                "jwtsecret"
             ]
         ]
     }
@@ -169,74 +131,12 @@
         "slug": "logging",
         "models": [
             [
-                "audittrails",
-                "audittrail"
-            ],
-            [
                 "axes",
                 "accessattempt"
             ],
             [
                 "axes",
                 "accesslog"
-            ]
-        ]
-    }
-},
-{
-    "model": "admin_index.appgroup",
-    "fields": {
-        "order": 7,
-        "translations": {
-            "en": "Legacy",
-            "nl": "Legacy"
-        },
-        "name": "Legacy",
-        "slug": "legacy",
-        "models": [
-            [
-                "contactmomenten",
-                "contactmoment"
-            ],
-            [
-                "contactmomenten",
-                "klantcontactmoment"
-            ],
-            [
-                "contactmomenten",
-                "medewerker"
-            ],
-            [
-                "contactmomenten",
-                "objectcontactmoment"
-            ],
-            [
-                "klanten",
-                "klant"
-            ],
-            [
-                "klanten",
-                "klantadres"
-            ],
-            [
-                "klanten",
-                "natuurlijkpersoon"
-            ],
-            [
-                "klanten",
-                "nietnatuurlijkpersoon"
-            ],
-            [
-                "klanten",
-                "subverblijfbuitenland"
-            ],
-            [
-                "klanten",
-                "verblijfsadres"
-            ],
-            [
-                "klanten",
-                "vestiging"
             ]
         ]
     }

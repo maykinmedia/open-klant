@@ -3,6 +3,8 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from openklant.utils.validators import validate_phone_number
+
 from .constants import SoortActor
 from .mixins import ObjectidentificatorMixin
 
@@ -96,6 +98,7 @@ class Medewerker(models.Model):
         help_text=_(
             "Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is."
         ),
+        validators=[validate_phone_number],
         max_length=20,
     )
 
@@ -139,6 +142,7 @@ class OrganisatorischeEenheid(models.Model):
         help_text=_(
             "Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar is."
         ),
+        validators=[validate_phone_number],
         max_length=20,
     )
 

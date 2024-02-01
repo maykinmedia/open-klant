@@ -118,12 +118,10 @@ INSTALLED_APPS = [
     "axes",
     "corsheaders",
     "vng_api_common",  # before drf_yasg to override the management command
-    "vng_api_common.notifications",
     "vng_api_common.authorizations",
-    "vng_api_common.audittrails",
+    "privates",
     "simple_certmanager",
     "zgw_consumers",
-    "notifications_api_common",
     "drf_spectacular",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
@@ -138,8 +136,6 @@ INSTALLED_APPS = [
     "openklant.components.token",
     "openklant.components.klantinteracties",
     "openklant.components.contactgegevens",
-    "openklant.components.legacy.klanten",
-    "openklant.components.legacy.contactmomenten",
 ]
 
 MIDDLEWARE = [
@@ -363,8 +359,6 @@ ENVIRONMENT = config("ENVIRONMENT", "")
 SHOW_ALERT = True
 
 # settings for sending notifications
-KLANTEN_NOTIFICATIONS_KANAAL = "klanten"
-CONTACTMOMENTEN_NOTIFICATIONS_KANAAL = "contactmomenten"
 NOTIFICATIONS_DISABLED = config("NOTIFICATIONS_DISABLED", default=False)
 
 # Generating the schema, depending on the component

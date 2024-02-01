@@ -53,19 +53,9 @@ urlpatterns = [
         "contactgegevens/api/",
         include("openklant.components.contactgegevens.api.urls"),
     ),
-    path("klanten/api/", include("openklant.components.legacy.klanten.api.urls")),
-    path(
-        "contactmomenten/api/",
-        include("openklant.components.legacy.contactmomenten.api.urls"),
-    ),
     # Simply show the master template.
     path("", TemplateView.as_view(template_name="main.html")),
     # separate apps
-    re_path(
-        r"^(?P<component>klanten|contactmomenten)/$",
-        TemplateView.as_view(template_name="legacy_index.html"),
-        name="main",
-    ),
     re_path(
         r"^(?P<component>klantinteracties|contactgegevens)/$",
         TemplateView.as_view(template_name="index.html"),

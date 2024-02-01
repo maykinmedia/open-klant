@@ -16,8 +16,6 @@ REST_FRAMEWORK[
 ] = "rest_framework.pagination.PageNumberPagination"
 REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
 
-SECURITY_DEFINITION_NAME = "JWT-Claims"
-
 SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "CAMELIZE_NAMES": True,
