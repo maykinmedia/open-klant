@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
+from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
+
 from ..models.constants import SoortPartij
 from ..models.digitaal_adres import DigitaalAdres
 from ..models.klantcontacten import Betrokkene
@@ -37,6 +39,12 @@ class BetrokkeneInlineAdmin(admin.StackedInline):
 class DigitaalAdresInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
     model = DigitaalAdres
+    extra = 0
+
+
+class RekeningnummerInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
+    model = Rekeningnummer
     extra = 0
 
 
@@ -83,6 +91,7 @@ class PartijAdmin(admin.ModelAdmin):
         ContactpersoonInlineAdmin,
         OrganisatieInlineAdmin,
         DigitaalAdresInlineAdmin,
+        RekeningnummerInlineAdmin,
         BetrokkeneInlineAdmin,
         VertegenwoordigdenInlineAdmin,
     )

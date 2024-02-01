@@ -16,6 +16,9 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
     PersoonFactory,
     VertegenwoordigdenFactory,
 )
+from openklant.components.klantinteracties.models.tests.factories.rekeningnummer import (
+    RekeningnummerFactory,
+)
 from openklant.components.token.tests.api_testcase import APITestCase
 
 
@@ -75,12 +78,15 @@ class PartijTests(APITestCase):
 
     def test_create_partij(self):
         digitaal_adres, digitaal_adres2 = DigitaalAdresFactory.create_batch(2)
+        rekeningnummer, rekeningnummer2 = RekeningnummerFactory.create_batch(2)
         list_url = reverse("klantinteracties:partij-list")
         data = {
             "nummer": "1298329191",
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
             "soortPartij": "persoon",
             "indicatieGeheimhouding": True,
             "voorkeurstaal": "ndl",
@@ -120,6 +126,10 @@ class PartijTests(APITestCase):
         self.assertEqual(data["digitaleAdressen"][0]["uuid"], str(digitaal_adres.uuid))
         self.assertEqual(
             data["voorkeursDigitaalAdres"]["uuid"], str(digitaal_adres.uuid)
+        )
+        self.assertEqual(data["rekeningnummers"][0]["uuid"], str(rekeningnummer.uuid))
+        self.assertEqual(
+            data["voorkeursRekeningnummer"]["uuid"], str(rekeningnummer.uuid)
         )
         self.assertEqual(data["soortPartij"], "persoon")
         self.assertTrue(data["indicatieGeheimhouding"])
@@ -162,6 +172,8 @@ class PartijTests(APITestCase):
             data["nummer"] = "1298329192"
             data["digitaleAdressen"] = []
             data["voorkeursDigitaalAdres"] = None
+            data["rekeningnummers"] = []
+            data["voorkeursRekeningnummer"] = None
 
             response = self.client.post(list_url, data)
 
@@ -173,6 +185,8 @@ class PartijTests(APITestCase):
             self.assertEqual(response_data["interneNotitie"], "interneNotitie")
             self.assertEqual(response_data["digitaleAdressen"], [])
             self.assertIsNone(response_data["voorkeursDigitaalAdres"])
+            self.assertEqual(response_data["rekeningnummers"], [])
+            self.assertIsNone(response_data["voorkeursRekeningnummer"])
             self.assertEqual(response_data["soortPartij"], "persoon")
             self.assertTrue(response_data["indicatieGeheimhouding"])
             self.assertEqual(response_data["voorkeurstaal"], "ndl")
@@ -260,6 +274,27 @@ class PartijTests(APITestCase):
                 ],
             )
 
+        with self.subTest("voorkeurs_adres_must_be_given_digitaal_adres_validation"):
+            data["nummer"] = "1298329194"
+            # change voorkeursDigitaalAdres because of previous subtest
+            data["voorkeursDigitaalAdres"] = None
+
+            data["voorkeursRekeningnummer"] = {"uuid": str(rekeningnummer2.uuid)}
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"],
+                [
+                    {
+                        "name": "voorkeursRekeningnummer",
+                        "code": "invalid",
+                        "reason": "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn.",
+                    }
+                ],
+            )
+
     def test_create_persoon(self):
         list_url = reverse("klantinteracties:partij-list")
         data = {
@@ -267,6 +302,8 @@ class PartijTests(APITestCase):
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
+            "rekeningnummers": [],
+            "voorkeursRekeningnummer": None,
             "indicatieGeheimhouding": True,
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
@@ -305,6 +342,8 @@ class PartijTests(APITestCase):
         self.assertEqual(response_data["interneNotitie"], "interneNotitie")
         self.assertEqual(response_data["digitaleAdressen"], [])
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
+        self.assertEqual(response_data["rekeningnummers"], [])
+        self.assertIsNone(response_data["voorkeursRekeningnummer"])
         self.assertEqual(response_data["soortPartij"], "persoon")
         self.assertTrue(response_data["indicatieGeheimhouding"])
         self.assertEqual(response_data["voorkeurstaal"], "ndl")
@@ -355,6 +394,8 @@ class PartijTests(APITestCase):
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
+            "rekeningnummers": [],
+            "voorkeursRekeningnummer": None,
             "indicatieGeheimhouding": True,
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
@@ -389,6 +430,8 @@ class PartijTests(APITestCase):
         self.assertEqual(response_data["interneNotitie"], "interneNotitie")
         self.assertEqual(response_data["digitaleAdressen"], [])
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
+        self.assertEqual(response_data["rekeningnummers"], [])
+        self.assertIsNone(response_data["voorkeursRekeningnummer"])
         self.assertEqual(response_data["soortPartij"], "organisatie")
         self.assertTrue(response_data["indicatieGeheimhouding"])
         self.assertEqual(response_data["voorkeurstaal"], "ndl")
@@ -426,6 +469,8 @@ class PartijTests(APITestCase):
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
+            "rekeningnummers": [],
+            "voorkeursRekeningnummer": None,
             "indicatieGeheimhouding": True,
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
@@ -467,6 +512,8 @@ class PartijTests(APITestCase):
         self.assertEqual(response_data["interneNotitie"], "interneNotitie")
         self.assertEqual(response_data["digitaleAdressen"], [])
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
+        self.assertEqual(response_data["rekeningnummers"], [])
+        self.assertIsNone(response_data["voorkeursRekeningnummer"])
         self.assertEqual(response_data["soortPartij"], "contactpersoon")
         self.assertTrue(response_data["indicatieGeheimhouding"])
         self.assertEqual(response_data["voorkeurstaal"], "ndl")
@@ -513,6 +560,7 @@ class PartijTests(APITestCase):
             nummer="1298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
             soort_partij="persoon",
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
@@ -539,6 +587,9 @@ class PartijTests(APITestCase):
         digitaal_adres = DigitaalAdresFactory.create(partij=partij)
         digitaal_adres2 = DigitaalAdresFactory.create()
 
+        rekeningnummer = RekeningnummerFactory.create(partij=partij)
+        rekeningnummer2 = RekeningnummerFactory.create()
+
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -556,7 +607,17 @@ class PartijTests(APITestCase):
                 },
             ],
         )
+        self.assertEqual(
+            data["rekeningnummers"],
+            [
+                {
+                    "uuid": str(rekeningnummer.uuid),
+                    "url": f"http://testserver/klantinteracties/api/v1/rekeningnummers/{str(rekeningnummer.uuid)}",
+                },
+            ],
+        )
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "persoon")
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
@@ -599,6 +660,8 @@ class PartijTests(APITestCase):
             "interneNotitie": "changed",
             "digitaleAdressen": [{"uuid": str(digitaal_adres2.uuid)}],
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres2.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer2.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer2.uuid)},
             "soortPartij": "persoon",
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
@@ -643,7 +706,19 @@ class PartijTests(APITestCase):
             ],
         )
         self.assertEqual(
+            data["rekeningnummers"],
+            [
+                {
+                    "uuid": str(rekeningnummer2.uuid),
+                    "url": f"http://testserver/klantinteracties/api/v1/rekeningnummers/{str(rekeningnummer2.uuid)}",
+                },
+            ],
+        )
+        self.assertEqual(
             data["voorkeursDigitaalAdres"]["uuid"], str(digitaal_adres2.uuid)
+        )
+        self.assertEqual(
+            data["voorkeursRekeningnummer"]["uuid"], str(rekeningnummer2.uuid)
         )
         self.assertEqual(data["soortPartij"], "persoon")
         self.assertFalse(data["indicatieGeheimhouding"])
@@ -718,12 +793,53 @@ class PartijTests(APITestCase):
                 ],
             )
 
+        with self.subTest(
+            "test_voorkeurs_rekeningnummer_must_be_part_of_rekeningnummers"
+        ):
+            # set voorkeursDigitaalAdres to null because of previous subtests
+            data["voorkeursDigitaalAdres"] = None
+
+            data["voorkeursRekeningnummer"] = {"uuid": str(rekeningnummer.uuid)}
+            response = self.client.put(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"],
+                [
+                    {
+                        "name": "voorkeursRekeningnummer",
+                        "code": "invalid",
+                        "reason": "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn.",
+                    }
+                ],
+            )
+
+        with self.subTest(
+            "test_rekeningnummer_can_only_be_given_with_none_empty_rekeningnummer"
+        ):
+            data["rekeningnummers"] = []
+            response = self.client.put(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"],
+                [
+                    {
+                        "name": "voorkeursRekeningnummer",
+                        "code": "invalid",
+                        "reason": "voorkeursRekeningnummer mag niet meegegeven worden als rekeningnummers leeg is.",
+                    }
+                ],
+            )
+
         with self.subTest("set_foreignkey_fields_to_none"):
             data = {
                 "nummer": "6427834668",
                 "interneNotitie": "changed",
                 "digitaleAdressen": [],
                 "voorkeursDigitaalAdres": None,
+                "rekeningnummers": [],
+                "voorkeursRekeningnummer": None,
                 "soortPartij": "organisatie",
                 "indicatieGeheimhouding": False,
                 "voorkeurstaal": "ger",
@@ -752,6 +868,8 @@ class PartijTests(APITestCase):
             self.assertEqual(data["interneNotitie"], "changed")
             self.assertEqual(data["digitaleAdressen"], [])
             self.assertIsNone(data["voorkeursDigitaalAdres"])
+            self.assertEqual(data["rekeningnummers"], [])
+            self.assertIsNone(data["voorkeursRekeningnummer"])
             self.assertEqual(data["soortPartij"], "organisatie")
             self.assertFalse(data["indicatieGeheimhouding"])
             self.assertEqual(data["voorkeurstaal"], "ger")
@@ -782,6 +900,7 @@ class PartijTests(APITestCase):
             nummer="1298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
             soort_partij="persoon",
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
@@ -814,6 +933,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertEqual(data["rekeningnummers"], [])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "persoon")
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
@@ -856,6 +977,8 @@ class PartijTests(APITestCase):
             "interneNotitie": "changed",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
+            "rekeningnummers": [],
+            "voorkeursRekeningnummer": None,
             "soortPartij": "persoon",
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
@@ -892,6 +1015,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertEqual(data["rekeningnummers"], [])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "persoon")
         self.assertFalse(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
@@ -934,6 +1059,7 @@ class PartijTests(APITestCase):
             nummer="1298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
             soort_partij="organisatie",
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
@@ -960,6 +1086,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertEqual(data["rekeningnummers"], [])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "organisatie")
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
@@ -991,6 +1119,8 @@ class PartijTests(APITestCase):
             "interneNotitie": "changed",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
+            "rekeningnummers": [],
+            "voorkeursRekeningnummer": None,
             "soortPartij": "organisatie",
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
@@ -1022,6 +1152,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertEqual(data["rekeningnummers"], [])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "organisatie")
         self.assertFalse(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
@@ -1056,6 +1188,7 @@ class PartijTests(APITestCase):
             nummer="1298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
             soort_partij="contactpersoon",
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
@@ -1098,6 +1231,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertEqual(data["rekeningnummers"], [])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "contactpersoon")
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
@@ -1144,6 +1279,8 @@ class PartijTests(APITestCase):
             "interneNotitie": "changed",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
+            "rekeningnummers": [],
+            "voorkeursRekeningnummer": None,
             "soortPartij": "contactpersoon",
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
@@ -1181,6 +1318,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertEqual(data["rekeningnummers"], [])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "contactpersoon")
         self.assertFalse(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
@@ -1227,6 +1366,7 @@ class PartijTests(APITestCase):
             nummer="1298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
             soort_partij="contactpersoon",
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
@@ -1261,6 +1401,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertEqual(data["rekeningnummers"], [])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "contactpersoon")
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
@@ -1307,6 +1449,8 @@ class PartijTests(APITestCase):
             "interneNotitie": "changed",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
+            "rekeningnummers": [],
+            "voorkeursRekeningnummer": None,
             "soortPartij": "persoon",
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
@@ -1343,6 +1487,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
+        self.assertEqual(data["rekeningnummers"], [])
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertEqual(data["soortPartij"], "persoon")
         self.assertFalse(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
@@ -1385,6 +1531,7 @@ class PartijTests(APITestCase):
             nummer="1298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
             soort_partij="persoon",
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
@@ -1402,6 +1549,10 @@ class PartijTests(APITestCase):
         )
         digitaal_adres = DigitaalAdresFactory.create(partij=partij)
         digitaal_adres2 = DigitaalAdresFactory.create(partij=None)
+
+        rekeningnummer = RekeningnummerFactory.create(partij=partij)
+        rekeningnummer2 = RekeningnummerFactory.create()
+
         PersoonFactory.create(
             partij=partij,
             contactnaam_voorletters="P",
@@ -1420,7 +1571,8 @@ class PartijTests(APITestCase):
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"][0]["uuid"], str(digitaal_adres.uuid))
         self.assertIsNone(data["voorkeursDigitaalAdres"])
-        self.assertEqual(data["soortPartij"], "persoon")
+        self.assertEqual(data["rekeningnummers"][0]["uuid"], str(rekeningnummer.uuid))
+        self.assertIsNone(data["voorkeursRekeningnummer"])
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
@@ -1459,6 +1611,7 @@ class PartijTests(APITestCase):
 
         data = {
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
             "soortPartij": "persoon",
         }
 
@@ -1471,6 +1624,10 @@ class PartijTests(APITestCase):
         self.assertEqual(data["digitaleAdressen"][0]["uuid"], str(digitaal_adres.uuid))
         self.assertEqual(
             data["voorkeursDigitaalAdres"]["uuid"], str(digitaal_adres.uuid)
+        )
+        self.assertEqual(data["rekeningnummers"][0]["uuid"], str(rekeningnummer.uuid))
+        self.assertEqual(
+            data["voorkeursRekeningnummer"]["uuid"], str(rekeningnummer.uuid)
         )
         self.assertEqual(data["soortPartij"], "persoon")
         self.assertTrue(data["indicatieGeheimhouding"])
@@ -1522,6 +1679,28 @@ class PartijTests(APITestCase):
                         "name": "voorkeursDigitaalAdres",
                         "code": "invalid",
                         "reason": "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
+                    }
+                ],
+            )
+
+        with self.subTest(
+            "voorkeurs_rekeningnummer_must_be_given_rekeningnummers_validation"
+        ):
+            # set voorkeursDigitaalAdres to none because of previous subtest
+            data["voorkeursDigitaalAdres"] = None
+
+            data["voorkeursRekeningnummer"] = {"uuid": str(rekeningnummer2.uuid)}
+            response = self.client.patch(detail_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"],
+                [
+                    {
+                        "name": "voorkeursRekeningnummer",
+                        "code": "invalid",
+                        "reason": "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn.",
                     }
                 ],
             )

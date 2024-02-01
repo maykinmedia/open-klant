@@ -3,6 +3,8 @@ from django.test import TestCase
 
 from openklant.utils.validators import (
     validate_charfield_entry,
+    validate_iban,
+    validate_no_space,
     validate_phone_number,
     validate_postal_code,
 )
@@ -91,3 +93,44 @@ class ValidatorsTestCase(TestCase):
         self.assertEqual(validate_phone_number("00695959595"), "00695959595")
         self.assertEqual(validate_phone_number("00-69-59-59-59-5"), "00-69-59-59-59-5")
         self.assertEqual(validate_phone_number("00 69 59 59 59 5"), "00 69 59 59 59 5")
+
+    def test_validate_no_space_validator(self):
+        invalid_strings = [
+            "aaaa aaaa",
+            " bbbbbbbb",
+            "cccccccc ",
+            "d d d d d",
+        ]
+
+        for invalid_string in invalid_strings:
+            self.assertRaisesMessage(
+                ValidationError,
+                "Geen spaties toegestaan",
+                validate_no_space,
+                invalid_string,
+            )
+
+        self.assertIsNone(validate_no_space("nospaces"))
+
+    def test_validate_iban(self):
+        invalid_ibans = [
+            "1231md4832842834",
+            "jda42034nnndnd23923",
+            "AB123dasd#asdasda",
+            "AB12",
+            "AB1259345934953495934953495345345345",
+        ]
+
+        for invalid_iban in invalid_ibans:
+            self.assertRaisesMessage(
+                ValidationError,
+                "Ongeldige IBAN",
+                validate_iban,
+                invalid_iban,
+            )
+
+        self.assertIsNone(validate_iban("AB12TEST1253678"))
+        self.assertIsNone(validate_iban("AB12test1253678"))
+        self.assertIsNone(validate_iban("ab1299999999999"))
+        self.assertIsNone(validate_iban("ab129"))
+        self.assertIsNone(validate_iban("ab12aaaaaaaaaa"))
