@@ -18,143 +18,143 @@ paths:
       description: Alle organisaties opvragen.
       summary: Alle organisaties opvragen.
       parameters:
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
       tags:
-        - organisaties
+      - organisaties
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaginatedOrganisatieList"
-          description: ""
+                $ref: '#/components/schemas/PaginatedOrganisatieList'
+          description: ''
     post:
       operationId: organisatieCreate
       description: Maak een organisatie aan.
       summary: Maak een organisatie aan.
       tags:
-        - organisaties
+      - organisaties
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Organisatie"
+              $ref: '#/components/schemas/Organisatie'
         required: true
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "201":
+        '201':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Organisatie"
-          description: ""
+                $ref: '#/components/schemas/Organisatie'
+          description: ''
   /organisatie/{uuid}:
     get:
       operationId: organisatieRetrieve
       description: Een specifiek organisatie opvragen.
       summary: Een specifiek organisatie opvragen.
       parameters:
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke (technische) identificatiecode van de organisatie.
-          required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        required: true
       tags:
-        - organisaties
+      - organisaties
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Organisatie"
-          description: ""
+                $ref: '#/components/schemas/Organisatie'
+          description: ''
     put:
       operationId: organisatieUpdate
       description: Werk een organisatie in zijn geheel bij.
       summary: Werk een organisatie in zijn geheel bij.
       parameters:
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke (technische) identificatiecode van de organisatie.
-          required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        required: true
       tags:
-        - organisaties
+      - organisaties
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Organisatie"
+              $ref: '#/components/schemas/Organisatie'
         required: true
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Organisatie"
-          description: ""
+                $ref: '#/components/schemas/Organisatie'
+          description: ''
     patch:
       operationId: organisatiePartialUpdate
       description: Werk een organisatie deels bij.
       summary: Werk een organisatie deels bij.
       parameters:
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke (technische) identificatiecode van de organisatie.
-          required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        required: true
       tags:
-        - organisaties
+      - organisaties
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PatchedOrganisatie"
+              $ref: '#/components/schemas/PatchedOrganisatie'
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Organisatie"
-          description: ""
+                $ref: '#/components/schemas/Organisatie'
+          description: ''
     delete:
       operationId: organisatieDestroy
       description: Verwijder een organisatie.
       summary: Verwijder een organisatie.
       parameters:
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke (technische) identificatiecode van de organisatie.
-          required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de organisatie.
+        required: true
       tags:
-        - organisaties
+      - organisaties
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "204":
+        '204':
           description: No response body
   /persoon:
     get:
@@ -162,154 +162,154 @@ paths:
       description: Alle personen opvragen.
       summary: Alle personen opvragen.
       parameters:
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
       tags:
-        - personen
+      - personen
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaginatedPersoonList"
-          description: ""
+                $ref: '#/components/schemas/PaginatedPersoonList'
+          description: ''
     post:
       operationId: persoonCreate
       description: Maak een persoon aan.
       summary: Maak een persoon aan.
       tags:
-        - personen
+      - personen
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Persoon"
+              $ref: '#/components/schemas/Persoon'
         required: true
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "201":
+        '201':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Persoon"
-          description: ""
+                $ref: '#/components/schemas/Persoon'
+          description: ''
   /persoon/{uuid}:
     get:
       operationId: persoonRetrieve
       description: Een specifiek persoon opvragen.
       summary: Een specifiek persoon opvragen.
       parameters:
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke (technische) identificatiecode van het persoon.
-          required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het persoon.
+        required: true
       tags:
-        - personen
+      - personen
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Persoon"
-          description: ""
+                $ref: '#/components/schemas/Persoon'
+          description: ''
     put:
       operationId: persoonUpdate
       description: Werk een persoon in zijn geheel bij.
       summary: Werk een persoon in zijn geheel bij.
       parameters:
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke (technische) identificatiecode van het persoon.
-          required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het persoon.
+        required: true
       tags:
-        - personen
+      - personen
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Persoon"
+              $ref: '#/components/schemas/Persoon'
         required: true
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Persoon"
-          description: ""
+                $ref: '#/components/schemas/Persoon'
+          description: ''
     patch:
       operationId: persoonPartialUpdate
       description: Werk een persoon deels bij.
       summary: Werk een persoon deels bij.
       parameters:
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke (technische) identificatiecode van het persoon.
-          required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het persoon.
+        required: true
       tags:
-        - personen
+      - personen
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PatchedPersoon"
+              $ref: '#/components/schemas/PatchedPersoon'
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Persoon"
-          description: ""
+                $ref: '#/components/schemas/Persoon'
+          description: ''
     delete:
       operationId: persoonDestroy
       description: Verwijder een persoon.
       summary: Verwijder een persoon.
       parameters:
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke (technische) identificatiecode van het persoon.
-          required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het persoon.
+        required: true
       tags:
-        - personen
+      - personen
       security:
-        - tokenAuth: []
+      - tokenAuth: []
       responses:
-        "204":
+        '204':
           description: No response body
 components:
   schemas:
     BlankEnum:
       enum:
-        - ""
+      - ''
     GeslachtEnum:
       enum:
-        - m
-        - v
-        - o
+      - m
+      - v
+      - o
       type: string
       description: |-
         * `m` - Man
@@ -340,34 +340,31 @@ components:
           type: string
           format: date
           nullable: true
-          description:
-            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21"
+            Een voorbeeld: 2022-02-21'
         opheffingsdatum:
           type: string
           format: date
           nullable: true
-          description:
-            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21"
+            Een voorbeeld: 2022-02-21'
         adres:
           allOf:
-            - $ref: "#/components/schemas/OrganisatieAdres"
+          - $ref: '#/components/schemas/OrganisatieAdres'
           nullable: true
           description: De adres gegevens van een organisatie.
         land:
           type: string
-          description:
-            Een code, opgenomen in Tabel 34, Landentabel, die het land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
           maxLength: 4
           minLength: 4
       required:
-        - handelsnaam
-        - url
-        - uuid
+      - handelsnaam
+      - url
+      - uuid
     OrganisatieAdres:
       type: object
       description: |-
@@ -383,36 +380,32 @@ components:
 
         Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
+        nummeraanduidingId:
+          type: string
+          description: Identificatie van het adres bij de Basisregistratie Adressen
+            en Gebouwen.
+          maxLength: 255
         adresregel1:
           type: string
-          description:
-            Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           maxLength: 80
         adresregel2:
           type: string
-          description:
-            Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           maxLength: 80
         adresregel3:
           type: string
-          description:
-            Derde deel van het adres dat niet voorkomt in de Basisregistratie
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           maxLength: 80
         land:
           type: string
-          description:
-            Een code, opgenomen in Tabel 34, Landentabel, die het land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
           maxLength: 4
           minLength: 4
-      required:
-        - adresregel1
-        - adresregel2
-        - adresregel3
-        - land
     PaginatedOrganisatieList:
       type: object
       properties:
@@ -432,7 +425,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/Organisatie"
+            $ref: '#/components/schemas/Organisatie'
     PaginatedPersoonList:
       type: object
       properties:
@@ -452,7 +445,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/Persoon"
+            $ref: '#/components/schemas/Persoon'
     PatchedOrganisatie:
       type: object
       description: |-
@@ -478,27 +471,24 @@ components:
           type: string
           format: date
           nullable: true
-          description:
-            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21"
+            Een voorbeeld: 2022-02-21'
         opheffingsdatum:
           type: string
           format: date
           nullable: true
-          description:
-            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21"
+            Een voorbeeld: 2022-02-21'
         adres:
           allOf:
-            - $ref: "#/components/schemas/OrganisatieAdres"
+          - $ref: '#/components/schemas/OrganisatieAdres'
           nullable: true
           description: De adres gegevens van een organisatie.
         land:
           type: string
-          description:
-            Een code, opgenomen in Tabel 34, Landentabel, die het land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
           maxLength: 4
           minLength: 4
@@ -522,22 +512,19 @@ components:
         geboortedatum:
           type: string
           format: date
-          description:
-            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21"
+            Een voorbeeld: 2022-02-21'
         overlijdensdatum:
           type: string
           format: date
           nullable: true
-          description:
-            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21"
+            Een voorbeeld: 2022-02-21'
         geslachtsnaam:
           type: string
-          description:
-            De (geslachts)naam waarvan de eventueel aanwezige voorvoegsels
+          description: De (geslachts)naam waarvan de eventueel aanwezige voorvoegsels
             zijn afgesplitst. Gebruik van de wildcard is toegestaan bij invoer van
             ten minste 3 letters. Zoeken met tekstvelden is case-insensitive.
           maxLength: 200
@@ -549,30 +536,27 @@ components:
             * `v` - Vrouw
             * `o` - Overig
           oneOf:
-            - $ref: "#/components/schemas/GeslachtEnum"
-            - $ref: "#/components/schemas/BlankEnum"
+          - $ref: '#/components/schemas/GeslachtEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         voorvoegsel:
           type: string
-          description:
-            Deel van de geslachtsnaam dat vooraf gaat aan de rest van de
+          description: Deel van de geslachtsnaam dat vooraf gaat aan de rest van de
             geslachtsnaam. Zoeken met tekstvelden is case-insensitive.
           maxLength: 10
         voornamen:
           type: string
-          description:
-            De verzameling namen die, gescheiden door spaties, aan de geslachtsnaam
+          description: De verzameling namen die, gescheiden door spaties, aan de geslachtsnaam
             voorafgaat. Gebruik van de wildcard is toegestaan. Zoeken met tekstvelden
             is case-insensitive.
           maxLength: 200
         adres:
           allOf:
-            - $ref: "#/components/schemas/PersoonAdres"
+          - $ref: '#/components/schemas/PersoonAdres'
           nullable: true
           description: De adres gegevens van een organisatie.
         land:
           type: string
-          description:
-            Een code, opgenomen in Tabel 34, Landentabel, die het land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
           maxLength: 4
           minLength: 4
@@ -596,22 +580,19 @@ components:
         geboortedatum:
           type: string
           format: date
-          description:
-            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21"
+            Een voorbeeld: 2022-02-21'
         overlijdensdatum:
           type: string
           format: date
           nullable: true
-          description:
-            "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
-            Een voorbeeld: 2022-02-21"
+            Een voorbeeld: 2022-02-21'
         geslachtsnaam:
           type: string
-          description:
-            De (geslachts)naam waarvan de eventueel aanwezige voorvoegsels
+          description: De (geslachts)naam waarvan de eventueel aanwezige voorvoegsels
             zijn afgesplitst. Gebruik van de wildcard is toegestaan bij invoer van
             ten minste 3 letters. Zoeken met tekstvelden is case-insensitive.
           maxLength: 200
@@ -623,38 +604,35 @@ components:
             * `v` - Vrouw
             * `o` - Overig
           oneOf:
-            - $ref: "#/components/schemas/GeslachtEnum"
-            - $ref: "#/components/schemas/BlankEnum"
+          - $ref: '#/components/schemas/GeslachtEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         voorvoegsel:
           type: string
-          description:
-            Deel van de geslachtsnaam dat vooraf gaat aan de rest van de
+          description: Deel van de geslachtsnaam dat vooraf gaat aan de rest van de
             geslachtsnaam. Zoeken met tekstvelden is case-insensitive.
           maxLength: 10
         voornamen:
           type: string
-          description:
-            De verzameling namen die, gescheiden door spaties, aan de geslachtsnaam
+          description: De verzameling namen die, gescheiden door spaties, aan de geslachtsnaam
             voorafgaat. Gebruik van de wildcard is toegestaan. Zoeken met tekstvelden
             is case-insensitive.
           maxLength: 200
         adres:
           allOf:
-            - $ref: "#/components/schemas/PersoonAdres"
+          - $ref: '#/components/schemas/PersoonAdres'
           nullable: true
           description: De adres gegevens van een organisatie.
         land:
           type: string
-          description:
-            Een code, opgenomen in Tabel 34, Landentabel, die het land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
           maxLength: 4
           minLength: 4
       required:
-        - geboortedatum
-        - geslachtsnaam
-        - url
-        - uuid
+      - geboortedatum
+      - geslachtsnaam
+      - url
+      - uuid
     PersoonAdres:
       type: object
       description: |-
@@ -670,36 +648,32 @@ components:
 
         Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
+        nummeraanduidingId:
+          type: string
+          description: Identificatie van het adres bij de Basisregistratie Adressen
+            en Gebouwen.
+          maxLength: 255
         adresregel1:
           type: string
-          description:
-            Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           maxLength: 80
         adresregel2:
           type: string
-          description:
-            Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           maxLength: 80
         adresregel3:
           type: string
-          description:
-            Derde deel van het adres dat niet voorkomt in de Basisregistratie
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
             Adressen en Gebouwen.
           maxLength: 80
         land:
           type: string
-          description:
-            Een code, opgenomen in Tabel 34, Landentabel, die het land
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
             (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
           maxLength: 4
           minLength: 4
-      required:
-        - adresregel1
-        - adresregel2
-        - adresregel3
-        - land
   securitySchemes:
     tokenAuth:
       type: apiKey
