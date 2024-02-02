@@ -11,6 +11,7 @@ from ..models.partijen import (
     Organisatie,
     Partij,
     Persoon,
+    Vertegenwoordigden,
 )
 
 
@@ -41,6 +42,13 @@ class DigitaalAdresInlineAdmin(admin.StackedInline):
 
 class PersoonInlineAdmin(admin.StackedInline):
     model = Persoon
+    extra = 0
+
+
+class VertegenwoordigdenInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
+    model = Vertegenwoordigden
+    fk_name = "vertegenwoordigende_partij"
     extra = 0
 
 
@@ -76,16 +84,18 @@ class PartijAdmin(admin.ModelAdmin):
         OrganisatieInlineAdmin,
         DigitaalAdresInlineAdmin,
         BetrokkeneInlineAdmin,
+        VertegenwoordigdenInlineAdmin,
     )
     search_fields = ("partij",)
     autocomplete_fields = ("voorkeurs_digitaal_adres",)
+    readonly_fields = ("uuid",)
     fieldsets = [
         (
             None,
             {
                 "fields": [
+                    "uuid",
                     "voorkeurs_digitaal_adres",
-                    "vertegenwoordigde",
                     "nummer",
                     "interne_notitie",
                     "soort_partij",

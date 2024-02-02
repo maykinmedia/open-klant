@@ -191,6 +191,171 @@ paths:
       responses:
         '204':
           description: No response body
+  /actorklantcontacten:
+    get:
+      operationId: actorklantcontactenList
+      description: Alle actor klantcontacten opvragen.
+      summary: Alle actor klantcontacten opvragen.
+      parameters:
+      - in: query
+        name: actor__url
+        schema:
+          type: string
+        description: Zoek actor klantcontract object op basis van het actor url
+      - in: query
+        name: actor__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: klantcontact__url
+        schema:
+          type: string
+        description: Zoek actor klantcontract object op basis van het klantcontact
+          url
+      - in: query
+        name: klantcontact__uuid
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      tags:
+      - ActorKlantcontacten
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActorKlantcontactList'
+          description: ''
+    post:
+      operationId: actorklantcontactenCreate
+      description: Maak een actor klantcontact aan.
+      summary: Maak een actor klantcontact aan.
+      tags:
+      - ActorKlantcontacten
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActorKlantcontact'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorKlantcontact'
+          description: ''
+  /actorklantcontacten/{uuid}:
+    get:
+      operationId: actorklantcontactenRetrieve
+      description: Een specifiek actor klantcontact opvragen.
+      summary: Een specifiek actor klantcontact opvragen.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de actor klantcontact.
+        required: true
+      tags:
+      - ActorKlantcontacten
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorKlantcontact'
+          description: ''
+    put:
+      operationId: actorklantcontactenUpdate
+      description: Werk een actor klantcontact in zijn geheel bij.
+      summary: Werk een actor klantcontact in zijn geheel bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de actor klantcontact.
+        required: true
+      tags:
+      - ActorKlantcontacten
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActorKlantcontact'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorKlantcontact'
+          description: ''
+    patch:
+      operationId: actorklantcontactenPartialUpdate
+      description: Werk een actor klantcontact deels bij.
+      summary: Werk een actor klantcontact deels bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de actor klantcontact.
+        required: true
+      tags:
+      - ActorKlantcontacten
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedActorKlantcontact'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorKlantcontact'
+          description: ''
+    delete:
+      operationId: actorklantcontactenDestroy
+      description: Verwijder een actor klantcontact.
+      summary: Verwijder een aactor klantcontactctor.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de actor klantcontact.
+        required: true
+      tags:
+      - ActorKlantcontacten
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /betrokkenen:
     get:
       operationId: betrokkenenList
@@ -1200,7 +1365,6 @@ paths:
             type: string
             enum:
             - ging_over_onderwerpobjecten
-            - had_betrokken_actoren
             - had_betrokkenen
             - had_betrokkenen.digitale_adressen
             - had_betrokkenen.was_partij
@@ -1210,7 +1374,6 @@ paths:
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
           * `had_betrokkenen` - had_betrokkenen
-          * `had_betrokken_actoren` - had_betrokken_actoren
           * `leidde_tot_interne_taken` - leidde_tot_interne_taken
           * `ging_over_onderwerpobjecten` - ging_over_onderwerpobjecten
           * `omvatte_bijlagen` - omvatte_bijlagen
@@ -1715,6 +1878,11 @@ paths:
         schema:
           type: string
       - in: query
+        name: categorierelatie__categorie__naam
+        schema:
+          type: string
+        description: Zoek partij object op basis van categorie namen.
+      - in: query
         name: correspondentieadres_adresregel1
         schema:
           type: string
@@ -1743,7 +1911,6 @@ paths:
             enum:
             - betrokkenen
             - betrokkenen.had_klantcontact
-            - betrokkenen.had_klantcontact.had_betrokken_actoren
             - categorie_relaties
             - digitale_adressen
         description: |-
@@ -1753,7 +1920,6 @@ paths:
           * `betrokkenen` - betrokkenen
           * `categorie_relaties` - categorie_relaties
           * `betrokkenen.had_klantcontact` - betrokkenen.had_klantcontact
-          * `betrokkenen.had_klantcontact.had_betrokken_actoren` - betrokkenen.had_klantcontact.had_betrokken_actoren
         explode: false
         style: form
       - in: query
@@ -1810,24 +1976,6 @@ paths:
           * `persoon` - Persoon
           * `organisatie` - Organisatie
           * `contactpersoon` - Contactpersoon
-      - in: query
-        name: werkt_voor_partij__nummer
-        schema:
-          type: string
-        description: Zoek partij object op basis van het vertegenwoordigde partij
-          nummer
-      - in: query
-        name: werkt_voor_partij__url
-        schema:
-          type: string
-        description: Zoek partij object op basis van het vertegenwoordigde partij
-          url
-      - in: query
-        name: werkt_voor_partij__uuid
-        schema:
-          type: string
-        description: Zoek partij object op basis van het vertegenwoordigde partij
-          uuid
       tags:
       - partijen
       security:
@@ -1960,6 +2108,172 @@ paths:
       responses:
         '204':
           description: No response body
+  /vertegenwoordigingen:
+    get:
+      operationId: vertegenwoordigingenList
+      description: Alle vertegenwoordigingen opvragen.
+      summary: Alle vertegenwoordigingen opvragen.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      - in: query
+        name: vertegenwoordigde_partij__url
+        schema:
+          type: string
+        description: Zoek Vertegenwoordigden object op basis van het vertegenwoordigde
+          partij url
+      - in: query
+        name: vertegenwoordigde_partij__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: vertegenwoordigende_partij__url
+        schema:
+          type: string
+        description: Zoek Vertegenwoordigden object op basis van het vertegenwoordigende
+          partij url
+      - in: query
+        name: vertegenwoordigende_partij__uuid
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - vertegenwoordigingen
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedVertegenwoordigdenList'
+          description: ''
+    post:
+      operationId: vertegenwoordigingenCreate
+      description: Maak een vertegenwoordiging aan.
+      summary: Maak een vertegenwoordiging aan.
+      tags:
+      - vertegenwoordigingen
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vertegenwoordigden'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vertegenwoordigden'
+          description: ''
+  /vertegenwoordigingen/{uuid}:
+    get:
+      operationId: vertegenwoordigingenRetrieve
+      description: Een specifiek vertegenwoordiging opvragen.
+      summary: Een specifiek vertegenwoordiging opvragen.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de vertegenwoordigden.
+        required: true
+      tags:
+      - vertegenwoordigingen
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vertegenwoordigden'
+          description: ''
+    put:
+      operationId: vertegenwoordigingenUpdate
+      description: Werk een vertegenwoordiging in zijn geheel bij.
+      summary: Werk een vertegenwoordiging in zijn geheel bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de vertegenwoordigden.
+        required: true
+      tags:
+      - vertegenwoordigingen
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vertegenwoordigden'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vertegenwoordigden'
+          description: ''
+    patch:
+      operationId: vertegenwoordigingenPartialUpdate
+      description: Werk een vertegenwoordiging deels bij.
+      summary: Werk een vertegenwoordiging deels bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de vertegenwoordigden.
+        required: true
+      tags:
+      - vertegenwoordigingen
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVertegenwoordigden'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vertegenwoordigden'
+          description: ''
+    delete:
+      operationId: vertegenwoordigingenDestroy
+      description: Verwijder een vertegenwoordiging.
+      summary: Verwijder een vertegenwoordiging.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de vertegenwoordigden.
+        required: true
+      tags:
+      - vertegenwoordigingen
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
 components:
   schemas:
     Actor:
@@ -2020,6 +2334,32 @@ components:
           readOnly: true
           description: De unieke URL van deze actor binnen deze API.
       required:
+      - url
+      - uuid
+    ActorKlantcontact:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de actor klantcontact.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze actor klantcontact binnen deze API.
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/ActorForeignKey'
+          description: De gekoppelde 'Actor'.
+        klantcontact:
+          allOf:
+          - $ref: '#/components/schemas/KlantcontactForeignKey'
+          description: De gekoppelde 'Klantcontact'.
+      required:
+      - actor
+      - klantcontact
       - url
       - uuid
     Betrokkene:
@@ -2613,6 +2953,10 @@ components:
             $ref: '#/components/schemas/OnderwerpobjectForeignKey'
           readOnly: true
           description: Onderwerpobject dat tijdens een klantcontact aan de orde was.
+        hadBetrokkenActoren:
+          type: string
+          readOnly: true
+          description: Actor die bij een klantcontact betrokken was.
         omvatteBijlagen:
           type: array
           items:
@@ -2644,11 +2988,6 @@ components:
           type: string
           description: Datgene waarover het klantcontact ging.
           maxLength: 200
-        hadBetrokkenActoren:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActorForeignKey'
-          description: Actor die bij een klantcontact betrokken was.
         inhoud:
           type: string
           description: Informatie die tijdens het klantcontact werd overgebracht of
@@ -2827,6 +3166,26 @@ components:
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
           maxLength: 200
+    PaginatedActorKlantcontactList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActorKlantcontact'
     PaginatedActorList:
       type: object
       properties:
@@ -3047,6 +3406,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Partij'
+    PaginatedVertegenwoordigdenList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vertegenwoordigden'
     Partij:
       type: object
       description: |-
@@ -3100,12 +3479,10 @@ components:
           nullable: true
           description: Digitaal adres waarop een partij bij voorkeur door de gemeente
             benaderd wordt.
-        vertegenwoordigde:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartijForeignKey'
-          nullable: true
-          description: Partij die een andere partij vertegenwoordigde.
+        vertegenwoordigden:
+          type: string
+          readOnly: true
+          description: Partijen die een andere partijen vertegenwoordigden.
         partijIdentificatoren:
           type: array
           items:
@@ -3159,7 +3536,7 @@ components:
       - soortPartij
       - url
       - uuid
-      - vertegenwoordigde
+      - vertegenwoordigden
       - voorkeursDigitaalAdres
     PartijBezoekadres:
       type: object
@@ -3402,6 +3779,27 @@ components:
           nullable: true
           description: Gegevens die een onderwerpobject in een extern register uniek
             identificeren.
+    PatchedActorKlantcontact:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de actor klantcontact.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze actor klantcontact binnen deze API.
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/ActorForeignKey'
+          description: De gekoppelde 'Actor'.
+        klantcontact:
+          allOf:
+          - $ref: '#/components/schemas/KlantcontactForeignKey'
+          description: De gekoppelde 'Klantcontact'.
     PatchedBetrokkene:
       type: object
       description: |-
@@ -3669,6 +4067,10 @@ components:
             $ref: '#/components/schemas/OnderwerpobjectForeignKey'
           readOnly: true
           description: Onderwerpobject dat tijdens een klantcontact aan de orde was.
+        hadBetrokkenActoren:
+          type: string
+          readOnly: true
+          description: Actor die bij een klantcontact betrokken was.
         omvatteBijlagen:
           type: array
           items:
@@ -3700,11 +4102,6 @@ components:
           type: string
           description: Datgene waarover het klantcontact ging.
           maxLength: 200
-        hadBetrokkenActoren:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActorForeignKey'
-          description: Actor die bij een klantcontact betrokken was.
         inhoud:
           type: string
           description: Informatie die tijdens het klantcontact werd overgebracht of
@@ -3818,12 +4215,10 @@ components:
           nullable: true
           description: Digitaal adres waarop een partij bij voorkeur door de gemeente
             benaderd wordt.
-        vertegenwoordigde:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartijForeignKey'
-          nullable: true
-          description: Partij die een andere partij vertegenwoordigde.
+        vertegenwoordigden:
+          type: string
+          readOnly: true
+          description: Partijen die een andere partijen vertegenwoordigden.
         partijIdentificatoren:
           type: array
           items:
@@ -3901,6 +4296,27 @@ components:
           nullable: true
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
+    PatchedVertegenwoordigden:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de vertegenwoordigden.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze vertegenwoordigden binnen deze API.
+        vertegenwoordigendePartij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignKey'
+          description: '''Partij'' die een andere ''Partij'' vertegenwoordigde.'
+        vertegenwoordigdePartij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignKey'
+          description: '''Partij'' vertegenwoordigd wordt door een andere ''Partij''.'
     RolEnum:
       enum:
       - vertegenwoordiger
@@ -3937,6 +4353,32 @@ components:
       description: |-
         * `te_verwerken` - Het verzoek is afgehandeld.
         * `verwerkt` - Het verzoek ID buiten behandeling gesteld.
+    Vertegenwoordigden:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de vertegenwoordigden.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze vertegenwoordigden binnen deze API.
+        vertegenwoordigendePartij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignKey'
+          description: '''Partij'' die een andere ''Partij'' vertegenwoordigde.'
+        vertegenwoordigdePartij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignKey'
+          description: '''Partij'' vertegenwoordigd wordt door een andere ''Partij''.'
+      required:
+      - url
+      - uuid
+      - vertegenwoordigdePartij
+      - vertegenwoordigendePartij
   securitySchemes:
     tokenAuth:
       type: apiKey

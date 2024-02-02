@@ -5,18 +5,21 @@ from rest_framework.pagination import PageNumberPagination
 from openklant.components.klantinteracties.api.filterset.partijen import (
     CategorieRelatieFilterSet,
     PartijFilterSet,
+    VertegenwoordigdenFilterSet,
 )
 from openklant.components.klantinteracties.api.serializers.partijen import (
     CategorieRelatieSerializer,
     CategorieSerializer,
     PartijIdentificatorSerializer,
     PartijSerializer,
+    VertegenwoordigdenSerializer,
 )
 from openklant.components.klantinteracties.models.partijen import (
     Categorie,
     CategorieRelatie,
     Partij,
     PartijIdentificator,
+    Vertegenwoordigden,
 )
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
@@ -69,6 +72,48 @@ class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
     filterset_class = PartijFilterSet
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
+
+
+@extend_schema(tags=["vertegenwoordigingen"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle vertegenwoordigingen opvragen.",
+        description="Alle vertegenwoordigingen opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek vertegenwoordiging opvragen.",
+        description="Een specifiek vertegenwoordiging opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een vertegenwoordiging aan.",
+        description="Maak een vertegenwoordiging aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een vertegenwoordiging in zijn geheel bij.",
+        description="Werk een vertegenwoordiging in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een vertegenwoordiging deels bij.",
+        description="Werk een vertegenwoordiging deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een vertegenwoordiging.",
+        description="Verwijder een vertegenwoordiging.",
+    ),
+)
+class VertegenwoordigdenViewSet(viewsets.ModelViewSet):
+    """Persoon of organisatie waarmee de gemeente een relatie heeft."""
+
+    queryset = Vertegenwoordigden.objects.order_by("-pk").select_related(
+        "vertegenwoordigende_partij",
+        "vertegenwoordigde_partij",
+    )
+    serializer_class = VertegenwoordigdenSerializer
+    lookup_field = "uuid"
+    pagination_class = PageNumberPagination
+    filterset_class = VertegenwoordigdenFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 

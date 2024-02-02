@@ -3,6 +3,8 @@ from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
+    ActorKlantcontactFactory,
+    MedewerkerFactory,
 )
 from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     BetrokkeneFactory,
@@ -28,8 +30,28 @@ class KlantContactTests(APITestCase):
         data = response.json()
         self.assertEqual(len(data["results"]), 2)
 
+        with self.subTest("test_empty_had_betrokken_actoren"):
+            self.assertEqual(data["results"][0]["hadBetrokkenActoren"], [])
+            self.assertEqual(data["results"][1]["hadBetrokkenActoren"], [])
+
     def test_read_klantcontact(self):
+        actor = ActorFactory.create(
+            naam="Phil",
+            soort_actor="medewerker",
+            indicatie_actief=True,
+            objectidentificator_objecttype="objecttype",
+            objectidentificator_soort_object_id="soortObjectId",
+            objectidentificator_object_id="objectId",
+            objectidentificator_register="register",
+        )
+        MedewerkerFactory.create(
+            actor=actor,
+            functie="functie",
+            emailadres="phil@bozeman.com",
+            telefoonnummer="3168234723",
+        )
         klantcontact = KlantcontactFactory.create()
+        ActorKlantcontactFactory.create(actor=actor, klantcontact=klantcontact)
         detail_url = reverse(
             "klantinteracties:klantcontact-detail",
             kwargs={"uuid": str(klantcontact.uuid)},
@@ -39,17 +61,38 @@ class KlantContactTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        with self.subTest("test_had_betrokken_actoren"):
+            data = response.json()
+            self.assertEqual(
+                data["hadBetrokkenActoren"],
+                [
+                    {
+                        "uuid": str(actor.uuid),
+                        "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
+                        "naam": "Phil",
+                        "soortActor": "medewerker",
+                        "indicatieActief": True,
+                        "objectidentificator": {
+                            "objecttype": "objecttype",
+                            "soortObjectId": "soortObjectId",
+                            "objectId": "objectId",
+                            "register": "register",
+                        },
+                        "actorIdentificatie": {
+                            "functie": "functie",
+                            "emailadres": "phil@bozeman.com",
+                            "telefoonnummer": "3168234723",
+                        },
+                    }
+                ],
+            )
+
     def test_create_klantcontact(self):
-        actor, actor2 = ActorFactory.create_batch(2)
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
             "nummer": "1234567890",
             "kanaal": "kanaal",
             "onderwerp": "onderwerp",
-            "hadBetrokkenActoren": [
-                {"uuid": str(actor.uuid)},
-                {"uuid": str(actor2.uuid)},
-            ],
             "inhoud": "inhoud",
             "indicatieContactGelukt": True,
             "taal": "ndl",
@@ -71,19 +114,6 @@ class KlantContactTests(APITestCase):
         self.assertEqual(data["plaatsgevondenOp"], "2019-08-24T14:15:22Z")
         self.assertTrue(data["indicatieContactGelukt"])
         self.assertTrue(data["vertrouwelijk"])
-        self.assertEqual(
-            data["hadBetrokkenActoren"],
-            [
-                {
-                    "uuid": str(actor.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                },
-                {
-                    "uuid": str(actor2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                },
-            ],
-        )
 
         with self.subTest("auto_generate_max_nummer_plus_one"):
             data["nummer"] = ""
@@ -118,16 +148,11 @@ class KlantContactTests(APITestCase):
             )
 
     def test_create_klantcontact_with_reverse_lookup_fields(self):
-        actor, actor2 = ActorFactory.create_batch(2)
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
             "nummer": "1234567890",
             "kanaal": "kanaal",
             "onderwerp": "onderwerp",
-            "hadBetrokkenActoren": [
-                {"uuid": str(actor.uuid)},
-                {"uuid": str(actor2.uuid)},
-            ],
             "inhoud": "inhoud",
             "indicatieContactGelukt": True,
             "taal": "ndl",
@@ -149,27 +174,12 @@ class KlantContactTests(APITestCase):
         self.assertEqual(data["plaatsgevondenOp"], "2019-08-24T14:15:22Z")
         self.assertTrue(data["indicatieContactGelukt"])
         self.assertTrue(data["vertrouwelijk"])
-        self.assertEqual(
-            data["hadBetrokkenActoren"],
-            [
-                {
-                    "uuid": str(actor.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                },
-                {
-                    "uuid": str(actor2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                },
-            ],
-        )
 
     def test_update_klantcontact(self):
-        actor, actor2, actor3, actor4 = ActorFactory.create_batch(4)
         klantcontact = KlantcontactFactory.create(
             nummer="1234567890",
             kanaal="kanaal",
             onderwerp="onderwerp",
-            actoren=[actor, actor2],
             inhoud="inhoud",
             indicatie_contact_gelukt=True,
             taal="ndl",
@@ -191,28 +201,11 @@ class KlantContactTests(APITestCase):
         self.assertEqual(data["plaatsgevondenOp"], "2019-08-24T14:15:22Z")
         self.assertTrue(data["indicatieContactGelukt"])
         self.assertTrue(data["vertrouwelijk"])
-        self.assertEqual(
-            data["hadBetrokkenActoren"],
-            [
-                {
-                    "uuid": str(actor.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                },
-                {
-                    "uuid": str(actor2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                },
-            ],
-        )
 
         data = {
             "nummer": "7948723947",
             "kanaal": "changed",
             "onderwerp": "changed",
-            "hadBetrokkenActoren": [
-                {"uuid": str(actor3.uuid)},
-                {"uuid": str(actor4.uuid)},
-            ],
             "inhoud": "changed",
             "indicatieContactGelukt": False,
             "taal": "de",
@@ -232,27 +225,12 @@ class KlantContactTests(APITestCase):
         self.assertEqual(data["plaatsgevondenOp"], "2020-08-24T14:15:22Z")
         self.assertFalse(data["indicatieContactGelukt"])
         self.assertFalse(data["vertrouwelijk"])
-        self.assertEqual(
-            data["hadBetrokkenActoren"],
-            [
-                {
-                    "uuid": str(actor3.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor3.uuid)}",
-                },
-                {
-                    "uuid": str(actor4.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor4.uuid)}",
-                },
-            ],
-        )
 
     def test_update_klantcontact_with_reverse_lookup_fields(self):
-        actor, actor2, actor3, actor4 = ActorFactory.create_batch(4)
         klantcontact = KlantcontactFactory.create(
             nummer="1234567890",
             kanaal="kanaal",
             onderwerp="onderwerp",
-            actoren=[actor, actor2],
             inhoud="inhoud",
             indicatie_contact_gelukt=True,
             taal="ndl",
@@ -275,28 +253,11 @@ class KlantContactTests(APITestCase):
         self.assertEqual(data["plaatsgevondenOp"], "2019-08-24T14:15:22Z")
         self.assertTrue(data["indicatieContactGelukt"])
         self.assertTrue(data["vertrouwelijk"])
-        self.assertEqual(
-            data["hadBetrokkenActoren"],
-            [
-                {
-                    "uuid": str(actor.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                },
-                {
-                    "uuid": str(actor2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                },
-            ],
-        )
 
         data = {
             "nummer": "7948723947",
             "kanaal": "changed",
             "onderwerp": "changed",
-            "hadBetrokkenActoren": [
-                {"uuid": str(actor3.uuid)},
-                {"uuid": str(actor4.uuid)},
-            ],
             "inhoud": "changed",
             "indicatieContactGelukt": False,
             "taal": "de",
@@ -318,19 +279,6 @@ class KlantContactTests(APITestCase):
         self.assertEqual(data["plaatsgevondenOp"], "2020-08-24T14:15:22Z")
         self.assertFalse(data["indicatieContactGelukt"])
         self.assertFalse(data["vertrouwelijk"])
-        self.assertEqual(
-            data["hadBetrokkenActoren"],
-            [
-                {
-                    "uuid": str(actor3.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor3.uuid)}",
-                },
-                {
-                    "uuid": str(actor4.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor4.uuid)}",
-                },
-            ],
-        )
 
     def test_partial_update_klantcontact(self):
         actor, actor2 = ActorFactory.create_batch(2)
@@ -338,7 +286,6 @@ class KlantContactTests(APITestCase):
             nummer="1234567890",
             kanaal="kanaal",
             onderwerp="onderwerp",
-            actoren=[actor, actor2],
             inhoud="inhoud",
             indicatie_contact_gelukt=True,
             taal="ndl",
@@ -367,19 +314,6 @@ class KlantContactTests(APITestCase):
         self.assertEqual(data["plaatsgevondenOp"], "2019-08-24T14:15:22Z")
         self.assertTrue(data["indicatieContactGelukt"])
         self.assertTrue(data["vertrouwelijk"])
-        self.assertEqual(
-            data["hadBetrokkenActoren"],
-            [
-                {
-                    "uuid": str(actor.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                },
-                {
-                    "uuid": str(actor2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                },
-            ],
-        )
 
         data = {
             "nummer": "7948723947",
@@ -399,19 +333,6 @@ class KlantContactTests(APITestCase):
         self.assertEqual(data["plaatsgevondenOp"], "2019-08-24T14:15:22Z")
         self.assertTrue(data["indicatieContactGelukt"])
         self.assertTrue(data["vertrouwelijk"])
-        self.assertEqual(
-            data["hadBetrokkenActoren"],
-            [
-                {
-                    "uuid": str(actor.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor.uuid)}",
-                },
-                {
-                    "uuid": str(actor2.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/actoren/{str(actor2.uuid)}",
-                },
-            ],
-        )
 
     def test_destroy_klantcontact(self):
         klantcontact = KlantcontactFactory.create()
@@ -1375,6 +1296,160 @@ class OnderwerpobjectTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         list_url = reverse("klantinteracties:onderwerpobject-list")
+        response = self.client.get(list_url)
+        data = response.json()
+        self.assertEqual(data["count"], 0)
+
+
+class ActorKlantcontactTests(APITestCase):
+    def test_list_actorklantcontact(self):
+        list_url = reverse("klantinteracties:actorklantcontact-list")
+        ActorKlantcontactFactory.create_batch(2)
+
+        response = self.client.get(list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+        self.assertEqual(len(data["results"]), 2)
+
+    def test_read_actorklantcontact(self):
+        actorklantcontact = ActorKlantcontactFactory.create()
+        detail_url = reverse(
+            "klantinteracties:actorklantcontact-detail",
+            kwargs={"uuid": str(actorklantcontact.uuid)},
+        )
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_actorklantcontact(self):
+        list_url = reverse("klantinteracties:actorklantcontact-list")
+        actor = ActorFactory.create()
+        klantcontact = KlantcontactFactory.create()
+        data = {
+            "actor": {"uuid": str(actor.uuid)},
+            "klantcontact": {"uuid": str(klantcontact.uuid)},
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+
+        self.assertEqual(data["actor"]["uuid"], str(actor.uuid))
+        self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact.uuid))
+
+        with self.subTest("test_unique_together"):
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(
+                data["invalidParams"],
+                [
+                    {
+                        "name": "nonFieldErrors",
+                        "code": "unique",
+                        "reason": "De velden actor, klantcontact moeten een unieke set zijn.",
+                    }
+                ],
+            )
+
+    def test_update_actorklantcontact(self):
+        actor, actor2 = ActorFactory.create_batch(2)
+        klantcontact, klantcontact2 = KlantcontactFactory.create_batch(2)
+        actorklantcontact = ActorKlantcontactFactory.create(
+            actor=actor,
+            klantcontact=klantcontact,
+        )
+        detail_url = reverse(
+            "klantinteracties:actorklantcontact-detail",
+            kwargs={"uuid": str(actorklantcontact.uuid)},
+        )
+        response = self.client.get(detail_url)
+        data = response.json()
+
+        self.assertEqual(data["actor"]["uuid"], str(actor.uuid))
+        self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact.uuid))
+
+        data = {
+            "actor": {"uuid": str(actor2.uuid)},
+            "klantcontact": {"uuid": str(klantcontact2.uuid)},
+        }
+
+        response = self.client.put(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        self.assertEqual(data["actor"]["uuid"], str(actor2.uuid))
+        self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact2.uuid))
+
+    def test_update_partial_actorklantcontact(self):
+        actor, actor2 = ActorFactory.create_batch(2)
+        klantcontact = KlantcontactFactory.create()
+        actorklantcontact = ActorKlantcontactFactory.create(
+            actor=actor,
+            klantcontact=klantcontact,
+        )
+        detail_url = reverse(
+            "klantinteracties:actorklantcontact-detail",
+            kwargs={"uuid": str(actorklantcontact.uuid)},
+        )
+        response = self.client.get(detail_url)
+        data = response.json()
+
+        self.assertEqual(data["actor"]["uuid"], str(actor.uuid))
+        self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact.uuid))
+
+        data = {
+            "actor": {"uuid": str(actor2.uuid)},
+        }
+
+        response = self.client.patch(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        self.assertEqual(data["actor"]["uuid"], str(actor2.uuid))
+        self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact.uuid))
+
+        with self.subTest("test_unique_together"):
+            actorklantcontact = ActorKlantcontactFactory.create(
+                actor=actor,
+                klantcontact=klantcontact,
+            )
+            detail_url = reverse(
+                "klantinteracties:actorklantcontact-detail",
+                kwargs={"uuid": str(actorklantcontact.uuid)},
+            )
+            data = {
+                "actor": {"uuid": str(actor2.uuid)},
+            }
+
+            # update new actorklantcontact object to have same data as the existing one.
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(
+                data["invalidParams"],
+                [
+                    {
+                        "name": "nonFieldErrors",
+                        "code": "unique",
+                        "reason": "De velden actor, klantcontact moeten een unieke set zijn.",
+                    }
+                ],
+            )
+
+    def test_destroy_actorklantcontact(self):
+        actorklantcontact = ActorKlantcontactFactory.create()
+        detail_url = reverse(
+            "klantinteracties:actorklantcontact-detail",
+            kwargs={"uuid": str(actorklantcontact.uuid)},
+        )
+        response = self.client.delete(detail_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        list_url = reverse("klantinteracties:actorklantcontact-list")
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)

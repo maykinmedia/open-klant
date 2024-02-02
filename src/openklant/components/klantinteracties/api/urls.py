@@ -15,6 +15,7 @@ from openklant.components.klantinteracties.api.viewsets.internetaken import (
     InterneTaakViewSet,
 )
 from openklant.components.klantinteracties.api.viewsets.klantcontacten import (
+    ActorKlantcontactViewSet,
     BetrokkeneViewSet,
     BijlageViewSet,
     KlantcontactViewSet,
@@ -25,6 +26,7 @@ from openklant.components.klantinteracties.api.viewsets.partijen import (
     CategorieViewSet,
     PartijIdentificatorViewSet,
     PartijViewSet,
+    VertegenwoordigdenViewSet,
 )
 
 from .schema import custom_settings
@@ -36,6 +38,7 @@ router.register("actoren", ActorViewSet)
 
 router.register("digitaleadressen", DigitaalAdresViewSet)
 
+router.register("actorklantcontacten", ActorKlantcontactViewSet)
 router.register("klantcontacten", KlantcontactViewSet)
 router.register("betrokkenen", BetrokkeneViewSet)
 router.register("onderwerpobjecten", OnderwerpobjectViewSet)
@@ -47,6 +50,7 @@ router.register("categorieen", CategorieViewSet)
 router.register("categorie-relaties", CategorieRelatieViewSet)
 router.register("partijen", PartijViewSet)
 router.register("partij-identificatoren", PartijIdentificatorViewSet)
+router.register("vertegenwoordigingen", VertegenwoordigdenViewSet)
 
 urlpatterns = [
     re_path(

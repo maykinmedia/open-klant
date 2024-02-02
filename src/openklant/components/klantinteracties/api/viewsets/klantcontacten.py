@@ -4,15 +4,18 @@ from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
+    ActorKlantcontactFilterSet,
     BetrokkeneFilterSet,
     KlantcontactFilterSet,
 )
 from openklant.components.klantinteracties.api.serializers.klantcontacten import (
+    ActorKlantcontactSerializer,
     BetrokkeneSerializer,
     BijlageSerializer,
     KlantcontactSerializer,
     OnderwerpobjectSerializer,
 )
+from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Bijlage,
@@ -58,7 +61,6 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     """
 
     queryset = Klantcontact.objects.order_by("-pk").prefetch_related(
-        "actoren",
         "bijlage_set",
         "betrokkene_set",
         "internetaak_set",
@@ -205,5 +207,47 @@ class BijlageViewSet(viewsets.ModelViewSet):
         "objectidentificator_soort_object_id",
         "objectidentificator_object_id",
     ]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
+
+
+@extend_schema(tags=["ActorKlantcontacten"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle actor klantcontacten opvragen.",
+        description="Alle actor klantcontacten opvragen.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifiek actor klantcontact opvragen.",
+        description="Een specifiek actor klantcontact opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een actor klantcontact aan.",
+        description="Maak een actor klantcontact aan.",
+    ),
+    update=extend_schema(
+        summary="Werk een actor klantcontact in zijn geheel bij.",
+        description="Werk een actor klantcontact in zijn geheel bij.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een actor klantcontact deels bij.",
+        description="Werk een actor klantcontact deels bij.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een aactor klantcontactctor.",
+        description="Verwijder een actor klantcontact.",
+    ),
+)
+class ActorKlantcontactViewSet(viewsets.ModelViewSet):
+    """Iets dat of iemand die voor de gemeente werkzaamheden uitvoert."""
+
+    queryset = ActorKlantcontact.objects.order_by("-pk").select_related(
+        "actor",
+        "klantcontact",
+    )
+    serializer_class = ActorKlantcontactSerializer
+    lookup_field = "uuid"
+    pagination_class = PageNumberPagination
+    filterset_class = ActorKlantcontactFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)

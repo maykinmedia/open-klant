@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from ..admin.internezaken import InterneTaakInlineAdmin
 from ..models.actoren import (
     Actor,
+    ActorKlantcontact,
     GeautomatiseerdeActor,
     Medewerker,
     OrganisatorischeEenheid,
@@ -28,6 +29,11 @@ class OrganisatorischeEenheidInlineAdmin(admin.StackedInline):
     extra = 0
 
 
+class ActorKlantcontactInlineAdmin(admin.StackedInline):
+    model = ActorKlantcontact
+    extra = 0
+
+
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
     list_display = (
@@ -41,6 +47,7 @@ class ActorAdmin(admin.ModelAdmin):
     )
     search_fields = ("naam",)
     inlines = (
+        ActorKlantcontactInlineAdmin,
         GeautomatiseerdeActorInlineAdmin,
         MedewerkerInlineAdmin,
         OrganisatorischeEenheidInlineAdmin,

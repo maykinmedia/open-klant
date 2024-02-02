@@ -3,6 +3,7 @@ import datetime
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
+from glom import PathAccessError, glom
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 
@@ -20,6 +21,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     BetrokkeneForeignKeySerializer,
 )
 from openklant.components.klantinteracties.api.validators import (
+    FKUniqueTogetherValidator,
     categorie_exists,
     categorie_relatie_exists,
     partij_exists,
@@ -36,6 +38,7 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     PartijIdentificator,
     Persoon,
+    Vertegenwoordigden,
 )
 
 
@@ -454,11 +457,8 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             "Digitaal adres waarop een partij bij voorkeur door de gemeente benaderd wordt."
         ),
     )
-    vertegenwoordigde = PartijForeignKeySerializer(
-        required=True,
-        allow_null=True,
-        many=True,
-        help_text=_("Partij die een andere partij vertegenwoordigde."),
+    vertegenwoordigden = serializers.SerializerMethodField(
+        help_text=_("Partijen die een andere partijen vertegenwoordigden."),
     )
     partij_identificatoren = PartijIdentificatorForeignkeySerializer(
         read_only=True,
@@ -492,8 +492,6 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         "categorie_relaties": f"{SERIALIZER_PATH}.partijen.CategorieRelatieSerializer",
         # 2 levels
         "betrokkenen.had_klantcontact": f"{SERIALIZER_PATH}.klantcontacten.KlantcontactSerializer",
-        # 3 levels
-        "betrokkenen.had_klantcontact.had_betrokken_actoren": f"{SERIALIZER_PATH}.actoren.ActorSerializer",
     }
 
     class Meta:
@@ -507,7 +505,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             "categorie_relaties",
             "digitale_adressen",
             "voorkeurs_digitaal_adres",
-            "vertegenwoordigde",
+            "vertegenwoordigden",
             "partij_identificatoren",
             "soort_partij",
             "indicatie_geheimhouding",
@@ -524,6 +522,15 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 "help_text": _("De unieke URL van deze partij binnen deze API."),
             },
         }
+
+    def get_vertegenwoordigden(self, obj):
+        return [
+            PartijForeignKeySerializer(
+                vertegenwoordigende.vertegenwoordigde_partij, context=self.context
+            ).data
+            for vertegenwoordigende in obj.vertegenwoordigende.all()
+            if vertegenwoordigende
+        ]
 
     @transaction.atomic
     def update(self, instance, validated_data):
@@ -597,13 +604,6 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
             validated_data["voorkeurs_digitaal_adres"] = voorkeurs_digitaal_adres
 
-        if "vertegenwoordigde" in validated_data:
-            if vertegenwoordigde := validated_data.pop("vertegenwoordigde", []):
-                partijen = [str(partij["uuid"]) for partij in vertegenwoordigde]
-                vertegenwoordigde = Partij.objects.filter(uuid__in=partijen)
-
-            instance.vertegenwoordigde.set(vertegenwoordigde)
-
         partij = super().update(instance, validated_data)
 
         if partij_identificatie:
@@ -644,12 +644,6 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 uuid=str(voorkeurs_digitaal_adres_uuid)
             )
 
-        if vertegenwoordigde := validated_data.pop("vertegenwoordigde", None):
-            partijen = [str(partij["uuid"]) for partij in vertegenwoordigde]
-            validated_data["vertegenwoordigde"] = Partij.objects.filter(
-                uuid__in=partijen
-            )
-
         validated_data["voorkeurs_digitaal_adres"] = voorkeurs_digitaal_adres
 
         partij = super().create(validated_data)
@@ -676,3 +670,102 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 digitaal_adres.save()
 
         return partij
+
+
+class VertegenwoordigdenSerializer(serializers.HyperlinkedModelSerializer):
+    vertegenwoordigende_partij = PartijForeignKeySerializer(
+        required=True,
+        help_text=_("'Partij' die een andere 'Partij' vertegenwoordigde."),
+    )
+    vertegenwoordigde_partij = PartijForeignKeySerializer(
+        required=True,
+        help_text=_("'Partij' vertegenwoordigd wordt door een andere 'Partij'."),
+    )
+
+    class Meta:
+        model = Vertegenwoordigden
+        fields = (
+            "uuid",
+            "url",
+            "vertegenwoordigende_partij",
+            "vertegenwoordigde_partij",
+        )
+        validators = [
+            FKUniqueTogetherValidator(
+                queryset=Vertegenwoordigden.objects.all(),
+                fields=(
+                    "vertegenwoordigende_partij",
+                    "vertegenwoordigde_partij",
+                ),
+            )
+        ]
+        extra_kwargs = {
+            "uuid": {"read_only": True},
+            "url": {
+                "view_name": "klantinteracties:vertegenwoordigden-detail",
+                "lookup_field": "uuid",
+                "help_text": _(
+                    "De unieke URL van deze vertegenwoordigden binnen deze API."
+                ),
+            },
+        }
+
+    def validate(self, attrs):
+        vertegenwoordigende_partij = (
+            glom(attrs, "vertegenwoordigende_partij.uuid", skip_exc=PathAccessError)
+            or self.instance.vertegenwoordigende_partij.uuid
+        )
+
+        vertegenwoordigde_partij = (
+            glom(attrs, "vertegenwoordigde_partij.uuid", skip_exc=PathAccessError)
+            or self.instance.vertegenwoordigde_partij.uuid
+        )
+
+        if vertegenwoordigende_partij == vertegenwoordigde_partij:
+            raise serializers.ValidationError(
+                {
+                    "vertegenwoordigde_partij": _(
+                        "De partij kan niet zichzelf vertegenwoordigen."
+                    )
+                }
+            )
+
+        return super().validate(attrs)
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        if "vertegenwoordigende_partij" in validated_data:
+            if vertegenwoordigende_partij := validated_data.pop(
+                "vertegenwoordigende_partij", None
+            ):
+                validated_data["vertegenwoordigende_partij"] = Partij.objects.get(
+                    uuid=str(vertegenwoordigende_partij.get("uuid"))
+                )
+
+        if "vertegenwoordigde_partij" in validated_data:
+            if vertegenwoordigde_partij := validated_data.pop(
+                "vertegenwoordigde_partij", None
+            ):
+                validated_data["vertegenwoordigde_partij"] = Partij.objects.get(
+                    uuid=str(vertegenwoordigde_partij.get("uuid"))
+                )
+
+        return super().update(instance, validated_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        vertegenwoordigende_partij_uuid = str(
+            validated_data.pop("vertegenwoordigende_partij").get("uuid")
+        )
+        validated_data["vertegenwoordigende_partij"] = Partij.objects.get(
+            uuid=vertegenwoordigende_partij_uuid
+        )
+
+        vertegenwoordigde_partij_uuid = str(
+            validated_data.pop("vertegenwoordigde_partij").get("uuid")
+        )
+        validated_data["vertegenwoordigde_partij"] = Partij.objects.get(
+            uuid=vertegenwoordigde_partij_uuid
+        )
+
+        return super().create(validated_data)

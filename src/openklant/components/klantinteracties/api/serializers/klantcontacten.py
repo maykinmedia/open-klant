@@ -6,6 +6,7 @@ from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGr
 
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorForeignKeySerializer,
+    ActorSerializer,
 )
 from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
@@ -14,12 +15,16 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
     DigitaalAdresForeignKeySerializer,
 )
 from openklant.components.klantinteracties.api.validators import (
+    FKUniqueTogetherValidator,
     betrokkene_exists,
     bijlage_exists,
     klantcontact_exists,
     onderwerpobject_exists,
 )
-from openklant.components.klantinteracties.models.actoren import Actor
+from openklant.components.klantinteracties.models.actoren import (
+    Actor,
+    ActorKlantcontact,
+)
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Bijlage,
@@ -257,12 +262,8 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         InterneTaakForeignKeySerializer,
     )
 
-    had_betrokken_actoren = ActorForeignKeySerializer(
-        required=True,
-        allow_null=False,
+    had_betrokken_actoren = serializers.SerializerMethodField(
         help_text=_("Actor die bij een klantcontact betrokken was."),
-        many=True,
-        source="actoren",
     )
     ging_over_onderwerpobjecten = OnderwerpobjectForeignKeySerializer(
         read_only=True,
@@ -294,7 +295,6 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
     inclusion_serializers = {
         # 1 level
         "had_betrokkenen": f"{SERIALIZER_PATH}.klantcontacten.BetrokkeneSerializer",
-        "had_betrokken_actoren": f"{SERIALIZER_PATH}.actoren.ActorSerializer",
         "leidde_tot_interne_taken": f"{SERIALIZER_PATH}.internetaken.InterneTaakSerializer",
         "ging_over_onderwerpobjecten": f"{SERIALIZER_PATH}.klantcontacten.OnderwerpobjectSerializer",
         "omvatte_bijlagen": f"{SERIALIZER_PATH}.klantcontacten.BijlageSerializer",
@@ -309,13 +309,13 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             "uuid",
             "url",
             "ging_over_onderwerpobjecten",
+            "had_betrokken_actoren",
             "omvatte_bijlagen",
             "had_betrokkenen",
             "leidde_tot_interne_taken",
             "nummer",
             "kanaal",
             "onderwerp",
-            "had_betrokken_actoren",
             "inhoud",
             "indicatie_contact_gelukt",
             "taal",
@@ -331,22 +331,12 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
 
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        if "actoren" in validated_data:
-            actoren = [
-                str(actor.get("uuid")) for actor in validated_data.pop("actoren")
-            ]
-            validated_data["actoren"] = Actor.objects.filter(uuid__in=actoren)
-
-        return super().update(instance, validated_data)
-
-    @transaction.atomic
-    def create(self, validated_data):
-        actoren = [str(actor["uuid"]) for actor in validated_data.pop("actoren")]
-        validated_data["actoren"] = Actor.objects.filter(uuid__in=actoren)
-
-        return super().create(validated_data)
+    def get_had_betrokken_actoren(self, obj):
+        return [
+            ActorSerializer(actor_klantcontact.actor, context=self.context).data
+            for actor_klantcontact in obj.actorklantcontact_set.all()
+            if actor_klantcontact
+        ]
 
 
 class OnderwerpobjectObjectidentificatorSerializer(GegevensGroepSerializer):
@@ -491,5 +481,72 @@ class BijlageSerializer(
             validated_data["klantcontact"] = Klantcontact.objects.get(
                 uuid=str(klantcontact.get("uuid"))
             )
+
+        return super().create(validated_data)
+
+
+class ActorKlantcontactSerializer(serializers.HyperlinkedModelSerializer):
+    actor = ActorForeignKeySerializer(
+        required=True,
+        help_text=_("De gekoppelde 'Actor'."),
+    )
+    klantcontact = KlantcontactForeignKeySerializer(
+        required=True,
+        help_text=_("De gekoppelde 'Klantcontact'."),
+    )
+
+    class Meta:
+        model = ActorKlantcontact
+        fields = (
+            "uuid",
+            "url",
+            "actor",
+            "klantcontact",
+        )
+        validators = [
+            FKUniqueTogetherValidator(
+                queryset=ActorKlantcontact.objects.all(),
+                fields=(
+                    "actor",
+                    "klantcontact",
+                ),
+            )
+        ]
+        extra_kwargs = {
+            "uuid": {"read_only": True},
+            "url": {
+                "view_name": "klantinteracties:actorklantcontact-detail",
+                "lookup_field": "uuid",
+                "help_text": _(
+                    "De unieke URL van deze actor klantcontact binnen deze API."
+                ),
+            },
+        }
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        if "actor" in validated_data:
+            if actor := validated_data.pop("actor", None):
+                actor = Actor.objects.get(uuid=str(actor.get("uuid")))
+
+            validated_data["actor"] = actor
+
+        if "klantcontact" in validated_data:
+            if klantcontact := validated_data.pop("klantcontact", None):
+                validated_data["klantcontact"] = Klantcontact.objects.get(
+                    uuid=str(klantcontact.get("uuid"))
+                )
+
+        return super().update(instance, validated_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        actor_uuid = str(validated_data.pop("actor").get("uuid"))
+        validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
+
+        klantcontact_uuid = str(validated_data.pop("klantcontact").get("uuid"))
+        validated_data["klantcontact"] = Klantcontact.objects.get(
+            uuid=klantcontact_uuid
+        )
 
         return super().create(validated_data)

@@ -1,6 +1,8 @@
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator, qs_filter
 
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.klantinteracties.models.constants import SoortPartij
@@ -20,6 +22,30 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     PartijIdentificator,
 )
+
+
+class FKUniqueTogetherValidator(UniqueTogetherValidator):
+    def filter_queryset(self, attrs, queryset, serializer):
+        """
+        Filter the queryset to all instances matching the given attributes.
+        """
+        sources = [serializer.fields[field_name].source for field_name in self.fields]
+
+        if serializer.instance is not None:  # noqa
+            for source in sources:
+                if source not in attrs:
+                    attrs[source] = getattr(serializer.instance, source)
+
+        # changed the way we generate filter_kwargs
+        # to either filter on model instance or model_uuid instance
+        filter_kwargs = {}
+        for source in sources:
+            if isinstance(attrs[source], models.Model):
+                filter_kwargs[source] = attrs[source]
+                continue
+            filter_kwargs[source + "__uuid"] = str(attrs[source]["uuid"])
+
+        return qs_filter(queryset, **filter_kwargs)
 
 
 def actor_is_valid_instance(value):
