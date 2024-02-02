@@ -1364,21 +1364,21 @@ paths:
           items:
             type: string
             enum:
-            - ging_over_onderwerpobjecten
-            - had_betrokkenen
-            - had_betrokkenen.digitale_adressen
-            - had_betrokkenen.was_partij
-            - leidde_tot_interne_taken
-            - omvatte_bijlagen
+            - gingOverOnderwerpobjecten
+            - hadBetrokkenen
+            - hadBetrokkenen.digitaleAdressen
+            - hadBetrokkenen.wasPartij
+            - leiddeTotInterneTaken
+            - omvatteBijlagen
         description: |-
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
-          * `had_betrokkenen` - had_betrokkenen
-          * `leidde_tot_interne_taken` - leidde_tot_interne_taken
-          * `ging_over_onderwerpobjecten` - ging_over_onderwerpobjecten
-          * `omvatte_bijlagen` - omvatte_bijlagen
-          * `had_betrokkenen.was_partij` - had_betrokkenen.was_partij
-          * `had_betrokkenen.digitale_adressen` - had_betrokkenen.digitale_adressen
+          * `hadBetrokkenen` - had_betrokkenen
+          * `leiddeTotInterneTaken` - leidde_tot_interne_taken
+          * `gingOverOnderwerpobjecten` - ging_over_onderwerpobjecten
+          * `omvatteBijlagen` - omvatte_bijlagen
+          * `hadBetrokkenen.wasPartij` - had_betrokkenen.was_partij
+          * `hadBetrokkenen.digitaleAdressen` - had_betrokkenen.digitale_adressen
         explode: false
         style: form
       - in: query
@@ -1910,16 +1910,16 @@ paths:
             type: string
             enum:
             - betrokkenen
-            - betrokkenen.had_klantcontact
-            - categorie_relaties
-            - digitale_adressen
+            - betrokkenen.hadKlantcontact
+            - categorieRelaties
+            - digitaleAdressen
         description: |-
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
-          * `digitale_adressen` - digitale_adressen
+          * `digitaleAdressen` - digitale_adressen
           * `betrokkenen` - betrokkenen
-          * `categorie_relaties` - categorie_relaties
-          * `betrokkenen.had_klantcontact` - betrokkenen.had_klantcontact
+          * `categorieRelaties` - categorie_relaties
+          * `betrokkenen.hadKlantcontact` - betrokkenen.had_klantcontact
         explode: false
         style: form
       - in: query

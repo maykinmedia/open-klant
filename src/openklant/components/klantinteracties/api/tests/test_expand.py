@@ -47,7 +47,7 @@ class ExpandTests(APITestCase):
 
     def test_list_single_expansion(self):
         list_url = reverse("klantinteracties:klantcontact-list")
-        response = self.client.get(list_url, {"expand": "had_betrokkenen"})
+        response = self.client.get(list_url, {"expand": "hadBetrokkenen"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -98,7 +98,7 @@ class ExpandTests(APITestCase):
     def test_list_multiple_level_expansion(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         response = self.client.get(
-            list_url, {"expand": "had_betrokkenen,had_betrokkenen.was_partij"}
+            list_url, {"expand": "hadBetrokkenen,hadBetrokkenen.wasPartij"}
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -188,7 +188,7 @@ class ExpandTests(APITestCase):
             "klantinteracties:klantcontact-detail",
             kwargs={"uuid": str(self.klantcontact.uuid)},
         )
-        response = self.client.get(detail_url, {"expand": "had_betrokkenen"})
+        response = self.client.get(detail_url, {"expand": "hadBetrokkenen"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -238,7 +238,7 @@ class ExpandTests(APITestCase):
             kwargs={"uuid": str(self.klantcontact.uuid)},
         )
         response = self.client.get(
-            detail_url, {"expand": "had_betrokkenen,had_betrokkenen.was_partij"}
+            detail_url, {"expand": "hadBetrokkenen,hadBetrokkenen.wasPartij"}
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
