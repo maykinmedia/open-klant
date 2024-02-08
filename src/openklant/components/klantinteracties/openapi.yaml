@@ -1385,12 +1385,12 @@ paths:
         name: had_betrokkene__url
         schema:
           type: string
-        description: Zoek klantcontract object op basis van het betrokkene url
+        description: Zoek klantcontact object op basis van het betrokkene url
       - in: query
         name: had_betrokkene__uuid
         schema:
           type: string
-        description: Zoek klantcontract object op basis van het betrokkene uuid
+        description: Zoek klantcontact object op basis van het betrokkene uuid
       - in: query
         name: inhoud
         schema:
@@ -1409,6 +1409,36 @@ paths:
         schema:
           type: string
         description: Zoek klantcontacten met specifieke tekst in onderwerp
+      - in: query
+        name: onderwerpobject__objectidentificator_object_id
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het object ID
+      - in: query
+        name: onderwerpobject__objectidentificator_objecttype
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het onderwerpobject objecttype
+      - in: query
+        name: onderwerpobject__objectidentificator_register
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het onderwerpobject register
+      - in: query
+        name: onderwerpobject__objectidentificator_soort_object_id
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het soort object ID
+      - in: query
+        name: onderwerpobject__url
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het onderwerpobject url
+      - in: query
+        name: onderwerpobject__uuid
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het onderwerpobject uuid
       - name: page
         required: false
         in: query

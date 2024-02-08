@@ -13,6 +13,7 @@ from openklant.components.klantinteracties.models.tests.factories.digitaal_adres
 from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     BetrokkeneFactory,
     KlantcontactFactory,
+    OnderwerpobjectFactory,
 )
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
     CategorieFactory,
@@ -30,22 +31,58 @@ class KlantcontactFilterSetTests(APITestCase):
     def setUp(self):
         super().setUp()
         (
-            klantcontact,
-            klantcontact2,
-            klantcontact3,
-            klantcontact4,
+            self.klantcontact,
+            self.klantcontact2,
+            self.klantcontact3,
+            self.klantcontact4,
             self.klantcontact5,
         ) = KlantcontactFactory.create_batch(5)
         for betrokkene_klantcontact in [
-            klantcontact,
-            klantcontact2,
-            klantcontact3,
-            klantcontact4,
+            self.klantcontact,
+            self.klantcontact2,
+            self.klantcontact3,
+            self.klantcontact4,
             self.klantcontact5,
         ]:
             self.betrokkene = BetrokkeneFactory.create(
                 klantcontact=betrokkene_klantcontact
             )
+
+        self.onderwerpobject = OnderwerpobjectFactory.create(
+            klantcontact=self.klantcontact,
+            objectidentificator_objecttype="1",
+            objectidentificator_soort_object_id="1",
+            objectidentificator_object_id="1",
+            objectidentificator_register="1",
+        )
+        self.onderwerpobject2 = OnderwerpobjectFactory.create(
+            klantcontact=self.klantcontact2,
+            objectidentificator_objecttype="2",
+            objectidentificator_soort_object_id="2",
+            objectidentificator_object_id="2",
+            objectidentificator_register="2",
+        )
+        self.onderwerpobject3 = OnderwerpobjectFactory.create(
+            klantcontact=self.klantcontact3,
+            objectidentificator_objecttype="3",
+            objectidentificator_soort_object_id="3",
+            objectidentificator_object_id="3",
+            objectidentificator_register="3",
+        )
+        self.onderwerpobject4 = OnderwerpobjectFactory.create(
+            klantcontact=self.klantcontact4,
+            objectidentificator_objecttype="4",
+            objectidentificator_soort_object_id="4",
+            objectidentificator_object_id="4",
+            objectidentificator_register="4",
+        )
+        self.onderwerpobject5 = OnderwerpobjectFactory.create(
+            klantcontact=self.klantcontact5,
+            objectidentificator_objecttype="5",
+            objectidentificator_soort_object_id="5",
+            objectidentificator_object_id="5",
+            objectidentificator_register="5",
+        )
 
     def test_filter_betrokkene_uuid(self):
         response = self.client.get(
@@ -95,6 +132,146 @@ class KlantcontactFilterSetTests(APITestCase):
 
         with self.subTest("invalid_value_returns_empty_query"):
             response = self.client.get(self.url, {"had_betrokkene__url": "ValueError"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_onderwerpobject_uuid(self):
+        response = self.client.get(
+            self.url, {"onderwerpobject__uuid": f"{self.onderwerpobject5.uuid}"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.klantcontact5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_empty_query"):
+            response = self.client.get(
+                self.url, {"onderwerpobject__uuid": str(uuid4())}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(
+                self.url, {"onderwerpobject__uuid": "ValueError"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_onderwerpobject__url(self):
+        url = f"http://testserver/klantinteracties/api/v1/onderwerpobjecten/{self.onderwerpobject5.uuid}"
+        response = self.client.get(
+            self.url,
+            {"onderwerpobject__url": url},
+        )
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.klantcontact5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            url = f"http://testserver/klantinteracties/api/v1/onderwerpobjecten/{str(uuid4())}"
+            response = self.client.get(
+                self.url,
+                {"onderwerpobject__url": url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(self.url, {"onderwerpobject__url": "ValueError"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_onderwerpobject_objectidentificator_objecttype(self):
+        response = self.client.get(
+            self.url,
+            {"onderwerpobject__objectidentificator_objecttype": "5"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.klantcontact5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"onderwerpobject__objectidentificator_objecttype": "lorum impsum"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_onderwerpobject_objectidentificator_soort_object_id(self):
+        response = self.client.get(
+            self.url,
+            {"onderwerpobject__objectidentificator_soort_object_id": "5"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.klantcontact5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "onderwerpobject__objectidentificator_soort_object_id": "lorum impsum"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_objectidentificator_object_id(self):
+        response = self.client.get(
+            self.url,
+            {"onderwerpobject__objectidentificator_object_id": "5"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.klantcontact5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"onderwerpobject__objectidentificator_object_id": "lorum impsum"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_objectidentificator_register(self):
+        response = self.client.get(
+            self.url,
+            {"onderwerpobject__objectidentificator_register": "5"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.klantcontact5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"onderwerpobject__objectidentificator_register": "lorum impsum"},
+            )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             self.assertEqual(response.json()["count"], 0)
