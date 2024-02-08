@@ -161,9 +161,10 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [
-        "objectidentificator_objecttype",
-        "objectidentificator_soort_object_id",
-        "objectidentificator_object_id",
+        "onderwerpobjectidentificator_object_id",
+        "onderwerpobjectidentificator_code_objecttype",
+        "onderwerpobjectidentificator_code_register",
+        "onderwerpobjectidentificator_code_soort_object_id",
     ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
@@ -203,9 +204,10 @@ class BijlageViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [
-        "objectidentificator_objecttype",
-        "objectidentificator_soort_object_id",
-        "objectidentificator_object_id",
+        "bijlageidentificator_object_id",
+        "bijlageidentificator_code_objecttype",
+        "bijlageidentificator_code_register",
+        "bijlageidentificator_code_soort_object_id",
     ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)

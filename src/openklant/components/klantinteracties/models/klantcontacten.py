@@ -5,16 +5,13 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from vng_api_common.descriptors import GegevensGroepType
+
 from openklant.components.utils.mixins import APIMixin
 from openklant.components.utils.number_generator import number_generator
 
 from .constants import Klantcontrol
-from .mixins import (
-    BezoekadresMixin,
-    ContactnaamMixin,
-    CorrespondentieadresMixin,
-    ObjectidentificatorMixin,
-)
+from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
 
 
 class Klantcontact(APIMixin, models.Model):
@@ -157,7 +154,7 @@ class Betrokkene(
         return str(self.uuid)
 
 
-class Onderwerpobject(ObjectidentificatorMixin):
+class Onderwerpobject(models.Model):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -180,12 +177,61 @@ class Onderwerpobject(ObjectidentificatorMixin):
         blank=True,
     )
 
+    onderwerpobjectidentificator_object_id = models.CharField(
+        _("object ID"),
+        help_text=_(
+            "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    onderwerpobjectidentificator_code_objecttype = models.CharField(
+        _("code objecttype"),
+        help_text=_(
+            "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    onderwerpobjectidentificator_code_register = models.CharField(
+        _("code register"),
+        help_text=_(
+            "Binnen het landschap van registers unieke omschrijving van het register waarin "
+            "het object is geregistreerd, bijvoorbeeld: 'BRP'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    onderwerpobjectidentificator_code_soort_object_id = models.CharField(
+        _("code soort object ID"),
+        help_text=_(
+            "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+
+    onderwerpobjectidentificator = GegevensGroepType(
+        {
+            "object_id": onderwerpobjectidentificator_object_id,
+            "code_objecttype": onderwerpobjectidentificator_code_objecttype,
+            "code_register": onderwerpobjectidentificator_code_register,
+            "code_soort_object_id": onderwerpobjectidentificator_code_soort_object_id,
+        },
+        optional=(
+            "object_id",
+            "code_objecttype",
+            "code_register",
+            "code_soort_object_id",
+        ),
+    )
+
     class Meta:
         verbose_name = _("onderwerpobject")
         verbose_name_plural = _("onderwerpobjecten")
 
 
-class Bijlage(APIMixin, ObjectidentificatorMixin):
+class Bijlage(APIMixin, models.Model):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -197,6 +243,55 @@ class Bijlage(APIMixin, ObjectidentificatorMixin):
         verbose_name=_("klantcontact"),
         help_text=_("'Klantcontact' omvatte 'Bijlage'"),
         null=True,
+    )
+
+    bijlageidentificator_object_id = models.CharField(
+        _("object ID"),
+        help_text=_(
+            "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    bijlageidentificator_code_objecttype = models.CharField(
+        _("code objecttype"),
+        help_text=_(
+            "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    bijlageidentificator_code_register = models.CharField(
+        _("code register"),
+        help_text=_(
+            "Binnen het landschap van registers unieke omschrijving van het register waarin "
+            "het object is geregistreerd, bijvoorbeeld: 'BRP'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    bijlageidentificator_code_soort_object_id = models.CharField(
+        _("code soort object ID"),
+        help_text=_(
+            "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+
+    bijlageidentificator = GegevensGroepType(
+        {
+            "object_id": bijlageidentificator_object_id,
+            "code_objecttype": bijlageidentificator_code_objecttype,
+            "code_register": bijlageidentificator_code_register,
+            "code_soort_object_id": bijlageidentificator_code_soort_object_id,
+        },
+        optional=(
+            "object_id",
+            "code_objecttype",
+            "code_register",
+            "code_soort_object_id",
+        ),
     )
 
     class Meta:

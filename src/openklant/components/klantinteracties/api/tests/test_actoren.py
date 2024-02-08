@@ -38,11 +38,11 @@ class ActorTests(APITestCase):
             "naam": "Phil",
             "soortActor": "medewerker",
             "indicatieActief": True,
-            "objectidentificator": {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+            "actoridentificator": {
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
             "actorIdentificatie": {
                 "functie": "functie",
@@ -61,12 +61,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "medewerker")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(
@@ -84,11 +84,11 @@ class ActorTests(APITestCase):
             "naam": "Phil",
             "soortActor": "organisatorische_eenheid",
             "indicatieActief": True,
-            "objectidentificator": {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+            "actoridentificator": {
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
             "actorIdentificatie": {
                 "omschrijving": "omschrijving",
@@ -108,12 +108,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "organisatorische_eenheid")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(
@@ -132,11 +132,11 @@ class ActorTests(APITestCase):
             "naam": "Phil",
             "soortActor": "geautomatiseerde_actor",
             "indicatieActief": True,
-            "objectidentificator": {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+            "actoridentificator": {
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
             "actorIdentificatie": {
                 "functie": "functie",
@@ -154,12 +154,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "geautomatiseerde_actor")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(
@@ -175,10 +175,10 @@ class ActorTests(APITestCase):
             naam="Phil",
             soort_actor="medewerker",
             indicatie_actief=True,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            actoridentificator_code_objecttype="codeObjecttype",
+            actoridentificator_code_soort_object_id="codeSoortObjectId",
+            actoridentificator_object_id="objectId",
+            actoridentificator_code_register="codeRegister",
         )
         MedewerkerFactory.create(
             actor=actor,
@@ -197,12 +197,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "medewerker")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(
@@ -218,11 +218,11 @@ class ActorTests(APITestCase):
             "naam": "changed",
             "soortActor": "medewerker",
             "indicatieActief": False,
-            "objectidentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+            "actoridentificator": {
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
             "actorIdentificatie": {
                 "functie": "vocalist",
@@ -241,12 +241,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "medewerker")
         self.assertFalse(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
         self.assertEqual(
@@ -263,10 +263,10 @@ class ActorTests(APITestCase):
             naam="Phil",
             soort_actor="organisatorische_eenheid",
             indicatie_actief=True,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            actoridentificator_code_objecttype="codeObjecttype",
+            actoridentificator_code_soort_object_id="codeSoortObjectId",
+            actoridentificator_object_id="objectId",
+            actoridentificator_code_register="codeRegister",
         )
         OrganisatorischeEenheidFactory.create(
             actor=actor,
@@ -286,12 +286,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "organisatorische_eenheid")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(
@@ -308,11 +308,11 @@ class ActorTests(APITestCase):
             "naam": "changed",
             "soortActor": "organisatorische_eenheid",
             "indicatieActief": False,
-            "objectidentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+            "actoridentificator": {
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
             "actorIdentificatie": {
                 "omschrijving": "changed",
@@ -332,12 +332,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "organisatorische_eenheid")
         self.assertFalse(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
         self.assertEqual(
@@ -355,10 +355,10 @@ class ActorTests(APITestCase):
             naam="Phil",
             soort_actor="geautomatiseerde_actor",
             indicatie_actief=True,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            actoridentificator_code_objecttype="codeObjecttype",
+            actoridentificator_code_soort_object_id="codeSoortObjectId",
+            actoridentificator_object_id="objectId",
+            actoridentificator_code_register="codeRegister",
         )
         GeautomatiseerdeActorFactory.create(
             actor=actor,
@@ -376,12 +376,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "geautomatiseerde_actor")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(
@@ -396,11 +396,11 @@ class ActorTests(APITestCase):
             "naam": "changed",
             "soortActor": "geautomatiseerde_actor",
             "indicatieActief": False,
-            "objectidentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+            "actoridentificator": {
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
             "actorIdentificatie": {
                 "functie": "changed",
@@ -418,12 +418,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "geautomatiseerde_actor")
         self.assertFalse(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
         self.assertEqual(
@@ -439,10 +439,10 @@ class ActorTests(APITestCase):
             naam="Phil",
             soort_actor="medewerker",
             indicatie_actief=True,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            actoridentificator_code_objecttype="codeObjecttype",
+            actoridentificator_code_soort_object_id="codeSoortObjectId",
+            actoridentificator_object_id="objectId",
+            actoridentificator_code_register="codeRegister",
         )
         MedewerkerFactory.create(
             actor=actor,
@@ -461,12 +461,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "medewerker")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(
@@ -482,11 +482,11 @@ class ActorTests(APITestCase):
             "naam": "changed",
             "soortActor": "geautomatiseerde_actor",
             "indicatieActief": False,
-            "objectidentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+            "actoridentificator": {
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
             "actorIdentificatie": {
                 "functie": "changed",
@@ -504,12 +504,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "geautomatiseerde_actor")
         self.assertFalse(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
         self.assertEqual(
@@ -525,10 +525,10 @@ class ActorTests(APITestCase):
             naam="Phil",
             soort_actor="medewerker",
             indicatie_actief=True,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            actoridentificator_code_objecttype="codeObjecttype",
+            actoridentificator_code_soort_object_id="codeSoortObjectId",
+            actoridentificator_object_id="objectId",
+            actoridentificator_code_register="codeRegister",
         )
         MedewerkerFactory.create(
             actor=actor,
@@ -546,12 +546,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "medewerker")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(
@@ -578,12 +578,12 @@ class ActorTests(APITestCase):
         self.assertEqual(data["soortActor"], "medewerker")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
-            data["objectidentificator"],
+            data["actoridentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
         self.assertEqual(

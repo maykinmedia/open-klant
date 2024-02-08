@@ -341,10 +341,10 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class OnderwerpobjectObjectidentificatorSerializer(GegevensGroepSerializer):
+class OnderwerpobjectidentificatorSerializer(GegevensGroepSerializer):
     class Meta:
         model = Onderwerpobject
-        gegevensgroep = "objectidentificator"
+        gegevensgroep = "onderwerpobjectidentificator"
 
 
 class OnderwerpobjectSerializer(
@@ -360,7 +360,7 @@ class OnderwerpobjectSerializer(
         allow_null=True,
         help_text=_("'Onderwerpobject' was 'Klantcontact'"),
     )
-    objectidentificator = OnderwerpobjectObjectidentificatorSerializer(
+    onderwerpobjectidentificator = OnderwerpobjectidentificatorSerializer(
         required=False,
         allow_null=True,
         help_text=_(
@@ -376,7 +376,7 @@ class OnderwerpobjectSerializer(
             "url",
             "klantcontact",
             "was_klantcontact",
-            "objectidentificator",
+            "onderwerpobjectidentificator",
         )
 
         extra_kwargs = {
@@ -424,10 +424,10 @@ class OnderwerpobjectSerializer(
         return super().create(validated_data)
 
 
-class BijlageObjectidentificatorSerializer(GegevensGroepSerializer):
+class BijlageIdentificatorSerializer(GegevensGroepSerializer):
     class Meta:
         model = Bijlage
-        gegevensgroep = "objectidentificator"
+        gegevensgroep = "bijlageidentificator"
 
 
 class BijlageSerializer(
@@ -439,7 +439,7 @@ class BijlageSerializer(
         help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
         source="klantcontact",
     )
-    objectidentificator = BijlageObjectidentificatorSerializer(
+    bijlageidentificator = BijlageIdentificatorSerializer(
         required=False,
         allow_null=True,
         help_text=_(
@@ -454,7 +454,7 @@ class BijlageSerializer(
             "uuid",
             "url",
             "was_bijlage_van_klantcontact",
-            "objectidentificator",
+            "bijlageidentificator",
         )
 
         extra_kwargs = {

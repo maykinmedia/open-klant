@@ -19,6 +19,22 @@ paths:
       summary: Alle actoren opvragen.
       parameters:
       - in: query
+        name: actoridentificator_code_objecttype
+        schema:
+          type: string
+      - in: query
+        name: actoridentificator_code_register
+        schema:
+          type: string
+      - in: query
+        name: actoridentificator_code_soort_object_id
+        schema:
+          type: string
+      - in: query
+        name: actoridentificator_object_id
+        schema:
+          type: string
+      - in: query
         name: indicatie_actief
         schema:
           type: boolean
@@ -27,18 +43,6 @@ paths:
         schema:
           type: string
         description: Zoek klantcontacten met specifieke tekst in inhoud
-      - in: query
-        name: objectidentificator_object_id
-        schema:
-          type: string
-      - in: query
-        name: objectidentificator_objecttype
-        schema:
-          type: string
-      - in: query
-        name: objectidentificator_soort_object_id
-        schema:
-          type: string
       - name: page
         required: false
         in: query
@@ -556,15 +560,19 @@ paths:
       summary: Alle bijlagen opvragen.
       parameters:
       - in: query
-        name: objectidentificator_object_id
+        name: bijlageidentificator_code_objecttype
         schema:
           type: string
       - in: query
-        name: objectidentificator_objecttype
+        name: bijlageidentificator_code_register
         schema:
           type: string
       - in: query
-        name: objectidentificator_soort_object_id
+        name: bijlageidentificator_code_soort_object_id
+        schema:
+          type: string
+      - in: query
+        name: bijlageidentificator_object_id
         schema:
           type: string
       - name: page
@@ -1390,6 +1398,7 @@ paths:
         name: had_betrokkene__uuid
         schema:
           type: string
+          format: uuid
         description: Zoek klantcontact object op basis van het betrokkene uuid
       - in: query
         name: inhoud
@@ -1410,25 +1419,21 @@ paths:
           type: string
         description: Zoek klantcontacten met specifieke tekst in onderwerp
       - in: query
-        name: onderwerpobject__objectidentificator_object_id
+        name: onderwerpobject__onderwerpobjectidentificator_code_objecttype
         schema:
           type: string
-        description: Zoek klantcontact object op basis van het object ID
       - in: query
-        name: onderwerpobject__objectidentificator_objecttype
+        name: onderwerpobject__onderwerpobjectidentificator_code_register
         schema:
           type: string
-        description: Zoek klantcontact object op basis van het onderwerpobject objecttype
       - in: query
-        name: onderwerpobject__objectidentificator_register
+        name: onderwerpobject__onderwerpobjectidentificator_code_soort_object_id
         schema:
           type: string
-        description: Zoek klantcontact object op basis van het onderwerpobject register
       - in: query
-        name: onderwerpobject__objectidentificator_soort_object_id
+        name: onderwerpobject__onderwerpobjectidentificator_object_id
         schema:
           type: string
-        description: Zoek klantcontact object op basis van het soort object ID
       - in: query
         name: onderwerpobject__url
         schema:
@@ -1438,13 +1443,40 @@ paths:
         name: onderwerpobject__uuid
         schema:
           type: string
-        description: Zoek klantcontact object op basis van het onderwerpobject uuid
+          format: uuid
       - name: page
         required: false
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
+      - in: query
+        name: was_onderwerpobject__onderwerpobjectidentificator_code_objecttype
+        schema:
+          type: string
+      - in: query
+        name: was_onderwerpobject__onderwerpobjectidentificator_code_register
+        schema:
+          type: string
+      - in: query
+        name: was_onderwerpobject__onderwerpobjectidentificator_code_soort_object_id
+        schema:
+          type: string
+      - in: query
+        name: was_onderwerpobject__onderwerpobjectidentificator_object_id
+        schema:
+          type: string
+      - in: query
+        name: was_onderwerpobject__url
+        schema:
+          type: string
+        description: Zoek was klantcontact object op basis van het onderwerpobject
+          url
+      - in: query
+        name: was_onderwerpobject__uuid
+        schema:
+          type: string
+          format: uuid
       tags:
       - klanten contacten
       security:
@@ -1588,15 +1620,19 @@ paths:
       summary: Alle onderwerpobject opvragen.
       parameters:
       - in: query
-        name: objectidentificator_object_id
+        name: onderwerpobjectidentificator_code_objecttype
         schema:
           type: string
       - in: query
-        name: objectidentificator_objecttype
+        name: onderwerpobjectidentificator_code_register
         schema:
           type: string
       - in: query
-        name: objectidentificator_soort_object_id
+        name: onderwerpobjectidentificator_code_soort_object_id
+        schema:
+          type: string
+      - in: query
+        name: onderwerpobjectidentificator_object_id
         schema:
           type: string
       - name: page
@@ -2340,11 +2376,11 @@ components:
           type: boolean
           description: Geeft aan of aan de actor nog betrokken mag worden bij nieuwe
             klantcontacten. Voor niet-actieve is dit niet toegestaan.
-        objectidentificator:
+        actoridentificator:
           allOf:
-          - $ref: '#/components/schemas/Objectidentificator'
+          - $ref: '#/components/schemas/Actoridentificator'
           nullable: true
-          description: Gegevens die een onderwerpobject in een extern register uniek
+          description: Gegevens die een actorwerpobject in een extern register uniek
             identificeren.
       required:
       - naam
@@ -2392,6 +2428,41 @@ components:
       - klantcontact
       - url
       - uuid
+    Actoridentificator:
+      type: object
+      description: |-
+        Generate a serializer out of a GegevensGroepType.
+
+        Usage::
+
+        >>> class VerlengingSerializer(GegevensGroepSerializer):
+        ...     class Meta:
+        ...         model = Zaak
+        ...         gegevensgroep = 'verlenging'
+        >>>
+
+        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
+      properties:
+        objectId:
+          type: string
+          description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''123456788''.'
+          maxLength: 200
+        codeObjecttype:
+          type: string
+          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+            PERSOON''.'
+          maxLength: 200
+        codeRegister:
+          type: string
+          description: 'Binnen het landschap van registers unieke omschrijving van
+            het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          maxLength: 200
+        codeSoortObjectId:
+          type: string
+          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''Burgerservicenummer''.'
+          maxLength: 200
     Betrokkene:
       type: object
       description: |-
@@ -2610,9 +2681,9 @@ components:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
           nullable: true
           description: '''Klantcontact'' ging over ''Onderwerpobject'''
-        objectidentificator:
+        bijlageidentificator:
           allOf:
-          - $ref: '#/components/schemas/BijlageObjectidentificator'
+          - $ref: '#/components/schemas/BijlageIdentificator'
           nullable: true
           description: Gegevens die een inhoudsobject in een extern register uniek
             identificeren.
@@ -2635,7 +2706,7 @@ components:
       required:
       - url
       - uuid
-    BijlageObjectidentificator:
+    BijlageIdentificator:
       type: object
       description: |-
         Generate a serializer out of a GegevensGroepType.
@@ -2650,25 +2721,25 @@ components:
 
         Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
-        objecttype:
-          type: string
-          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-            PERSOON''.'
-          maxLength: 200
-        soortObjectId:
-          type: string
-          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''Burgerservicenummer''.'
-          maxLength: 200
         objectId:
           type: string
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
             ''123456788''.'
           maxLength: 200
-        register:
+        codeObjecttype:
+          type: string
+          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+            PERSOON''.'
+          maxLength: 200
+        codeRegister:
           type: string
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          maxLength: 200
+        codeSoortObjectId:
+          type: string
+          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''Burgerservicenummer''.'
           maxLength: 200
     Categorie:
       type: object
@@ -3075,41 +3146,6 @@ components:
       required:
       - url
       - uuid
-    Objectidentificator:
-      type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
-      properties:
-        objecttype:
-          type: string
-          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-            PERSOON''.'
-          maxLength: 200
-        soortObjectId:
-          type: string
-          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''Burgerservicenummer''.'
-          maxLength: 200
-        objectId:
-          type: string
-          description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''123456788''.'
-          maxLength: 200
-        register:
-          type: string
-          description: 'Binnen het landschap van registers unieke omschrijving van
-            het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
-          maxLength: 200
     Onderwerpobject:
       type: object
       description: |-
@@ -3137,9 +3173,9 @@ components:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
           nullable: true
           description: '''Onderwerpobject'' was ''Klantcontact'''
-        objectidentificator:
+        onderwerpobjectidentificator:
           allOf:
-          - $ref: '#/components/schemas/OnderwerpobjectObjectidentificator'
+          - $ref: '#/components/schemas/Onderwerpobjectidentificator'
           nullable: true
           description: Gegevens die een onderwerpobject in een extern register uniek
             identificeren.
@@ -3163,7 +3199,7 @@ components:
       required:
       - url
       - uuid
-    OnderwerpobjectObjectidentificator:
+    Onderwerpobjectidentificator:
       type: object
       description: |-
         Generate a serializer out of a GegevensGroepType.
@@ -3178,25 +3214,25 @@ components:
 
         Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
-        objecttype:
-          type: string
-          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-            PERSOON''.'
-          maxLength: 200
-        soortObjectId:
-          type: string
-          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''Burgerservicenummer''.'
-          maxLength: 200
         objectId:
           type: string
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
             ''123456788''.'
           maxLength: 200
-        register:
+        codeObjecttype:
+          type: string
+          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+            PERSOON''.'
+          maxLength: 200
+        codeRegister:
           type: string
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          maxLength: 200
+        codeSoortObjectId:
+          type: string
+          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''Burgerservicenummer''.'
           maxLength: 200
     PaginatedActorKlantcontactList:
       type: object
@@ -3807,11 +3843,11 @@ components:
           type: boolean
           description: Geeft aan of aan de actor nog betrokken mag worden bij nieuwe
             klantcontacten. Voor niet-actieve is dit niet toegestaan.
-        objectidentificator:
+        actoridentificator:
           allOf:
-          - $ref: '#/components/schemas/Objectidentificator'
+          - $ref: '#/components/schemas/Actoridentificator'
           nullable: true
-          description: Gegevens die een onderwerpobject in een extern register uniek
+          description: Gegevens die een actorwerpobject in een extern register uniek
             identificeren.
     PatchedActorKlantcontact:
       type: object
@@ -3929,9 +3965,9 @@ components:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
           nullable: true
           description: '''Klantcontact'' ging over ''Onderwerpobject'''
-        objectidentificator:
+        bijlageidentificator:
           allOf:
-          - $ref: '#/components/schemas/BijlageObjectidentificator'
+          - $ref: '#/components/schemas/BijlageIdentificator'
           nullable: true
           description: Gegevens die een inhoudsobject in een extern register uniek
             identificeren.
@@ -4192,9 +4228,9 @@ components:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
           nullable: true
           description: '''Onderwerpobject'' was ''Klantcontact'''
-        objectidentificator:
+        onderwerpobjectidentificator:
           allOf:
-          - $ref: '#/components/schemas/OnderwerpobjectObjectidentificator'
+          - $ref: '#/components/schemas/Onderwerpobjectidentificator'
           nullable: true
           description: Gegevens die een onderwerpobject in een extern register uniek
             identificeren.
