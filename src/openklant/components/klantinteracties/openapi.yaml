@@ -225,7 +225,7 @@ paths:
         schema:
           type: integer
       tags:
-      - ActorKlantcontacten
+      - actor klantcontacten
       security:
       - tokenAuth: []
       responses:
@@ -240,7 +240,7 @@ paths:
       description: Maak een actor klantcontact aan.
       summary: Maak een actor klantcontact aan.
       tags:
-      - ActorKlantcontacten
+      - actor klantcontacten
       requestBody:
         content:
           application/json:
@@ -270,7 +270,7 @@ paths:
           description: Unieke (technische) identificatiecode van de actor klantcontact.
         required: true
       tags:
-      - ActorKlantcontacten
+      - actor klantcontacten
       security:
       - tokenAuth: []
       responses:
@@ -293,7 +293,7 @@ paths:
           description: Unieke (technische) identificatiecode van de actor klantcontact.
         required: true
       tags:
-      - ActorKlantcontacten
+      - actor klantcontacten
       requestBody:
         content:
           application/json:
@@ -322,7 +322,7 @@ paths:
           description: Unieke (technische) identificatiecode van de actor klantcontact.
         required: true
       tags:
-      - ActorKlantcontacten
+      - actor klantcontacten
       requestBody:
         content:
           application/json:
@@ -350,7 +350,7 @@ paths:
           description: Unieke (technische) identificatiecode van de actor klantcontact.
         required: true
       tags:
-      - ActorKlantcontacten
+      - actor klantcontacten
       security:
       - tokenAuth: []
       responses:
@@ -2954,7 +2954,9 @@ components:
           readOnly: true
           description: Onderwerpobject dat tijdens een klantcontact aan de orde was.
         hadBetrokkenActoren:
-          type: string
+          type: array
+          items:
+            $ref: '#/components/schemas/Actor'
           readOnly: true
           description: Actor die bij een klantcontact betrokken was.
         omvatteBijlagen:
@@ -3480,7 +3482,9 @@ components:
           description: Digitaal adres waarop een partij bij voorkeur door de gemeente
             benaderd wordt.
         vertegenwoordigden:
-          type: string
+          type: array
+          items:
+            $ref: '#/components/schemas/PartijForeignKey'
           readOnly: true
           description: Partijen die een andere partijen vertegenwoordigden.
         partijIdentificatoren:
@@ -4068,7 +4072,9 @@ components:
           readOnly: true
           description: Onderwerpobject dat tijdens een klantcontact aan de orde was.
         hadBetrokkenActoren:
-          type: string
+          type: array
+          items:
+            $ref: '#/components/schemas/Actor'
           readOnly: true
           description: Actor die bij een klantcontact betrokken was.
         omvatteBijlagen:
@@ -4216,7 +4222,9 @@ components:
           description: Digitaal adres waarop een partij bij voorkeur door de gemeente
             benaderd wordt.
         vertegenwoordigden:
-          type: string
+          type: array
+          items:
+            $ref: '#/components/schemas/PartijForeignKey'
           readOnly: true
           description: Partijen die een andere partijen vertegenwoordigden.
         partijIdentificatoren:

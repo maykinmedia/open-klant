@@ -3,6 +3,7 @@ import datetime
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
+from drf_spectacular.utils import extend_schema_field
 from glom import PathAccessError, glom
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
@@ -523,6 +524,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             },
         }
 
+    @extend_schema_field(PartijForeignKeySerializer(many=True))
     def get_vertegenwoordigden(self, obj):
         return [
             PartijForeignKeySerializer(

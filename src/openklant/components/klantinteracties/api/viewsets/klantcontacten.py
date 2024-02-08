@@ -211,7 +211,7 @@ class BijlageViewSet(viewsets.ModelViewSet):
     permission_classes = (TokenPermissions,)
 
 
-@extend_schema(tags=["ActorKlantcontacten"])
+@extend_schema(tags=["actor klantcontacten"])
 @extend_schema_view(
     list=extend_schema(
         summary="Alle actor klantcontacten opvragen.",

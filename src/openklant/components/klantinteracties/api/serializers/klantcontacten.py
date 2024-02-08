@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 
@@ -331,6 +332,7 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
 
+    @extend_schema_field(ActorSerializer(many=True))
     def get_had_betrokken_actoren(self, obj):
         return [
             ActorSerializer(actor_klantcontact.actor, context=self.context).data
