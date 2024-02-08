@@ -11,6 +11,7 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     PartijIdentificator,
     Persoon,
+    Vertegenwoordigden,
 )
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
@@ -30,13 +31,14 @@ class PartijFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Partij
 
-    @factory.post_generation
-    def vertegenwoordigde(self, create, extracted, **kwargs):
-        if not create or not extracted:
-            # Simple build, do nothing.
-            return
 
-        self.vertegenwoordigde.add(*extracted)
+class VertegenwoordigdenFactory(factory.django.DjangoModelFactory):
+    uuid = factory.Faker("uuid4")
+    vertegenwoordigende_partij = factory.SubFactory(PartijFactory)
+    vertegenwoordigde_partij = factory.SubFactory(PartijFactory)
+
+    class Meta:
+        model = Vertegenwoordigden
 
 
 class CategorieRelatieFactory(factory.django.DjangoModelFactory):

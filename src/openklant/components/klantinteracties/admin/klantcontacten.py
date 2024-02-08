@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
+from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
+
 from ..admin.internezaken import InterneTaakInlineAdmin
 from ..models.klantcontacten import Betrokkene, Bijlage, Klantcontact, Onderwerpobject
 
@@ -136,6 +138,11 @@ class BijlageInlineAdmin(admin.StackedInline):
     extra = 0
 
 
+class ActorKlantcontactInlineAdmin(admin.StackedInline):
+    model = ActorKlantcontact
+    extra = 0
+
+
 @admin.register(Klantcontact)
 class KlantcontactAdmin(admin.ModelAdmin):
     list_display = ["nummer", "kanaal", "indicatie_contact_gelukt", "betrokkene_namen"]
@@ -143,13 +150,13 @@ class KlantcontactAdmin(admin.ModelAdmin):
         "indicatie_contact_gelukt",
     ]
     inlines = [
+        ActorKlantcontactInlineAdmin,
         BetrokkeneInlineAdmin,
         WasOnderwerpobjectInlineAdmin,
         BijlageInlineAdmin,
         InterneTaakInlineAdmin,
     ]
     search_fields = ("nummer",)
-    autocomplete_fields = ["actoren"]
     date_hierarchy = "plaatsgevonden_op"
 
     @admin.display(empty_value="---")

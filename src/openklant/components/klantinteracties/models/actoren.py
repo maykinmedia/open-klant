@@ -43,6 +43,37 @@ class Actor(ObjectidentificatorMixin):
         return self.naam
 
 
+class ActorKlantcontact(models.Model):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van de actor klantcontact."),
+    )
+    actor = models.ForeignKey(
+        "klantinteracties.Actor",
+        on_delete=models.CASCADE,
+        verbose_name=_("actor"),
+        help_text=_("De gekoppelde 'Actor'."),
+    )
+    klantcontact = models.ForeignKey(
+        "klantinteracties.Klantcontact",
+        on_delete=models.CASCADE,
+        verbose_name=_("klantcontact"),
+        help_text=_("De gekoppelde 'Klantcontact'."),
+    )
+
+    class Meta:
+        verbose_name = _("actor klantcontact")
+        verbose_name_plural = _("actor klantcontacten")
+        unique_together = (
+            "actor",
+            "klantcontact",
+        )
+
+    def __str__(self):
+        return f"{self.actor.naam} - {self.klantcontact.nummer}"
+
+
 class GeautomatiseerdeActor(models.Model):
     actor = models.OneToOneField(
         Actor,

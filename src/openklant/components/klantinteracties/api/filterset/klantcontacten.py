@@ -7,6 +7,7 @@ from django_filters.rest_framework import FilterSet, filters
 from openklant.components.klantinteracties.api.serializers.klantcontacten import (
     KlantcontactSerializer,
 )
+from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
@@ -169,5 +170,41 @@ class BetrokkeneFilterSet(FilterSet):
         try:
             partij_uuid = uuid.UUID(value)
             return queryset.filter(partij__uuid=partij_uuid)
+        except ValueError:
+            return queryset.none()
+
+
+class ActorKlantcontactFilterSet(FilterSet):
+    actor__url = filters.CharFilter(
+        help_text=_("Zoek actor klantcontract object op basis van het actor url"),
+        method="filter_actor_url",
+    )
+    klantcontact__url = filters.CharFilter(
+        help_text=_(
+            "Zoek actor klantcontract object op basis van het klantcontact url"
+        ),
+        method="filter_klantcontact_url",
+    )
+
+    class Meta:
+        model = ActorKlantcontact
+        fields = (
+            "actor__uuid",
+            "actor__url",
+            "klantcontact__uuid",
+            "klantcontact__url",
+        )
+
+    def filter_actor_url(self, queryset, name, value):
+        try:
+            url_uuid = uuid.UUID(value.split("/")[-1])
+            return queryset.filter(actor__uuid=url_uuid)
+        except ValueError:
+            return queryset.none()
+
+    def filter_klantcontact_url(self, queryset, name, value):
+        try:
+            url_uuid = uuid.UUID(value.split("/")[-1])
+            return queryset.filter(klantcontact__uuid=url_uuid)
         except ValueError:
             return queryset.none()

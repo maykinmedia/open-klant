@@ -3,6 +3,7 @@ from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
+    ActorKlantcontactFactory,
 )
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
@@ -26,7 +27,10 @@ class ExpandTests(APITestCase):
     def setUp(self):
         super().setUp()
         self.actor = ActorFactory.create()
-        self.klantcontact = KlantcontactFactory.create(actoren=[self.actor])
+        self.klantcontact = KlantcontactFactory.create()
+        self.actorklantcontact = ActorKlantcontactFactory.create(
+            actor=self.actor, klantcontact=self.klantcontact
+        )
         self.internetaak = InterneTaakFactory.create(klantcontact=self.klantcontact)
         self.onderwerpobject = OnderwerpobjectFactory.create(
             klantcontact=self.klantcontact, was_klantcontact=None
@@ -152,7 +156,6 @@ class ExpandTests(APITestCase):
         self.assertEqual(
             expand["digitaleAdressen"][0]["uuid"], str(self.digitaal_adres.uuid)
         )
-        self.assertEqual(expand["vertegenwoordigde"], [])
         self.assertEqual(expand["soortPartij"], self.partij.soort_partij)
         self.assertEqual(
             expand["indicatieGeheimhouding"], self.partij.indicatie_geheimhouding
@@ -289,7 +292,6 @@ class ExpandTests(APITestCase):
         self.assertEqual(
             expand["digitaleAdressen"][0]["uuid"], str(self.digitaal_adres.uuid)
         )
-        self.assertEqual(expand["vertegenwoordigde"], [])
         self.assertEqual(expand["soortPartij"], self.partij.soort_partij)
         self.assertEqual(
             expand["indicatieGeheimhouding"], self.partij.indicatie_geheimhouding

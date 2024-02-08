@@ -29,13 +29,6 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         null=True,
         blank=True,
     )
-    vertegenwoordigde = models.ManyToManyField(
-        "self",
-        verbose_name=_("vertegenwoordigde"),
-        help_text=_("'Partij' die een andere 'Partij' vertegenwoordigde."),
-        blank=True,
-        null=True,
-    )
     nummer = models.CharField(
         _("nummer"),
         help_text=_(
@@ -104,6 +97,45 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
     def save(self, *args, **kwargs):
         number_generator(self, Partij)
         return super().save(*args, **kwargs)
+
+
+class Vertegenwoordigden(models.Model):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van de vertegenwoordigden."),
+    )
+    vertegenwoordigende_partij = models.ForeignKey(
+        "klantinteracties.Partij",
+        on_delete=models.CASCADE,
+        verbose_name=_("vertegenwoordigende partij"),
+        related_name="vertegenwoordigende",
+        help_text=_("'Partij' die een andere 'Partij' vertegenwoordigde."),
+    )
+    vertegenwoordigde_partij = models.ForeignKey(
+        "klantinteracties.Partij",
+        on_delete=models.CASCADE,
+        verbose_name=_("vertegenwoordigde partij"),
+        related_name="vertegenwoordigde",
+        help_text=_("'Partij' vertegenwoordigd wordt door een andere 'Partij'."),
+    )
+
+    class Meta:
+        verbose_name = _("vertegenwoordigde")
+        verbose_name_plural = _("vertegenwoordigden")
+        unique_together = (
+            "vertegenwoordigende_partij",
+            "vertegenwoordigde_partij",
+        )
+
+    def clean(self):
+        super().clean()
+
+        if self.vertegenwoordigde_partij == self.vertegenwoordigende_partij:
+            raise ValidationError(_("De partij kan niet zichzelf vertegenwoordigen."))
+
+    def __str__(self):
+        return f"{self.vertegenwoordigende_partij.nummer} - {self.vertegenwoordigde_partij.nummer}"
 
 
 class CategorieRelatie(models.Model):

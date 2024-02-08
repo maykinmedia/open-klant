@@ -8,7 +8,6 @@ from django.utils.translation import gettext_lazy as _
 from openklant.components.utils.mixins import APIMixin
 from openklant.components.utils.number_generator import number_generator
 
-from .actoren import Actor
 from .constants import Klantcontrol
 from .mixins import (
     BezoekadresMixin,
@@ -25,15 +24,6 @@ class Klantcontact(APIMixin, models.Model):
         help_text=_(
             "Unieke (technische) identificatiecode van de betrokkene bij klantcontact."
         ),
-    )
-    actoren = models.ManyToManyField(
-        Actor,
-        verbose_name=_("actoren"),
-        related_name="klantcontacten",
-        help_text=_(
-            "De actoren die tijdens het klantcontant contact had met klanten of hun vertegenwoordigers."
-        ),
-        blank=False,
     )
     nummer = models.CharField(
         _("nummer"),

@@ -6,8 +6,6 @@ import factory.fuzzy
 from ...constants import Klantcontrol
 from ...klantcontacten import Betrokkene, Bijlage, Klantcontact, Onderwerpobject
 
-# from openklant.components.klantinteracties.models.tests.factories.klantcontacten import KlantcontactFactory
-
 
 class KlantcontactFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
@@ -21,16 +19,6 @@ class KlantcontactFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Klantcontact
-
-    @factory.post_generation
-    def actoren(self, create, extracted, **kwargs):
-        if not create:
-            # Simple build, do nothing.
-            return
-
-        if extracted:
-            for actoren in extracted:
-                self.actoren.add(actoren)
 
 
 class BetrokkeneFactory(factory.django.DjangoModelFactory):

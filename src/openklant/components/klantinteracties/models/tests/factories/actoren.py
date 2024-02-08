@@ -4,9 +4,13 @@ import factory.fuzzy
 
 from openklant.components.klantinteracties.models.actoren import (
     Actor,
+    ActorKlantcontact,
     GeautomatiseerdeActor,
     Medewerker,
     OrganisatorischeEenheid,
+)
+from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
+    KlantcontactFactory,
 )
 
 from ...constants import SoortActor
@@ -20,6 +24,15 @@ class ActorFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Actor
+
+
+class ActorKlantcontactFactory(factory.django.DjangoModelFactory):
+    uuid = factory.Faker("uuid4")
+    actor = factory.SubFactory(ActorFactory)
+    klantcontact = factory.SubFactory(KlantcontactFactory)
+
+    class Meta:
+        model = ActorKlantcontact
 
 
 class GeautomatiseerdeActorFactory(factory.django.DjangoModelFactory):
