@@ -16,8 +16,12 @@ from rest_framework.serializers import (
 from rest_framework_inclusions.core import InclusionLoader
 from rest_framework_inclusions.renderer import (
     InclusionJSONRenderer,
-    get_allowed_paths,
     should_skip_inclusions,
+)
+
+from openklant.utils.converters import (
+    camel_to_snake_converter,
+    snake_to_camel_converter,
 )
 
 from .camilize import CamelCaseJSONRenderer
@@ -355,12 +359,32 @@ class ExpandJSONRenderer(InclusionJSONRenderer, CamelCaseJSONRenderer):
         return render_data
 
 
+# Added camelCase to snake_case converter
+def get_allowed_paths(request, view=None):
+    if getattr(view, "get_requested_inclusions", None):
+        include = view.get_requested_inclusions(request)
+    else:
+        include = request.GET.get("include") if request else None
+
+    if include is None:
+        # nothing is allowed
+        return set()
+    if include == "*":
+        # everything is allowed
+        return None
+
+    include = camel_to_snake_converter(include)
+    return [tuple(entry.split(".")) for entry in include.split(",")]
+
+
 def get_expand_options_for_serializer(
     serializer_class: Type[Serializer],
 ) -> List[tuple]:
     choices = [
         (
-            opt,
+            ".".join(
+                snake_to_camel_converter(field_name) for field_name in opt.split(".")
+            ),
             opt,
         )
         for opt in serializer_class.inclusion_serializers
