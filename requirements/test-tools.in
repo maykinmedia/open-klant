@@ -13,6 +13,7 @@ tblib
 waitress>=2.1.1
 
 # Code formatting
+click<8.1.0  # click>=8.1.0 causes issues with black https://github.com/psf/black/issues/2964
 black
 isort
 flake8
