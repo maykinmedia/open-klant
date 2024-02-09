@@ -16,17 +16,27 @@ from openklant.components.utils.filters import ExpandFilter
 
 
 class PartijFilterSet(FilterSet):
-    partij_identificator__objecttype = filters.CharFilter(
+    vertegenwoordigde_partij__uuid = filters.UUIDFilter(
+        help_text=_(
+            "Zoek partij object op basis van het vertegenwoordigde partij uuid"
+        ),
+        field_name="vertegenwoordigde__vertegenwoordigende_partij__uuid",
+    )
+    vertegenwoordigde_partij__url = filters.CharFilter(
+        help_text=_("Zoek partij object op basis van het vertegenwoordigde partij url"),
+        method="filter_vertegenwoordigde_partij_url",
+    )
+    partij_identificator__code_objecttype = filters.CharFilter(
         help_text=_(
             "Zoek partij object op basis van het partij identificator objecttype"
         ),
-        method="filter_identificator_objecttype",
+        method="filter_identificator_code_objecttype",
     )
-    partij_identificator__soort_object_id = filters.CharFilter(
+    partij_identificator__code_soort_object_id = filters.CharFilter(
         help_text=_(
             "Zoek partij object op basis van het partij identificator soort object ID"
         ),
-        method="filter_identificator_soort_object_id",
+        method="filter_identificator_code_soort_object_id",
     )
     partij_identificator__object_id = filters.CharFilter(
         help_text=_(
@@ -34,11 +44,11 @@ class PartijFilterSet(FilterSet):
         ),
         method="filter_identificator_object_id",
     )
-    partij_identificator__register = filters.CharFilter(
+    partij_identificator__code_register = filters.CharFilter(
         help_text=_(
             "Zoek partij object op basis van het partij identificator register"
         ),
-        method="filter_identificator_register",
+        method="filter_identificator_code_register",
     )
 
     categorierelatie__categorie__naam = filters.CharFilter(
@@ -56,10 +66,12 @@ class PartijFilterSet(FilterSet):
     class Meta:
         model = Partij
         fields = (
-            "partij_identificator__objecttype",
-            "partij_identificator__soort_object_id",
+            "vertegenwoordigde_partij__uuid",
+            "vertegenwoordigde_partij__url",
+            "partij_identificator__code_objecttype",
+            "partij_identificator__code_soort_object_id",
             "partij_identificator__object_id",
-            "partij_identificator__register",
+            "partij_identificator__code_register",
             "categorierelatie__categorie__naam",
             "nummer",
             "indicatie_geheimhouding",
@@ -77,18 +89,27 @@ class PartijFilterSet(FilterSet):
             "correspondentieadres_land",
         )
 
-    def filter_identificator_objecttype(self, queryset, name, value):
+    def filter_vertegenwoordigde_partij_url(self, queryset, name, value):
         try:
+            url_uuid = uuid.UUID(value.split("/")[-1])
             return queryset.filter(
-                partijidentificator__partij_identificator_objecttype=value
+                vertegenwoordigde__vertegenwoordigende_partij__uuid=url_uuid
             )
         except ValueError:
             return queryset.none()
 
-    def filter_identificator_soort_object_id(self, queryset, name, value):
+    def filter_identificator_code_objecttype(self, queryset, name, value):
         try:
             return queryset.filter(
-                partijidentificator__partij_identificator_soort_object_id=value
+                partijidentificator__partij_identificator_code_objecttype=value
+            )
+        except ValueError:
+            return queryset.none()
+
+    def filter_identificator_code_soort_object_id(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partijidentificator__partij_identificator_code_soort_object_id=value
             )
         except ValueError:
             return queryset.none()
@@ -101,10 +122,10 @@ class PartijFilterSet(FilterSet):
         except ValueError:
             return queryset.none()
 
-    def filter_identificator_register(self, queryset, name, value):
+    def filter_identificator_code_register(self, queryset, name, value):
         try:
             return queryset.filter(
-                partijidentificator__partij_identificator_register=value
+                partijidentificator__partij_identificator_code_register=value
             )
         except ValueError:
             return queryset.none()

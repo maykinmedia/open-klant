@@ -69,8 +69,11 @@ class KlantcontactFilterSet(FilterSet):
             "was_onderwerpobject__onderwerpobjectidentificator_code_register",
             "nummer",
             "kanaal",
-            "inhoud",
             "onderwerp",
+            "inhoud",
+            "indicatie_contact_gelukt",
+            "vertrouwelijk",
+            "plaatsgevonden_op",
         )
 
     def filter_betrokkene_url(self, queryset, name, value):
@@ -96,17 +99,17 @@ class KlantcontactFilterSet(FilterSet):
 
 
 class BetrokkeneFilterSet(FilterSet):
-    klantcontact__nummer = filters.CharFilter(
+    had_klantcontact__nummer = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact nummer"),
-        method="filter_klantcontact_nummer",
+        method="filter_had_klantcontact_nummer",
     )
-    klantcontact__url = filters.CharFilter(
+    had_klantcontact__url = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact url"),
-        method="filter_klantcontact_url",
+        method="filter_had_klantcontact_url",
     )
-    klantcontact__uuid = filters.CharFilter(
+    had_klantcontact__uuid = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact uuid"),
-        method="filter_klantcontact_uuid",
+        method="filter_had_klantcontact_uuid",
     )
     verstrektedigitaal_adres__adres = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het digitaaladres adres"),
@@ -137,32 +140,37 @@ class BetrokkeneFilterSet(FilterSet):
     class Meta:
         model = Betrokkene
         fields = (
-            "klantcontact__nummer",
-            "klantcontact__uuid",
-            "klantcontact__url",
+            "contactnaam_voorletters",
+            "contactnaam_voornaam",
+            "contactnaam_voorvoegsel_achternaam",
+            "contactnaam_achternaam",
+            "had_klantcontact__nummer",
+            "had_klantcontact__uuid",
+            "had_klantcontact__url",
             "verstrektedigitaal_adres__adres",
             "verstrektedigitaal_adres__uuid",
             "verstrektedigitaal_adres__url",
             "was_partij__nummer",
             "was_partij__url",
             "was_partij__uuid",
+            "organisatienaam",
         )
 
-    def filter_klantcontact_url(self, queryset, name, value):
+    def filter_had_klantcontact_url(self, queryset, name, value):
         try:
             url_uuid = uuid.UUID(value.split("/")[-1])
             return queryset.filter(klantcontact__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
-    def filter_klantcontact_uuid(self, queryset, name, value):
+    def filter_had_klantcontact_uuid(self, queryset, name, value):
         try:
             klantcontact_uuid = uuid.UUID(value)
             return queryset.filter(klantcontact__uuid=klantcontact_uuid)
         except ValueError:
             return queryset.none()
 
-    def filter_klantcontact_nummer(self, queryset, name, value):
+    def filter_had_klantcontact_nummer(self, queryset, name, value):
         try:
             return queryset.filter(klantcontact__nummer=value)
         except ValueError:

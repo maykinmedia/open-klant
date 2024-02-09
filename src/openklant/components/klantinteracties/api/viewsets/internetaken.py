@@ -1,8 +1,10 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
+from openklant.components.klantinteracties.api.filterset.internetaken import (
+    InternetaakFilterSet,
+)
 from openklant.components.klantinteracties.api.serializers.internetaken import (
     InterneTaakSerializer,
 )
@@ -48,13 +50,6 @@ class InterneTaakViewSet(viewsets.ModelViewSet):
     serializer_class = InterneTaakSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = [
-        "nummer",
-        "status",
-        "actor__naam",
-        "klantcontact__uuid",
-        "klantcontact__nummer",
-    ]
+    filterset_class = InternetaakFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)

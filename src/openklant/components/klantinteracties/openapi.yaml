@@ -367,20 +367,40 @@ paths:
       summary: Alle betrokkenen opvragen.
       parameters:
       - in: query
-        name: klantcontact__nummer
+        name: contactnaam_achternaam
+        schema:
+          type: string
+      - in: query
+        name: contactnaam_voorletters
+        schema:
+          type: string
+      - in: query
+        name: contactnaam_voornaam
+        schema:
+          type: string
+      - in: query
+        name: contactnaam_voorvoegsel_achternaam
+        schema:
+          type: string
+      - in: query
+        name: had_klantcontact__nummer
         schema:
           type: string
         description: Zoek betrokkene object op basis van het klantcontact nummer
       - in: query
-        name: klantcontact__url
+        name: had_klantcontact__url
         schema:
           type: string
         description: Zoek betrokkene object op basis van het klantcontact url
       - in: query
-        name: klantcontact__uuid
+        name: had_klantcontact__uuid
         schema:
           type: string
         description: Zoek betrokkene object op basis van het klantcontact uuid
+      - in: query
+        name: organisatienaam
+        schema:
+          type: string
       - name: page
         required: false
         in: query
@@ -1193,6 +1213,19 @@ paths:
       summary: Alle interne taken opvragen.
       parameters:
       - in: query
+        name: aanleidinggevend_klantcontact__url
+        schema:
+          type: string
+        description: Zoek internetaak object op basis van het aanleidingevende klantcontact
+          url
+      - in: query
+        name: aanleidinggevend_klantcontact__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Zoek internetaak object op basis van het aanleidingevende klantcontact
+          uuid
+      - in: query
         name: actor__naam
         schema:
           type: string
@@ -1227,6 +1260,22 @@ paths:
 
           * `te_verwerken` - Het verzoek is afgehandeld.
           * `verwerkt` - Het verzoek ID buiten behandeling gesteld.
+      - in: query
+        name: toegewezen_aan_actor__url
+        schema:
+          type: string
+        description: Zoek internetaak object op basis van het toegewezen actor url
+      - in: query
+        name: toegewezen_aan_actor__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Zoek internetaak object op basis van het toegewezen actor uuid
+      - in: query
+        name: toegewezen_op
+        schema:
+          type: string
+          format: date-time
       tags:
       - interne taken
       security:
@@ -1401,6 +1450,10 @@ paths:
           format: uuid
         description: Zoek klantcontact object op basis van het betrokkene uuid
       - in: query
+        name: indicatie_contact_gelukt
+        schema:
+          type: boolean
+      - in: query
         name: inhoud
         schema:
           type: string
@@ -1450,6 +1503,15 @@ paths:
         description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
+      - in: query
+        name: plaatsgevonden_op
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: vertrouwelijk
+        schema:
+          type: boolean
       - in: query
         name: was_onderwerpobject__onderwerpobjectidentificator_code_objecttype
         schema:
@@ -1779,12 +1841,32 @@ paths:
       description: Alle partij-identificatoren opvragen.
       summary: Alle partij-identificatoren opvragen.
       parameters:
+      - in: query
+        name: andere_partij_identificator
+        schema:
+          type: string
       - name: page
         required: false
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
+      - in: query
+        name: partij_identificator_code_objecttype
+        schema:
+          type: string
+      - in: query
+        name: partij_identificator_code_register
+        schema:
+          type: string
+      - in: query
+        name: partij_identificator_code_soort_object_id
+        schema:
+          type: string
+      - in: query
+        name: partij_identificator_object_id
+        schema:
+          type: string
       tags:
       - partij-identificatoren
       security:
@@ -2007,27 +2089,27 @@ paths:
         schema:
           type: integer
       - in: query
+        name: partij_identificator__code_objecttype
+        schema:
+          type: string
+        description: Zoek partij object op basis van het partij identificator objecttype
+      - in: query
+        name: partij_identificator__code_register
+        schema:
+          type: string
+        description: Zoek partij object op basis van het partij identificator register
+      - in: query
+        name: partij_identificator__code_soort_object_id
+        schema:
+          type: string
+        description: Zoek partij object op basis van het partij identificator soort
+          object ID
+      - in: query
         name: partij_identificator__object_id
         schema:
           type: string
         description: Zoek partij object op basis van het partij identificator object
           ID
-      - in: query
-        name: partij_identificator__objecttype
-        schema:
-          type: string
-        description: Zoek partij object op basis van het partij identificator objecttype
-      - in: query
-        name: partij_identificator__register
-        schema:
-          type: string
-        description: Zoek partij object op basis van het partij identificator register
-      - in: query
-        name: partij_identificator__soort_object_id
-        schema:
-          type: string
-        description: Zoek partij object op basis van het partij identificator soort
-          object ID
       - in: query
         name: soort_partij
         schema:
@@ -2042,6 +2124,19 @@ paths:
           * `persoon` - Persoon
           * `organisatie` - Organisatie
           * `contactpersoon` - Contactpersoon
+      - in: query
+        name: vertegenwoordigde_partij__url
+        schema:
+          type: string
+        description: Zoek partij object op basis van het vertegenwoordigde partij
+          url
+      - in: query
+        name: vertegenwoordigde_partij__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Zoek partij object op basis van het vertegenwoordigde partij
+          uuid
       tags:
       - partijen
       security:
@@ -3789,13 +3884,15 @@ components:
 
         Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
-        objecttype:
+        codeObjecttype:
           type: string
+          title: Objecttype
           description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
             PERSOON''.'
           maxLength: 200
-        soortObjectId:
+        codeSoortObjectId:
           type: string
+          title: Soort object ID
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''Burgerservicenummer''.'
           maxLength: 200
@@ -3804,8 +3901,9 @@ components:
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
             ''123456788''.'
           maxLength: 200
-        register:
+        codeRegister:
           type: string
+          title: Register
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
           maxLength: 200

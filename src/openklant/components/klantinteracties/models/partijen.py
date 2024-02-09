@@ -316,7 +316,7 @@ class PartijIdentificator(models.Model):
     )
 
     # Partij-identificator fields
-    partij_identificator_objecttype = models.CharField(
+    partij_identificator_code_objecttype = models.CharField(
         _("objecttype"),
         help_text=_(
             "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
@@ -324,7 +324,7 @@ class PartijIdentificator(models.Model):
         max_length=200,
         blank=True,
     )
-    partij_identificator_soort_object_id = models.CharField(
+    partij_identificator_code_soort_object_id = models.CharField(
         _("soort object ID"),
         help_text=_(
             "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
@@ -340,7 +340,7 @@ class PartijIdentificator(models.Model):
         max_length=200,
         blank=True,
     )
-    partij_identificator_register = models.CharField(
+    partij_identificator_code_register = models.CharField(
         _("register"),
         help_text=_(
             "Binnen het landschap van registers unieke omschrijving van het register waarin "
@@ -352,16 +352,16 @@ class PartijIdentificator(models.Model):
 
     partij_identificator = GegevensGroepType(
         {
-            "objecttype": partij_identificator_objecttype,
-            "soort_object_id": partij_identificator_soort_object_id,
+            "code_objecttype": partij_identificator_code_objecttype,
+            "code_soort_object_id": partij_identificator_code_soort_object_id,
             "object_id": partij_identificator_object_id,
-            "register": partij_identificator_register,
+            "code_register": partij_identificator_code_register,
         },
         optional=(
-            "objecttype",
-            "soort_object_id",
+            "code_objecttype",
+            "code_soort_object_id",
             "object_id",
-            "register",
+            "code_register",
         ),
     )
 
