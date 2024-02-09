@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("klantinteracties", "0010_auto_20240207_1416"),
     ]

@@ -6,6 +6,7 @@ from typing import Dict, Iterator, List, Optional, Tuple, Type, Union
 from django.db import models
 from django.utils.module_loading import import_string
 
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 from rest_framework.serializers import (
     BaseSerializer,
     Field,
@@ -23,8 +24,6 @@ from openklant.utils.converters import (
     camel_to_snake_converter,
     snake_to_camel_converter,
 )
-
-from .camilize import CamelCaseJSONRenderer
 
 logger = logging.getLogger(__name__)
 

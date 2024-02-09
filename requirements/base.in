@@ -35,6 +35,7 @@ django-jsonform
 # API libraries
 djangorestframework
 djangorestframework-inclusions
+djangorestframework-camel-case
 drf-spectacular
 
 commonground-api-common

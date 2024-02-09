@@ -19,23 +19,23 @@ paths:
       summary: Alle actoren opvragen.
       parameters:
       - in: query
-        name: actoridentificator_code_objecttype
+        name: actoridentificatorCodeObjecttype
         schema:
           type: string
       - in: query
-        name: actoridentificator_code_register
+        name: actoridentificatorCodeRegister
         schema:
           type: string
       - in: query
-        name: actoridentificator_code_soort_object_id
+        name: actoridentificatorCodeSoortObjectId
         schema:
           type: string
       - in: query
-        name: actoridentificator_object_id
+        name: actoridentificatorObjectId
         schema:
           type: string
       - in: query
-        name: indicatie_actief
+        name: indicatieActief
         schema:
           type: boolean
       - in: query
@@ -50,7 +50,7 @@ paths:
         schema:
           type: integer
       - in: query
-        name: soort_actor
+        name: soortActor
         schema:
           type: string
           enum:
@@ -367,33 +367,33 @@ paths:
       summary: Alle betrokkenen opvragen.
       parameters:
       - in: query
-        name: contactnaam_achternaam
+        name: contactnaamAchternaam
         schema:
           type: string
       - in: query
-        name: contactnaam_voorletters
+        name: contactnaamVoorletters
         schema:
           type: string
       - in: query
-        name: contactnaam_voornaam
+        name: contactnaamVoornaam
         schema:
           type: string
       - in: query
-        name: contactnaam_voorvoegsel_achternaam
+        name: contactnaamVoorvoegselAchternaam
         schema:
           type: string
       - in: query
-        name: had_klantcontact__nummer
+        name: hadKlantcontact__nummer
         schema:
           type: string
         description: Zoek betrokkene object op basis van het klantcontact nummer
       - in: query
-        name: had_klantcontact__url
+        name: hadKlantcontact__url
         schema:
           type: string
         description: Zoek betrokkene object op basis van het klantcontact url
       - in: query
-        name: had_klantcontact__uuid
+        name: hadKlantcontact__uuid
         schema:
           type: string
         description: Zoek betrokkene object op basis van het klantcontact uuid
@@ -408,32 +408,32 @@ paths:
         schema:
           type: integer
       - in: query
-        name: verstrektedigitaal_adres__adres
+        name: verstrektedigitaalAdres__adres
         schema:
           type: string
         description: Zoek betrokkene object op basis van het digitaaladres adres
       - in: query
-        name: verstrektedigitaal_adres__url
+        name: verstrektedigitaalAdres__url
         schema:
           type: string
         description: Zoek betrokkene object op basis van het digitaaladres url
       - in: query
-        name: verstrektedigitaal_adres__uuid
+        name: verstrektedigitaalAdres__uuid
         schema:
           type: string
         description: Zoek betrokkene object op basis van het digitaaladres uuid
       - in: query
-        name: was_partij__nummer
+        name: wasPartij__nummer
         schema:
           type: string
         description: Zoek betrokkene object op basis van het partij nummer
       - in: query
-        name: was_partij__url
+        name: wasPartij__url
         schema:
           type: string
         description: Zoek betrokkene object op basis van het partij url
       - in: query
-        name: was_partij__uuid
+        name: wasPartij__uuid
         schema:
           type: string
         description: Zoek betrokkene object op basis van het partij uuid
@@ -580,19 +580,19 @@ paths:
       summary: Alle bijlagen opvragen.
       parameters:
       - in: query
-        name: bijlageidentificator_code_objecttype
+        name: bijlageidentificatorCodeObjecttype
         schema:
           type: string
       - in: query
-        name: bijlageidentificator_code_register
+        name: bijlageidentificatorCodeRegister
         schema:
           type: string
       - in: query
-        name: bijlageidentificator_code_soort_object_id
+        name: bijlageidentificatorCodeSoortObjectId
         schema:
           type: string
       - in: query
-        name: bijlageidentificator_object_id
+        name: bijlageidentificatorObjectId
         schema:
           type: string
       - name: page
@@ -740,7 +740,7 @@ paths:
       summary: Alle categorie relaties opvragen.
       parameters:
       - in: query
-        name: begin_datum
+        name: beginDatum
         schema:
           type: string
           format: date
@@ -760,7 +760,7 @@ paths:
           type: string
         description: Zoek categorie relatie object op basis van de categorie uuid.
       - in: query
-        name: eind_datum
+        name: eindDatum
         schema:
           type: string
           format: date
@@ -1213,13 +1213,13 @@ paths:
       summary: Alle interne taken opvragen.
       parameters:
       - in: query
-        name: aanleidinggevend_klantcontact__url
+        name: aanleidinggevendKlantcontact__url
         schema:
           type: string
         description: Zoek internetaak object op basis van het aanleidingevende klantcontact
           url
       - in: query
-        name: aanleidinggevend_klantcontact__uuid
+        name: aanleidinggevendKlantcontact__uuid
         schema:
           type: string
           format: uuid
@@ -1261,18 +1261,18 @@ paths:
           * `te_verwerken` - Het verzoek is afgehandeld.
           * `verwerkt` - Het verzoek ID buiten behandeling gesteld.
       - in: query
-        name: toegewezen_aan_actor__url
+        name: toegewezenAanActor__url
         schema:
           type: string
         description: Zoek internetaak object op basis van het toegewezen actor url
       - in: query
-        name: toegewezen_aan_actor__uuid
+        name: toegewezenAanActor__uuid
         schema:
           type: string
           format: uuid
         description: Zoek internetaak object op basis van het toegewezen actor uuid
       - in: query
-        name: toegewezen_op
+        name: toegewezenOp
         schema:
           type: string
           format: date-time
@@ -1439,18 +1439,18 @@ paths:
         explode: false
         style: form
       - in: query
-        name: had_betrokkene__url
+        name: hadBetrokkene__url
         schema:
           type: string
         description: Zoek klantcontact object op basis van het betrokkene url
       - in: query
-        name: had_betrokkene__uuid
+        name: hadBetrokkene__uuid
         schema:
           type: string
           format: uuid
         description: Zoek klantcontact object op basis van het betrokkene uuid
       - in: query
-        name: indicatie_contact_gelukt
+        name: indicatieContactGelukt
         schema:
           type: boolean
       - in: query
@@ -1472,19 +1472,19 @@ paths:
           type: string
         description: Zoek klantcontacten met specifieke tekst in onderwerp
       - in: query
-        name: onderwerpobject__onderwerpobjectidentificator_code_objecttype
+        name: onderwerpobject__onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
       - in: query
-        name: onderwerpobject__onderwerpobjectidentificator_code_register
+        name: onderwerpobject__onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
       - in: query
-        name: onderwerpobject__onderwerpobjectidentificator_code_soort_object_id
+        name: onderwerpobject__onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
       - in: query
-        name: onderwerpobject__onderwerpobjectidentificator_object_id
+        name: onderwerpobject__onderwerpobjectidentificatorObjectId
         schema:
           type: string
       - in: query
@@ -1504,7 +1504,7 @@ paths:
         schema:
           type: integer
       - in: query
-        name: plaatsgevonden_op
+        name: plaatsgevondenOp
         schema:
           type: string
           format: date-time
@@ -1513,29 +1513,29 @@ paths:
         schema:
           type: boolean
       - in: query
-        name: was_onderwerpobject__onderwerpobjectidentificator_code_objecttype
+        name: wasOnderwerpobject__onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
       - in: query
-        name: was_onderwerpobject__onderwerpobjectidentificator_code_register
+        name: wasOnderwerpobject__onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
       - in: query
-        name: was_onderwerpobject__onderwerpobjectidentificator_code_soort_object_id
+        name: wasOnderwerpobject__onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
       - in: query
-        name: was_onderwerpobject__onderwerpobjectidentificator_object_id
+        name: wasOnderwerpobject__onderwerpobjectidentificatorObjectId
         schema:
           type: string
       - in: query
-        name: was_onderwerpobject__url
+        name: wasOnderwerpobject__url
         schema:
           type: string
         description: Zoek was klantcontact object op basis van het onderwerpobject
           url
       - in: query
-        name: was_onderwerpobject__uuid
+        name: wasOnderwerpobject__uuid
         schema:
           type: string
           format: uuid
@@ -1682,19 +1682,19 @@ paths:
       summary: Alle onderwerpobject opvragen.
       parameters:
       - in: query
-        name: onderwerpobjectidentificator_code_objecttype
+        name: onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
       - in: query
-        name: onderwerpobjectidentificator_code_register
+        name: onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
       - in: query
-        name: onderwerpobjectidentificator_code_soort_object_id
+        name: onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
       - in: query
-        name: onderwerpobjectidentificator_object_id
+        name: onderwerpobjectidentificatorObjectId
         schema:
           type: string
       - name: page
@@ -1842,7 +1842,7 @@ paths:
       summary: Alle partij-identificatoren opvragen.
       parameters:
       - in: query
-        name: andere_partij_identificator
+        name: anderePartijIdentificator
         schema:
           type: string
       - name: page
@@ -1852,19 +1852,19 @@ paths:
         schema:
           type: integer
       - in: query
-        name: partij_identificator_code_objecttype
+        name: partijIdentificatorCodeObjecttype
         schema:
           type: string
       - in: query
-        name: partij_identificator_code_register
+        name: partijIdentificatorCodeRegister
         schema:
           type: string
       - in: query
-        name: partij_identificator_code_soort_object_id
+        name: partijIdentificatorCodeSoortObjectId
         schema:
           type: string
       - in: query
-        name: partij_identificator_object_id
+        name: partijIdentificatorObjectId
         schema:
           type: string
       tags:
@@ -2006,23 +2006,23 @@ paths:
       summary: Alle partijen opvragen.
       parameters:
       - in: query
-        name: bezoekadres_adresregel1
+        name: bezoekadresAdresregel1
         schema:
           type: string
       - in: query
-        name: bezoekadres_adresregel2
+        name: bezoekadresAdresregel2
         schema:
           type: string
       - in: query
-        name: bezoekadres_adresregel3
+        name: bezoekadresAdresregel3
         schema:
           type: string
       - in: query
-        name: bezoekadres_land
+        name: bezoekadresLand
         schema:
           type: string
       - in: query
-        name: bezoekadres_nummeraanduiding_id
+        name: bezoekadresNummeraanduidingId
         schema:
           type: string
       - in: query
@@ -2031,23 +2031,23 @@ paths:
           type: string
         description: Zoek partij object op basis van categorie namen.
       - in: query
-        name: correspondentieadres_adresregel1
+        name: correspondentieadresAdresregel1
         schema:
           type: string
       - in: query
-        name: correspondentieadres_adresregel2
+        name: correspondentieadresAdresregel2
         schema:
           type: string
       - in: query
-        name: correspondentieadres_adresregel3
+        name: correspondentieadresAdresregel3
         schema:
           type: string
       - in: query
-        name: correspondentieadres_land
+        name: correspondentieadresLand
         schema:
           type: string
       - in: query
-        name: correspondentieadres_nummeraanduiding_id
+        name: correspondentieadresNummeraanduidingId
         schema:
           type: string
       - in: query
@@ -2071,11 +2071,11 @@ paths:
         explode: false
         style: form
       - in: query
-        name: indicatie_actief
+        name: indicatieActief
         schema:
           type: boolean
       - in: query
-        name: indicatie_geheimhouding
+        name: indicatieGeheimhouding
         schema:
           type: boolean
       - in: query
@@ -2089,29 +2089,29 @@ paths:
         schema:
           type: integer
       - in: query
-        name: partij_identificator__code_objecttype
+        name: partijIdentificator__codeObjecttype
         schema:
           type: string
         description: Zoek partij object op basis van het partij identificator objecttype
       - in: query
-        name: partij_identificator__code_register
+        name: partijIdentificator__codeRegister
         schema:
           type: string
         description: Zoek partij object op basis van het partij identificator register
       - in: query
-        name: partij_identificator__code_soort_object_id
+        name: partijIdentificator__codeSoortObjectId
         schema:
           type: string
         description: Zoek partij object op basis van het partij identificator soort
           object ID
       - in: query
-        name: partij_identificator__object_id
+        name: partijIdentificator__objectId
         schema:
           type: string
         description: Zoek partij object op basis van het partij identificator object
           ID
       - in: query
-        name: soort_partij
+        name: soortPartij
         schema:
           type: string
           enum:
@@ -2125,13 +2125,13 @@ paths:
           * `organisatie` - Organisatie
           * `contactpersoon` - Contactpersoon
       - in: query
-        name: vertegenwoordigde_partij__url
+        name: vertegenwoordigdePartij__url
         schema:
           type: string
         description: Zoek partij object op basis van het vertegenwoordigde partij
           url
       - in: query
-        name: vertegenwoordigde_partij__uuid
+        name: vertegenwoordigdePartij__uuid
         schema:
           type: string
           format: uuid
@@ -2282,24 +2282,24 @@ paths:
         schema:
           type: integer
       - in: query
-        name: vertegenwoordigde_partij__url
+        name: vertegenwoordigdePartij__url
         schema:
           type: string
         description: Zoek Vertegenwoordigden object op basis van het vertegenwoordigde
           partij url
       - in: query
-        name: vertegenwoordigde_partij__uuid
+        name: vertegenwoordigdePartij__uuid
         schema:
           type: string
           format: uuid
       - in: query
-        name: vertegenwoordigende_partij__url
+        name: vertegenwoordigendePartij__url
         schema:
           type: string
         description: Zoek Vertegenwoordigden object op basis van het vertegenwoordigende
           partij url
       - in: query
-        name: vertegenwoordigende_partij__uuid
+        name: vertegenwoordigendePartij__uuid
         schema:
           type: string
           format: uuid
