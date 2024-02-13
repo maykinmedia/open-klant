@@ -61,7 +61,7 @@ jobs:
 
     strategy:
       matrix:
-        postgres: ['11', '12', '13']
+        postgres: ['13', '14', '15', '16']
 
     name: Tests (PG ${{ matrix.postgres }})
 
@@ -99,7 +99,7 @@ jobs:
           python src/manage.py collectstatic --noinput --link
           coverage run src/manage.py test src
         env:
-          DJANGO_SETTINGS_MODULE: openklant.conf.dev
+          DJANGO_SETTINGS_MODULE: openklant.conf.jenkins
           SECRET_KEY: dummy
           DB_USER: postgres
           DB_PASSWORD: ''

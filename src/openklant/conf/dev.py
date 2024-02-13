@@ -75,7 +75,7 @@ CACHES = {
 ELASTIC_APM["DEBUG"] = True
 
 # Django debug toolbar
-INSTALLED_APPS += ["debug_toolbar", "ddt_api_calls"]
+INSTALLED_APPS += ["debug_toolbar"]
 MIDDLEWARE += [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
@@ -95,7 +95,6 @@ DEBUG_TOOLBAR_PANELS = [
     "debug_toolbar.panels.logging.LoggingPanel",
     "debug_toolbar.panels.redirects.RedirectsPanel",
     "debug_toolbar.panels.profiling.ProfilingPanel",
-    "ddt_api_calls.panels.APICallsPanel",
 ]
 
 # THOU SHALT NOT USE NAIVE DATETIMES
