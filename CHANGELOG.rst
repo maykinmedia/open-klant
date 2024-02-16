@@ -2,11 +2,10 @@
 Change history
 ==============
 
-0.6.0
+2.0.0
 =====
 
-*tbd*
-
+*t.b.d.*
 
 *VNG officially retired the Klanten and Contactmomenten API, which never had an
 official release. These API's are replaced by the Klantinteractie API. In 
@@ -14,6 +13,17 @@ cooperation with several municipalities and VNG, Open Klant will implement the
 new API specification and might introduce backwards incompatible changes. Since
 Open Klant never had an official 1.0 release, we will continue versioning on 
 the 0.x.x-scheme.*
+
+* Initial release of Open Klant featuring the first iteration of the 
+  Klantinteracties API.
+
+1.0.0
+=====
+
+*February 16, 2023*
+
+* Only a version change has been applied to emphasize the major change from
+  version 1.0.0 to 2.0.0 which features a completely different API.
 
 0.5.0-pre
 =========

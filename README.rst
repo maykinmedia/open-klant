@@ -12,7 +12,8 @@ Open Klant
 Registratiecomponent voor de opslag en ontsluiting van klantgegevens volgens de
 Klantinteracties API-specificatie. (`English version`_)
 
-Ontwikkeld door `Maykin B.V.`_ in opdracht van de gemeente Den Haag.
+Ontwikkeld door `Maykin B.V.`_ in samenwerking met gemeente Amsterdam, gemeente 
+Den Haag, gemeente Utrecht en VNG Realisatie.
 
 
 Introductie
@@ -30,21 +31,26 @@ Open Klant als beproeving van de toekomstige API standaard.
 API specificatie
 ================
 
-==============  ==============  =============================
-Versie          Release datum   API specificatie
-==============  ==============  =============================
-latest          n/a             t.b.d.
+Hieronder staat de versie van Open Klant en welke versie van de 
+API-specificatie wordt aangeboden.
 
-0.5-pre         2023-08-05      Klanten:
-                                `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/v0.5-pre/src/openklant/components/klanten/openapi.yaml>`_,
-                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/v0.5-pre/src/openklant/components/klanten/openapi.yaml>`_
-                                Contactmomenten:
-                                `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/v0.5-pre/src/openklant/components/contactmomenten/openapi.yaml>`_,
-                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/v0.5-pre/src/openklant/components/contactmomenten/openapi.yaml>`_
-==============  ==============  =============================
+==================  ==============  =============   ================
+Open Klant versie   API versie      Release datum   API specificatie
+==================  ==============  =============   ================
+master              master          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_
+2.0.0               0.0.3           t.b.d.          `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.0.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.0.0/src/openklant/components/klantinteracties/openapi.yaml>`_
+1.0.0               0.0.1           2023-08-05      Klanten:
+                                                    `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/1.0.0/src/openklant/components/klanten/openapi.yaml>`_,
+                                                    `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/1.0.0/src/openklant/components/klanten/openapi.yaml>`_
+                                                    Contactmomenten:
+                                                    `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/1.0.0/src/openklant/components/contactmomenten/openapi.yaml>`_,
+                                                    `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/1.0.0/src/openklant/components/contactmomenten/openapi.yaml>`_
+==================  ==============  =============   ================
 
 Vorige versies worden nog 6 maanden ondersteund nadat de volgende versie is 
-uitgebracht. Versie 0.5-pre bevat nog de Klanten en Contactmomenten 
+uitgebracht. Open Klant versie 1.0.0 bevat nog de Klanten en Contactmomenten 
 API-specificatie die door VNG is geschrapt en beschouwd moet worden als legacy.
 
 Zie: `Alle versies en wijzigingen <https://github.com/maykinmedia/open-klant/blob/master/CHANGELOG.rst>`_
@@ -57,7 +63,7 @@ Ready-to-go implementatie
 
 Deze implementatie is bedoeld als referentie implementatie van de API 
 specificaties maar tevens een productiewaardig component dat ingezet kan worden
-in het gemeentelijke ICT landschap.
+in het ICT landschap van de overheid.
 
 Quickstart
 ----------
@@ -66,9 +72,9 @@ Quickstart
 
    .. code:: bash
 
-      $ wget https://raw.githubusercontent.com/maykinmedia/open-klant/master/docker-compose-quickstart.yml -O docker-compose.yml
-      $ docker-compose -f docker-compose-qs.yml up -d
-      $ docker-compose exec web src/manage.py loaddata demodata
+      $ wget https://raw.githubusercontent.com/maykinmedia/open-klant/master/docker-compose.yml
+      $ docker-compose up -d --no-build
+      $ # TODO: docker-compose exec web src/manage.py loaddata demodata
       $ docker-compose exec web src/manage.py createsuperuser
 
 2. In de browser, navigeer naar ``http://localhost:8000/`` om de beheerinterface
@@ -80,7 +86,7 @@ Links
 
 * `Documentatie <https://open-klant.readthedocs.io/>`_
 * `Docker image <https://hub.docker.com/r/maykinmedia/open-klant>`_
-* `Issues <https://github.com/maykinmedia/open-klant/open-klant>`_
+* `Issues <https://github.com/maykinmedia/open-klant/issues>`_
 * `Code <https://github.com/maykinmedia/open-klant>`_
 * `Community <https://commonground.nl/groups/view/6bca7599-0f58-44e4-a405-7aa3a4c682f3/open-klant>`_
 
@@ -88,7 +94,7 @@ Links
 Licentie
 ========
 
-Copyright © Maykin B.V., 2023
+Copyright © Maykin B.V., 2023 - 2024
 
 Licensed under the EUPL_
 
