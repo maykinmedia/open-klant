@@ -49,3 +49,12 @@ class CustomRegexValidator(RegexValidator):
 validate_postal_code = CustomRegexValidator(
     regex="^[1-9][0-9]{3} ?[a-zA-Z]{2}$", message=_("Ongeldige postcode")
 )
+
+# Doesn't truely validate if IBAN is valid but validated the basic pattern.
+validate_iban = CustomRegexValidator(
+    regex="^[A-Za-z]{2}[0-9]{2}[A-Za-z0-9]{1,30}$", message=_("Ongeldige IBAN")
+)
+
+validate_no_space = CustomRegexValidator(
+    regex="^[\S]+$", message=_("Geen spaties toegestaan")  # noqa
+)

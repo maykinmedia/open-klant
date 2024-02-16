@@ -41,6 +41,7 @@ from openklant.components.klantinteracties.models.partijen import (
     Persoon,
     Vertegenwoordigden,
 )
+from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 
 
 class PartijForeignkeyBaseSerializer(serializers.HyperlinkedModelSerializer):
@@ -417,6 +418,10 @@ class PartijIdentificatorSerializer(
 
 
 class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
+    from openklant.components.klantinteracties.api.serializers.rekeningnummers import (
+        RekeningnummerForeignKeySerializer,
+    )
+
     discriminator = Discriminator(
         discriminator_field="soort_partij",
         mapping={
@@ -445,7 +450,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         required=True,
         allow_null=True,
         help_text=_(
-            "Digitaal adres dat een partij verstrekte voor gebruik bij "
+            "Digitaal adresen dat een partij verstrekte voor gebruik bij "
             "toekomstig contact met de gemeente."
         ),
         source="digitaaladres_set",
@@ -457,6 +462,18 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         help_text=_(
             "Digitaal adres waarop een partij bij voorkeur door de gemeente benaderd wordt."
         ),
+    )
+    rekeningnummers = RekeningnummerForeignKeySerializer(
+        required=True,
+        allow_null=True,
+        help_text=_("Rekeningnummers van een partij"),
+        source="rekeningnummer_set",
+        many=True,
+    )
+    voorkeurs_rekeningnummer = RekeningnummerForeignKeySerializer(
+        required=True,
+        allow_null=True,
+        help_text=_("Rekeningsnummer die een partij bij voorkeur gebruikt."),
     )
     vertegenwoordigden = serializers.SerializerMethodField(
         help_text=_("Partijen die een andere partijen vertegenwoordigden."),
@@ -507,6 +524,8 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             "digitale_adressen",
             "voorkeurs_digitaal_adres",
             "vertegenwoordigden",
+            "rekeningnummers",
+            "voorkeurs_rekeningnummer",
             "partij_identificatoren",
             "soort_partij",
             "indicatie_geheimhouding",
@@ -606,6 +625,82 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
             validated_data["voorkeurs_digitaal_adres"] = voorkeurs_digitaal_adres
 
+        if "rekeningnummer_set" in validated_data:
+            existing_rekeningnummers = instance.rekeningnummer_set.all()
+            rekeningnummers_uuids = [
+                rekeningnummer["uuid"]
+                for rekeningnummer in validated_data.pop("rekeningnummer_set")
+            ]
+
+            # unset relation of rekeningnummer that weren't given with the update
+            for rekeningnummer in existing_rekeningnummers:
+                if rekeningnummer.uuid not in rekeningnummers_uuids:
+                    rekeningnummer.partij = None
+                    rekeningnummer.save()
+
+            # create relation between rekeningnummer and partij of new entries
+            for rekeninnummers_uuid in rekeningnummers_uuids:
+                if rekeninnummers_uuid not in existing_rekeningnummers.values_list(
+                    "uuid", flat=True
+                ):
+                    rekeningnummer = Rekeningnummer.objects.get(
+                        uuid=rekeninnummers_uuid
+                    )
+                    rekeningnummer.partij = instance
+                    rekeningnummer.save()
+
+        if "voorkeurs_rekeningnummer" in validated_data:
+            if voorkeurs_rekeningnummer := validated_data.pop(
+                "voorkeurs_rekeningnummer", None
+            ):
+                voorkeurs_rekeningnummer_uuid = voorkeurs_rekeningnummer.get("uuid")
+                match (method):
+                    case "PUT":
+                        if len(rekeningnummers_uuids) == 0:
+                            raise serializers.ValidationError(
+                                {
+                                    "voorkeurs_rekeningnummer": _(
+                                        "voorkeursRekeningnummer mag niet meegegeven worden "
+                                        "als rekeningnummers leeg is."
+                                    )
+                                }
+                            )
+                        if voorkeurs_rekeningnummer_uuid not in rekeningnummers_uuids:
+                            raise serializers.ValidationError(
+                                {
+                                    "voorkeurs_rekeningnummer": _(
+                                        "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
+                                    )
+                                }
+                            )
+                    case "PATCH":
+                        if (
+                            voorkeurs_rekeningnummer_uuid
+                            not in instance.rekeningnummer_set.all().values_list(
+                                "uuid", flat=True
+                            )
+                        ):
+                            raise serializers.ValidationError(
+                                {
+                                    "voorkeurs_rekeningnummer": _(
+                                        "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
+                                    )
+                                }
+                            )
+
+                voorkeurs_rekeningnummer = Rekeningnummer.objects.get(
+                    uuid=str(voorkeurs_rekeningnummer_uuid)
+                )
+
+            validated_data["voorkeurs_rekeningnummer"] = voorkeurs_rekeningnummer
+
+        if "vertegenwoordigde" in validated_data:
+            if vertegenwoordigde := validated_data.pop("vertegenwoordigde", []):
+                partijen = [str(partij["uuid"]) for partij in vertegenwoordigde]
+                vertegenwoordigde = Partij.objects.filter(uuid__in=partijen)
+
+            instance.vertegenwoordigde.set(vertegenwoordigde)
+
         partij = super().update(instance, validated_data)
 
         if partij_identificatie:
@@ -627,6 +722,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     def create(self, validated_data):
         partij_identificatie = validated_data.pop("partij_identificatie")
         digitale_adressen = validated_data.pop("digitaaladres_set")
+        rekeningnummers = validated_data.pop("rekeningnummer_set")
 
         if voorkeurs_digitaal_adres := validated_data.pop(
             "voorkeurs_digitaal_adres", None
@@ -646,7 +742,32 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 uuid=str(voorkeurs_digitaal_adres_uuid)
             )
 
+        if voorkeurs_rekeningnummer := validated_data.pop(
+            "voorkeurs_rekeningnummer", None
+        ):
+            voorkeurs_rekeningnummer_uuid = voorkeurs_rekeningnummer.get("uuid")
+            if voorkeurs_rekeningnummer and voorkeurs_rekeningnummer_uuid not in [
+                rekeningnummer["uuid"] for rekeningnummer in rekeningnummers
+            ]:
+                raise serializers.ValidationError(
+                    {
+                        "voorkeurs_rekeningnummer": _(
+                            "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
+                        )
+                    }
+                )
+            voorkeurs_rekeningnummer = Rekeningnummer.objects.get(
+                uuid=str(voorkeurs_rekeningnummer_uuid)
+            )
+
+        if vertegenwoordigde := validated_data.pop("vertegenwoordigde", None):
+            partijen = [str(partij["uuid"]) for partij in vertegenwoordigde]
+            validated_data["vertegenwoordigde"] = Partij.objects.filter(
+                uuid__in=partijen
+            )
+
         validated_data["voorkeurs_digitaal_adres"] = voorkeurs_digitaal_adres
+        validated_data["voorkeurs_rekeningnummer"] = voorkeurs_rekeningnummer
 
         partij = super().create(validated_data)
 
@@ -670,6 +791,14 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 )
                 digitaal_adres.partij = partij
                 digitaal_adres.save()
+
+        if rekeningnummers:
+            for rekeningnummer in rekeningnummers:
+                rekeningnummer = Rekeningnummer.objects.get(
+                    uuid=str(rekeningnummer["uuid"])
+                )
+                rekeningnummer.partij = partij
+                rekeningnummer.save()
 
         return partij
 

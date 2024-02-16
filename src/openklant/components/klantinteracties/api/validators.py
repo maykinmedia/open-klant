@@ -22,6 +22,7 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     PartijIdentificator,
 )
+from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 
 
 class FKUniqueTogetherValidator(UniqueTogetherValidator):
@@ -158,3 +159,10 @@ def partij_identificator_exists(value):
         PartijIdentificator.objects.get(uuid=str(value))
     except PartijIdentificator.DoesNotExist:
         raise serializers.ValidationError(_("PartijIdentificator object bestaat niet."))
+
+
+def Rekeningnummer_exists(value):
+    try:
+        Rekeningnummer.objects.get(uuid=str(value))
+    except Rekeningnummer.DoesNotExist:
+        raise serializers.ValidationError(_("Rekeningnummer object bestaat niet."))

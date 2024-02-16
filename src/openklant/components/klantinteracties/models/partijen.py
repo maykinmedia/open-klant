@@ -29,6 +29,15 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         null=True,
         blank=True,
     )
+    voorkeurs_rekeningnummer = models.ForeignKey(
+        "klantinteracties.Rekeningnummer",
+        on_delete=models.CASCADE,
+        related_name="voorkeurs_rekeningnummer",
+        verbose_name=_("voorkeurs rekeningnummer"),
+        help_text=_("'Partij' gaf voorkeur voor 'rekeningnummer'"),
+        null=True,
+        blank=True,
+    )
     nummer = models.CharField(
         _("nummer"),
         help_text=_(
@@ -92,6 +101,14 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
             if self.voorkeurs_digitaal_adres not in self.digitaaladres_set.all():
                 raise ValidationError(
                     _("Het voorkeurs adres moet een gelinkte digitaal adres zijn.")
+                )
+
+        if self.voorkeurs_rekeningnummer:
+            if self.voorkeurs_rekeningnummer not in self.rekeningnummer_set.all():
+                raise ValidationError(
+                    _(
+                        "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
+                    )
                 )
 
     def save(self, *args, **kwargs):

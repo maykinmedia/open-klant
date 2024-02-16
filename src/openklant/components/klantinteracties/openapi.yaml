@@ -2138,6 +2138,163 @@ paths:
       responses:
         '204':
           description: No response body
+  /rekeningnummers:
+    get:
+      operationId: rekeningnummersList
+      description: Alle rekeningnummers opvragen.
+      summary: Alle rekeningnummers opvragen.
+      parameters:
+      - in: query
+        name: bic
+        schema:
+          type: string
+      - in: query
+        name: iban
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      - in: query
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - rekeningnummers
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRekeningnummerList'
+          description: ''
+    post:
+      operationId: rekeningnummersCreate
+      description: Maak een rekeningnummer aan.
+      summary: Maak een rekeningnummer aan.
+      tags:
+      - rekeningnummers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rekeningnummer'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rekeningnummer'
+          description: ''
+  /rekeningnummers/{uuid}:
+    get:
+      operationId: rekeningnummersRetrieve
+      description: Een specifiek rekeningnummer opvragen.
+      summary: Een specifiek rekeningnummer opvragen.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de interne taak.
+        required: true
+      tags:
+      - rekeningnummers
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rekeningnummer'
+          description: ''
+    put:
+      operationId: rekeningnummersUpdate
+      description: Werk een rekeningnummer in zijn geheel bij.
+      summary: Werk een rekeningnummer in zijn geheel bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de interne taak.
+        required: true
+      tags:
+      - rekeningnummers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rekeningnummer'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rekeningnummer'
+          description: ''
+    patch:
+      operationId: rekeningnummersPartialUpdate
+      description: Werk een rekeningnummer deels bij.
+      summary: Werk een rekeningnummer deels bij.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de interne taak.
+        required: true
+      tags:
+      - rekeningnummers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRekeningnummer'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rekeningnummer'
+          description: ''
+    delete:
+      operationId: rekeningnummersDestroy
+      description: Verwijder een rekeningnummer.
+      summary: Verwijder een rekeningnummer.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de interne taak.
+        required: true
+      tags:
+      - rekeningnummers
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /vertegenwoordigingen:
     get:
       operationId: vertegenwoordigingenList
@@ -3438,6 +3595,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Partij'
+    PaginatedRekeningnummerList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rekeningnummer'
     PaginatedVertegenwoordigdenList:
       type: object
       properties:
@@ -3503,8 +3680,8 @@ components:
           items:
             $ref: '#/components/schemas/DigitaalAdresForeignKey'
           nullable: true
-          description: Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig
-            contact met de gemeente.
+          description: Digitaal adresen dat een partij verstrekte voor gebruik bij
+            toekomstig contact met de gemeente.
         voorkeursDigitaalAdres:
           allOf:
           - $ref: '#/components/schemas/DigitaalAdresForeignKey'
@@ -3517,6 +3694,17 @@ components:
             $ref: '#/components/schemas/PartijForeignKey'
           readOnly: true
           description: Partijen die een andere partijen vertegenwoordigden.
+        rekeningnummers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RekeningnummerForeignKey'
+          nullable: true
+          description: Rekeningnummers van een partij
+        voorkeursRekeningnummer:
+          allOf:
+          - $ref: '#/components/schemas/RekeningnummerForeignKey'
+          nullable: true
+          description: Rekeningsnummer die een partij bij voorkeur gebruikt.
         partijIdentificatoren:
           type: array
           items:
@@ -3567,11 +3755,13 @@ components:
       - indicatieActief
       - indicatieGeheimhouding
       - partijIdentificatoren
+      - rekeningnummers
       - soortPartij
       - url
       - uuid
       - vertegenwoordigden
       - voorkeursDigitaalAdres
+      - voorkeursRekeningnummer
     PartijBezoekadres:
       type: object
       description: |-
@@ -4243,8 +4433,8 @@ components:
           items:
             $ref: '#/components/schemas/DigitaalAdresForeignKey'
           nullable: true
-          description: Digitaal adres dat een partij verstrekte voor gebruik bij toekomstig
-            contact met de gemeente.
+          description: Digitaal adresen dat een partij verstrekte voor gebruik bij
+            toekomstig contact met de gemeente.
         voorkeursDigitaalAdres:
           allOf:
           - $ref: '#/components/schemas/DigitaalAdresForeignKey'
@@ -4257,6 +4447,17 @@ components:
             $ref: '#/components/schemas/PartijForeignKey'
           readOnly: true
           description: Partijen die een andere partijen vertegenwoordigden.
+        rekeningnummers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RekeningnummerForeignKey'
+          nullable: true
+          description: Rekeningnummers van een partij
+        voorkeursRekeningnummer:
+          allOf:
+          - $ref: '#/components/schemas/RekeningnummerForeignKey'
+          nullable: true
+          description: Rekeningsnummer die een partij bij voorkeur gebruikt.
         partijIdentificatoren:
           type: array
           items:
@@ -4334,6 +4535,34 @@ components:
           nullable: true
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
+    PatchedRekeningnummer:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de interne taak.
+        partij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignKey'
+          nullable: true
+          description: Rekeningnummer van een partij
+        iban:
+          type: string
+          description: Het internationaal bankrekeningnummer, zoals dat door een bankinstelling
+            als identificator aan een overeenkomst tussen de bank en een of meer subjecten
+            wordt toegekend, op basis waarvan het SUBJECT in de regel internationaal
+            financieel communiceert.
+          pattern: ^[A-Za-z]{2}[0-9]{2}[A-Za-z0-9]{1,30}$
+          maxLength: 34
+        bic:
+          type: string
+          description: De unieke code van de bankinstelling waar het SUBJECT het bankrekeningnummer
+            heeft waarmee het subject in de regel internationaal financieel communiceert.
+          pattern: ^[\S]+$
+          maxLength: 11
+          minLength: 8
     PatchedVertegenwoordigden:
       type: object
       properties:
@@ -4355,6 +4584,53 @@ components:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
           description: '''Partij'' vertegenwoordigd wordt door een andere ''Partij''.'
+    Rekeningnummer:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de interne taak.
+        partij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignKey'
+          nullable: true
+          description: Rekeningnummer van een partij
+        iban:
+          type: string
+          description: Het internationaal bankrekeningnummer, zoals dat door een bankinstelling
+            als identificator aan een overeenkomst tussen de bank en een of meer subjecten
+            wordt toegekend, op basis waarvan het SUBJECT in de regel internationaal
+            financieel communiceert.
+          pattern: ^[A-Za-z]{2}[0-9]{2}[A-Za-z0-9]{1,30}$
+          maxLength: 34
+        bic:
+          type: string
+          description: De unieke code van de bankinstelling waar het SUBJECT het bankrekeningnummer
+            heeft waarmee het subject in de regel internationaal financieel communiceert.
+          pattern: ^[\S]+$
+          maxLength: 11
+          minLength: 8
+      required:
+      - iban
+      - partij
+      - uuid
+    RekeningnummerForeignKey:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de interne taak.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze rekeningnummer binnen deze API.
+      required:
+      - url
+      - uuid
     RolEnum:
       enum:
       - vertegenwoordiger

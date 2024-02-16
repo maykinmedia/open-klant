@@ -28,6 +28,9 @@ from openklant.components.klantinteracties.api.viewsets.partijen import (
     PartijViewSet,
     VertegenwoordigdenViewSet,
 )
+from openklant.components.klantinteracties.api.viewsets.rekeningnummers import (
+    RekeningnummerViewSet,
+)
 
 from .schema import custom_settings
 
@@ -37,6 +40,8 @@ router = routers.DefaultRouter()
 router.register("actoren", ActorViewSet)
 
 router.register("digitaleadressen", DigitaalAdresViewSet)
+
+router.register("rekeningnummers", RekeningnummerViewSet)
 
 router.register("actorklantcontacten", ActorKlantcontactViewSet)
 router.register("klantcontacten", KlantcontactViewSet)
