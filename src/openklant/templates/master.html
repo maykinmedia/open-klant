@@ -33,14 +33,14 @@
           <div class="footer__row">
             <div class="footer__item footer__logo">
               <img src="{% static 'img/logo.png' %}" alt="" height="50">
-              <small>Ontwikkeld door <a class="link" href="https://www.maykinmedia.nl">Maykin Media</a> &copy; {% now "Y" %}</small>
+              <small>Ontwikkeld door <a class="link" href="https://www.maykinmedia.nl">Maykin</a> &copy; {% now "Y" %}</small>
             </div>
             <div class="footer__item">
-              <h5>Open Zaak</h5>
+              <h5>Open Klant</h5>
               <ul class="list">
                 <li><a class="link link--muted" href="https://open-klant.readthedocs.io/en/latest/">Documentatie</a></li>
                 <li><a class="link link--muted" href="https://github.com/maykinmedia/open-klant">Code op Github</a></li>
-                <li><a class="link link--muted" href="https://vng-realisatie.github.io/gemma-zaken/">Standaard "API's voor Zaakgericht werken"</a></li>
+                <li><a class="link link--muted" href="https://vng-realisatie.github.io/klantinteracties/">Klantinteracties API standaard</a></li>
               </ul>
             </div>
             <div class="footer__item">
@@ -67,10 +67,6 @@
         </footer>
       </div>
     {% endblock footer %}
-
-    <script src="{% static 'vng_api_common/libs/jquery/jquery-3.3.1.slim.min.js' %}"></script>
-    <script src="{% static 'vng_api_common/libs/popper/popper.min.js' %}"></script>
-    <script src="{% static 'vng_api_common/libs/bootstrap/js/bootstrap.min.js' %}"></script>
 
     {% block extra_scripts %}{% endblock %}
   </body>
