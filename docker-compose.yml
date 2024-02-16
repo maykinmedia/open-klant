@@ -15,6 +15,7 @@ services:
       - db:/var/lib/postgresql/data
 
   web:
+    image: maykinmedia/open-klant:latest
     build: .
     environment: &web-env
       - DJANGO_SETTINGS_MODULE=openklant.conf.docker
@@ -37,15 +38,6 @@ services:
 
   redis:
     image: redis
-
-  celery:
-    build: .
-    environment: *web-env
-    command: /celery_worker.sh
-    depends_on:
-      - db
-      - redis
-      - web
 
 volumes:
   db:
