@@ -1749,10 +1749,10 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         }
 
@@ -1765,10 +1765,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
@@ -1777,10 +1777,10 @@ class PartijIdentificatorTests(APITestCase):
         partij_identificator = PartijIdentificatorFactory.create(
             partij=partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_objecttype="objecttype",
-            partij_identificator_soort_object_id="soortObjectId",
+            partij_identificator_code_objecttype="codeObjecttype",
+            partij_identificator_code_soort_object_id="codeSoortObjectId",
             partij_identificator_object_id="objectId",
-            partij_identificator_register="register",
+            partij_identificator_code_register="codeRegister",
         )
 
         detail_url = reverse(
@@ -1795,10 +1795,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
@@ -1806,10 +1806,10 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij2.uuid)},
             "anderePartijIdentificator": "changed",
             "partijIdentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         }
 
@@ -1822,10 +1822,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
 
@@ -1834,10 +1834,10 @@ class PartijIdentificatorTests(APITestCase):
         partij_identificator = PartijIdentificatorFactory.create(
             partij=partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_objecttype="objecttype",
-            partij_identificator_soort_object_id="soortObjectId",
+            partij_identificator_code_objecttype="codeObjecttype",
+            partij_identificator_code_soort_object_id="codeSoortObjectId",
             partij_identificator_object_id="objectId",
-            partij_identificator_register="register",
+            partij_identificator_code_register="codeRegister",
         )
 
         detail_url = reverse(
@@ -1852,10 +1852,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
@@ -1872,10 +1872,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 

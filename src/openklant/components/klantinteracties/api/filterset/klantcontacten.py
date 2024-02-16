@@ -20,37 +20,19 @@ class KlantcontactFilterSet(FilterSet):
         help_text=_("Zoek klantcontact object op basis van het betrokkene url"),
         method="filter_betrokkene_url",
     )
-    had_betrokkene__uuid = filters.CharFilter(
+    had_betrokkene__uuid = filters.UUIDFilter(
         help_text=_("Zoek klantcontact object op basis van het betrokkene uuid"),
-        method="filter_betrokkene_uuid",
-    )
-    onderwerpobject__uuid = filters.CharFilter(
-        help_text=_("Zoek klantcontact object op basis van het onderwerpobject uuid"),
-        method="filter_onderwerpobject_uuid",
+        field_name="betrokkene__uuid",
     )
     onderwerpobject__url = filters.CharFilter(
         help_text=_("Zoek klantcontact object op basis van het onderwerpobject url"),
         method="filter_onderwerpobject_url",
     )
-    onderwerpobject__objectidentificator_objecttype = filters.CharFilter(
+    was_onderwerpobject__url = filters.CharFilter(
         help_text=_(
-            "Zoek klantcontact object op basis van het onderwerpobject objecttype"
+            "Zoek was klantcontact object op basis van het onderwerpobject url"
         ),
-        method="filter_onderwerpobject_objectidentificator_objecttype",
-    )
-    onderwerpobject__objectidentificator_soort_object_id = filters.CharFilter(
-        help_text=_("Zoek klantcontact object op basis van het soort object ID"),
-        method="filter_onderwerpobject_objectidentificator_soort_object_id",
-    )
-    onderwerpobject__objectidentificator_object_id = filters.CharFilter(
-        help_text=_("Zoek klantcontact object op basis van het object ID"),
-        method="filter_onderwerpobject_objectidentificator_object_id",
-    )
-    onderwerpobject__objectidentificator_register = filters.CharFilter(
-        help_text=_(
-            "Zoek klantcontact object op basis van het onderwerpobject register"
-        ),
-        method="filter_onderwerpobject_objectidentificator_register",
+        method="filter_was_onderwerpobject_url",
     )
     inhoud = filters.CharFilter(
         lookup_expr="icontains",
@@ -75,34 +57,29 @@ class KlantcontactFilterSet(FilterSet):
             "had_betrokkene__uuid",
             "onderwerpobject__uuid",
             "onderwerpobject__url",
-            "onderwerpobject__objectidentificator_objecttype",
-            "onderwerpobject__objectidentificator_soort_object_id",
-            "onderwerpobject__objectidentificator_object_id",
-            "onderwerpobject__objectidentificator_register",
+            "onderwerpobject__onderwerpobjectidentificator_code_objecttype",
+            "onderwerpobject__onderwerpobjectidentificator_code_soort_object_id",
+            "onderwerpobject__onderwerpobjectidentificator_object_id",
+            "onderwerpobject__onderwerpobjectidentificator_code_register",
+            "was_onderwerpobject__uuid",
+            "was_onderwerpobject__url",
+            "was_onderwerpobject__onderwerpobjectidentificator_code_objecttype",
+            "was_onderwerpobject__onderwerpobjectidentificator_code_soort_object_id",
+            "was_onderwerpobject__onderwerpobjectidentificator_object_id",
+            "was_onderwerpobject__onderwerpobjectidentificator_code_register",
             "nummer",
             "kanaal",
-            "inhoud",
             "onderwerp",
+            "inhoud",
+            "indicatie_contact_gelukt",
+            "vertrouwelijk",
+            "plaatsgevonden_op",
         )
-
-    def filter_betrokkene_uuid(self, queryset, name, value):
-        try:
-            betrokkene_uuid = uuid.UUID(value)
-            return queryset.filter(betrokkene__uuid=betrokkene_uuid)
-        except ValueError:
-            return queryset.none()
 
     def filter_betrokkene_url(self, queryset, name, value):
         try:
             url_uuid = uuid.UUID(value.split("/")[-1])
             return queryset.filter(betrokkene__uuid=url_uuid)
-        except ValueError:
-            return queryset.none()
-
-    def filter_onderwerpobject_uuid(self, queryset, name, value):
-        try:
-            onderwerpobject_uuid = uuid.UUID(value)
-            return queryset.filter(onderwerpobject__uuid=onderwerpobject_uuid)
         except ValueError:
             return queryset.none()
 
@@ -113,55 +90,26 @@ class KlantcontactFilterSet(FilterSet):
         except ValueError:
             return queryset.none()
 
-    def filter_onderwerpobject_objectidentificator_objecttype(
-        self, queryset, name, value
-    ):
+    def filter_was_onderwerpobject_url(self, queryset, name, value):
         try:
-            return queryset.filter(
-                onderwerpobject__objectidentificator_objecttype=value
-            )
-        except ValueError:
-            return queryset.none()
-
-    def filter_onderwerpobject_objectidentificator_soort_object_id(
-        self, queryset, name, value
-    ):
-        try:
-            return queryset.filter(
-                onderwerpobject__objectidentificator_soort_object_id=value
-            )
-        except ValueError:
-            return queryset.none()
-
-    def filter_onderwerpobject_objectidentificator_object_id(
-        self, queryset, name, value
-    ):
-        try:
-            return queryset.filter(onderwerpobject__objectidentificator_object_id=value)
-        except ValueError:
-            return queryset.none()
-
-    def filter_onderwerpobject_objectidentificator_register(
-        self, queryset, name, value
-    ):
-        try:
-            return queryset.filter(onderwerpobject__objectidentificator_register=value)
+            url_uuid = uuid.UUID(value.split("/")[-1])
+            return queryset.filter(was_onderwerpobject__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
 
 class BetrokkeneFilterSet(FilterSet):
-    klantcontact__nummer = filters.CharFilter(
+    had_klantcontact__nummer = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact nummer"),
-        method="filter_klantcontact_nummer",
+        method="filter_had_klantcontact_nummer",
     )
-    klantcontact__url = filters.CharFilter(
+    had_klantcontact__url = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact url"),
-        method="filter_klantcontact_url",
+        method="filter_had_klantcontact_url",
     )
-    klantcontact__uuid = filters.CharFilter(
+    had_klantcontact__uuid = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact uuid"),
-        method="filter_klantcontact_uuid",
+        method="filter_had_klantcontact_uuid",
     )
     verstrektedigitaal_adres__adres = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het digitaaladres adres"),
@@ -192,32 +140,37 @@ class BetrokkeneFilterSet(FilterSet):
     class Meta:
         model = Betrokkene
         fields = (
-            "klantcontact__nummer",
-            "klantcontact__uuid",
-            "klantcontact__url",
+            "contactnaam_voorletters",
+            "contactnaam_voornaam",
+            "contactnaam_voorvoegsel_achternaam",
+            "contactnaam_achternaam",
+            "had_klantcontact__nummer",
+            "had_klantcontact__uuid",
+            "had_klantcontact__url",
             "verstrektedigitaal_adres__adres",
             "verstrektedigitaal_adres__uuid",
             "verstrektedigitaal_adres__url",
             "was_partij__nummer",
             "was_partij__url",
             "was_partij__uuid",
+            "organisatienaam",
         )
 
-    def filter_klantcontact_url(self, queryset, name, value):
+    def filter_had_klantcontact_url(self, queryset, name, value):
         try:
             url_uuid = uuid.UUID(value.split("/")[-1])
             return queryset.filter(klantcontact__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
-    def filter_klantcontact_uuid(self, queryset, name, value):
+    def filter_had_klantcontact_uuid(self, queryset, name, value):
         try:
             klantcontact_uuid = uuid.UUID(value)
             return queryset.filter(klantcontact__uuid=klantcontact_uuid)
         except ValueError:
             return queryset.none()
 
-    def filter_klantcontact_nummer(self, queryset, name, value):
+    def filter_had_klantcontact_nummer(self, queryset, name, value):
         try:
             return queryset.filter(klantcontact__nummer=value)
         except ValueError:

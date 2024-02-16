@@ -12,6 +12,7 @@ from ..models.partijen import (
     Contactpersoon,
     Organisatie,
     Partij,
+    PartijIdentificator,
     Persoon,
     Vertegenwoordigden,
 )
@@ -27,6 +28,12 @@ class CategorieRelatieInlineAdmin(admin.StackedInline):
         "begin_datum",
         "eind_datum",
     )
+    extra = 0
+
+
+class PartijIdentificatorInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
+    model = PartijIdentificator
     extra = 0
 
 
@@ -94,6 +101,7 @@ class PartijAdmin(admin.ModelAdmin):
         RekeningnummerInlineAdmin,
         BetrokkeneInlineAdmin,
         VertegenwoordigdenInlineAdmin,
+        PartijIdentificatorInlineAdmin,
     )
     search_fields = ("partij",)
     autocomplete_fields = ("voorkeurs_digitaal_adres",)

@@ -39,10 +39,10 @@ class KlantContactTests(APITestCase):
             naam="Phil",
             soort_actor="medewerker",
             indicatie_actief=True,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            actoridentificator_code_objecttype="codeObjecttype",
+            actoridentificator_code_soort_object_id="codeSoortObjectId",
+            actoridentificator_object_id="objectId",
+            actoridentificator_code_register="codeRegister",
         )
         MedewerkerFactory.create(
             actor=actor,
@@ -72,11 +72,11 @@ class KlantContactTests(APITestCase):
                         "naam": "Phil",
                         "soortActor": "medewerker",
                         "indicatieActief": True,
-                        "objectidentificator": {
-                            "objecttype": "objecttype",
-                            "soortObjectId": "soortObjectId",
+                        "actoridentificator": {
+                            "codeObjecttype": "codeObjecttype",
+                            "codeSoortObjectId": "codeSoortObjectId",
                             "objectId": "objectId",
-                            "register": "register",
+                            "codeRegister": "codeRegister",
                         },
                         "actorIdentificatie": {
                             "functie": "functie",
@@ -813,11 +813,11 @@ class BijlageTests(APITestCase):
         list_url = reverse("klantinteracties:bijlage-list")
         data = {
             "wasBijlageVanKlantcontact": None,
-            "objectidentificator": {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+            "bijlageidentificator": {
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         }
 
@@ -829,12 +829,12 @@ class BijlageTests(APITestCase):
 
         self.assertEqual(data["wasBijlageVanKlantcontact"], None)
         self.assertEqual(
-            data["objectidentificator"],
+            data["bijlageidentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
@@ -842,11 +842,11 @@ class BijlageTests(APITestCase):
             klantcontact = KlantcontactFactory.create()
             data = {
                 "wasBijlageVanKlantcontact": {"uuid": str(klantcontact.uuid)},
-                "objectidentificator": {
-                    "objecttype": "objecttype",
-                    "soortObjectId": "soortObjectId",
+                "bijlageidentificator": {
+                    "codeObjecttype": "codeObjecttype",
+                    "codeSoortObjectId": "codeSoortObjectId",
                     "objectId": "objectId",
-                    "register": "register",
+                    "codeRegister": "codeRegister",
                 },
             }
             response = self.client.post(list_url, data)
@@ -859,12 +859,12 @@ class BijlageTests(APITestCase):
                 data["wasBijlageVanKlantcontact"]["uuid"], str(klantcontact.uuid)
             )
             self.assertEqual(
-                data["objectidentificator"],
+                data["bijlageidentificator"],
                 {
-                    "objecttype": "objecttype",
-                    "soortObjectId": "soortObjectId",
+                    "codeObjecttype": "codeObjecttype",
+                    "codeSoortObjectId": "codeSoortObjectId",
                     "objectId": "objectId",
-                    "register": "register",
+                    "codeRegister": "codeRegister",
                 },
             )
 
@@ -872,10 +872,10 @@ class BijlageTests(APITestCase):
         klantcontact, klantcontact2 = KlantcontactFactory.create_batch(2)
         bijlage = BijlageFactory.create(
             klantcontact=klantcontact,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            bijlageidentificator_code_objecttype="codeObjecttype",
+            bijlageidentificator_code_soort_object_id="codeSoortObjectId",
+            bijlageidentificator_object_id="objectId",
+            bijlageidentificator_code_register="codeRegister",
         )
         detail_url = reverse(
             "klantinteracties:bijlage-detail", kwargs={"uuid": str(bijlage.uuid)}
@@ -887,22 +887,22 @@ class BijlageTests(APITestCase):
             data["wasBijlageVanKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
         self.assertEqual(
-            data["objectidentificator"],
+            data["bijlageidentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
         data = {
             "wasBijlageVanKlantcontact": {"uuid": str(klantcontact2.uuid)},
-            "objectidentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+            "bijlageidentificator": {
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         }
 
@@ -916,23 +916,23 @@ class BijlageTests(APITestCase):
             data["wasBijlageVanKlantcontact"]["uuid"], str(klantcontact2.uuid)
         )
         self.assertEqual(
-            data["objectidentificator"],
+            data["bijlageidentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
 
         with self.subTest("unset_klantcontact"):
             data = {
                 "wasBijlageVanKlantcontact": None,
-                "objectidentificator": {
-                    "objecttype": "changed",
-                    "soortObjectId": "changed",
+                "bijlageidentificator": {
+                    "codeObjecttype": "changed",
+                    "codeSoortObjectId": "changed",
                     "objectId": "changed",
-                    "register": "changed",
+                    "codeRegister": "changed",
                 },
             }
 
@@ -944,12 +944,12 @@ class BijlageTests(APITestCase):
 
             self.assertIsNone(data["wasBijlageVanKlantcontact"])
             self.assertEqual(
-                data["objectidentificator"],
+                data["bijlageidentificator"],
                 {
-                    "objecttype": "changed",
-                    "soortObjectId": "changed",
+                    "codeObjecttype": "changed",
+                    "codeSoortObjectId": "changed",
                     "objectId": "changed",
-                    "register": "changed",
+                    "codeRegister": "changed",
                 },
             )
 
@@ -957,10 +957,10 @@ class BijlageTests(APITestCase):
         klantcontact = KlantcontactFactory.create()
         bijlage = BijlageFactory.create(
             klantcontact=klantcontact,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            bijlageidentificator_code_objecttype="codeObjecttype",
+            bijlageidentificator_code_soort_object_id="codeSoortObjectId",
+            bijlageidentificator_object_id="objectId",
+            bijlageidentificator_code_register="codeRegister",
         )
         detail_url = reverse(
             "klantinteracties:bijlage-detail", kwargs={"uuid": str(bijlage.uuid)}
@@ -972,21 +972,21 @@ class BijlageTests(APITestCase):
             data["wasBijlageVanKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
         self.assertEqual(
-            data["objectidentificator"],
+            data["bijlageidentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
         data = {
-            "objectidentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+            "bijlageidentificator": {
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         }
 
@@ -1000,12 +1000,12 @@ class BijlageTests(APITestCase):
             data["wasBijlageVanKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
         self.assertEqual(
-            data["objectidentificator"],
+            data["bijlageidentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
 
@@ -1051,11 +1051,11 @@ class OnderwerpobjectTests(APITestCase):
         data = {
             "klantcontact": None,
             "wasKlantcontact": None,
-            "objectidentificator": {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+            "onderwerpobjectidentificator": {
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         }
 
@@ -1068,12 +1068,12 @@ class OnderwerpobjectTests(APITestCase):
         self.assertEqual(data["klantcontact"], None)
         self.assertEqual(data["wasKlantcontact"], None)
         self.assertEqual(
-            data["objectidentificator"],
+            data["onderwerpobjectidentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
@@ -1082,11 +1082,11 @@ class OnderwerpobjectTests(APITestCase):
             data = {
                 "klantcontact": {"uuid": str(klantcontact2.uuid)},
                 "wasKlantcontact": None,
-                "objectidentificator": {
-                    "objecttype": "objecttype",
-                    "soortObjectId": "soortObjectId",
+                "onderwerpobjectidentificator": {
+                    "codeObjecttype": "codeObjecttype",
+                    "codeSoortObjectId": "codeSoortObjectId",
                     "objectId": "objectId",
-                    "register": "register",
+                    "codeRegister": "codeRegister",
                 },
             }
             response = self.client.post(list_url, data)
@@ -1098,12 +1098,12 @@ class OnderwerpobjectTests(APITestCase):
             self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact2.uuid))
             self.assertIsNone(data["wasKlantcontact"])
             self.assertEqual(
-                data["objectidentificator"],
+                data["onderwerpobjectidentificator"],
                 {
-                    "objecttype": "objecttype",
-                    "soortObjectId": "soortObjectId",
+                    "codeObjecttype": "codeObjecttype",
+                    "codeSoortObjectId": "codeSoortObjectId",
                     "objectId": "objectId",
-                    "register": "register",
+                    "codeRegister": "codeRegister",
                 },
             )
 
@@ -1112,11 +1112,11 @@ class OnderwerpobjectTests(APITestCase):
             data = {
                 "klantcontact": None,
                 "wasKlantcontact": {"uuid": str(klantcontact3.uuid)},
-                "objectidentificator": {
-                    "objecttype": "objecttype",
-                    "soortObjectId": "soortObjectId",
+                "onderwerpobjectidentificator": {
+                    "codeObjecttype": "codeObjecttype",
+                    "codeSoortObjectId": "codeSoortObjectId",
                     "objectId": "objectId",
-                    "register": "register",
+                    "codeRegister": "codeRegister",
                 },
             }
             response = self.client.post(list_url, data)
@@ -1128,12 +1128,12 @@ class OnderwerpobjectTests(APITestCase):
             self.assertIsNone(data["klantcontact"])
             self.assertEqual(data["wasKlantcontact"]["uuid"], str(klantcontact3.uuid))
             self.assertEqual(
-                data["objectidentificator"],
+                data["onderwerpobjectidentificator"],
                 {
-                    "objecttype": "objecttype",
-                    "soortObjectId": "soortObjectId",
+                    "codeObjecttype": "codeObjecttype",
+                    "codeSoortObjectId": "codeSoortObjectId",
                     "objectId": "objectId",
-                    "register": "register",
+                    "codeRegister": "codeRegister",
                 },
             )
 
@@ -1147,10 +1147,10 @@ class OnderwerpobjectTests(APITestCase):
         onderwerpobject = OnderwerpobjectFactory.create(
             klantcontact=klantcontact,
             was_klantcontact=klantcontact3,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            onderwerpobjectidentificator_code_objecttype="codeObjecttype",
+            onderwerpobjectidentificator_code_soort_object_id="codeSoortObjectId",
+            onderwerpobjectidentificator_object_id="objectId",
+            onderwerpobjectidentificator_code_register="codeRegister",
         )
         detail_url = reverse(
             "klantinteracties:onderwerpobject-detail",
@@ -1162,23 +1162,23 @@ class OnderwerpobjectTests(APITestCase):
         self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact.uuid))
         self.assertEqual(data["wasKlantcontact"]["uuid"], str(klantcontact3.uuid))
         self.assertEqual(
-            data["objectidentificator"],
+            data["onderwerpobjectidentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
         data = {
             "klantcontact": {"uuid": str(klantcontact2.uuid)},
             "wasKlantcontact": {"uuid": str(klantcontact4.uuid)},
-            "objectidentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+            "onderwerpobjectidentificator": {
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         }
 
@@ -1191,12 +1191,12 @@ class OnderwerpobjectTests(APITestCase):
         self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact2.uuid))
         self.assertEqual(data["wasKlantcontact"]["uuid"], str(klantcontact4.uuid))
         self.assertEqual(
-            data["objectidentificator"],
+            data["onderwerpobjectidentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
 
@@ -1204,11 +1204,11 @@ class OnderwerpobjectTests(APITestCase):
             data = {
                 "klantcontact": None,
                 "wasKlantcontact": None,
-                "objectidentificator": {
-                    "objecttype": "changed",
-                    "soortObjectId": "changed",
+                "onderwerpobjectidentificator": {
+                    "codeObjecttype": "changed",
+                    "codeSoortObjectId": "changed",
                     "objectId": "changed",
-                    "register": "changed",
+                    "codeRegister": "changed",
                 },
             }
 
@@ -1221,12 +1221,12 @@ class OnderwerpobjectTests(APITestCase):
             self.assertIsNone(data["klantcontact"])
             self.assertIsNone(data["wasKlantcontact"])
             self.assertEqual(
-                data["objectidentificator"],
+                data["onderwerpobjectidentificator"],
                 {
-                    "objecttype": "changed",
-                    "soortObjectId": "changed",
+                    "codeObjecttype": "changed",
+                    "codeSoortObjectId": "changed",
                     "objectId": "changed",
-                    "register": "changed",
+                    "codeRegister": "changed",
                 },
             )
 
@@ -1235,10 +1235,10 @@ class OnderwerpobjectTests(APITestCase):
         onderwerpobject = OnderwerpobjectFactory.create(
             klantcontact=klantcontact,
             was_klantcontact=klantcontact2,
-            objectidentificator_objecttype="objecttype",
-            objectidentificator_soort_object_id="soortObjectId",
-            objectidentificator_object_id="objectId",
-            objectidentificator_register="register",
+            onderwerpobjectidentificator_code_objecttype="codeObjecttype",
+            onderwerpobjectidentificator_code_soort_object_id="codeSoortObjectId",
+            onderwerpobjectidentificator_object_id="objectId",
+            onderwerpobjectidentificator_code_register="codeRegister",
         )
         detail_url = reverse(
             "klantinteracties:onderwerpobject-detail",
@@ -1250,21 +1250,21 @@ class OnderwerpobjectTests(APITestCase):
         self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact.uuid))
         self.assertEqual(data["wasKlantcontact"]["uuid"], str(klantcontact2.uuid))
         self.assertEqual(
-            data["objectidentificator"],
+            data["onderwerpobjectidentificator"],
             {
-                "objecttype": "objecttype",
-                "soortObjectId": "soortObjectId",
+                "codeObjecttype": "codeObjecttype",
+                "codeSoortObjectId": "codeSoortObjectId",
                 "objectId": "objectId",
-                "register": "register",
+                "codeRegister": "codeRegister",
             },
         )
 
         data = {
-            "objectidentificator": {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+            "onderwerpobjectidentificator": {
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         }
 
@@ -1277,12 +1277,12 @@ class OnderwerpobjectTests(APITestCase):
         self.assertEqual(data["klantcontact"]["uuid"], str(klantcontact.uuid))
         self.assertEqual(data["wasKlantcontact"]["uuid"], str(klantcontact2.uuid))
         self.assertEqual(
-            data["objectidentificator"],
+            data["onderwerpobjectidentificator"],
             {
-                "objecttype": "changed",
-                "soortObjectId": "changed",
+                "codeObjecttype": "changed",
+                "codeSoortObjectId": "changed",
                 "objectId": "changed",
-                "register": "changed",
+                "codeRegister": "changed",
             },
         )
 

@@ -1,6 +1,7 @@
 """
 Test the JSON output/formatting principles.
 """
+
 import json
 
 from rest_framework import status

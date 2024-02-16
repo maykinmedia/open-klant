@@ -3,13 +3,14 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from vng_api_common.descriptors import GegevensGroepType
+
 from openklant.utils.validators import validate_phone_number
 
 from .constants import SoortActor
-from .mixins import ObjectidentificatorMixin
 
 
-class Actor(ObjectidentificatorMixin):
+class Actor(models.Model):
     uuid = models.UUIDField(
         unique=True,
         default=uuid.uuid4,
@@ -33,6 +34,55 @@ class Actor(ObjectidentificatorMixin):
             "Voor niet-actieve is dit niet toegestaan."
         ),
         default=True,
+    )
+
+    actoridentificator_object_id = models.CharField(
+        _("object ID"),
+        help_text=_(
+            "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    actoridentificator_code_objecttype = models.CharField(
+        _("code objecttype"),
+        help_text=_(
+            "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    actoridentificator_code_register = models.CharField(
+        _("code register"),
+        help_text=_(
+            "Binnen het landschap van registers unieke omschrijving van het register waarin "
+            "het object is geregistreerd, bijvoorbeeld: 'BRP'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+    actoridentificator_code_soort_object_id = models.CharField(
+        _("code soort object ID"),
+        help_text=_(
+            "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
+        ),
+        max_length=200,
+        blank=True,
+    )
+
+    actoridentificator = GegevensGroepType(
+        {
+            "object_id": actoridentificator_object_id,
+            "code_objecttype": actoridentificator_code_objecttype,
+            "code_register": actoridentificator_code_register,
+            "code_soort_object_id": actoridentificator_code_soort_object_id,
+        },
+        optional=(
+            "object_id",
+            "code_objecttype",
+            "code_register",
+            "code_soort_object_id",
+        ),
     )
 
     class Meta:

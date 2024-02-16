@@ -17,7 +17,8 @@ class ActorenFilterSet(FilterSet):
             "naam",
             "soort_actor",
             "indicatie_actief",
-            "objectidentificator_objecttype",
-            "objectidentificator_soort_object_id",
-            "objectidentificator_object_id",
+            "actoridentificator_object_id",
+            "actoridentificator_code_objecttype",
+            "actoridentificator_code_register",
+            "actoridentificator_code_soort_object_id",
         )

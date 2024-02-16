@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
@@ -232,5 +233,13 @@ class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     serializer_class = PartijIdentificatorSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [
+        "andere_partij_identificator",
+        "partij_identificator_code_objecttype",
+        "partij_identificator_code_soort_object_id",
+        "partij_identificator_object_id",
+        "partij_identificator_code_register",
+    ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)

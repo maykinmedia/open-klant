@@ -65,21 +65,21 @@ class MedewerkerSerializer(serializers.ModelSerializer):
         )
 
 
-class ObjectidentificatorSerializer(GegevensGroepSerializer):
+class ActoridentificatorSerializer(GegevensGroepSerializer):
     class Meta:
         model = Actor
-        gegevensgroep = "objectidentificator"
+        gegevensgroep = "actoridentificator"
 
 
 class ActorSerializer(
     NestedGegevensGroepMixin,
     PolymorphicSerializer,
 ):
-    objectidentificator = ObjectidentificatorSerializer(
+    actoridentificator = ActoridentificatorSerializer(
         required=False,
         allow_null=True,
         help_text=_(
-            "Gegevens die een onderwerpobject in een extern register uniek identificeren."
+            "Gegevens die een actorwerpobject in een extern register uniek identificeren."
         ),
     )
     discriminator = Discriminator(
@@ -101,7 +101,7 @@ class ActorSerializer(
             "naam",
             "soort_actor",
             "indicatie_actief",
-            "objectidentificator",
+            "actoridentificator",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
