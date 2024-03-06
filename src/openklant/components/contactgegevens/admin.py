@@ -6,25 +6,20 @@ from openklant.components.contactgegevens.models import Organisatie, Persoon
 
 @admin.register(Persoon)
 class PersoonAdmin(admin.ModelAdmin):
+    readonly_fields = ("uuid",)
     fieldsets = [
         (
             None,
             {
                 "fields": [
-                    "contactgegevens",
-                    "geboortedatum",
-                    "overlijdensdatum",
-                ]
-            },
-        ),
-        (
-            _("Persoon gegevens"),
-            {
-                "fields": [
+                    "uuid",
                     "geslacht",
                     "voornamen",
                     "voorvoegsel",
                     "geslachtsnaam",
+                    "geboortedatum",
+                    "overlijdensdatum",
+                    "land",
                 ]
             },
         ),
@@ -36,14 +31,6 @@ class PersoonAdmin(admin.ModelAdmin):
                     "adres_adresregel2",
                     "adres_adresregel3",
                     "adres_land",
-                ]
-            },
-        ),
-        (
-            _("Land gegevens"),
-            {
-                "fields": [
-                    "land_code",
                 ]
             },
         ),
@@ -53,15 +40,17 @@ class PersoonAdmin(admin.ModelAdmin):
 
 @admin.register(Organisatie)
 class OrganisatieAdmin(admin.ModelAdmin):
+    readonly_fields = ("uuid",)
     fieldsets = [
         (
             None,
             {
                 "fields": [
-                    "contactgegevens",
+                    "uuid",
                     "handelsnaam",
                     "oprichtingsdatum",
                     "opheffingsdatum",
+                    "land",
                 ]
             },
         ),
@@ -73,14 +62,6 @@ class OrganisatieAdmin(admin.ModelAdmin):
                     "adres_adresregel2",
                     "adres_adresregel3",
                     "adres_land",
-                ]
-            },
-        ),
-        (
-            _("Land gegevens"),
-            {
-                "fields": [
-                    "land_code",
                 ]
             },
         ),
