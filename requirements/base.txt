@@ -58,19 +58,19 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==1.12.1
+commonground-api-common==1.13.0
     # via -r requirements/base.in
 coreapi==2.3.3
     # via commonground-api-common
 coreschema==0.0.4
     # via coreapi
-cryptography==42.0.2
+cryptography==42.0.5
     # via
     #   django-simple-certmanager
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
-django==3.2.24
+django==4.2.11
     # via
     #   -r requirements/base.in
     #   commonground-api-common
@@ -102,11 +102,11 @@ django==3.2.24
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
-django-admin-index==3.1.0
+django-admin-index==3.1.1
     # via -r requirements/base.in
 django-appconf==1.0.6
     # via django-log-outgoing-requests
-django-axes==6.3.0
+django-axes[ipware]==6.4.0
     # via -r requirements/base.in
 django-cors-headers==4.3.1
     # via -r requirements/base.in
@@ -116,17 +116,19 @@ django-extra-views==0.14.0
     # via -r requirements/base.in
 django-filter==23.5
     # via commonground-api-common
-django-jsonform==2.21.5
+django-ipware==6.0.4
+    # via django-axes
+django-jsonform==2.22.0
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
-django-log-outgoing-requests==0.6.0
+django-log-outgoing-requests==0.6.1
     # via -r requirements/base.in
 django-markup==1.8.1
     # via -r requirements/base.in
 django-ordered-model==3.7.4
     # via django-admin-index
-django-privates==2.0.0.post0
+django-privates==2.0.0.post1
     # via django-simple-certmanager
 django-redis==5.4.0
     # via -r requirements/base.in
@@ -134,9 +136,9 @@ django-relativedelta==2.0.0
     # via zgw-consumers
 django-rest-framework-condition==0.1.1
     # via commonground-api-common
-django-rosetta==0.9.9
+django-rosetta==0.10.0
     # via -r requirements/base.in
-django-sendfile2==0.7.0
+django-sendfile2==0.7.1
     # via django-privates
 django-simple-certmanager==1.4.1
     # via zgw-consumers
@@ -149,7 +151,7 @@ django-solo==2.2.0
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
-djangorestframework==3.12.4
+djangorestframework==3.14.0
     # via
     #   -r requirements/base.in
     #   commonground-api-common
@@ -165,7 +167,7 @@ djangorestframework-camel-case==1.4.2
     #   notifications-api-common
 djangorestframework-inclusions==1.2.0
     # via -r requirements/base.in
-drf-nested-routers==0.93.4
+drf-nested-routers==0.93.5
     # via commonground-api-common
 drf-spectacular==0.27.1
     # via -r requirements/base.in
@@ -179,7 +181,7 @@ exceptiongroup==1.2.0
     # via cattrs
 face==20.1.1
     # via glom
-faker==23.1.0
+faker==24.0.0
     # via zgw-consumers
 flower==2.0.1
     # via -r requirements/base.in
@@ -237,7 +239,7 @@ platformdirs==4.2.0
     # via requests-cache
 polib==1.2.0
     # via django-rosetta
-prometheus-client==0.19.0
+prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.43
     # via click-repl
@@ -254,7 +256,7 @@ pyopenssl==24.0.0
     #   django-simple-certmanager
     #   josepy
     #   zgw-consumers
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
     # via
     #   -r requirements/base.in
     #   django-relativedelta
@@ -263,20 +265,21 @@ python-decouple==3.8
     # via -r requirements/base.in
 python-dotenv==1.0.1
     # via -r requirements/base.in
+python-ipware==2.0.2
+    # via django-ipware
 pytz==2024.1
     # via
     #   celery
-    #   django
+    #   djangorestframework
     #   drf-yasg
     #   flower
 pyyaml==6.0.1
     # via
-    #   commonground-api-common
     #   drf-spectacular
     #   drf-yasg
     #   gemma-zds-client
     #   oyaml
-redis==5.0.1
+redis==5.0.2
     # via django-redis
 referencing==0.33.0
     # via
@@ -294,17 +297,17 @@ requests==2.31.0
     #   requests-cache
     #   requests-mock
     #   zgw-consumers
-requests-cache==1.1.1
+requests-cache==1.2.0
     # via -r requirements/base.in
 requests-mock==1.11.0
     # via zgw-consumers
-rpds-py==0.17.1
+rpds-py==0.18.0
     # via
     #   jsonschema
     #   referencing
 self-certifi==1.0.0
     # via -r requirements/base.in
-sentry-sdk==1.40.3
+sentry-sdk==1.40.6
     # via -r requirements/base.in
 six==1.16.0
     # via
@@ -318,7 +321,7 @@ sqlparse==0.4.4
     # via django
 tornado==6.4
     # via flower
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via
     #   asgiref
     #   cattrs
@@ -329,7 +332,7 @@ uritemplate==4.1.1
     #   drf-yasg
 url-normalize==1.4.3
     # via requests-cache
-urllib3==2.2.0
+urllib3==2.2.1
     # via
     #   elastic-apm
     #   requests
@@ -352,6 +355,3 @@ zgw-consumers==0.27.0
     # via
     #   -r requirements/base.in
     #   notifications-api-common
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools

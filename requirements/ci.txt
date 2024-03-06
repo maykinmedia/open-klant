@@ -17,7 +17,7 @@ asgiref==3.7.2
     #   -r requirements/base.txt
     #   django
     #   django-cors-headers
-astroid==3.0.3
+astroid==3.1.0
     # via pylint
 async-timeout==4.0.3
     # via
@@ -42,7 +42,7 @@ billiard==3.6.4.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
-black==24.1.1
+black==24.2.0
     # via -r requirements/test-tools.in
 bleach==6.1.0
     # via
@@ -108,7 +108,7 @@ click-repl==0.3.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
-commonground-api-common==1.12.1
+commonground-api-common==1.13.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -126,7 +126,7 @@ coreschema==0.0.4
     #   coreapi
 coverage==4.5.4
     # via -r requirements/test-tools.in
-cryptography==42.0.2
+cryptography==42.0.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -136,7 +136,7 @@ cryptography==42.0.2
     #   pyopenssl
 dill==0.3.8
     # via pylint
-django==3.2.24
+django==4.2.11
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -170,7 +170,7 @@ django==3.2.24
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
-django-admin-index==3.1.0
+django-admin-index==3.1.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -179,10 +179,11 @@ django-appconf==1.0.6
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-log-outgoing-requests
-django-axes==6.3.0
+django-axes[ipware]==6.4.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   django-axes
 django-cors-headers==4.3.1
     # via
     #   -c requirements/base.txt
@@ -200,14 +201,19 @@ django-filter==23.5
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
+django-ipware==6.0.4
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-axes
 django-jenkins==0.110.0
     # via -r requirements/test-tools.in
-django-jsonform==2.21.5
+django-jsonform==2.22.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
-django-log-outgoing-requests==0.6.0
+django-log-outgoing-requests==0.6.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -220,7 +226,7 @@ django-ordered-model==3.7.4
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-admin-index
-django-privates==2.0.0.post0
+django-privates==2.0.0.post1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -239,11 +245,11 @@ django-rest-framework-condition==0.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-django-rosetta==0.9.9
+django-rosetta==0.10.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-django-sendfile2==0.7.0
+django-sendfile2==0.7.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -268,7 +274,7 @@ django-solo==2.2.0
     #   zgw-consumers
 django-webtest==1.9.11
     # via -r requirements/test-tools.in
-djangorestframework==3.12.4
+djangorestframework==3.14.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -294,7 +300,7 @@ docutils==0.20.1
     #   sphinx
     #   sphinx-rtd-theme
     #   sphinx-tabs
-drf-nested-routers==0.93.4
+drf-nested-routers==0.93.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -329,7 +335,7 @@ face==20.1.1
     #   glom
 factory-boy==3.3.0
     # via -r requirements/test-tools.in
-faker==23.1.0
+faker==24.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -480,7 +486,7 @@ polib==1.2.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-rosetta
-prometheus-client==0.19.0
+prometheus-client==0.20.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -513,7 +519,7 @@ pyjwt==2.8.0
     #   -r requirements/base.txt
     #   commonground-api-common
     #   gemma-zds-client
-pylint==3.0.3
+pylint==3.1.0
     # via -r requirements/test-tools.in
 pyopenssl==24.0.0
     # via
@@ -522,7 +528,7 @@ pyopenssl==24.0.0
     #   django-simple-certmanager
     #   josepy
     #   zgw-consumers
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -537,26 +543,30 @@ python-dotenv==1.0.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+python-ipware==2.0.2
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-ipware
 pytz==2024.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
-    #   django
+    #   djangorestframework
     #   drf-yasg
     #   flower
 pyyaml==6.0.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   commonground-api-common
     #   drf-spectacular
     #   drf-yasg
     #   gemma-zds-client
     #   oyaml
 recommonmark==0.7.1
     # via -r requirements/docs.in
-redis==5.0.1
+redis==5.0.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -581,7 +591,7 @@ requests==2.31.0
     #   requests-mock
     #   sphinx
     #   zgw-consumers
-requests-cache==1.1.1
+requests-cache==1.2.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -591,7 +601,7 @@ requests-mock==1.11.0
     #   -r requirements/base.txt
     #   -r requirements/test-tools.in
     #   zgw-consumers
-rpds-py==0.17.1
+rpds-py==0.18.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -601,7 +611,7 @@ self-certifi==1.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-sentry-sdk==1.40.3
+sentry-sdk==1.40.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -657,14 +667,14 @@ tomli==2.0.1
     # via
     #   black
     #   pylint
-tomlkit==0.12.3
+tomlkit==0.12.4
     # via pylint
 tornado==6.4
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   flower
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -684,7 +694,7 @@ url-normalize==1.4.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   requests-cache
-urllib3==2.2.0
+urllib3==2.2.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -731,6 +741,3 @@ zgw-consumers==0.27.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   notifications-api-common
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools

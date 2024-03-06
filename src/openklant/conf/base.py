@@ -1,4 +1,3 @@
-import datetime
 import os
 
 from django.urls import reverse_lazy
@@ -407,23 +406,19 @@ ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 # DJANGO-AXES
 #
 AXES_CACHE = "axes"  # refers to CACHES setting
-AXES_FAILURE_LIMIT = 5  # Default: 3
+AXES_FAILURE_LIMIT = 10
 AXES_LOCK_OUT_AT_FAILURE = True  # Default: True
-AXES_USE_USER_AGENT = False  # Default: False
-AXES_COOLOFF_TIME = datetime.timedelta(minutes=5)
+AXES_COOLOFF_TIME = 1
 # after testing, the REMOTE_ADDR does not appear to be included with nginx (so single
 # reverse proxy) and the ipware detection didn't properly work. On K8s you typically have
 # ingress (load balancer) and then an additional nginx container for private file serving,
 # bringing the total of reverse proxies to 2 - meaning HTTP_X_FORWARDED_FOR basically
 # looks like ``$realIp,$ingressIp``. -> to get to $realIp, there is only 1 extra reverse
 # proxy included.
-AXES_PROXY_COUNT = NUM_PROXIES - 1 if NUM_PROXIES else None
-AXES_ONLY_USER_FAILURES = (
-    False  # Default: False (you might want to block on username rather than IP)
-)
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = (
-    False  # Default: False (you might want to block on username and IP)
-)
+AXES_IPWARE_PROXY_COUNT = NUM_PROXIES - 1 if NUM_PROXIES else None
+AXES_LOCKOUT_TEMPLATE = "account_blocked.html"
+AXES_LOCKOUT_PARAMETERS = [["ip_address", "user_agent", "username"]]
+
 # The default meta precedence order
 IPWARE_META_PRECEDENCE_ORDER = (
     "HTTP_X_FORWARDED_FOR",
