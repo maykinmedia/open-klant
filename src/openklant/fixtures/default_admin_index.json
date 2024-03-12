@@ -81,10 +81,6 @@
             [
                 "zgw_consumers",
                 "nlxconfig"
-            ],
-            [
-                "zgw_consumers",
-                "service"
             ]
         ]
     }
@@ -109,12 +105,26 @@
                 "group"
             ],
             [
-                "token",
-                "tokenauth"
-            ],
-            [
                 "mozilla_django_oidc_db",
                 "openidconnectconfig"
+            ]
+        ]
+    }
+},
+{
+    "model": "admin_index.appgroup",
+    "fields": {
+        "order": 2,
+        "translations": {
+            "en": "API auth",
+            "nl": "API auth"
+        },
+        "name": "API auth",
+        "slug": "api-auth",
+        "models": [
+            [
+                "token",
+                "tokenauth"
             ]
         ]
     }

@@ -399,6 +399,10 @@ gemma-zds-client==1.0.1
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
+gitdb==4.0.11
+    # via gitpython
+gitpython==3.1.42
+    # via -r requirements/dev.in
 glom==23.5.0
     # via
     #   -c requirements/ci.txt
@@ -700,6 +704,8 @@ six==1.16.0
     #   python-dateutil
     #   requests-mock
     #   url-normalize
+smmap==5.0.1
+    # via gitdb
 snowballstemmer==2.2.0
     # via
     #   -c requirements/ci.txt
