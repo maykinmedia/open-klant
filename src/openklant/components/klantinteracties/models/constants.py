@@ -3,8 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Taakstatus(TextChoices):
-    te_verwerken = "te_verwerken", _("Het verzoek is afgehandeld.")
-    verwerkt = "verwerkt", _("Het verzoek ID buiten behandeling gesteld.")
+    te_verwerken = "te_verwerken", _("Te verwerken.")
+    verwerkt = "verwerkt", _("Verwerkt")
 
 
 class SoortBezoekadres(TextChoices):
