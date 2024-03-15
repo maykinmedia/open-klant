@@ -74,7 +74,7 @@ Quickstart
 
       $ wget https://raw.githubusercontent.com/maykinmedia/open-klant/master/docker-compose.yml
       $ docker-compose up -d --no-build
-      $ # TODO: docker-compose exec web src/manage.py loaddata demodata
+      $ docker-compose exec web src/manage.py loaddata klantinteracties contactgegevens
       $ docker-compose exec web src/manage.py createsuperuser
 
 2. In de browser, navigeer naar ``http://localhost:8000/`` om de beheerinterface

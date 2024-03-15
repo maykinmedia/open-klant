@@ -54,4 +54,4 @@ class DigitaalAdres(APIMixin, models.Model):
         verbose_name = _("digitaal adres")
 
     def __str__(self):
-        return self.adres
+        return f"{self.betrokkene} - {self.adres}"

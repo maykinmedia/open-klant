@@ -121,7 +121,7 @@ class ActorKlantcontact(models.Model):
         )
 
     def __str__(self):
-        return f"{self.actor.naam} - {self.klantcontact.nummer}"
+        return f"{self.actor} - {self.klantcontact}"
 
 
 class GeautomatiseerdeActor(models.Model):
@@ -150,7 +150,7 @@ class GeautomatiseerdeActor(models.Model):
         verbose_name_plural = _("geautomatiseerde actoren")
 
     def __str__(self):
-        return self.functie
+        return f"{self.actor} - {self.functie}"
 
 
 class Medewerker(models.Model):
@@ -188,7 +188,7 @@ class Medewerker(models.Model):
         verbose_name_plural = _("mederwerkers")
 
     def __str__(self):
-        return self.functie
+        return f"{self.actor} - {self.functie}"
 
 
 class OrganisatorischeEenheid(models.Model):
@@ -217,6 +217,7 @@ class OrganisatorischeEenheid(models.Model):
             "Faxnummer waaronder de organisatorische eenheid in de regel bereikbaar is."
         ),
         max_length=20,
+        blank=True,
     )
     telefoonnummer = models.CharField(
         _("telefoonnummer"),
@@ -225,10 +226,13 @@ class OrganisatorischeEenheid(models.Model):
         ),
         validators=[validate_phone_number],
         max_length=20,
+        blank=True,
     )
 
     class Meta:
         verbose_name = _("organisatorische eenheid")
 
     def __str__(self):
-        return self.omschrijving
+        return (
+            f"{self.actor} - {self.emailadres or self.telefoonnummer or self.faxnummer}"
+        )

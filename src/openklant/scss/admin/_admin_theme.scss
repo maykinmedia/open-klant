@@ -6,6 +6,8 @@ DO NOT PUT ANY TARGET APP-SPECIFIC RULES HERE.
 @use 'sass:list' as list;
 @use 'sass:selector' as selector;
 
+@use './tooltip';
+
 @import 'microscope-sass/lib/bem';
 
 @import '../vars';
@@ -414,35 +416,6 @@ body.popup {
     // admin override
     font-weight: bold;
   }
-}
-
-/**
- * Help text mouseover
- */
-div.help:hover {
-  text-indent: inherit;
-  width: auto;
-  background-image: none;
-  background-color: $color-tooltip-background;
-  border: 1px solid $color-tooltip-border;
-  color: $color-tooltip-text;
-  padding: 5px 5px 3px 5px !important;
-  max-width: 300px;
-  height: auto !important;
-  z-index: 10;
-}
-
-div.help {
-  cursor: help;
-  width: 16px;
-  height: 16px;
-  background-image: url(../admin/img/icon-unknown.svg);
-  display: inline-block;
-  background-repeat: no-repeat;
-  background-size: 14px;
-  margin-left: 2px !important;
-  position: absolute;
-  text-indent: -9999px;
 }
 
 /* Overrides default Django CSS */

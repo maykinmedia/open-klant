@@ -48,4 +48,4 @@ class Rekeningnummer(models.Model):
         verbose_name_plural = _("rekeningnummers")
 
     def __str__(self):
-        return self.iban
+        return f"{self.partij} - ({self.bic} - {self.iban})"

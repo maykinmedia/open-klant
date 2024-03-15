@@ -3,6 +3,7 @@ import os
 from django.urls import reverse_lazy
 
 import sentry_sdk
+from log_outgoing_requests.formatters import HttpFormatter
 
 from .api import *  # noqa
 from .includes.environ import config, get_sentry_integrations
@@ -117,10 +118,7 @@ INSTALLED_APPS = [
     "axes",
     "corsheaders",
     "vng_api_common",  # before drf_yasg to override the management command
-    "vng_api_common.authorizations",
     "privates",
-    "simple_certmanager",
-    "zgw_consumers",
     "drf_spectacular",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
@@ -128,6 +126,7 @@ INSTALLED_APPS = [
     "django_markup",
     "solo",
     "django_jsonform",
+    "log_outgoing_requests",
     # Project applications.
     "openklant",
     "openklant.accounts",
@@ -226,6 +225,7 @@ DEFAULT_FROM_EMAIL = "openklant@example.com"
 # LOGGING
 #
 LOG_STDOUT = config("LOG_STDOUT", default=False)
+LOG_REQUESTS = config("LOG_REQUESTS", default=True)
 
 LOGGING_DIR = os.path.join(BASE_DIR, "log")
 
@@ -241,6 +241,7 @@ LOGGING = {
         "performance": {
             "format": "%(asctime)s %(process)d | %(thread)d | %(message)s",
         },
+        "outgoing_requests": {"()": HttpFormatter},
     },
     "filters": {
         "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"},
@@ -284,6 +285,15 @@ LOGGING = {
             "maxBytes": 1024 * 1024 * 10,  # 10 MB
             "backupCount": 10,
         },
+        "log_outgoing_requests": {
+            "level": "DEBUG",
+            "formatter": "outgoing_requests",
+            "class": "logging.StreamHandler",
+        },
+        "save_outgoing_requests": {
+            "level": "DEBUG",
+            "class": "log_outgoing_requests.handlers.DatabaseOutgoingRequestsHandler",
+        },
     },
     "loggers": {
         "openklant": {
@@ -304,6 +314,15 @@ LOGGING = {
         "mozilla_django_oidc": {
             "handlers": ["project"],
             "level": "DEBUG",
+        },
+        "log_outgoing_requests": {
+            "handlers": (
+                ["log_outgoing_requests", "save_outgoing_requests"]
+                if LOG_REQUESTS
+                else []
+            ),
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }
@@ -469,3 +488,15 @@ if not ELASTIC_APM_SERVER_URL:
 OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
 MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
 MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
+
+#
+# Django-log-outgoing-requests
+#
+LOG_OUTGOING_REQUESTS_EMIT_BODY = True
+LOG_OUTGOING_REQUESTS_DB_SAVE = config("LOG_OUTGOING_REQUESTS_DB_SAVE", default=False)
+LOG_OUTGOING_REQUESTS_RESET_DB_SAVE_AFTER = None
+
+# Custom settings
+LOG_OUTGOING_REQUESTS_MAX_AGE = config(
+    "LOG_OUTGOING_REQUESTS_MAX_AGE", default=7
+)  # number of days
