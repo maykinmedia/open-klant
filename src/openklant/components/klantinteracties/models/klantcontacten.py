@@ -95,7 +95,7 @@ class Klantcontact(APIMixin, models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.nummer
+        return f"{self.onderwerp} ({self.nummer})"
 
 
 class Betrokkene(
@@ -149,9 +149,11 @@ class Betrokkene(
 
     def __str__(self):
         if self.get_full_name():
+            if self.organisatienaam:
+                return f"{self.organisatienaam} ({self.get_full_name()})"
             return self.get_full_name()
 
-        return str(self.uuid)
+        return str(self.partij)
 
 
 class Onderwerpobject(models.Model):
@@ -230,6 +232,12 @@ class Onderwerpobject(models.Model):
         verbose_name = _("onderwerpobject")
         verbose_name_plural = _("onderwerpobjecten")
 
+    def __str__(self):
+        soort_object = self.onderwerpobjectidentificator_code_soort_object_id
+        object = self.onderwerpobjectidentificator_object_id
+
+        return f"{self.klantcontact} - ({soort_object} - {object})"
+
 
 class Bijlage(APIMixin, models.Model):
     uuid = models.UUIDField(
@@ -297,3 +305,9 @@ class Bijlage(APIMixin, models.Model):
     class Meta:
         verbose_name = _("bijlage")
         verbose_name_plural = _("bijlagen")
+
+    def __str__(self):
+        soort_object = self.bijlageidentificator_code_soort_object_id
+        object = self.bijlageidentificator_object_id
+
+        return f"{self.klantcontact} - ({soort_object} - {object})"

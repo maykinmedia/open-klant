@@ -130,17 +130,20 @@ class WasOnderwerpobjectInlineAdmin(admin.StackedInline):
     model = Onderwerpobject
     fk_name = "was_klantcontact"
     raw_id_field = ["was_klantcontact"]
+    readonly_fields = ("uuid",)
     extra = 0
 
 
 class BijlageInlineAdmin(admin.StackedInline):
     model = Bijlage
     extra = 0
+    readonly_fields = ("uuid",)
 
 
 class ActorKlantcontactInlineAdmin(admin.StackedInline):
     model = ActorKlantcontact
     extra = 0
+    readonly_fields = ("uuid",)
 
 
 @admin.register(Klantcontact)

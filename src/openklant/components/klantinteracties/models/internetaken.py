@@ -79,3 +79,6 @@ class InterneTaak(models.Model):
     def save(self, *args, **kwargs):
         number_generator(self, InterneTaak)
         return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.klantcontact} - ({self.nummer})"

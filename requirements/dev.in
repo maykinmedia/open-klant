@@ -2,6 +2,7 @@
 
 # Helpers
 pip-tools
+gitpython
 
 # Debug tooling
 django-debug-toolbar

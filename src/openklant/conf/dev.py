@@ -16,6 +16,9 @@ os.environ.setdefault("DB_PASSWORD", "openklant"),
 
 os.environ.setdefault("ENVIRONMENT", "development")
 
+os.environ.setdefault("RELEASE", "dev")
+os.environ.setdefault("LOG_REQUESTS", "no")
+
 from .base import *  # noqa isort:skip
 
 # Feel free to switch dev to sqlite3 for simple projects,

@@ -91,9 +91,6 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         verbose_name = _("partij")
         verbose_name_plural = _("partijen")
 
-        def __str__(self):
-            return self.nummer
-
     def clean(self):
         super().clean()
 
@@ -114,6 +111,20 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
     def save(self, *args, **kwargs):
         number_generator(self, Partij)
         return super().save(*args, **kwargs)
+
+    def __str__(self):
+        if soort_partij := self.soort_partij:
+            match (soort_partij):
+                case SoortPartij.persoon:
+                    partij = Persoon.objects.get(partij__uuid=self.uuid)
+                case SoortPartij.organisatie:
+                    partij = Organisatie.objects.get(partij__uuid=self.uuid)
+                case SoortPartij.contactpersoon:
+                    partij = Contactpersoon.objects.get(partij__uuid=self.uuid)
+
+            return f"{partij} ({self.nummer})"
+
+        return self.nummer
 
 
 class Vertegenwoordigden(models.Model):
@@ -152,7 +163,7 @@ class Vertegenwoordigden(models.Model):
             raise ValidationError(_("De partij kan niet zichzelf vertegenwoordigen."))
 
     def __str__(self):
-        return f"{self.vertegenwoordigende_partij.nummer} - {self.vertegenwoordigde_partij.nummer}"
+        return f"{self.vertegenwoordigende_partij} - {self.vertegenwoordigde_partij}"
 
 
 class CategorieRelatie(models.Model):
@@ -206,9 +217,9 @@ class CategorieRelatie(models.Model):
 
     def __str__(self):
         if self.categorie and self.partij:
-            return f"{self.categorie} - ({self.partij.nummer})"
+            return f"{self.categorie} - {self.partij}"
         elif self.categorie:
-            return self.categorie.naam
+            return self.categorie
 
         return str(self.uuid)
 
@@ -267,7 +278,7 @@ class Persoon(ContactnaamMixin):
         verbose_name_plural = _("personen")
 
     def __str__(self):
-        return self.contactnaam_voorletters
+        return self.get_full_name()
 
 
 class Contactpersoon(ContactnaamMixin):
@@ -304,7 +315,7 @@ class Contactpersoon(ContactnaamMixin):
                 )
 
     def __str__(self):
-        return self.contactnaam_voorletters
+        return self.get_full_name()
 
 
 class PartijIdentificator(models.Model):
@@ -385,3 +396,9 @@ class PartijIdentificator(models.Model):
     class Meta:
         verbose_name = _("partij identificator")
         verbose_name_plural = _("partij identificatoren")
+
+    def __str__(self):
+        soort_object = self.partij_identificator_code_soort_object_id
+        object = self.partij_identificator_object_id
+
+        return f"{soort_object} - {object}"

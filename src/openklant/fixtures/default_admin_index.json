@@ -67,24 +67,12 @@
                 "appgroup"
             ],
             [
-                "simple_certmanager",
-                "certificate"
-            ],
-            [
                 "sites",
                 "site"
             ],
             [
-                "zgw_consumers",
-                "certificate"
-            ],
-            [
-                "zgw_consumers",
-                "nlxconfig"
-            ],
-            [
-                "zgw_consumers",
-                "service"
+                "log_outgoing_requests",
+                "outgoingrequestslogconfig"
             ]
         ]
     }
@@ -109,12 +97,26 @@
                 "group"
             ],
             [
-                "token",
-                "tokenauth"
-            ],
-            [
                 "mozilla_django_oidc_db",
                 "openidconnectconfig"
+            ]
+        ]
+    }
+},
+{
+    "model": "admin_index.appgroup",
+    "fields": {
+        "order": 2,
+        "translations": {
+            "en": "API auth",
+            "nl": "API auth"
+        },
+        "name": "API auth",
+        "slug": "api-auth",
+        "models": [
+            [
+                "token",
+                "tokenauth"
             ]
         ]
     }
@@ -137,6 +139,10 @@
             [
                 "axes",
                 "accesslog"
+            ],
+            [
+                "log_outgoing_requests",
+                "outgoingrequestslog"
             ]
         ]
     }

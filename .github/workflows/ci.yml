@@ -186,7 +186,7 @@ jobs:
 
     name: Push Docker image
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.repository_owner == 'open-klant'  # exclude PRs/forks
+    if: github.event_name == 'push'  # exclude PRs
 
     steps:
       - uses: actions/checkout@v3
