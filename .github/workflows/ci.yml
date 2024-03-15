@@ -12,7 +12,7 @@ on:
 
 env:
   IMAGE_NAME: maykinmedia/open-klant
-  DJANGO_SETTINGS_MODULE: openklant.conf.jenkins
+  DJANGO_SETTINGS_MODULE: openklant.conf.ci
   DB_PASSWORD: ''
   DB_USER: postgres
   # ALLOWED_HOSTS: openklant.nl
@@ -98,7 +98,7 @@ jobs:
           python src/manage.py collectstatic --noinput --link
           coverage run src/manage.py test src
         env:
-          DJANGO_SETTINGS_MODULE: openklant.conf.jenkins
+          DJANGO_SETTINGS_MODULE: openklant.conf.ci
           SECRET_KEY: dummy
           DB_USER: postgres
           DB_PASSWORD: ''

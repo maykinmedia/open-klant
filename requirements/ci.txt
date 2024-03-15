@@ -148,7 +148,6 @@ django==4.2.11
     #   django-db-logger
     #   django-extra-views
     #   django-filter
-    #   django-jenkins
     #   django-jsonform
     #   django-log-outgoing-requests
     #   django-markup
@@ -183,7 +182,6 @@ django-axes[ipware]==6.4.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   django-axes
 django-cors-headers==4.3.1
     # via
     #   -c requirements/base.txt
@@ -206,8 +204,6 @@ django-ipware==6.0.4
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-axes
-django-jenkins==0.110.0
-    # via -r requirements/test-tools.in
 django-jsonform==2.22.0
     # via
     #   -c requirements/base.txt
