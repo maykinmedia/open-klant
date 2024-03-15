@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: klantinteracties
-  version: 1.0.0
+  version: 0.0.3
   description: |2
 
     Description WIP.
@@ -1258,8 +1258,8 @@ paths:
         description: |-
           Aanduiding van de vordering bij afhandeling van de interne taak.
 
-          * `te_verwerken` - Het verzoek is afgehandeld.
-          * `verwerkt` - Het verzoek ID buiten behandeling gesteld.
+          * `te_verwerken` - Te verwerken.
+          * `verwerkt` - Verwerkt
       - in: query
         name: toegewezenAanActor__url
         schema:
@@ -3255,8 +3255,8 @@ components:
           description: |-
             Aanduiding van de vordering bij afhandeling van de interne taak.
 
-            * `te_verwerken` - Het verzoek is afgehandeld.
-            * `verwerkt` - Het verzoek ID buiten behandeling gesteld.
+            * `te_verwerken` - Te verwerken.
+            * `verwerkt` - Verwerkt
         toegewezenOp:
           type: string
           format: date-time
@@ -4397,8 +4397,8 @@ components:
           description: |-
             Aanduiding van de vordering bij afhandeling van de interne taak.
 
-            * `te_verwerken` - Het verzoek is afgehandeld.
-            * `verwerkt` - Het verzoek ID buiten behandeling gesteld.
+            * `te_verwerken` - Te verwerken.
+            * `verwerkt` - Verwerkt
         toegewezenOp:
           type: string
           format: date-time
@@ -4799,8 +4799,8 @@ components:
       - verwerkt
       type: string
       description: |-
-        * `te_verwerken` - Het verzoek is afgehandeld.
-        * `verwerkt` - Het verzoek ID buiten behandeling gesteld.
+        * `te_verwerken` - Te verwerken.
+        * `verwerkt` - Verwerkt
     Vertegenwoordigden:
       type: object
       properties:

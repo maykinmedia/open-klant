@@ -5,7 +5,7 @@ Change history
 2.0.0
 =====
 
-*t.b.d.*
+*March 15, 2024*
 
 *VNG officially retired the Klanten and Contactmomenten API, which never had an
 official release. These API's are replaced by the Klantinteractie API. In 

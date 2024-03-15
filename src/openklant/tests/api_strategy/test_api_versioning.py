@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+from django.conf import settings
 from django.test import override_settings
 
 import yaml
@@ -8,8 +9,8 @@ from rest_framework.test import APITestCase
 from vng_api_common.tests import reverse
 
 EXPECTED_VERSIONS = (
-    ("klantinteracties", "1.0.0"),
-    ("contactgegevens", "1.0.0"),
+    ("klantinteracties", settings.KLANTINTERACTIES_API_VERSION),
+    ("contactgegevens", settings.CONTACTGEGEVENS_API_VERSION),
 )
 
 
