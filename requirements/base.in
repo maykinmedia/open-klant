@@ -30,6 +30,7 @@ mozilla-django-oidc-db
 # Admin and UI libraries
 django-admin-index
 django-sniplates
+# django-jsonform
 
 # API libraries
 djangorestframework

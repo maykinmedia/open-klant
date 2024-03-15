@@ -422,21 +422,23 @@ ADMIN_INDEX_AUTO_CREATE_APP_GROUP = False
 ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 
 #
-# DJANGO-AXES
+# DJANGO-AXES (6.0+)
 #
 AXES_CACHE = "axes"  # refers to CACHES setting
+# The number of login attempts allowed before a record is created for the
+# failed logins. Default: 3
 AXES_FAILURE_LIMIT = 10
-AXES_LOCK_OUT_AT_FAILURE = True  # Default: True
+# If set, defines a period of inactivity after which old failed login attempts
+# will be forgotten. Can be set to a python timedelta object or an integer. If
+# an integer, will be interpreted as a number of hours. Default: None
 AXES_COOLOFF_TIME = 1
-# after testing, the REMOTE_ADDR does not appear to be included with nginx (so single
-# reverse proxy) and the ipware detection didn't properly work. On K8s you typically have
-# ingress (load balancer) and then an additional nginx container for private file serving,
-# bringing the total of reverse proxies to 2 - meaning HTTP_X_FORWARDED_FOR basically
-# looks like ``$realIp,$ingressIp``. -> to get to $realIp, there is only 1 extra reverse
-# proxy included.
+# The number of reverse proxies
 AXES_IPWARE_PROXY_COUNT = NUM_PROXIES - 1 if NUM_PROXIES else None
+# If set, specifies a template to render when a user is locked out. Template
+# receives cooloff_time and failure_limit as context variables. Default: None
 AXES_LOCKOUT_TEMPLATE = "account_blocked.html"
 AXES_LOCKOUT_PARAMETERS = [["ip_address", "user_agent", "username"]]
+AXES_BEHIND_REVERSE_PROXY = IS_HTTPS
 
 # The default meta precedence order
 IPWARE_META_PRECEDENCE_ORDER = (
