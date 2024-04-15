@@ -146,25 +146,6 @@ jobs:
       - docker
 
     steps:
-      # So the scanner gets commit meta-information
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Derive version
-        id: vars
-        run: |
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-          # Strip "v" prefix from tag name (if present at all)
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-
-          # PRs result in version 'merge' -> transform that into 'latest'
-          [ "$VERSION" == "merge" ] && VERSION=latest
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
       - name: Download built image
         uses: actions/download-artifact@v3
         with:
