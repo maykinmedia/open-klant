@@ -15,6 +15,15 @@ from openklant.components.klantinteracties.models.klantcontacten import (
 from openklant.components.utils.filters import ExpandFilter
 
 
+class KlantcontactDetailFilterSet(FilterSet):
+    expand = ExpandFilter(
+        serializer_class=KlantcontactSerializer,
+        help_text=_(
+            "Sluit de gespecifieerde gerelateerde resources in in het antwoord."
+        ),
+    )
+
+
 class KlantcontactFilterSet(FilterSet):
     had_betrokkene__url = filters.CharFilter(
         help_text=_("Zoek klantcontact object op basis van het betrokkene url"),

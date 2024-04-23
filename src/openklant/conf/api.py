@@ -14,7 +14,7 @@ REST_FRAMEWORK["PAGE_SIZE"] = 100
 REST_FRAMEWORK["DEFAULT_PAGINATION_CLASS"] = (
     "rest_framework.pagination.PageNumberPagination"
 )
-REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
+REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "openklant.components.utils.schema.AutoSchema"
 
 SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,

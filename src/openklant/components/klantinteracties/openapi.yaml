@@ -1548,7 +1548,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedKlantcontactList'
+                $ref: '#/components/schemas/PaginatedExpandKlantcontactList'
           description: ''
     post:
       operationId: klantcontactenCreate
@@ -1577,6 +1577,30 @@ paths:
       description: Een specifiek klant contact opvragen.
       summary: Een specifiek klant contact opvragen.
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - gingOverOnderwerpobjecten
+            - hadBetrokkenen
+            - hadBetrokkenen.digitaleAdressen
+            - hadBetrokkenen.wasPartij
+            - leiddeTotInterneTaken
+            - omvatteBijlagen
+        description: |-
+          Sluit de gespecifieerde gerelateerde resources in in het antwoord.
+
+          * `hadBetrokkenen` - had_betrokkenen
+          * `leiddeTotInterneTaken` - leidde_tot_interne_taken
+          * `gingOverOnderwerpobjecten` - ging_over_onderwerpobjecten
+          * `omvatteBijlagen` - omvatte_bijlagen
+          * `hadBetrokkenen.wasPartij` - had_betrokkenen.was_partij
+          * `hadBetrokkenen.digitaleAdressen` - had_betrokkenen.digitale_adressen
+        explode: false
+        style: form
       - in: path
         name: uuid
         schema:
@@ -1594,7 +1618,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Klantcontact'
+                $ref: '#/components/schemas/ExpandKlantcontact'
           description: ''
     put:
       operationId: klantcontactenUpdate
@@ -2146,7 +2170,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedPartijList'
+                $ref: '#/components/schemas/PaginatedExpandPartijList'
           description: ''
     post:
       operationId: partijenCreate
@@ -2175,6 +2199,26 @@ paths:
       description: Een specifiek partij opvragen.
       summary: Een specifiek partij opvragen.
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - betrokkenen
+            - betrokkenen.hadKlantcontact
+            - categorieRelaties
+            - digitaleAdressen
+        description: |-
+          Sluit de gespecifieerde gerelateerde resources in in het antwoord.
+
+          * `digitaleAdressen` - digitale_adressen
+          * `betrokkenen` - betrokkenen
+          * `categorieRelaties` - categorie_relaties
+          * `betrokkenen.hadKlantcontact` - betrokkenen.had_klantcontact
+        explode: false
+        style: form
       - in: path
         name: uuid
         schema:
@@ -2191,7 +2235,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Partij'
+                $ref: '#/components/schemas/ExpandPartij'
           description: ''
     put:
       operationId: partijenUpdate
@@ -3213,6 +3257,65 @@ components:
       required:
       - url
       - uuid
+    ExpandKlantcontact:
+      allOf:
+      - $ref: '#/components/schemas/Klantcontact'
+      - type: object
+        properties:
+          _expand:
+            type: object
+            description: Display details of the linked resources requested in the
+              `expand` parameter
+            properties:
+              had_betrokkenen:
+                allOf:
+                - $ref: '#/components/schemas/Betrokkene'
+                readOnly: true
+                description: Persoon of organisatie die betrokken was bij een klantcontact.
+              leidde_tot_interne_taken:
+                allOf:
+                - $ref: '#/components/schemas/InterneTaak'
+                readOnly: true
+                description: Klantcontact dat leidde tot een interne taak.
+              ging_over_onderwerpobjecten:
+                allOf:
+                - $ref: '#/components/schemas/Onderwerpobject'
+                readOnly: true
+                description: Onderwerpobject dat tijdens een klantcontact aan de orde
+                  was.
+              omvatte_bijlagen:
+                allOf:
+                - $ref: '#/components/schemas/Bijlage'
+                readOnly: true
+                description: Bijlage die (een deel van) de inhoud van het klantcontact
+                  beschrijft.
+    ExpandPartij:
+      allOf:
+      - $ref: '#/components/schemas/Partij'
+      - type: object
+        properties:
+          _expand:
+            type: object
+            description: Display details of the linked resources requested in the
+              `expand` parameter
+            properties:
+              digitale_adressen:
+                allOf:
+                - $ref: '#/components/schemas/DigitaalAdres'
+                nullable: true
+                description: Digitaal adresen dat een partij verstrekte voor gebruik
+                  bij toekomstig contact met de gemeente.
+              betrokkenen:
+                allOf:
+                - $ref: '#/components/schemas/Betrokkene'
+                readOnly: true
+                description: Betrokkene bij klantcontact die een partij was.
+              categorie_relaties:
+                allOf:
+                - $ref: '#/components/schemas/CategorieRelatie'
+                readOnly: true
+                description: 'De Categorie relaties van een partij: Let op: Dit attribuut
+                  is EXPERIMENTEEL.'
     InterneTaak:
       type: object
       properties:
@@ -3626,6 +3729,46 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DigitaalAdres'
+    PaginatedExpandKlantcontactList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpandKlantcontact'
+    PaginatedExpandPartijList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpandPartij'
     PaginatedInterneTaakList:
       type: object
       properties:
