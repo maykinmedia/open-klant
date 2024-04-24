@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
@@ -11,6 +12,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
 )
 from openklant.components.klantinteracties.api.validators import internetaak_exists
 from openklant.components.klantinteracties.models.actoren import Actor
+from openklant.components.klantinteracties.models.constants import Taakstatus
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import Klantcontact
 
@@ -58,6 +60,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             "toelichting",
             "status",
             "toegewezen_op",
+            "afgehandeld_op",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
@@ -66,6 +69,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van deze interne taak binnen deze API."),
             },
+            "afgehandeld_op": {"read_only": True},
         }
 
     @transaction.atomic
@@ -77,6 +81,9 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
         validated_data["klantcontact"] = Klantcontact.objects.get(
             uuid=klantcontact_uuid
         )
+
+        if validated_data.get("status") == Taakstatus.verwerkt:
+            validated_data["afgehandeld_op"] = timezone.now()
 
         return super().create(validated_data)
 
@@ -91,6 +98,18 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
                 validated_data["klantcontact"] = Klantcontact.objects.get(
                     uuid=str(klantcontact.get("uuid"))
                 )
+
+        if (
+            not self.instance.afgehandeld_op
+            and validated_data.get("status") == Taakstatus.verwerkt
+        ):
+            validated_data["afgehandeld_op"] = timezone.now()
+
+        if (
+            self.instance.afgehandeld_op
+            and validated_data.get("status") == Taakstatus.te_verwerken
+        ):
+            validated_data["afgehandeld_op"] = None
 
         return super().update(instance, validated_data)
 

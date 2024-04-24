@@ -3263,8 +3263,16 @@ components:
           readOnly: true
           description: Datum en tijdstip waarop de interne taak aan een actor werd
             toegewezen.
+        afgehandeldOp:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          description: 'Datum en tijdstip wanneer de interne taak was afgehandeld:
+            EXPERIMENTEEL.'
       required:
       - aanleidinggevendKlantcontact
+      - afgehandeldOp
       - gevraagdeHandeling
       - status
       - toegewezenAanActor
@@ -4405,6 +4413,13 @@ components:
           readOnly: true
           description: Datum en tijdstip waarop de interne taak aan een actor werd
             toegewezen.
+        afgehandeldOp:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          description: 'Datum en tijdstip wanneer de interne taak was afgehandeld:
+            EXPERIMENTEEL.'
     PatchedKlantcontact:
       type: object
       properties:

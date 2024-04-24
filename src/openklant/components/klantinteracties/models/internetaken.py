@@ -2,6 +2,7 @@ import uuid
 
 from django.core.validators import validate_integer
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.utils.number_generator import number_generator
@@ -71,6 +72,15 @@ class InterneTaak(models.Model):
         auto_now_add=True,
         blank=False,
     )
+    afgehandeld_op = models.DateTimeField(
+        _("afgehandeld op"),
+        help_text=_(
+            "Datum en tijdstip wanneer de interne taak was afgehandeld: EXPERIMENTEEL."
+        ),
+        editable=True,
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = _("interne taak")
@@ -78,6 +88,10 @@ class InterneTaak(models.Model):
 
     def save(self, *args, **kwargs):
         number_generator(self, InterneTaak)
+        if not self.afgehandeld_op and self.status == Taakstatus.verwerkt:
+            self.afgehandeld_op = timezone.now()
+        if self.afgehandeld_op and self.status == Taakstatus.te_verwerken:
+            self.afgehandeld_op = None
         return super().save(*args, **kwargs)
 
     def __str__(self):

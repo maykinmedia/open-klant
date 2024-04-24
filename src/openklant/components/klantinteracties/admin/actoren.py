@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from ..admin.internezaken import InterneTaakInlineAdmin
 from ..models.actoren import (
     Actor,
     ActorKlantcontact,
@@ -9,6 +8,7 @@ from ..models.actoren import (
     Medewerker,
     OrganisatorischeEenheid,
 )
+from .internetaken import InterneTaakInlineAdmin
 
 
 class GeautomatiseerdeActorInlineAdmin(admin.StackedInline):

@@ -17,9 +17,13 @@ class InterneTaakAdmin(admin.ModelAdmin):
         "nummer",
         "status",
         "toegewezen_op",
+        "afgehandeld_op",
     )
     list_filter = (
         "actor",
         "status",
     )
-    readonly_fields = ("toegewezen_op",)
+    readonly_fields = (
+        "toegewezen_op",
+        "afgehandeld_op",
+    )
