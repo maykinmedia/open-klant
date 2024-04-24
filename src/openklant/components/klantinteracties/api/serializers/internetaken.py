@@ -115,9 +115,9 @@ class KlantcontactInterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             "nummer",
             "gevraagde_handeling",
             "actor",
-            "klantcontact",
-            "toelichting",
-            "status",
+            # "klantcontact",
+            # "toelichting",
+            # "status",
             "toegewezen_op",
         )
         extra_kwargs = {
