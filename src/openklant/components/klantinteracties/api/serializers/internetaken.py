@@ -69,13 +69,30 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van deze interne taak binnen deze API."),
             },
-            "afgehandeld_op": {"read_only": True},
         }
+
+    def validate(self, attrs):
+        status = attrs.get("status", None)
+        if not status and self.instance:
+            status = self.instance.status
+
+        if attrs.get("afgehandeld_op") and status == Taakstatus.te_verwerken.value:
+            raise serializers.ValidationError(
+                {
+                    "afgehandeld_op": _(
+                        "De Internetaak kan geen afgehandeld op datum bevatten "
+                        "als de status nog in '{te_verwerken}' staat."
+                    ).format(te_verwerken=Taakstatus.te_verwerken.value)
+                }
+            )
+
+        return super().validate(attrs)
 
     @transaction.atomic
     def create(self, validated_data):
         actor_uuid = str(validated_data.pop("actor").get("uuid"))
         klantcontact_uuid = str(validated_data.pop("klantcontact").get("uuid"))
+        afgehandeld_op = validated_data.pop("afgehandeld_op", timezone.now())
 
         validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
         validated_data["klantcontact"] = Klantcontact.objects.get(
@@ -83,12 +100,14 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         if validated_data.get("status") == Taakstatus.verwerkt:
-            validated_data["afgehandeld_op"] = timezone.now()
+            validated_data["afgehandeld_op"] = afgehandeld_op
 
         return super().create(validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        afgehandeld_op = validated_data.pop("afgehandeld_op", timezone.now())
+
         if "actor" in validated_data:
             if actor := validated_data.pop("actor", None):
                 validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
@@ -103,7 +122,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             not self.instance.afgehandeld_op
             and validated_data.get("status") == Taakstatus.verwerkt
         ):
-            validated_data["afgehandeld_op"] = timezone.now()
+            validated_data["afgehandeld_op"] = afgehandeld_op
 
         if (
             self.instance.afgehandeld_op

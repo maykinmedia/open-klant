@@ -138,6 +138,52 @@ class InterneTaakTests(APITestCase):
             InterneTaak.objects.filter(afgehandeld_op="2024-01-01T12:00:00Z").exists()
         )
 
+        with self.subTest("validate_afgehandeld_op_error_with_te_verwerken_status"):
+            del data["nummer"]
+            data["afgehandeldOp"] = "2024-01-01T01:00:00Z"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(response_data["invalidParams"][0]["name"], "afgehandeldOp")
+            self.assertEqual(
+                response_data["invalidParams"][0]["reason"],
+                "De Internetaak kan geen afgehandeld op datum bevatten als de status nog in 'te_verwerken' staat.",
+            )
+
+    def test_create_internetaak_with_afgehandeld_op_date(self):
+        actor = ActorFactory.create()
+        klantcontact = KlantcontactFactory.create()
+
+        list_url = reverse("klantinteracties:internetaak-list")
+        data = {
+            "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
+            "nummer": "1312312312",
+            "gevraagdeHandeling": "gevraagdeHandeling",
+            "toelichting": "toelichting",
+            "status": "verwerkt",
+            "afgehandeldOp": "2024-01-01T01:00:00Z",
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response_data = response.json()
+
+        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor.uuid))
+        self.assertEqual(
+            response_data["aanleidinggevendKlantcontact"]["uuid"],
+            str(klantcontact.uuid),
+        )
+        self.assertEqual(response_data["nummer"], "1312312312")
+        self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
+        self.assertEqual(response_data["toelichting"], "toelichting")
+        self.assertEqual(response_data["status"], "verwerkt")
+        self.assertTrue(
+            InterneTaak.objects.filter(afgehandeld_op="2024-01-01T01:00:00Z").exists()
+        )
+
     @freeze_time("2024-01-01T12:00:00Z")
     def test_update_internetaak(self):
         actor, actor2 = ActorFactory.create_batch(2)
@@ -219,6 +265,49 @@ class InterneTaakTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(InterneTaak.objects.count(), 1)
             self.assertIsNone(InterneTaak.objects.first().afgehandeld_op)
+
+        with self.subTest("with_afgehandeld_op_data_value"):
+            data = {
+                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
+                "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
+                "gevraagdeHandeling": "changed",
+                "status": "verwerkt",
+                "afgehandeldOp": "2024-01-01T01:00:00Z",
+            }
+            response = self.client.put(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+
+            self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor2.uuid))
+            self.assertEqual(
+                data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact2.uuid)
+            )
+            self.assertEqual(data["nummer"], "9999999999")
+            self.assertEqual(data["gevraagdeHandeling"], "changed")
+            self.assertEqual(data["toelichting"], "changed")
+            self.assertEqual(data["status"], "verwerkt")
+            self.assertTrue(
+                InterneTaak.objects.filter(
+                    afgehandeld_op="2024-01-01T01:00:00Z"
+                ).exists()
+            )
+
+        with self.subTest("validate_afgehandeld_op_error_with_te_verwerken_status"):
+            data = {
+                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
+                "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
+                "gevraagdeHandeling": "changed",
+                "status": "te_verwerken",
+                "afgehandeldOp": "2024-01-01T01:00:00Z",
+            }
+            response = self.client.put(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(data["invalidParams"][0]["name"], "afgehandeldOp")
+            self.assertEqual(
+                data["invalidParams"][0]["reason"],
+                "De Internetaak kan geen afgehandeld op datum bevatten als de status nog in 'te_verwerken' staat.",
+            )
 
     def test_partial_update_internetaak(self):
         actor = ActorFactory.create()

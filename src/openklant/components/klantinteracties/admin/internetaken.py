@@ -23,7 +23,3 @@ class InterneTaakAdmin(admin.ModelAdmin):
         "actor",
         "status",
     )
-    readonly_fields = (
-        "toegewezen_op",
-        "afgehandeld_op",
-    )
