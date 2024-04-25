@@ -57,12 +57,9 @@ paths:
           - geautomatiseerde_actor
           - medewerker
           - organisatorische_eenheid
-        description: |-
+        description: |+
           Geeft aan van welke specifieke soort actor sprake is.
 
-          * `medewerker` - Medewerker
-          * `geautomatiseerde_actor` - Geautomatiseerde actor
-          * `organisatorische_eenheid` - Organisatorische eenheid
       tags:
       - actoren
       security:
@@ -1255,11 +1252,9 @@ paths:
           enum:
           - te_verwerken
           - verwerkt
-        description: |-
+        description: |+
           Aanduiding van de vordering bij afhandeling van de interne taak.
 
-          * `te_verwerken` - Te verwerken.
-          * `verwerkt` - Verwerkt
       - in: query
         name: toegewezenAanActor__url
         schema:
@@ -1427,15 +1422,9 @@ paths:
             - hadBetrokkenen.wasPartij
             - leiddeTotInterneTaken
             - omvatteBijlagen
-        description: |-
+        description: |+
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
-          * `hadBetrokkenen` - had_betrokkenen
-          * `leiddeTotInterneTaken` - leidde_tot_interne_taken
-          * `gingOverOnderwerpobjecten` - ging_over_onderwerpobjecten
-          * `omvatteBijlagen` - omvatte_bijlagen
-          * `hadBetrokkenen.wasPartij` - had_betrokkenen.was_partij
-          * `hadBetrokkenen.digitaleAdressen` - had_betrokkenen.digitale_adressen
         explode: false
         style: form
       - in: query
@@ -1590,15 +1579,9 @@ paths:
             - hadBetrokkenen.wasPartij
             - leiddeTotInterneTaken
             - omvatteBijlagen
-        description: |-
+        description: |+
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
-          * `hadBetrokkenen` - had_betrokkenen
-          * `leiddeTotInterneTaken` - leidde_tot_interne_taken
-          * `gingOverOnderwerpobjecten` - ging_over_onderwerpobjecten
-          * `omvatteBijlagen` - omvatte_bijlagen
-          * `hadBetrokkenen.wasPartij` - had_betrokkenen.was_partij
-          * `hadBetrokkenen.digitaleAdressen` - had_betrokkenen.digitale_adressen
         explode: false
         style: form
       - in: path
@@ -2085,13 +2068,9 @@ paths:
             - betrokkenen.hadKlantcontact
             - categorieRelaties
             - digitaleAdressen
-        description: |-
+        description: |+
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
-          * `digitaleAdressen` - digitale_adressen
-          * `betrokkenen` - betrokkenen
-          * `categorieRelaties` - categorie_relaties
-          * `betrokkenen.hadKlantcontact` - betrokkenen.had_klantcontact
         explode: false
         style: form
       - in: query
@@ -2142,12 +2121,9 @@ paths:
           - contactpersoon
           - organisatie
           - persoon
-        description: |-
+        description: |+
           Geeft aan van welke specifieke soort partij sprake is.
 
-          * `persoon` - Persoon
-          * `organisatie` - Organisatie
-          * `contactpersoon` - Contactpersoon
       - in: query
         name: vertegenwoordigdePartij__url
         schema:
@@ -2210,13 +2186,9 @@ paths:
             - betrokkenen.hadKlantcontact
             - categorieRelaties
             - digitaleAdressen
-        description: |-
+        description: |+
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
-          * `digitaleAdressen` - digitale_adressen
-          * `betrokkenen` - betrokkenen
-          * `categorieRelaties` - categorie_relaties
-          * `betrokkenen.hadKlantcontact` - betrokkenen.had_klantcontact
         explode: false
         style: form
       - in: path
@@ -2662,12 +2634,7 @@ components:
         soortActor:
           allOf:
           - $ref: '#/components/schemas/SoortActorEnum'
-          description: |-
-            Geeft aan van welke specifieke soort actor sprake is.
-
-            * `medewerker` - Medewerker
-            * `geautomatiseerde_actor` - Geautomatiseerde actor
-            * `organisatorische_eenheid` - Organisatorische eenheid
+          description: Geeft aan van welke specifieke soort actor sprake is.
         indicatieActief:
           type: boolean
           description: Geeft aan of aan de actor nog betrokken mag worden bij nieuwe
@@ -2820,11 +2787,8 @@ components:
         rol:
           allOf:
           - $ref: '#/components/schemas/RolEnum'
-          description: |-
-            Rol die de betrokkene bij klantcontact tijdens dat contact vervulde.
-
-            * `vertegenwoordiger` - Vertegenwoordiger
-            * `klant` - Klant
+          description: Rol die de betrokkene bij klantcontact tijdens dat contact
+            vervulde.
         organisatienaam:
           type: string
           description: Naam van de organisatie waarmee de betrokkene bij klantcontact
@@ -3355,11 +3319,8 @@ components:
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
-          description: |-
-            Aanduiding van de vordering bij afhandeling van de interne taak.
-
-            * `te_verwerken` - Te verwerken.
-            * `verwerkt` - Verwerkt
+          description: Aanduiding van de vordering bij afhandeling van de interne
+            taak.
         toegewezenOp:
           type: string
           format: date-time
@@ -3988,12 +3949,7 @@ components:
         soortPartij:
           allOf:
           - $ref: '#/components/schemas/SoortPartijEnum'
-          description: |-
-            Geeft aan van welke specifieke soort partij sprake is.
-
-            * `persoon` - Persoon
-            * `organisatie` - Organisatie
-            * `contactpersoon` - Contactpersoon
+          description: Geeft aan van welke specifieke soort partij sprake is.
         indicatieGeheimhouding:
           type: boolean
           description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
@@ -4264,12 +4220,7 @@ components:
         soortActor:
           allOf:
           - $ref: '#/components/schemas/SoortActorEnum'
-          description: |-
-            Geeft aan van welke specifieke soort actor sprake is.
-
-            * `medewerker` - Medewerker
-            * `geautomatiseerde_actor` - Geautomatiseerde actor
-            * `organisatorische_eenheid` - Organisatorische eenheid
+          description: Geeft aan van welke specifieke soort actor sprake is.
         indicatieActief:
           type: boolean
           description: Geeft aan of aan de actor nog betrokken mag worden bij nieuwe
@@ -4362,11 +4313,8 @@ components:
         rol:
           allOf:
           - $ref: '#/components/schemas/RolEnum'
-          description: |-
-            Rol die de betrokkene bij klantcontact tijdens dat contact vervulde.
-
-            * `vertegenwoordiger` - Vertegenwoordiger
-            * `klant` - Klant
+          description: Rol die de betrokkene bij klantcontact tijdens dat contact
+            vervulde.
         organisatienaam:
           type: string
           description: Naam van de organisatie waarmee de betrokkene bij klantcontact
@@ -4537,11 +4485,8 @@ components:
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
-          description: |-
-            Aanduiding van de vordering bij afhandeling van de interne taak.
-
-            * `te_verwerken` - Te verwerken.
-            * `verwerkt` - Verwerkt
+          description: Aanduiding van de vordering bij afhandeling van de interne
+            taak.
         toegewezenOp:
           type: string
           format: date-time
@@ -4744,12 +4689,7 @@ components:
         soortPartij:
           allOf:
           - $ref: '#/components/schemas/SoortPartijEnum'
-          description: |-
-            Geeft aan van welke specifieke soort partij sprake is.
-
-            * `persoon` - Persoon
-            * `organisatie` - Organisatie
-            * `contactpersoon` - Contactpersoon
+          description: Geeft aan van welke specifieke soort partij sprake is.
         indicatieGeheimhouding:
           type: boolean
           description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
@@ -4913,37 +4853,23 @@ components:
       - vertegenwoordiger
       - klant
       type: string
-      description: |-
-        * `vertegenwoordiger` - Vertegenwoordiger
-        * `klant` - Klant
     SoortActorEnum:
       enum:
       - medewerker
       - geautomatiseerde_actor
       - organisatorische_eenheid
       type: string
-      description: |-
-        * `medewerker` - Medewerker
-        * `geautomatiseerde_actor` - Geautomatiseerde actor
-        * `organisatorische_eenheid` - Organisatorische eenheid
     SoortPartijEnum:
       enum:
       - persoon
       - organisatie
       - contactpersoon
       type: string
-      description: |-
-        * `persoon` - Persoon
-        * `organisatie` - Organisatie
-        * `contactpersoon` - Contactpersoon
     StatusEnum:
       enum:
       - te_verwerken
       - verwerkt
       type: string
-      description: |-
-        * `te_verwerken` - Te verwerken.
-        * `verwerkt` - Verwerkt
     Vertegenwoordigden:
       type: object
       properties:

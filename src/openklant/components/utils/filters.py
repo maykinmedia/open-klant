@@ -1,3 +1,5 @@
+from django.utils.translation import gettext_lazy as _
+
 from django_filters import filters
 
 from .expansion import get_expand_options_for_serializer
@@ -9,6 +11,10 @@ class ExpandFilter(filters.BaseInFilter, filters.ChoiceFilter):
 
         kwargs.setdefault(
             "choices", get_expand_options_for_serializer(serializer_class)
+        )
+        kwargs.setdefault(
+            "help_text",
+            _("Sluit de gespecifieerde gerelateerde resources in in het antwoord."),
         )
 
         super().__init__(*args, **kwargs)

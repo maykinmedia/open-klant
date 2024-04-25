@@ -21,6 +21,7 @@ SPECTACULAR_SETTINGS = {
     "CAMELIZE_NAMES": True,
     "SCHEMA_PATH_PREFIX": r"/v[0-9]+",
     "SCHEMA_PATH_PREFIX_TRIM": True,
+    "ENUM_GENERATE_CHOICE_DESCRIPTION": False,
     "POSTPROCESSING_HOOKS": [
         "drf_spectacular.hooks.postprocess_schema_enums",
         "drf_spectacular.contrib.djangorestframework_camel_case.camelize_serializer_fields",

@@ -16,12 +16,7 @@ from openklant.components.utils.filters import ExpandFilter
 
 
 class KlantcontactDetailFilterSet(FilterSet):
-    expand = ExpandFilter(
-        serializer_class=KlantcontactSerializer,
-        help_text=_(
-            "Sluit de gespecifieerde gerelateerde resources in in het antwoord."
-        ),
-    )
+    expand = ExpandFilter(serializer_class=KlantcontactSerializer)
 
 
 class KlantcontactFilterSet(FilterSet):
@@ -52,12 +47,7 @@ class KlantcontactFilterSet(FilterSet):
         help_text=_("Zoek klantcontacten met specifieke tekst in onderwerp"),
     )
 
-    expand = ExpandFilter(
-        serializer_class=KlantcontactSerializer,
-        help_text=_(
-            "Sluit de gespecifieerde gerelateerde resources in in het antwoord."
-        ),
-    )
+    expand = ExpandFilter(serializer_class=KlantcontactSerializer)
 
     class Meta:
         model = Klantcontact
