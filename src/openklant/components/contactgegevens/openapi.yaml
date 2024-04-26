@@ -311,10 +311,6 @@ components:
       - v
       - o
       type: string
-      description: |-
-        * `m` - Man
-        * `v` - Vrouw
-        * `o` - Overig
     Organisatie:
       type: object
       description: |-
@@ -529,12 +525,8 @@ components:
             ten minste 3 letters. Zoeken met tekstvelden is case-insensitive.
           maxLength: 200
         geslacht:
-          description: |-
-            Geeft aan dat de persoon een man of een vrouw is, of dat het geslacht (nog) onbekend is.
-
-            * `m` - Man
-            * `v` - Vrouw
-            * `o` - Overig
+          description: Geeft aan dat de persoon een man of een vrouw is, of dat het
+            geslacht (nog) onbekend is.
           oneOf:
           - $ref: '#/components/schemas/GeslachtEnum'
           - $ref: '#/components/schemas/BlankEnum'
@@ -597,12 +589,8 @@ components:
             ten minste 3 letters. Zoeken met tekstvelden is case-insensitive.
           maxLength: 200
         geslacht:
-          description: |-
-            Geeft aan dat de persoon een man of een vrouw is, of dat het geslacht (nog) onbekend is.
-
-            * `m` - Man
-            * `v` - Vrouw
-            * `o` - Overig
+          description: Geeft aan dat de persoon een man of een vrouw is, of dat het
+            geslacht (nog) onbekend is.
           oneOf:
           - $ref: '#/components/schemas/GeslachtEnum'
           - $ref: '#/components/schemas/BlankEnum'

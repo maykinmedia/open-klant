@@ -6,6 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
     ActorKlantcontactFilterSet,
     BetrokkeneFilterSet,
+    KlantcontactDetailFilterSet,
     KlantcontactFilterSet,
 )
 from openklant.components.klantinteracties.api.serializers.klantcontacten import (
@@ -68,9 +69,17 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     serializer_class = KlantcontactSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
-    filterset_class = KlantcontactFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @property
+    def filterset_class(self):
+        """
+        support expand in the detail endpoint
+        """
+        if self.detail:
+            return KlantcontactDetailFilterSet
+        return KlantcontactFilterSet
 
 
 @extend_schema(tags=["betrokkenen"])

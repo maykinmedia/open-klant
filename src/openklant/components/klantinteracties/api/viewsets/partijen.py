@@ -5,6 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from openklant.components.klantinteracties.api.filterset.partijen import (
     CategorieRelatieFilterSet,
+    PartijDetailFilterSet,
     PartijFilterSet,
     VertegenwoordigdenFilterSet,
 )
@@ -72,9 +73,17 @@ class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
     serializer_class = PartijSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
-    filterset_class = PartijFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @property
+    def filterset_class(self):
+        """
+        support expand in the detail endpoint
+        """
+        if self.detail:
+            return PartijDetailFilterSet
+        return PartijFilterSet
 
 
 @extend_schema(tags=["vertegenwoordigingen"])

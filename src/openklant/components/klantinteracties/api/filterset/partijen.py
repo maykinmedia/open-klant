@@ -15,6 +15,10 @@ from openklant.components.klantinteracties.models.partijen import (
 from openklant.components.utils.filters import ExpandFilter
 
 
+class PartijDetailFilterSet(FilterSet):
+    expand = ExpandFilter(serializer_class=PartijSerializer)
+
+
 class PartijFilterSet(FilterSet):
     vertegenwoordigde_partij__uuid = filters.UUIDFilter(
         help_text=_(
@@ -56,12 +60,7 @@ class PartijFilterSet(FilterSet):
         method="filter_categorierelatie_categorie_naam",
     )
 
-    expand = ExpandFilter(
-        serializer_class=PartijSerializer,
-        help_text=_(
-            "Sluit de gespecifieerde gerelateerde resources in in het antwoord."
-        ),
-    )
+    expand = ExpandFilter(serializer_class=PartijSerializer)
 
     class Meta:
         model = Partij

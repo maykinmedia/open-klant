@@ -14,13 +14,14 @@ REST_FRAMEWORK["PAGE_SIZE"] = 100
 REST_FRAMEWORK["DEFAULT_PAGINATION_CLASS"] = (
     "rest_framework.pagination.PageNumberPagination"
 )
-REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
+REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "openklant.components.utils.schema.AutoSchema"
 
 SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "CAMELIZE_NAMES": True,
     "SCHEMA_PATH_PREFIX": r"/v[0-9]+",
     "SCHEMA_PATH_PREFIX_TRIM": True,
+    "ENUM_GENERATE_CHOICE_DESCRIPTION": False,
     "POSTPROCESSING_HOOKS": [
         "drf_spectacular.hooks.postprocess_schema_enums",
         "drf_spectacular.contrib.djangorestframework_camel_case.camelize_serializer_fields",
