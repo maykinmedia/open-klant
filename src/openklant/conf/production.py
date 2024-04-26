@@ -52,15 +52,3 @@ SECURE_BROWSER_XSS_FILTER = True  # Sets X-XSS-Protection: 1; mode=block
 # Custom settings overrides
 #
 SHOW_ALERT = False
-
-##############################
-#                            #
-# 3RD PARTY LIBRARY SETTINGS #
-#                            #
-##############################
-
-# APM
-MIDDLEWARE = ["elasticapm.contrib.django.middleware.TracingMiddleware"] + MIDDLEWARE
-INSTALLED_APPS = INSTALLED_APPS + [
-    "elasticapm.contrib.django",
-]
