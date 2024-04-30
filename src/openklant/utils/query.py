@@ -1,5 +1,3 @@
-# SPDX-License-Identifier: EUPL-1.2
-# Copyright (C) 2024 Dimpact
 from drf_spectacular.contrib.django_filters import DjangoFilterExtension
 from vng_api_common.utils import underscore_to_camel
 
