@@ -1,5 +1,4 @@
 from django.db import transaction
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
@@ -76,7 +75,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
         if not status and self.instance:
             status = self.instance.status
 
-        if attrs.get("afgehandeld_op") and status == Taakstatus.te_verwerken.value:
+        if attrs.get("afgehandeld_op") and status != Taakstatus.verwerkt:
             raise serializers.ValidationError(
                 {
                     "afgehandeld_op": _(
@@ -92,22 +91,16 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         actor_uuid = str(validated_data.pop("actor").get("uuid"))
         klantcontact_uuid = str(validated_data.pop("klantcontact").get("uuid"))
-        afgehandeld_op = validated_data.pop("afgehandeld_op", timezone.now())
 
         validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
         validated_data["klantcontact"] = Klantcontact.objects.get(
             uuid=klantcontact_uuid
         )
 
-        if validated_data.get("status") == Taakstatus.verwerkt:
-            validated_data["afgehandeld_op"] = afgehandeld_op
-
         return super().create(validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        afgehandeld_op = validated_data.pop("afgehandeld_op", timezone.now())
-
         if "actor" in validated_data:
             if actor := validated_data.pop("actor", None):
                 validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
@@ -117,18 +110,6 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
                 validated_data["klantcontact"] = Klantcontact.objects.get(
                     uuid=str(klantcontact.get("uuid"))
                 )
-
-        if (
-            not self.instance.afgehandeld_op
-            and validated_data.get("status") == Taakstatus.verwerkt
-        ):
-            validated_data["afgehandeld_op"] = afgehandeld_op
-
-        if (
-            self.instance.afgehandeld_op
-            and validated_data.get("status") == Taakstatus.te_verwerken
-        ):
-            validated_data["afgehandeld_op"] = None
 
         return super().update(instance, validated_data)
 
