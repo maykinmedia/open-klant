@@ -246,6 +246,9 @@ if LOG_QUERIES and not DEBUG:
 
 LOGGING_DIR = os.path.join(BASE_DIR, "log")
 
+_root_handlers = ["console"] if LOG_STDOUT else ["project"]
+_django_handlers = ["console"] if LOG_STDOUT else ["django"]
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -319,13 +322,22 @@ LOGGING = {
         },
     },
     "loggers": {
+        "": {
+            "handlers": _root_handlers,
+            "level": "ERROR",
+            "propagate": False,
+        },
         "openklant": {
-            "handlers": ["project"] if not LOG_STDOUT else ["console"],
+            "handlers": _root_handlers,
             "level": LOG_LEVEL,
             "propagate": True,
         },
+        "mozilla_django_oidc": {
+            "handlers": _root_handlers,
+            "level": LOG_LEVEL,
+        },
         "django.request": {
-            "handlers": ["django"] if not LOG_STDOUT else ["console"],
+            "handlers": _django_handlers,
             "level": LOG_LEVEL,
             "propagate": True,
         },
@@ -333,10 +345,6 @@ LOGGING = {
             "handlers": ["console"],
             "level": "INFO",
             "propagate": True,
-        },
-        "mozilla_django_oidc": {
-            "handlers": ["project"],
-            "level": LOG_LEVEL,
         },
         "log_outgoing_requests": {
             "handlers": (
