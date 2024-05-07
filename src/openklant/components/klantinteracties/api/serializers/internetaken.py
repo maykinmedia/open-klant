@@ -72,7 +72,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
 
     def validate(self, attrs):
         status = attrs.get("status", None)
-        if not status and self.instance:
+        if status is None and self.instance is not None:
             status = self.instance.status
 
         if attrs.get("afgehandeld_op") and status != Taakstatus.verwerkt:
@@ -80,8 +80,8 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
                 {
                     "afgehandeld_op": _(
                         "De Internetaak kan geen afgehandeld op datum bevatten "
-                        "als de status nog in '{te_verwerken}' staat."
-                    ).format(te_verwerken=Taakstatus.te_verwerken.value)
+                        "als de status niet op '{verwerkt}' staat."
+                    ).format(verwerkt=Taakstatus.verwerkt)
                 }
             )
 

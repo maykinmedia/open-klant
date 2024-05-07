@@ -147,7 +147,7 @@ class InterneTaakTests(APITestCase):
             self.assertEqual(response_data["invalidParams"][0]["name"], "afgehandeldOp")
             self.assertEqual(
                 response_data["invalidParams"][0]["reason"],
-                "De Internetaak kan geen afgehandeld op datum bevatten als de status nog in 'te_verwerken' staat.",
+                "De Internetaak kan geen afgehandeld op datum bevatten als de status niet op 'verwerkt' staat.",
             )
 
     def test_create_internetaak_with_afgehandeld_op_date(self):
@@ -306,7 +306,7 @@ class InterneTaakTests(APITestCase):
             self.assertEqual(data["invalidParams"][0]["name"], "afgehandeldOp")
             self.assertEqual(
                 data["invalidParams"][0]["reason"],
-                "De Internetaak kan geen afgehandeld op datum bevatten als de status nog in 'te_verwerken' staat.",
+                "De Internetaak kan geen afgehandeld op datum bevatten als de status niet op 'verwerkt' staat.",
             )
 
     def test_partial_update_internetaak(self):

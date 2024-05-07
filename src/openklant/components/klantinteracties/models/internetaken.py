@@ -88,10 +88,12 @@ class InterneTaak(models.Model):
 
     def save(self, *args, **kwargs):
         number_generator(self, InterneTaak)
-        if not self.afgehandeld_op and self.status == Taakstatus.verwerkt:
-            self.afgehandeld_op = timezone.now()
-        if self.afgehandeld_op and self.status == Taakstatus.te_verwerken:
-            self.afgehandeld_op = None
+        if self.afgehandeld_op is None:
+            if self.status == Taakstatus.verwerkt:
+                self.afgehandeld_op = timezone.now()
+        else:
+            if self.status == Taakstatus.te_verwerken:
+                self.afgehandeld_op = None
         return super().save(*args, **kwargs)
 
     def __str__(self):
