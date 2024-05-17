@@ -41,11 +41,6 @@ LOGGING["loggers"].update(
             "level": "DEBUG",
             "propagate": True,
         },
-        "django.db.backends": {
-            "handlers": ["django"],
-            "level": "DEBUG",
-            "propagate": False,
-        },
         "performance": {
             "handlers": ["console"],
             "level": "INFO",
@@ -62,6 +57,9 @@ LOGGING["loggers"].update(
         },
     }
 )
+
+if not LOG_QUERIES:
+    LOGGING["loggers"]["django.db.backends"]["handlers"] = ["django"]
 
 # in memory cache and django-axes don't get along.
 # https://django-axes.readthedocs.io/en/latest/configuration.html#known-configuration-problems

@@ -1,8 +1,10 @@
 import os
+import warnings
 
 from django.urls import reverse_lazy
 
 import sentry_sdk
+from corsheaders.defaults import default_headers as default_cors_headers
 from log_outgoing_requests.formatters import HttpFormatter
 
 from .api import *  # noqa
@@ -31,6 +33,7 @@ DEBUG = config("DEBUG", default=False)
 
 # = domains we're running on
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", split=True)
+USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST", default=False)
 
 IS_HTTPS = config("IS_HTTPS", default=not DEBUG)
 
@@ -54,7 +57,7 @@ USE_THOUSAND_SEPARATOR = True
 #
 DATABASES = {
     "default": {
-        "ENGINE": config("DB_ENGINE", "django.db.backends.postgresql"),
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": config("DB_NAME", "openklant"),
         "USER": config("DB_USER", "openklant"),
         "PASSWORD": config("DB_PASSWORD", "openklant"),
@@ -84,7 +87,14 @@ CACHES = {
             "IGNORE_EXCEPTIONS": True,
         },
     },
-    "oidc": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
+    "oidc": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{config('CACHE_OIDC', 'localhost:6379/0')}",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "IGNORE_EXCEPTIONS": True,
+        },
+    },
 }
 
 
@@ -219,15 +229,25 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=False)
 EMAIL_TIMEOUT = 10
 
-DEFAULT_FROM_EMAIL = "openklant@example.com"
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", "openklant@example.com")
 
 #
 # LOGGING
 #
 LOG_STDOUT = config("LOG_STDOUT", default=False)
-LOG_REQUESTS = config("LOG_REQUESTS", default=True)
+LOG_LEVEL = config("LOG_LEVEL", default="WARNING")
+LOG_QUERIES = config("LOG_QUERIES", default=False)
+LOG_REQUESTS = config("LOG_REQUESTS", default=False)
+if LOG_QUERIES and not DEBUG:
+    warnings.warn(
+        "Requested LOG_QUERIES=1 but DEBUG is false, no query logs will be emited.",
+        RuntimeWarning,
+    )
 
 LOGGING_DIR = os.path.join(BASE_DIR, "log")
+
+_root_handlers = ["console"] if LOG_STDOUT else ["project"]
+_django_handlers = ["console"] if LOG_STDOUT else ["django"]
 
 LOGGING = {
     "version": 1,
@@ -241,6 +261,7 @@ LOGGING = {
         "performance": {
             "format": "%(asctime)s %(process)d | %(thread)d | %(message)s",
         },
+        "db": {"format": "%(asctime)s | %(message)s"},
         "outgoing_requests": {"()": HttpFormatter},
     },
     "filters": {
@@ -260,6 +281,11 @@ LOGGING = {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "timestamped",
+        },
+        "console_db": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "db",
         },
         "django": {
             "level": "DEBUG",
@@ -296,24 +322,29 @@ LOGGING = {
         },
     },
     "loggers": {
+        "": {
+            "handlers": _root_handlers,
+            "level": "ERROR",
+            "propagate": False,
+        },
         "openklant": {
-            "handlers": ["project"] if not LOG_STDOUT else ["console"],
-            "level": "INFO",
+            "handlers": _root_handlers,
+            "level": LOG_LEVEL,
             "propagate": True,
         },
+        "mozilla_django_oidc": {
+            "handlers": _root_handlers,
+            "level": LOG_LEVEL,
+        },
         "django.request": {
-            "handlers": ["django"] if not LOG_STDOUT else ["console"],
-            "level": "ERROR",
+            "handlers": _django_handlers,
+            "level": LOG_LEVEL,
             "propagate": True,
         },
         "django.template": {
             "handlers": ["console"],
             "level": "INFO",
             "propagate": True,
-        },
-        "mozilla_django_oidc": {
-            "handlers": ["project"],
-            "level": "DEBUG",
         },
         "log_outgoing_requests": {
             "handlers": (
@@ -323,6 +354,11 @@ LOGGING = {
             ),
             "level": "DEBUG",
             "propagate": True,
+        },
+        "django.db.backends": {
+            "handlers": ["console_db"] if LOG_QUERIES else [],
+            "level": "DEBUG",
+            "propagate": False,
         },
     },
 }
@@ -455,6 +491,19 @@ IPWARE_META_PRECEDENCE_ORDER = (
 )
 
 #
+# DJANGO-CORS-MIDDLEWARE
+#
+CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS", default=False)
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", split=True, default=[])
+CORS_ALLOWED_ORIGIN_REGEXES = config(
+    "CORS_ALLOWED_ORIGIN_REGEXES", split=True, default=[]
+)
+# Authorization is included in default_cors_headers
+CORS_ALLOW_HEADERS = list(default_cors_headers) + config(
+    "CORS_EXTRA_ALLOW_HEADERS", split=True, default=[]
+)
+
+#
 # RAVEN/SENTRY - error monitoring
 #
 SENTRY_DSN = config("SENTRY_DSN", None)
@@ -472,17 +521,24 @@ if SENTRY_DSN:
         send_default_pii=True,
     )
 
+#
 # Elastic APM
-ELASTIC_APM_SERVER_URL = os.getenv("ELASTIC_APM_SERVER_URL", None)
+#
+ELASTIC_APM_SERVER_URL = config("ELASTIC_APM_SERVER_URL", None)
 ELASTIC_APM = {
-    "SERVICE_NAME": f"openklant {ENVIRONMENT}",
+    "SERVICE_NAME": f"Open Klant - {ENVIRONMENT}",
     "SECRET_TOKEN": config("ELASTIC_APM_SECRET_TOKEN", "default"),
     "SERVER_URL": ELASTIC_APM_SERVER_URL,
+    "TRANSACTION_SAMPLE_RATE": config("ELASTIC_APM_TRANSACTION_SAMPLE_RATE", 0.1),
 }
 if not ELASTIC_APM_SERVER_URL:
     ELASTIC_APM["ENABLED"] = False
     ELASTIC_APM["SERVER_URL"] = "http://localhost:8200"
-
+else:
+    MIDDLEWARE = ["elasticapm.contrib.django.middleware.TracingMiddleware"] + MIDDLEWARE
+    INSTALLED_APPS = INSTALLED_APPS + [
+        "elasticapm.contrib.django",
+    ]
 
 #
 # Mozilla Django OIDC DB settings
@@ -497,8 +553,6 @@ MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
 LOG_OUTGOING_REQUESTS_EMIT_BODY = True
 LOG_OUTGOING_REQUESTS_DB_SAVE = config("LOG_OUTGOING_REQUESTS_DB_SAVE", default=False)
 LOG_OUTGOING_REQUESTS_RESET_DB_SAVE_AFTER = None
-
-# Custom settings
 LOG_OUTGOING_REQUESTS_MAX_AGE = config(
     "LOG_OUTGOING_REQUESTS_MAX_AGE", default=7
 )  # number of days
