@@ -1,2 +1,1 @@
-open-api-framework
-django-log-outgoing-requests
+git+https://github.com/maykinmedia/open-api-framework.git@feature/extend-base-settings
