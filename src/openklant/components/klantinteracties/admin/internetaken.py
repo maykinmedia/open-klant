@@ -17,6 +17,7 @@ class InterneTaakAdmin(admin.ModelAdmin):
         "nummer",
         "status",
         "toegewezen_op",
+        "afgehandeld_op",
     )
     list_filter = (
         "actor",

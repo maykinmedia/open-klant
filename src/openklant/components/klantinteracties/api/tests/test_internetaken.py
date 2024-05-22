@@ -1,6 +1,8 @@
+from freezegun import freeze_time
 from rest_framework import status
 from vng_api_common.tests import reverse
 
+from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
 )
@@ -36,6 +38,7 @@ class InterneTaakTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    @freeze_time("2024-01-01T12:00:00Z")
     def test_create_internetaak(self):
         actor = ActorFactory.create()
         klantcontact = KlantcontactFactory.create()
@@ -65,6 +68,9 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(response_data["toelichting"], "toelichting")
         self.assertEqual(response_data["status"], "verwerkt")
+        self.assertTrue(
+            InterneTaak.objects.filter(afgehandeld_op="2024-01-01T12:00:00Z").exists()
+        )
 
         with self.subTest("auto_generate_max_nummer_plus_one"):
             data["nummer"] = ""
@@ -98,6 +104,87 @@ class InterneTaakTests(APITestCase):
                 "Het maximaal aantal tekens is bereikt.",
             )
 
+    @freeze_time("2024-01-01T12:00:00Z")
+    def test_create_internetaak_with_status_te_verwerken(self):
+        actor = ActorFactory.create()
+        klantcontact = KlantcontactFactory.create()
+
+        list_url = reverse("klantinteracties:internetaak-list")
+        data = {
+            "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
+            "nummer": "1312312312",
+            "gevraagdeHandeling": "gevraagdeHandeling",
+            "toelichting": "toelichting",
+            "status": "te_verwerken",
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response_data = response.json()
+
+        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor.uuid))
+        self.assertEqual(
+            response_data["aanleidinggevendKlantcontact"]["uuid"],
+            str(klantcontact.uuid),
+        )
+        self.assertEqual(response_data["nummer"], "1312312312")
+        self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
+        self.assertEqual(response_data["toelichting"], "toelichting")
+        self.assertEqual(response_data["status"], "te_verwerken")
+        self.assertFalse(
+            InterneTaak.objects.filter(afgehandeld_op="2024-01-01T12:00:00Z").exists()
+        )
+
+        with self.subTest("validate_afgehandeld_op_error_with_te_verwerken_status"):
+            del data["nummer"]
+            data["afgehandeldOp"] = "2024-01-01T01:00:00Z"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(response_data["invalidParams"][0]["name"], "afgehandeldOp")
+            self.assertEqual(
+                response_data["invalidParams"][0]["reason"],
+                "De Internetaak kan geen afgehandeld op datum bevatten als de status niet op 'verwerkt' staat.",
+            )
+
+    def test_create_internetaak_with_afgehandeld_op_date(self):
+        actor = ActorFactory.create()
+        klantcontact = KlantcontactFactory.create()
+
+        list_url = reverse("klantinteracties:internetaak-list")
+        data = {
+            "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
+            "nummer": "1312312312",
+            "gevraagdeHandeling": "gevraagdeHandeling",
+            "toelichting": "toelichting",
+            "status": "verwerkt",
+            "afgehandeldOp": "2024-01-01T01:00:00Z",
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response_data = response.json()
+
+        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor.uuid))
+        self.assertEqual(
+            response_data["aanleidinggevendKlantcontact"]["uuid"],
+            str(klantcontact.uuid),
+        )
+        self.assertEqual(response_data["nummer"], "1312312312")
+        self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
+        self.assertEqual(response_data["toelichting"], "toelichting")
+        self.assertEqual(response_data["status"], "verwerkt")
+        self.assertTrue(
+            InterneTaak.objects.filter(afgehandeld_op="2024-01-01T01:00:00Z").exists()
+        )
+
+    @freeze_time("2024-01-01T12:00:00Z")
     def test_update_internetaak(self):
         actor, actor2 = ActorFactory.create_batch(2)
         klantcontact, klantcontact2 = KlantcontactFactory.create_batch(2)
@@ -107,7 +194,7 @@ class InterneTaakTests(APITestCase):
             nummer="1237713712",
             gevraagde_handeling="gevraagdeHandeling",
             toelichting="toelichting",
-            status="verwerkt",
+            status="te_verwerken",
         )
         detail_url = reverse(
             "klantinteracties:internetaak-detail",
@@ -123,7 +210,7 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(data["nummer"], "1237713712")
         self.assertEqual(data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(data["toelichting"], "toelichting")
-        self.assertEqual(data["status"], "verwerkt")
+        self.assertEqual(data["status"], "te_verwerken")
 
         data = {
             "toegewezenAanActor": {"uuid": str(actor2.uuid)},
@@ -131,7 +218,7 @@ class InterneTaakTests(APITestCase):
             "nummer": "9999999999",
             "gevraagdeHandeling": "changed",
             "toelichting": "changed",
-            "status": "te_verwerken",
+            "status": "verwerkt",
         }
 
         response = self.client.put(detail_url, data)
@@ -147,7 +234,80 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(data["nummer"], "9999999999")
         self.assertEqual(data["gevraagdeHandeling"], "changed")
         self.assertEqual(data["toelichting"], "changed")
-        self.assertEqual(data["status"], "te_verwerken")
+        self.assertEqual(data["status"], "verwerkt")
+        self.assertTrue(
+            InterneTaak.objects.filter(afgehandeld_op="2024-01-01T12:00:00Z").exists()
+        )
+
+        with freeze_time("2024-01-01T12:20:00Z") and self.subTest(
+            "updating_on_later_date_does_not_change_afgehandeld_op"
+        ):
+            response = self.client.put(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertFalse(
+                InterneTaak.objects.filter(
+                    afgehandeld_op="2024-01-01T12:20:00Z"
+                ).exists()
+            )
+
+        with self.subTest(
+            "changing_status_back_to_te_verwerken_clears_afgehandeld_op_field"
+        ):
+            data = {
+                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
+                "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
+                "gevraagdeHandeling": "changed",
+                "status": "te_verwerken",
+            }
+            response = self.client.put(detail_url, data)
+            data = response.json()
+            self.assertEqual(data["status"], "te_verwerken")
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(InterneTaak.objects.count(), 1)
+            self.assertIsNone(InterneTaak.objects.first().afgehandeld_op)
+
+        with self.subTest("with_afgehandeld_op_data_value"):
+            data = {
+                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
+                "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
+                "gevraagdeHandeling": "changed",
+                "status": "verwerkt",
+                "afgehandeldOp": "2024-01-01T01:00:00Z",
+            }
+            response = self.client.put(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+
+            self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor2.uuid))
+            self.assertEqual(
+                data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact2.uuid)
+            )
+            self.assertEqual(data["nummer"], "9999999999")
+            self.assertEqual(data["gevraagdeHandeling"], "changed")
+            self.assertEqual(data["toelichting"], "changed")
+            self.assertEqual(data["status"], "verwerkt")
+            self.assertTrue(
+                InterneTaak.objects.filter(
+                    afgehandeld_op="2024-01-01T01:00:00Z"
+                ).exists()
+            )
+
+        with self.subTest("validate_afgehandeld_op_error_with_te_verwerken_status"):
+            data = {
+                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
+                "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
+                "gevraagdeHandeling": "changed",
+                "status": "te_verwerken",
+                "afgehandeldOp": "2024-01-01T01:00:00Z",
+            }
+            response = self.client.put(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(data["invalidParams"][0]["name"], "afgehandeldOp")
+            self.assertEqual(
+                data["invalidParams"][0]["reason"],
+                "De Internetaak kan geen afgehandeld op datum bevatten als de status niet op 'verwerkt' staat.",
+            )
 
     def test_partial_update_internetaak(self):
         actor = ActorFactory.create()

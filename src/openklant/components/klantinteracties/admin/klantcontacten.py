@@ -3,8 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
 
-from ..admin.internezaken import InterneTaakInlineAdmin
 from ..models.klantcontacten import Betrokkene, Bijlage, Klantcontact, Onderwerpobject
+from .internetaken import InterneTaakInlineAdmin
 
 
 class BetrokkeneInlineAdmin(admin.StackedInline):

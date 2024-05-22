@@ -11,6 +11,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
 )
 from openklant.components.klantinteracties.api.validators import internetaak_exists
 from openklant.components.klantinteracties.models.actoren import Actor
+from openklant.components.klantinteracties.models.constants import Taakstatus
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import Klantcontact
 
@@ -58,6 +59,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             "toelichting",
             "status",
             "toegewezen_op",
+            "afgehandeld_op",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
@@ -67,6 +69,23 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": _("De unieke URL van deze interne taak binnen deze API."),
             },
         }
+
+    def validate(self, attrs):
+        status = attrs.get("status", None)
+        if status is None and self.instance is not None:
+            status = self.instance.status
+
+        if attrs.get("afgehandeld_op") and status != Taakstatus.verwerkt:
+            raise serializers.ValidationError(
+                {
+                    "afgehandeld_op": _(
+                        "De Internetaak kan geen afgehandeld op datum bevatten "
+                        "als de status niet op '{verwerkt}' staat."
+                    ).format(verwerkt=Taakstatus.verwerkt)
+                }
+            )
+
+        return super().validate(attrs)
 
     @transaction.atomic
     def create(self, validated_data):
