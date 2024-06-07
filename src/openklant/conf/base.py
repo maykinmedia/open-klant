@@ -437,6 +437,7 @@ else:
     GIT_SHA = None
 
 RELEASE = config("RELEASE", GIT_SHA)
+ENVIRONMENT_SHOWN_IN_ADMIN = True
 
 NUM_PROXIES = config(  # TODO: this also is relevant for DRF settings if/when we have rate-limited endpoints
     "NUM_PROXIES",
