@@ -46,6 +46,12 @@ DO NOT PUT ANY TARGET APP-SPECIFIC RULES HERE.
   --object-tools-bg: #888;
   --object-tools-hover-bg: #{$color_dark};
 
+  // version styling
+  --version-fg: #{$color-secondary-dark};
+
+  // environment styling
+  --environment-button-fg: #{$color-secondary};
+
   // custom variables
   --form-input-bg: var(--body-bg);
   --react-tab-border-color: #{$color-secondary-dark};
@@ -261,43 +267,6 @@ div.breadcrumbs {
 .datetimeshortcuts .date-icon {
   @include icon-override('../img/admin/calendar-alt-regular.svg');
   background: none !important;
-}
-
-/* Footer */
-.login .version {
-  text-align: center;
-}
-.version {
-  padding: 0 30px;
-  color: $color_secondary_dark;
-  font-size: smaller;
-}
-
-#footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/**
- * Environment banner
- */
-.env {
-  display: block;
-  line-height: 35px;
-  text-align: center;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: $color_secondary;
-  background-color: $color_dark;
-  position: fixed;
-  top: 0;
-  height: 35px;
-  width: 300px;
-  left: 50%;
-  margin-left: -150px;
-  z-index: 1000001;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
 }
 
 /**
