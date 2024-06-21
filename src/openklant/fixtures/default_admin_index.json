@@ -105,7 +105,7 @@
                 "totpdevice"
             ],
             [
-                "two_factor_webauth",
+                "two_factor_webauthn",
                 "webauthndevice"
             ]
         ]
