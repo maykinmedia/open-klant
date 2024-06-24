@@ -46,12 +46,6 @@ DO NOT PUT ANY TARGET APP-SPECIFIC RULES HERE.
   --object-tools-bg: #888;
   --object-tools-hover-bg: #{$color_dark};
 
-  // version styling
-  --version-fg: #{$color-secondary-dark};
-
-  // environment styling
-  --environment-button-fg: #{$color-secondary};
-
   // custom variables
   --form-input-bg: var(--body-bg);
   --react-tab-border-color: #{$color-secondary-dark};
@@ -62,6 +56,12 @@ DO NOT PUT ANY TARGET APP-SPECIFIC RULES HERE.
   --input-group-text-bg: #{$color-secondary-dark};
   --input-group-text-fg: #{$color-dark};
   --formio-dropdown-highlighted-bg: #f2f2f2;
+
+  // version styling
+  --version-fg: var(--body-quiet-color);
+
+  // environment styling
+  --env-button-fg: #{$color-secondary};
 }
 
 @media (prefers-color-scheme: dark) {

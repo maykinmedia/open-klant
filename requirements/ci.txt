@@ -29,11 +29,6 @@ asn1crypto==1.5.1
     #   webauthn
 astroid==3.1.0
     # via pylint
-async-timeout==4.0.3
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   redis
 attrs==23.2.0
     # via
     #   -c requirements/base.txt
@@ -484,7 +479,7 @@ notifications-api-common==0.2.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework @ git+https://github.com/maykinmedia/open-api-framework@bd51d3f592b4f1088e2233f98c90c6fd67c60e0c
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework@b6164c606e3f7a6dd4d5a47a5b0e6ab486707d36
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
