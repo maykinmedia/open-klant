@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 import sentry_sdk
 from corsheaders.defaults import default_headers as default_cors_headers
 from log_outgoing_requests.formatters import HttpFormatter
-from open_api_framework.conf.base import TEMPLATES, TEMPLATE_LOADERS  # noqa
+from open_api_framework.conf.base import TEMPLATE_LOADERS, TEMPLATES  # noqa
 
 from .api import *  # noqa
 from .includes.environ import config, get_sentry_integrations
