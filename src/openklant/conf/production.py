@@ -52,3 +52,5 @@ SECURE_BROWSER_XSS_FILTER = True  # Sets X-XSS-Protection: 1; mode=block
 # Custom settings overrides
 #
 SHOW_ALERT = False
+
+ENVIRONMENT_SHOWN_IN_ADMIN = False
