@@ -2,19 +2,38 @@
 Change history
 ==============
 
+2.1.0
+=====
+
+*??? ???, 2024*
+
+New features:
+
+* Add support for mounting Open Klant on a ``SUBPATH``
+* Elastic APM service name can now be configured with ``ELASTIC_APM_SERVICE_NAME`` envvar
+
+.. warning::
+
+    The service name for Elastic APM is now configurable via the ``ELASTIC_APM_SERVICE_NAME`` environment variable.
+    The default value changed from ``Open Klant - <ENVIRONMENT>`` to ``openklant - <ENVIRONMENT>``
+
+Bugfixes/QoL:
+* Settings module was refactored to use generic settings provided by Open API Framework
+
+
 2.0.0
 =====
 
 *March 15, 2024*
 
 *VNG officially retired the Klanten and Contactmomenten API, which never had an
-official release. These API's are replaced by the Klantinteractie API. In 
-cooperation with several municipalities and VNG, Open Klant will implement the 
+official release. These API's are replaced by the Klantinteractie API. In
+cooperation with several municipalities and VNG, Open Klant will implement the
 new API specification and might introduce backwards incompatible changes. Since
-Open Klant never had an official 1.0 release, we will continue versioning on 
+Open Klant never had an official 1.0 release, we will continue versioning on
 the 0.x.x-scheme.*
 
-* Initial release of Open Klant featuring the first iteration of the 
+* Initial release of Open Klant featuring the first iteration of the
   Klantinteracties API.
 
 1.0.0

@@ -1,6 +1,6 @@
 import os
 
-from .includes.environ import config
+from open_api_framework.conf.utils import config
 
 os.environ.setdefault("DB_USER", config("DATABASE_USER", "postgres"))
 os.environ.setdefault("DB_NAME", config("DATABASE_NAME", "postgres"))

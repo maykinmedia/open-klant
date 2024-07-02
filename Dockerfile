@@ -3,6 +3,7 @@ FROM python:3.11-slim-bookworm AS build
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
         pkg-config \
+        git \
         build-essential \
         libpq-dev \
     && rm -rf /var/lib/apt/lists/*

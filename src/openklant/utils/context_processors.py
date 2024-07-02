@@ -5,7 +5,6 @@ def settings(request):
     public_settings = (
         "GOOGLE_ANALYTICS_ID",
         "ENVIRONMENT",
-        "SHOW_ALERT",
         "SITE_TITLE",
         "PROJECT_NAME",
         "VNG_COMPONENTS_BRANCH",
