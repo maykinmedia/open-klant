@@ -7,11 +7,12 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 
+from maykin_2fa import monkeypatch_admin
+from maykin_2fa.urls import urlpatterns, webauthn_urlpatterns
+
 from openklant.accounts.views.password_reset import PasswordResetView
 
-# from two_factor.admin import AdminSiteOTPRequired
-# from two_factor.urls import urlpatterns as tf_urls
-
+monkeypatch_admin()
 
 handler500 = "openklant.utils.views.server_error"
 admin.site.site_header = "openklant admin"
@@ -33,6 +34,9 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(),
         name="password_reset_done",
     ),
+    # 2fa
+    path("admin/", include((urlpatterns, "maykin_2fa"))),
+    path("admin/", include((webauthn_urlpatterns, "two_factor"))),
     path("admin/", admin.site.urls),
     # path("admin/", include(tf_urls)),
     path(
