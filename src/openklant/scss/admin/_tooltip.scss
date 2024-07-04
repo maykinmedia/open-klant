@@ -66,12 +66,41 @@ div.help {
   
         background-color: #fffeaa;
         border: solid 1px #f7f071;
-  
         color: #000;
       }
     }
   }
-  
+
+/**
+ * Help text for datetime field is without inner div
+ */
+div.help:not(:has(div)) {
+  cursor: help;
+  width: 16px;
+  height: 16px;
+  background-image: url(../admin/img/icon-unknown.svg);
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: 14px;
+  margin-left: 8px !important;
+  margin-top: 6px !important;
+  position: absolute;
+  text-indent: -9999px;
+
+  &:hover {
+    text-indent: inherit;
+    width: auto;
+    background-image: none;
+    background-color: #fffeaa;
+    border: solid 1px #f7f071;
+    color: #000;
+    padding: 5px 5px 3px 5px !important;
+    max-width: 300px;
+    height: auto !important;
+    margin-top: 2px !important;
+    z-index: 10;
+  }
+}
   // Unsure why Django hides the overflow here :/
   .form-row:has(.help) {
     overflow: visible;
