@@ -1,4 +1,4 @@
-from django.test import override_settings, tag
+from django.test import override_settings
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext
 
@@ -14,7 +14,7 @@ LOGIN_URL = reverse_lazy("admin:login")
     MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS=[],  # enforce MFA
 )
 class RecoveryTokenTests(WebTest):
-    @tag("gh-4072")
+
     def test_can_enter_recovery_token(self):
         user = SuperUserFactory.create(
             with_totp_device=True,
