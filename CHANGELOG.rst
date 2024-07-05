@@ -11,13 +11,21 @@ New features:
 
 * Add support for mounting Open Klant on a ``SUBPATH``
 * Elastic APM service name can now be configured with ``ELASTIC_APM_SERVICE_NAME`` envvar
+* Made user emails unique to prevent two users logging in with the same email, causing an error
 
 .. warning::
 
     The service name for Elastic APM is now configurable via the ``ELASTIC_APM_SERVICE_NAME`` environment variable.
     The default value changed from ``Open Klant - <ENVIRONMENT>`` to ``openklant - <ENVIRONMENT>``
 
+.. warning::
+    User email addresses will now be unique on a database level. The database migration will fail if there are already
+    two or more users with the same email address. You must ensure this is not the case before upgrading.
+
+
+
 Bugfixes/QoL:
+
 * Settings module was refactored to use generic settings provided by Open API Framework
 
 
