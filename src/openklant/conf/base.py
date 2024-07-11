@@ -7,8 +7,6 @@ init_sentry()
 #
 # APPLICATIONS enabled for this project
 #
-# FIXME implement 2fa
-INSTALLED_APPS.pop(INSTALLED_APPS.index("maykin_2fa"))
 INSTALLED_APPS = INSTALLED_APPS + [
     # Project applications.
     "openklant.accounts",
