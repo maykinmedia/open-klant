@@ -27,22 +27,6 @@
 
     {% endblock %}
 
-    {% block extra_content %}
-      <div class="cardlist">
-        <div class="cardlist__item">
-          <div class="card">
-              <h5 class="card__title"><i class="fas fa-cogs"></i> Runtime gedrag</h5>
-              <p>Beschrijving van de business logica (VNG Standaard).</p>
-              <a href="https://vng-realisatie.github.io/gemma-zaken/standaard/{{ component }}/" class="button button--primary">
-                {{ component|capfirst }} API
-                &nbsp;&nbsp;
-                <i class="fas fa-external-link-alt"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    {% endblock %}
-
     {% block admin_link %}
       <p>
         <a href="{% url 'admin:index' %}" class="button button--alert"><i class="fas fa-lock"></i> Beheer</a>
