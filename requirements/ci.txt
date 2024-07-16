@@ -29,6 +29,11 @@ asn1crypto==1.5.1
     #   webauthn
 astroid==3.1.0
     # via pylint
+async-timeout==4.0.3
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   redis
 attrs==23.2.0
     # via
     #   -c requirements/base.txt
@@ -479,7 +484,7 @@ notifications-api-common==0.2.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.4.2
+open-api-framework==0.5.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
