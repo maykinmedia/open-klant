@@ -5,13 +5,16 @@ Change history
 2.1.0
 =====
 
-*??? ???, 2024*
+*July 16, 2024*
 
-New features:
+**New features**:
 
 * Add support for mounting Open Klant on a ``SUBPATH``
 * Elastic APM service name can now be configured with ``ELASTIC_APM_SERVICE_NAME`` envvar
+* [#175] added expand for detail endpoints in redoc
 * Made user emails unique to prevent two users logging in with the same email, causing an error
+* [#183] added afgehandeld_op field for internetaken
+* [#189] Introduced two-factor authentification (2FA) for the Admin, which can be disabled by the environment variable ``DISABLE_2FA``
 
 .. warning::
 
@@ -22,11 +25,28 @@ New features:
     User email addresses will now be unique on a database level. The database migration will fail if there are already
     two or more users with the same email address. You must ensure this is not the case before upgrading.
 
+.. warning::
 
+    Two-factor authentication is enabled by default. The ``DISABLE_2FA`` environment variable
+    can be used to disable it if needed.
 
-Bugfixes/QoL:
+**Bugfixes/QoL**:
 
 * Settings module was refactored to use generic settings provided by Open API Framework
+* [#187] Streamline environment variables
+* Fix help-text icon for datetime field in the admin
+
+**Documentation**
+
+* [#196] remove links to outdated VNG documentation
+
+**Project maintenance**
+
+* [#179] Fix Trivy github action
+* Update to Python 3.11
+* [#155] use open-api-framework
+* [#188] remove unused notification settings
+* Refactor settings module
 
 
 2.0.0
