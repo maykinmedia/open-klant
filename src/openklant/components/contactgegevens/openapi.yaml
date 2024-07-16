@@ -404,6 +404,9 @@ components:
           minLength: 4
     PaginatedOrganisatieList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -424,6 +427,9 @@ components:
             $ref: '#/components/schemas/Organisatie'
     PaginatedPersoonList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -668,3 +674,6 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+tags:
+- name: organisaties
+- name: personen

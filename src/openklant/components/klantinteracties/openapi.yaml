@@ -3330,13 +3330,11 @@ components:
         afgehandeldOp:
           type: string
           format: date-time
-          readOnly: true
           nullable: true
           description: 'Datum en tijdstip wanneer de interne taak was afgehandeld:
             EXPERIMENTEEL.'
       required:
       - aanleidinggevendKlantcontact
-      - afgehandeldOp
       - gevraagdeHandeling
       - status
       - toegewezenAanActor
@@ -3560,6 +3558,9 @@ components:
           maxLength: 200
     PaginatedActorKlantcontactList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3580,6 +3581,9 @@ components:
             $ref: '#/components/schemas/ActorKlantcontact'
     PaginatedActorList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3600,6 +3604,9 @@ components:
             $ref: '#/components/schemas/Actor'
     PaginatedBetrokkeneList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3620,6 +3627,9 @@ components:
             $ref: '#/components/schemas/Betrokkene'
     PaginatedBijlageList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3640,6 +3650,9 @@ components:
             $ref: '#/components/schemas/Bijlage'
     PaginatedCategorieList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3660,6 +3673,9 @@ components:
             $ref: '#/components/schemas/Categorie'
     PaginatedCategorieRelatieList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3680,6 +3696,9 @@ components:
             $ref: '#/components/schemas/CategorieRelatie'
     PaginatedDigitaalAdresList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3700,6 +3719,9 @@ components:
             $ref: '#/components/schemas/DigitaalAdres'
     PaginatedExpandKlantcontactList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3720,6 +3742,9 @@ components:
             $ref: '#/components/schemas/ExpandKlantcontact'
     PaginatedExpandPartijList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3740,6 +3765,9 @@ components:
             $ref: '#/components/schemas/ExpandPartij'
     PaginatedInterneTaakList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3760,6 +3788,9 @@ components:
             $ref: '#/components/schemas/InterneTaak'
     PaginatedKlantcontactList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3780,6 +3811,9 @@ components:
             $ref: '#/components/schemas/Klantcontact'
     PaginatedOnderwerpobjectList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3800,6 +3834,9 @@ components:
             $ref: '#/components/schemas/Onderwerpobject'
     PaginatedPartijIdentificatorList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3820,6 +3857,9 @@ components:
             $ref: '#/components/schemas/PartijIdentificator'
     PaginatedPartijList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3840,6 +3880,9 @@ components:
             $ref: '#/components/schemas/Partij'
     PaginatedRekeningnummerList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -3860,6 +3903,9 @@ components:
             $ref: '#/components/schemas/Rekeningnummer'
     PaginatedVertegenwoordigdenList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -4504,7 +4550,6 @@ components:
         afgehandeldOp:
           type: string
           format: date-time
-          readOnly: true
           nullable: true
           description: 'Datum en tijdstip wanneer de interne taak was afgehandeld:
             EXPERIMENTEEL.'
@@ -4917,3 +4962,18 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+tags:
+- name: actoren
+- name: actor klantcontacten
+- name: betrokkenen
+- name: bijlagen
+- name: categorie relaties
+- name: categorieën
+- name: digitale adressen
+- name: interne taken
+- name: klanten contacten
+- name: onderwerpobjecten
+- name: partij-identificatoren
+- name: partijen
+- name: rekeningnummers
+- name: vertegenwoordigingen
