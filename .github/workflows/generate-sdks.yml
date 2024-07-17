@@ -1,0 +1,45 @@
+name: generate-sdks
+
+on:
+  push:
+    paths:
+      - "src/openklant/api/v*/openapi.yaml"
+      - ".github/workflows/generate-sdks.yml"
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ 'v1' ]
+
+    name: Run with version v${{ matrix.version }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - name: Install dependencies
+        run: npm install -g @openapitools/openapi-generator-cli
+      - name: Determing oas path
+        id: vars
+        run: echo ::set-output name=oas::./src/openklant/api/${{ matrix.version }}/openapi.yaml
+      - name: Validate schema
+        run: openapi-generator-cli validate -i ${{ steps.vars.outputs.oas }}
+      - name: Generate Java client
+        run: openapi-generator-cli generate -i ${{ steps.vars.outputs.oas }} --global-property=modelTests=false,apiTests=false,modelDocs=false,apiDocs=false \
+          -o ./sdks/java -g java --additional-properties=dateLibrary=java8,java8=true,optionalProjectFile=false,optionalAssemblyInfo=false
+#      - name: Generate .NET Core client
+#        run: openapi-generator-cli generate -i ${{ steps.vars.outputs.oas }} --global-property=modelTests=false,apiTests=false,modelDocs=false,apiDocs=false \
+#          -o ./sdks/netcore -g csharp-netcore --additional-properties=optionalProjectFile=false,optionalAssemblyInfo=false
+#      - name: Generate .NET Full Framework client
+#        run: openapi-generator-cli generate -i ${{ steps.vars.outputs.oas }} --global-property=modelTests=false,apiTests=false,modelDocs=false,apiDocs=false \
+#          -o ./sdks/net -g csharp --additional-properties=optionalProjectFile=false,optionalAssemblyInfo=false
+      - name: Generate Python client
+        run: openapi-generator-cli generate -i ${{ steps.vars.outputs.oas }} --global-property=modelTests=false,apiTests=false,modelDocs=false,apiDocs=false \
+          -o ./sdks/python -g python --additional-properties=optionalProjectFile=false,optionalAssemblyInfo=false+
