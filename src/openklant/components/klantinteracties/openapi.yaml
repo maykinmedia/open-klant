@@ -4962,3 +4962,18 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+tags:
+- name: actoren
+- name: actor klantcontacten
+- name: betrokkenen
+- name: bijlagen
+- name: categorie relaties
+- name: categorieën
+- name: digitale adressen
+- name: interne taken
+- name: klanten contacten
+- name: onderwerpobjecten
+- name: partij-identificatoren
+- name: partijen
+- name: rekeningnummers
+- name: vertegenwoordigingen
