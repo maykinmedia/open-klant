@@ -2,6 +2,9 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
+from openklant.components.klantinteracties.api.filterset.digitaal_adres import (
+    DigitaalAdresFilterSet,
+)
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
     DigitaalAdresSerializer,
 )
@@ -50,5 +53,6 @@ class DigitaalAdresViewSet(viewsets.ModelViewSet):
     serializer_class = DigitaalAdresSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
+    filterset_class = DigitaalAdresFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
