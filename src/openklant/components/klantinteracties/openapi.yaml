@@ -2752,7 +2752,8 @@ components:
         hadKlantcontact:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
-          description: Persoon of organisatie die betrokken was bij een klantcontact.
+          description: Het klantcontact waar deze persoon of organisatie bij betrokken
+            was.
         digitaleAdressen:
           type: array
           items:
@@ -4332,7 +4333,8 @@ components:
         hadKlantcontact:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
-          description: Persoon of organisatie die betrokken was bij een klantcontact.
+          description: Het klantcontact waar deze persoon of organisatie bij betrokken
+            was.
         digitaleAdressen:
           type: array
           items:

@@ -159,7 +159,9 @@ class BetrokkeneSerializer(
     had_klantcontact = KlantcontactForeignKeySerializer(
         required=True,
         allow_null=False,
-        help_text=_("Persoon of organisatie die betrokken was bij een klantcontact."),
+        help_text=_(
+            "Het klantcontact waar deze persoon of organisatie bij betrokken was."
+        ),
         source="klantcontact",
     )
     digitale_adressen = DigitaalAdresForeignKeySerializer(
