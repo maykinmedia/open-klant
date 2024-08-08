@@ -21,30 +21,30 @@ class KlantcontactDetailFilterSet(FilterSet):
 
 class KlantcontactFilterSet(FilterSet):
     had_betrokkene__url = filters.CharFilter(
-        help_text=_("Zoek klantcontact object op basis van het betrokkene url"),
+        help_text=_("Zoek klantcontact object op basis van het betrokkene url."),
         method="filter_betrokkene_url",
     )
     had_betrokkene__uuid = filters.UUIDFilter(
-        help_text=_("Zoek klantcontact object op basis van het betrokkene uuid"),
+        help_text=_("Zoek klantcontact object op basis van het betrokkene uuid."),
         field_name="betrokkene__uuid",
     )
     onderwerpobject__url = filters.CharFilter(
-        help_text=_("Zoek klantcontact object op basis van het onderwerpobject url"),
+        help_text=_("Zoek klantcontact object op basis van het onderwerpobject url."),
         method="filter_onderwerpobject_url",
     )
     was_onderwerpobject__url = filters.CharFilter(
         help_text=_(
-            "Zoek was klantcontact object op basis van het onderwerpobject url"
+            "Zoek was klantcontact object op basis van het onderwerpobject url."
         ),
         method="filter_was_onderwerpobject_url",
     )
     inhoud = filters.CharFilter(
         lookup_expr="icontains",
-        help_text=_("Zoek klantcontacten met specifieke tekst in inhoud"),
+        help_text=_("Zoek klantcontacten met specifieke tekst in inhoud."),
     )
     onderwerp = filters.CharFilter(
         lookup_expr="icontains",
-        help_text=_("Zoek klantcontacten met specifieke tekst in onderwerp"),
+        help_text=_("Zoek klantcontacten met specifieke tekst in onderwerp."),
     )
 
     expand = ExpandFilter(serializer_class=KlantcontactSerializer)

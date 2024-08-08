@@ -1174,3 +1174,106 @@ class InterneTaakFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             self.assertEqual(response.json()["count"], 0)
+
+
+class DigitaalAdresFilterSetTests(APITestCase):
+    url = reverse("klantinteracties:digitaaladres-list")
+
+    def setUp(self):
+        super().setUp()
+        (
+            self.betrokkene,
+            self.betrokkene2,
+            self.betrokkene3,
+            self.betrokkene4,
+            self.betrokkene5,
+        ) = BetrokkeneFactory.create_batch(5)
+        (
+            self.partij,
+            self.partij2,
+            self.partij3,
+            self.partij4,
+            self.partij5,
+        ) = PartijFactory.create_batch(5)
+        self.digitaal_adres = DigitaalAdresFactory.create(
+            partij=self.partij, betrokkene=self.betrokkene
+        )
+        self.digitaal_adres2 = DigitaalAdresFactory.create(
+            partij=self.partij2, betrokkene=self.betrokkene2
+        )
+        self.digitaal_adres3 = DigitaalAdresFactory.create(
+            partij=self.partij3, betrokkene=self.betrokkene3
+        )
+        self.digitaal_adres4 = DigitaalAdresFactory.create(
+            partij=self.partij4, betrokkene=self.betrokkene4
+        )
+        self.digitaal_adres5 = DigitaalAdresFactory.create(
+            partij=self.partij5, betrokkene=self.betrokkene5
+        )
+
+    def test_filter_verstrekt_door_betrokkene_url(self):
+        betrokkene_url = f"http://testserver/klantinteracties/api/v1/betrokkenen/{str(self.betrokkene5.uuid)}"
+        response = self.client.get(
+            self.url,
+            {"verstrektDoorBetrokkene__url": betrokkene_url},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.digitaal_adres5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            betrokkene_url = (
+                f"http://testserver/klantinteracties/api/v1/betrokkenen/{str(uuid4())}"
+            )
+            response = self.client.get(
+                self.url,
+                {"verstrektDoorBetrokkene__url": betrokkene_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(
+                self.url, {"verstrektDoorBetrokkene__url": "ValueError"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_verstrekt_door_partij_url(self):
+        partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
+        response = self.client.get(
+            self.url,
+            {"verstrektDoorPartij__url": partij_url},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.digitaal_adres5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "verstrektDoorPartij__url": f"http://testserver/klantinteracties/api/v1/partijen/{str(uuid4())}"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(
+                self.url, {"verstrektDoorPartij__url": "ValueError"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)

@@ -42,7 +42,7 @@ paths:
         name: naam
         schema:
           type: string
-        description: Zoek klantcontacten met specifieke tekst in inhoud
+        description: Zoek klantcontacten met specifieke tekst in inhoud.
       - name: page
         required: false
         in: query
@@ -771,17 +771,17 @@ paths:
         name: partij__nummer
         schema:
           type: string
-        description: Zoek categorie relatie object op basis van het partij nummer
+        description: Zoek categorie relatie object op basis van het partij nummer.
       - in: query
         name: partij__url
         schema:
           type: string
-        description: Zoek categorie relatie object op basis van de partij url
+        description: Zoek categorie relatie object op basis van de partij url.
       - in: query
         name: partij__uuid
         schema:
           type: string
-        description: Zoek categorie relatie object op basis van de partij uuid
+        description: Zoek categorie relatie object op basis van de partij uuid.
       tags:
       - categorie relaties
       security:
@@ -1244,14 +1244,14 @@ paths:
         schema:
           type: string
         description: Zoek internetaak object op basis van het aanleidingevende klantcontact
-          url
+          url.
       - in: query
         name: aanleidinggevendKlantcontact__uuid
         schema:
           type: string
           format: uuid
         description: Zoek internetaak object op basis van het aanleidingevende klantcontact
-          uuid
+          uuid.
       - in: query
         name: actor__naam
         schema:
@@ -1289,13 +1289,13 @@ paths:
         name: toegewezenAanActor__url
         schema:
           type: string
-        description: Zoek internetaak object op basis van het toegewezen actor url
+        description: Zoek internetaak object op basis van het toegewezen actor url.
       - in: query
         name: toegewezenAanActor__uuid
         schema:
           type: string
           format: uuid
-        description: Zoek internetaak object op basis van het toegewezen actor uuid
+        description: Zoek internetaak object op basis van het toegewezen actor uuid.
       - in: query
         name: toegewezenOp
         schema:
@@ -1461,13 +1461,13 @@ paths:
         name: hadBetrokkene__url
         schema:
           type: string
-        description: Zoek klantcontact object op basis van het betrokkene url
+        description: Zoek klantcontact object op basis van het betrokkene url.
       - in: query
         name: hadBetrokkene__uuid
         schema:
           type: string
           format: uuid
-        description: Zoek klantcontact object op basis van het betrokkene uuid
+        description: Zoek klantcontact object op basis van het betrokkene uuid.
       - in: query
         name: indicatieContactGelukt
         schema:
@@ -1476,7 +1476,7 @@ paths:
         name: inhoud
         schema:
           type: string
-        description: Zoek klantcontacten met specifieke tekst in inhoud
+        description: Zoek klantcontacten met specifieke tekst in inhoud.
       - in: query
         name: kanaal
         schema:
@@ -1489,7 +1489,7 @@ paths:
         name: onderwerp
         schema:
           type: string
-        description: Zoek klantcontacten met specifieke tekst in onderwerp
+        description: Zoek klantcontacten met specifieke tekst in onderwerp.
       - in: query
         name: onderwerpobject__onderwerpobjectidentificatorCodeObjecttype
         schema:
@@ -1510,7 +1510,7 @@ paths:
         name: onderwerpobject__url
         schema:
           type: string
-        description: Zoek klantcontact object op basis van het onderwerpobject url
+        description: Zoek klantcontact object op basis van het onderwerpobject url.
       - in: query
         name: onderwerpobject__uuid
         schema:
@@ -1552,7 +1552,7 @@ paths:
         schema:
           type: string
         description: Zoek was klantcontact object op basis van het onderwerpobject
-          url
+          url.
       - in: query
         name: wasOnderwerpobject__uuid
         schema:
@@ -2125,24 +2125,24 @@ paths:
         name: partijIdentificator__codeObjecttype
         schema:
           type: string
-        description: Zoek partij object op basis van het partij identificator objecttype
+        description: Zoek partij object op basis van het partij identificator objecttype.
       - in: query
         name: partijIdentificator__codeRegister
         schema:
           type: string
-        description: Zoek partij object op basis van het partij identificator register
+        description: Zoek partij object op basis van het partij identificator register.
       - in: query
         name: partijIdentificator__codeSoortObjectId
         schema:
           type: string
         description: Zoek partij object op basis van het partij identificator soort
-          object ID
+          object ID.
       - in: query
         name: partijIdentificator__objectId
         schema:
           type: string
         description: Zoek partij object op basis van het partij identificator object
-          ID
+          ID.
       - in: query
         name: soortPartij
         schema:
@@ -2159,14 +2159,14 @@ paths:
         schema:
           type: string
         description: Zoek partij object op basis van het vertegenwoordigde partij
-          url
+          url.
       - in: query
         name: vertegenwoordigdePartij__uuid
         schema:
           type: string
           format: uuid
         description: Zoek partij object op basis van het vertegenwoordigde partij
-          uuid
+          uuid.
       tags:
       - partijen
       security:
@@ -2489,7 +2489,7 @@ paths:
         schema:
           type: string
         description: Zoek Vertegenwoordigden object op basis van het vertegenwoordigde
-          partij url
+          partij url.
       - in: query
         name: vertegenwoordigdePartij__uuid
         schema:
@@ -2500,7 +2500,7 @@ paths:
         schema:
           type: string
         description: Zoek Vertegenwoordigden object op basis van het vertegenwoordigende
-          partij url
+          partij url.
       - in: query
         name: vertegenwoordigendePartij__uuid
         schema:
