@@ -1319,7 +1319,7 @@ paths:
         description: Zoek internetaak object op basis van het aanleidingevende klantcontact
           uuid.
       - in: query
-        name: actor__naam
+        name: actoren__naam
         schema:
           type: string
       - in: query
@@ -3413,7 +3413,13 @@ components:
         toegewezenAanActor:
           allOf:
           - $ref: '#/components/schemas/ActorForeignKey'
-          description: Actor die een interne taak toegewezen kreeg.
+          description: Eerste actor die een interne taak toegewezen kreeg.
+          deprecated: true
+        toegewezenAanActoren:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActorForeignKey'
+          description: Actoren die een interne taak toegewezen kreeg.
         toelichting:
           type: string
           description: Toelichting die, aanvullend bij de inhoud van het klantcontact
@@ -3441,7 +3447,6 @@ components:
       - aanleidinggevendKlantcontact
       - gevraagdeHandeling
       - status
-      - toegewezenAanActor
       - toegewezenOp
       - url
       - uuid
@@ -4658,7 +4663,13 @@ components:
         toegewezenAanActor:
           allOf:
           - $ref: '#/components/schemas/ActorForeignKey'
-          description: Actor die een interne taak toegewezen kreeg.
+          description: Eerste actor die een interne taak toegewezen kreeg.
+          deprecated: true
+        toegewezenAanActoren:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActorForeignKey'
+          description: Actoren die een interne taak toegewezen kreeg.
         toelichting:
           type: string
           description: Toelichting die, aanvullend bij de inhoud van het klantcontact

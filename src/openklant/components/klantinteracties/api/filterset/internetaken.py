@@ -9,8 +9,8 @@ from openklant.components.klantinteracties.models.internetaken import InterneTaa
 
 class InternetaakFilterSet(FilterSet):
     toegewezen_aan_actor__uuid = filters.UUIDFilter(
-        help_text=_("Zoek internetaak object op basis van het toegewezen actor uuid."),
-        field_name="actor__uuid",
+        help_text=_("Zoek internetaak object op basis van het toegewezen actor uuid"),
+        field_name="actoren__uuid",
     )
     toegewezen_aan_actor__url = filters.CharFilter(
         help_text=_("Zoek internetaak object op basis van het toegewezen actor url."),
@@ -35,7 +35,7 @@ class InternetaakFilterSet(FilterSet):
             "nummer",
             "status",
             "toegewezen_op",
-            "actor__naam",
+            "actoren__naam",
             "klantcontact__uuid",
             "klantcontact__nummer",
             "toegewezen_aan_actor__uuid",
@@ -47,7 +47,7 @@ class InternetaakFilterSet(FilterSet):
     def filter_toegewezen_aan_actor_url(self, queryset, name, value):
         try:
             url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
-            return queryset.filter(actor__uuid=url_uuid)
+            return queryset.filter(actoren__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
