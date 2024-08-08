@@ -2862,22 +2862,6 @@ components:
       required:
       - url
       - uuid
-    BetrokkeneForeignkey:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: Unieke (technische) identificatiecode van de betrokkene bij
-            klantcontact.
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          description: De unieke URL van deze betrokkene binnen deze API.
-      required:
-      - url
-      - uuid
     Bezoekadres:
       type: object
       description: |-
@@ -3232,24 +3216,28 @@ components:
               `expand` parameter
             properties:
               had_betrokkenen:
-                allOf:
-                - $ref: '#/components/schemas/Betrokkene'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Betrokkene'
                 readOnly: true
                 description: Persoon of organisatie die betrokken was bij een klantcontact.
               leidde_tot_interne_taken:
-                allOf:
-                - $ref: '#/components/schemas/InterneTaak'
+                type: array
+                items:
+                  $ref: '#/components/schemas/InterneTaak'
                 readOnly: true
                 description: Klantcontact dat leidde tot een interne taak.
               ging_over_onderwerpobjecten:
-                allOf:
-                - $ref: '#/components/schemas/Onderwerpobject'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Onderwerpobject'
                 readOnly: true
                 description: Onderwerpobject dat tijdens een klantcontact aan de orde
                   was.
               omvatte_bijlagen:
-                allOf:
-                - $ref: '#/components/schemas/Bijlage'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bijlage'
                 readOnly: true
                 description: Bijlage die (een deel van) de inhoud van het klantcontact
                   beschrijft.
@@ -3264,19 +3252,22 @@ components:
               `expand` parameter
             properties:
               digitale_adressen:
-                allOf:
-                - $ref: '#/components/schemas/DigitaalAdres'
+                type: array
+                items:
+                  $ref: '#/components/schemas/DigitaalAdres'
                 nullable: true
                 description: Digitaal adresen dat een partij verstrekte voor gebruik
                   bij toekomstig contact met de gemeente.
               betrokkenen:
-                allOf:
-                - $ref: '#/components/schemas/Betrokkene'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Betrokkene'
                 readOnly: true
                 description: Betrokkene bij klantcontact die een partij was.
               categorie_relaties:
-                allOf:
-                - $ref: '#/components/schemas/CategorieRelatie'
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategorieRelatie'
                 readOnly: true
                 description: 'De Categorie relaties van een partij: Let op: Dit attribuut
                   is EXPERIMENTEEL.'
@@ -3391,7 +3382,7 @@ components:
         hadBetrokkenen:
           type: array
           items:
-            $ref: '#/components/schemas/BetrokkeneForeignkey'
+            $ref: '#/components/schemas/BetrokkeneForeignKey'
           readOnly: true
           description: Persoon of organisatie die betrokken was bij een klantcontact.
         leiddeTotInterneTaken:
@@ -4589,7 +4580,7 @@ components:
         hadBetrokkenen:
           type: array
           items:
-            $ref: '#/components/schemas/BetrokkeneForeignkey'
+            $ref: '#/components/schemas/BetrokkeneForeignKey'
           readOnly: true
           description: Persoon of organisatie die betrokken was bij een klantcontact.
         leiddeTotInterneTaken:
