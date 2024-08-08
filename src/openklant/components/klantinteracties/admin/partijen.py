@@ -113,6 +113,7 @@ class PartijAdmin(admin.ModelAdmin):
                 "fields": [
                     "uuid",
                     "voorkeurs_digitaal_adres",
+                    "voorkeurs_rekeningnummer",
                     "nummer",
                     "interne_notitie",
                     "soort_partij",
