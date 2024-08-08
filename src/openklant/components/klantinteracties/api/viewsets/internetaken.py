@@ -43,9 +43,10 @@ from openklant.components.token.permission import TokenPermissions
 class InterneTaakViewSet(viewsets.ModelViewSet):
     """Iets dat door een actor moet worden gedaan om opvolging te geven aan een klantcontact."""
 
-    queryset = InterneTaak.objects.order_by("-pk").select_related(
-        "actor",
-        "klantcontact",
+    queryset = (
+        InterneTaak.objects.order_by("-pk")
+        .prefetch_related("actoren")
+        .select_related("klantcontact")
     )
     serializer_class = InterneTaakSerializer
     lookup_field = "uuid"

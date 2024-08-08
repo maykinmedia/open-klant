@@ -1,6 +1,8 @@
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
+from drf_spectacular.utils import extend_schema_serializer
+from glom import PathAccessError, glom
 from rest_framework import serializers
 
 from openklant.components.klantinteracties.api.serializers.actoren import (
@@ -12,7 +14,10 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
 from openklant.components.klantinteracties.api.validators import internetaak_exists
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.klantinteracties.models.constants import Taakstatus
-from openklant.components.klantinteracties.models.internetaken import InterneTaak
+from openklant.components.klantinteracties.models.internetaken import (
+    InterneActorenThoughModel,
+    InterneTaak,
+)
 from openklant.components.klantinteracties.models.klantcontacten import Klantcontact
 
 
@@ -33,12 +38,21 @@ class InterneTaakForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
+@extend_schema_serializer(deprecate_fields=["toegewezen_aan_actor"])
 class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
     toegewezen_aan_actor = ActorForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=False,
-        help_text=_("Actor die een interne taak toegewezen kreeg."),
-        source="actor",
+        help_text=_("Eerste actor die een interne taak toegewezen kreeg."),
+        source="actoren.first",
+        many=False,
+    )
+    toegewezen_aan_actoren = ActorForeignKeySerializer(
+        required=False,
+        allow_null=False,
+        help_text=_("Actoren die een interne taak toegewezen kreeg."),
+        source="actoren",
+        many=True,
     )
     aanleidinggevend_klantcontact = KlantcontactForeignKeySerializer(
         required=True,
@@ -56,6 +70,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             "gevraagde_handeling",
             "aanleidinggevend_klantcontact",
             "toegewezen_aan_actor",
+            "toegewezen_aan_actoren",
             "toelichting",
             "status",
             "toegewezen_op",
@@ -70,7 +85,52 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
 
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response["toegewezen_aan_actor"] = ActorForeignKeySerializer(
+            instance.actoren.order_by("interneactorenthoughmodel__order").first(),
+            context={**self.context},
+        ).data
+
+        response["toegewezen_aan_actoren"] = ActorForeignKeySerializer(
+            instance.actoren.all().order_by("interneactorenthoughmodel__order"),
+            context={**self.context},
+            many=True,
+        ).data
+        return response
+
+    # TODO: remove when depricated actoren field gets removed
+    def _validate_actoren(self):
+        toegewezen_aan_actor = "toegewezen_aan_actor" in self.initial_data
+        toegewezen_aan_actoren = "toegewezen_aan_actoren" in self.initial_data
+
+        if toegewezen_aan_actor == toegewezen_aan_actoren:
+            if toegewezen_aan_actor:
+                message = _(
+                    "`toegewezen_aan_actor` en `toegewezen_aan_actoren` mag niet beiden gebruikt worden."
+                )
+            else:
+                message = _(
+                    "`toegewezen_aan_actor` of `toegewezen_aan_actoren` is required (mag niet beiden gebruiken)."
+                )
+
+                # If patch don't raise required error
+                if self.context.get("request").method == "PATCH":
+                    return
+
+            raise serializers.ValidationError(message)
+
+    # TODO: remove when depricated actoren field gets removed
+    def _get_actoren(self, actoren):
+        if isinstance(actoren, list):
+            actor_uuids = [str(actor.get("uuid")) for actor in actoren]
+        else:
+            actor_uuids = [glom(actoren, "first.uuid", skip_exc=PathAccessError)]
+
+        return [Actor.objects.get(uuid=uuid) for uuid in actor_uuids]
+
     def validate(self, attrs):
+        self._validate_actoren()
         status = attrs.get("status", None)
         if status is None and self.instance is not None:
             status = self.instance.status
@@ -89,21 +149,33 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        actor_uuid = str(validated_data.pop("actor").get("uuid"))
+        actoren = validated_data.pop("actoren", None)
         klantcontact_uuid = str(validated_data.pop("klantcontact").get("uuid"))
 
-        validated_data["actor"] = Actor.objects.get(uuid=actor_uuid)
         validated_data["klantcontact"] = Klantcontact.objects.get(
             uuid=klantcontact_uuid
         )
 
-        return super().create(validated_data)
+        internetaak = super().create(validated_data)
+        if actoren:
+            bulk_create_instances = [
+                InterneActorenThoughModel(internetaak=internetaak, actor=actor)
+                for actor in self._get_actoren(actoren)
+            ]
+            InterneActorenThoughModel.objects.bulk_create(bulk_create_instances)
+
+        return internetaak
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if "actor" in validated_data:
-            if actor := validated_data.pop("actor", None):
-                validated_data["actor"] = Actor.objects.get(uuid=str(actor.get("uuid")))
+        if "actoren" in validated_data:
+            actoren = validated_data.pop("actoren")
+            instance.actoren.clear()
+            bulk_create_instances = [
+                InterneActorenThoughModel(internetaak=instance, actor=actor)
+                for actor in self._get_actoren(actoren)
+            ]
+            InterneActorenThoughModel.objects.bulk_create(bulk_create_instances)
 
         if "klantcontact" in validated_data:
             if klantcontact := validated_data.pop("klantcontact", None):

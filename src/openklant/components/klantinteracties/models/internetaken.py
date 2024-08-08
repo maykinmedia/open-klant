@@ -5,9 +5,10 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from ordered_model.models import OrderedModel
+
 from openklant.components.utils.number_generator import number_generator
 
-from .actoren import Actor
 from .constants import Taakstatus
 from .klantcontacten import Klantcontact
 
@@ -18,11 +19,11 @@ class InterneTaak(models.Model):
         default=uuid.uuid4,
         help_text=_("Unieke (technische) identificatiecode van de interne taak."),
     )
-    actor = models.ForeignKey(
-        Actor,
-        on_delete=models.CASCADE,
-        verbose_name=_("actor"),
-        help_text=_("De actor aan wie de interne taak werd toegewezen."),
+    actoren = models.ManyToManyField(
+        "klantinteracties.Actor",
+        verbose_name=_("actoren"),
+        help_text=_("De actoren aan wie de interne taak werd toegewezen."),
+        through="klantinteracties.InterneActorenThoughModel",
     )
     klantcontact = models.ForeignKey(
         Klantcontact,
@@ -98,3 +99,15 @@ class InterneTaak(models.Model):
 
     def __str__(self):
         return f"{self.klantcontact} - ({self.nummer})"
+
+
+# Added for deprecated toegewezen_aan_actor field to return correct order
+class InterneActorenThoughModel(OrderedModel):
+    actor = models.ForeignKey("klantinteracties.Actor", on_delete=models.CASCADE)
+    internetaak = models.ForeignKey(
+        "klantinteracties.InterneTaak", on_delete=models.CASCADE
+    )
+    order_with_respect_to = "internetaak"
+
+    class Meta:
+        ordering = ("actor", "order")
