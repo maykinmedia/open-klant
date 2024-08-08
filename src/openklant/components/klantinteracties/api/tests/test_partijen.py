@@ -88,7 +88,6 @@ class PartijTests(APITestCase):
             "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
             "soortPartij": "persoon",
-            "indicatieGeheimhouding": True,
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
             "bezoekadres": {
@@ -132,7 +131,7 @@ class PartijTests(APITestCase):
             data["voorkeursRekeningnummer"]["uuid"], str(rekeningnummer.uuid)
         )
         self.assertEqual(data["soortPartij"], "persoon")
-        self.assertTrue(data["indicatieGeheimhouding"])
+        self.assertIsNone(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
         self.assertEqual(
@@ -188,7 +187,7 @@ class PartijTests(APITestCase):
             self.assertEqual(response_data["rekeningnummers"], [])
             self.assertIsNone(response_data["voorkeursRekeningnummer"])
             self.assertEqual(response_data["soortPartij"], "persoon")
-            self.assertTrue(response_data["indicatieGeheimhouding"])
+            self.assertIsNone(data["indicatieGeheimhouding"])
             self.assertEqual(response_data["voorkeurstaal"], "ndl")
             self.assertTrue(response_data["indicatieActief"])
             self.assertEqual(
@@ -663,7 +662,7 @@ class PartijTests(APITestCase):
             "rekeningnummers": [{"uuid": str(rekeningnummer2.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer2.uuid)},
             "soortPartij": "persoon",
-            "indicatieGeheimhouding": False,
+            "indicatieGeheimhouding": None,
             "voorkeurstaal": "ger",
             "indicatieActief": False,
             "bezoekadres": {
@@ -721,7 +720,7 @@ class PartijTests(APITestCase):
             data["voorkeursRekeningnummer"]["uuid"], str(rekeningnummer2.uuid)
         )
         self.assertEqual(data["soortPartij"], "persoon")
-        self.assertFalse(data["indicatieGeheimhouding"])
+        self.assertIsNone(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
         self.assertFalse(data["indicatieActief"])
         self.assertEqual(

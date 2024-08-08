@@ -4006,8 +4006,10 @@ components:
           description: Geeft aan van welke specifieke soort partij sprake is.
         indicatieGeheimhouding:
           type: boolean
+          nullable: true
           description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
-            dat deze gegevens als geheim beschouwd moeten worden.
+            dat deze gegevens als geheim beschouwd moeten worden. Als dit niet aangegeven
+            is dan wordt dit ingevuld als `null`.
         voorkeurstaal:
           type: string
           description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
@@ -4037,7 +4039,6 @@ components:
       - categorieRelaties
       - digitaleAdressen
       - indicatieActief
-      - indicatieGeheimhouding
       - partijIdentificatoren
       - rekeningnummers
       - soortPartij
@@ -4752,8 +4753,10 @@ components:
           description: Geeft aan van welke specifieke soort partij sprake is.
         indicatieGeheimhouding:
           type: boolean
+          nullable: true
           description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
-            dat deze gegevens als geheim beschouwd moeten worden.
+            dat deze gegevens als geheim beschouwd moeten worden. Als dit niet aangegeven
+            is dan wordt dit ingevuld als `null`.
         voorkeurstaal:
           type: string
           description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur

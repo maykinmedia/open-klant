@@ -67,8 +67,11 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         _("indicatie geheimhouding"),
         help_text=_(
             "Geeft aan of de verstrekker van partijgegevens heeft aangegeven dat "
-            "deze gegevens als geheim beschouwd moeten worden."
+            "deze gegevens als geheim beschouwd moeten worden. Als dit niet aangegeven is "
+            "dan wordt dit ingevuld als `null`."
         ),
+        null=True,
+        default=None,
     )
     voorkeurstaal = models.CharField(
         _("voorkeurstaal"),
