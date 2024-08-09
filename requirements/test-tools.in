@@ -7,8 +7,10 @@ factory-boy
 freezegun
 pep8
 pylint
+pyquery
 requests-mock
 tblib
+vcrpy
 waitress>=2.1.1
 
 # Code formatting

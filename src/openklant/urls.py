@@ -9,6 +9,7 @@ from django.views.generic.base import TemplateView
 
 from maykin_2fa import monkeypatch_admin
 from maykin_2fa.urls import urlpatterns, webauthn_urlpatterns
+from mozilla_django_oidc_db.views import AdminLoginFailure
 
 from openklant.accounts.views.password_reset import PasswordResetView
 
@@ -34,6 +35,7 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(),
         name="password_reset_done",
     ),
+    path("admin/login/failure/", AdminLoginFailure.as_view(), name="admin-oidc-error"),
     # 2fa
     path("admin/", include((urlpatterns, "maykin_2fa"))),
     path("admin/", include((webauthn_urlpatterns, "two_factor"))),
