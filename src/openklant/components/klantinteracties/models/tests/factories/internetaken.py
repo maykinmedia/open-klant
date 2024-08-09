@@ -2,9 +2,6 @@ import factory.fuzzy
 
 from openklant.components.klantinteracties.models.constants import Taakstatus
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
-from openklant.components.klantinteracties.models.tests.factories.actoren import (
-    ActorFactory,
-)
 from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     KlantcontactFactory,
 )
@@ -12,7 +9,6 @@ from openklant.components.klantinteracties.models.tests.factories.klantcontacten
 
 class InterneTaakFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
-    actor = factory.SubFactory(ActorFactory)
     klantcontact = factory.SubFactory(KlantcontactFactory)
     nummer = factory.Sequence(lambda n: str(n))
     gevraagde_handeling = factory.Faker("word")
@@ -22,3 +18,12 @@ class InterneTaakFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = InterneTaak
+
+    @factory.post_generation
+    def actoren(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for actor in extracted:
+                self.actoren.add(actor)

@@ -363,7 +363,7 @@
     "pk": 1,
     "fields": {
         "uuid": "58d26043-0cdc-4a46-9110-6acca6e200f2",
-        "actor": 1,
+        "actoren": [1],
         "klantcontact": 1,
         "nummer": "0000000001",
         "gevraagde_handeling": "Doorzetten naar juiste afdeling en terubellend.",
@@ -377,7 +377,7 @@
     "pk": 2,
     "fields": {
         "uuid": "2ef831a3-9c4a-42d2-9b55-fc885e9292dc",
-        "actor": 2,
+        "actoren": [2],
         "klantcontact": 2,
         "nummer": "0000000002",
         "gevraagde_handeling": "Terugbellen",
