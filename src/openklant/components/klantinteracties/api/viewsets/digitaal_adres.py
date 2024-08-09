@@ -8,6 +8,7 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.mixins import ExpandMixin
 
 
 @extend_schema(tags=["digitale adressen"])
@@ -37,7 +38,7 @@ from openklant.components.token.permission import TokenPermissions
         description="Verwijder een digitaal adres.",
     ),
 )
-class DigitaalAdresViewSet(viewsets.ModelViewSet):
+class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
     """
     Digitaal adres dat een betrokkene bij klantcontact verstrekte
     voor gebruik bij opvolging van een klantcontact.

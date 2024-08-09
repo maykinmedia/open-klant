@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 
+from openklant.components.klantinteracties.api.serializers.constants import (
+    SERIALIZER_PATH,
+)
 from openklant.components.klantinteracties.api.validators import digitaal_adres_exists
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.klantcontacten import Betrokkene
@@ -52,6 +55,16 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         ),
         source="betrokkene",
     )
+
+    inclusion_serializers = {
+        # 1 level
+        "verstrekt_door_betrokkene": f"{SERIALIZER_PATH}.klantcontacten.BetrokkeneSerializer",
+        # 2 levels
+        "verstrekt_door_betrokkene.had_klantcontact": f"{SERIALIZER_PATH}.klantcontacten.KlantcontactSerializer",
+        # 3 levels
+        "verstrekt_door_betrokkene.had_klantcontact.leidde_tot_interne_taken": f"{SERIALIZER_PATH}"
+        ".internetaken.InterneTaakSerializer",
+    }
 
     class Meta:
         model = DigitaalAdres
