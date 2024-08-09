@@ -8,7 +8,7 @@ from openklant.components.klantinteracties.models.actoren import Actor
 class ActorenFilterSet(FilterSet):
     naam = filters.CharFilter(
         lookup_expr="icontains",
-        help_text=_("Zoek klantcontacten met specifieke tekst in inhoud"),
+        help_text=_("Zoek klantcontacten met specifieke tekst in inhoud."),
     )
 
     class Meta:
