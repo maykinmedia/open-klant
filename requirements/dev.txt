@@ -35,11 +35,6 @@ astroid==3.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-async-timeout==4.0.3
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   redis
 attrs==23.2.0
     # via
     #   -c requirements/ci.txt
@@ -544,7 +539,7 @@ notifications-api-common==0.2.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.5.0
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework.git@feature/autodoc
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
