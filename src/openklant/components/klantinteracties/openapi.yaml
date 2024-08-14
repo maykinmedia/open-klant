@@ -1065,6 +1065,21 @@ paths:
       description: Alle digitale adressen opvragen.
       summary: Alle digitale adressen opvragen.
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - verstrektDoorBetrokkene
+            - verstrektDoorBetrokkene.hadKlantcontact
+            - verstrektDoorBetrokkene.hadKlantcontact.leiddeTotInterneTaken
+        description: |+
+          Sluit de gespecifieerde gerelateerde resources in in het antwoord.
+
+        explode: false
+        style: form
       - name: page
         required: false
         in: query
@@ -1109,6 +1124,21 @@ paths:
       description: Een specifiek digitaal adres opvragen.
       summary: Een specifiek digitaal adres opvragen.
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - verstrektDoorBetrokkene
+            - verstrektDoorBetrokkene.hadKlantcontact
+            - verstrektDoorBetrokkene.hadKlantcontact.leiddeTotInterneTaken
+        description: |+
+          Sluit de gespecifieerde gerelateerde resources in in het antwoord.
+
+        explode: false
+        style: form
       - in: path
         name: uuid
         schema:
