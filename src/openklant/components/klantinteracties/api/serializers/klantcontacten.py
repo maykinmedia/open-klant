@@ -107,23 +107,6 @@ class BijlageForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class BetrokkeneForeignkeySerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Betrokkene
-        fields = (
-            "uuid",
-            "url",
-        )
-        extra_kwargs = {
-            "uuid": {"required": True, "validators": [betrokkene_exists]},
-            "url": {
-                "view_name": "klantinteracties:betrokkene-detail",
-                "lookup_field": "uuid",
-                "help_text": _("De unieke URL van deze betrokkene binnen deze API."),
-            },
-        }
-
-
 class BezoekadresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Betrokkene
@@ -282,7 +265,7 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         ),
         many=True,
     )
-    had_betrokkenen = BetrokkeneForeignkeySerializer(
+    had_betrokkenen = BetrokkeneForeignKeySerializer(
         read_only=True,
         source="betrokkene_set",
         help_text=_("Persoon of organisatie die betrokken was bij een klantcontact."),
