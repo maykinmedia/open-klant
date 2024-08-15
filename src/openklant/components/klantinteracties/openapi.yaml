@@ -1065,6 +1065,21 @@ paths:
       description: Alle digitale adressen opvragen.
       summary: Alle digitale adressen opvragen.
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - verstrektDoorBetrokkene
+            - verstrektDoorBetrokkene.hadKlantcontact
+            - verstrektDoorBetrokkene.hadKlantcontact.leiddeTotInterneTaken
+        description: |+
+          Sluit de gespecifieerde gerelateerde resources in in het antwoord.
+
+        explode: false
+        style: form
       - name: page
         required: false
         in: query
@@ -1080,7 +1095,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedDigitaalAdresList'
+                $ref: '#/components/schemas/PaginatedExpandDigitaalAdresList'
           description: ''
     post:
       operationId: digitaleadressenCreate
@@ -1109,6 +1124,21 @@ paths:
       description: Een specifiek digitaal adres opvragen.
       summary: Een specifiek digitaal adres opvragen.
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - verstrektDoorBetrokkene
+            - verstrektDoorBetrokkene.hadKlantcontact
+            - verstrektDoorBetrokkene.hadKlantcontact.leiddeTotInterneTaken
+        description: |+
+          Sluit de gespecifieerde gerelateerde resources in in het antwoord.
+
+        explode: false
+        style: form
       - in: path
         name: uuid
         schema:
@@ -1125,7 +1155,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DigitaalAdres'
+                $ref: '#/components/schemas/ExpandDigitaalAdres'
           description: ''
     put:
       operationId: digitaleadressenUpdate
@@ -3206,6 +3236,22 @@ components:
       required:
       - url
       - uuid
+    ExpandDigitaalAdres:
+      allOf:
+      - $ref: '#/components/schemas/DigitaalAdres'
+      - type: object
+        properties:
+          _expand:
+            type: object
+            description: Display details of the linked resources requested in the
+              `expand` parameter
+            properties:
+              verstrekt_door_betrokkene:
+                allOf:
+                - $ref: '#/components/schemas/Betrokkene'
+                nullable: true
+                description: Digitaal adres dat een betrokkene bij klantcontact verstrekte
+                  voor gebruik bij opvolging van een klantcontact.
     ExpandKlantcontact:
       allOf:
       - $ref: '#/components/schemas/Klantcontact'
@@ -3709,6 +3755,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DigitaalAdres'
+    PaginatedExpandDigitaalAdresList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpandDigitaalAdres'
     PaginatedExpandKlantcontactList:
       type: object
       required:

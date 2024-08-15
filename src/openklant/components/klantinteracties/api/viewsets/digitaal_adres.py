@@ -2,12 +2,16 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
+from openklant.components.klantinteracties.api.filterset.digitaal_adres import (
+    DigitaalAdresExpandFilterSet,
+)
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
     DigitaalAdresSerializer,
 )
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.mixins import ExpandMixin
 
 
 @extend_schema(tags=["digitale adressen"])
@@ -37,7 +41,7 @@ from openklant.components.token.permission import TokenPermissions
         description="Verwijder een digitaal adres.",
     ),
 )
-class DigitaalAdresViewSet(viewsets.ModelViewSet):
+class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
     """
     Digitaal adres dat een betrokkene bij klantcontact verstrekte
     voor gebruik bij opvolging van een klantcontact.
@@ -52,3 +56,10 @@ class DigitaalAdresViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @property
+    def filterset_class(self):
+        """
+        support expand in the detail endpoint
+        """
+        return DigitaalAdresExpandFilterSet
