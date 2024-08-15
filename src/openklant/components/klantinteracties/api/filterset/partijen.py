@@ -92,7 +92,7 @@ class PartijFilterSet(FilterSet):
 
     def filter_vertegenwoordigde_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(
                 vertegenwoordigde__vertegenwoordigende_partij__uuid=url_uuid
             )
@@ -166,14 +166,14 @@ class VertegenwoordigdenFilterSet(FilterSet):
 
     def filter_vertegenwoordigende_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(vertegenwoordigende_partij__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
     def filter_vertegenwoordigde_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(vertegenwoordigde_partij__uuid=url_uuid)
         except ValueError:
             return queryset.none()
@@ -227,7 +227,7 @@ class CategorieRelatieFilterSet(FilterSet):
 
     def filter_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(partij__uuid=url_uuid)
         except ValueError:
             return queryset.none()
@@ -247,7 +247,7 @@ class CategorieRelatieFilterSet(FilterSet):
 
     def filter_categorie_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(categorie__uuid=url_uuid)
         except ValueError:
             return queryset.none()

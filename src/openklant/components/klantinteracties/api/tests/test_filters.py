@@ -521,9 +521,7 @@ class PartijFilterSetTests(APITestCase):
     def test_filter_vertegenwoordigde_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"vertegenwoordigdePartij__url": partij_url},
-            content_type="application/json",
+            self.url, {"vertegenwoordigdePartij__url": partij_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -714,11 +712,7 @@ class CategorieRelatieFiltersetTests(APITestCase):
 
     def test_filter_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
-        response = self.client.get(
-            self.url,
-            {"partij__url": partij_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"partij__url": partij_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -793,11 +787,7 @@ class CategorieRelatieFiltersetTests(APITestCase):
 
     def test_filter_categorie_url(self):
         categorie_url = f"http://testserver/klantinteracties/api/v1/categorieen/{str(self.categorie5.uuid)}"
-        response = self.client.get(
-            self.url,
-            {"categorie__url": categorie_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"categorie__url": categorie_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -909,11 +899,7 @@ class ActorKlantcontactFilterSetTests(APITestCase):
 
     def test_filter_klantcontact_url(self):
         klantcontact_url = f"http://testserver/klantinteracties/api/v1/klantcontacten/{str(self.klantcontact5.uuid)}"
-        response = self.client.get(
-            self.url,
-            {"klantcontact__url": klantcontact_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"klantcontact__url": klantcontact_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -942,11 +928,7 @@ class ActorKlantcontactFilterSetTests(APITestCase):
         actor_url = (
             f"http://testserver/klantinteracties/api/v1/actoren/{str(self.actor5.uuid)}"
         )
-        response = self.client.get(
-            self.url,
-            {"actor__url": actor_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"actor__url": actor_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -1007,9 +989,7 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
     def test_filter_vertegenwoordigende_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"vertegenwoordigendePartij__url": partij_url},
-            content_type="application/json",
+            self.url, {"vertegenwoordigendePartij__url": partij_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1041,9 +1021,7 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
     def test_filter_vertegenwoordigde_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"vertegenwoordigdePartij__url": partij_url},
-            content_type="application/json",
+            self.url, {"vertegenwoordigdePartij__url": partij_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1112,11 +1090,7 @@ class InterneTaakFilterSetTests(APITestCase):
         actor_url = (
             f"http://testserver/klantinteracties/api/v1/actoren/{str(self.actor5.uuid)}"
         )
-        response = self.client.get(
-            self.url,
-            {"toegewezenAanActor__url": actor_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"toegewezenAanActor__url": actor_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -1146,9 +1120,7 @@ class InterneTaakFilterSetTests(APITestCase):
     def test_filter_aanleidinggevend_klantcontact_url(self):
         klantcontact_url = f"http://testserver/klantinteracties/api/v1/klantcontacten/{str(self.klantcontact5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"aanleidinggevendKlantcontact__url": klantcontact_url},
-            content_type="application/json",
+            self.url, {"aanleidinggevendKlantcontact__url": klantcontact_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1214,9 +1186,7 @@ class DigitaalAdresFilterSetTests(APITestCase):
     def test_filter_verstrekt_door_betrokkene_url(self):
         betrokkene_url = f"http://testserver/klantinteracties/api/v1/betrokkenen/{str(self.betrokkene5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"verstrektDoorBetrokkene__url": betrokkene_url},
-            content_type="application/json",
+            self.url, {"verstrektDoorBetrokkene__url": betrokkene_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1247,11 +1217,7 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
     def test_filter_verstrekt_door_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
-        response = self.client.get(
-            self.url,
-            {"verstrektDoorPartij__url": partij_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"verstrektDoorPartij__url": partij_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]

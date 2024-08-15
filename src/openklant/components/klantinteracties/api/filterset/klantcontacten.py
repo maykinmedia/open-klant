@@ -77,21 +77,21 @@ class KlantcontactFilterSet(FilterSet):
 
     def filter_betrokkene_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(betrokkene__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
     def filter_onderwerpobject_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(onderwerpobject__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
     def filter_was_onderwerpobject_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(was_onderwerpobject__uuid=url_uuid)
         except ValueError:
             return queryset.none()
@@ -157,7 +157,7 @@ class BetrokkeneFilterSet(FilterSet):
 
     def filter_had_klantcontact_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(klantcontact__uuid=url_uuid)
         except ValueError:
             return queryset.none()
@@ -180,7 +180,7 @@ class BetrokkeneFilterSet(FilterSet):
 
     def filter_digitaaladres_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(digitaaladres__uuid=url_uuid)
         except ValueError:
             return queryset.none()
@@ -197,7 +197,7 @@ class BetrokkeneFilterSet(FilterSet):
 
     def filter_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(partij__uuid=url_uuid)
         except ValueError:
             return queryset.none()
@@ -233,14 +233,14 @@ class ActorKlantcontactFilterSet(FilterSet):
 
     def filter_actor_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(actor__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
     def filter_klantcontact_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(klantcontact__uuid=url_uuid)
         except ValueError:
             return queryset.none()

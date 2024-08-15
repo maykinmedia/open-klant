@@ -46,14 +46,14 @@ class InternetaakFilterSet(FilterSet):
 
     def filter_toegewezen_aan_actor_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(actor__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
     def filter_aanleidinggevend_klantcontact_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(klantcontact__uuid=url_uuid)
         except ValueError:
             return queryset.none()
