@@ -10,7 +10,7 @@ from ..models.actoren import (
     Medewerker,
     OrganisatorischeEenheid,
 )
-from ..models.internetaken import InterneActorenThoughModel
+from ..models.internetaken import InterneTakenActorenThoughModel
 
 
 class GeautomatiseerdeActorInlineAdmin(admin.StackedInline):
@@ -38,7 +38,7 @@ class ActorKlantcontactInlineAdmin(admin.StackedInline):
 
 
 class ActorThoughTabularInlineAdmin(OrderedTabularInline):
-    model = InterneActorenThoughModel
+    model = InterneTakenActorenThoughModel
     fields = (
         "actor",
         "order",

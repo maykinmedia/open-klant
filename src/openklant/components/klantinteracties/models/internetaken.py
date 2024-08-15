@@ -23,7 +23,7 @@ class InterneTaak(models.Model):
         "klantinteracties.Actor",
         verbose_name=_("actoren"),
         help_text=_("De actoren aan wie de interne taak werd toegewezen."),
-        through="klantinteracties.InterneActorenThoughModel",
+        through="klantinteracties.InterneTakenActorenThoughModel",
     )
     klantcontact = models.ForeignKey(
         Klantcontact,
@@ -102,7 +102,7 @@ class InterneTaak(models.Model):
 
 
 # Added for deprecated toegewezen_aan_actor field to return correct order
-class InterneActorenThoughModel(OrderedModel):
+class InterneTakenActorenThoughModel(OrderedModel):
     actor = models.ForeignKey("klantinteracties.Actor", on_delete=models.CASCADE)
     internetaak = models.ForeignKey(
         "klantinteracties.InterneTaak", on_delete=models.CASCADE

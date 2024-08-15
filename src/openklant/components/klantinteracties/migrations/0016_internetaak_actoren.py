@@ -5,18 +5,13 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-    def sync_actor_and_actoren(apps, schema_editor):
-        Internetaak = apps.get_model("klantinteracties", "internetaak")
-        for internetaak in Internetaak.objects.all():
-            internetaak.actoren.add(internetaak.actor)
-
     dependencies = [
         ("klantinteracties", "0015_internetaak_afgehandeld_op"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="InterneActorenThoughModel",
+            name="InterneTakenActorenThoughModel",
             fields=[
                 (
                     "id",
@@ -57,14 +52,9 @@ class Migration(migrations.Migration):
             name="actoren",
             field=models.ManyToManyField(
                 help_text="De actoren aan wie de interne taak werd toegewezen.",
-                through="klantinteracties.InterneActorenThoughModel",
+                through="klantinteracties.InterneTakenActorenThoughModel",
                 to="klantinteracties.actor",
                 verbose_name="actoren",
             ),
-        ),
-        migrations.RunPython(sync_actor_and_actoren),
-        migrations.RemoveField(
-            model_name="internetaak",
-            name="actor",
         ),
     ]
