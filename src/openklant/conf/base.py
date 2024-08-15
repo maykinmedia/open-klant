@@ -15,6 +15,9 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "openklant.components.klantinteracties",
     "openklant.components.contactgegevens",
 ]
+# `django.contrib.sites` is installed by Open API Framework by default
+# but we don't want to rely on it anymore (e.g. when generating the label for 2FA)
+INSTALLED_APPS.remove("django.contrib.sites")
 
 # FIXME should these be part of OAf?
 MIDDLEWARE.insert(
