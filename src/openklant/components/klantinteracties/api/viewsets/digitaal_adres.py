@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
 from openklant.components.klantinteracties.api.filterset.digitaal_adres import (
-    DigitaalAdresExpandFilterSet,
+    DigitaalAdresDetailFilterSet,
     DigitaalAdresFilterSet,
 )
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
@@ -55,7 +55,6 @@ class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
     serializer_class = DigitaalAdresSerializer
     lookup_field = "uuid"
     pagination_class = PageNumberPagination
-    filterset_class = DigitaalAdresFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
@@ -64,4 +63,6 @@ class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
         """
         support expand in the detail endpoint
         """
-        return DigitaalAdresExpandFilterSet
+        if self.detail:
+            return DigitaalAdresDetailFilterSet
+        return DigitaalAdresFilterSet

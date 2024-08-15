@@ -11,7 +11,7 @@ from openklant.components.klantinteracties.models.digitaal_adres import Digitaal
 from openklant.components.utils.filters import ExpandFilter
 
 
-class DigitaalAdresExpandFilterSet(FilterSet):
+class DigitaalAdresDetailFilterSet(FilterSet):
     expand = ExpandFilter(serializer_class=DigitaalAdresSerializer)
 
 

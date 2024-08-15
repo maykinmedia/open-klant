@@ -1066,6 +1066,18 @@ paths:
       summary: Alle digitale adressen opvragen.
       parameters:
       - in: query
+        name: adres
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van adres dat exact
+          gelijk moet zijn aan deze waarde.
+      - in: query
+        name: adres__icontains
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van adres die de
+          opgegeven waarden bevat.
+      - in: query
         name: expand
         schema:
           type: array
@@ -1080,12 +1092,66 @@ paths:
 
         explode: false
         style: form
+      - in: query
+        name: omschrijving
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van omschijving
+          die de opgegeven waarden bevat.
       - name: page
         required: false
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
+      - in: query
+        name: soortDigitaalAdres
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van het soort digitaal
+          adres dat exact gelijk moet zijn aan deze waarde.
+      - in: query
+        name: verstrektDoorBetrokkene__rol
+        schema:
+          type: string
+          enum:
+          - klant
+          - vertegenwoordiger
+        description: Zoek digitaal adres(sen) object(en) op basis van de betrokkene
+          rol.
+      - in: query
+        name: verstrektDoorBetrokkene__url
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van de betrokkene
+          url.
+      - in: query
+        name: verstrektDoorBetrokkene__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Zoek digitaal adres(sen) object(en) op basis van de betrokkene
+          uuid.
+      - in: query
+        name: verstrektDoorPartij__soortPartij
+        schema:
+          type: string
+          enum:
+          - contactpersoon
+          - organisatie
+          - persoon
+        description: Zoek digitaal adres(sen) object(en) op basis van de partij soort.
+      - in: query
+        name: verstrektDoorPartij__url
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van de partij url.
+      - in: query
+        name: verstrektDoorPartij__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Zoek digitaal adres(sen) object(en) op basis van de partij uuid.
       tags:
       - digitale adressen
       security:
