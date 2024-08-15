@@ -9,7 +9,7 @@ from openklant.components.klantinteracties.models.internetaken import InterneTaa
 
 class InternetaakFilterSet(FilterSet):
     toegewezen_aan_actor__uuid = filters.UUIDFilter(
-        help_text=_("Zoek internetaak object op basis van het toegewezen actor uuid"),
+        help_text=_("Zoek internetaak object op basis van het toegewezen actor uuid."),
         field_name="actoren__uuid",
     )
     toegewezen_aan_actor__url = filters.CharFilter(

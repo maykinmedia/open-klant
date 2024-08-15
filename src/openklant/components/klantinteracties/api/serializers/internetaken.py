@@ -15,8 +15,8 @@ from openklant.components.klantinteracties.api.validators import internetaak_exi
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.klantinteracties.models.constants import Taakstatus
 from openklant.components.klantinteracties.models.internetaken import (
-    InterneTakenActorenThoughModel,
     InterneTaak,
+    InterneTakenActorenThoughModel,
 )
 from openklant.components.klantinteracties.models.klantcontacten import Klantcontact
 
