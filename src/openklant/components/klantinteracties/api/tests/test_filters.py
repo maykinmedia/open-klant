@@ -521,9 +521,7 @@ class PartijFilterSetTests(APITestCase):
     def test_filter_vertegenwoordigde_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"vertegenwoordigdePartij__url": partij_url},
-            content_type="application/json",
+            self.url, {"vertegenwoordigdePartij__url": partij_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -714,11 +712,7 @@ class CategorieRelatieFiltersetTests(APITestCase):
 
     def test_filter_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
-        response = self.client.get(
-            self.url,
-            {"partij__url": partij_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"partij__url": partij_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -793,11 +787,7 @@ class CategorieRelatieFiltersetTests(APITestCase):
 
     def test_filter_categorie_url(self):
         categorie_url = f"http://testserver/klantinteracties/api/v1/categorieen/{str(self.categorie5.uuid)}"
-        response = self.client.get(
-            self.url,
-            {"categorie__url": categorie_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"categorie__url": categorie_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -909,11 +899,7 @@ class ActorKlantcontactFilterSetTests(APITestCase):
 
     def test_filter_klantcontact_url(self):
         klantcontact_url = f"http://testserver/klantinteracties/api/v1/klantcontacten/{str(self.klantcontact5.uuid)}"
-        response = self.client.get(
-            self.url,
-            {"klantcontact__url": klantcontact_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"klantcontact__url": klantcontact_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -942,11 +928,7 @@ class ActorKlantcontactFilterSetTests(APITestCase):
         actor_url = (
             f"http://testserver/klantinteracties/api/v1/actoren/{str(self.actor5.uuid)}"
         )
-        response = self.client.get(
-            self.url,
-            {"actor__url": actor_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"actor__url": actor_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -1007,9 +989,7 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
     def test_filter_vertegenwoordigende_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"vertegenwoordigendePartij__url": partij_url},
-            content_type="application/json",
+            self.url, {"vertegenwoordigendePartij__url": partij_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1041,9 +1021,7 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
     def test_filter_vertegenwoordigde_partij_url(self):
         partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"vertegenwoordigdePartij__url": partij_url},
-            content_type="application/json",
+            self.url, {"vertegenwoordigdePartij__url": partij_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1112,11 +1090,7 @@ class InterneTaakFilterSetTests(APITestCase):
         actor_url = (
             f"http://testserver/klantinteracties/api/v1/actoren/{str(self.actor5.uuid)}"
         )
-        response = self.client.get(
-            self.url,
-            {"toegewezenAanActor__url": actor_url},
-            content_type="application/json",
-        )
+        response = self.client.get(self.url, {"toegewezenAanActor__url": actor_url})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()["results"]
@@ -1146,9 +1120,7 @@ class InterneTaakFilterSetTests(APITestCase):
     def test_filter_aanleidinggevend_klantcontact_url(self):
         klantcontact_url = f"http://testserver/klantinteracties/api/v1/klantcontacten/{str(self.klantcontact5.uuid)}"
         response = self.client.get(
-            self.url,
-            {"aanleidinggevendKlantcontact__url": klantcontact_url},
-            content_type="application/json",
+            self.url, {"aanleidinggevendKlantcontact__url": klantcontact_url}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1170,6 +1142,103 @@ class InterneTaakFilterSetTests(APITestCase):
         with self.subTest("invalid_value_returns_empty_query"):
             response = self.client.get(
                 self.url, {"aanleidinggevendKlantcontact__url": "ValueError"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+
+class DigitaalAdresFilterSetTests(APITestCase):
+    url = reverse("klantinteracties:digitaaladres-list")
+
+    def setUp(self):
+        super().setUp()
+        (
+            self.betrokkene,
+            self.betrokkene2,
+            self.betrokkene3,
+            self.betrokkene4,
+            self.betrokkene5,
+        ) = BetrokkeneFactory.create_batch(5)
+        (
+            self.partij,
+            self.partij2,
+            self.partij3,
+            self.partij4,
+            self.partij5,
+        ) = PartijFactory.create_batch(5)
+        self.digitaal_adres = DigitaalAdresFactory.create(
+            partij=self.partij, betrokkene=self.betrokkene
+        )
+        self.digitaal_adres2 = DigitaalAdresFactory.create(
+            partij=self.partij2, betrokkene=self.betrokkene2
+        )
+        self.digitaal_adres3 = DigitaalAdresFactory.create(
+            partij=self.partij3, betrokkene=self.betrokkene3
+        )
+        self.digitaal_adres4 = DigitaalAdresFactory.create(
+            partij=self.partij4, betrokkene=self.betrokkene4
+        )
+        self.digitaal_adres5 = DigitaalAdresFactory.create(
+            partij=self.partij5, betrokkene=self.betrokkene5
+        )
+
+    def test_filter_verstrekt_door_betrokkene_url(self):
+        betrokkene_url = f"http://testserver/klantinteracties/api/v1/betrokkenen/{str(self.betrokkene5.uuid)}"
+        response = self.client.get(
+            self.url, {"verstrektDoorBetrokkene__url": betrokkene_url}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.digitaal_adres5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            betrokkene_url = (
+                f"http://testserver/klantinteracties/api/v1/betrokkenen/{str(uuid4())}"
+            )
+            response = self.client.get(
+                self.url,
+                {"verstrektDoorBetrokkene__url": betrokkene_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(
+                self.url, {"verstrektDoorBetrokkene__url": "ValueError"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_verstrekt_door_partij_url(self):
+        partij_url = f"http://testserver/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
+        response = self.client.get(self.url, {"verstrektDoorPartij__url": partij_url})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(self.digitaal_adres5.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "verstrektDoorPartij__url": f"http://testserver/klantinteracties/api/v1/partijen/{str(uuid4())}"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("invalid_value_returns_empty_query"):
+            response = self.client.get(
+                self.url, {"verstrektDoorPartij__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 

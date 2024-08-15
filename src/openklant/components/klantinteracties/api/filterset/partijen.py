@@ -22,35 +22,37 @@ class PartijDetailFilterSet(FilterSet):
 class PartijFilterSet(FilterSet):
     vertegenwoordigde_partij__uuid = filters.UUIDFilter(
         help_text=_(
-            "Zoek partij object op basis van het vertegenwoordigde partij uuid"
+            "Zoek partij object op basis van het vertegenwoordigde partij uuid."
         ),
         field_name="vertegenwoordigde__vertegenwoordigende_partij__uuid",
     )
     vertegenwoordigde_partij__url = filters.CharFilter(
-        help_text=_("Zoek partij object op basis van het vertegenwoordigde partij url"),
+        help_text=_(
+            "Zoek partij object op basis van het vertegenwoordigde partij url."
+        ),
         method="filter_vertegenwoordigde_partij_url",
     )
     partij_identificator__code_objecttype = filters.CharFilter(
         help_text=_(
-            "Zoek partij object op basis van het partij identificator objecttype"
+            "Zoek partij object op basis van het partij identificator objecttype."
         ),
         method="filter_identificator_code_objecttype",
     )
     partij_identificator__code_soort_object_id = filters.CharFilter(
         help_text=_(
-            "Zoek partij object op basis van het partij identificator soort object ID"
+            "Zoek partij object op basis van het partij identificator soort object ID."
         ),
         method="filter_identificator_code_soort_object_id",
     )
     partij_identificator__object_id = filters.CharFilter(
         help_text=_(
-            "Zoek partij object op basis van het partij identificator object ID"
+            "Zoek partij object op basis van het partij identificator object ID."
         ),
         method="filter_identificator_object_id",
     )
     partij_identificator__code_register = filters.CharFilter(
         help_text=_(
-            "Zoek partij object op basis van het partij identificator register"
+            "Zoek partij object op basis van het partij identificator register."
         ),
         method="filter_identificator_code_register",
     )
@@ -90,7 +92,7 @@ class PartijFilterSet(FilterSet):
 
     def filter_vertegenwoordigde_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(
                 vertegenwoordigde__vertegenwoordigende_partij__uuid=url_uuid
             )
@@ -142,13 +144,13 @@ class PartijFilterSet(FilterSet):
 class VertegenwoordigdenFilterSet(FilterSet):
     vertegenwoordigende_partij__url = filters.CharFilter(
         help_text=_(
-            "Zoek Vertegenwoordigden object op basis van het vertegenwoordigende partij url"
+            "Zoek Vertegenwoordigden object op basis van het vertegenwoordigende partij url."
         ),
         method="filter_vertegenwoordigende_partij_url",
     )
     vertegenwoordigde_partij__url = filters.CharFilter(
         help_text=_(
-            "Zoek Vertegenwoordigden object op basis van het vertegenwoordigde partij url"
+            "Zoek Vertegenwoordigden object op basis van het vertegenwoordigde partij url."
         ),
         method="filter_vertegenwoordigde_partij_url",
     )
@@ -164,14 +166,14 @@ class VertegenwoordigdenFilterSet(FilterSet):
 
     def filter_vertegenwoordigende_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(vertegenwoordigende_partij__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
     def filter_vertegenwoordigde_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(vertegenwoordigde_partij__uuid=url_uuid)
         except ValueError:
             return queryset.none()
@@ -179,15 +181,15 @@ class VertegenwoordigdenFilterSet(FilterSet):
 
 class CategorieRelatieFilterSet(FilterSet):
     partij__url = filters.CharFilter(
-        help_text=_("Zoek categorie relatie object op basis van de partij url"),
+        help_text=_("Zoek categorie relatie object op basis van de partij url."),
         method="filter_partij_url",
     )
     partij__uuid = filters.CharFilter(
-        help_text=_("Zoek categorie relatie object op basis van de partij uuid"),
+        help_text=_("Zoek categorie relatie object op basis van de partij uuid."),
         method="filter_partij_uuid",
     )
     partij__nummer = filters.CharFilter(
-        help_text=_("Zoek categorie relatie object op basis van het partij nummer"),
+        help_text=_("Zoek categorie relatie object op basis van het partij nummer."),
         method="filter_partij_nummer",
     )
     categorie__naam = filters.CharFilter(
@@ -225,7 +227,7 @@ class CategorieRelatieFilterSet(FilterSet):
 
     def filter_partij_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(partij__uuid=url_uuid)
         except ValueError:
             return queryset.none()
@@ -245,7 +247,7 @@ class CategorieRelatieFilterSet(FilterSet):
 
     def filter_categorie_url(self, queryset, name, value):
         try:
-            url_uuid = uuid.UUID(value.split("/")[-1])
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(categorie__uuid=url_uuid)
         except ValueError:
             return queryset.none()
