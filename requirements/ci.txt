@@ -767,7 +767,7 @@ webencodings==0.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   bleach
-webob==1.8.7
+webob==1.8.8
     # via webtest
 webtest==3.0.0
     # via django-webtest

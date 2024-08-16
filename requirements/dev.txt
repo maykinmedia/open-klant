@@ -913,7 +913,7 @@ webencodings==0.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   bleach
-webob==1.8.7
+webob==1.8.8
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
