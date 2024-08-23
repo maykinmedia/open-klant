@@ -67,10 +67,6 @@
                 "appgroup"
             ],
             [
-                "sites",
-                "site"
-            ],
-            [
                 "log_outgoing_requests",
                 "outgoingrequestslogconfig"
             ]
