@@ -181,6 +181,7 @@ django==4.2.15
     #   django-appconf
     #   django-axes
     #   django-cors-headers
+    #   django-csp
     #   django-debug-toolbar
     #   django-extensions
     #   django-filter
@@ -226,6 +227,11 @@ django-axes==6.5.1
     #   -r requirements/ci.txt
     #   open-api-framework
 django-cors-headers==4.4.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   open-api-framework
+django-csp==3.8
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -556,7 +562,7 @@ notifications-api-common==0.2.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.7.1
+open-api-framework==0.8.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
