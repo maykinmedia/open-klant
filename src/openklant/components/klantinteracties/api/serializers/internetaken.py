@@ -14,10 +14,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
 from openklant.components.klantinteracties.api.validators import internetaak_exists
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.klantinteracties.models.constants import Taakstatus
-from openklant.components.klantinteracties.models.internetaken import (
-    InterneTaak,
-    InterneTakenActorenThoughModel,
-)
+from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import Klantcontact
 
 
@@ -88,12 +85,12 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response["toegewezen_aan_actor"] = ActorForeignKeySerializer(
-            instance.actoren.order_by("internetakenactorenthoughmodel__order").first(),
+            instance.actoren.order_by("internetakenactorenthoughmodel__pk").first(),
             context={**self.context},
         ).data
 
         response["toegewezen_aan_actoren"] = ActorForeignKeySerializer(
-            instance.actoren.all().order_by("internetakenactorenthoughmodel__order"),
+            instance.actoren.all().order_by("internetakenactorenthoughmodel__pk"),
             context={**self.context},
             many=True,
         ).data
@@ -158,11 +155,8 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
 
         internetaak = super().create(validated_data)
         if actoren:
-            bulk_create_instances = [
-                InterneTakenActorenThoughModel(internetaak=internetaak, actor=actor)
-                for actor in self._get_actoren(actoren)
-            ]
-            InterneTakenActorenThoughModel.objects.bulk_create(bulk_create_instances)
+            for actor in self._get_actoren(actoren):
+                internetaak.actoren.add(actor)
 
         return internetaak
 
@@ -171,11 +165,8 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
         if "actoren" in validated_data:
             actoren = validated_data.pop("actoren")
             instance.actoren.clear()
-            bulk_create_instances = [
-                InterneTakenActorenThoughModel(internetaak=instance, actor=actor)
-                for actor in self._get_actoren(actoren)
-            ]
-            InterneTakenActorenThoughModel.objects.bulk_create(bulk_create_instances)
+            for actor in self._get_actoren(actoren):
+                instance.actoren.add(actor)
 
         if "klantcontact" in validated_data:
             if klantcontact := validated_data.pop("klantcontact", None):

@@ -5,8 +5,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from ordered_model.models import OrderedModel
-
 from openklant.components.utils.number_generator import number_generator
 
 from .constants import Taakstatus
@@ -101,13 +99,11 @@ class InterneTaak(models.Model):
         return f"{self.klantcontact} - ({self.nummer})"
 
 
-# Added for deprecated toegewezen_aan_actor field to return correct order
-class InterneTakenActorenThoughModel(OrderedModel):
+class InterneTakenActorenThoughModel(models.Model):
     actor = models.ForeignKey("klantinteracties.Actor", on_delete=models.CASCADE)
     internetaak = models.ForeignKey(
         "klantinteracties.InterneTaak", on_delete=models.CASCADE
     )
-    order_with_respect_to = "internetaak"
 
     class Meta:
-        ordering = ("actor", "order")
+        ordering = ("pk",)

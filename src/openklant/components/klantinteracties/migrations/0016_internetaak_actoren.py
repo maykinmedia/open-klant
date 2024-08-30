@@ -23,12 +23,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "order",
-                    models.PositiveIntegerField(
-                        db_index=True, editable=False, verbose_name="order"
-                    ),
-                ),
-                (
                     "actor",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
@@ -43,9 +37,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={
-                "ordering": ("actor", "order"),
-            },
+            options={"ordering": ("pk",)},
         ),
         migrations.AddField(
             model_name="internetaak",

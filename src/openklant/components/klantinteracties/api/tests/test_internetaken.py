@@ -464,28 +464,50 @@ class InterneTaakTests(APITestCase):
 
         response = self.client.put(detail_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.json()
+        response_data = response.json()
 
-        self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor3.uuid))
-        self.assertEqual(len(data["toegewezenAanActoren"]), 2)
+        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor3.uuid))
+        self.assertEqual(len(response_data["toegewezenAanActoren"]), 2)
         self.assertEqual(
-            data["toegewezenAanActoren"][0]["uuid"],
+            response_data["toegewezenAanActoren"][0]["uuid"],
             str(actor3.uuid),
         )
         self.assertEqual(
-            data["toegewezenAanActoren"][1]["uuid"],
+            response_data["toegewezenAanActoren"][1]["uuid"],
             str(actor2.uuid),
         )
         self.assertEqual(
-            data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact2.uuid)
+            response_data["aanleidinggevendKlantcontact"]["uuid"],
+            str(klantcontact2.uuid),
         )
-        self.assertEqual(data["nummer"], "9999999999")
-        self.assertEqual(data["gevraagdeHandeling"], "changed")
-        self.assertEqual(data["toelichting"], "changed")
-        self.assertEqual(data["status"], "verwerkt")
+        self.assertEqual(response_data["nummer"], "9999999999")
+        self.assertEqual(response_data["gevraagdeHandeling"], "changed")
+        self.assertEqual(response_data["toelichting"], "changed")
+        self.assertEqual(response_data["status"], "verwerkt")
         self.assertTrue(
             InterneTaak.objects.filter(afgehandeld_op="2024-01-01T12:00:00Z").exists()
         )
+
+        with self.subTest(
+            "update_toegewezen_aan_actor_resoltes_in_one_actor_being_set"
+        ):
+            # no toegewezen_aan_actoren and toegewezen_aan_actor
+            del data["toegewezenAanActoren"]
+            data = {
+                "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            }
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response_data = response.json()
+
+            self.assertEqual(
+                response_data["toegewezenAanActor"]["uuid"], str(actor.uuid)
+            )
+            self.assertEqual(len(response_data["toegewezenAanActoren"]), 1)
+            self.assertEqual(
+                response_data["toegewezenAanActoren"][0]["uuid"],
+                str(actor.uuid),
+            )
 
     def test_partial_update_internetaak(self):
         actor = ActorFactory.create()

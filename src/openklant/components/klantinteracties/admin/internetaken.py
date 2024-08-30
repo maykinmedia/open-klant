@@ -1,9 +1,6 @@
 from django.contrib import admin
 
-from ordered_model.admin import OrderedInlineModelAdminMixin
-
 from ..models.internetaken import InterneTaak
-from .actoren import ActorThoughTabularInlineAdmin
 
 
 class InterneTaakInlineAdmin(admin.StackedInline):
@@ -14,7 +11,7 @@ class InterneTaakInlineAdmin(admin.StackedInline):
 
 
 @admin.register(InterneTaak)
-class InterneTaakAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
+class InterneTaakAdmin(admin.ModelAdmin):
     readonly_fields = ("uuid",)
     list_display = (
         "nummer",
@@ -30,4 +27,3 @@ class InterneTaakAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
         "uuid",
         "toegewezen_op",
     )
-    inlines = (ActorThoughTabularInlineAdmin,)

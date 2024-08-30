@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from ordered_model.admin import OrderedTabularInline
-
 from ..models.actoren import (
     Actor,
     ActorKlantcontact,
@@ -10,7 +8,6 @@ from ..models.actoren import (
     Medewerker,
     OrganisatorischeEenheid,
 )
-from ..models.internetaken import InterneTakenActorenThoughModel
 
 
 class GeautomatiseerdeActorInlineAdmin(admin.StackedInline):
@@ -34,21 +31,6 @@ class OrganisatorischeEenheidInlineAdmin(admin.StackedInline):
 class ActorKlantcontactInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
     model = ActorKlantcontact
-    extra = 0
-
-
-class ActorThoughTabularInlineAdmin(OrderedTabularInline):
-    model = InterneTakenActorenThoughModel
-    fields = (
-        "actor",
-        "order",
-        "move_up_down_links",
-    )
-    readonly_fields = (
-        "order",
-        "move_up_down_links",
-    )
-    ordering = ("order",)
     extra = 0
 
 
