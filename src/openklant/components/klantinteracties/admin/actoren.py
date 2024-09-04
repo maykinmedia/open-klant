@@ -8,7 +8,6 @@ from ..models.actoren import (
     Medewerker,
     OrganisatorischeEenheid,
 )
-from .internetaken import InterneTaakInlineAdmin
 
 
 class GeautomatiseerdeActorInlineAdmin(admin.StackedInline):
@@ -52,7 +51,6 @@ class ActorAdmin(admin.ModelAdmin):
         GeautomatiseerdeActorInlineAdmin,
         MedewerkerInlineAdmin,
         OrganisatorischeEenheidInlineAdmin,
-        InterneTaakInlineAdmin,
     )
     fieldsets = (
         (

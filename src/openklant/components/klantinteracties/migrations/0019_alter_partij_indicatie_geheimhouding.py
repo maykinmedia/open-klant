@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("klantinteracties", "0015_internetaak_afgehandeld_op"),
+        ("klantinteracties", "0018_remove_internetaak_actor"),
     ]
 
     operations = [

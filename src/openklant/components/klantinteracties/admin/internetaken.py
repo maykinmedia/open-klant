@@ -20,7 +20,10 @@ class InterneTaakAdmin(admin.ModelAdmin):
         "afgehandeld_op",
     )
     list_filter = (
-        "actor",
+        "actoren",
         "status",
     )
-    readonly_fields = ("toegewezen_op",)
+    readonly_fields = (
+        "uuid",
+        "toegewezen_op",
+    )

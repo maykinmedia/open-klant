@@ -1071,19 +1071,19 @@ class InterneTaakFilterSetTests(APITestCase):
             self.klantcontact5,
         ) = KlantcontactFactory.create_batch(5)
         self.internetaak = InterneTaakFactory.create(
-            actor=self.actor, klantcontact=self.klantcontact
+            actoren=[self.actor], klantcontact=self.klantcontact
         )
         self.internetaak2 = InterneTaakFactory.create(
-            actor=self.actor2, klantcontact=self.klantcontact2
+            actoren=[self.actor2], klantcontact=self.klantcontact2
         )
         self.internetaak3 = InterneTaakFactory.create(
-            actor=self.actor3, klantcontact=self.klantcontact3
+            actoren=[self.actor3], klantcontact=self.klantcontact3
         )
         self.internetaak4 = InterneTaakFactory.create(
-            actor=self.actor4, klantcontact=self.klantcontact4
+            actoren=[self.actor4], klantcontact=self.klantcontact4
         )
         self.internetaak5 = InterneTaakFactory.create(
-            actor=self.actor5, klantcontact=self.klantcontact5
+            actoren=[self.actor5], klantcontact=self.klantcontact5
         )
 
     def test_filter_toegewezen_aan_actor_url(self):
