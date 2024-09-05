@@ -54,6 +54,19 @@ class PartijTests(APITestCase):
                 ],
             )
 
+    def test_list_pagination_pagesize_param(self):
+        list_url = reverse("klantinteracties:partij-list")
+        PartijFactory.create_batch(10)
+
+        response = self.client.get(list_url, {"pageSize": 5})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+        self.assertEqual(data["count"], 10)
+        self.assertEqual(len(data["results"]), 5)
+        self.assertEqual(data["next"], f"http://testserver{list_url}?page=2&pageSize=5")
+
     def test_read_partij(self):
         partij = PartijFactory.create()
         detail_url = reverse(
