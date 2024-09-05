@@ -39,13 +39,13 @@ Open Klant versie   API versie      Release datum   API specificatie
 ==================  ==============  =============   ================
 master/latest       n/a             n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.2.0...master#diff-0198a3368d5c8c5325ef11e3c0ba8d2986f50b964c8002d3ece7cadc0b8ba23d>`_)
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.2.0..master#diff-0198a3368d5c8c5325ef11e3c0ba8d2986f50b964c8002d3ece7cadc0b8ba23d>`_)
 2.2.0               0.0.3+          2024-09-05      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.2.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.2.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.1.0...2.2.0#diff-0198a3368d5c8c5325ef11e3c0ba8d2986f50b964c8002d3ece7cadc0b8ba23d>`_)
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.1.0..2.2.0#diff-0198a3368d5c8c5325ef11e3c0ba8d2986f50b964c8002d3ece7cadc0b8ba23d>`_)
 2.1.0               0.0.3+          2024-07-16      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.1.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.1.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.1.0...2.0.0#diff-0198a3368d5c8c5325ef11e3c0ba8d2986f50b964c8002d3ece7cadc0b8ba23d>`_)
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.0.0..2.1.0#diff-0198a3368d5c8c5325ef11e3c0ba8d2986f50b964c8002d3ece7cadc0b8ba23d>`_)
 2.0.0               0.0.3           2024-03-15      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.0.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.0.0/src/openklant/components/klantinteracties/openapi.yaml>`_
 1.0.0               0.0.1           2023-08-05      Klanten:
