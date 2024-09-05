@@ -8,6 +8,12 @@ Change history
 
 **New features**
 
+* [#50] updated Python dependencies to minimize security risks.
+* [#208] fixed the bug within the API schema generation for expand paths.
+* [#209] added query parameters to the `digitaleadressen` endpoint.
+* [#214] Added expand path from `digitaleadressen` to `internetaken`.
+* [#182] added `actoren` field in `internetaken`.
+* [#207] changed indicatie geheimhouding from required to optional.
 * updated open-api-framework to 0.8.0, which includes adding CSRF, CSP and HSTS settings (#438).
   All new environment variables are added to the `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html>`_
 
@@ -17,7 +23,9 @@ Change history
     before upgrading to this version of open-api-framework, your entire application is served
     over HTTPS, otherwise this setting can break parts of your application (see https://docs.djangoproject.com/en/4.2/ref/middleware/#http-strict-transport-security)
 
+.. warning::
 
+    With the introduction of the ``actoren`` field in the `internetaken` endpoint, the field ``actor`` is now deprecated and will be removed in the next version.
 
 2.1.0
 =====
