@@ -1,6 +1,6 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
+from vng_api_common.pagination import DynamicPageSizePagination
 
 from openklant.components.klantinteracties.api.filterset.internetaken import (
     InternetaakFilterSet,
@@ -50,7 +50,7 @@ class InterneTaakViewSet(viewsets.ModelViewSet):
     )
     serializer_class = InterneTaakSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filterset_class = InternetaakFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)

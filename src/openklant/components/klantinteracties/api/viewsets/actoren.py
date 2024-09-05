@@ -1,6 +1,6 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
+from vng_api_common.pagination import DynamicPageSizePagination
 
 from openklant.components.klantinteracties.api.filterset.actoren import ActorenFilterSet
 from openklant.components.klantinteracties.api.serializers.actoren import (
@@ -48,7 +48,7 @@ class ActorViewSet(viewsets.ModelViewSet):
     )
     serializer_class = ActorSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filterset_class = ActorenFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
