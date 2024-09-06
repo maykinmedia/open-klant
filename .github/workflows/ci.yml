@@ -15,7 +15,6 @@ env:
   DJANGO_SETTINGS_MODULE: openklant.conf.ci
   DB_PASSWORD: ''
   DB_USER: postgres
-  # ALLOWED_HOSTS: openklant.nl
 
 jobs:
   # determine changed files to decide if certain jobs can be skipped or not
@@ -28,25 +27,21 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Changed files
-        id: app-files
+      - name: Get changed PY files
+        id: changed-py-files
         uses: tj-actions/changed-files@v45
         with:
           files: |
-            src/**/*.py
-            requirements/*.txt
-
-      - name: Display changed files
-        if: steps.app-files.outputs.any_changed == 'true'
-        env:
-          ALL_CHANGED_FILES: ${{ steps.app-files.outputs.all_changed_files }}
-        run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "$file was changed"
-          done
+            ^src/.+\.py
+      - name: Get changed requirements files
+        id: changed-requirements
+        uses: tj-actions/changed-files@v45
+        with:
+          files: ^requirements/.+\.txt$
 
     outputs:
-      changed-files: ${{ steps.app-files.outputs.any_changed }}
+      changed-py-files: ${{ steps.changed-py-files.outputs.any_changed }}
+      changed-requirements: ${{ steps.changed-requirements.outputs.any_changed }}
 
   tests:
     name: Tests (PG ${{ matrix.postgres }})
@@ -91,10 +86,7 @@ jobs:
           python src/manage.py collectstatic --noinput --link
           coverage run src/manage.py test src
         env:
-          DJANGO_SETTINGS_MODULE: openklant.conf.ci
           SECRET_KEY: dummy
-          DB_USER: postgres
-          DB_PASSWORD: ''
 
       - name: Publish coverage report
         uses: codecov/codecov-action@v3
@@ -121,101 +113,26 @@ jobs:
               echo "Please update the environment documentation by running \`bin/generate_envvar_docs.sh\`"
               exit 1
           fi
-        env:
-          DJANGO_SETTINGS_MODULE: openklant.conf.ci
 
-  docker:
-    needs: tests
-    name: Build Docker image
+  store-reusable-workflow-vars:
+    name: create values which can be passed through a reusable workflow
     runs-on: ubuntu-latest
+    outputs:
+      image-name: ${{ steps.image-name.outputs.image-name }}
+      sphinx-ssl-conf: ${{ steps.sphinx-ssl-conf.outputs.sphinx-ssl-conf }}
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Determine tag/commit hash
-        id: vars
-        run: |
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name (if present at all)
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-          echo "tag=${VERSION}" >> $GITHUB_OUTPUT
-          echo "git_hash=${GITHUB_SHA}" >> $GITHUB_OUTPUT
-      - name: Build the Docker image
-        run: |
-          docker build \
-            --tag $IMAGE_NAME:${{ steps.vars.outputs.tag }} \
-            --build-arg COMMIT_HASH=${{ steps.vars.outputs.git_hash }} \
-            --build-arg RELEASE=${{ steps.vars.outputs.tag }} \
-            .
-      - run: docker image save -o image.tar $IMAGE_NAME:${{ steps.vars.outputs.tag }}
-      - name: Store image artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: docker-image
-          path: image.tar
-          retention-days: 1
+      - run: echo "image-name=$IMAGE_NAME" >> $GITHUB_OUTPUT
+        name: 'Store the docker image name'
+        id: image-name
 
-  # image_scan:
-  #   runs-on: ubuntu-latest
-  #   name: Scan docker image
-  #   needs:
-  #     - docker
-
-  #   steps:
-  #     - name: Download built image
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: docker-image
-  #     - name: Scan image with Trivy
-  #       uses: aquasecurity/trivy-action@master
-  #       with:
-  #         input: /github/workspace/image.tar  # from download-artifact
-  #         format: 'sarif'
-  #         output: 'trivy-results-docker.sarif'
-  #         ignore-unfixed: true
-  #     - name: Upload results to GH Security tab
-  #       uses: github/codeql-action/upload-sarif@v3
-  #       with:
-  #         sarif_file: 'trivy-results-docker.sarif'
-
-  publish:
+  open-api-ci:
+    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@initial-setup
     needs:
+      - store-reusable-workflow-vars
       - tests
-      - docker
-
-    name: Push Docker image
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'  # exclude PRs
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download built image
-        uses: actions/download-artifact@v3
-        with:
-          name: docker-image
-
-      - name: Determine tag/commit hash
-        id: vars
-        run: |
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-          # Strip "v" prefix from tag name (if present at all)
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-
-          echo "tag=${VERSION}" >> $GITHUB_OUTPUT
-
-      - name: Load image
-        run: |
-          docker image load -i image.tar
-
-      - name: Log into registry
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-
-      - name: Push the Docker image
-        run: docker push $IMAGE_NAME:${{ steps.vars.outputs.tag }}
+    with:
+      main-branch: 'master'
+      python-version: '3.11'
+      docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
+      repository-owner: 'maykinmedia'
