@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
+from vng_api_common.pagination import DynamicPageSizePagination
 
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
     ActorKlantcontactFilterSet,
@@ -68,7 +68,7 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     )
     serializer_class = KlantcontactSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
@@ -127,7 +127,7 @@ class BetrokkeneViewSet(viewsets.ModelViewSet):
     )
     serializer_class = BetrokkeneSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filterset_class = BetrokkeneFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
@@ -167,7 +167,7 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
     )
     serializer_class = OnderwerpobjectSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [
         "onderwerpobjectidentificator_object_id",
@@ -210,7 +210,7 @@ class BijlageViewSet(viewsets.ModelViewSet):
     queryset = Bijlage.objects.order_by("-pk").select_related("klantcontact")
     serializer_class = BijlageSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [
         "bijlageidentificator_object_id",
@@ -258,7 +258,7 @@ class ActorKlantcontactViewSet(viewsets.ModelViewSet):
     )
     serializer_class = ActorKlantcontactSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filterset_class = ActorKlantcontactFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)

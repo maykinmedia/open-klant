@@ -1,6 +1,6 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
+from vng_api_common.pagination import DynamicPageSizePagination
 
 from openklant.components.contactgegevens.api.serializers import (
     OrganisatieSerializer,
@@ -44,7 +44,7 @@ class OrganisatieViewSet(viewsets.ModelViewSet):
     queryset = Organisatie.objects.order_by("-pk")
     serializer_class = OrganisatieSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
@@ -82,6 +82,6 @@ class PersoonViewSet(viewsets.ModelViewSet):
     queryset = Persoon.objects.order_by("-pk")
     serializer_class = PersoonSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)

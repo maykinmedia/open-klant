@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
+from vng_api_common.pagination import DynamicPageSizePagination
 
 from openklant.components.klantinteracties.api.serializers.rekeningnummers import (
     RekeningnummerSerializer,
@@ -44,7 +44,7 @@ class RekeningnummerViewSet(viewsets.ModelViewSet):
     )
     serializer_class = RekeningnummerSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [
         "uuid",

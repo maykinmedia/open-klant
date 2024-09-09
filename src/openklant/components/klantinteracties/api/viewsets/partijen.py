@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
+from vng_api_common.pagination import DynamicPageSizePagination
 
 from openklant.components.klantinteracties.api.filterset.partijen import (
     CategorieRelatieFilterSet,
@@ -72,7 +72,7 @@ class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
     )
     serializer_class = PartijSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
@@ -122,7 +122,7 @@ class VertegenwoordigdenViewSet(viewsets.ModelViewSet):
     )
     serializer_class = VertegenwoordigdenSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filterset_class = VertegenwoordigdenFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
@@ -165,7 +165,7 @@ class CategorieRelatieViewSet(viewsets.ModelViewSet):
     serializer_class = CategorieRelatieSerializer
     lookup_field = "uuid"
     filterset_class = CategorieRelatieFilterSet
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
@@ -203,7 +203,7 @@ class CategorieViewSet(viewsets.ModelViewSet):
     queryset = Categorie.objects.order_by("-pk")
     serializer_class = CategorieSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
@@ -241,7 +241,7 @@ class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     queryset = PartijIdentificator.objects.order_by("-pk").select_related("partij")
     serializer_class = PartijIdentificatorSerializer
     lookup_field = "uuid"
-    pagination_class = PageNumberPagination
+    pagination_class = DynamicPageSizePagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [
         "andere_partij_identificator",
