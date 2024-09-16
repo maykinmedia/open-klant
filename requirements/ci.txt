@@ -361,6 +361,8 @@ inflection==0.5.1
     #   -r requirements/base.txt
     #   drf-spectacular
     #   drf-yasg
+iniconfig==2.0.0
+    # via pytest
 iso-639==0.4.5
     # via
     #   -r requirements/base.txt
@@ -446,6 +448,7 @@ packaging==24.1
     #   -r requirements/base.txt
     #   black
     #   drf-yasg
+    #   pytest
     #   sphinx
 pathspec==0.12.1
     # via black
@@ -459,6 +462,8 @@ platformdirs==4.2.2
     # via
     #   black
     #   pylint
+pluggy==1.5.0
+    # via pytest
 prometheus-client==0.20.0
     # via
     #   -r requirements/base.txt
@@ -502,6 +507,8 @@ pypng==0.20220715.0
     #   qrcode
 pyquery==2.0.0
     # via -r requirements/test-tools.in
+pytest==8.3.3
+    # via -r requirements/ci.in
 python-dateutil==2.9.0.post0
     # via
     #   -r requirements/base.txt

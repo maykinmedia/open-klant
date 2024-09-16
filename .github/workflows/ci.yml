@@ -31,13 +31,13 @@ jobs:
         id: changed-py-files
         uses: tj-actions/changed-files@v45
         with:
-          files: |
-            ^src/.+\.py
+          files: src/{,**/}*.py
+
       - name: Get changed requirements files
         id: changed-requirements
         uses: tj-actions/changed-files@v45
         with:
-          files: ^requirements/.+\.txt$
+          files: requirements/*.txt
 
     outputs:
       changed-py-files: ${{ steps.changed-py-files.outputs.any_changed }}
@@ -68,19 +68,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Set up backend environment
+        uses: maykinmedia/setup-django-backend@v1.3
         with:
           python-version: '3.11'
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+          setup-node: true
 
-      - name: Install dependencies
-        run: pip install -r requirements/dev.txt codecov
-      - name: Build frontend
-        run: |
-          npm ci
-          npm run build
       - name: Run tests
         run: |
           python src/manage.py collectstatic --noinput --link
@@ -103,7 +96,7 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'requirements/*.txt'
       - name: Install dependencies
-        run: pip install -r requirements/ci.txt pytest
+        run: pip install -r requirements/ci.txt
       - name: Generate environment variable documentation using OAf and check if it was updated
         run: |
           bin/generate_envvar_docs.sh
@@ -119,7 +112,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image-name: ${{ steps.image-name.outputs.image-name }}
-      sphinx-ssl-conf: ${{ steps.sphinx-ssl-conf.outputs.sphinx-ssl-conf }}
 
     steps:
       - run: echo "image-name=$IMAGE_NAME" >> $GITHUB_OUTPUT
@@ -136,3 +128,6 @@ jobs:
       python-version: '3.11'
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
       repository-owner: 'maykinmedia'
+    secrets:
+      docker-username: ${{ secrets.DOCKER_USERNAME }}
+      docker-token: ${{ secrets.DOCKER_TOKEN }}

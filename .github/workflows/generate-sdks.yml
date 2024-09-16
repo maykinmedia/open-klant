@@ -12,3 +12,10 @@ on:
 jobs:
   open-api-workflow-generate-sdks:
     uses: maykinmedia/open-api-workflows/.github/workflows/generate-sdks.yml@initial-setup
+    strategy:
+      matrix:
+        component:
+          - contactgevens
+          - klantinteracties
+    with:
+      schema-path: 'src/openklant/components/${{ matrix.component }}/openapi.yaml'
