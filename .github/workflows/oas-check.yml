@@ -1,0 +1,25 @@
+name: check-oas
+
+on:
+  push:
+    paths:
+      - "src/openklant/components/*/openapi.yaml"
+      - .github/workflows/oas-check.yml
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  open-api-workflow-check-oas:
+    uses: maykinmedia/open-api-workflows/.github/workflows/oas-check.yml@initial-setup
+    strategy:
+      matrix:
+        component:
+          - contactgegevens
+          - klantinteracties
+    with:
+      schema-path: 'src/openklant/components/${{ matrix.component }}/openapi.yaml'
+      schema-command: 'spectacular_for_component'
+      schema-options: "--component ${{ matrix.component }}"
+      python-version: '3.11'
+      django-settings-module: 'openklant.conf.ci'

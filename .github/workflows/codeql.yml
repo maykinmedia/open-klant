@@ -26,9 +26,5 @@ jobs:
       node-version: '18'
       postgres-version: 'latest'
 
-      isort-src-pattern: 'src'
-      black-src-pattern: 'src docs'
-      flake8-src-pattern: 'src'
-
       django-settings-module: 'openklant.conf.ci'
       django-secret-key: dummy
