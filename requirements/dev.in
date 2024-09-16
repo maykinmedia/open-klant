@@ -1,5 +1,3 @@
--c ci.txt
-
 # Helpers
 pip-tools
 gitpython
@@ -7,7 +5,3 @@ gitpython
 # Debug tooling
 django-debug-toolbar
 django-extensions
-
-# Documentation
-sphinx
-sphinx_rtd_theme
