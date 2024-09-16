@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         component:
-          - contactgevens
+          - contactgegevens
           - klantinteracties
     with:
       schema-path: 'src/openklant/components/${{ matrix.component }}/openapi.yaml'
