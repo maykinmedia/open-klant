@@ -48,7 +48,7 @@ SITE_TITLE = "API dashboard"
 #
 ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 
-CSP_EXCLUDE_URL_PREFIXES += (
+CSP_EXCLUDE_URL_PREFIXES = (
     "/contactgegevens/api/v1/schema/",
     "/klantinteracties/api/v1/schema/",
 )
