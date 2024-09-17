@@ -24,7 +24,6 @@ jobs:
     with:
       python-version: '3.11'
       node-version: '18'
-      postgres-version: 'latest'
 
       django-settings-module: 'openklant.conf.ci'
       django-secret-key: dummy
