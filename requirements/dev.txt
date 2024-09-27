@@ -112,8 +112,6 @@ coreschema==0.0.4
     # via
     #   -r requirements/base.txt
     #   coreapi
-coverage==4.5.4
-    # via -r requirements/test-tools.in
 cryptography==43.0.0
     # via
     #   -r requirements/base.txt
