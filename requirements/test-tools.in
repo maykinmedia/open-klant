@@ -1,5 +1,4 @@
 # Dependencies only relevant for (unit) testing
-coverage < 5.0
 django-webtest
 factory-boy
 freezegun
