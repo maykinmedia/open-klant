@@ -90,13 +90,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Set up backend environment
+        uses: maykinmedia/setup-django-backend@v1.3
         with:
           python-version: '3.11'
-          cache: 'pip'
-          cache-dependency-path: 'requirements/*.txt'
-      - name: Install dependencies
-        run: pip install -r requirements/ci.txt
+          setup-node: false
+
       - name: Generate environment variable documentation using OAf and check if it was updated
         run: |
           bin/generate_envvar_docs.sh
@@ -122,10 +121,18 @@ jobs:
     uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@initial-setup
     needs:
       - store-reusable-workflow-vars
-      - tests
     with:
       main-branch: 'master'
       python-version: '3.11'
+      docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
+
+  open-api-publish:
+    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@initial-setup
+    needs:
+      - store-reusable-workflow-vars
+      - open-api-ci
+      - tests
+    with:
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
       repository-owner: 'maykinmedia'
     secrets:
