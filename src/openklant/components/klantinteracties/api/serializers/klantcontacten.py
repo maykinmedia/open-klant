@@ -537,3 +537,55 @@ class ActorKlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         return super().create(validated_data)
+
+
+class BetrokkeneConvenienceSerializer(BetrokkeneSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["had_klantcontact"].read_only = True
+
+
+class OnderwerpobjectConvenienceSerializer(OnderwerpobjectSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["klantcontact"].read_only = True
+
+
+class KlantContactBetrokkeneOnderwerpObjectSerializer(serializers.Serializer):
+    klantcontact = KlantcontactSerializer()
+    betrokkene = BetrokkeneConvenienceSerializer()
+    onderwerpobject = OnderwerpobjectConvenienceSerializer()
+
+    @transaction.atomic
+    def create(self, validated_data):
+        """
+        Create the objects and use the original serializers to ensure all the correct
+        fields show up in the response
+        """
+        klantcontact_data = validated_data["klantcontact"]
+        klantcontact = Klantcontact.objects.create(**klantcontact_data)
+
+        betrokkene_data = validated_data["betrokkene"]
+        betrokkene_data["had_klantcontact"] = {"uuid": str(klantcontact.uuid)}
+        # TODO for some reason `was_partij` is converted to `partij` by the serializer
+        betrokkene_data.setdefault("was_partij", betrokkene_data.get("partij", None))
+        betrokkene_serializer = BetrokkeneSerializer(data=betrokkene_data)
+        betrokkene_serializer.is_valid()
+        betrokkene = betrokkene_serializer.save()
+
+        onderwerpobject_data = validated_data["onderwerpobject"]
+        onderwerpobject_data["klantcontact"] = {"uuid": str(klantcontact.uuid)}
+        onderwerpobject_data.setdefault("was_klantcontact", None)
+        onderwerpobject_serializer = OnderwerpobjectSerializer(
+            data=onderwerpobject_data
+        )
+        onderwerpobject_serializer.is_valid()
+        onderwerpobject = onderwerpobject_serializer.save()
+
+        return {
+            "klantcontact": klantcontact,
+            "betrokkene": betrokkene,
+            "onderwerpobject": onderwerpobject,
+        }
