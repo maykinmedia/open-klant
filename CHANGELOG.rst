@@ -2,9 +2,24 @@
 Change history
 ==============
 
+2.3.0
+=====
+*October 4, 2024*
+
+**New features**
+
+* [#236] add dynamic pagination with ``pageSize`` parameter
+
+**Bugfixes/QoL**:
+
+* [#258] Use correct API root in redoc OAS
+* [#255] Fix API schema not showing caused by CSP errors
+* [#255] Change SameSite session cookie  to lax to fix OIDC login not working
 
 2.2.0
 =====
+
+*September 5, 2024*
 
 **New features**
 
