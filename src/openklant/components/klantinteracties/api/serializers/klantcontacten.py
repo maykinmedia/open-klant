@@ -209,7 +209,7 @@ class BetrokkeneSerializer(
             },
         }
 
-    def get_volledige_naam(self, obj):
+    def get_volledige_naam(self, obj) -> str:
         return obj.get_full_name()
 
     @transaction.atomic
