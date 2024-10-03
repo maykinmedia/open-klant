@@ -3371,6 +3371,7 @@ components:
           description: De unieke URL van deze categorie binnen deze API.
         categorieNaam:
           type: string
+          nullable: true
           readOnly: true
           description: De naam van de gelinkte categorie.
         beginDatum:

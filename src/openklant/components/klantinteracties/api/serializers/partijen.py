@@ -115,7 +115,7 @@ class CategorieRelatieForeignKeySerializer(serializers.HyperlinkedModelSerialize
             },
         }
 
-    def get_categorie_naam(self, obj):
+    def get_categorie_naam(self, obj) -> str | None:
         if obj.categorie:
             return obj.categorie.naam
 
@@ -301,7 +301,7 @@ class PersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
             "volledige_naam",
         )
 
-    def get_volledige_naam(self, obj):
+    def get_volledige_naam(self, obj) -> str:
         return obj.get_full_name()
 
 
@@ -333,7 +333,7 @@ class ContactpersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerial
             "volledige_naam",
         )
 
-    def get_volledige_naam(self, obj):
+    def get_volledige_naam(self, obj) -> str:
         return obj.get_full_name()
 
     @transaction.atomic
