@@ -367,7 +367,7 @@ class OnderwerpobjectSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "klantinteracties:klantcontact-detail",
+                "view_name": "klantinteracties:onderwerpobject-detail",
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van dit klantcontact binnen deze API."),
             },
