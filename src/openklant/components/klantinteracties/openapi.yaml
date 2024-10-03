@@ -1547,6 +1547,28 @@ paths:
       responses:
         '204':
           description: No response body
+  /klantcontact-convenience:
+    post:
+      operationId: klantcontactConvenienceCreate
+      description: Maak een KlantContact, Betrokkene en een OnderwerpObject aan.
+      summary: Maak een KlantContact, Betrokkene en een OnderwerpObject aan.
+      tags:
+      - klantcontact-convenience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KlantContactBetrokkeneOnderwerpObject'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KlantContactBetrokkeneOnderwerpObject'
+          description: ''
   /klantcontacten:
     get:
       operationId: klantcontactenList
@@ -2986,6 +3008,87 @@ components:
       - uuid
       - volledigeNaam
       - wasPartij
+    BetrokkeneConvenience:
+      type: object
+      description: |-
+        Set gegevensgroepdata from validated nested data.
+
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de betrokkene bij
+            klantcontact.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze betrokkene binnen deze API.
+        wasPartij:
+          allOf:
+          - $ref: '#/components/schemas/PartijForeignKey'
+          nullable: true
+          description: Betrokkene bij klantcontact die een partij was.
+        hadKlantcontact:
+          allOf:
+          - $ref: '#/components/schemas/KlantcontactForeignKey'
+          readOnly: true
+          description: Het klantcontact waar deze persoon of organisatie bij betrokken
+            was.
+        digitaleAdressen:
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitaalAdresForeignKey'
+          readOnly: true
+          description: Digitale adressen van de betrokkene bij klantcontact.
+        bezoekadres:
+          allOf:
+          - $ref: '#/components/schemas/Bezoekadres'
+          nullable: true
+          description: Adres waarop de betrokkene bij klantcontact in naar aanleiding
+            van dat contact af te leggen bezoeken wil ontvangen. Dit mag afwijken
+            van voor de verstrekker eventueel in een basisregistratie bekende adressen.
+        correspondentieadres:
+          allOf:
+          - $ref: '#/components/schemas/BetrokkeneCorrespondentieadres'
+          nullable: true
+          description: Adres waarop de betrokkene bij klantcontact naar aanleiding
+            van dat contact te versturen post wil ontvangen. Dit mag afwijken van
+            voor de verstrekker eventueel in een basisregistratie bekende adressen.
+        contactnaam:
+          allOf:
+          - $ref: '#/components/schemas/Contactnaam'
+          nullable: true
+          description: Naam die de betrokkene bij klantcontact tijdens vervolghandelingen
+            naar aanleiding van dat contact wil gebruiken. Deze mag afwijken van eventueel
+            in de Basisregistratie Personen (BRP) bekende naam van de betrokkene.
+        volledigeNaam:
+          type: string
+          readOnly: true
+          description: De voledige naam van de betrokkene.
+        rol:
+          allOf:
+          - $ref: '#/components/schemas/RolEnum'
+          description: Rol die de betrokkene bij klantcontact tijdens dat contact
+            vervulde.
+        organisatienaam:
+          type: string
+          description: Naam van de organisatie waarmee de betrokkene bij klantcontact
+            een relatie had.
+          maxLength: 200
+        initiator:
+          type: boolean
+      required:
+      - digitaleAdressen
+      - hadKlantcontact
+      - initiator
+      - rol
+      - url
+      - uuid
+      - volledigeNaam
+      - wasPartij
     BetrokkeneCorrespondentieadres:
       type: object
       description: |-
@@ -3549,6 +3652,19 @@ components:
       required:
       - url
       - uuid
+    KlantContactBetrokkeneOnderwerpObject:
+      type: object
+      properties:
+        klantcontact:
+          $ref: '#/components/schemas/Klantcontact'
+        betrokkene:
+          $ref: '#/components/schemas/BetrokkeneConvenience'
+        onderwerpobject:
+          $ref: '#/components/schemas/OnderwerpobjectConvenience'
+      required:
+      - betrokkene
+      - klantcontact
+      - onderwerpobject
     Klantcontact:
       type: object
       properties:
@@ -3681,6 +3797,45 @@ components:
         klantcontact:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
+          nullable: true
+          description: '''Klantcontact'' ging over ''Onderwerpobject'''
+        wasKlantcontact:
+          allOf:
+          - $ref: '#/components/schemas/KlantcontactForeignKey'
+          nullable: true
+          description: '''Onderwerpobject'' was ''Klantcontact'''
+        onderwerpobjectidentificator:
+          allOf:
+          - $ref: '#/components/schemas/Onderwerpobjectidentificator'
+          nullable: true
+          description: Gegevens die een onderwerpobject in een extern register uniek
+            identificeren.
+      required:
+      - klantcontact
+      - url
+      - uuid
+      - wasKlantcontact
+    OnderwerpobjectConvenience:
+      type: object
+      description: |-
+        Set gegevensgroepdata from validated nested data.
+
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van het onderwerpdeel.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van dit klantcontact binnen deze API.
+        klantcontact:
+          allOf:
+          - $ref: '#/components/schemas/KlantcontactForeignKey'
+          readOnly: true
           nullable: true
           description: '''Klantcontact'' ging over ''Onderwerpobject'''
         wasKlantcontact:
