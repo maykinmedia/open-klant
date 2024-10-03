@@ -9,6 +9,7 @@ custom_settings = {
     "TITLE": "klantinteracties",
     "DESCRIPTION": description,
     "VERSION": settings.KLANTINTERACTIES_API_VERSION,
+    "SERVERS": [{"url": "/klantinteracties/api/v1"}],
     "TAGS": [
         {"name": "actoren"},
         {"name": "actor klantcontacten"},

@@ -686,6 +686,8 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+servers:
+- url: /contactgegevens/api/v1
 tags:
 - name: organisaties
 - name: personen

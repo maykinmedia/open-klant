@@ -5188,6 +5188,8 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+servers:
+- url: /klantinteracties/api/v1
 tags:
 - name: actoren
 - name: actor klantcontacten
