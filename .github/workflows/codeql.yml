@@ -20,7 +20,7 @@ on:
 
 jobs:
   open-api-workflow-code-quality:
-    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@initial-setup
+    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@v1
     with:
       python-version: '3.11'
       node-version: '18'
