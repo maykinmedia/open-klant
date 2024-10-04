@@ -23,6 +23,8 @@ export CUSTOM_COMPILE_COMMAND="./bin/compile_dependencies.sh"
 # Base (& prod) deps
 pip-compile \
     --no-emit-index-url \
+    --output-file requirements/base.txt \
+    --output-file requirements/production.txt \
     "$@" \
     requirements/base.in
 
@@ -33,12 +35,13 @@ pip-compile \
     "$@" \
     requirements/base.txt \
     requirements/test-tools.in \
-    requirements/docs.in
+    requirements/ci.in
 
 # Dev depedencies - exact same set as CI + some extra tooling
 pip-compile \
     --no-emit-index-url \
     --output-file requirements/dev.txt \
     "$@" \
-    requirements/ci.txt \
+    requirements/base.txt \
+    requirements/test-tools.in \
     requirements/dev.in

@@ -1,7 +1,4 @@
--c base.txt
-
 # Dependencies only relevant for (unit) testing
-coverage < 5.0
 django-webtest
 factory-boy
 freezegun
@@ -17,3 +14,10 @@ waitress>=2.1.1
 black
 isort
 flake8
+
+# Documentation
+sphinx
+sphinx_rtd_theme
+recommonmark
+sphinx-markdown-tables
+sphinx-tabs
