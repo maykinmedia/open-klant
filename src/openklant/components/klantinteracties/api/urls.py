@@ -18,6 +18,7 @@ from openklant.components.klantinteracties.api.viewsets.klantcontacten import (
     ActorKlantcontactViewSet,
     BetrokkeneViewSet,
     BijlageViewSet,
+    KlantContactBetrokkeneOnderwerpObjectViewSet,
     KlantcontactViewSet,
     OnderwerpobjectViewSet,
 )
@@ -48,6 +49,11 @@ router.register("klantcontacten", KlantcontactViewSet)
 router.register("betrokkenen", BetrokkeneViewSet)
 router.register("onderwerpobjecten", OnderwerpobjectViewSet)
 router.register("bijlagen", BijlageViewSet)
+router.register(
+    "klantcontact-convenience",
+    KlantContactBetrokkeneOnderwerpObjectViewSet,
+    basename="klantcontact-convenience",
+)
 
 router.register("internetaken", InterneTaakViewSet)
 
