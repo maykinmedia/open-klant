@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from components.klanten.models.tests.factories import (
+from openklant.components.klanten.models.tests.factories import (
     NatuurlijkPersoonFactory,
     NietNatuurlijkPersoonFactory,
     VestigingFactory,
