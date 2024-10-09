@@ -30,7 +30,11 @@ class KlantFactory(factory.django.DjangoModelFactory):
 
 # klant factories
 class NatuurlijkPersoonFactory(factory.django.DjangoModelFactory):
-    klant = factory.SubFactory(KlantFactory)
+    klant = factory.SubFactory(
+        KlantFactory,
+        subject_type=KlantType.natuurlijk_persoon
+    )
+
     anp_identificatie = factory.Sequence(lambda n: f"{n}")
     geslachtsnaam = factory.Faker("last_name")
     voornamen = factory.Faker("first_name")
@@ -41,7 +45,11 @@ class NatuurlijkPersoonFactory(factory.django.DjangoModelFactory):
 
 
 class NietNatuurlijkPersoonFactory(factory.django.DjangoModelFactory):
-    klant = factory.SubFactory(KlantFactory)
+    klant = factory.SubFactory(
+        KlantFactory,
+        subject_type=KlantType.niet_natuurlijk_persoon
+    )
+
     inn_nnp_id = factory.Faker("ssn", locale="nl_NL")
     statutaire_naam = factory.Faker("word")
     inn_rechtsvorm = factory.fuzzy.FuzzyChoice(SoortRechtsvorm.values)
@@ -52,7 +60,7 @@ class NietNatuurlijkPersoonFactory(factory.django.DjangoModelFactory):
 
 
 class VestigingFactory(factory.django.DjangoModelFactory):
-    klant = factory.SubFactory(KlantFactory)
+    klant = factory.SubFactory(KlantFactory, subject_type=KlantType.vestiging)
     vestigings_nummer = factory.Sequence(lambda n: f"{n}")
     handelsnaam = factory.List([factory.Faker("word")])
 
