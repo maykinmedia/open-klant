@@ -262,8 +262,19 @@ def _generate_dummy_token() -> str:
 class Command(BaseCommand):
     # TODO: add cleanup argument to remove (partially) failed klant creation?
     def add_arguments(self, parser: CommandParser) -> None:
-        parser.add_argument("v1_url", type=str)
-        parser.add_argument("v2_url", type=str)
+        parser.add_argument(
+            "v1_url",
+            type=str,
+            metavar="example.openklant.nl",
+            help="URL of the Klanten API"
+        )
+
+        parser.add_argument(
+            "v2_url",
+            type=str,
+            metavar="example.klantinteracties.nl",
+            help="URL of the Klantinteracties API"
+        )
 
     def handle(self, *args: Any, **options: Any) -> str | None:
         access_token = os.getenv("ACCESS_TOKEN")
