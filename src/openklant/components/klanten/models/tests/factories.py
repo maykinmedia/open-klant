@@ -29,6 +29,7 @@ class KlantFactory(factory.django.DjangoModelFactory):
 
 
 # klant factories
+# TODO: add missing fields
 class NatuurlijkPersoonFactory(factory.django.DjangoModelFactory):
     klant = factory.SubFactory(
         KlantFactory,
@@ -44,6 +45,7 @@ class NatuurlijkPersoonFactory(factory.django.DjangoModelFactory):
         model = NatuurlijkPersoon
 
 
+# TODO: add missing fields
 class NietNatuurlijkPersoonFactory(factory.django.DjangoModelFactory):
     klant = factory.SubFactory(
         KlantFactory,
@@ -59,10 +61,15 @@ class NietNatuurlijkPersoonFactory(factory.django.DjangoModelFactory):
         model = NietNatuurlijkPersoon
 
 
+# TODO: add missing fields
 class VestigingFactory(factory.django.DjangoModelFactory):
-    klant = factory.SubFactory(KlantFactory, subject_type=KlantType.vestiging)
+    klant = factory.SubFactory(
+        KlantFactory,
+        subject_type=KlantType.vestiging,
+        bedrijfsnaam=factory.Faker("company")
+    )
     vestigings_nummer = factory.Sequence(lambda n: f"{n}")
-    handelsnaam = factory.List([factory.Faker("word")])
+    handelsnaam = factory.List([factory.SelfAttribute("klant.bedrijfsnaam")])
 
     class Meta:
         model = Vestiging
