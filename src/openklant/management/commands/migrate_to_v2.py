@@ -6,7 +6,7 @@ import logging
 import os
 from dataclasses import asdict, dataclass, fields as dataclass_fields
 from io import BytesIO
-from typing import Any, Literal, Optional, Tuple
+from typing import Any, Iterable, Literal, Optional, Tuple
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
@@ -37,13 +37,14 @@ class Client:
     def _request(
         self, method: str, url: str, data: dict | None = None
     ) -> list | dict | None:
-        logger.debug(f"Retrieving {url}")
+        logger.debug(f"Performing {method} request on {url}")
 
         headers = {"Authorization": f"{self.token_prefix} {self.token}"}
         renderer = CamelCaseJSONRenderer()
         _data = renderer.render(data) if data else None
 
         if method == "POST":
+            logger.debug(f"Posting: {_data}")
             headers.update({"Content-Type": "application/json"})
 
         try:
@@ -56,7 +57,13 @@ class Client:
 
             response.raise_for_status()
         except requests.RequestException:
-            logger.exception(f"Failed retrieving {url}")
+            logger.exception(f"{method} request failed for {url}")
+
+            try:
+                logger.debug(response.json())
+            except requests.RequestException:
+                pass
+
             return
 
         parser = CamelCaseJSONParser()
@@ -106,11 +113,11 @@ class Subject:
 
 @dataclass
 class NatuurlijkPersoon(Subject):  # SoortPartij.persoon
-    voornaam: str
-    achternaam: str
-    voorvoegsel_achternaam: str
+    voornaam: Optional[str]
+    achternaam: Optional[str]
+    voorvoegsel_achternaam: Optional[str]
 
-    inp_bsn: str
+    inp_bsn: Optional[str]
 
     @property
     def nummer(self) -> str:
@@ -129,8 +136,8 @@ class NatuurlijkPersoon(Subject):  # SoortPartij.persoon
 
 @dataclass
 class NietNatuurlijkPersoon(Subject):  # SoortPartij.organisatie
-    inn_nnp_id: str
-    statutaire_naam: str
+    inn_nnp_id: Optional[str]
+    statutaire_naam: Optional[str]
 
     @property
     def nummer(self) -> str:
@@ -142,31 +149,45 @@ class NietNatuurlijkPersoon(Subject):  # SoortPartij.organisatie
 
 @dataclass
 class Vestiging(Subject):  # SoortPartij.organisatie
-    bedrijfsnaam: str
-    vestigings_nummer: str
+    bedrijfsnaam: Optional[str]
+    vestigings_nummer: Optional[str]
 
     @property
     def nummer(self) -> str:
         return self.vestigings_nummer or ""
 
     def migrate(self) -> dict:
-        return dict(naam=self.handelsnaam)
+        return dict(naam=self.bedrijfsnaam)
+
+
+class APIClass:
+    @property
+    def required_fields(self) -> Iterable:
+        raise NotImplementedError
+
+    def dict(self) -> dict:
+        return {
+            k: v
+            for k, v in asdict(self).items()
+            if k in self.required_fields or v
+        }
 
 
 @dataclass
-class DigitaalAdres:
+class DigitaalAdres(APIClass):
     adres: str
     soort_digitaal_adres: str = "email"
     omschrijving: str = "Emailadres"
     verstrekt_door_betrokkene: Optional[dict] = None
     verstrekt_door_partij: Optional[dict] = None
 
-    def dict(self):
-        return {k: v for k, v in asdict(self).items()}
+    @property
+    def required_fields(self):
+        return {field.name: field for field in dataclass_fields(self)}
 
 
 @dataclass
-class Partij:
+class Partij(APIClass):
     nummer: str
 
     partij_identificatie: dict
@@ -179,45 +200,70 @@ class Partij:
     digitale_adressen: Optional[list] = None
     voorkeurs_digitaal_adres: Optional[dict] = None
 
-    def dict(self):
-        return {k: v for k, v in asdict(self).items()}
+    @property
+    def required_fields(self):
+        return (
+            "digitale_addressen",
+            "voorkeurs_digitaal_adres",
+            "rekeningnummers",
+            "voorkeurs_rekeningnummer",
+            "soort_partij",
+            "indicatie_actief",
+        )
 
 
+# TODO: handle subject URL's (prioritize subjectIdentificatie)
+# TODO: handle Klanten without subject and subjectIdentificatie
 @dataclass
 class Klant:
-    subject_identificatie: dict
-    subject_type: str
-    telefoonnummer: str
-    emailadres: str
+    subject: Optional[str]
+    subject_identificatie: Optional[dict]
+    subject_type: Optional[str]
+    telefoonnummer: Optional[str]
+    emailadres: Optional[str]
 
-    voornaam: str
-    achternaam: str
-    voorvoegsel_achternaam: str
+    voornaam: Optional[str]
+    achternaam: Optional[str]
+    voorvoegsel_achternaam: Optional[str]
 
-    bedrijfsnaam: str
+    bedrijfsnaam: Optional[str]
 
-    def _get_subject(self) -> NatuurlijkPersoon | NietNatuurlijkPersoon | Vestiging:
+    def _get_subject(
+        self
+    ) -> NatuurlijkPersoon | NietNatuurlijkPersoon | Vestiging | None:
         subject_mapping = {
             KlantType.natuurlijk_persoon: NatuurlijkPersoon,
             KlantType.niet_natuurlijk_persoon: NietNatuurlijkPersoon,
             KlantType.vestiging: Vestiging,
         }
+
+        if not self.subject_type:
+            return
+
         subject_class = subject_mapping.get(self.subject_type)
 
         if not subject_class:
-            raise ValueError("No subjectType found")
+            raise ValueError("No known subjectType found")
 
         subject_data = self.subject_identificatie or {}
-        fields = {field.name: field for field in dataclass_fields(subject_class)}
 
-        # TODO: retrieve from subject_data or from Klant
-        kwargs = {
-            field: value or fields[field].type
-            for field, value in subject_data.items()
-            if field in fields
-        }
-
-        return subject_class(**kwargs)
+        if subject_class == NatuurlijkPersoon:
+            return NatuurlijkPersoon(
+                voornaam=self.voornaam,
+                achternaam=self.achternaam,
+                voorvoegsel_achternaam=self.voorvoegsel_achternaam,
+                inp_bsn=subject_data.get("inp_bsn", "")
+            )
+        elif subject_class == NietNatuurlijkPersoon:
+            return NietNatuurlijkPersoon(
+                inn_nnp_id=subject_data.get("inn_nnp_id", ""),
+                statutaire_naam=subject_data.get("statutaire_naam", "")
+            )
+        elif subject_class == Vestiging:
+            return Vestiging(
+                bedrijfsnaam=self.bedrijfsnaam,
+                vestigings_nummer=subject_data.get("vestigings_nummer", ""),
+            )
 
     def _get_soort_partij(self) -> SoortPartij:
         mapping = {
@@ -255,8 +301,8 @@ class Klant:
             digitale_adressen=None,
             voorkeurs_digitaal_adres=None,
             soort_partij=soort_partij,
-            nummer=subject.nummer,
-            partij_identificatie=subject.migrate(),
+            nummer=subject.nummer if subject else "",
+            partij_identificatie=subject.migrate() if subject else None,
         )
 
         if digitaal_adres:
@@ -281,7 +327,7 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
     for data in items:
         klant = Klant(
             **{
-                field: value or klant_fields[field].type
+                field: value
                 for field, value in data.items()
                 if field in klant_fields
             }
