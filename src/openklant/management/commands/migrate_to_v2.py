@@ -6,7 +6,7 @@ import logging
 import os
 from dataclasses import asdict, dataclass, fields as dataclass_fields
 from io import BytesIO
-from typing import Any, Iterable, Literal, Optional, Tuple
+from typing import Any, Iterable, Optional, Tuple
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
@@ -26,20 +26,15 @@ logger = logging.getLogger(__name__)
 
 
 class Client:
-    token: str
-    token_prefix: str
-    base_url: str
-
-    def __init__(self, base_url: str, token: str) -> None:
-        self.token = token
-        self.base_url = base_url
-
     def _request(
-        self, method: str, url: str, data: dict | None = None
+        self,
+        method: str,
+        url: str,
+        data: dict | None = None,
+        headers: dict = {},
     ) -> list | dict | None:
         logger.debug(f"Performing {method} request on {url}")
 
-        headers = {"Authorization": f"{self.token_prefix} {self.token}"}
         renderer = CamelCaseJSONRenderer()
         _data = renderer.render(data) if data else None
 
@@ -79,20 +74,40 @@ class Client:
 
         return response_data
 
+    def retrieve(self, url: str) -> list | dict | None:
+        return self._request("GET", url)
+
+    def create(self, url: str, data: dict) -> dict | None:
+        return self._request("POST", url, data=data)
+
+
+class BaseOpenKlantClient(Client):
+    token: str
+    token_prefix: str
+    base_url: str
+
+    headers: dict
+
+    def __init__(self, base_url: str, token: str) -> None:
+        self.token = token
+        self.base_url = base_url
+
+        self.headers = {"Authorization": f"{self.token_prefix} {self.token}"}
+
     def retrieve(self, path: str) -> list | dict | None:
         url = self.base_url + path
-        return self._request("GET", url)
+        return self._request("GET", url, headers=self.headers)
 
     def create(self, path: str, data: dict) -> dict | None:
         url = self.base_url + path
-        return self._request("POST", url, data)
+        return self._request("POST", url, data=data, headers=self.headers)
 
 
-class ClientV1(Client):
+class LegacyOpenKlantClient(BaseOpenKlantClient):
     token_prefix = "Bearer"
 
 
-class ClientV2(Client):
+class OpenKlantClient(BaseOpenKlantClient):
     token_prefix = "Token"
 
 
@@ -166,11 +181,7 @@ class APIClass:
         raise NotImplementedError
 
     def dict(self) -> dict:
-        return {
-            k: v
-            for k, v in asdict(self).items()
-            if k in self.required_fields or v
-        }
+        return {k: v for k, v in asdict(self).items() if k in self.required_fields or v}
 
 
 @dataclass
@@ -212,8 +223,6 @@ class Partij(APIClass):
         )
 
 
-# TODO: handle subject URL's (prioritize subjectIdentificatie)
-# TODO: handle Klanten without subject and subjectIdentificatie
 @dataclass
 class Klant:
     subject: Optional[str]
@@ -229,7 +238,7 @@ class Klant:
     bedrijfsnaam: Optional[str]
 
     def _get_subject(
-        self
+        self,
     ) -> NatuurlijkPersoon | NietNatuurlijkPersoon | Vestiging | None:
         subject_mapping = {
             KlantType.natuurlijk_persoon: NatuurlijkPersoon,
@@ -252,12 +261,12 @@ class Klant:
                 voornaam=self.voornaam,
                 achternaam=self.achternaam,
                 voorvoegsel_achternaam=self.voorvoegsel_achternaam,
-                inp_bsn=subject_data.get("inp_bsn", "")
+                inp_bsn=subject_data.get("inp_bsn", ""),
             )
         elif subject_class == NietNatuurlijkPersoon:
             return NietNatuurlijkPersoon(
                 inn_nnp_id=subject_data.get("inn_nnp_id", ""),
-                statutaire_naam=subject_data.get("statutaire_naam", "")
+                statutaire_naam=subject_data.get("statutaire_naam", ""),
             )
         elif subject_class == Vestiging:
             return Vestiging(
@@ -313,7 +322,7 @@ class Klant:
 
 
 def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | None]:
-    client = ClientV1(url, access_token)
+    client = LegacyOpenKlantClient(url, access_token)
     response_data = client.retrieve("/klanten/api/v1/klanten")
 
     if not isinstance(response_data, dict):
@@ -326,11 +335,7 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
 
     for data in items:
         klant = Klant(
-            **{
-                field: value
-                for field, value in data.items()
-                if field in klant_fields
-            }
+            **{field: value for field, value in data.items() if field in klant_fields}
         )
 
         klanten.append(klant)
@@ -357,7 +362,8 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
     )
 
     dummy_token = _generate_dummy_token()
-    client = ClientV2(url, dummy_token)
+    openklant_client = OpenKlantClient(url, dummy_token)
+    generic_client = Client()
     created_klanten = []
 
     for klant in klanten:
@@ -365,7 +371,9 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
         digitaal_adres_ref = None
 
         if digitaal_adres:
-            _data = client.create(digitaal_addressen_path, digitaal_adres.dict())
+            _data = openklant_client.create(
+                digitaal_addressen_path, digitaal_adres.dict()
+            )
 
             if not isinstance(_data, dict):
                 logger.error(
@@ -376,13 +384,24 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
 
             digitaal_adres_ref = _data.get("uuid")
 
+        if klant.subject and not klant.subject_identificatie:
+            subject_identificatie = generic_client.retrieve(klant.subject)
+
+            if not isinstance(subject_identificatie, dict):
+                logger.error(
+                    f"Unknown data received receiving a subject: {subject_identificatie}. "
+                    "Skipping klant."
+                )
+
+            klant.subject_identificatie = subject_identificatie
+
         partij = klant.to_partij(digitaal_adres=digitaal_adres_ref)
 
         if not partij:
             logger.error("Unable to create partij, skipping klant..")
             continue
 
-        response_data = client.create(partijen_path, partij.dict())
+        response_data = openklant_client.create(partijen_path, partij.dict())
 
         if response_data and "url" in response_data:
             created_klanten.append(response_data["url"])
@@ -396,7 +415,6 @@ def _generate_dummy_token() -> str:
 
 
 class Command(BaseCommand):
-    # TODO: add cleanup argument to remove (partially) failed klant creation?
     def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument(
             "v1_url",
