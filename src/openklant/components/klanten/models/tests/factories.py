@@ -68,8 +68,12 @@ class VestigingFactory(factory.django.DjangoModelFactory):
         subject_type=KlantType.vestiging,
         bedrijfsnaam=factory.Faker("company")
     )
+
     vestigings_nummer = factory.Sequence(lambda n: f"{n}")
-    handelsnaam = factory.List([factory.SelfAttribute("klant.bedrijfsnaam")])
+
+    @factory.lazy_attribute
+    def handelsnaam(self):
+        return [self.klant.bedrijfsnaam]
 
     class Meta:
         model = Vestiging
