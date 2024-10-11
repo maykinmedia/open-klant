@@ -14,7 +14,6 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.management.base import BaseCommand, CommandParser
 from django.db.models import TextChoices
 
-
 import requests
 from djangorestframework_camel_case.parser import CamelCaseJSONParser, ParseError
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
@@ -47,11 +46,7 @@ class Client:
 
         try:
             response = requests.request(
-                method,
-                url,
-                data=_data,
-                params=params,
-                headers=headers
+                method, url, data=_data, params=params, headers=headers
             )
 
             response.raise_for_status()
