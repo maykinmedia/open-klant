@@ -18,6 +18,7 @@ from django.db.models import TextChoices
 import requests
 from djangorestframework_camel_case.parser import CamelCaseJSONParser, ParseError
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
+from rest_framework.fields import URLValidator
 from rest_framework.reverse import reverse
 
 from openklant.components.klantinteracties.models.constants import SoortPartij
@@ -452,6 +453,17 @@ class Command(BaseCommand):
         access_token = os.getenv("ACCESS_TOKEN")
         v1_url = options["v1_url"]
         v2_url = options["v2_url"]
+
+        url_validator = URLValidator(schemes=["http", "https"])
+
+        for url in (v1_url, v2_url):
+            try:
+                url_validator(url)
+            except ValidationError as e:
+                return (
+                    f"Invalid URL(s) detected: {str(e.message)}. See "
+                    "migrate_to_v2 --help for correct usage."
+                )
 
         next_url: str | None = ""
 
