@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://127.0.0.1:8001/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://127.0.0.1:8001/klanten/api/v1/klanten/084d1e86-a58e-4d09-9842-b0582a95cef0","bronorganisatie":"594607231","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"","emailadres":"","adres":null,"subject":"","subjectType":"","aanmaakkanaal":"","geverifieerd":false}]}'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '414'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 11 Oct 2024 12:38:05 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - WSGIServer/0.2 CPython/3.11.9
+      Server-Timing:
+      - TimerPanel_utime;dur=13.763000000011516;desc="User CPU time", TimerPanel_stime;dur=0.2720000000095979;desc="System
+        CPU time", TimerPanel_total;dur=14.035000000021114;desc="Total CPU time",
+        TimerPanel_total_time;dur=18.50438117980957;desc="Elapsed time", SQLPanel_sql_time;dur=2.427339553833008;desc="SQL
+        6 queries", CachePanel_total_time;dur=0;desc="Cache 0 Calls"
+      Vary:
+      - Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
