@@ -11,8 +11,8 @@ from typing import Any, Iterable, Optional, Tuple
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.management.base import BaseCommand, CommandParser
-from django.core.validators import URLValidator
 from django.db.models import TextChoices
+
 
 import requests
 from djangorestframework_camel_case.parser import CamelCaseJSONParser, ParseError
@@ -56,10 +56,12 @@ class Client:
 
             try:
                 logger.debug(response.json())
-            except requests.RequestException:
+            except (requests.RequestException, UnboundLocalError):
                 pass
 
             return
+
+        logger.debug(f"Received response data from {url}: {response.content}")
 
         parser = CamelCaseJSONParser()
 
@@ -214,7 +216,7 @@ class Partij(APIClass):
     @property
     def required_fields(self):
         return (
-            "digitale_addressen",
+            "digitale_adressen",
             "voorkeurs_digitaal_adres",
             "rekeningnummers",
             "voorkeurs_rekeningnummer",
@@ -225,17 +227,17 @@ class Partij(APIClass):
 
 @dataclass
 class Klant:
-    subject: Optional[str]
-    subject_identificatie: Optional[dict]
-    subject_type: Optional[str]
-    telefoonnummer: Optional[str]
-    emailadres: Optional[str]
+    subject: Optional[str] = None
+    subject_identificatie: Optional[dict] = None
+    subject_type: Optional[str] = None
+    telefoonnummer: Optional[str] = None
+    emailadres: Optional[str] = None
 
-    voornaam: Optional[str]
-    achternaam: Optional[str]
-    voorvoegsel_achternaam: Optional[str]
+    voornaam: Optional[str] = None
+    achternaam: Optional[str] = None
+    voorvoegsel_achternaam: Optional[str] = None
 
-    bedrijfsnaam: Optional[str]
+    bedrijfsnaam: Optional[str] = None
 
     def _get_subject(
         self,
@@ -434,13 +436,6 @@ class Command(BaseCommand):
         access_token = os.getenv("ACCESS_TOKEN")
         v1_url = options["v1_url"]
         v2_url = options["v2_url"]
-
-        validator = URLValidator()
-        for url in (v1_url, v2_url):
-            try:
-                validator(url)
-            except ValidationError as e:
-                return str(e)
 
         next_url: str | None = ""
 
