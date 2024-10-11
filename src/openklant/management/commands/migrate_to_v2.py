@@ -133,6 +133,7 @@ class Subject:
 
 @dataclass
 class NatuurlijkPersoon(Subject):  # SoortPartij.persoon
+    voorletters: Optional[str]
     voornaam: Optional[str]
     achternaam: Optional[str]
     voorvoegsel_achternaam: Optional[str]
@@ -146,7 +147,7 @@ class NatuurlijkPersoon(Subject):  # SoortPartij.persoon
     def migrate(self) -> dict:
         return dict(
             contactnaam=dict(
-                voorletters="",
+                voorletters=self.voorletters,
                 voornaam=self.voornaam,
                 voorvoegsel_achternaam=self.voorvoegsel_achternaam,
                 achternaam=self.achternaam,
@@ -263,6 +264,7 @@ class Klant:
 
         if subject_class == NatuurlijkPersoon:
             return NatuurlijkPersoon(
+                voorletters=subject_data.get("voorletters", ""),
                 voornaam=self.voornaam,
                 achternaam=self.achternaam,
                 voorvoegsel_achternaam=self.voorvoegsel_achternaam,
