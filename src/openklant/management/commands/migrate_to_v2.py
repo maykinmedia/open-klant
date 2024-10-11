@@ -260,7 +260,13 @@ class Klant:
         if not subject_class:
             raise ValueError("No known subjectType found")
 
-        subject_data = self.subject_identificatie or {}
+        subject_data = self.subject_identificatie
+
+        if not isinstance(subject_data, dict) and subject_data is not None:
+            raise ValueError("Invalid subjectIdentificatie data received")
+
+        if not subject_data:
+            return
 
         if subject_class == NatuurlijkPersoon:
             return NatuurlijkPersoon(
