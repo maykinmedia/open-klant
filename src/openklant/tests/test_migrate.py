@@ -1,5 +1,4 @@
 import os
-
 from io import StringIO
 from pathlib import Path
 
@@ -11,9 +10,13 @@ from vcr.config import RecordMode
 from vcr.unittest import VCRMixin
 from vng_api_common.tests import reverse
 
-from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.constants import SoortPartij
-from openklant.components.klantinteracties.models.partijen import Partij, Persoon, Organisatie
+from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
+from openklant.components.klantinteracties.models.partijen import (
+    Organisatie,
+    Partij,
+    Persoon,
+)
 
 
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
@@ -41,7 +44,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             decode_compressed_response=True,
             filter_headers=["authorization"],
             ignore_hosts=["localhost"],
-            **kwargs
+            **kwargs,
         )
 
     def _get_partij_url(self, partij) -> str:
@@ -62,7 +65,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         partij = Partij.objects.get()
@@ -83,7 +86,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         partijen = Partij.objects.all()
@@ -106,7 +109,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         partij = Partij.objects.get()
@@ -144,7 +147,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         partij = Partij.objects.get()
@@ -179,7 +182,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         partij = Partij.objects.get()
@@ -214,7 +217,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         partij = Partij.objects.get()
@@ -252,7 +255,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         partij = Partij.objects.get()
@@ -290,7 +293,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         self.assertEqual(Partij.objects.count(), 0)
@@ -306,7 +309,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         self.assertEqual(Partij.objects.count(), 0)
@@ -322,7 +325,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         self.assertEqual(Partij.objects.count(), 0)
@@ -338,7 +341,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         self.assertEqual(Partij.objects.count(), 0)
@@ -354,7 +357,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         partij = Partij.objects.get()
@@ -397,7 +400,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
                 "migrate_to_v2",
                 "http://127.0.0.1:8001",
                 self.live_server_url,
-                stdout=stdout
+                stdout=stdout,
             )
 
         self.assertEqual(Partij.objects.count(), 0)
@@ -413,7 +416,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             "migrate_to_v2",
             "http://127.0.0.1:8001",
             self.live_server_url,
-            stdout=stdout
+            stdout=stdout,
         )
 
         self.assertEqual(Partij.objects.count(), 0)
@@ -425,12 +428,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
     def test_invalid_urls(self):
         stdout = StringIO()
 
-        call_command(
-            "migrate_to_v2",
-            "foobar.com",
-            self.live_server_url,
-            stdout=stdout
-        )
+        call_command("migrate_to_v2", "foobar.com", self.live_server_url, stdout=stdout)
 
         self.assertEqual(Partij.objects.count(), 0)
 
