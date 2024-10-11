@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://127.0.0.1:8001/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://127.0.0.1:8001/klanten/api/v1/klanten/d0f654c4-ee23-41bb-b789-aa4c694e0fb3","bronorganisatie":"732491587","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"","emailadres":"","adres":null,"subject":"","subjectType":"niet_natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"innNnpId":"807371440","annIdentificatie":"","statutaireNaam":"Foobar
+        Inc.","innRechtsvorm":"commanditaire_vennootschap","bezoekadres":"Jaydenbaan
+        5\n4234 XW\nHeusden","subVerblijfBuitenland":null}}]}'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '659'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 11 Oct 2024 10:50:19 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - WSGIServer/0.2 CPython/3.11.9
+      Server-Timing:
+      - TimerPanel_utime;dur=27.2679999999923;desc="User CPU time", TimerPanel_stime;dur=0.0;desc="System
+        CPU time", TimerPanel_total;dur=27.2679999999923;desc="Total CPU time", TimerPanel_total_time;dur=29.017210006713867;desc="Elapsed
+        time", SQLPanel_sql_time;dur=2.4929046630859375;desc="SQL 8 queries", CachePanel_total_time;dur=0;desc="Cache
+        0 Calls"
+      Vary:
+      - Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
