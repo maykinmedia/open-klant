@@ -7,28 +7,41 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.management import call_command
 from django.test import LiveServerTestCase
 
-import vcr
+from vcr.config import RecordMode
+from vcr.unittest import VCRMixin
 from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.partijen import Partij, Persoon, Organisatie
 
-CASSETTE_DIR = Path(__file__).resolve().parent / "fixtures" / "migrate_command" / "cassettes"
 
-
-class MigrateTestCase(LiveServerTestCase):
+class MigrateTestCase(VCRMixin, LiveServerTestCase):
     host = "localhost"
     port = 8005
 
-    def setUp(self):
-        super().setUp()
+    def _get_cassette_library_dir(self) -> str:
+        parent_dir = Path(__file__).resolve().parent
+        return str(parent_dir / "fixtures" / "migrate_command" / "cassettes")
 
-        os.environ["ACCESS_TOKEN"] = (
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
-            "eyJpc3MiOiJ0ZXN0c3VpdGUiLCJpYXQiOjE3Mjg2MzU1NDUsImNsaWVudF9pZCI6I"
-            "nRlc3RzdWl0ZSIsInVzZXJfaWQiOiJ0ZXN0X3VzZXJfaWQiLCJ1c2VyX3JlcHJlc2V"
-            "udGF0aW9uIjoiVGVzdCBVc2VyIn0.puffLXIskm2mfih0knOPKnMh89bpoiHJ539hPfywZto"
+    def _get_cassette_name(self) -> str:
+        """Return the filename for cassette
+
+        Default VCR behaviour puts class name in the cassettename
+        we put them in a directory.
+        """
+        prefix, test_name = self._testMethodName.split("test_")
+        return f"{test_name}.yaml"
+
+    def _get_vcr_kwargs(self, **kwargs) -> dict:
+        kwargs = super()._get_vcr_kwargs(**kwargs)
+        return dict(
+            record_mode=RecordMode.ONCE,
+            # Decompress for human readable cassette diffs when re-recoding
+            decode_compressed_response=True,
+            filter_headers=["authorization"],
+            ignore_hosts=["localhost"],
+            **kwargs
         )
 
     def _get_partij_url(self, partij) -> str:
@@ -37,11 +50,11 @@ class MigrateTestCase(LiveServerTestCase):
             kwargs={"uuid": str(partij.uuid)},
         )
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "single_run.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
+    def setUp(self) -> None:
+        super().setUp()
+
+        os.environ["ACCESS_TOKEN"] = "secret"
+
     def test_single_run(self):
         stdout = StringIO()
 
@@ -63,11 +76,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "pagination.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_pagination(self):
         stdout = StringIO()
 
@@ -91,11 +99,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertCountEqual(output, expected_urls)
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "natuurlijk_persoon.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_natuurlijk_persoon(self):
         stdout = StringIO()
 
@@ -134,11 +137,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "niet_natuurlijk_persoon.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_niet_natuurlijk_persoon(self):
         stdout = StringIO()
 
@@ -174,11 +172,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "vestiging.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_vestiging(self):
         stdout = StringIO()
 
@@ -214,11 +207,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "no_subject_and_subject_identificatie.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_no_subject_and_subject_identificatie(self):
         stdout = StringIO()
 
@@ -257,11 +245,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "subject_and_no_subject_identificatie.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_subject_and_no_subject_identificatie(self):
         stdout = StringIO()
 
@@ -300,11 +283,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "no_subject_and_no_subject_identificatie.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_no_subject_and_no_subject_identificatie(self):
         stdout = StringIO()
 
@@ -321,11 +299,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "incorrect_subject_identificatie.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_incorrect_subject_identificatie(self):
         stdout = StringIO()
 
@@ -342,11 +315,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "incorrect_subject_url.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_incorrect_subject_url(self):
         stdout = StringIO()
 
@@ -363,11 +331,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "subject_404.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_subject_404(self):
         stdout = StringIO()
 
@@ -384,11 +347,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "digitaal_adres.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_digitaal_adres(self):
         stdout = StringIO()
 
@@ -448,11 +406,6 @@ class MigrateTestCase(LiveServerTestCase):
 
         self.assertEqual(output, [])
 
-    @vcr.use_cassette(
-        str(CASSETTE_DIR / "no_subject_type.yaml"),
-        ignore_hosts=["localhost"],
-        filter_headers=["authorization"]
-    )
     def test_no_subject_type(self):
         stdout = StringIO()
 
