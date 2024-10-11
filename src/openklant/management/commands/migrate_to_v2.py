@@ -7,6 +7,7 @@ import os
 from dataclasses import asdict, dataclass, fields as dataclass_fields
 from io import BytesIO
 from typing import Any, Iterable, Optional, Tuple
+from urllib.parse import parse_qs, urlparse
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
@@ -31,6 +32,7 @@ class Client:
         method: str,
         url: str,
         data: dict | None = None,
+        params: dict | None = None,
         headers: dict = {},
     ) -> list | dict | None:
         logger.debug(f"Performing {method} request on {url}")
@@ -47,7 +49,8 @@ class Client:
                 method,
                 url,
                 data=_data,
-                headers=headers,
+                params=params,
+                headers=headers
             )
 
             response.raise_for_status()
@@ -76,8 +79,8 @@ class Client:
 
         return response_data
 
-    def retrieve(self, url: str) -> list | dict | None:
-        return self._request("GET", url)
+    def retrieve(self, url: str, params: dict | None = None) -> list | dict | None:
+        return self._request("GET", url, params=params)
 
     def create(self, url: str, data: dict) -> dict | None:
         return self._request("POST", url, data=data)
@@ -96,9 +99,9 @@ class BaseOpenKlantClient(Client):
 
         self.headers = {"Authorization": f"{self.token_prefix} {self.token}"}
 
-    def retrieve(self, path: str) -> list | dict | None:
+    def retrieve(self, path: str, params: dict | None = None) -> list | dict | None:
         url = self.base_url + path
-        return self._request("GET", url, headers=self.headers)
+        return self._request("GET", url, headers=self.headers, params=params)
 
     def create(self, path: str, data: dict) -> dict | None:
         url = self.base_url + path
@@ -324,8 +327,13 @@ class Klant:
 
 
 def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | None]:
-    client = LegacyOpenKlantClient(url, access_token)
-    response_data = client.retrieve("/klanten/api/v1/klanten")
+    klanten_path = "/klanten/api/v1/klanten"
+
+    _url = urlparse(url)
+    _params = parse_qs(_url.query)
+
+    client = LegacyOpenKlantClient(f"{_url.scheme}://{_url.netloc}", access_token)
+    response_data = client.retrieve(_url.path or klanten_path, params=_params)
 
     if not isinstance(response_data, dict):
         logger.error(f"Unexpected response data returned: {response_data}")
@@ -421,14 +429,14 @@ class Command(BaseCommand):
         parser.add_argument(
             "v1_url",
             type=str,
-            metavar="example.openklant.nl",
+            metavar="https://example.openklant.nl",
             help="URL of the Klanten API",
         )
 
         parser.add_argument(
             "v2_url",
             type=str,
-            metavar="example.klantinteracties.nl",
+            metavar="https://example.klantinteracties.nl",
             help="URL of the Klantinteracties API",
         )
 
@@ -445,7 +453,9 @@ class Command(BaseCommand):
         results = []
 
         while next_url is not None:
-            klanten, next_url = _retrieve_klanten(v1_url, access_token)
+            klanten, next_url = _retrieve_klanten(
+                v1_url if next_url == "" else next_url, access_token
+            )
             results.extend(_save_klanten(v2_url, klanten))
 
         return "\n".join(results)
