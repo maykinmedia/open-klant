@@ -230,7 +230,6 @@ class Klant:
     subject: Optional[str] = None
     subject_identificatie: Optional[dict] = None
     subject_type: Optional[str] = None
-    telefoonnummer: Optional[str] = None
     emailadres: Optional[str] = None
 
     voornaam: Optional[str] = None
