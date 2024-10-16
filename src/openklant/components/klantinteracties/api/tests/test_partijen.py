@@ -5,6 +5,9 @@ from django.utils.translation import gettext as _
 from rest_framework import status
 from vng_api_common.tests import reverse
 
+from openklant.components.klantinteracties.models.constants import SoortPartij
+from openklant.components.klantinteracties.api.serializers.digitaal_adres import DigitaalAdresSerializer
+from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
 )
@@ -1796,6 +1799,54 @@ class PartijTests(APITestCase):
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
+
+    def test_digitale_adressen_inclusion_param(self):
+        persoon = PersoonFactory(partij__soort_partij=SoortPartij.persoon)
+
+        persoon_with_adressen = PersoonFactory(
+            partij__soort_partij=SoortPartij.persoon
+        )
+        digitaal_adres = DigitaalAdresFactory(
+            partij=persoon_with_adressen.partij
+        )
+
+        def _get_detail_url(partij: Partij) -> str:
+            return reverse(
+                "klantinteracties:partij-detail",
+                kwargs={"uuid": str(partij.uuid)}
+            )
+
+        # request the partij *without* any digitale adressen
+        response = self.client.get(
+            _get_detail_url(persoon.partij),
+            data=dict(expand="digitaleAdressen")
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data: dict = response.json()
+
+        from pprint import pprint
+        pprint(response_data)
+
+        self.assertEqual(response_data["_expand"], {"digitaleAdressen": []})
+
+        # request the partij *with* digitale adressen
+        response = self.client.get(
+            _get_detail_url(persoon_with_adressen.partij),
+            data=dict(expand="digitaleAdressen")
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data: dict = response.json()
+
+        serializer = DigitaalAdresSerializer(instance=digitaal_adres)
+
+        self.assertEqual(
+            response_data["_expand"],
+            {"digitaleAdressen": [serializer.validated_data]}
+        )
 
 
 class PartijIdentificatorTests(APITestCase):

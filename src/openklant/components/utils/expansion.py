@@ -111,6 +111,7 @@ class InclusionTree:
 
         for node in root_nodes:
             result[node.id] = node.display_children()
+
         return result
 
 
@@ -230,6 +231,8 @@ class ExpandLoader(InclusionLoader):
         if inclusion_serializer is None:
             return
 
+        # from here, these fields are for inclusion serializer fields
+
         if isinstance(inclusion_serializer, str):
             inclusion_serializer = import_string(inclusion_serializer)
 
@@ -250,6 +253,8 @@ class ExpandLoader(InclusionLoader):
                 inclusion_serializers,
             ):
                 yield entry
+        else:
+            return [], inclusion_serializer, instance, new_path, many
 
     def _some_related_field_inclusions(
         self,
