@@ -3359,6 +3359,10 @@ components:
           - $ref: '#/components/schemas/SoortDigitaalAdresEnum'
           description: Typering van het digitale adres die aangeeft via welk(e) kanaal
             of kanalen met dit adres contact kan worden opgenomen.
+        isStandaardAdres:
+          type: boolean
+          description: Geeft aan of dit digitaal adres het standaard adres is voor
+            het `soort_digitaal_adres`
         omschrijving:
           type: string
           description: Omschrijving van het digitaal adres.
@@ -4714,6 +4718,10 @@ components:
           - $ref: '#/components/schemas/SoortDigitaalAdresEnum'
           description: Typering van het digitale adres die aangeeft via welk(e) kanaal
             of kanalen met dit adres contact kan worden opgenomen.
+        isStandaardAdres:
+          type: boolean
+          description: Geeft aan of dit digitaal adres het standaard adres is voor
+            het `soort_digitaal_adres`
         omschrijving:
           type: string
           description: Omschrijving van het digitaal adres.
