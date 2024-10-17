@@ -28,28 +28,12 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Get changed PY files
-        id: changed-py-files
-        uses: tj-actions/changed-files@v41
+      - name: Changed files
+        uses: tj-actions/changed-files@v45
         with:
           files: |
-            ^src/.+\.py
-      - name: Get changed JS files
-        id: changed-js-files
-        uses: tj-actions/changed-files@v41
-        with:
-          files: |
-            ^src/.+\.js
-      - name: Get changed requirements files
-        id: changed-requirements
-        uses: tj-actions/changed-files@v41
-        with:
-          files: ^requirements/.+\.txt$
-
-    outputs:
-      changed-py-files: ${{ steps.changed-py-files.outputs.any_changed }}
-      changed-js-files: ${{ steps.changed-js-files.outputs.any_changed }}
-      changed-requirements: ${{ steps.changed-requirements.outputs.any_changed }}
+            src/**/*.py
+            requirements/*.txt
 
   tests:
     name: Tests (PG ${{ matrix.postgres }})
@@ -58,7 +42,7 @@ jobs:
       - changed-files
 
     # only run tests if source files have changed (e.g. skip for PRs that only update docs)
-    if: ${{ needs.changed-files.outputs.changed-py-files == 'true'|| needs.changed-files.outputs.changed-requirements == 'true'|| github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    if: needs.changed-files.outputs.any_changed == 'true'|| github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
     strategy:
       matrix:
