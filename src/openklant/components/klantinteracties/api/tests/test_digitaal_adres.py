@@ -5,6 +5,7 @@ from rest_framework import status
 from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
+from openklant.components.klantinteracties.models import DigitaalAdres
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
 )
@@ -73,6 +74,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(data["verstrektDoorPartij"], None)
         self.assertEqual(data["adres"], "foobar@example.com")
         self.assertEqual(data["omschrijving"], "omschrijving")
+        self.assertEqual(data["isStandaardAdres"], False)
 
         with self.subTest("with_betrokkene_and_partij"):
             partij = PartijFactory.create()
@@ -160,6 +162,47 @@ class DigitaalAdresTests(APITestCase):
             )
             self.assertEqual(digitaal_adres.adres, "0612345678")
 
+    def test_create_digitaal_adres_is_standaard_adres(self):
+        """
+        Creating a DigitaalAdres with isStandaardAdres=True should make other existing
+        DigitaalAdressen no longer the default
+        """
+        # Since this has a different Partij, the value of `is_standaard_adres` should stay `True`
+        partij1, partij2 = PartijFactory.create_batch(2)
+        existing_adres_different_partij = DigitaalAdresFactory.create(
+            partij=partij1, is_standaard_adres=True, soort_digitaal_adres="email"
+        )
+        # This adres has the same `soort_digitaal_adres` and `partij`, so the value of
+        # `is_standaard_adres` should be changed to `False` if we change another one to `True`
+        existing_adres = DigitaalAdresFactory.create(
+            is_standaard_adres=True, soort_digitaal_adres="email", partij=partij2
+        )
+
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        data = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": {"uuid": str(partij2.uuid)},
+            "soortDigitaalAdres": "email",
+            "adres": "adres",
+            "omschrijving": "omschrijving",
+            "isStandaardAdres": True,
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        data = response.json()
+
+        self.assertEqual(data["isStandaardAdres"], True)
+
+        existing_adres_different_partij.refresh_from_db()
+        existing_adres.refresh_from_db()
+        new_adres = DigitaalAdres.objects.last()
+
+        self.assertEqual(existing_adres_different_partij.is_standaard_adres, True)
+        self.assertEqual(existing_adres.is_standaard_adres, False)
+        self.assertEqual(new_adres.is_standaard_adres, True)
+
     def test_update_digitaal_adres(self):
         betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
         partij, partij2 = PartijFactory.create_batch(2)
@@ -225,6 +268,55 @@ class DigitaalAdresTests(APITestCase):
             )
             self.assertEqual(data["adres"], "0721434543")
             self.assertEqual(data["omschrijving"], "changed")
+
+    def test_update_digitaal_adres_is_standaard_adres(self):
+        """
+        Creating a DigitaalAdres with isStandaardAdres=True should make other existing
+        DigitaalAdressen no longer the default
+        """
+        partij1, partij2 = PartijFactory.create_batch(2)
+        # Since this has a different Partij, the value of `is_standaard_adres` should stay `True`
+        existing_adres_different_partij = DigitaalAdresFactory.create(
+            partij=partij1, is_standaard_adres=True, soort_digitaal_adres="email"
+        )
+        # This adres has the same `soort_digitaal_adres` and `partij`, so the value of
+        # `is_standaard_adres` should be changed to `False` if we change another one to `True`
+        existing_adres = DigitaalAdresFactory.create(
+            is_standaard_adres=True, soort_digitaal_adres="email", partij=partij2
+        )
+        digitaal_adres = DigitaalAdresFactory.create(
+            partij=partij2,
+            soort_digitaal_adres="email",
+            adres="adres",
+            omschrijving="omschrijving",
+        )
+        detail_url = reverse(
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
+        )
+
+        data = {
+            "verstrektDoorBetrokkene": {"uuid": str(digitaal_adres.betrokkene.uuid)},
+            "verstrektDoorPartij": {"uuid": str(partij2.uuid)},
+            "soortDigitaalAdres": "email",
+            "isStandaardAdres": True,
+            "adres": "changed",
+            "omschrijving": "changed",
+        }
+
+        response = self.client.put(detail_url, data)
+
+        data = response.json()
+
+        self.assertEqual(data["isStandaardAdres"], True)
+
+        existing_adres_different_partij.refresh_from_db()
+        existing_adres.refresh_from_db()
+        digitaal_adres.refresh_from_db()
+
+        self.assertEqual(existing_adres_different_partij.is_standaard_adres, True)
+        self.assertEqual(existing_adres.is_standaard_adres, False)
+        self.assertEqual(digitaal_adres.is_standaard_adres, True)
 
     def test_partial_update_digitaal_adres(self):
         betrokkene = BetrokkeneFactory.create()
