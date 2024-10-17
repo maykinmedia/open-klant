@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://127.0.0.1:8001/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://127.0.0.1:8001/klanten/api/v1/klanten/c124aba0-d2ed-48d4-9ddd-20a6c24b3bfb","bronorganisatie":"264058914","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"Anthony","voorvoegselAchternaam":"","achternaam":"Hopkins","telefoonnummer":"","emailadres":"","adres":null,"subject":"foobar","subjectType":"natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":null}]}'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '727'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 11 Oct 2024 10:40:03 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - WSGIServer/0.2 CPython/3.11.9
+      Server-Timing:
+      - TimerPanel_utime;dur=40.236000000007266;desc="User CPU time", TimerPanel_stime;dur=0.18199999999524152;desc="System
+        CPU time", TimerPanel_total;dur=40.41800000000251;desc="Total CPU time", TimerPanel_total_time;dur=45.01748085021973;desc="Elapsed
+        time", SQLPanel_sql_time;dur=3.337860107421875;desc="SQL 9 queries", CachePanel_total_time;dur=0;desc="Cache
+        0 Calls"
+      Vary:
+      - Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
