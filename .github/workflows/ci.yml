@@ -24,16 +24,27 @@ jobs:
     name: Determine changed files
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
       - name: Changed files
+        id: app-files
         uses: tj-actions/changed-files@v45
         with:
           files: |
             src/**/*.py
             requirements/*.txt
+
+      - name: Display changed files
+        if: steps.app-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.app-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
+
 
   tests:
     name: Tests (PG ${{ matrix.postgres }})
@@ -42,7 +53,7 @@ jobs:
       - changed-files
 
     # only run tests if source files have changed (e.g. skip for PRs that only update docs)
-    if: needs.changed-files.outputs.any_changed == 'true'|| github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: needs.changed-files.app-files.outputs.any_changed == 'true'|| github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
     strategy:
       matrix:
