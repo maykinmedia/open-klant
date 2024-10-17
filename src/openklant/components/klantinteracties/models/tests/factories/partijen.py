@@ -57,7 +57,7 @@ class CategorieFactory(factory.django.DjangoModelFactory):
 
 
 class OrganisatieFactory(factory.django.DjangoModelFactory):
-    partij = factory.SubFactory(PartijFactory)
+    partij = factory.SubFactory(PartijFactory, soort_partij=SoortPartij.organisatie)
     naam = factory.Faker("word")
 
     class Meta:
@@ -65,7 +65,7 @@ class OrganisatieFactory(factory.django.DjangoModelFactory):
 
 
 class PersoonFactory(factory.django.DjangoModelFactory):
-    partij = factory.SubFactory(PartijFactory)
+    partij = factory.SubFactory(PartijFactory, soort_partij=SoortPartij.persoon)
     contactnaam_voorletters = ".".join(random.choices(string.ascii_uppercase, k=2))
 
     class Meta:
@@ -73,7 +73,7 @@ class PersoonFactory(factory.django.DjangoModelFactory):
 
 
 class ContactpersoonFactory(factory.django.DjangoModelFactory):
-    partij = factory.SubFactory(PartijFactory)
+    partij = factory.SubFactory(PartijFactory, soort_partij=SoortPartij.contactpersoon)
     contactnaam_voorletters = ".".join(random.choices(string.ascii_uppercase, k=2))
 
     class Meta:
