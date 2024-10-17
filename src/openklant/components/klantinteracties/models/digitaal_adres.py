@@ -40,6 +40,13 @@ class DigitaalAdres(APIMixin, models.Model):
         max_length=255,
         choices=SoortDigitaalAdres.choices,
     )
+    is_standaard_adres = models.BooleanField(
+        _("Is standaard adres"),
+        help_text=_(
+            "Geeft aan of dit digitaal adres het standaard adres is voor het `soort_digitaal_adres`"
+        ),
+        default=False,
+    )
     adres = models.CharField(
         _("adres"),
         help_text=_(
@@ -55,6 +62,25 @@ class DigitaalAdres(APIMixin, models.Model):
 
     class Meta:
         verbose_name = _("digitaal adres")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["partij", "soort_digitaal_adres"],
+                condition=models.Q(is_standaard_adres=True),
+                name="unique_default_per_partij_and_soort",
+            )
+        ]
 
     def __str__(self):
         return f"{self.betrokkene} - {self.adres}"
+
+    def save(self, *args, **kwargs):
+        if self.is_standaard_adres:
+            # Because there can only be one default address per `soort_digitaal_adres`
+            # and `partij`, mark all other addresses as non-default
+            DigitaalAdres.objects.filter(
+                soort_digitaal_adres=self.soort_digitaal_adres,
+                partij=self.partij,
+                is_standaard_adres=True,
+            ).update(is_standaard_adres=False)
+
+        super().save(*args, **kwargs)
