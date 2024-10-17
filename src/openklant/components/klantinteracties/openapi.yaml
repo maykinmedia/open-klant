@@ -3663,9 +3663,7 @@ components:
         onderwerpobject:
           $ref: '#/components/schemas/OnderwerpobjectConvenience'
       required:
-      - betrokkene
       - klantcontact
-      - onderwerpobject
     Klantcontact:
       type: object
       properties:
