@@ -103,7 +103,7 @@ class PartijAdmin(admin.ModelAdmin):
         VertegenwoordigdenInlineAdmin,
         PartijIdentificatorInlineAdmin,
     )
-    search_fields = ("nummer", "uuid", "voorkeurs_digitaal_adres__adres")
+    search_fields = ("partij",)
     autocomplete_fields = ("voorkeurs_digitaal_adres",)
     readonly_fields = ("uuid",)
     fieldsets = [
