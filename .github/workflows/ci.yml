@@ -20,36 +20,33 @@ env:
 jobs:
   # determine changed files to decide if certain jobs can be skipped or not
   changed-files:
-    runs-on: ubuntu-latest  # windows-latest | macos-latest
+    runs-on: ubuntu-latest
     name: Determine changed files
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: Get changed PY files
-        id: changed-py-files
-        uses: tj-actions/changed-files@v41
+      - name: Changed files
+        id: app-files
+        uses: tj-actions/changed-files@v45
         with:
           files: |
-            ^src/.+\.py
-      - name: Get changed JS files
-        id: changed-js-files
-        uses: tj-actions/changed-files@v41
-        with:
-          files: |
-            ^src/.+\.js
-      - name: Get changed requirements files
-        id: changed-requirements
-        uses: tj-actions/changed-files@v41
-        with:
-          files: ^requirements/.+\.txt$
+            src/**/*.py
+            requirements/*.txt
+
+      - name: Display changed files
+        if: steps.app-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.app-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
 
     outputs:
-      changed-py-files: ${{ steps.changed-py-files.outputs.any_changed }}
-      changed-js-files: ${{ steps.changed-js-files.outputs.any_changed }}
-      changed-requirements: ${{ steps.changed-requirements.outputs.any_changed }}
+      changed-files: ${{ steps.app-files.outputs.any_changed }}
 
   tests:
     name: Tests (PG ${{ matrix.postgres }})
@@ -58,7 +55,7 @@ jobs:
       - changed-files
 
     # only run tests if source files have changed (e.g. skip for PRs that only update docs)
-    if: ${{ needs.changed-files.outputs.changed-py-files == 'true'|| needs.changed-files.outputs.changed-requirements == 'true'|| github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    if: needs.changed-files.outputs.changed-files == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
     strategy:
       matrix:
