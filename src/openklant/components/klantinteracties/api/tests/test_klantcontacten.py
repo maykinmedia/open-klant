@@ -1976,3 +1976,54 @@ class ConvenienceEndpointTests(APITestCase):
             )
             self.assertEqual(onderwerpobject.klantcontact, klantcontact)
             self.assertEqual(onderwerpobject.was_klantcontact, existing_klantcontact)
+
+    def test_create_without_betrokkene_and_onderwerpobject(self):
+        del self.post_data["betrokkene"]
+        del self.post_data["onderwerpobject"]
+        response = self.client.post(self.url, self.post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+
+        klantcontact = Klantcontact.objects.get()
+
+        self.assertFalse(Betrokkene.objects.exists())
+        self.assertFalse(Onderwerpobject.objects.exists())
+
+        klantcontact_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(klantcontact.uuid)},
+        )
+
+        klantcontact_url = f"http://testserver{klantcontact_url}"
+
+        data = response.json()
+
+        self.assertEqual(
+            list(data.keys()), ["klantcontact", "betrokkene", "onderwerpobject"]
+        )
+
+        with self.subTest("Klantcontact response data is correct"):
+            expected_klantcontact = {
+                "uuid": str(klantcontact.uuid),
+                "url": klantcontact_url,
+                "gingOverOnderwerpobjecten": [],
+                "hadBetrokkenActoren": [],
+                "hadBetrokkenen": [],
+                "indicatieContactGelukt": False,
+                "inhoud": "changed",
+                "kanaal": "changed",
+                "leiddeTotInterneTaken": [],
+                "nummer": "7948723947",
+                "omvatteBijlagen": [],
+                "onderwerp": "changed",
+                "plaatsgevondenOp": "2020-08-24T14:15:22Z",
+                "taal": "de",
+                "vertrouwelijk": False,
+            }
+            self.assertEqual(data["klantcontact"], expected_klantcontact)
+
+        with self.subTest("Betrokkene is None in response"):
+            self.assertEqual(data["betrokkene"], None)
+
+        with self.subTest("Onderwerpobject is None in response"):
+            self.assertEqual(data["onderwerpobject"], None)

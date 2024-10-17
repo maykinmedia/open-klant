@@ -555,8 +555,8 @@ class OnderwerpobjectConvenienceSerializer(OnderwerpobjectSerializer):
 
 class KlantContactBetrokkeneOnderwerpObjectSerializer(serializers.Serializer):
     klantcontact = KlantcontactSerializer()
-    betrokkene = BetrokkeneConvenienceSerializer()
-    onderwerpobject = OnderwerpobjectConvenienceSerializer()
+    betrokkene = BetrokkeneConvenienceSerializer(required=False)
+    onderwerpobject = OnderwerpobjectConvenienceSerializer(required=False)
 
     @transaction.atomic
     def create(self, validated_data):
@@ -567,22 +567,26 @@ class KlantContactBetrokkeneOnderwerpObjectSerializer(serializers.Serializer):
         klantcontact_data = validated_data["klantcontact"]
         klantcontact = Klantcontact.objects.create(**klantcontact_data)
 
-        betrokkene_data = validated_data["betrokkene"]
-        betrokkene_data["had_klantcontact"] = {"uuid": str(klantcontact.uuid)}
-        # TODO for some reason `was_partij` is converted to `partij` by the serializer
-        betrokkene_data.setdefault("was_partij", betrokkene_data.get("partij", None))
-        betrokkene_serializer = BetrokkeneSerializer(data=betrokkene_data)
-        betrokkene_serializer.is_valid()
-        betrokkene = betrokkene_serializer.save()
+        betrokkene = None
+        if betrokkene_data := validated_data.pop("betrokkene", None):
+            betrokkene_data["had_klantcontact"] = {"uuid": str(klantcontact.uuid)}
+            # TODO for some reason `was_partij` is converted to `partij` by the serializer
+            betrokkene_data.setdefault(
+                "was_partij", betrokkene_data.get("partij", None)
+            )
+            betrokkene_serializer = BetrokkeneSerializer(data=betrokkene_data)
+            betrokkene_serializer.is_valid()
+            betrokkene = betrokkene_serializer.save()
 
-        onderwerpobject_data = validated_data["onderwerpobject"]
-        onderwerpobject_data["klantcontact"] = {"uuid": str(klantcontact.uuid)}
-        onderwerpobject_data.setdefault("was_klantcontact", None)
-        onderwerpobject_serializer = OnderwerpobjectSerializer(
-            data=onderwerpobject_data
-        )
-        onderwerpobject_serializer.is_valid()
-        onderwerpobject = onderwerpobject_serializer.save()
+        onderwerpobject = None
+        if onderwerpobject_data := validated_data.pop("onderwerpobject", None):
+            onderwerpobject_data["klantcontact"] = {"uuid": str(klantcontact.uuid)}
+            onderwerpobject_data.setdefault("was_klantcontact", None)
+            onderwerpobject_serializer = OnderwerpobjectSerializer(
+                data=onderwerpobject_data
+            )
+            onderwerpobject_serializer.is_valid()
+            onderwerpobject = onderwerpobject_serializer.save()
 
         return {
             "klantcontact": klantcontact,
