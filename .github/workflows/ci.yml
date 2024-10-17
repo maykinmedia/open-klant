@@ -20,7 +20,7 @@ env:
 jobs:
   # determine changed files to decide if certain jobs can be skipped or not
   changed-files:
-    runs-on: ubuntu-latest  # windows-latest | macos-latest
+    runs-on: ubuntu-latest
     name: Determine changed files
     steps:
 
@@ -45,7 +45,6 @@ jobs:
             echo "$file was changed"
           done
 
-
   tests:
     name: Tests (PG ${{ matrix.postgres }})
     runs-on: ubuntu-latest
@@ -53,7 +52,7 @@ jobs:
       - changed-files
 
     # only run tests if source files have changed (e.g. skip for PRs that only update docs)
-    if: needs.changed-files.app-files.outputs.any_changed == 'true'|| github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: needs.changed-files.app-files.outputs.any_changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
     strategy:
       matrix:
