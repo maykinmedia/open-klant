@@ -1,5 +1,7 @@
 from uuid import uuid4
 
+from django.conf import settings
+from django.test import override_settings
 from django.urls import reverse
 
 from django_webtest import WebTest
@@ -25,6 +27,9 @@ class PartijAdminTests(WebTest):
 
         self.assertRedirects(redirect, reverse("admin:index"))
 
+    @override_settings(
+        MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS=settings.AUTHENTICATION_BACKENDS
+    )
     def test_search(self):
         nummer_persoon = PersoonFactory(
             partij__nummer="123456789",
