@@ -61,6 +61,8 @@ class PartijAdminTests(WebTest):
         search_response = search_form.submit()
 
         self.assertContains(search_response, nummer_persoon.get_full_name())
+        self.assertNotContains(search_response, uuid_persoon.get_full_name())
+        self.assertNotContains(search_response, digitaal_adres_persoon.get_full_name())
 
         # Test a uuid search query
         response: TestResponse = self.app.get(admin_url)
@@ -70,6 +72,8 @@ class PartijAdminTests(WebTest):
         search_response = search_form.submit()
 
         self.assertContains(search_response, uuid_persoon.get_full_name())
+        self.assertNotContains(search_response, nummer_persoon.get_full_name())
+        self.assertNotContains(search_response, digitaal_adres_persoon.get_full_name())
 
         # Test a adres search query
         response: TestResponse = self.app.get(admin_url)
@@ -79,3 +83,5 @@ class PartijAdminTests(WebTest):
         search_response = search_form.submit()
 
         self.assertContains(search_response, digitaal_adres_persoon.get_full_name())
+        self.assertNotContains(search_response, nummer_persoon.get_full_name())
+        self.assertNotContains(search_response, uuid_persoon.get_full_name())
