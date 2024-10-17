@@ -1,6 +1,7 @@
 from rest_framework import status
 from vng_api_common.tests import reverse
 
+from openklant.components.klantinteracties.models import DigitaalAdres
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
 )
@@ -69,6 +70,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(data["verstrektDoorPartij"], None)
         self.assertEqual(data["adres"], "adres")
         self.assertEqual(data["omschrijving"], "omschrijving")
+        self.assertEqual(data["isStandaardAdres"], False)
 
         with self.subTest("with_betrokkene_and_partij"):
             partij = PartijFactory.create()
@@ -88,6 +90,38 @@ class DigitaalAdresTests(APITestCase):
             self.assertEqual(data["soortDigitaalAdres"], "soortDigitaalAdres")
             self.assertEqual(data["adres"], "adres")
             self.assertEqual(data["omschrijving"], "omschrijving")
+
+    def test_create_digitaal_adres_is_standaard_adres(self):
+        """
+        Creating a DigitaalAdres with isStandaardAdres=True should make other existing
+        DigitaalAdressen no longer the default
+        """
+        existing_adres = DigitaalAdresFactory.create(
+            is_standaard_adres=True, soort_digitaal_adres="email"
+        )
+
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        data = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": None,
+            "soortDigitaalAdres": "email",
+            "adres": "adres",
+            "omschrijving": "omschrijving",
+            "isStandaardAdres": True,
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        data = response.json()
+
+        self.assertEqual(data["isStandaardAdres"], True)
+
+        existing_adres.refresh_from_db()
+        new_adres = DigitaalAdres.objects.last()
+
+        self.assertEqual(existing_adres.is_standaard_adres, False)
+        self.assertEqual(new_adres.is_standaard_adres, True)
 
     def test_update_digitaal_adres(self):
         betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
@@ -152,6 +186,49 @@ class DigitaalAdresTests(APITestCase):
             self.assertEqual(data["soortDigitaalAdres"], "changed")
             self.assertEqual(data["adres"], "changed")
             self.assertEqual(data["omschrijving"], "changed")
+
+    def test_update_digitaal_adres_is_standaard_adres(self):
+        """
+        Creating a DigitaalAdres with isStandaardAdres=True should make other existing
+        DigitaalAdressen no longer the default
+        """
+        existing_adres = DigitaalAdresFactory.create(
+            is_standaard_adres=True, soort_digitaal_adres="email"
+        )
+        betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
+        partij, partij2 = PartijFactory.create_batch(2)
+        digitaal_adres = DigitaalAdresFactory.create(
+            betrokkene=betrokkene,
+            partij=partij2,
+            soort_digitaal_adres="email",
+            adres="adres",
+            omschrijving="omschrijving",
+        )
+        detail_url = reverse(
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
+        )
+
+        data = {
+            "verstrektDoorBetrokkene": {"uuid": str(betrokkene2.uuid)},
+            "verstrektDoorPartij": {"uuid": str(partij.uuid)},
+            "soortDigitaalAdres": "email",
+            "isStandaardAdres": True,
+            "adres": "changed",
+            "omschrijving": "changed",
+        }
+
+        response = self.client.put(detail_url, data)
+
+        data = response.json()
+
+        self.assertEqual(data["isStandaardAdres"], True)
+
+        existing_adres.refresh_from_db()
+        digitaal_adres.refresh_from_db()
+
+        self.assertEqual(existing_adres.is_standaard_adres, False)
+        self.assertEqual(digitaal_adres.is_standaard_adres, True)
 
     def test_partial_update_digitaal_adres(self):
         betrokkene = BetrokkeneFactory.create()
