@@ -1,7 +1,7 @@
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
-from rest_framework import serializers
+from rest_framework import serializers, validators
 
 from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
@@ -79,6 +79,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
             "verstrekt_door_partij",
             "adres",
             "soort_digitaal_adres",
+            "is_standaard_adres",
             "omschrijving",
         )
         extra_kwargs = {
@@ -89,6 +90,20 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": _("De unieke URL van dit digitaal adres binnen deze API."),
             },
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if "soort_digitaal_adres" in self.fields:
+            # Avoid validating the UniqueConstraint for `soort_digitaal_adres` with
+            # `is_standaard_adres=True`. We want to enforce the constraint at the database
+            # level, but not via the API, because setting a new default sets all other
+            # `is_standaard_adres=False` (via DigitaalAdres.save)
+            self.fields["soort_digitaal_adres"].validators = [
+                validator
+                for validator in self.fields["soort_digitaal_adres"].validators
+                if not isinstance(validator, validators.UniqueValidator)
+            ]
 
     def validate_adres(self, adres):
         """
