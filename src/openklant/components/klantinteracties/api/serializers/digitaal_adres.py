@@ -6,7 +6,10 @@ from rest_framework import serializers
 from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
 )
-from openklant.components.klantinteracties.api.validators import digitaal_adres_exists
+from openklant.components.klantinteracties.api.validators import (
+    OptionalEmailValidator,
+    digitaal_adres_exists,
+)
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.klantcontacten import Betrokkene
 from openklant.components.klantinteracties.models.partijen import Partij
@@ -85,6 +88,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": _("De unieke URL van dit digitaal adres binnen deze API."),
             },
         }
+        validators = [OptionalEmailValidator()]
 
     @transaction.atomic
     def update(self, instance, validated_data):
