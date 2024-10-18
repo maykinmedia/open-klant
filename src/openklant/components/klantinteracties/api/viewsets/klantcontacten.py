@@ -1,6 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
 
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
@@ -13,6 +13,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     ActorKlantcontactSerializer,
     BetrokkeneSerializer,
     BijlageSerializer,
+    KlantContactConvenienceSerializer,
     KlantcontactSerializer,
     OnderwerpobjectSerializer,
 )
@@ -260,5 +261,23 @@ class ActorKlantcontactViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = DynamicPageSizePagination
     filterset_class = ActorKlantcontactFilterSet
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (TokenPermissions,)
+
+
+@extend_schema(tags=["klantcontact-convenience"])
+@extend_schema_view(
+    create=extend_schema(
+        summary="Maak een KlantContact, Betrokkene en een OnderwerpObject aan.",
+        description="Maak een KlantContact, Betrokkene en een OnderwerpObject aan.",
+    ),
+)
+class KlantContactConvenienceViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    """
+    Convenience endpoint om in één request een Betrokkene, KlantContact en een OnderwerpObject
+    aan te maken. De aangemaakte objecten worden automatisch aan elkaar gekoppeld.
+    """
+
+    serializer_class = KlantContactConvenienceSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
