@@ -7,7 +7,6 @@ from django.core.management import call_command
 from django.test import LiveServerTestCase
 
 from vcr.config import RecordMode
-from vcr.unittest import VCRMixin
 from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.constants import SoortPartij
@@ -17,6 +16,7 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     Persoon,
 )
+from openklant.tests.vcr import VCRMixin
 
 
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
@@ -38,14 +38,14 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
     def _get_vcr_kwargs(self, **kwargs) -> dict:
         kwargs = super()._get_vcr_kwargs(**kwargs)
-        return dict(
-            record_mode=RecordMode.ONCE,
-            # Decompress for human readable cassette diffs when re-recoding
-            decode_compressed_response=True,
-            filter_headers=["authorization"],
-            ignore_hosts=["localhost"],
+        return {
             **kwargs,
-        )
+            "record_mode": RecordMode.ONCE,
+            # Decompress for human readable cassette diffs when re-recoding
+            "decode_compressed_response": True,
+            "filter_headers": ["authorization"],
+            "ignore_hosts": ["localhost"],
+        }
 
     def _get_partij_url(self, partij) -> str:
         return reverse(
