@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://127.0.0.1:8001/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://127.0.0.1:8001/klanten/api/v1/klanten/edb958c3-6a98-4a3a-82c6-11583d66fea7","bronorganisatie":"762395011","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"","emailadres":"example@example.com","adres":null,"subject":"","subjectType":"natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"inpBsn":"","anpIdentificatie":"0","inpANummer":"","geslachtsnaam":"Thomas","voorvoegselGeslachtsnaam":"","voorletters":"","voornamen":"Lauren","geslachtsaanduiding":"","geboortedatum":"1980-06-17","verblijfsadres":null,"subVerblijfBuitenland":null}}]}'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '725'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 11 Oct 2024 13:14:28 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - WSGIServer/0.2 CPython/3.11.9
+      Server-Timing:
+      - TimerPanel_utime;dur=17.482000000001108;desc="User CPU time", TimerPanel_stime;dur=0.5709999999794491;desc="System
+        CPU time", TimerPanel_total;dur=18.052999999980557;desc="Total CPU time",
+        TimerPanel_total_time;dur=22.54629135131836;desc="Elapsed time", SQLPanel_sql_time;dur=3.4415721893310547;desc="SQL
+        9 queries", CachePanel_total_time;dur=0;desc="Cache 0 Calls"
+      Vary:
+      - Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
