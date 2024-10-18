@@ -553,7 +553,7 @@ class OnderwerpobjectConvenienceSerializer(OnderwerpobjectSerializer):
         self.fields["klantcontact"].read_only = True
 
 
-class KlantContactBetrokkeneOnderwerpObjectSerializer(serializers.Serializer):
+class KlantContactConvenienceSerializer(serializers.Serializer):
     klantcontact = KlantcontactSerializer()
     betrokkene = BetrokkeneConvenienceSerializer(required=False)
     onderwerpobject = OnderwerpobjectConvenienceSerializer(required=False)

@@ -24,6 +24,12 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
 )
 from openklant.components.token.tests.api_testcase import APITestCase
 
+from .factories import (
+    BetrokkeneDataFactory,
+    KlantContactDataFactory,
+    OnderwerpObjectDataFactory,
+)
+
 
 class KlantContactTests(APITestCase):
     def test_list_klantcontact(self):
@@ -1479,59 +1485,14 @@ class ConvenienceEndpointTests(APITestCase):
     maxDiff = None
     url = reverse("klantinteracties:klantcontact-convenience-list")
 
-    def setUp(self):
-        super().setUp()
-
-        self.post_data = {
-            "klantcontact": {
-                "nummer": "7948723947",
-                "kanaal": "changed",
-                "onderwerp": "changed",
-                "inhoud": "changed",
-                "indicatieContactGelukt": False,
-                "taal": "de",
-                "vertrouwelijk": False,
-                "plaatsgevondenOp": "2020-08-24T14:15:22Z",
-            },
-            "betrokkene": {
-                "wasPartij": None,
-                "bezoekadres": {
-                    "nummeraanduidingId": "4a282b5c-16d7-401d-9737-28e98c865ab2",
-                    "adresregel1": "adres1",
-                    "adresregel2": "adres2",
-                    "adresregel3": "adres3",
-                    "land": "6030",
-                },
-                "correspondentieadres": {
-                    "nummeraanduidingId": "c06918d9-899b-4d98-a10d-08436ebc6c20",
-                    "adresregel1": "adres1",
-                    "adresregel2": "adres2",
-                    "adresregel3": "adres3",
-                    "land": "6030",
-                },
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                },
-                "rol": "vertegenwoordiger",
-                "organisatienaam": "Whitechapel",
-                "initiator": True,
-            },
-            "onderwerpobject": {
-                "wasKlantcontact": None,
-                "onderwerpobjectidentificator": {
-                    "codeObjecttype": "codeObjecttype",
-                    "codeSoortObjectId": "codeSoortObjectId",
-                    "objectId": "objectId",
-                    "codeRegister": "codeRegister",
-                },
-            },
+    def test_create_success(self):
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
         }
 
-    def test_create_success(self):
-        response = self.client.post(self.url, self.post_data)
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
@@ -1653,9 +1614,13 @@ class ConvenienceEndpointTests(APITestCase):
         """
         If there are validation errors in the Klantcontact, no resources should be created
         """
-        self.post_data["klantcontact"]["taal"] = "incorrect"
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(taal="incorrect"),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
 
-        response = self.client.post(self.url, self.post_data)
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -1681,9 +1646,13 @@ class ConvenienceEndpointTests(APITestCase):
         """
         If there are validation errors in the Betrokkene, no resources should be created
         """
-        self.post_data["betrokkene"]["wasPartij"] = "incorrect"
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(wasPartij="incorrect"),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
 
-        response = self.client.post(self.url, self.post_data)
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -1706,10 +1675,14 @@ class ConvenienceEndpointTests(APITestCase):
         self.assertFalse(Onderwerpobject.objects.exists())
 
     def test_create_use_read_only_betrokkene_attributes(self):
-        # This field should be ignored
-        self.post_data["betrokkene"]["hadKlantcontact"] = "foobar"
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            # `hadKlantcontact` field should be ignored
+            "betrokkene": BetrokkeneDataFactory.create(hadKlantcontact="foobar"),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
 
-        response = self.client.post(self.url, self.post_data)
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
@@ -1763,11 +1736,16 @@ class ConvenienceEndpointTests(APITestCase):
 
     def test_create_betrokkene_was_partij_and_partij(self):
         partij = PartijFactory.create(voorkeurs_digitaal_adres=None)
-        # This field should be ignored
-        self.post_data["betrokkene"]["partij"] = "foobar"
-        self.post_data["betrokkene"]["wasPartij"] = {"uuid": str(partij.uuid)}
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            # `partij` should be ignored
+            "betrokkene": BetrokkeneDataFactory.create(
+                partij="foobar", wasPartij={"uuid": str(partij.uuid)}
+            ),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
 
-        response = self.client.post(self.url, self.post_data)
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
@@ -1824,11 +1802,15 @@ class ConvenienceEndpointTests(APITestCase):
         """
         If there are validation errors in the Betrokkene, no resources should be created
         """
-        self.post_data["onderwerpobject"]["onderwerpobjectidentificator"][
-            "objectId"
-        ] = True
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(
+                onderwerpobjectidentificator__objectId=True
+            ),
+        }
 
-        response = self.client.post(self.url, self.post_data)
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -1849,10 +1831,14 @@ class ConvenienceEndpointTests(APITestCase):
         self.assertFalse(Onderwerpobject.objects.exists())
 
     def test_create_use_read_only_onderwerpobject_attributes(self):
-        # This field should be ignored
-        self.post_data["onderwerpobject"]["klantcontact"] = "foobar"
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            # `klantcontact` field should be ignored
+            "onderwerpobject": OnderwerpObjectDataFactory.create(klantcontact="foobar"),
+        }
 
-        response = self.client.post(self.url, self.post_data)
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
@@ -1911,13 +1897,15 @@ class ConvenienceEndpointTests(APITestCase):
             kwargs={"uuid": str(existing_klantcontact.uuid)},
         )
         existing_klantcontact_url = f"http://testserver{existing_klantcontact_url}"
-
-        # This field should be ignored
-        self.post_data["onderwerpobject"]["wasKlantcontact"] = {
-            "uuid": str(existing_klantcontact.uuid)
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(
+                wasKlantcontact={"uuid": str(existing_klantcontact.uuid)}
+            ),
         }
 
-        response = self.client.post(self.url, self.post_data)
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
@@ -1978,9 +1966,11 @@ class ConvenienceEndpointTests(APITestCase):
             self.assertEqual(onderwerpobject.was_klantcontact, existing_klantcontact)
 
     def test_create_without_betrokkene_and_onderwerpobject(self):
-        del self.post_data["betrokkene"]
-        del self.post_data["onderwerpobject"]
-        response = self.client.post(self.url, self.post_data)
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+        }
+
+        response = self.client.post(self.url, post_data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 

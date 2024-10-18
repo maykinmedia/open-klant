@@ -13,7 +13,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     ActorKlantcontactSerializer,
     BetrokkeneSerializer,
     BijlageSerializer,
-    KlantContactBetrokkeneOnderwerpObjectSerializer,
+    KlantContactConvenienceSerializer,
     KlantcontactSerializer,
     OnderwerpobjectSerializer,
 )
@@ -272,14 +272,12 @@ class ActorKlantcontactViewSet(viewsets.ModelViewSet):
         description="Maak een KlantContact, Betrokkene en een OnderwerpObject aan.",
     ),
 )
-class KlantContactBetrokkeneOnderwerpObjectViewSet(
-    mixins.CreateModelMixin, viewsets.GenericViewSet
-):
+class KlantContactConvenienceViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
     Convenience endpoint om in één request een Betrokkene, KlantContact en een OnderwerpObject
     aan te maken. De aangemaakte objecten worden automatisch aan elkaar gekoppeld.
     """
 
-    serializer_class = KlantContactBetrokkeneOnderwerpObjectSerializer
+    serializer_class = KlantContactConvenienceSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
