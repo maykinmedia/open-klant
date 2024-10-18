@@ -1,0 +1,32 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "Foobar Inc.",
+            "bronorganisatie": "675241030",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "",
+            "subject_type": "vestiging",
+            "telefoonnummer": "",
+            "uuid": "ef333f9b-1720-47f2-a752-d7c59a51977e",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 1176
+    },
+    {
+        "fields": {
+            "handelsnaam": "[\"Foobar Inc.\"]",
+            "klant": 1176,
+            "vestigings_nummer": "123456789"
+        },
+        "model": "klanten.vestiging",
+        "pk": 34
+    }
+]

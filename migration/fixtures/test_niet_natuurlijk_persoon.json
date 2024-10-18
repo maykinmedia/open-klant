@@ -1,0 +1,35 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "613907826",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "",
+            "subject_type": "niet_natuurlijk_persoon",
+            "telefoonnummer": "",
+            "uuid": "abd7a618-1177-4d17-a9d9-a3b6f9ee8606",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 1175
+    },
+    {
+        "fields": {
+            "ann_identificatie": "",
+            "bezoekadres": "Masonhof 351\n6335 OX\nMetslawier",
+            "inn_nnp_id": "807371440",
+            "inn_rechtsvorm": "vereniging_van_eigenaars",
+            "klant": 1175,
+            "statutaire_naam": "Foobar Inc."
+        },
+        "model": "klanten.nietnatuurlijkpersoon",
+        "pk": 33
+    }
+]

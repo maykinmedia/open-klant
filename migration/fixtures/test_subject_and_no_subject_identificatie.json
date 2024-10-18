@@ -1,0 +1,23 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "710426380",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "http://example.com/subject/1",
+            "subject_type": null,
+            "telefoonnummer": "",
+            "uuid": "ace470b2-ef75-45ce-8b16-106481b8f0f7",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 1177
+    }
+]

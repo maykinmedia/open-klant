@@ -1,0 +1,39 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "Potter",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "620357848",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "",
+            "subject_type": "natuurlijk_persoon",
+            "telefoonnummer": "",
+            "uuid": "c29538c1-98b8-4773-8ac1-f0af110d92f9",
+            "voornaam": "Harry",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 974
+    },
+    {
+        "fields": {
+            "anp_identificatie": "0",
+            "geboortedatum": "1973-02-23",
+            "geslachtsaanduiding": "",
+            "geslachtsnaam": "Williams",
+            "inp_a_nummer": "",
+            "inp_bsn": "024325818",
+            "klant": 974,
+            "voorletters": "H",
+            "voornamen": "Nicole",
+            "voorvoegsel_geslachtsnaam": ""
+        },
+        "model": "klanten.natuurlijkpersoon",
+        "pk": 899
+    }
+]
