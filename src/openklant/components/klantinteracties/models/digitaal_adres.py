@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.klantcontacten import Betrokkene
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.components.utils.mixins import APIMixin
@@ -36,6 +37,7 @@ class DigitaalAdres(APIMixin, models.Model):
             "met dit adres contact kan worden opgenomen."
         ),
         max_length=255,
+        choices=SoortDigitaalAdres.choices,
     )
     adres = models.CharField(
         _("adres"),

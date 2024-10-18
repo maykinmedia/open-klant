@@ -1,6 +1,7 @@
 from rest_framework import status
 from vng_api_common.tests import reverse
 
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
 )
@@ -54,8 +55,8 @@ class DigitaalAdresTests(APITestCase):
         data = {
             "verstrektDoorBetrokkene": None,
             "verstrektDoorPartij": None,
-            "soortDigitaalAdres": "soortDigitaalAdres",
-            "adres": "adres",
+            "soortDigitaalAdres": SoortDigitaalAdres.email,
+            "adres": "foobar@example.com",
             "omschrijving": "omschrijving",
         }
 
@@ -65,9 +66,9 @@ class DigitaalAdresTests(APITestCase):
         data = response.json()
 
         self.assertIsNone(data["verstrektDoorBetrokkene"])
-        self.assertEqual(data["soortDigitaalAdres"], "soortDigitaalAdres")
+        self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.email)
         self.assertEqual(data["verstrektDoorPartij"], None)
-        self.assertEqual(data["adres"], "adres")
+        self.assertEqual(data["adres"], "foobar@example.com")
         self.assertEqual(data["omschrijving"], "omschrijving")
 
         with self.subTest("with_betrokkene_and_partij"):
@@ -85,8 +86,8 @@ class DigitaalAdresTests(APITestCase):
                 data["verstrektDoorBetrokkene"]["uuid"], str(betrokkene.uuid)
             )
             self.assertEqual(data["verstrektDoorPartij"]["uuid"], str(partij.uuid))
-            self.assertEqual(data["soortDigitaalAdres"], "soortDigitaalAdres")
-            self.assertEqual(data["adres"], "adres")
+            self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.email)
+            self.assertEqual(data["adres"], "foobar@example.com")
             self.assertEqual(data["omschrijving"], "omschrijving")
 
     def test_update_digitaal_adres(self):
@@ -95,8 +96,8 @@ class DigitaalAdresTests(APITestCase):
         digitaal_adres = DigitaalAdresFactory.create(
             betrokkene=betrokkene,
             partij=partij2,
-            soort_digitaal_adres="soortDigitaalAdres",
-            adres="adres",
+            soort_digitaal_adres=SoortDigitaalAdres.email,
+            adres="foobar@example.com",
             omschrijving="omschrijving",
         )
         detail_url = reverse(
@@ -108,15 +109,15 @@ class DigitaalAdresTests(APITestCase):
 
         self.assertEqual(data["verstrektDoorBetrokkene"]["uuid"], str(betrokkene.uuid))
         self.assertEqual(data["verstrektDoorPartij"]["uuid"], str(partij2.uuid))
-        self.assertEqual(data["soortDigitaalAdres"], "soortDigitaalAdres")
-        self.assertEqual(data["adres"], "adres")
+        self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.email)
+        self.assertEqual(data["adres"], "foobar@example.com")
         self.assertEqual(data["omschrijving"], "omschrijving")
 
         data = {
             "verstrektDoorBetrokkene": {"uuid": str(betrokkene2.uuid)},
             "verstrektDoorPartij": {"uuid": str(partij.uuid)},
-            "soortDigitaalAdres": "changed",
-            "adres": "changed",
+            "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
+            "adres": "0721434543",
             "omschrijving": "changed",
         }
 
@@ -128,16 +129,16 @@ class DigitaalAdresTests(APITestCase):
 
         self.assertEqual(data["verstrektDoorBetrokkene"]["uuid"], str(betrokkene2.uuid))
         self.assertEqual(data["verstrektDoorPartij"]["uuid"], str(partij.uuid))
-        self.assertEqual(data["soortDigitaalAdres"], "changed")
-        self.assertEqual(data["adres"], "changed")
+        self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.telefoonnummer)
+        self.assertEqual(data["adres"], "0721434543")
         self.assertEqual(data["omschrijving"], "changed")
 
         with self.subTest("update_betrokkene_partij_to_none"):
             data = {
                 "verstrektDoorBetrokkene": None,
                 "verstrektDoorPartij": None,
-                "soortDigitaalAdres": "changed",
-                "adres": "changed",
+                "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
+                "adres": "0721434543",
                 "omschrijving": "changed",
             }
 
@@ -149,8 +150,10 @@ class DigitaalAdresTests(APITestCase):
 
             self.assertIsNone(data["verstrektDoorBetrokkene"])
             self.assertIsNone(data["verstrektDoorPartij"])
-            self.assertEqual(data["soortDigitaalAdres"], "changed")
-            self.assertEqual(data["adres"], "changed")
+            self.assertEqual(
+                data["soortDigitaalAdres"], SoortDigitaalAdres.telefoonnummer
+            )
+            self.assertEqual(data["adres"], "0721434543")
             self.assertEqual(data["omschrijving"], "changed")
 
     def test_partial_update_digitaal_adres(self):
@@ -159,8 +162,8 @@ class DigitaalAdresTests(APITestCase):
         digitaal_adres = DigitaalAdresFactory.create(
             betrokkene=betrokkene,
             partij=partij,
-            soort_digitaal_adres="soortDigitaalAdres",
-            adres="adres",
+            soort_digitaal_adres=SoortDigitaalAdres.email,
+            adres="foobar@example.com",
             omschrijving="omschrijving",
         )
         detail_url = reverse(
@@ -172,12 +175,13 @@ class DigitaalAdresTests(APITestCase):
 
         self.assertEqual(data["verstrektDoorBetrokkene"]["uuid"], str(betrokkene.uuid))
         self.assertEqual(data["verstrektDoorPartij"]["uuid"], str(partij.uuid))
-        self.assertEqual(data["soortDigitaalAdres"], "soortDigitaalAdres")
-        self.assertEqual(data["adres"], "adres")
+        self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.email)
+        self.assertEqual(data["adres"], "foobar@example.com")
         self.assertEqual(data["omschrijving"], "omschrijving")
 
         data = {
-            "soortDigitaalAdres": "changed",
+            "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
+            "adres": "0721434543",
         }
 
         response = self.client.patch(detail_url, data)
@@ -188,8 +192,8 @@ class DigitaalAdresTests(APITestCase):
 
         self.assertEqual(data["verstrektDoorBetrokkene"]["uuid"], str(betrokkene.uuid))
         self.assertEqual(data["verstrektDoorPartij"]["uuid"], str(partij.uuid))
-        self.assertEqual(data["soortDigitaalAdres"], "changed")
-        self.assertEqual(data["adres"], "adres")
+        self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.telefoonnummer)
+        self.assertEqual(data["adres"], "0721434543")
         self.assertEqual(data["omschrijving"], "omschrijving")
 
     def test_destroy_digitaal_adres(self):

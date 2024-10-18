@@ -3355,10 +3355,10 @@ components:
             worden.
           maxLength: 80
         soortDigitaalAdres:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/SoortDigitaalAdresEnum'
           description: Typering van het digitale adres die aangeeft via welk(e) kanaal
             of kanalen met dit adres contact kan worden opgenomen.
-          maxLength: 255
         omschrijving:
           type: string
           description: Omschrijving van het digitaal adres.
@@ -4710,10 +4710,10 @@ components:
             worden.
           maxLength: 80
         soortDigitaalAdres:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/SoortDigitaalAdresEnum'
           description: Typering van het digitale adres die aangeeft via welk(e) kanaal
             of kanalen met dit adres contact kan worden opgenomen.
-          maxLength: 255
         omschrijving:
           type: string
           description: Omschrijving van het digitaal adres.
@@ -5144,6 +5144,12 @@ components:
       - medewerker
       - geautomatiseerde_actor
       - organisatorische_eenheid
+      type: string
+    SoortDigitaalAdresEnum:
+      enum:
+      - email
+      - telefoonnummer
+      - overig
       type: string
     SoortPartijEnum:
       enum:
