@@ -19,7 +19,6 @@ os.environ.setdefault("DISABLE_2FA", "yes")
 
 os.environ.setdefault("RELEASE", "dev")
 os.environ.setdefault("LOG_REQUESTS", "no")
-os.environ.setdefault("DISABLE_2FA", "yes")
 
 from .base import *  # noqa isort:skip
 
