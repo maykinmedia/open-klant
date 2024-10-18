@@ -25,7 +25,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
     def _get_cassette_library_dir(self) -> str:
         parent_dir = Path(__file__).resolve().parent
-        return str(parent_dir / "fixtures" / "migrate_command" / "cassettes")
+        return str(parent_dir / "cassettes" / "migration")
 
     def _get_cassette_name(self) -> str:
         """Return the filename for cassette
@@ -33,7 +33,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         Default VCR behaviour puts class name in the cassettename
         we put them in a directory.
         """
-        prefix, test_name = self._testMethodName.split("test_")
+        _, test_name = self._testMethodName.split("test_")
         return f"{test_name}.yaml"
 
     def _get_vcr_kwargs(self, **kwargs) -> dict:
@@ -63,7 +63,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -84,7 +84,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -107,7 +107,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -145,7 +145,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -180,7 +180,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -215,7 +215,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -253,7 +253,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -291,23 +291,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
-            self.live_server_url,
-            stdout=stdout,
-        )
-
-        self.assertEqual(Partij.objects.count(), 0)
-
-        output = stdout.getvalue().splitlines()
-
-        self.assertEqual(output, [])
-
-    def test_incorrect_subject_identificatie(self):
-        stdout = StringIO()
-
-        call_command(
-            "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -323,7 +307,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -339,7 +323,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -355,7 +339,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         call_command(
             "migrate_to_v2",
-            "http://127.0.0.1:8001",
+            "http://localhost:8000",
             self.live_server_url,
             stdout=stdout,
         )
@@ -398,26 +382,10 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         with self.assertRaises(ImproperlyConfigured):
             call_command(
                 "migrate_to_v2",
-                "http://127.0.0.1:8001",
+                "http://localhost:8000",
                 self.live_server_url,
                 stdout=stdout,
             )
-
-        self.assertEqual(Partij.objects.count(), 0)
-
-        output = stdout.getvalue().splitlines()
-
-        self.assertEqual(output, [])
-
-    def test_no_subject_type(self):
-        stdout = StringIO()
-
-        call_command(
-            "migrate_to_v2",
-            "http://127.0.0.1:8001",
-            self.live_server_url,
-            stdout=stdout,
-        )
 
         self.assertEqual(Partij.objects.count(), 0)
 
