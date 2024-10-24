@@ -188,4 +188,8 @@ class OptionalEmailValidator(EmailValidator):
             try:
                 super().__call__(get_field_value(serializer, attrs, "adres"))
             except ValidationError as e:
-                raise exceptions.ValidationError({"adres": e.message})
+                # re-raise as field error
+                if serializer:
+                    raise exceptions.ValidationError({"adres": e.message})
+                else:
+                    raise ValidationError({"adres": e})
