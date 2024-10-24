@@ -209,7 +209,7 @@ class BetrokkeneSerializer(
             },
         }
 
-    def get_volledige_naam(self, obj):
+    def get_volledige_naam(self, obj) -> str:
         return obj.get_full_name()
 
     @transaction.atomic
@@ -367,7 +367,7 @@ class OnderwerpobjectSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "klantinteracties:klantcontact-detail",
+                "view_name": "klantinteracties:onderwerpobject-detail",
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van dit klantcontact binnen deze API."),
             },
@@ -537,3 +537,58 @@ class ActorKlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         return super().create(validated_data)
+
+
+class BetrokkeneKlantcontactReadOnlySerializer(BetrokkeneSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["had_klantcontact"].read_only = True
+
+
+class OnderwerpobjectKlantcontactReadOnlySerializer(OnderwerpobjectSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["klantcontact"].read_only = True
+
+
+class MaakKlantcontactSerializer(serializers.Serializer):
+    klantcontact = KlantcontactSerializer()
+    betrokkene = BetrokkeneKlantcontactReadOnlySerializer(required=False)
+    onderwerpobject = OnderwerpobjectKlantcontactReadOnlySerializer(required=False)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        """
+        Create the objects and use the original serializers to ensure all the correct
+        fields show up in the response
+        """
+        klantcontact_data = validated_data["klantcontact"]
+        klantcontact = Klantcontact.objects.create(**klantcontact_data)
+
+        betrokkene = None
+        if betrokkene_data := validated_data.pop("betrokkene", None):
+            betrokkene_data["had_klantcontact"] = {"uuid": str(klantcontact.uuid)}
+            betrokkene_data.setdefault(
+                "was_partij", betrokkene_data.get("partij", None)
+            )
+            betrokkene_serializer = BetrokkeneSerializer(data=betrokkene_data)
+            betrokkene_serializer.is_valid()
+            betrokkene = betrokkene_serializer.save()
+
+        onderwerpobject = None
+        if onderwerpobject_data := validated_data.pop("onderwerpobject", None):
+            onderwerpobject_data["klantcontact"] = {"uuid": str(klantcontact.uuid)}
+            onderwerpobject_data.setdefault("was_klantcontact", None)
+            onderwerpobject_serializer = OnderwerpobjectSerializer(
+                data=onderwerpobject_data
+            )
+            onderwerpobject_serializer.is_valid()
+            onderwerpobject = onderwerpobject_serializer.save()
+
+        return {
+            "klantcontact": klantcontact,
+            "betrokkene": betrokkene,
+            "onderwerpobject": onderwerpobject,
+        }

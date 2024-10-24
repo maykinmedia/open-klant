@@ -1,6 +1,13 @@
+from django.utils.translation import gettext as _
+
 from rest_framework import status
 from vng_api_common.tests import reverse
 
+from openklant.components.klantinteracties.models import (
+    Betrokkene,
+    Klantcontact,
+    Onderwerpobject,
+)
 from openklant.components.klantinteracties.models.tests.factories.actoren import (
     ActorFactory,
     ActorKlantcontactFactory,
@@ -16,6 +23,12 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
     PartijFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase
+
+from .factories import (
+    BetrokkeneDataFactory,
+    KlantContactDataFactory,
+    OnderwerpObjectDataFactory,
+)
 
 
 class KlantContactTests(APITestCase):
@@ -1466,3 +1479,541 @@ class ActorKlantcontactTests(APITestCase):
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
+
+
+class MaakKlantcontactEndpointTests(APITestCase):
+    maxDiff = None
+    url = reverse("klantinteracties:maak-klantcontact-list")
+
+    def test_create_success(self):
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+
+        klantcontact = Klantcontact.objects.get()
+        betrokkene = Betrokkene.objects.get()
+        onderwerpobject = Onderwerpobject.objects.get()
+
+        klantcontact_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(klantcontact.uuid)},
+        )
+        betrokkene_url = reverse(
+            "klantinteracties:betrokkene-detail",
+            kwargs={"uuid": str(betrokkene.uuid)},
+        )
+        onderwerpobject_url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": str(onderwerpobject.uuid)},
+        )
+
+        klantcontact_url = f"http://testserver{klantcontact_url}"
+        betrokkene_url = f"http://testserver{betrokkene_url}"
+        onderwerpobject_url = f"http://testserver{onderwerpobject_url}"
+
+        data = response.json()
+
+        self.assertEqual(
+            list(data.keys()), ["klantcontact", "betrokkene", "onderwerpobject"]
+        )
+
+        with self.subTest("Klantcontact response data is correct"):
+            expected_klantcontact = {
+                "uuid": str(klantcontact.uuid),
+                "url": klantcontact_url,
+                "gingOverOnderwerpobjecten": [
+                    {
+                        "url": onderwerpobject_url,
+                        "uuid": str(onderwerpobject.uuid),
+                    }
+                ],
+                "hadBetrokkenActoren": [],
+                "hadBetrokkenen": [
+                    {
+                        "url": betrokkene_url,
+                        "uuid": str(betrokkene.uuid),
+                    }
+                ],
+                "indicatieContactGelukt": False,
+                "inhoud": "changed",
+                "kanaal": "changed",
+                "leiddeTotInterneTaken": [],
+                "nummer": "7948723947",
+                "omvatteBijlagen": [],
+                "onderwerp": "changed",
+                "plaatsgevondenOp": "2020-08-24T14:15:22Z",
+                "taal": "de",
+                "vertrouwelijk": False,
+            }
+            self.assertEqual(data["klantcontact"], expected_klantcontact)
+
+        with self.subTest("Betrokkene response data is correct"):
+            expected_betrokkene = {
+                "uuid": str(betrokkene.uuid),
+                "url": betrokkene_url,
+                "hadKlantcontact": {
+                    "url": klantcontact_url,
+                    "uuid": str(klantcontact.uuid),
+                },
+                "wasPartij": None,
+                "digitaleAdressen": [],
+                "bezoekadres": {
+                    "nummeraanduidingId": "4a282b5c-16d7-401d-9737-28e98c865ab2",
+                    "adresregel1": "adres1",
+                    "adresregel2": "adres2",
+                    "adresregel3": "adres3",
+                    "land": "6030",
+                },
+                "correspondentieadres": {
+                    "nummeraanduidingId": "c06918d9-899b-4d98-a10d-08436ebc6c20",
+                    "adresregel1": "adres1",
+                    "adresregel2": "adres2",
+                    "adresregel3": "adres3",
+                    "land": "6030",
+                },
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                },
+                "volledigeNaam": "Phil Bozeman",
+                "rol": "vertegenwoordiger",
+                "organisatienaam": "Whitechapel",
+                "initiator": True,
+            }
+            self.assertEqual(data["betrokkene"], expected_betrokkene)
+            self.assertEqual(betrokkene.klantcontact, klantcontact)
+
+        with self.subTest("Onderwerpobject response data is correct"):
+            expected_onderwerpobject = {
+                "uuid": str(onderwerpobject.uuid),
+                "url": onderwerpobject_url,
+                "klantcontact": {
+                    "url": klantcontact_url,
+                    "uuid": str(klantcontact.uuid),
+                },
+                "wasKlantcontact": None,
+                "onderwerpobjectidentificator": {
+                    "codeObjecttype": "codeObjecttype",
+                    "codeSoortObjectId": "codeSoortObjectId",
+                    "objectId": "objectId",
+                    "codeRegister": "codeRegister",
+                },
+            }
+            self.assertEqual(data["onderwerpobject"], expected_onderwerpobject)
+            self.assertEqual(onderwerpobject.klantcontact, klantcontact)
+
+    def test_create_klantcontact_validation_error(self):
+        """
+        If there are validation errors in the Klantcontact, no resources should be created
+        """
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(taal="incorrect"),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "klantcontact.taal",
+                    "code": "max_length",
+                    "reason": _(
+                        "Zorg ervoor dat dit veld niet meer dan 3 karakters bevat."
+                    ),
+                }
+            ],
+        )
+
+        self.assertFalse(Klantcontact.objects.exists())
+        self.assertFalse(Betrokkene.objects.exists())
+        self.assertFalse(Onderwerpobject.objects.exists())
+
+    def test_create_betrokkene_validation_error(self):
+        """
+        If there are validation errors in the Betrokkene, no resources should be created
+        """
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(wasPartij="incorrect"),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "betrokkene.wasPartij.nonFieldErrors",
+                    "code": "invalid",
+                    "reason": _(
+                        "Ongeldige data. Verwacht een dictionary, kreeg een str."
+                    ),
+                }
+            ],
+        )
+
+        self.assertFalse(Klantcontact.objects.exists())
+        self.assertFalse(Betrokkene.objects.exists())
+        self.assertFalse(Onderwerpobject.objects.exists())
+
+    def test_create_use_read_only_betrokkene_attributes(self):
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            # `hadKlantcontact` field should be ignored
+            "betrokkene": BetrokkeneDataFactory.create(hadKlantcontact="foobar"),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+
+        klantcontact = Klantcontact.objects.get()
+        betrokkene = Betrokkene.objects.get()
+        onderwerpobject = Onderwerpobject.objects.get()
+
+        klantcontact_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(klantcontact.uuid)},
+        )
+        betrokkene_url = reverse(
+            "klantinteracties:betrokkene-detail",
+            kwargs={"uuid": str(betrokkene.uuid)},
+        )
+        onderwerpobject_url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": str(onderwerpobject.uuid)},
+        )
+
+        klantcontact_url = f"http://testserver{klantcontact_url}"
+        betrokkene_url = f"http://testserver{betrokkene_url}"
+        onderwerpobject_url = f"http://testserver{onderwerpobject_url}"
+
+        data = response.json()
+
+        self.assertEqual(
+            list(data.keys()), ["klantcontact", "betrokkene", "onderwerpobject"]
+        )
+
+        with self.subTest("Klantcontact is linked to Betrokkene"):
+            self.assertEqual(
+                data["klantcontact"]["hadBetrokkenen"],
+                [
+                    {
+                        "url": betrokkene_url,
+                        "uuid": str(betrokkene.uuid),
+                    }
+                ],
+            )
+
+        with self.subTest("Betrokkene is linked to Klantcontact"):
+            self.assertEqual(
+                data["betrokkene"]["hadKlantcontact"],
+                {
+                    "url": klantcontact_url,
+                    "uuid": str(klantcontact.uuid),
+                },
+            )
+            self.assertEqual(betrokkene.klantcontact, klantcontact)
+
+    def test_create_betrokkene_was_partij_and_partij(self):
+        partij = PartijFactory.create(voorkeurs_digitaal_adres=None)
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            # `partij` should be ignored
+            "betrokkene": BetrokkeneDataFactory.create(
+                partij="foobar", wasPartij={"uuid": str(partij.uuid)}
+            ),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+
+        klantcontact = Klantcontact.objects.get()
+        betrokkene = Betrokkene.objects.get()
+        onderwerpobject = Onderwerpobject.objects.get()
+
+        klantcontact_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(klantcontact.uuid)},
+        )
+        betrokkene_url = reverse(
+            "klantinteracties:betrokkene-detail",
+            kwargs={"uuid": str(betrokkene.uuid)},
+        )
+        onderwerpobject_url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": str(onderwerpobject.uuid)},
+        )
+
+        klantcontact_url = f"http://testserver{klantcontact_url}"
+        betrokkene_url = f"http://testserver{betrokkene_url}"
+        onderwerpobject_url = f"http://testserver{onderwerpobject_url}"
+
+        data = response.json()
+
+        self.assertEqual(
+            list(data.keys()), ["klantcontact", "betrokkene", "onderwerpobject"]
+        )
+
+        with self.subTest("Klantcontact is linked to Betrokkene"):
+            self.assertEqual(
+                data["klantcontact"]["hadBetrokkenen"],
+                [
+                    {
+                        "url": betrokkene_url,
+                        "uuid": str(betrokkene.uuid),
+                    }
+                ],
+            )
+
+        with self.subTest("Betrokkene is linked to Klantcontact and Partij"):
+            self.assertEqual(
+                data["betrokkene"]["hadKlantcontact"],
+                {
+                    "url": klantcontact_url,
+                    "uuid": str(klantcontact.uuid),
+                },
+            )
+            self.assertEqual(betrokkene.klantcontact, klantcontact)
+            self.assertEqual(betrokkene.partij, partij)
+
+    def test_create_onderwerpobject_validation_error(self):
+        """
+        If there are validation errors in the Betrokkene, no resources should be created
+        """
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(
+                onderwerpobjectidentificator__objectId=True
+            ),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "onderwerpobject.onderwerpobjectidentificator.objectId",
+                    "code": "invalid",
+                    "reason": _("Not a valid string."),
+                }
+            ],
+        )
+
+        self.assertFalse(Klantcontact.objects.exists())
+        self.assertFalse(Betrokkene.objects.exists())
+        self.assertFalse(Onderwerpobject.objects.exists())
+
+    def test_create_use_read_only_onderwerpobject_attributes(self):
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            # `klantcontact` field should be ignored
+            "onderwerpobject": OnderwerpObjectDataFactory.create(klantcontact="foobar"),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+
+        klantcontact = Klantcontact.objects.get()
+        betrokkene = Betrokkene.objects.get()
+        onderwerpobject = Onderwerpobject.objects.get()
+
+        klantcontact_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(klantcontact.uuid)},
+        )
+        betrokkene_url = reverse(
+            "klantinteracties:betrokkene-detail",
+            kwargs={"uuid": str(betrokkene.uuid)},
+        )
+        onderwerpobject_url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": str(onderwerpobject.uuid)},
+        )
+
+        klantcontact_url = f"http://testserver{klantcontact_url}"
+        betrokkene_url = f"http://testserver{betrokkene_url}"
+        onderwerpobject_url = f"http://testserver{onderwerpobject_url}"
+
+        data = response.json()
+
+        self.assertEqual(
+            list(data.keys()), ["klantcontact", "betrokkene", "onderwerpobject"]
+        )
+
+        with self.subTest("Klantcontact is linked to Betrokkene"):
+            self.assertEqual(
+                data["klantcontact"]["gingOverOnderwerpobjecten"],
+                [
+                    {
+                        "url": onderwerpobject_url,
+                        "uuid": str(onderwerpobject.uuid),
+                    }
+                ],
+            )
+
+        with self.subTest("Onderwerpobject is linked to Klantcontact"):
+            self.assertEqual(
+                data["onderwerpobject"]["klantcontact"],
+                {
+                    "url": klantcontact_url,
+                    "uuid": str(klantcontact.uuid),
+                },
+            )
+            self.assertEqual(onderwerpobject.klantcontact, klantcontact)
+
+    def test_create_onderwerpobject_with_was_klantcontact(self):
+        existing_klantcontact = KlantcontactFactory.create()
+        existing_klantcontact_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(existing_klantcontact.uuid)},
+        )
+        existing_klantcontact_url = f"http://testserver{existing_klantcontact_url}"
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(
+                wasKlantcontact={"uuid": str(existing_klantcontact.uuid)}
+            ),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+
+        klantcontact = Klantcontact.objects.last()
+        betrokkene = Betrokkene.objects.get()
+        onderwerpobject = Onderwerpobject.objects.get()
+
+        klantcontact_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(klantcontact.uuid)},
+        )
+        betrokkene_url = reverse(
+            "klantinteracties:betrokkene-detail",
+            kwargs={"uuid": str(betrokkene.uuid)},
+        )
+        onderwerpobject_url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": str(onderwerpobject.uuid)},
+        )
+
+        klantcontact_url = f"http://testserver{klantcontact_url}"
+        betrokkene_url = f"http://testserver{betrokkene_url}"
+        onderwerpobject_url = f"http://testserver{onderwerpobject_url}"
+
+        data = response.json()
+
+        self.assertEqual(
+            list(data.keys()), ["klantcontact", "betrokkene", "onderwerpobject"]
+        )
+
+        with self.subTest("Klantcontact is linked to Betrokkene"):
+            self.assertEqual(
+                data["klantcontact"]["gingOverOnderwerpobjecten"],
+                [
+                    {
+                        "url": onderwerpobject_url,
+                        "uuid": str(onderwerpobject.uuid),
+                    }
+                ],
+            )
+
+        with self.subTest("Onderwerpobject is linked to Klantcontact"):
+            self.assertEqual(
+                data["onderwerpobject"]["klantcontact"],
+                {
+                    "url": klantcontact_url,
+                    "uuid": str(klantcontact.uuid),
+                },
+            )
+            self.assertEqual(
+                data["onderwerpobject"]["wasKlantcontact"],
+                {
+                    "url": existing_klantcontact_url,
+                    "uuid": str(existing_klantcontact.uuid),
+                },
+            )
+            self.assertEqual(onderwerpobject.klantcontact, klantcontact)
+            self.assertEqual(onderwerpobject.was_klantcontact, existing_klantcontact)
+
+    def test_create_without_betrokkene_and_onderwerpobject(self):
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+        }
+
+        response = self.client.post(self.url, post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+
+        klantcontact = Klantcontact.objects.get()
+
+        self.assertFalse(Betrokkene.objects.exists())
+        self.assertFalse(Onderwerpobject.objects.exists())
+
+        klantcontact_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(klantcontact.uuid)},
+        )
+
+        klantcontact_url = f"http://testserver{klantcontact_url}"
+
+        data = response.json()
+
+        self.assertEqual(
+            list(data.keys()), ["klantcontact", "betrokkene", "onderwerpobject"]
+        )
+
+        with self.subTest("Klantcontact response data is correct"):
+            expected_klantcontact = {
+                "uuid": str(klantcontact.uuid),
+                "url": klantcontact_url,
+                "gingOverOnderwerpobjecten": [],
+                "hadBetrokkenActoren": [],
+                "hadBetrokkenen": [],
+                "indicatieContactGelukt": False,
+                "inhoud": "changed",
+                "kanaal": "changed",
+                "leiddeTotInterneTaken": [],
+                "nummer": "7948723947",
+                "omvatteBijlagen": [],
+                "onderwerp": "changed",
+                "plaatsgevondenOp": "2020-08-24T14:15:22Z",
+                "taal": "de",
+                "vertrouwelijk": False,
+            }
+            self.assertEqual(data["klantcontact"], expected_klantcontact)
+
+        with self.subTest("Betrokkene is None in response"):
+            self.assertEqual(data["betrokkene"], None)
+
+        with self.subTest("Onderwerpobject is None in response"):
+            self.assertEqual(data["onderwerpobject"], None)
