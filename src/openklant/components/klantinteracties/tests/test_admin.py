@@ -1,17 +1,19 @@
 from uuid import uuid4
 
-from django.conf import settings
-from django.test import override_settings
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from django_webtest import WebTest
 from maykin_2fa.test import disable_admin_mfa
-from webtest import Form, TestResponse
+from webtest import TestResponse
 
 from openklant.accounts.tests.factories import SuperUserFactory
 from openklant.components.klantinteracties.models import DigitaalAdres
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
+)
+from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
+    BetrokkeneFactory,
 )
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
     PartijFactory,
@@ -19,22 +21,15 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
 )
 from openklant.utils.tests.webtest import add_dynamic_field
 
+from ..constants import SoortDigitaalAdres
 
+
+@disable_admin_mfa()
 class PartijAdminTests(WebTest):
-    def _login_user(self, username: str, password: str) -> None:
-        request = self.app.get(reverse("admin:login"))
-
-        form: Form = request.forms["login-form"]
-        form["auth-username"] = username
-        form["auth-password"] = password
-        redirect = form.submit()
-
-        self.assertRedirects(redirect, reverse("admin:index"))
-
-    @override_settings(
-        MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS=settings.AUTHENTICATION_BACKENDS
-    )
     def test_search(self):
+        user = SuperUserFactory.create()
+        self.app.set_user(user)
+
         nummer_persoon = PersoonFactory(
             partij__nummer="123456789",
             contactnaam_voornaam="Willem",
@@ -55,10 +50,6 @@ class PartijAdminTests(WebTest):
             contactnaam_voornaam="Sjaak",
             contactnaam_achternaam="Willemse",
         )
-
-        SuperUserFactory(username="admin", password="admin")
-
-        self._login_user(username="admin", password="admin")
 
         admin_url = reverse("admin:klantinteracties_partij_changelist")
 
@@ -126,3 +117,49 @@ class PartijAdminTests(WebTest):
         self.assertEqual(adres.omschrijving, "description")
         self.assertEqual(adres.adres, "email@example.com")
         self.assertIsNone(adres.betrokkene)
+
+
+@disable_admin_mfa()
+class DigitaalAdresAdminTests(WebTest):
+    def test_email_validation(self):
+        """
+        Check that the admin applies conditional email validation on `adres`, only if
+        `soort_digitaal_adres` is `email`
+        """
+        user = SuperUserFactory.create()
+        self.app.set_user(user)
+
+        betrokkene = BetrokkeneFactory.create()
+
+        admin_url = reverse("admin:klantinteracties_digitaaladres_add")
+
+        with self.subTest("apply validation for soort_digitaal_adres == email"):
+            response: TestResponse = self.app.get(admin_url)
+
+            form = response.form
+            form["betrokkene"] = betrokkene.pk
+            form["soort_digitaal_adres"] = SoortDigitaalAdres.email
+            form["adres"] = "invalid"
+            form["omschrijving"] = "foo"
+
+            response = form.submit()
+
+            self.assertEqual(response.status_code, 200)
+            self.assertFalse(DigitaalAdres.objects.exists())
+            self.assertEqual(
+                response.context["errors"], [[_("Voer een geldig e-mailadres in.")]]
+            )
+
+        with self.subTest("do not apply validation for soort_digitaal_adres != email"):
+            response: TestResponse = self.app.get(admin_url)
+
+            form = response.form
+            form["betrokkene"] = betrokkene.pk
+            form["soort_digitaal_adres"] = SoortDigitaalAdres.telefoonnummer
+            form["adres"] = "0612345678"
+            form["omschrijving"] = "foo"
+
+            response = form.submit()
+
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue(DigitaalAdres.objects.exists())
