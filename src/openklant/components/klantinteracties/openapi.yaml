@@ -1547,28 +1547,6 @@ paths:
       responses:
         '204':
           description: No response body
-  /klantcontact-convenience:
-    post:
-      operationId: klantcontactConvenienceCreate
-      description: Maak een KlantContact, Betrokkene en een OnderwerpObject aan.
-      summary: Maak een KlantContact, Betrokkene en een OnderwerpObject aan.
-      tags:
-      - klantcontact-convenience
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/KlantContactConvenience'
-        required: true
-      security:
-      - tokenAuth: []
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KlantContactConvenience'
-          description: ''
   /klantcontacten:
     get:
       operationId: klantcontactenList
@@ -1854,6 +1832,28 @@ paths:
       responses:
         '204':
           description: No response body
+  /maak-klantcontact:
+    post:
+      operationId: maakKlantcontactCreate
+      description: Maak een KlantContact, Betrokkene en een OnderwerpObject aan.
+      summary: Maak een KlantContact, Betrokkene en een OnderwerpObject aan.
+      tags:
+      - maak-klantcontact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MaakKlantcontact'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaakKlantcontact'
+          description: ''
   /onderwerpobjecten:
     get:
       operationId: onderwerpobjectenList
@@ -3008,7 +3008,64 @@ components:
       - uuid
       - volledigeNaam
       - wasPartij
-    BetrokkeneConvenience:
+    BetrokkeneCorrespondentieadres:
+      type: object
+      description: |-
+        Generate a serializer out of a GegevensGroepType.
+
+        Usage::
+
+        >>> class VerlengingSerializer(GegevensGroepSerializer):
+        ...     class Meta:
+        ...         model = Zaak
+        ...         gegevensgroep = 'verlenging'
+        >>>
+
+        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
+      properties:
+        nummeraanduidingId:
+          type: string
+          description: Identificatie van het adres bij de Basisregistratie Adressen
+            en Gebouwen.
+          maxLength: 255
+        adresregel1:
+          type: string
+          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
+        adresregel2:
+          type: string
+          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
+        adresregel3:
+          type: string
+          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+            Adressen en Gebouwen.
+          maxLength: 80
+        land:
+          type: string
+          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
+            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
+          maxLength: 4
+          minLength: 4
+    BetrokkeneForeignKey:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de betrokkene bij
+            klantcontact.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze betrokkene binnen deze API.
+      required:
+      - url
+      - uuid
+    BetrokkeneKlantcontactReadOnly:
       type: object
       description: |-
         Set gegevensgroepdata from validated nested data.
@@ -3089,63 +3146,6 @@ components:
       - uuid
       - volledigeNaam
       - wasPartij
-    BetrokkeneCorrespondentieadres:
-      type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
-      properties:
-        nummeraanduidingId:
-          type: string
-          description: Identificatie van het adres bij de Basisregistratie Adressen
-            en Gebouwen.
-          maxLength: 255
-        adresregel1:
-          type: string
-          description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
-          maxLength: 80
-        adresregel2:
-          type: string
-          description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
-          maxLength: 80
-        adresregel3:
-          type: string
-          description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
-            Adressen en Gebouwen.
-          maxLength: 80
-        land:
-          type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
-    BetrokkeneForeignKey:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: Unieke (technische) identificatiecode van de betrokkene bij
-            klantcontact.
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          description: De unieke URL van deze betrokkene binnen deze API.
-      required:
-      - url
-      - uuid
     Bezoekadres:
       type: object
       description: |-
@@ -3653,17 +3653,6 @@ components:
       required:
       - url
       - uuid
-    KlantContactConvenience:
-      type: object
-      properties:
-        klantcontact:
-          $ref: '#/components/schemas/Klantcontact'
-        betrokkene:
-          $ref: '#/components/schemas/BetrokkeneConvenience'
-        onderwerpobject:
-          $ref: '#/components/schemas/OnderwerpobjectConvenience'
-      required:
-      - klantcontact
     Klantcontact:
       type: object
       properties:
@@ -3776,6 +3765,17 @@ components:
       required:
       - url
       - uuid
+    MaakKlantcontact:
+      type: object
+      properties:
+        klantcontact:
+          $ref: '#/components/schemas/Klantcontact'
+        betrokkene:
+          $ref: '#/components/schemas/BetrokkeneKlantcontactReadOnly'
+        onderwerpobject:
+          $ref: '#/components/schemas/OnderwerpobjectKlantcontactReadOnly'
+      required:
+      - klantcontact
     Onderwerpobject:
       type: object
       description: |-
@@ -3814,7 +3814,22 @@ components:
       - url
       - uuid
       - wasKlantcontact
-    OnderwerpobjectConvenience:
+    OnderwerpobjectForeignKey:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van het onderwerpdeel.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van dit onderwerp object binnen deze API.
+      required:
+      - url
+      - uuid
+    OnderwerpobjectKlantcontactReadOnly:
       type: object
       description: |-
         Set gegevensgroepdata from validated nested data.
@@ -3853,21 +3868,6 @@ components:
       - url
       - uuid
       - wasKlantcontact
-    OnderwerpobjectForeignKey:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: Unieke (technische) identificatiecode van het onderwerpdeel.
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          description: De unieke URL van dit onderwerp object binnen deze API.
-      required:
-      - url
-      - uuid
     Onderwerpobjectidentificator:
       type: object
       description: |-

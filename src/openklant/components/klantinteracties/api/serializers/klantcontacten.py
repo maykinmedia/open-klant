@@ -539,24 +539,24 @@ class ActorKlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         return super().create(validated_data)
 
 
-class BetrokkeneConvenienceSerializer(BetrokkeneSerializer):
+class BetrokkeneKlantcontactReadOnlySerializer(BetrokkeneSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["had_klantcontact"].read_only = True
 
 
-class OnderwerpobjectConvenienceSerializer(OnderwerpobjectSerializer):
+class OnderwerpobjectKlantcontactReadOnlySerializer(OnderwerpobjectSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["klantcontact"].read_only = True
 
 
-class KlantContactConvenienceSerializer(serializers.Serializer):
+class MaakKlantcontactSerializer(serializers.Serializer):
     klantcontact = KlantcontactSerializer()
-    betrokkene = BetrokkeneConvenienceSerializer(required=False)
-    onderwerpobject = OnderwerpobjectConvenienceSerializer(required=False)
+    betrokkene = BetrokkeneKlantcontactReadOnlySerializer(required=False)
+    onderwerpobject = OnderwerpobjectKlantcontactReadOnlySerializer(required=False)
 
     @transaction.atomic
     def create(self, validated_data):
@@ -570,7 +570,6 @@ class KlantContactConvenienceSerializer(serializers.Serializer):
         betrokkene = None
         if betrokkene_data := validated_data.pop("betrokkene", None):
             betrokkene_data["had_klantcontact"] = {"uuid": str(klantcontact.uuid)}
-            # TODO for some reason `was_partij` is converted to `partij` by the serializer
             betrokkene_data.setdefault(
                 "was_partij", betrokkene_data.get("partij", None)
             )

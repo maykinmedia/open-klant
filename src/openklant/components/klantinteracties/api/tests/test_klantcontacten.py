@@ -1481,9 +1481,9 @@ class ActorKlantcontactTests(APITestCase):
         self.assertEqual(data["count"], 0)
 
 
-class ConvenienceEndpointTests(APITestCase):
+class MaakKlantcontactEndpointTests(APITestCase):
     maxDiff = None
-    url = reverse("klantinteracties:klantcontact-convenience-list")
+    url = reverse("klantinteracties:maak-klantcontact-list")
 
     def test_create_success(self):
         post_data = {
