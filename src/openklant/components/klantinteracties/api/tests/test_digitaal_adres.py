@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from rest_framework import status
 from vng_api_common.tests import reverse
 
@@ -89,6 +91,54 @@ class DigitaalAdresTests(APITestCase):
             self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.email)
             self.assertEqual(data["adres"], "foobar@example.com")
             self.assertEqual(data["omschrijving"], "omschrijving")
+
+    def test_create_digitaal_adres_email_validation(self):
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        data = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": None,
+            "soortDigitaalAdres": SoortDigitaalAdres.email,
+            "adres": "invalid",
+            "omschrijving": "omschrijving",
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "adres",
+                    "code": "invalid",
+                    "reason": _("Voer een geldig e-mailadres in."),
+                }
+            ],
+        )
+
+        digitaal_adres = DigitaalAdresFactory.create(
+            soort_digitaal_adres=SoortDigitaalAdres.email, adres="foo@bar.com"
+        )
+        detail_url = reverse(
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
+        )
+
+        response = self.client.patch(detail_url, {"adres": "invalid"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "adres",
+                    "code": "invalid",
+                    "reason": _("Voer een geldig e-mailadres in."),
+                }
+            ],
+        )
 
     def test_update_digitaal_adres(self):
         betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
