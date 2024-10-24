@@ -28,6 +28,7 @@ class DigitaalAdres(APIMixin, models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("betrokkene"),
         help_text=_("'Digitaal Adres' had 'Betrokkene bij klantcontact'"),
+        blank=True,
         null=True,
     )
     soort_digitaal_adres = models.CharField(
