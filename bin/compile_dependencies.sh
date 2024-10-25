@@ -23,8 +23,6 @@ export CUSTOM_COMPILE_COMMAND="./bin/compile_dependencies.sh"
 # Base (& prod) deps
 pip-compile \
     --no-emit-index-url \
-    --output-file requirements/base.txt \
-    --output-file requirements/production.txt \
     "$@" \
     requirements/base.in
 
