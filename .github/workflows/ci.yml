@@ -50,7 +50,7 @@ jobs:
       - changed-files
 
     # only run tests if source files have changed (e.g. skip for PRs that only update docs)
-    if: needs.changed-files.outputs.changed-files == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: ${{ needs.changed-files.outputs.changed-py-files == 'true'|| needs.changed-files.outputs.changed-requirements == 'true'|| github.event_name == 'push' }}
 
     strategy:
       matrix:
