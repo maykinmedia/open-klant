@@ -19,6 +19,9 @@ from openklant.components.klantinteracties.models.partijen import (
 from openklant.tests.vcr import VCRMixin
 
 
+# TODO: add a fixture which loads a JWTSecret corresponding to the one used in setUp
+# TODO: rerecord VCR cassettes
+# TODO: use new SoortDigitaalAdres
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
     host = "localhost"
     port = 8005
