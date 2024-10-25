@@ -19,11 +19,6 @@ INSTALLED_APPS = INSTALLED_APPS + [
 # but we don't want to rely on it anymore (e.g. when generating the label for 2FA)
 INSTALLED_APPS.remove("django.contrib.sites")
 
-# FIXME should these be part of OAf?
-MIDDLEWARE.insert(
-    MIDDLEWARE.index("django.contrib.auth.middleware.AuthenticationMiddleware") + 1,
-    "vng_api_common.middleware.AuthMiddleware",
-)
 MIDDLEWARE = MIDDLEWARE + ["openklant.utils.middleware.APIVersionHeaderMiddleware"]
 
 #
