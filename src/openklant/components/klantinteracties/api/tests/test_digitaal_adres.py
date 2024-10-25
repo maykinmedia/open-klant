@@ -1,3 +1,4 @@
+from django.test import tag
 from django.utils.translation import gettext as _
 
 from rest_framework import status
@@ -92,6 +93,7 @@ class DigitaalAdresTests(APITestCase):
             self.assertEqual(data["adres"], "foobar@example.com")
             self.assertEqual(data["omschrijving"], "omschrijving")
 
+    @tag("gh-234")
     def test_create_digitaal_adres_email_validation(self):
         list_url = reverse("klantinteracties:digitaaladres-list")
         data = {
@@ -139,6 +141,24 @@ class DigitaalAdresTests(APITestCase):
                 }
             ],
         )
+
+        with self.subTest("no validation applied if soort is not email"):
+            response = self.client.patch(
+                detail_url,
+                {
+                    "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
+                    "adres": "0612345678",
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            digitaal_adres.refresh_from_db()
+
+            self.assertEqual(
+                digitaal_adres.soort_digitaal_adres, SoortDigitaalAdres.telefoonnummer
+            )
+            self.assertEqual(digitaal_adres.adres, "0612345678")
 
     def test_update_digitaal_adres(self):
         betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)

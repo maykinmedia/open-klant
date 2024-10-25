@@ -10,10 +10,10 @@ class DigitaalAdresAdminForm(forms.ModelForm):
         model = DigitaalAdres
         fields = "__all__"
 
-    def clean(self):
+    def clean_adres(self):
         data = self.cleaned_data
-        OptionalEmailValidator()(data, None)
-        return data
+        OptionalEmailValidator()(data["adres"], data.get("soort_digitaal_adres"))
+        return data["adres"]
 
 
 @admin.register(DigitaalAdres)

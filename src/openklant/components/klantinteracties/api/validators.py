@@ -1,9 +1,8 @@
-from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from rest_framework import exceptions, serializers
+from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator, qs_filter
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
@@ -26,7 +25,6 @@ from openklant.components.klantinteracties.models.partijen import (
     PartijIdentificator,
 )
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
-from openklant.utils.serializers import get_field_value
 
 
 class FKUniqueTogetherValidator(UniqueTogetherValidator):
@@ -175,21 +173,9 @@ def Rekeningnummer_exists(value):
 class OptionalEmailValidator(EmailValidator):
     """
     EmailValidator for SoortDigitaalAdres that only attempts to validate if
-    `SoortDigitaalAdres` is `email
+    `SoortDigitaalAdres` is `email`
     """
 
-    requires_context = True
-
-    def __call__(self, attrs: dict, serializer):
-        if (
-            get_field_value(serializer, attrs, "soort_digitaal_adres")
-            == SoortDigitaalAdres.email
-        ):
-            try:
-                super().__call__(get_field_value(serializer, attrs, "adres"))
-            except ValidationError as e:
-                # re-raise as field error
-                if serializer:
-                    raise exceptions.ValidationError({"adres": e.message})
-                else:
-                    raise ValidationError({"adres": e})
+    def __call__(self, value: str, soort_digitaal_adres: str):
+        if soort_digitaal_adres == SoortDigitaalAdres.email:
+            super().__call__(value)

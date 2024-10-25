@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from django.test import tag
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
@@ -94,8 +95,8 @@ class PartijAdminTests(WebTest):
         betrokkene should be optional
         """
 
-        SuperUserFactory(username="admin", password="admin")
-        self._login_user(username="admin", password="admin")
+        user = SuperUserFactory(username="admin", password="admin")
+        self.app.set_user(user)
 
         partij = PartijFactory(soort_partij="persoon", voorkeurs_digitaal_adres=None)
         PersoonFactory(partij=partij)
@@ -121,6 +122,7 @@ class PartijAdminTests(WebTest):
 
 @disable_admin_mfa()
 class DigitaalAdresAdminTests(WebTest):
+    @tag("gh-234")
     def test_email_validation(self):
         """
         Check that the admin applies conditional email validation on `adres`, only if
