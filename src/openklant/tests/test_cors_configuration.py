@@ -149,7 +149,7 @@ class CORSEnabledWithAuthHeaderTests(CorsMixin, APITestCase):
         response = self.client.get(
             "/cors",
             HTTP_ORIGIN="http://localhost:3000",
-            HTTP_AUTHORIZATION="Bearer foobarbaz",
+            HTTP_AUTHORIZATION="Token foobarbaz",
         )
 
         self.assertEqual(response["Access-Control-Allow-Origin"], "*")
