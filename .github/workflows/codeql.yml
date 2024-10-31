@@ -3,27 +3,17 @@
 #
 # You may wish to alter this file to override the set of languages analyzed,
 # or to provide custom queries or build logic.
-name: Code quality checks
+name: "CodeQL"
 
 on:
   push:
-    branches:
-      - master
-    paths:
-      - '**.py'
-      - '**.yml'
+    branches: [master]
   pull_request:
-    paths:
-      - '**.py'
-      - '**.yml'
-  workflow_dispatch:
+    # The branches below must be a subset of the branches above
+    branches: [master]
+  schedule:
+    - cron: '0 23 * * 6'
 
 jobs:
-  open-api-workflow-code-quality:
-    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@v1
-    with:
-      python-version: '3.11'
-      node-version: '18'
-
-      django-settings-module: 'openklant.conf.ci'
-      django-secret-key: dummy
+  open-api-workflow-code-analysis:
+    uses: maykinmedia/open-api-workflows/.github/workflows/code-analysis.yml@v1
