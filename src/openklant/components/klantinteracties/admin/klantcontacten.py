@@ -126,10 +126,10 @@ class BetrokkeneAdmin(admin.ModelAdmin):
     ]
 
 
-class WasOnderwerpobjectInlineAdmin(admin.StackedInline):
+class OnderwerpobjectInlineAdmin(admin.StackedInline):
     model = Onderwerpobject
-    fk_name = "was_klantcontact"
-    raw_id_field = ["was_klantcontact"]
+    fk_name = "klantcontact"
+    raw_id_field = ["klantcontact"]
     readonly_fields = ("uuid",)
     extra = 0
 
@@ -155,7 +155,7 @@ class KlantcontactAdmin(admin.ModelAdmin):
     inlines = [
         ActorKlantcontactInlineAdmin,
         BetrokkeneInlineAdmin,
-        WasOnderwerpobjectInlineAdmin,
+        OnderwerpobjectInlineAdmin,
         BijlageInlineAdmin,
         InterneTaakInlineAdmin,
     ]
