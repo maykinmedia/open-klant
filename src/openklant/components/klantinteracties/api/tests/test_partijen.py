@@ -1,5 +1,7 @@
 import datetime
 
+from django.utils.translation import gettext as _
+
 from rest_framework import status
 from vng_api_common.tests import reverse
 
@@ -306,6 +308,71 @@ class PartijTests(APITestCase):
                     }
                 ],
             )
+
+    def test_create_partij_only_required(self):
+        """
+        Test if object is created with only required parameters
+
+        Regression Test for #227
+        """
+        list_url = reverse("klantinteracties:partij-list")
+
+        response = self.client.post(list_url, {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        response_data = response.json()
+        self.assertEqual(response_data["title"], "Invalid input.")
+        self.assertEqual(response_data["code"], "invalid")
+        self.assertEqual(response_data["status"], 400)
+        self.assertEqual(
+            response_data["invalidParams"],
+            [
+                {
+                    "name": "digitaleAdressen",
+                    "code": "required",
+                    "reason": _("This field is required."),
+                },
+                {
+                    "name": "voorkeursDigitaalAdres",
+                    "code": "required",
+                    "reason": _("This field is required."),
+                },
+                {
+                    "name": "rekeningnummers",
+                    "code": "required",
+                    "reason": _("This field is required."),
+                },
+                {
+                    "name": "voorkeursRekeningnummer",
+                    "code": "required",
+                    "reason": _("This field is required."),
+                },
+                {
+                    "name": "soortPartij",
+                    "code": "required",
+                    "reason": _("This field is required."),
+                },
+                {
+                    "name": "indicatieActief",
+                    "code": "required",
+                    "reason": _("This field is required."),
+                },
+            ],
+        )
+
+        digitaal_adres = DigitaalAdresFactory()
+
+        data = {
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [],
+            "voorkeursRekeningnummer": None,
+            "soortPartij": "persoon",
+            "indicatieActief": True,
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_create_persoon(self):
         list_url = reverse("klantinteracties:partij-list")

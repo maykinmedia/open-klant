@@ -720,7 +720,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        partij_identificatie = validated_data.pop("partij_identificatie")
+        partij_identificatie = validated_data.pop("partij_identificatie", None)
         digitale_adressen = validated_data.pop("digitaaladres_set")
         rekeningnummers = validated_data.pop("rekeningnummer_set")
 
