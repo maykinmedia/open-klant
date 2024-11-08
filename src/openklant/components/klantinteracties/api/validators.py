@@ -1,9 +1,11 @@
+from django.core.validators import EmailValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator, qs_filter
 
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
@@ -166,3 +168,14 @@ def Rekeningnummer_exists(value):
         Rekeningnummer.objects.get(uuid=str(value))
     except Rekeningnummer.DoesNotExist:
         raise serializers.ValidationError(_("Rekeningnummer object bestaat niet."))
+
+
+class OptionalEmailValidator(EmailValidator):
+    """
+    EmailValidator for SoortDigitaalAdres that only attempts to validate if
+    `SoortDigitaalAdres` is `email`
+    """
+
+    def __call__(self, value: str, soort_digitaal_adres: str):
+        if soort_digitaal_adres == SoortDigitaalAdres.email:
+            super().__call__(value)
