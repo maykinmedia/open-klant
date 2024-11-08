@@ -8,7 +8,10 @@ from rest_framework.validators import UniqueTogetherValidator, qs_filter
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.klantinteracties.models.constants import SoortPartij
-from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
+from openklant.components.klantinteracties.models.digitaal_adres import (
+    BetrokkeneAdres,
+    DigitaalAdres,
+)
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
@@ -103,6 +106,13 @@ def digitaal_adres_exists(value):
         DigitaalAdres.objects.get(uuid=str(value))
     except DigitaalAdres.DoesNotExist:
         raise serializers.ValidationError(_("DigitaalAdres object bestaat niet."))
+
+
+def betrokkene_adres_exists(value):
+    try:
+        BetrokkeneAdres.objects.get(uuid=str(value))
+    except BetrokkeneAdres.DoesNotExist:
+        raise serializers.ValidationError(_("BetrokkeneAdres object bestaat niet."))
 
 
 def internetaak_exists(value):

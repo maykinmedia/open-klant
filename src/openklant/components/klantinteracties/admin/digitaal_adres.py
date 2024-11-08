@@ -5,15 +5,20 @@ from ..api.validators import OptionalEmailValidator
 from ..models.digitaal_adres import DigitaalAdres
 
 
-class DigitaalAdresAdminForm(forms.ModelForm):
+class BaseAdresAdminForm(forms.ModelForm):
     class Meta:
-        model = DigitaalAdres
         fields = "__all__"
 
     def clean_adres(self):
         data = self.cleaned_data
         OptionalEmailValidator()(data["adres"], data.get("soort_digitaal_adres"))
         return data["adres"]
+
+
+class DigitaalAdresAdminForm(BaseAdresAdminForm):
+    class Meta:
+        model = DigitaalAdres
+        fields = "__all__"
 
 
 @admin.register(DigitaalAdres)

@@ -12,9 +12,6 @@ from openklant.components.klantinteracties.api.serializers.actoren import (
 from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
 )
-from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
-    DigitaalAdresForeignKeySerializer,
-)
 from openklant.components.klantinteracties.api.validators import (
     FKUniqueTogetherValidator,
     betrokkene_exists,
@@ -129,6 +126,9 @@ class ContactnaamSerializer(GegevensGroepSerializer):
 class BetrokkeneSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
+    from openklant.components.klantinteracties.api.serializers.betrokkene_adres import (
+        BetrokkeneAdresForeignKeySerializer,
+    )
     from openklant.components.klantinteracties.api.serializers.partijen import (
         PartijForeignKeySerializer,
     )
@@ -147,7 +147,7 @@ class BetrokkeneSerializer(
         ),
         source="klantcontact",
     )
-    digitale_adressen = DigitaalAdresForeignKeySerializer(
+    digitale_adressen = BetrokkeneAdresForeignKeySerializer(
         read_only=True,
         help_text=_("Digitale adressen van de betrokkene bij klantcontact."),
         source="digitaaladres_set",

@@ -18,9 +18,10 @@ from openklant.components.klantinteracties.api.serializers.constants import (
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
     DigitaalAdresForeignKeySerializer,
 )
-from openklant.components.klantinteracties.api.serializers.klantcontacten import (
-    BetrokkeneForeignKeySerializer,
-)
+
+# from openklant.components.klantinteracties.api.serializers.klantcontacten import (
+#     BetrokkeneForeignKeySerializer,
+# )
 from openklant.components.klantinteracties.api.validators import (
     FKUniqueTogetherValidator,
     categorie_exists,
@@ -418,6 +419,9 @@ class PartijIdentificatorSerializer(
 
 
 class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
+    from openklant.components.klantinteracties.api.serializers.klantcontacten import (
+        BetrokkeneForeignKeySerializer,
+    )
     from openklant.components.klantinteracties.api.serializers.rekeningnummers import (
         RekeningnummerForeignKeySerializer,
     )

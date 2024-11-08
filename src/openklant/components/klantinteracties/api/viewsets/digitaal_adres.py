@@ -2,8 +2,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
 
-from openklant.components.klantinteracties.api.filterset.digitaal_adres import (
-    DigitaalAdresDetailFilterSet,
+from openklant.components.klantinteracties.api.filterset.digitaal_adres import (  # DigitaalAdresDetailFilterSet,
     DigitaalAdresFilterSet,
 )
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
@@ -57,12 +56,13 @@ class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
     pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+    filterset_class = DigitaalAdresFilterSet
 
-    @property
-    def filterset_class(self):
-        """
-        support expand in the detail endpoint
-        """
-        if self.detail:
-            return DigitaalAdresDetailFilterSet
-        return DigitaalAdresFilterSet
+    # @property
+    # def filterset_class(self):
+    #     """
+    #     support expand in the detail endpoint
+    #     """
+    #     if self.detail:
+    #         return DigitaalAdresDetailFilterSet
+    #     return DigitaalAdresFilterSet
