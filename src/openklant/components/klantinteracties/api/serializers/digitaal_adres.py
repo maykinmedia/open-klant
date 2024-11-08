@@ -3,9 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers, validators
 
-from openklant.components.klantinteracties.api.serializers.constants import (
-    SERIALIZER_PATH,
-)
 from openklant.components.klantinteracties.api.validators import (
     OptionalEmailValidator,
     digitaal_adres_exists,
@@ -34,9 +31,6 @@ class DigitaalAdresForeignKeySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
-    from openklant.components.klantinteracties.api.serializers.klantcontacten import (
-        BetrokkeneForeignKeySerializer,
-    )
     from openklant.components.klantinteracties.api.serializers.partijen import (
         PartijForeignKeySerializer,
     )
@@ -50,32 +44,12 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         ),
         source="partij",
     )
-    verstrekt_door_betrokkene = BetrokkeneForeignKeySerializer(
-        required=True,
-        allow_null=True,
-        help_text=_(
-            "Digitaal adres dat een betrokkene bij klantcontact verstrekte voor gebruik bij "
-            "opvolging van een klantcontact."
-        ),
-        source="betrokkene",
-    )
-
-    inclusion_serializers = {
-        # 1 level
-        "verstrekt_door_betrokkene": f"{SERIALIZER_PATH}.klantcontacten.BetrokkeneSerializer",
-        # 2 levels
-        "verstrekt_door_betrokkene.had_klantcontact": f"{SERIALIZER_PATH}.klantcontacten.KlantcontactSerializer",
-        # 3 levels
-        "verstrekt_door_betrokkene.had_klantcontact.leidde_tot_interne_taken": f"{SERIALIZER_PATH}"
-        ".internetaken.InterneTaakSerializer",
-    }
 
     class Meta:
         model = DigitaalAdres
         fields = (
             "uuid",
             "url",
-            "verstrekt_door_betrokkene",
             "verstrekt_door_partij",
             "adres",
             "soort_digitaal_adres",

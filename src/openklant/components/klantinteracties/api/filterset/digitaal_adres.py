@@ -10,9 +10,8 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.utils.filters import ExpandFilter
 
-
-class DigitaalAdresDetailFilterSet(FilterSet):
-    expand = ExpandFilter(serializer_class=DigitaalAdresSerializer)
+# class DigitaalAdresDetailFilterSet(FilterSet):
+#     expand = ExpandFilter(serializer_class=DigitaalAdresSerializer)
 
 
 class DigitaalAdresFilterSet(FilterSet):
@@ -74,7 +73,7 @@ class DigitaalAdresFilterSet(FilterSet):
         ),
     )
 
-    expand = ExpandFilter(serializer_class=DigitaalAdresSerializer)
+    # expand = ExpandFilter(serializer_class=DigitaalAdresSerializer)
 
     class Meta:
         model = DigitaalAdres

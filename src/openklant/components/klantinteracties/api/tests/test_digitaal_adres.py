@@ -183,7 +183,7 @@ class DigitaalAdresTests(APITestCase):
             "verstrektDoorBetrokkene": None,
             "verstrektDoorPartij": {"uuid": str(partij2.uuid)},
             "soortDigitaalAdres": "email",
-            "adres": "adres",
+            "adres": "foo@bar.com",
             "omschrijving": "omschrijving",
             "isStandaardAdres": True,
         }
@@ -300,7 +300,7 @@ class DigitaalAdresTests(APITestCase):
             "verstrektDoorPartij": {"uuid": str(partij2.uuid)},
             "soortDigitaalAdres": "email",
             "isStandaardAdres": True,
-            "adres": "changed",
+            "adres": "foo@bar.com",
             "omschrijving": "changed",
         }
 
