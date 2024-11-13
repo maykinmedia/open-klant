@@ -15,14 +15,6 @@ from ..klanten import (
 class KlantFactory(factory.django.DjangoModelFactory):
     bronorganisatie = factory.Faker("ssn", locale="nl_NL")
     klantnummer = factory.Sequence(lambda n: f"{n}")
-    website_url = factory.Faker("url")
-    voornaam = factory.Faker("first_name")
-    achternaam = factory.Faker("last_name")
-    emailadres = factory.Faker("email")
-    functie = factory.Faker("word")
-    subject = factory.Faker("url")
-    subject_type = factory.fuzzy.FuzzyChoice(KlantType.values)
-    aanmaakkanaal = "email"
 
     class Meta:
         model = Klant
