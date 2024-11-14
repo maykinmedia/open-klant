@@ -11,7 +11,6 @@ from requests import Request
 from vcr.config import RecordMode
 from vng_api_common.tests import reverse
 
-from openklant.migration.utils import generate_jwt_token
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.partijen import (
@@ -19,8 +18,8 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     Persoon,
 )
+from openklant.migration.utils import generate_jwt_token
 from openklant.tests.vcr import VCRMixin
-
 
 LIVE_SERVER_HOST = "localhost"
 LIVE_SERVER_PORT = 8005

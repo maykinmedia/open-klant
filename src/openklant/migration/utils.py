@@ -4,7 +4,9 @@ import jwt
 
 
 # Can be used to easily generate a encoded JWT token given the client_id and secret
-def generate_jwt_token(client_id: str, secret: str, user_representation: str = "") -> str:
+def generate_jwt_token(
+    client_id: str, secret: str, user_representation: str = ""
+) -> str:
     payload = {
         # standard claims
         "iss": "testsuite",

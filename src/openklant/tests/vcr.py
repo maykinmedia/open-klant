@@ -3,7 +3,6 @@ from pathlib import Path
 
 from vcr.unittest import VCRMixin as _VCRMixin
 
-
 RECORD_MODE = os.environ.get("VCR_RECORD_MODE", "none")
 
 
@@ -23,9 +22,7 @@ class VCRMixin(_VCRMixin):
         assert (
             self.VCR_TEST_FILES
         ), "You must define the `VCR_TEST_FILES` class attribute"
-        return str(
-            self.VCR_TEST_FILES / "vcr_cassettes" / self.__class__.__qualname__
-        )
+        return str(self.VCR_TEST_FILES / "vcr_cassettes" / self.__class__.__qualname__)
 
     def _get_vcr_kwargs(self, **kwargs) -> dict:
         kwargs = super()._get_vcr_kwargs()

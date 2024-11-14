@@ -156,12 +156,8 @@ class Klant:
         self.subject_identificatie = subject_data
 
         subject_fields = {
-            subject_class: [
-                field.name for field in dataclass_fields(subject_class)
-            ]
-            for subject_class in (
-                NatuurlijkPersoon, NietNatuurlijkPersoon, Vestiging
-            )
+            subject_class: [field.name for field in dataclass_fields(subject_class)]
+            for subject_class in (NatuurlijkPersoon, NietNatuurlijkPersoon, Vestiging)
         }
 
         for subject_class, fields in subject_fields.items():
