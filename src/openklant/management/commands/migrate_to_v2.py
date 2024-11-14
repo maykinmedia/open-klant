@@ -41,10 +41,25 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
     klant_fields = {field.name: field for field in dataclass_fields(Klant)}
     klanten = []
 
+    generic_client = Client()
+
     for data in items:
         klant = Klant(
             **{field: value for field, value in data.items() if field in klant_fields}
         )
+
+        if klant.subject and not klant.subject_type:
+            subject_data = generic_client.retrieve(klant.subject)
+
+            if not isinstance(subject_data, dict):
+                logger.error(
+                    "Unexpected response data returned during retrieval of "
+                    f"subject: {subject_data}"
+                )
+
+                continue
+
+            klant.set_from_external_subject(subject_data)
 
         klanten.append(klant)
 

@@ -1,6 +1,8 @@
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, fields as dataclass_fields
 from typing import Optional
+
+from django.utils.functional import classproperty
 
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.migration.v1.enum import KlantType
@@ -12,6 +14,10 @@ logger = logging.getLogger(__name__)
 class Subject:
     @property
     def nummer(self) -> str:
+        raise NotImplementedError
+
+    @classproperty
+    def klant_type(self) -> KlantType:
         raise NotImplementedError
 
     def migrate(self) -> dict:
@@ -30,6 +36,10 @@ class NatuurlijkPersoon(Subject):  # SoortPartij.persoon
     @property
     def nummer(self) -> str:
         return self.inp_bsn or ""
+
+    @classproperty
+    def klant_type(self) -> KlantType:
+        return KlantType.natuurlijk_persoon
 
     def migrate(self) -> dict:
         return dict(
@@ -51,6 +61,10 @@ class NietNatuurlijkPersoon(Subject):  # SoortPartij.organisatie
     def nummer(self) -> str:
         return self.inn_nnp_id or ""
 
+    @classproperty
+    def klant_type(self) -> KlantType:
+        return KlantType.niet_natuurlijk_persoon
+
     def migrate(self) -> dict:
         return dict(naam=self.statutaire_naam)
 
@@ -63,6 +77,10 @@ class Vestiging(Subject):  # SoortPartij.organisatie
     @property
     def nummer(self) -> str:
         return self.vestigings_nummer or ""
+
+    @classproperty
+    def klant_type(self) -> KlantType:
+        return KlantType.vestiging
 
     def migrate(self) -> dict:
         return dict(naam=self.bedrijfsnaam)
@@ -133,6 +151,25 @@ class Klant:
         }
 
         return mapping[self.subject_type]
+
+    def set_from_external_subject(self, subject_data: dict) -> None:
+        self.subject_identificatie = subject_data
+
+        subject_fields = {
+            subject_class: [
+                field.name for field in dataclass_fields(subject_class)
+            ]
+            for subject_class in (
+                NatuurlijkPersoon, NietNatuurlijkPersoon, Vestiging
+            )
+        }
+
+        for subject_class, fields in subject_fields.items():
+            match = any(field in subject_data for field in fields)
+
+            if match:
+                self.subject_type = subject_class.klant_type
+                return
 
     def to_digitaal_adres(self) -> DigitaalAdres | None:
         if not self.emailadres:
