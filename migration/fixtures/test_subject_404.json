@@ -9,7 +9,7 @@
             "functie": "",
             "geverifieerd": false,
             "klantnummer": "0",
-            "subject": "http://unknown-url.com",
+            "subject": "http://localhost:8010",
             "subject_type": null,
             "telefoonnummer": "",
             "uuid": "b27668f2-01ac-447e-a7d1-83ec80e42abe",

@@ -2,18 +2,18 @@
     {
         "fields": {
             "aanmaakkanaal": "",
-            "achternaam": "",
+            "achternaam": "Hopkins",
             "bedrijfsnaam": "",
             "bronorganisatie": "710426380",
             "emailadres": "",
             "functie": "",
             "geverifieerd": false,
             "klantnummer": "0",
-            "subject": "http://example.com/subject/1",
+            "subject": "http://localhost:8010/subject/1",
             "subject_type": null,
             "telefoonnummer": "",
             "uuid": "ace470b2-ef75-45ce-8b16-106481b8f0f7",
-            "voornaam": "",
+            "voornaam": "Anthony",
             "voorvoegsel_achternaam": "",
             "website_url": ""
         },
