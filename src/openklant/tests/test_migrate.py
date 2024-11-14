@@ -11,6 +11,7 @@ from requests import Request
 from vcr.config import RecordMode
 from vng_api_common.tests import reverse
 
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.partijen import (
@@ -32,7 +33,6 @@ def vcr_request_filter(request: Request):
     return request
 
 
-# TODO: use new SoortDigitaalAdres
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
     host = LIVE_SERVER_HOST
     port = LIVE_SERVER_PORT
@@ -377,7 +377,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(digitaal_adres.partij, partij)
         self.assertIsNone(digitaal_adres.betrokkene)
-        self.assertEqual(digitaal_adres.soort_digitaal_adres, "email")
+        self.assertEqual(digitaal_adres.soort_digitaal_adres, SoortDigitaalAdres.email)
         self.assertEqual(digitaal_adres.adres, "example@maykinmedia.nl")
         self.assertEqual(digitaal_adres.omschrijving, "Emailadres")
 
