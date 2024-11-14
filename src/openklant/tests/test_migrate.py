@@ -19,7 +19,6 @@ from openklant.components.klantinteracties.models.partijen import (
 from openklant.tests.vcr import VCRMixin
 
 
-# TODO: add a fixture which loads a JWTSecret corresponding to the one used in setUp
 # TODO: rerecord VCR cassettes
 # TODO: use new SoortDigitaalAdres
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
@@ -29,15 +28,6 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
     def _get_cassette_library_dir(self) -> str:
         parent_dir = Path(__file__).resolve().parent
         return str(parent_dir / "cassettes" / "migration")
-
-    def _get_cassette_name(self) -> str:
-        """Return the filename for cassette
-
-        Default VCR behaviour puts class name in the cassettename
-        we put them in a directory.
-        """
-        _, test_name = self._testMethodName.split("test_")
-        return f"{test_name}.yaml"
 
     def _get_vcr_kwargs(self, **kwargs) -> dict:
         kwargs = super()._get_vcr_kwargs(**kwargs)
@@ -59,7 +49,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
     def setUp(self) -> None:
         super().setUp()
 
-        os.environ["ACCESS_TOKEN"] = "secret"
+        os.environ.setdefault("ACCESS_TOKEN") = "secret"
 
     def test_single_run(self):
         stdout = StringIO()
@@ -251,6 +241,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
+    # TODO: run separate local server which returns the expected JSON
     def test_subject_and_no_subject_identificatie(self):
         stdout = StringIO()
 
@@ -321,6 +312,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(output, [])
 
+    # TODO: run separate local server which returns the expected response
     def test_subject_404(self):
         stdout = StringIO()
 
@@ -365,7 +357,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(digitaal_adres.partij, partij)
         self.assertIsNone(digitaal_adres.betrokkene)
         self.assertEqual(digitaal_adres.soort_digitaal_adres, "email")
-        self.assertEqual(digitaal_adres.adres, "example@example.com")
+        self.assertEqual(digitaal_adres.adres, "example@maykinmedia.nl")
         self.assertEqual(digitaal_adres.omschrijving, "Emailadres")
 
         output = stdout.getvalue().splitlines()

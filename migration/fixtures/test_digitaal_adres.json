@@ -1,0 +1,44 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "812304792",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "",
+            "subject_type": "natuurlijk_persoon",
+            "telefoonnummer": "",
+            "uuid": "a6965025-cff0-4e9c-838f-5bc3c99bf0a2",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 99
+    },
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "596703843",
+            "emailadres": "example@maykinmedia.nl",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "",
+            "subject_type": "natuurlijk_persoon",
+            "telefoonnummer": "",
+            "uuid": "047c3e9a-faf8-4906-b902-958085b06b7c",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 100
+    }
+]
