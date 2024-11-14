@@ -4,7 +4,7 @@
 
 import logging
 import os
-from dataclasses import fields as dataclass_fields
+from dataclasses import asdict, fields as dataclass_fields
 from typing import Any, Tuple
 from urllib.parse import parse_qs, urlparse
 
@@ -112,7 +112,7 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
         partij = klant.to_partij(digitaal_adres=digitaal_adres_ref)
 
         if not partij:
-            logger.error("Unable to create partij, skipping klant..")
+            logger.error(f"Unable to create partij for klant: {asdict(klant)}")
             continue
 
         response_data = openklant_client.create(PARTIJEN_PATH, partij.dict())
