@@ -14,7 +14,7 @@ from django.core.management import CommandError
 from django.core.management.base import BaseCommand, CommandParser
 
 from rest_framework.fields import URLValidator
-from rest_framework.reverse import reverse
+from rest_framework.reverse import reverse_lazy
 
 from openklant.components.token.models import TokenAuth
 from openklant.migration.client import Client
@@ -26,6 +26,16 @@ logger = logging.getLogger(__name__)
 
 
 KLANT_FIELDS = {field.name: field for field in dataclass_fields(Klant)}
+
+DIGITALE_ADDRESSEN_PATH = reverse_lazy(
+    "klantinteracties:digitaaladres-list",
+    kwargs=dict(version=settings.REST_FRAMEWORK["DEFAULT_VERSION"]),
+)
+
+PARTIJEN_PATH = reverse_lazy(
+    "klantinteracties:partij-list",
+    kwargs=dict(version=settings.REST_FRAMEWORK["DEFAULT_VERSION"]),
+)
 
 
 def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | None]:
@@ -77,16 +87,6 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
 
     logger.info(f"Trying to create {len(klanten)} klanten through the V2 API")
 
-    digitaal_addressen_path = reverse(
-        "klantinteracties:digitaaladres-list",
-        kwargs=dict(version=settings.REST_FRAMEWORK["DEFAULT_VERSION"]),
-    )
-
-    partijen_path = reverse(
-        "klantinteracties:partij-list",
-        kwargs=dict(version=settings.REST_FRAMEWORK["DEFAULT_VERSION"]),
-    )
-
     dummy_token = _generate_dummy_token()
     openklant_client = OpenKlantClient(url, dummy_token)
     generic_client = Client()
@@ -98,7 +98,7 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
 
         if digitaal_adres:
             _data = openklant_client.create(
-                digitaal_addressen_path, digitaal_adres.dict()
+                DIGITALE_ADDRESSEN_PATH, digitaal_adres.dict()
             )
 
             if not isinstance(_data, dict):
@@ -127,7 +127,7 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
             logger.error("Unable to create partij, skipping klant..")
             continue
 
-        response_data = openklant_client.create(partijen_path, partij.dict())
+        response_data = openklant_client.create(PARTIJEN_PATH, partij.dict())
 
         if response_data and "url" in response_data:
             created_klanten.append(response_data["url"])
