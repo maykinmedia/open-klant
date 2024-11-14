@@ -25,6 +25,9 @@ from openklant.migration.v2.client import OpenKlantClient
 logger = logging.getLogger(__name__)
 
 
+KLANT_FIELDS = {field.name: field for field in dataclass_fields(Klant)}
+
+
 def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | None]:
     klanten_path = "/klanten/api/v1/klanten"
 
@@ -39,14 +42,13 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
         return [], None
 
     items = response_data.get("results", [])
-    klant_fields = {field.name: field for field in dataclass_fields(Klant)}
     klanten = []
 
     generic_client = Client()
 
     for data in items:
         klant = Klant(
-            **{field: value for field, value in data.items() if field in klant_fields}
+            **{field: value for field, value in data.items() if field in KLANT_FIELDS}
         )
 
         if klant.subject and not klant.subject_type:
