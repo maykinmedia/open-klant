@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://localhost:8000/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://localhost:8000/klanten/api/v1/klanten/7853958c-4ff1-4b62-bb81-1277346692bf","bronorganisatie":"719250341","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"Harry","voorvoegselAchternaam":"","achternaam":"Potter","telefoonnummer":"","emailadres":"","adres":null,"subject":"","subjectType":"natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"inpBsn":"024325818","anpIdentificatie":"0","inpANummer":"","geslachtsnaam":"Huffman","voorvoegselGeslachtsnaam":"","voorletters":"H","voornamen":"Frank","geslachtsaanduiding":"","geboortedatum":"2005-09-30","verblijfsadres":null,"subVerblijfBuitenland":null}}]}'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '727'
+      Content-Type:
+      - application/json
+      Referrer-Policy:
+      - same-origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

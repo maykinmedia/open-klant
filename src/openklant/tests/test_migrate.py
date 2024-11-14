@@ -2,13 +2,16 @@ import os
 from io import StringIO
 from pathlib import Path
 
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management import call_command
 from django.test import LiveServerTestCase
 
+from requests import Request
 from vcr.config import RecordMode
 from vng_api_common.tests import reverse
 
+from openklant.migration.utils import generate_jwt_token
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.partijen import (
@@ -19,15 +22,33 @@ from openklant.components.klantinteracties.models.partijen import (
 from openklant.tests.vcr import VCRMixin
 
 
-# TODO: rerecord VCR cassettes
+LIVE_SERVER_HOST = "localhost"
+LIVE_SERVER_PORT = 8005
+
+
+def vcr_request_filter(request: Request):
+    if f"{LIVE_SERVER_HOST}:{LIVE_SERVER_PORT}" in request.url:
+        return
+
+    return request
+
+
 # TODO: use new SoortDigitaalAdres
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
-    host = "localhost"
-    port = 8005
+    host = LIVE_SERVER_HOST
+    port = LIVE_SERVER_PORT
 
     def _get_cassette_library_dir(self) -> str:
-        parent_dir = Path(__file__).resolve().parent
-        return str(parent_dir / "cassettes" / "migration")
+        base_dir = Path(settings.BASE_DIR)
+        return str(base_dir / "migration" / "cassettes")
+
+    def _get_cassette_name(self) -> str:
+        """Return the filename for cassette
+
+        Default VCR behaviour puts class name in the cassettename
+        we put them in a directory.
+        """
+        return f"{self._testMethodName}.yaml"
 
     def _get_vcr_kwargs(self, **kwargs) -> dict:
         kwargs = super()._get_vcr_kwargs(**kwargs)
@@ -37,7 +58,9 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
             # Decompress for human readable cassette diffs when re-recoding
             "decode_compressed_response": True,
             "filter_headers": ["authorization"],
-            "ignore_hosts": ["localhost"],
+            # Use `before_record_request` as `ignore_hosts` does not take port
+            # numbers into account
+            "before_record_request": vcr_request_filter,
         }
 
     def _get_partij_url(self, partij) -> str:
@@ -49,7 +72,8 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
     def setUp(self) -> None:
         super().setUp()
 
-        os.environ.setdefault("ACCESS_TOKEN") = "secret"
+        default_token = generate_jwt_token("migration", "foobar")
+        os.environ.setdefault("ACCESS_TOKEN", default_token)
 
     def test_single_run(self):
         stdout = StringIO()
@@ -241,7 +265,6 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
-    # TODO: run separate local server which returns the expected JSON
     def test_subject_and_no_subject_identificatie(self):
         stdout = StringIO()
 
@@ -266,7 +289,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij.voorkeurstaal, "")
         self.assertTrue(partij.indicatie_actief)
 
-        self.assertEqual(persoon.contactnaam_voorletters, "H")
+        self.assertEqual(persoon.contactnaam_voorletters, "W")
         self.assertEqual(persoon.contactnaam_voornaam, "Anthony")
         self.assertEqual(persoon.contactnaam_voorvoegsel_achternaam, "")
         self.assertEqual(persoon.contactnaam_achternaam, "Hopkins")
@@ -312,7 +335,6 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(output, [])
 
-    # TODO: run separate local server which returns the expected response
     def test_subject_404(self):
         stdout = StringIO()
 
