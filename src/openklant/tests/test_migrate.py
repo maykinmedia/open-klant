@@ -4,7 +4,7 @@ from pathlib import Path
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.core.management import call_command
+from django.core.management import CommandError, call_command
 from django.test import LiveServerTestCase
 
 from requests import Request
@@ -410,14 +410,10 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(output, [])
 
     def test_invalid_urls(self):
-        stdout = StringIO()
-
-        call_command("migrate_to_v2", "foobar.com", self.live_server_url, stdout=stdout)
+        with self.assertRaises(CommandError) as context_manager:
+            call_command("migrate_to_v2", "foobar.com", self.live_server_url)
 
         self.assertEqual(Partij.objects.count(), 0)
 
-        output = stdout.getvalue().splitlines()
-
-        message = next(iter(output))
-
-        self.assertIn("Invalid URL(s)", message)
+        self.assertEqual(context_manager.exception.returncode, 1)
+        self.assertIn("Invalid URL(s)", context_manager.exception.args[0])

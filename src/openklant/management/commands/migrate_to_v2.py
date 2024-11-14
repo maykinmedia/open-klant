@@ -10,6 +10,7 @@ from urllib.parse import parse_qs, urlparse
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
+from django.core.management import CommandError
 from django.core.management.base import BaseCommand, CommandParser
 
 from rest_framework.fields import URLValidator
@@ -164,7 +165,7 @@ class Command(BaseCommand):
             try:
                 url_validator(url)
             except ValidationError as e:
-                return (
+                raise CommandError(
                     f"Invalid URL(s) detected: {str(e.message)}. See "
                     "migrate_to_v2 --help for correct usage."
                 )
