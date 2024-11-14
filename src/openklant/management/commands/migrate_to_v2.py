@@ -89,7 +89,6 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
 
     dummy_token = _generate_dummy_token()
     openklant_client = OpenKlantClient(url, dummy_token)
-    generic_client = Client()
     created_klanten = []
 
     for klant in klanten:
@@ -109,17 +108,6 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
                 continue
 
             digitaal_adres_ref = _data.get("uuid")
-
-        if klant.subject and not klant.subject_identificatie:
-            subject_identificatie = generic_client.retrieve(klant.subject)
-
-            if not isinstance(subject_identificatie, dict):
-                logger.error(
-                    f"Unknown data received receiving a subject: {subject_identificatie}. "
-                    "Skipping klant."
-                )
-
-            klant.subject_identificatie = subject_identificatie
 
         partij = klant.to_partij(digitaal_adres=digitaal_adres_ref)
 
