@@ -62,6 +62,23 @@ API-specificatie die door VNG is geschrapt en beschouwd moet worden als legacy.
 
 Zie: `Alle versies en wijzigingen <https://github.com/maykinmedia/open-klant/blob/master/CHANGELOG.rst>`_
 
+Semantisch Informatiemodel
+==========================
+.. image:: https://raw.githubusercontent.com/maykinmedia/open-klant/refs/heads/feature/add-sim-documentation/docs/OpenKlant2SIM.drawio.png
+   :width: 800px
+
+Opmerkingen
+-----------
+Bovenstaand informatiemodel is opgesteld door Hugo ter Doest, met de volgende opmerkingen:
+
+ * Voor de leesbaarheid en onderhoudbaarheid bevat het SIM niet de attributen zoals in het oorspronkelijke model. Deze zijn niet belangrijk voor het begrip van het model en eenvoudig op te zoeken in de API-specificatie.
+ * Voor de relaties tussen entiteiten worden de feitelijke attribuutnamen uit de API specificatie gebruikt met weglating van de entiteit waarnaar wordt verwezen, bijv. "leiddeTotInterneTaken" word "leidde tot".Dit verbetert de de relatie met de API en daarmee het begrip. Als er geen betekenisvolle attribuutnaam voor de relatie wordt gebruikt (bijv. alleen de naam van de gerelateerde entiteit), is de relatienaam leeg gelaten.
+ * Alle relaties tussen entiteiten worden gevisualiseerd. Soms zijn er relaties in beide richtingen.
+ * De meeste API resources worden gevisualiseerd als een entiteit in het model. Actor Klantcontacten is weggelaten omdat dit een linktabel is.
+ * Het kader “OpenKlant begrenzing“ geeft aan welke entiteiten in het register kunnen worden beheerd. De geel gekleurde entiteiten staan in een extern register. Om naar deze externe entiteiten te verwijzen wordt gebruik gemaakt van zgn. identificatoren.
+ * Cardinaliteit is met * aangegeven als er meer dan één entiteit gekoppeld kan worden.
+ * Bij Actor en Partij is class inheritance gebruikt om specieke actoren c.q. partijen te modelleren. Dit is in de API uitgewerkt met een attribuut soortActor en soortPartij die de specialisatie uitdrukt.
+
 
 Ready-to-go implementatie
 =========================
