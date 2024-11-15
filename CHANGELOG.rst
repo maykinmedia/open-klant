@@ -2,6 +2,18 @@
 Change history
 ==============
 
+2.x.x
+=====
+*TBD*
+
+**New features**
+
+* Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
+
+**Bugfixes/QoL**:
+
+* [#258] Use correct API root in redoc OAS
+
 2.3.0
 =====
 *October 4, 2024*
