@@ -88,7 +88,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Actor'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -141,7 +140,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Actor'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2077,14 +2075,41 @@ paths:
         name: partijIdentificatorCodeObjecttype
         schema:
           type: string
+          title: Objecttype
+          enum:
+          - natuurlijk_persoon
+          - niet_natuurlijk_persoon
+          - overig
+          - vestiging
+        description: |+
+          Type van het object, bijvoorbeeld: 'natuurlijk_persoon'.
+
       - in: query
         name: partijIdentificatorCodeRegister
         schema:
           type: string
+          title: Register
+          enum:
+          - brp
+          - hr
+          - overig
+        description: |+
+          Binnen het landschap van registers unieke omschrijving van het register waarin het object is geregistreerd, bijvoorbeeld: 'BRP'.
+
       - in: query
         name: partijIdentificatorCodeSoortObjectId
         schema:
           type: string
+          title: Soort object ID
+          enum:
+          - bsn
+          - kvk_nummer
+          - overig
+          - rsin
+          - vestigingsnummer
+        description: |+
+          Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'bsn'.
+
       - in: query
         name: partijIdentificatorObjectId
         schema:
@@ -2381,7 +2406,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Partij'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2450,7 +2474,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Partij'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2847,6 +2870,85 @@ paths:
 components:
   schemas:
     Actor:
+      oneOf:
+      - $ref: '#/components/schemas/medewerker_ActorSerializer'
+      - $ref: '#/components/schemas/geautomatiseerde_actor_ActorSerializer'
+      - $ref: '#/components/schemas/organisatorische_eenheid_ActorSerializer'
+      discriminator:
+        propertyName: soortActor
+        mapping:
+          medewerker: '#/components/schemas/medewerker_ActorSerializer'
+          geautomatiseerde_actor: '#/components/schemas/geautomatiseerde_actor_ActorSerializer'
+          organisatorische_eenheid: '#/components/schemas/organisatorische_eenheid_ActorSerializer'
+    ActorForeignKey:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de actor.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze actor binnen deze API.
+          minLength: 1
+          maxLength: 1000
+      required:
+      - url
+      - uuid
+    ActorKlantcontact:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de actor klantcontact.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze actor klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/ActorForeignKey'
+          description: De gekoppelde 'Actor'.
+        klantcontact:
+          allOf:
+          - $ref: '#/components/schemas/KlantcontactForeignKey'
+          description: De gekoppelde 'Klantcontact'.
+      required:
+      - actor
+      - klantcontact
+      - url
+      - uuid
+    Actoridentificator:
+      type: object
+      properties:
+        objectId:
+          type: string
+          description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''123456788''.'
+          maxLength: 200
+        codeObjecttype:
+          type: string
+          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+            PERSOON''.'
+          maxLength: 200
+        codeRegister:
+          type: string
+          description: 'Binnen het landschap van registers unieke omschrijving van
+            het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          maxLength: 200
+        codeSoortObjectId:
+          type: string
+          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+            ''Burgerservicenummer''.'
+          maxLength: 200
+    Base_ActorSerializer:
       type: object
       description: |-
         Set gegevensgroepdata from validated nested data.
@@ -2863,6 +2965,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze actor binnen deze API.
+          minLength: 1
+          maxLength: 1000
         naam:
           type: string
           description: Naam van de actor.
@@ -2886,82 +2990,131 @@ components:
       - soortActor
       - url
       - uuid
-    ActorForeignKey:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: Unieke (technische) identificatiecode van de actor.
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          description: De unieke URL van deze actor binnen deze API.
-      required:
-      - url
-      - uuid
-    ActorKlantcontact:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unieke (technische) identificatiecode van de actor klantcontact.
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          description: De unieke URL van deze actor klantcontact binnen deze API.
-        actor:
-          allOf:
-          - $ref: '#/components/schemas/ActorForeignKey'
-          description: De gekoppelde 'Actor'.
-        klantcontact:
-          allOf:
-          - $ref: '#/components/schemas/KlantcontactForeignKey'
-          description: De gekoppelde 'Klantcontact'.
-      required:
-      - actor
-      - klantcontact
-      - url
-      - uuid
-    Actoridentificator:
+    Base_PartijSerializer:
       type: object
       description: |-
-        Generate a serializer out of a GegevensGroepType.
+        Set gegevensgroepdata from validated nested data.
 
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
       properties:
-        objectId:
+        uuid:
           type: string
-          description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''123456788''.'
-          maxLength: 200
-        codeObjecttype:
+          format: uuid
+          readOnly: true
+          description: Unieke (technische) identificatiecode van de partij.
+        url:
           type: string
-          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-            PERSOON''.'
-          maxLength: 200
-        codeRegister:
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze partij binnen deze API.
+          minLength: 1
+          maxLength: 1000
+        nummer:
           type: string
-          description: 'Binnen het landschap van registers unieke omschrijving van
-            het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
-          maxLength: 200
-        codeSoortObjectId:
+          description: Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om de specifieke partij aan te duiden.
+          maxLength: 10
+        interneNotitie:
           type: string
-          description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''Burgerservicenummer''.'
-          maxLength: 200
+          description: Mededelingen, aantekeningen of bijzonderheden over de partij,
+            bedoeld voor intern gebruik.
+          maxLength: 1000
+        betrokkenen:
+          type: array
+          items:
+            $ref: '#/components/schemas/BetrokkeneForeignKey'
+          readOnly: true
+          description: Betrokkene bij klantcontact die een partij was.
+        categorieRelaties:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategorieRelatieForeignKey'
+          readOnly: true
+          description: 'De Categorie relaties van een partij: Let op: Dit attribuut
+            is EXPERIMENTEEL.'
+        digitaleAdressen:
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitaalAdresForeignKey'
+          nullable: true
+          description: Digitaal adresen dat een partij verstrekte voor gebruik bij
+            toekomstig contact met de gemeente.
+        voorkeursDigitaalAdres:
+          allOf:
+          - $ref: '#/components/schemas/DigitaalAdresForeignKey'
+          nullable: true
+          description: Digitaal adres waarop een partij bij voorkeur door de gemeente
+            benaderd wordt.
+        vertegenwoordigden:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartijForeignKey'
+          readOnly: true
+          description: Partijen die een andere partijen vertegenwoordigden.
+        rekeningnummers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RekeningnummerForeignKey'
+          nullable: true
+          description: Rekeningnummers van een partij
+        voorkeursRekeningnummer:
+          allOf:
+          - $ref: '#/components/schemas/RekeningnummerForeignKey'
+          nullable: true
+          description: Rekeningsnummer die een partij bij voorkeur gebruikt.
+        partijIdentificatoren:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartijIdentificatorForeignkey'
+          readOnly: true
+          description: Partij-identificatoren die hoorde bij deze partij.
+        soortPartij:
+          allOf:
+          - $ref: '#/components/schemas/SoortPartijEnum'
+          description: Geeft aan van welke specifieke soort partij sprake is.
+        indicatieGeheimhouding:
+          type: boolean
+          nullable: true
+          description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
+            dat deze gegevens als geheim beschouwd moeten worden. Als dit niet aangegeven
+            is dan wordt dit ingevuld als `null`.
+        voorkeurstaal:
+          type: string
+          description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
+            contact heeft met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html'
+          maxLength: 3
+        indicatieActief:
+          type: boolean
+          description: Geeft aan of de contactgegevens van de partij nog gebruikt
+            morgen worden om contact op te nemen. Gegevens van niet-actieve partijen
+            mogen hiervoor niet worden gebruikt.
+        bezoekadres:
+          allOf:
+          - $ref: '#/components/schemas/PartijBezoekadres'
+          nullable: true
+          description: Adres waarop de partij door gemeente bezocht wil worden. Dit
+            mag afwijken van voor de verstrekker eventueel in een basisregistratie
+            bekende adressen.
+        correspondentieadres:
+          allOf:
+          - $ref: '#/components/schemas/PartijCorrespondentieadres'
+          nullable: true
+          description: Adres waarop de partij post van de gemeente wil ontvangen.
+            Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie
+            bekende adressen.
+      required:
+      - betrokkenen
+      - categorieRelaties
+      - digitaleAdressen
+      - indicatieActief
+      - partijIdentificatoren
+      - rekeningnummers
+      - soortPartij
+      - url
+      - uuid
+      - vertegenwoordigden
+      - voorkeursDigitaalAdres
+      - voorkeursRekeningnummer
     Betrokkene:
       type: object
       description: |-
@@ -2980,6 +3133,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze betrokkene binnen deze API.
+          minLength: 1
+          maxLength: 1000
         wasPartij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -3044,18 +3199,6 @@ components:
       - wasPartij
     BetrokkeneCorrespondentieadres:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         nummeraanduidingId:
           type: string
@@ -3096,6 +3239,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze betrokkene binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
@@ -3117,6 +3262,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze betrokkene binnen deze API.
+          minLength: 1
+          maxLength: 1000
         wasPartij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -3182,18 +3329,6 @@ components:
       - wasPartij
     Bezoekadres:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         nummeraanduidingId:
           type: string
@@ -3238,6 +3373,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
         wasBijlageVanKlantcontact:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
@@ -3265,23 +3402,13 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze bijlage binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
     BijlageIdentificator:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         objectId:
           type: string
@@ -3303,6 +3430,9 @@ components:
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''Burgerservicenummer''.'
           maxLength: 200
+    BlankEnum:
+      enum:
+      - ''
     Categorie:
       type: object
       description: 'Let op: Dit endpoint is EXPERIMENTEEL.'
@@ -3317,6 +3447,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
+          minLength: 1
+          maxLength: 1000
         naam:
           type: string
           description: Naam van de categorie.
@@ -3337,6 +3469,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
+          minLength: 1
+          maxLength: 1000
         naam:
           type: string
           readOnly: true
@@ -3359,6 +3493,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
+          minLength: 1
+          maxLength: 1000
         partij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignkeyBase'
@@ -3403,6 +3539,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
+          minLength: 1
+          maxLength: 1000
         categorieNaam:
           type: string
           nullable: true
@@ -3426,20 +3564,83 @@ components:
       - categorieNaam
       - url
       - uuid
+    CodeObjecttypeEnum:
+      enum:
+      - natuurlijk_persoon
+      - niet_natuurlijk_persoon
+      - vestiging
+      - overig
+      type: string
+    CodeRegisterEnum:
+      enum:
+      - brp
+      - hr
+      - overig
+      type: string
+    CodeSoortObjectIdEnum:
+      enum:
+      - bsn
+      - vestigingsnummer
+      - kvk_nummer
+      - rsin
+      - overig
+      type: string
     Contactnaam:
       type: object
+      properties:
+        voorletters:
+          type: string
+          description: Een afkorting van de voornamen. Meestal de beginletter, maar
+            in sommige gevallen de beginletter gecombineerd met de tweede letter van
+            een voornaam.
+          maxLength: 10
+        voornaam:
+          type: string
+          description: De voornaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          maxLength: 200
+        voorvoegselAchternaam:
+          type: string
+          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
+            persoon wil gebruiken tijdens communicatie met de gemeente.
+          maxLength: 10
+        achternaam:
+          type: string
+          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          maxLength: 200
+    Contactpersoon:
+      type: object
       description: |-
-        Generate a serializer out of a GegevensGroepType.
+        Set gegevensgroepdata from validated nested data.
 
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unieke (technische) identificatiecode van de contactpersoon.
+        werkteVoorPartij:
+          allOf:
+          - $ref: '#/components/schemas/PartijPolymorphic'
+          nullable: true
+          description: Organisatie waarvoor een contactpersoon werkte.
+        contactnaam:
+          allOf:
+          - $ref: '#/components/schemas/ContactpersoonPersoon'
+          nullable: true
+          description: Naam die een contactpersoon wil gebruiken tijdens contact met
+            de gemeente. Deze mag afwijken van de eventueel in de Basisregistratie
+            Personen (BRP) bekende naam van de contactpersoon.
+        volledigeNaam:
+          type: string
+          readOnly: true
+          description: De voledige naam van het constact persoon.
+      required:
+      - volledigeNaam
+      - werkteVoorPartij
+    ContactpersoonPersoon:
+      type: object
       properties:
         voorletters:
           type: string
@@ -3475,6 +3676,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit digitaal adres binnen deze API.
+          minLength: 1
+          maxLength: 1000
         verstrektDoorBetrokkene:
           allOf:
           - $ref: '#/components/schemas/BetrokkeneForeignKey'
@@ -3527,6 +3730,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit digitaal adres binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
@@ -3612,6 +3817,20 @@ components:
                 readOnly: true
                 description: 'De Categorie relaties van een partij: Let op: Dit attribuut
                   is EXPERIMENTEEL.'
+    GeautomatiseerdeActor:
+      type: object
+      properties:
+        functie:
+          type: string
+          description: Functie van de geautomatiseerde actor of beschrijving van de
+            werkzaamheden die deze uitvoert.
+          maxLength: 40
+        omschrijving:
+          type: string
+          description: Omschrijving van de geautomatiseerde actor.
+          maxLength: 200
+      required:
+      - functie
     InterneTaak:
       type: object
       properties:
@@ -3625,6 +3844,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze interne taak binnen deze API.
+          minLength: 1
+          maxLength: 1000
         nummer:
           type: string
           description: Uniek identificerend nummer dat tijdens communicatie tussen
@@ -3690,6 +3911,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze interne taak binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
@@ -3707,6 +3930,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
         gingOverOnderwerpobjecten:
           type: array
           items:
@@ -3802,6 +4027,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
@@ -3816,6 +4043,30 @@ components:
           $ref: '#/components/schemas/OnderwerpobjectKlantcontactReadOnly'
       required:
       - klantcontact
+    Medewerker:
+      type: object
+      properties:
+        functie:
+          type: string
+          description: Functie van de geautomatiseerde actor of beschrijving van de
+            werkzaamheden die deze uitvoert.
+          maxLength: 40
+        emailadres:
+          type: string
+          format: email
+          title: E-mailadres
+          description: Elektronisch postadres waaronder de MEDEWERKER in de regel
+            bereikbaar is.
+          maxLength: 254
+        telefoonnummer:
+          type: string
+          description: Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar
+            is.
+          pattern: (0[8-9]00[0-9]{4,7})|(0[1-9][0-9]{8})|(\+[0-9]{9,20}|1400|140[0-9]{2,3})
+          maxLength: 20
+      required:
+      - functie
+      - telefoonnummer
     Onderwerpobject:
       type: object
       description: |-
@@ -3833,6 +4084,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
         klantcontact:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
@@ -3866,6 +4119,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit onderwerp object binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
@@ -3886,6 +4141,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
         klantcontact:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
@@ -3910,18 +4167,6 @@ components:
       - wasKlantcontact
     Onderwerpobjectidentificator:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         objectId:
           type: string
@@ -3943,6 +4188,38 @@ components:
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''Burgerservicenummer''.'
           maxLength: 200
+    Organisatie:
+      type: object
+      properties:
+        naam:
+          type: string
+          description: Naam van de organisatie.
+          maxLength: 200
+    OrganisatorischeEenheid:
+      type: object
+      properties:
+        omschrijving:
+          type: string
+          description: Omschrijving van de geautomatiseerde actor.
+          maxLength: 200
+        emailadres:
+          type: string
+          format: email
+          title: E-mailadres
+          description: Elektronisch postadres waaronder de MEDEWERKER in de regel
+            bereikbaar is.
+          maxLength: 254
+        faxnummer:
+          type: string
+          description: Faxnummer waaronder de organisatorische eenheid in de regel
+            bereikbaar is.
+          maxLength: 20
+        telefoonnummer:
+          type: string
+          description: Telefoonnummer waaronder de MEDEWERKER in de regel bereikbaar
+            is.
+          pattern: (0[8-9]00[0-9]{4,7})|(0[1-9][0-9]{8})|(\+[0-9]{9,20}|1400|140[0-9]{2,3})
+          maxLength: 20
     PaginatedActorKlantcontactList:
       type: object
       required:
@@ -4335,142 +4612,18 @@ components:
           items:
             $ref: '#/components/schemas/Vertegenwoordigden'
     Partij:
-      type: object
-      description: |-
-        Set gegevensgroepdata from validated nested data.
-
-        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unieke (technische) identificatiecode van de partij.
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          description: De unieke URL van deze partij binnen deze API.
-        nummer:
-          type: string
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om de specifieke partij aan te duiden.
-          maxLength: 10
-        interneNotitie:
-          type: string
-          description: Mededelingen, aantekeningen of bijzonderheden over de partij,
-            bedoeld voor intern gebruik.
-          maxLength: 1000
-        betrokkenen:
-          type: array
-          items:
-            $ref: '#/components/schemas/BetrokkeneForeignKey'
-          readOnly: true
-          description: Betrokkene bij klantcontact die een partij was.
-        categorieRelaties:
-          type: array
-          items:
-            $ref: '#/components/schemas/CategorieRelatieForeignKey'
-          readOnly: true
-          description: 'De Categorie relaties van een partij: Let op: Dit attribuut
-            is EXPERIMENTEEL.'
-        digitaleAdressen:
-          type: array
-          items:
-            $ref: '#/components/schemas/DigitaalAdresForeignKey'
-          nullable: true
-          description: Digitaal adresen dat een partij verstrekte voor gebruik bij
-            toekomstig contact met de gemeente.
-        voorkeursDigitaalAdres:
-          allOf:
-          - $ref: '#/components/schemas/DigitaalAdresForeignKey'
-          nullable: true
-          description: Digitaal adres waarop een partij bij voorkeur door de gemeente
-            benaderd wordt.
-        vertegenwoordigden:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartijForeignKey'
-          readOnly: true
-          description: Partijen die een andere partijen vertegenwoordigden.
-        rekeningnummers:
-          type: array
-          items:
-            $ref: '#/components/schemas/RekeningnummerForeignKey'
-          nullable: true
-          description: Rekeningnummers van een partij
-        voorkeursRekeningnummer:
-          allOf:
-          - $ref: '#/components/schemas/RekeningnummerForeignKey'
-          nullable: true
-          description: Rekeningsnummer die een partij bij voorkeur gebruikt.
-        partijIdentificatoren:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartijIdentificatorForeignkey'
-          readOnly: true
-          description: Partij-identificatoren die hoorde bij deze partij.
-        soortPartij:
-          allOf:
-          - $ref: '#/components/schemas/SoortPartijEnum'
-          description: Geeft aan van welke specifieke soort partij sprake is.
-        indicatieGeheimhouding:
-          type: boolean
-          nullable: true
-          description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
-            dat deze gegevens als geheim beschouwd moeten worden. Als dit niet aangegeven
-            is dan wordt dit ingevuld als `null`.
-        voorkeurstaal:
-          type: string
-          description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
-            contact heeft met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html'
-          maxLength: 3
-        indicatieActief:
-          type: boolean
-          description: Geeft aan of de contactgegevens van de partij nog gebruikt
-            morgen worden om contact op te nemen. Gegevens van niet-actieve partijen
-            mogen hiervoor niet worden gebruikt.
-        bezoekadres:
-          allOf:
-          - $ref: '#/components/schemas/PartijBezoekadres'
-          nullable: true
-          description: Adres waarop de partij door gemeente bezocht wil worden. Dit
-            mag afwijken van voor de verstrekker eventueel in een basisregistratie
-            bekende adressen.
-        correspondentieadres:
-          allOf:
-          - $ref: '#/components/schemas/PartijCorrespondentieadres'
-          nullable: true
-          description: Adres waarop de partij post van de gemeente wil ontvangen.
-            Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie
-            bekende adressen.
-      required:
-      - betrokkenen
-      - categorieRelaties
-      - digitaleAdressen
-      - indicatieActief
-      - partijIdentificatoren
-      - rekeningnummers
-      - soortPartij
-      - url
-      - uuid
-      - vertegenwoordigden
-      - voorkeursDigitaalAdres
-      - voorkeursRekeningnummer
+      oneOf:
+      - $ref: '#/components/schemas/contactpersoon_PartijSerializer'
+      - $ref: '#/components/schemas/persoon_PartijSerializer'
+      - $ref: '#/components/schemas/organisatie_PartijSerializer'
+      discriminator:
+        propertyName: soortPartij
+        mapping:
+          contactpersoon: '#/components/schemas/contactpersoon_PartijSerializer'
+          persoon: '#/components/schemas/persoon_PartijSerializer'
+          organisatie: '#/components/schemas/organisatie_PartijSerializer'
     PartijBezoekadres:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         nummeraanduidingId:
           type: string
@@ -4500,18 +4653,6 @@ components:
           minLength: 4
     PartijCorrespondentieadres:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         nummeraanduidingId:
           type: string
@@ -4551,6 +4692,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze partij binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
@@ -4566,6 +4709,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze partij binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
@@ -4586,6 +4731,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze partij indentificator binnen deze API.
+          minLength: 1
+          maxLength: 1000
         identificeerdePartij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -4620,82 +4767,67 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze partij indentificator binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
     PartijIdentificatorGroepType:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         codeObjecttype:
-          type: string
           title: Objecttype
-          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-            PERSOON''.'
-          maxLength: 200
+          description: 'Type van het object, bijvoorbeeld: ''natuurlijk_persoon''.'
+          oneOf:
+          - $ref: '#/components/schemas/CodeObjecttypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         codeSoortObjectId:
-          type: string
           title: Soort object ID
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''Burgerservicenummer''.'
-          maxLength: 200
+            ''bsn''.'
+          oneOf:
+          - $ref: '#/components/schemas/CodeSoortObjectIdEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         objectId:
           type: string
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
             ''123456788''.'
           maxLength: 200
         codeRegister:
-          type: string
           title: Register
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
-          maxLength: 200
-    PatchedActor:
+          oneOf:
+          - $ref: '#/components/schemas/CodeRegisterEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+    PartijPolymorphic:
       type: object
-      description: |-
-        Set gegevensgroepdata from validated nested data.
-
-        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
       properties:
         uuid:
           type: string
           format: uuid
-          readOnly: true
-          description: Unieke (technische) identificatiecode van de actor.
+          description: Unieke (technische) identificatiecode van de partij.
         url:
           type: string
           format: uri
           readOnly: true
-          description: De unieke URL van deze actor binnen deze API.
-        naam:
-          type: string
-          description: Naam van de actor.
-          maxLength: 200
-        soortActor:
-          allOf:
-          - $ref: '#/components/schemas/SoortActorEnum'
-          description: Geeft aan van welke specifieke soort actor sprake is.
-        indicatieActief:
-          type: boolean
-          description: Geeft aan of aan de actor nog betrokken mag worden bij nieuwe
-            klantcontacten. Voor niet-actieve is dit niet toegestaan.
-        actoridentificator:
-          allOf:
-          - $ref: '#/components/schemas/Actoridentificator'
-          nullable: true
-          description: Gegevens die een actorwerpobject in een extern register uniek
-            identificeren.
+          description: De unieke URL van deze partij binnen deze API.
+          minLength: 1
+          maxLength: 1000
+      required:
+      - url
+      - uuid
+    PatchedActor:
+      oneOf:
+      - $ref: '#/components/schemas/medewerker_ActorSerializer'
+      - $ref: '#/components/schemas/geautomatiseerde_actor_ActorSerializer'
+      - $ref: '#/components/schemas/organisatorische_eenheid_ActorSerializer'
+      discriminator:
+        propertyName: soortActor
+        mapping:
+          medewerker: '#/components/schemas/medewerker_ActorSerializer'
+          geautomatiseerde_actor: '#/components/schemas/geautomatiseerde_actor_ActorSerializer'
+          organisatorische_eenheid: '#/components/schemas/organisatorische_eenheid_ActorSerializer'
     PatchedActorKlantcontact:
       type: object
       properties:
@@ -4709,6 +4841,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze actor klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
         actor:
           allOf:
           - $ref: '#/components/schemas/ActorForeignKey'
@@ -4735,6 +4869,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze betrokkene binnen deze API.
+          minLength: 1
+          maxLength: 1000
         wasPartij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -4805,6 +4941,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
         wasBijlageVanKlantcontact:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
@@ -4830,6 +4968,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
+          minLength: 1
+          maxLength: 1000
         naam:
           type: string
           description: Naam van de categorie.
@@ -4848,6 +4988,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze categorie binnen deze API.
+          minLength: 1
+          maxLength: 1000
         partij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignkeyBase'
@@ -4886,6 +5028,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit digitaal adres binnen deze API.
+          minLength: 1
+          maxLength: 1000
         verstrektDoorBetrokkene:
           allOf:
           - $ref: '#/components/schemas/BetrokkeneForeignKey'
@@ -4932,6 +5076,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze interne taak binnen deze API.
+          minLength: 1
+          maxLength: 1000
         nummer:
           type: string
           description: Uniek identificerend nummer dat tijdens communicatie tussen
@@ -4992,6 +5138,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
         gingOverOnderwerpobjecten:
           type: array
           items:
@@ -5079,6 +5227,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van dit klantcontact binnen deze API.
+          minLength: 1
+          maxLength: 1000
         klantcontact:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
@@ -5096,115 +5246,16 @@ components:
           description: Gegevens die een onderwerpobject in een extern register uniek
             identificeren.
     PatchedPartij:
-      type: object
-      description: |-
-        Set gegevensgroepdata from validated nested data.
-
-        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unieke (technische) identificatiecode van de partij.
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          description: De unieke URL van deze partij binnen deze API.
-        nummer:
-          type: string
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om de specifieke partij aan te duiden.
-          maxLength: 10
-        interneNotitie:
-          type: string
-          description: Mededelingen, aantekeningen of bijzonderheden over de partij,
-            bedoeld voor intern gebruik.
-          maxLength: 1000
-        betrokkenen:
-          type: array
-          items:
-            $ref: '#/components/schemas/BetrokkeneForeignKey'
-          readOnly: true
-          description: Betrokkene bij klantcontact die een partij was.
-        categorieRelaties:
-          type: array
-          items:
-            $ref: '#/components/schemas/CategorieRelatieForeignKey'
-          readOnly: true
-          description: 'De Categorie relaties van een partij: Let op: Dit attribuut
-            is EXPERIMENTEEL.'
-        digitaleAdressen:
-          type: array
-          items:
-            $ref: '#/components/schemas/DigitaalAdresForeignKey'
-          nullable: true
-          description: Digitaal adresen dat een partij verstrekte voor gebruik bij
-            toekomstig contact met de gemeente.
-        voorkeursDigitaalAdres:
-          allOf:
-          - $ref: '#/components/schemas/DigitaalAdresForeignKey'
-          nullable: true
-          description: Digitaal adres waarop een partij bij voorkeur door de gemeente
-            benaderd wordt.
-        vertegenwoordigden:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartijForeignKey'
-          readOnly: true
-          description: Partijen die een andere partijen vertegenwoordigden.
-        rekeningnummers:
-          type: array
-          items:
-            $ref: '#/components/schemas/RekeningnummerForeignKey'
-          nullable: true
-          description: Rekeningnummers van een partij
-        voorkeursRekeningnummer:
-          allOf:
-          - $ref: '#/components/schemas/RekeningnummerForeignKey'
-          nullable: true
-          description: Rekeningsnummer die een partij bij voorkeur gebruikt.
-        partijIdentificatoren:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartijIdentificatorForeignkey'
-          readOnly: true
-          description: Partij-identificatoren die hoorde bij deze partij.
-        soortPartij:
-          allOf:
-          - $ref: '#/components/schemas/SoortPartijEnum'
-          description: Geeft aan van welke specifieke soort partij sprake is.
-        indicatieGeheimhouding:
-          type: boolean
-          nullable: true
-          description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
-            dat deze gegevens als geheim beschouwd moeten worden. Als dit niet aangegeven
-            is dan wordt dit ingevuld als `null`.
-        voorkeurstaal:
-          type: string
-          description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
-            contact heeft met de gemeente. Voorbeeld: nld. Zie: https://www.iso.org/standard/4767.html'
-          maxLength: 3
-        indicatieActief:
-          type: boolean
-          description: Geeft aan of de contactgegevens van de partij nog gebruikt
-            morgen worden om contact op te nemen. Gegevens van niet-actieve partijen
-            mogen hiervoor niet worden gebruikt.
-        bezoekadres:
-          allOf:
-          - $ref: '#/components/schemas/PartijBezoekadres'
-          nullable: true
-          description: Adres waarop de partij door gemeente bezocht wil worden. Dit
-            mag afwijken van voor de verstrekker eventueel in een basisregistratie
-            bekende adressen.
-        correspondentieadres:
-          allOf:
-          - $ref: '#/components/schemas/PartijCorrespondentieadres'
-          nullable: true
-          description: Adres waarop de partij post van de gemeente wil ontvangen.
-            Dit mag afwijken van voor de verstrekker eventueel in een basisregistratie
-            bekende adressen.
+      oneOf:
+      - $ref: '#/components/schemas/contactpersoon_PartijSerializer'
+      - $ref: '#/components/schemas/persoon_PartijSerializer'
+      - $ref: '#/components/schemas/organisatie_PartijSerializer'
+      discriminator:
+        propertyName: soortPartij
+        mapping:
+          contactpersoon: '#/components/schemas/contactpersoon_PartijSerializer'
+          persoon: '#/components/schemas/persoon_PartijSerializer'
+          organisatie: '#/components/schemas/organisatie_PartijSerializer'
     PatchedPartijIdentificator:
       type: object
       description: |-
@@ -5222,6 +5273,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze partij indentificator binnen deze API.
+          minLength: 1
+          maxLength: 1000
         identificeerdePartij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -5252,6 +5305,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze rekeningnummer binnen deze API.
+          minLength: 1
+          maxLength: 1000
         partij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -5285,6 +5340,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze vertegenwoordigden binnen deze API.
+          minLength: 1
+          maxLength: 1000
         vertegenwoordigendePartij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -5293,6 +5350,51 @@ components:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
           description: '''Partij'' vertegenwoordigd wordt door een andere ''Partij''.'
+    Persoon:
+      type: object
+      description: |-
+        Set gegevensgroepdata from validated nested data.
+
+        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
+      properties:
+        contactnaam:
+          allOf:
+          - $ref: '#/components/schemas/PersoonContact'
+          nullable: true
+          description: Naam die een persoon wil gebruiken tijdens contact met de gemeente.
+            Deze mag afwijken van de eventueel in de Basisregistratie Personen (BRP)
+            bekende naam van de persoon.
+        volledigeNaam:
+          type: string
+          readOnly: true
+          description: De voledige naam van het persoon.
+      required:
+      - contactnaam
+      - volledigeNaam
+    PersoonContact:
+      type: object
+      properties:
+        voorletters:
+          type: string
+          description: Een afkorting van de voornamen. Meestal de beginletter, maar
+            in sommige gevallen de beginletter gecombineerd met de tweede letter van
+            een voornaam.
+          maxLength: 10
+        voornaam:
+          type: string
+          description: De voornaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          maxLength: 200
+        voorvoegselAchternaam:
+          type: string
+          description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
+            persoon wil gebruiken tijdens communicatie met de gemeente.
+          maxLength: 10
+        achternaam:
+          type: string
+          description: Een achternaam die de persoon wil gebruiken tijdens communicatie
+            met de gemeente.
+          maxLength: 200
     Rekeningnummer:
       type: object
       properties:
@@ -5306,6 +5408,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze rekeningnummer binnen deze API.
+          minLength: 1
+          maxLength: 1000
         partij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -5343,6 +5447,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze rekeningnummer binnen deze API.
+          minLength: 1
+          maxLength: 1000
       required:
       - url
       - uuid
@@ -5387,6 +5493,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze vertegenwoordigden binnen deze API.
+          minLength: 1
+          maxLength: 1000
         vertegenwoordigendePartij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -5400,6 +5508,60 @@ components:
       - uuid
       - vertegenwoordigdePartij
       - vertegenwoordigendePartij
+    actor_identificatie_GeautomatiseerdeActor:
+      type: object
+      properties:
+        actorIdentificatie:
+          $ref: '#/components/schemas/GeautomatiseerdeActor'
+    actor_identificatie_Medewerker:
+      type: object
+      properties:
+        actorIdentificatie:
+          $ref: '#/components/schemas/Medewerker'
+    actor_identificatie_OrganisatorischeEenheid:
+      type: object
+      properties:
+        actorIdentificatie:
+          $ref: '#/components/schemas/OrganisatorischeEenheid'
+    contactpersoon_PartijSerializer:
+      allOf:
+      - $ref: '#/components/schemas/Base_PartijSerializer'
+      - $ref: '#/components/schemas/partij_identificatie_Contactpersoon'
+    geautomatiseerde_actor_ActorSerializer:
+      allOf:
+      - $ref: '#/components/schemas/Base_ActorSerializer'
+      - $ref: '#/components/schemas/actor_identificatie_GeautomatiseerdeActor'
+    medewerker_ActorSerializer:
+      allOf:
+      - $ref: '#/components/schemas/Base_ActorSerializer'
+      - $ref: '#/components/schemas/actor_identificatie_Medewerker'
+    organisatie_PartijSerializer:
+      allOf:
+      - $ref: '#/components/schemas/Base_PartijSerializer'
+      - $ref: '#/components/schemas/partij_identificatie_Organisatie'
+    organisatorische_eenheid_ActorSerializer:
+      allOf:
+      - $ref: '#/components/schemas/Base_ActorSerializer'
+      - $ref: '#/components/schemas/actor_identificatie_OrganisatorischeEenheid'
+    partij_identificatie_Contactpersoon:
+      type: object
+      properties:
+        partijIdentificatie:
+          $ref: '#/components/schemas/Contactpersoon'
+    partij_identificatie_Organisatie:
+      type: object
+      properties:
+        partijIdentificatie:
+          $ref: '#/components/schemas/Organisatie'
+    partij_identificatie_Persoon:
+      type: object
+      properties:
+        partijIdentificatie:
+          $ref: '#/components/schemas/Persoon'
+    persoon_PartijSerializer:
+      allOf:
+      - $ref: '#/components/schemas/Base_PartijSerializer'
+      - $ref: '#/components/schemas/partij_identificatie_Persoon'
   securitySchemes:
     tokenAuth:
       type: apiKey

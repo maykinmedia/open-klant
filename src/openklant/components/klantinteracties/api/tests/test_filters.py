@@ -694,16 +694,17 @@ class PartijFilterSetTests(APITestCase):
     def test_filter_partij_identificator_code_objecttype(self):
         partij, partij2 = PartijFactory.create_batch(2)
         PartijIdentificatorFactory.create(
-            partij=partij, partij_identificator_code_objecttype="one"
+            partij=partij, partij_identificator_code_objecttype="natuurlijk_persoon"
         )
         PartijIdentificatorFactory.create(
-            partij=partij2, partij_identificator_code_objecttype="two"
+            partij=partij2,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
         )
 
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"partijIdentificator__codeObjecttype": "two"},
+                {"partijIdentificator__codeObjecttype": "niet_natuurlijk_persoon"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -724,16 +725,16 @@ class PartijFilterSetTests(APITestCase):
     def test_filter_identificator_soort_object_id(self):
         partij, partij2 = PartijFactory.create_batch(2)
         PartijIdentificatorFactory.create(
-            partij=partij, partij_identificator_code_soort_object_id="one"
+            partij=partij, partij_identificator_code_soort_object_id="bsn"
         )
         PartijIdentificatorFactory.create(
-            partij=partij2, partij_identificator_code_soort_object_id="two"
+            partij=partij2, partij_identificator_code_soort_object_id="kvk_nummer"
         )
 
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"partijIdentificator__codeSoortObjectId": "one"},
+                {"partijIdentificator__codeSoortObjectId": "bsn"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -756,16 +757,20 @@ class PartijFilterSetTests(APITestCase):
     def test_filter_identificator_object_id(self):
         partij, partij2 = PartijFactory.create_batch(2)
         PartijIdentificatorFactory.create(
-            partij=partij, partij_identificator_object_id="one"
+            partij=partij,
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="296648875",
         )
         PartijIdentificatorFactory.create(
-            partij=partij2, partij_identificator_object_id="two"
+            partij=partij2,
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="111222333",
         )
 
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"partijIdentificator__objectId": "one"},
+                {"partijIdentificator__objectId": "296648875"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -786,16 +791,16 @@ class PartijFilterSetTests(APITestCase):
     def test_filter_identificator_code_register(self):
         partij, partij2 = PartijFactory.create_batch(2)
         PartijIdentificatorFactory.create(
-            partij=partij, partij_identificator_code_register="one"
+            partij=partij, partij_identificator_code_register="brp"
         )
         PartijIdentificatorFactory.create(
-            partij=partij2, partij_identificator_code_register="two"
+            partij=partij2, partij_identificator_code_register="hr"
         )
 
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"partijIdentificator__code_register": "two"},
+                {"partijIdentificator__code_register": "hr"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
