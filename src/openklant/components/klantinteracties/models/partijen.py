@@ -10,8 +10,14 @@ from vng_api_common.descriptors import GegevensGroepType
 from openklant.components.utils.mixins import APIMixin
 from openklant.components.utils.number_generator import number_generator
 
-from .constants import SoortPartij
+from .constants import (
+    PartijIdentificatorCodeObjectType,
+    PartijIdentificatorCodeRegister,
+    PartijIdentificatorCodeSoortObjectId,
+    SoortPartij,
+)
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
+from .validators import PartijIdentificatorValidator
 
 
 class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
@@ -352,6 +358,7 @@ class PartijIdentificator(models.Model):
         help_text=_(
             "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
         ),
+        choices=PartijIdentificatorCodeObjectType.choices,
         max_length=200,
         blank=True,
     )
@@ -360,6 +367,7 @@ class PartijIdentificator(models.Model):
         help_text=_(
             "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
         ),
+        choices=PartijIdentificatorCodeSoortObjectId.choices,
         max_length=200,
         blank=True,
     )
@@ -368,6 +376,7 @@ class PartijIdentificator(models.Model):
         help_text=_(
             "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
         ),
+        validators=[validate_integer],
         max_length=200,
         blank=True,
     )
@@ -378,6 +387,7 @@ class PartijIdentificator(models.Model):
             "het object is geregistreerd, bijvoorbeeld: 'BRP'."
         ),
         max_length=200,
+        choices=PartijIdentificatorCodeRegister.choices,
         blank=True,
     )
 
@@ -405,3 +415,11 @@ class PartijIdentificator(models.Model):
         object = self.partij_identificator_object_id
 
         return f"{soort_object} - {object}"
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        super().clean()
+        PartijIdentificatorValidator(**self.partij_identificator).validate()
