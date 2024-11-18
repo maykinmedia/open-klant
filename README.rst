@@ -69,7 +69,7 @@ Semantisch Informatiemodel
 
 Opmerkingen
 -----------
-Bovenstaand informatiemodel is opgesteld door Hugo ter Doest, met de volgende opmerkingen:
+Bovenstaand informatiemodel is opgesteld met de volgende opmerkingen:
 
  * Voor de leesbaarheid en onderhoudbaarheid bevat het SIM niet de attributen zoals in het oorspronkelijke model. Deze zijn niet belangrijk voor het begrip van het model en eenvoudig op te zoeken in de API-specificatie.
  * Voor de relaties tussen entiteiten worden de feitelijke attribuutnamen uit de API specificatie gebruikt met weglating van de entiteit waarnaar wordt verwezen, bijv. "leiddeTotInterneTaken" word "leidde tot".Dit verbetert de de relatie met de API en daarmee het begrip. Als er geen betekenisvolle attribuutnaam voor de relatie wordt gebruikt (bijv. alleen de naam van de gerelateerde entiteit), is de relatienaam leeg gelaten.
