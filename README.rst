@@ -64,7 +64,7 @@ Zie: `Alle versies en wijzigingen <https://github.com/maykinmedia/open-klant/blo
 
 Semantisch Informatiemodel
 ==========================
-.. image:: https://raw.githubusercontent.com/maykinmedia/open-klant/refs/heads/feature/add-sim-documentation/docs/OpenKlant2SIM.drawio.png
+.. image:: https://raw.githubusercontent.com/maykinmedia/open-klant/refs/heads/feature/add-sim-documentation/docs/OpenKlant2SIM.drawio-v2.png
    :width: 800px
 
 Opmerkingen
