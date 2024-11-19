@@ -1583,6 +1583,17 @@ paths:
           format: uuid
         description: Zoek klantcontact object op basis van het betrokkene uuid.
       - in: query
+        name: hadBetrokkene__wasPartij__url
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van de partij url.
+      - in: query
+        name: hadBetrokkene__wasPartij__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Zoek klantcontact object op basis van de partij uuid.
+      - in: query
         name: indicatieContactGelukt
         schema:
           type: boolean

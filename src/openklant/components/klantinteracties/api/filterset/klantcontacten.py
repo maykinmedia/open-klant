@@ -28,6 +28,14 @@ class KlantcontactFilterSet(FilterSet):
         help_text=_("Zoek klantcontact object op basis van het betrokkene uuid."),
         field_name="betrokkene__uuid",
     )
+    had_betrokkene__was_partij__url = filters.CharFilter(
+        help_text=_("Zoek klantcontact object op basis van de partij url."),
+        method="filter_partij_url",
+    )
+    had_betrokkene__was_partij__uuid = filters.UUIDFilter(
+        help_text=_("Zoek klantcontact object op basis van de partij uuid."),
+        field_name="betrokkene__partij__uuid",
+    )
     onderwerpobject__url = filters.CharFilter(
         help_text=_("Zoek klantcontact object op basis van het onderwerpobject url."),
         method="filter_onderwerpobject_url",
@@ -54,6 +62,8 @@ class KlantcontactFilterSet(FilterSet):
         fields = (
             "had_betrokkene__url",
             "had_betrokkene__uuid",
+            "had_betrokkene__was_partij__url",
+            "had_betrokkene__was_partij__uuid",
             "onderwerpobject__uuid",
             "onderwerpobject__url",
             "onderwerpobject__onderwerpobjectidentificator_code_objecttype",
@@ -79,6 +89,13 @@ class KlantcontactFilterSet(FilterSet):
         try:
             url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
             return queryset.filter(betrokkene__uuid=url_uuid)
+        except ValueError:
+            return queryset.none()
+
+    def filter_partij_url(self, queryset, name, value):
+        try:
+            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
+            return queryset.filter(betrokkene__partij__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
