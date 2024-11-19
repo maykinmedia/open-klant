@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: EUPL-1.2
 # Copyright (C) 2023 Dimpact
 import logging
-from typing import Dict, Iterator, List, Optional, Tuple, Type, Union
+from typing import Dict, Generator, Iterator, List, Optional, Tuple, Type, Union
+from uuid import uuid4
 
 from django.db import models
 from django.utils.module_loading import import_string
@@ -65,9 +66,14 @@ class InclusionNode:
         """
         results = {}
         for child in self._children:
-            child_result = child.display()
+            # TODO: rewrite display function?
+            child_result = child.display() if child.value else None
+
             if child.many:
-                results.setdefault(child.label, []).append(child_result)
+                child_results = results.setdefault(child.label, [])
+
+                if child_result:
+                    child_results.append(child_result)
             else:
                 results[child.label] = child_result
         return results
@@ -169,9 +175,19 @@ class ExpandLoader(InclusionLoader):
         entries = self._inclusions((), serializer, serializer.instance)
 
         for obj, inclusion_serializer, parent, path, many in entries:
-            data = inclusion_serializer(instance=obj, context=serializer.context).data
+            if not obj:
+                data = None
+                id = str(uuid4())
+            else:
+                serializer = inclusion_serializer(
+                    instance=obj, context=serializer.context
+                )
+
+                data: dict | list = serializer.data
+                id = data["url"]
+
             tree.add_node(
-                id=data["url"],
+                id=id,
                 value=data,
                 label=path[-1],
                 many=many,
@@ -205,11 +221,11 @@ class ExpandLoader(InclusionLoader):
         self,
         path: Tuple[str, ...],
         field: Field,
-        instance: models.Model,
+        instance: Optional[models.Model],
         name: str,
         inclusion_serializers: Dict[str, Union[str, Type[Serializer]]],
     ) -> Iterator[
-        Tuple[models.Model, Type[Serializer], models.Model, Tuple[str, ...], bool]
+        Tuple[Optional[models.Model], Type[Serializer], models.Model, Tuple[str, ...], bool]
     ]:
         """
         change return of this generator from (obj, serializer_class) to
@@ -230,8 +246,6 @@ class ExpandLoader(InclusionLoader):
 
         if inclusion_serializer is None:
             return
-
-        # from here, these fields are for inclusion serializer fields
 
         if isinstance(inclusion_serializer, str):
             inclusion_serializer = import_string(inclusion_serializer)
@@ -254,7 +268,8 @@ class ExpandLoader(InclusionLoader):
             ):
                 yield entry
         else:
-            return [], inclusion_serializer, instance, new_path, many
+            if new_path in self.allowed_paths:
+                yield None, inclusion_serializer, instance, new_path, many
 
     def _some_related_field_inclusions(
         self,

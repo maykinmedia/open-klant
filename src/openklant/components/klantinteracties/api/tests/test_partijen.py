@@ -1826,9 +1826,6 @@ class PartijTests(APITestCase):
 
         response_data: dict = response.json()
 
-        from pprint import pprint
-        pprint(response_data)
-
         self.assertEqual(response_data["_expand"], {"digitaleAdressen": []})
 
         # request the partij *with* digitale adressen
@@ -1841,11 +1838,16 @@ class PartijTests(APITestCase):
 
         response_data: dict = response.json()
 
-        serializer = DigitaalAdresSerializer(instance=digitaal_adres)
+        received_adressen = response_data["_expand"]["digitaleAdressen"]
+        expected_url = reverse(
+            "klantinteracties:digitaaladres-detail",
+            kwargs=dict(uuid=digitaal_adres.uuid)
+        )
 
+        self.assertEqual(len(received_adressen), 1)
         self.assertEqual(
-            response_data["_expand"],
-            {"digitaleAdressen": [serializer.validated_data]}
+            received_adressen[0]["url"],
+            f"http://testserver{expected_url}"
         )
 
 
