@@ -74,25 +74,37 @@ class ValidatorsTestCase(TestCase):
         self.assertIsNone(validate_postal_code("1015 cJ"))
 
     def test_validate_phone_number(self):
+        valid_phone_numbers = [
+            "+31612345678",
+            "+441134960000",  # US test number
+            "+12065550100",  # US test number
+            "0031612345678",
+            "09001234567",
+            "080085285212",
+            "1400",
+            "14012",
+            "14079",
+        ]
         invalid_phone_numbers = [
             "0695azerty",
             "azerty0545",
             "@4566544++8",
             "onetwothreefour",
+            "020 753 0523",
+            "+311234",
         ]
         for invalid_phone_number in invalid_phone_numbers:
-            self.assertRaisesMessage(
-                ValidationError,
-                "Het opgegeven mobiele telefoonnummer is ongeldig.",
-                validate_phone_number,
-                invalid_phone_number,
-            )
+            with self.subTest(invalid_phone_number):
+                self.assertRaisesMessage(
+                    ValidationError,
+                    "Het opgegeven telefoonnummer is ongeldig.",
+                    validate_phone_number,
+                    invalid_phone_number,
+                )
 
-        self.assertEqual(validate_phone_number(" 0695959595"), " 0695959595")
-        self.assertEqual(validate_phone_number("+33695959595"), "+33695959595")
-        self.assertEqual(validate_phone_number("00695959595"), "00695959595")
-        self.assertEqual(validate_phone_number("00-69-59-59-59-5"), "00-69-59-59-59-5")
-        self.assertEqual(validate_phone_number("00 69 59 59 59 5"), "00 69 59 59 59 5")
+        for valid_phone_number in valid_phone_numbers:
+            with self.subTest(valid_phone_number):
+                self.assertIsNone(validate_phone_number(valid_phone_number))
 
     def test_validate_no_space_validator(self):
         invalid_strings = [

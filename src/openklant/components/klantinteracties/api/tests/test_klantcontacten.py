@@ -74,7 +74,7 @@ class KlantContactTests(APITestCase):
             actor=actor,
             functie="functie",
             emailadres="phil@bozeman.com",
-            telefoonnummer="3168234723",
+            telefoonnummer="+31618234723",
         )
         klantcontact = KlantcontactFactory.create()
         ActorKlantcontactFactory.create(actor=actor, klantcontact=klantcontact)
@@ -107,7 +107,7 @@ class KlantContactTests(APITestCase):
                         "actorIdentificatie": {
                             "functie": "functie",
                             "emailadres": "phil@bozeman.com",
-                            "telefoonnummer": "3168234723",
+                            "telefoonnummer": "+31618234723",
                         },
                     }
                 ],
