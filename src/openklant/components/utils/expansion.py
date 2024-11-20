@@ -2,7 +2,6 @@
 # Copyright (C) 2023 Dimpact
 import logging
 from typing import Dict, Iterator, List, Optional, Tuple, Type, Union
-from uuid import uuid4
 
 from django.db import models
 from django.utils.module_loading import import_string
