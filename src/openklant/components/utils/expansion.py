@@ -75,6 +75,7 @@ class InclusionNode:
                     child_results.append(child_result)
             else:
                 results[child.label] = child_result
+
         return results
 
     def display(self) -> Optional[dict]:
@@ -174,24 +175,23 @@ class ExpandLoader(InclusionLoader):
         entries = self._inclusions((), serializer, serializer.instance)
 
         for obj, inclusion_serializer, parent, path, many in entries:
-            if not obj:
-                data = None
-                id = str(uuid4())
-            else:
-                serializer = inclusion_serializer(
-                    instance=obj, context=serializer.context
-                )
-
-                data: dict | list = serializer.data
-                id = data["url"]
-
-            tree.add_node(
-                id=id,
-                value=data,
+            tree_kwargs = dict(
+                id=None,
+                value=None,
                 label=path[-1],
                 many=many,
                 parent_id=parent.get_absolute_api_url(request=request),
             )
+
+            if obj:
+                serializer = inclusion_serializer(
+                    instance=obj, context=serializer.context
+                )
+                data: dict | list = serializer.data
+
+                tree_kwargs.update(dict(value=data, id=data["url"]))
+
+            tree.add_node(**tree_kwargs)
 
         result = tree.display_tree()
 
