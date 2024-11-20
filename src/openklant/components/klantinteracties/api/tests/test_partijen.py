@@ -6,7 +6,6 @@ from rest_framework import status
 from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.constants import SoortPartij
-from openklant.components.klantinteracties.api.serializers.digitaal_adres import DigitaalAdresSerializer
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
@@ -1803,23 +1802,17 @@ class PartijTests(APITestCase):
     def test_digitale_adressen_inclusion_param(self):
         persoon = PersoonFactory(partij__soort_partij=SoortPartij.persoon)
 
-        persoon_with_adressen = PersoonFactory(
-            partij__soort_partij=SoortPartij.persoon
-        )
-        digitaal_adres = DigitaalAdresFactory(
-            partij=persoon_with_adressen.partij
-        )
+        persoon_with_adressen = PersoonFactory(partij__soort_partij=SoortPartij.persoon)
+        digitaal_adres = DigitaalAdresFactory(partij=persoon_with_adressen.partij)
 
         def _get_detail_url(partij: Partij) -> str:
             return reverse(
-                "klantinteracties:partij-detail",
-                kwargs={"uuid": str(partij.uuid)}
+                "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
             )
 
         # request the partij *without* any digitale adressen
         response = self.client.get(
-            _get_detail_url(persoon.partij),
-            data=dict(expand="digitaleAdressen")
+            _get_detail_url(persoon.partij), data=dict(expand="digitaleAdressen")
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -1831,7 +1824,7 @@ class PartijTests(APITestCase):
         # request the partij *with* digitale adressen
         response = self.client.get(
             _get_detail_url(persoon_with_adressen.partij),
-            data=dict(expand="digitaleAdressen")
+            data=dict(expand="digitaleAdressen"),
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -1841,13 +1834,12 @@ class PartijTests(APITestCase):
         received_adressen = response_data["_expand"]["digitaleAdressen"]
         expected_url = reverse(
             "klantinteracties:digitaaladres-detail",
-            kwargs=dict(uuid=digitaal_adres.uuid)
+            kwargs=dict(uuid=digitaal_adres.uuid),
         )
 
         self.assertEqual(len(received_adressen), 1)
         self.assertEqual(
-            received_adressen[0]["url"],
-            f"http://testserver{expected_url}"
+            received_adressen[0]["url"], f"http://testserver{expected_url}"
         )
 
 

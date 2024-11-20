@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: EUPL-1.2
 # Copyright (C) 2023 Dimpact
 import logging
-from typing import Dict, Generator, Iterator, List, Optional, Tuple, Type, Union
+from typing import Dict, Iterator, List, Optional, Tuple, Type, Union
 from uuid import uuid4
 
 from django.db import models
@@ -66,20 +66,19 @@ class InclusionNode:
         """
         results = {}
         for child in self._children:
-            # TODO: rewrite display function?
-            child_result = child.display() if child.value else None
+            child_result = child.display()
 
             if child.many:
                 child_results = results.setdefault(child.label, [])
 
-                if child_result:
+                if child_result is not None:
                     child_results.append(child_result)
             else:
                 results[child.label] = child_result
         return results
 
-    def display(self) -> dict:
-        data = self.value.copy()
+    def display(self) -> Optional[dict]:
+        data = self.value.copy() if self.value is not None else None
         if self._children:
             data[EXPAND_KEY] = self.display_children()
         return data
@@ -225,7 +224,13 @@ class ExpandLoader(InclusionLoader):
         name: str,
         inclusion_serializers: Dict[str, Union[str, Type[Serializer]]],
     ) -> Iterator[
-        Tuple[Optional[models.Model], Type[Serializer], models.Model, Tuple[str, ...], bool]
+        Tuple[
+            Optional[models.Model],
+            Type[Serializer],
+            models.Model,
+            Tuple[str, ...],
+            bool,
+        ]
     ]:
         """
         change return of this generator from (obj, serializer_class) to
@@ -254,6 +259,8 @@ class ExpandLoader(InclusionLoader):
             True if hasattr(field, "child_relation") else getattr(field, "many", False)
         )
 
+        obj: Optional[models.Model] = None
+
         for obj in self._some_related_field_inclusions(
             new_path, field, instance, inclusion_serializer
         ):
@@ -269,7 +276,7 @@ class ExpandLoader(InclusionLoader):
                 yield entry
         else:
             if new_path in self.allowed_paths:
-                yield None, inclusion_serializer, instance, new_path, many
+                yield obj, inclusion_serializer, instance, new_path, many
 
     def _some_related_field_inclusions(
         self,
