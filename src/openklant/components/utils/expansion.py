@@ -65,16 +65,21 @@ class InclusionNode:
         return dict where children are grouped by their label
         """
         results = {}
+
         for child in self._children:
-            child_result = child.display()
+            child_result: Optional[dict] = child.display()
 
-            if child.many:
-                child_results = results.setdefault(child.label, [])
-
-                if child_result is not None:
-                    child_results.append(child_result)
-            else:
+            if not child.many:
                 results[child.label] = child_result
+                continue
+
+            child_results: list = results.setdefault(child.label, [])
+
+            if child_result is None:
+                continue
+
+            if child_result is not None:
+                child_results.append(child_result)
 
         return results
 
