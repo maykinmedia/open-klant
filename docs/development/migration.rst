@@ -32,7 +32,7 @@ could look like the following:
         ./src/manage.py loaddata migration/credentials migration/test_digitaal_adres
 
     # Run the corresponding test
-    $ ./src/manage.py test test openklant.tests.test_migrate.MigrateTestCase.test_digitaal_adres
+    $ ./src/manage.py test openklant.tests.test_migrate.MigrateTestCase.test_digitaal_adres
 
     # Stop and destroy the containers (to start with a clean slate on the next run)
     $ docker compose down
