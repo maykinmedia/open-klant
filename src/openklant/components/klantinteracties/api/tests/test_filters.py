@@ -31,92 +31,28 @@ from openklant.components.token.tests.api_testcase import APITestCase
 class KlantcontactFilterSetTests(APITestCase):
     url = reverse("klantinteracties:klantcontact-list")
 
-    def setUp(self):
-        super().setUp()
-        (
-            self.klantcontact,
-            self.klantcontact2,
-            self.klantcontact3,
-            self.klantcontact4,
-            self.klantcontact5,
-        ) = KlantcontactFactory.create_batch(5)
-
-        self.partij, self.partij2, self.partij3, self.partij4, self.partij5 = (
-            PartijFactory.create_batch(5)
-        )
-
-        self.betrokkene = BetrokkeneFactory.create(
-            klantcontact=self.klantcontact,
-            partij=self.partij,
-        )
-        self.betrokkene2 = BetrokkeneFactory.create(
-            klantcontact=self.klantcontact2,
-            partij=self.partij2,
-        )
-        self.betrokkene3 = BetrokkeneFactory.create(
-            klantcontact=self.klantcontact3,
-            partij=self.partij3,
-        )
-        self.betrokkene4 = BetrokkeneFactory.create(
-            klantcontact=self.klantcontact4,
-            partij=self.partij4,
-        )
-        self.betrokkene5 = BetrokkeneFactory.create(
-            klantcontact=self.klantcontact5,
-            partij=self.partij5,
-        )
-
-        self.onderwerpobject = OnderwerpobjectFactory.create(
-            klantcontact=self.klantcontact,
-            was_klantcontact=self.klantcontact5,
-            onderwerpobjectidentificator_code_objecttype="1",
-            onderwerpobjectidentificator_code_soort_object_id="1",
-            onderwerpobjectidentificator_object_id="1",
-            onderwerpobjectidentificator_code_register="1",
-        )
-        self.onderwerpobject2 = OnderwerpobjectFactory.create(
-            klantcontact=self.klantcontact2,
-            was_klantcontact=self.klantcontact,
-            onderwerpobjectidentificator_code_objecttype="2",
-            onderwerpobjectidentificator_code_soort_object_id="2",
-            onderwerpobjectidentificator_object_id="2",
-            onderwerpobjectidentificator_code_register="2",
-        )
-        self.onderwerpobject3 = OnderwerpobjectFactory.create(
-            klantcontact=self.klantcontact3,
-            was_klantcontact=self.klantcontact2,
-            onderwerpobjectidentificator_code_objecttype="3",
-            onderwerpobjectidentificator_code_soort_object_id="3",
-            onderwerpobjectidentificator_object_id="3",
-            onderwerpobjectidentificator_code_register="3",
-        )
-        self.onderwerpobject4 = OnderwerpobjectFactory.create(
-            klantcontact=self.klantcontact4,
-            was_klantcontact=self.klantcontact3,
-            onderwerpobjectidentificator_code_objecttype="4",
-            onderwerpobjectidentificator_code_soort_object_id="4",
-            onderwerpobjectidentificator_object_id="4",
-            onderwerpobjectidentificator_code_register="4",
-        )
-        self.onderwerpobject5 = OnderwerpobjectFactory.create(
-            klantcontact=self.klantcontact5,
-            was_klantcontact=self.klantcontact4,
-            onderwerpobjectidentificator_code_objecttype="5",
-            onderwerpobjectidentificator_code_soort_object_id="5",
-            onderwerpobjectidentificator_object_id="5",
-            onderwerpobjectidentificator_code_register="5",
-        )
-
     def test_filter_partij_url(self):
-        partij_url = f"https://testserver.com/klantinteracties/api/v1/klantcontact/{self.partij.uuid}"
-        response = self.client.get(
-            self.url,
-            {"hadBetrokkene__wasPartij__url": partij_url},
-        )
-        data = response.json()["results"]
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        partij = PartijFactory.create()
+        partij2 = PartijFactory.create()
+        BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
+        BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.klantcontact.uuid), data[0]["uuid"])
+        with self.subTest("happy flow"):
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+            )
+            full_partij_url = "https://testserver.com" + partij_detail_url
+
+            response = self.client.get(
+                self.url,
+                {"hadBetrokkene__wasPartij__url": full_partij_url},
+            )
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             url = f"https://testserver.com/klantinteracties/api/v1/klantcontact/{str(uuid4())}"
@@ -133,25 +69,43 @@ class KlantcontactFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_partij_uuid(self):
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        partij = PartijFactory.create()
+        partij2 = PartijFactory.create()
+        BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
+        BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
+
         response = self.client.get(
             self.url,
-            {"hadBetrokkene__wasPartij__uuid": str(self.partij.uuid)},
+            {"hadBetrokkene__wasPartij__uuid": str(partij.uuid)},
         )
         data = response.json()["results"]
 
         self.assertEqual(1, len(data))
-        self.assertEqual(str(self.klantcontact.uuid), data[0]["uuid"])
+        self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
 
     def test_filter_betrokkene_url(self):
-        url = f"https://testserver.com/klantinteracties/api/v1/klantcontact/{self.betrokkene.uuid}"
-        response = self.client.get(
-            self.url,
-            {"hadBetrokkene__url": url},
-        )
-        data = response.json()["results"]
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
+        BetrokkeneFactory.create(klantcontact=klantcontact2)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.klantcontact.uuid), data[0]["uuid"])
+        with self.subTest("happy flow"):
+            betrokkene_detail_url = reverse(
+                "klantinteracties:betrokkene-detail",
+                kwargs={"uuid": str(betrokkene.uuid)},
+            )
+            full_betrokkene_url = "https://testserver.com" + betrokkene_detail_url
+
+            response = self.client.get(
+                self.url,
+                {"hadBetrokkene__url": full_betrokkene_url},
+            )
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -169,15 +123,28 @@ class KlantcontactFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_onderwerpobject__url(self):
-        url = f"https://testserver.com/klantinteracties/api/v1/onderwerpobjecten/{self.onderwerpobject5.uuid}"
-        response = self.client.get(
-            self.url,
-            {"onderwerpobject__url": url},
-        )
-        data = response.json()["results"]
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        OnderwerpobjectFactory.create(klantcontact=klantcontact)
+        onderwerpobject2 = OnderwerpobjectFactory.create(klantcontact=klantcontact2)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.klantcontact5.uuid), data[0]["uuid"])
+        with self.subTest("happy flow"):
+            onderwerpobject_detail_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={"uuid": str(onderwerpobject2.uuid)},
+            )
+            full_onderwerpobject_url = (
+                "https://testserver.com" + onderwerpobject_detail_url
+            )
+
+            response = self.client.get(
+                self.url,
+                {"onderwerpobject__url": full_onderwerpobject_url},
+            )
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             url = f"https://testserver.com/klantinteracties/api/v1/onderwerpobjecten/{str(uuid4())}"
@@ -194,15 +161,28 @@ class KlantcontactFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_was_onderwerpobject__url(self):
-        url = f"https://testserver.com/klantinteracties/api/v1/onderwerpobjecten/{self.onderwerpobject5.uuid}"
-        response = self.client.get(
-            self.url,
-            {"wasOnderwerpobject__url": url},
-        )
-        data = response.json()["results"]
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        OnderwerpobjectFactory.create(was_klantcontact=klantcontact)
+        onderwerpobject2 = OnderwerpobjectFactory.create(was_klantcontact=klantcontact2)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.klantcontact4.uuid), data[0]["uuid"])
+        with self.subTest("happy flow"):
+            was_onderwerpobject_detail_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={"uuid": str(onderwerpobject2.uuid)},
+            )
+            full_was_onderwerpobject_url = (
+                "https://testserver.com" + was_onderwerpobject_detail_url
+            )
+
+            response = self.client.get(
+                self.url,
+                {"wasOnderwerpobject__url": full_was_onderwerpobject_url},
+            )
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             url = f"https://testserver.com/klantinteracties/api/v1/onderwerpobjecten/{str(uuid4())}"
@@ -224,45 +204,29 @@ class KlantcontactFilterSetTests(APITestCase):
 class BetrokkeneFilterSetTests(APITestCase):
     url = reverse("klantinteracties:betrokkene-list")
 
-    def setUp(self):
-        super().setUp()
-        self.klantcontact = KlantcontactFactory.create(nummer="6237172371")
-        self.partij = PartijFactory.create(nummer="8123973457")
-        self.betrokkene = BetrokkeneFactory.create(
-            partij=self.partij, klantcontact=self.klantcontact
-        )
-        self.digitaal_adres = DigitaalAdresFactory.create(
-            betrokkene=self.betrokkene, adres="search_param_adres"
-        )
-
-        partij2 = PartijFactory.create()
-        betrokkene2 = BetrokkeneFactory.create(partij=partij2)
-        DigitaalAdresFactory.create(betrokkene=betrokkene2)
-
-        partij3 = PartijFactory.create()
-        betrokkene3 = BetrokkeneFactory.create(partij=partij3)
-        DigitaalAdresFactory.create(betrokkene=betrokkene3)
-
-        partij4 = PartijFactory.create()
-        betrokkene4 = BetrokkeneFactory.create(partij=partij4)
-        DigitaalAdresFactory.create(betrokkene=betrokkene4)
-
-        partij5 = PartijFactory.create()
-        betrokkene5 = BetrokkeneFactory.create(partij=partij5)
-        DigitaalAdresFactory.create(betrokkene=betrokkene5)
-
     def test_filter_had_klantcontact_url(self):
-        klantcontact_url = f"https://testserver.com/klantinteracties/api/v1/klantcontact/{self.klantcontact.uuid}"
-        response = self.client.get(
-            self.url,
-            {"hadKlantcontact__url": klantcontact_url},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
+        BetrokkeneFactory.create(klantcontact=klantcontact2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            klantcontact_detail_url = reverse(
+                "klantinteracties:klantcontact-detail",
+                kwargs={"uuid": str(klantcontact.uuid)},
+            )
+            full_klantcontact_url = "https://testserver.com" + klantcontact_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url,
+                {"hadKlantcontact__url": full_klantcontact_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             url = f"https://testserver.com/klantinteracties/api/v1/klantcontact/{str(uuid4())}"
@@ -279,16 +243,22 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_had_klantcontact_uuid(self):
-        response = self.client.get(
-            self.url,
-            {"hadKlantcontact__uuid": str(self.klantcontact.uuid)},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
+        BetrokkeneFactory.create(klantcontact=klantcontact2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"hadKlantcontact__uuid": str(klantcontact.uuid)},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -306,16 +276,22 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_had_klantcontact_nummer(self):
-        response = self.client.get(
-            self.url,
-            {"hadKlantcontact__nummer": str(6237172371)},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        klantcontact = KlantcontactFactory.create(nummer="6237172371")
+        klantcontact2 = KlantcontactFactory.create(nummer="9999999999")
+        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
+        BetrokkeneFactory.create(klantcontact=klantcontact2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"hadKlantcontact__nummer": str(6237172371)},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -327,17 +303,30 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
     def test_filter_verstrektedigitaal_adres_url(self):
-        url = f"https://testserver.com/klantinteracties/api/v1/digitaal_adres/{self.digitaal_adres.uuid}"
-        response = self.client.get(
-            self.url,
-            {"verstrektedigitaalAdres__url": url},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        betrokkene = BetrokkeneFactory.create()
+        betrokkene2 = BetrokkeneFactory.create()
+        digitaal_adres = DigitaalAdresFactory.create(betrokkene=betrokkene)
+        DigitaalAdresFactory.create(betrokkene=betrokkene2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            digitaal_adres_detail_url = reverse(
+                "klantinteracties:digitaaladres-detail",
+                kwargs={"uuid": str(digitaal_adres.uuid)},
+            )
+            full_digitaal_adres_url = (
+                "https://testserver.com" + digitaal_adres_detail_url
+            )
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url,
+                {"verstrektedigitaalAdres__url": full_digitaal_adres_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             none_existing_url = f"https://testserver.com/klantinteracties/api/v1/digitaal_adres/{str(uuid4())}"
@@ -356,16 +345,22 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_verstrektedigitaal_adres_uuid(self):
-        response = self.client.get(
-            self.url,
-            {"verstrektedigitaalAdres__uuid": str(self.digitaal_adres.uuid)},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        betrokkene = BetrokkeneFactory.create()
+        betrokkene2 = BetrokkeneFactory.create()
+        digitaal_adres = DigitaalAdresFactory.create(betrokkene=betrokkene)
+        DigitaalAdresFactory.create(betrokkene=betrokkene2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"verstrektedigitaalAdres__uuid": str(digitaal_adres.uuid)},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -383,16 +378,22 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_verstrektedigitaal_adres_adres(self):
-        response = self.client.get(
-            self.url,
-            {"verstrektedigitaalAdres__adres": "search_param_adres"},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        betrokkene = BetrokkeneFactory.create()
+        betrokkene2 = BetrokkeneFactory.create()
+        DigitaalAdresFactory.create(betrokkene=betrokkene, adres="search_param_adres")
+        DigitaalAdresFactory.create(betrokkene=betrokkene2, adres="whatever")
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"verstrektedigitaalAdres__adres": "search_param_adres"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -404,18 +405,27 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
     def test_filter_was_partij_url(self):
-        response = self.client.get(
-            self.url,
-            {
-                "wasPartij__url": f"https://testserver.com/klantinteracties/api/v1/partij/{self.partij.uuid}"
-            },
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        partij = PartijFactory.create()
+        partij2 = PartijFactory.create()
+        betrokkene = BetrokkeneFactory.create(partij=partij)
+        BetrokkeneFactory.create(partij=partij2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+            )
+            full_partij_url = "https://testserver.com" + partij_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url,
+                {"wasPartij__url": full_partij_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -433,16 +443,22 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_was_partij_uuid(self):
-        response = self.client.get(
-            self.url,
-            {"wasPartij__uuid": str(self.partij.uuid)},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        partij = PartijFactory.create()
+        partij2 = PartijFactory.create()
+        betrokkene = BetrokkeneFactory.create(partij=partij)
+        BetrokkeneFactory.create(partij=partij2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"wasPartij__uuid": str(partij.uuid)},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -458,16 +474,22 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_was_partij_nummer(self):
-        response = self.client.get(
-            self.url,
-            {"wasPartij__nummer": "8123973457"},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        partij = PartijFactory.create(nummer="8123973457")
+        partij2 = PartijFactory.create(nummer="9999999999")
+        betrokkene = BetrokkeneFactory.create(partij=partij)
+        BetrokkeneFactory.create(partij=partij2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"wasPartij__nummer": "8123973457"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.betrokkene.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -482,83 +504,30 @@ class BetrokkeneFilterSetTests(APITestCase):
 class PartijFilterSetTests(APITestCase):
     url = reverse("klantinteracties:partij-list")
 
-    def setUp(self):
-        super().setUp()
-        self.partij = PartijFactory.create(nummer="1111111111")
-        self.partij2 = PartijFactory.create(nummer="2222222222")
-        self.partij3 = PartijFactory.create(nummer="3333333333")
-        self.partij4 = PartijFactory.create(nummer="4444444444")
-        self.partij5 = PartijFactory.create(nummer="5555555555")
-
-        for partij_obj in [
-            self.partij,
-            self.partij2,
-            self.partij3,
-            self.partij4,
-            self.partij5,
-        ]:
-            self.partij_identificator = PartijIdentificatorFactory.create(
-                partij=partij_obj,
-                partij_identificator_code_objecttype=f"objecttype-{partij_obj.nummer}",
-                partij_identificator_code_soort_object_id=f"soort-object-id-{partij_obj.nummer}",
-                partij_identificator_object_id=f"object-id-{partij_obj.nummer}",
-                partij_identificator_code_register=f"register-{partij_obj.nummer}",
-            )
-
-        self.vertegenwoordigde = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij,
-            vertegenwoordigde_partij=self.partij2,
-        )
-        self.vertegenwoordigde2 = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij2,
-            vertegenwoordigde_partij=self.partij3,
-        )
-        self.vertegenwoordigde3 = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij3,
-            vertegenwoordigde_partij=self.partij4,
-        )
-        self.vertegenwoordigde4 = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij4,
-            vertegenwoordigde_partij=self.partij5,
-        )
-        self.vertegenwoordigde5 = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij5,
-            vertegenwoordigde_partij=self.partij,
-        )
-
-        self.categorie = CategorieFactory.create(naam="een")
-        self.categorie2 = CategorieFactory.create(naam="twee")
-        self.categorie3 = CategorieFactory.create(naam="drie")
-        self.categorie4 = CategorieFactory.create(naam="vier")
-        self.categorie5 = CategorieFactory.create(naam="vijf")
-
-        self.categorie_relatie = CategorieRelatieFactory.create(
-            partij=self.partij, categorie=self.categorie
-        )
-        self.categorie_relatie2 = CategorieRelatieFactory.create(
-            partij=self.partij2, categorie=self.categorie2
-        )
-        self.categorie_relatie3 = CategorieRelatieFactory.create(
-            partij=self.partij3, categorie=self.categorie3
-        )
-        self.categorie_relatie4 = CategorieRelatieFactory.create(
-            partij=self.partij4, categorie=self.categorie4
-        )
-        self.categorie_relatie5 = CategorieRelatieFactory.create(
-            partij=self.partij5, categorie=self.categorie5
-        )
-
     def test_filter_vertegenwoordigde_partij_url(self):
-        partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
-        response = self.client.get(
-            self.url, {"vertegenwoordigdePartij__url": partij_url}
+        partij, partij2, partij3, partij4 = PartijFactory.create_batch(4)
+        VertegenwoordigdenFactory.create(
+            vertegenwoordigende_partij=partij, vertegenwoordigde_partij=partij3
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        VertegenwoordigdenFactory.create(
+            vertegenwoordigende_partij=partij2, vertegenwoordigde_partij=partij4
+        )
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+            )
+            full_partij_url = "https://testserver.com" + partij_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.partij.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url, {"vertegenwoordigdePartij__url": full_partij_url}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(partij3.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
@@ -576,19 +545,26 @@ class PartijFilterSetTests(APITestCase):
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_filter_partij_identificator_nummer(self):
-        response = self.client.get(
-            self.url,
-            {
-                "partijIdentificator__codeObjecttype": f"objecttype-{self.partij5.nummer}"
-            },
+    def test_filter_partij_identificator_code_objecttype(self):
+        partij, partij2 = PartijFactory.create_batch(2)
+        PartijIdentificatorFactory.create(
+            partij=partij, partij_identificator_code_objecttype="one"
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        PartijIdentificatorFactory.create(
+            partij=partij2, partij_identificator_code_objecttype="two"
+        )
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"partijIdentificator__codeObjecttype": "two"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.partij5.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(partij2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -600,18 +576,25 @@ class PartijFilterSetTests(APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
     def test_filter_identificator_soort_object_id(self):
-        response = self.client.get(
-            self.url,
-            {
-                "partijIdentificator__codeSoortObjectId": f"soort-object-id-{self.partij5.nummer}"
-            },
+        partij, partij2 = PartijFactory.create_batch(2)
+        PartijIdentificatorFactory.create(
+            partij=partij, partij_identificator_code_soort_object_id="one"
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        PartijIdentificatorFactory.create(
+            partij=partij2, partij_identificator_code_soort_object_id="two"
+        )
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"partijIdentificator__codeSoortObjectId": "one"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.partij5.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(partij.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -625,16 +608,25 @@ class PartijFilterSetTests(APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
     def test_filter_identificator_object_id(self):
-        response = self.client.get(
-            self.url,
-            {"partijIdentificator__objectId": f"object-id-{self.partij5.nummer}"},
+        partij, partij2 = PartijFactory.create_batch(2)
+        PartijIdentificatorFactory.create(
+            partij=partij, partij_identificator_object_id="one"
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        PartijIdentificatorFactory.create(
+            partij=partij2, partij_identificator_object_id="two"
+        )
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"partijIdentificator__objectId": "one"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.partij5.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(partij.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -645,17 +637,26 @@ class PartijFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-    def test_filter_identificator_register(self):
-        response = self.client.get(
-            self.url,
-            {"partijIdentificator__codeRegister": f"register-{self.partij5.nummer}"},
+    def test_filter_identificator_code_register(self):
+        partij, partij2 = PartijFactory.create_batch(2)
+        PartijIdentificatorFactory.create(
+            partij=partij, partij_identificator_code_register="one"
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        PartijIdentificatorFactory.create(
+            partij=partij2, partij_identificator_code_register="two"
+        )
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"partijIdentificator__code_register": "two"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.partij5.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(partij2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -667,16 +668,23 @@ class PartijFilterSetTests(APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
     def test_filter_categorie_relaties_categorie_naam(self):
-        response = self.client.get(
-            self.url,
-            {"categorierelatie__categorie__naam": self.categorie5.naam},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        partij, partij2 = PartijFactory.create_batch(2)
+        categorie = CategorieFactory.create(naam="one")
+        categorie2 = CategorieFactory.create(naam="two")
+        CategorieRelatieFactory.create(partij=partij, categorie=categorie)
+        CategorieRelatieFactory.create(partij=partij2, categorie=categorie2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"categorierelatie__categorie__naam": "two"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.partij5.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(partij2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -690,61 +698,38 @@ class PartijFilterSetTests(APITestCase):
         with self.subTest("search_based_on_multiple_categorie_namen"):
             response = self.client.get(
                 self.url,
-                {
-                    "categorierelatie__categorie__naam": f"{self.categorie.naam},{self.categorie2.naam}"
-                },
+                {"categorierelatie__categorie__naam": "one,two"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             data = response.json()["results"]
 
             self.assertEqual(2, len(data))
-            self.assertEqual(str(self.partij2.uuid), data[0]["uuid"])
-            self.assertEqual(str(self.partij.uuid), data[1]["uuid"])
+            self.assertEqual(str(partij2.uuid), data[0]["uuid"])
+            self.assertEqual(str(partij.uuid), data[1]["uuid"])
 
 
 class CategorieRelatieFiltersetTests(APITestCase):
     url = reverse("klantinteracties:categorierelatie-list")
 
-    def setUp(self):
-        super().setUp()
-        self.partij = PartijFactory.create(nummer="1111111111")
-        self.partij2 = PartijFactory.create(nummer="2222222222")
-        self.partij3 = PartijFactory.create(nummer="3333333333")
-        self.partij4 = PartijFactory.create(nummer="4444444444")
-        self.partij5 = PartijFactory.create(nummer="5555555555")
-
-        self.categorie = CategorieFactory.create(naam="een")
-        self.categorie2 = CategorieFactory.create(naam="twee")
-        self.categorie3 = CategorieFactory.create(naam="drie")
-        self.categorie4 = CategorieFactory.create(naam="vier")
-        self.categorie5 = CategorieFactory.create(naam="vijf")
-
-        self.categorie_relatie = CategorieRelatieFactory.create(
-            partij=self.partij, categorie=self.categorie
-        )
-        self.categorie_relatie2 = CategorieRelatieFactory.create(
-            partij=self.partij2, categorie=self.categorie2
-        )
-        self.categorie_relatie3 = CategorieRelatieFactory.create(
-            partij=self.partij3, categorie=self.categorie3
-        )
-        self.categorie_relatie4 = CategorieRelatieFactory.create(
-            partij=self.partij4, categorie=self.categorie4
-        )
-        self.categorie_relatie5 = CategorieRelatieFactory.create(
-            partij=self.partij5, categorie=self.categorie5
-        )
-
     def test_filter_partij_url(self):
-        partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
-        response = self.client.get(self.url, {"partij__url": partij_url})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        partij, partij2 = PartijFactory.create_batch(2)
+        CategorieRelatieFactory.create(partij=partij)
+        categorie_relatie2 = CategorieRelatieFactory.create(partij=partij2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(partij2.uuid)}
+            )
+            full_partij_url = "https://testserver.com" + partij_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+            response = self.client.get(self.url, {"partij__url": full_partij_url})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(categorie_relatie2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -762,16 +747,21 @@ class CategorieRelatieFiltersetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_partij_uuid(self):
-        response = self.client.get(
-            self.url,
-            {"partij__uuid": str(self.partij5.uuid)},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        partij, partij2 = PartijFactory.create_batch(2)
+        categorie_relatie = CategorieRelatieFactory.create(partij=partij)
+        CategorieRelatieFactory.create(partij=partij2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"partij__uuid": str(partij.uuid)},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(categorie_relatie.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -787,16 +777,22 @@ class CategorieRelatieFiltersetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_partij_nummer(self):
-        response = self.client.get(
-            self.url,
-            {"partij__nummer": "5555555555"},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        partij = PartijFactory.create(nummer="1111111111")
+        partij2 = PartijFactory.create(nummer="2222222222")
+        categorie_relatie = CategorieRelatieFactory.create(partij=partij)
+        CategorieRelatieFactory.create(partij=partij2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"partij__nummer": "1111111111"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(categorie_relatie.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -808,14 +804,26 @@ class CategorieRelatieFiltersetTests(APITestCase):
             self.assertEqual(response.json()["count"], 0)
 
     def test_filter_categorie_url(self):
-        categorie_url = f"https://testserver.com/klantinteracties/api/v1/categorieen/{str(self.categorie5.uuid)}"
-        response = self.client.get(self.url, {"categorie__url": categorie_url})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        categorie = CategorieFactory.create()
+        categorie2 = CategorieFactory.create()
+        categorie_relatie = CategorieRelatieFactory.create(categorie=categorie)
+        CategorieRelatieFactory.create(categorie=categorie2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            categorie_detail_url = reverse(
+                "klantinteracties:categorie-detail",
+                kwargs={"uuid": str(categorie.uuid)},
+            )
+            full_categorie_url = "https://testserver.com" + categorie_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+            response = self.client.get(self.url, {"categorie__url": full_categorie_url})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(categorie_relatie.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -833,16 +841,22 @@ class CategorieRelatieFiltersetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_categorie_uuid(self):
-        response = self.client.get(
-            self.url,
-            {"categorie__uuid": str(self.categorie5.uuid)},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        categorie = CategorieFactory.create()
+        categorie2 = CategorieFactory.create()
+        categorie_relatie = CategorieRelatieFactory.create(categorie=categorie)
+        CategorieRelatieFactory.create(categorie=categorie2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"categorie__uuid": str(categorie.uuid)},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(categorie_relatie.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -858,16 +872,23 @@ class CategorieRelatieFiltersetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_categorie_naam(self):
-        response = self.client.get(
-            self.url,
-            {"categorie__naam": "vijf"},
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        categorie = CategorieFactory.create(naam="one")
+        categorie2 = CategorieFactory.create(naam="two")
+        CategorieRelatieFactory.create(categorie=categorie)
+        categorie_relatie2 = CategorieRelatieFactory.create(categorie=categorie2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.categorie_relatie5.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url,
+                {"categorie__naam": "two"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(categorie_relatie2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -882,48 +903,32 @@ class CategorieRelatieFiltersetTests(APITestCase):
 class ActorKlantcontactFilterSetTests(APITestCase):
     url = reverse("klantinteracties:actorklantcontact-list")
 
-    def setUp(self):
-        super().setUp()
-        (
-            self.actor,
-            self.actor2,
-            self.actor3,
-            self.actor4,
-            self.actor5,
-        ) = ActorFactory.create_batch(5)
-        (
-            self.klantcontact,
-            self.klantcontact2,
-            self.klantcontact3,
-            self.klantcontact4,
-            self.klantcontact5,
-        ) = KlantcontactFactory.create_batch(5)
-
-        self.actor_klantcontact = ActorKlantcontactFactory.create(
-            actor=self.actor, klantcontact=self.klantcontact
-        )
-        self.actor_klantcontact2 = ActorKlantcontactFactory.create(
-            actor=self.actor2, klantcontact=self.klantcontact2
-        )
-        self.actor_klantcontact3 = ActorKlantcontactFactory.create(
-            actor=self.actor3, klantcontact=self.klantcontact3
-        )
-        self.actor_klantcontact4 = ActorKlantcontactFactory.create(
-            actor=self.actor4, klantcontact=self.klantcontact4
-        )
-        self.actor_klantcontact5 = ActorKlantcontactFactory.create(
-            actor=self.actor5, klantcontact=self.klantcontact5
-        )
-
     def test_filter_klantcontact_url(self):
-        url = f"https://testserver.com/klantinteracties/api/v1/klantcontacten/{str(self.klantcontact5.uuid)}"
-        response = self.client.get(self.url, {"klantcontact__url": url})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        actor = ActorFactory.create()
+        actor2 = ActorFactory.create()
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        actor_klantcontact = ActorKlantcontactFactory.create(
+            actor=actor, klantcontact=klantcontact
+        )
+        ActorKlantcontactFactory.create(actor=actor2, klantcontact=klantcontact2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            klantcontact_detail_url = reverse(
+                "klantinteracties:klantcontact-detail",
+                kwargs={"uuid": str(klantcontact.uuid)},
+            )
+            full_klantcontact_url = "https://testserver.com" + klantcontact_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.actor_klantcontact5.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url, {"klantcontact__url": full_klantcontact_url}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(actor_klantcontact.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             url = f"https://testserver.com/klantinteracties/api/v1/klantcontacten/{str(uuid4())}"
@@ -940,14 +945,28 @@ class ActorKlantcontactFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_actor_url(self):
-        actor_url = f"https://testserver.com/klantinteracties/api/v1/actoren/{str(self.actor5.uuid)}"
-        response = self.client.get(self.url, {"actor__url": actor_url})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        actor = ActorFactory.create()
+        actor2 = ActorFactory.create()
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        actor_klantcontact = ActorKlantcontactFactory.create(
+            actor=actor, klantcontact=klantcontact
+        )
+        ActorKlantcontactFactory.create(actor=actor2, klantcontact=klantcontact2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            actor_detail_url = reverse(
+                "klantinteracties:actor-detail", kwargs={"uuid": str(actor.uuid)}
+            )
+            full_actor_url = "https://testserver.com" + actor_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.actor_klantcontact5.uuid), data[0]["uuid"])
+            response = self.client.get(self.url, {"actor__url": full_actor_url})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(actor_klantcontact.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -968,46 +987,31 @@ class ActorKlantcontactFilterSetTests(APITestCase):
 class VertegenwoordigdenFiltersetTests(APITestCase):
     url = reverse("klantinteracties:vertegenwoordigden-list")
 
-    def setUp(self):
-        super().setUp()
-        self.partij = PartijFactory.create(nummer="1111111111")
-        self.partij2 = PartijFactory.create(nummer="2222222222")
-        self.partij3 = PartijFactory.create(nummer="3333333333")
-        self.partij4 = PartijFactory.create(nummer="4444444444")
-        self.partij5 = PartijFactory.create(nummer="5555555555")
-
-        self.vertegenwoordigde = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij,
-            vertegenwoordigde_partij=self.partij2,
-        )
-        self.vertegenwoordigde2 = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij2,
-            vertegenwoordigde_partij=self.partij3,
-        )
-        self.vertegenwoordigde3 = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij3,
-            vertegenwoordigde_partij=self.partij4,
-        )
-        self.vertegenwoordigde4 = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij4,
-            vertegenwoordigde_partij=self.partij5,
-        )
-        self.vertegenwoordigde5 = VertegenwoordigdenFactory.create(
-            vertegenwoordigende_partij=self.partij5,
-            vertegenwoordigde_partij=self.partij,
-        )
-
     def test_filter_vertegenwoordigende_partij_url(self):
-        partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
-        response = self.client.get(
-            self.url, {"vertegenwoordigendePartij__url": partij_url}
+        partij, partij2, partij3, partij4 = PartijFactory.create_batch(4)
+
+        vertegenwoordigden = VertegenwoordigdenFactory.create(
+            vertegenwoordigende_partij=partij, vertegenwoordigde_partij=partij3
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        VertegenwoordigdenFactory.create(
+            vertegenwoordigende_partij=partij2, vertegenwoordigde_partij=partij4
+        )
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+            )
+            full_partij_url = "https://testserver.com" + partij_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.vertegenwoordigde5.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url, {"vertegenwoordigendePartij__url": full_partij_url}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(vertegenwoordigden.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             vertegenwoordigde_partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
@@ -1024,16 +1028,29 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_vertegenwoordigde_partij_url(self):
-        partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
-        response = self.client.get(
-            self.url, {"vertegenwoordigdePartij__url": partij_url}
+        partij, partij2, partij3, partij4 = PartijFactory.create_batch(4)
+        vertegenwoordigden = VertegenwoordigdenFactory.create(
+            vertegenwoordigende_partij=partij, vertegenwoordigde_partij=partij3
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        VertegenwoordigdenFactory.create(
+            vertegenwoordigende_partij=partij2, vertegenwoordigde_partij=partij4
+        )
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(partij3.uuid)}
+            )
+            full_partij_url = "https://testserver.com" + partij_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.vertegenwoordigde4.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url, {"vertegenwoordigdePartij__url": full_partij_url}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(vertegenwoordigden.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
@@ -1055,47 +1072,26 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
 class InterneTaakFilterSetTests(APITestCase):
     url = reverse("klantinteracties:internetaak-list")
 
-    def setUp(self):
-        super().setUp()
-        (
-            self.actor,
-            self.actor2,
-            self.actor3,
-            self.actor4,
-            self.actor5,
-        ) = ActorFactory.create_batch(5)
-        (
-            self.klantcontact,
-            self.klantcontact2,
-            self.klantcontact3,
-            self.klantcontact4,
-            self.klantcontact5,
-        ) = KlantcontactFactory.create_batch(5)
-        self.internetaak = InterneTaakFactory.create(
-            actoren=[self.actor], klantcontact=self.klantcontact
-        )
-        self.internetaak2 = InterneTaakFactory.create(
-            actoren=[self.actor2], klantcontact=self.klantcontact2
-        )
-        self.internetaak3 = InterneTaakFactory.create(
-            actoren=[self.actor3], klantcontact=self.klantcontact3
-        )
-        self.internetaak4 = InterneTaakFactory.create(
-            actoren=[self.actor4], klantcontact=self.klantcontact4
-        )
-        self.internetaak5 = InterneTaakFactory.create(
-            actoren=[self.actor5], klantcontact=self.klantcontact5
-        )
-
     def test_filter_toegewezen_aan_actor_url(self):
-        actor_url = f"https://testserver.com/klantinteracties/api/v1/actoren/{str(self.actor5.uuid)}"
-        response = self.client.get(self.url, {"toegewezenAanActor__url": actor_url})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        actor, actor2 = ActorFactory.create_batch(2)
+        internetaak = InterneTaakFactory.create(actoren=[actor])
+        InterneTaakFactory.create(actoren=[actor2])
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            actor_detail_url = reverse(
+                "klantinteracties:actor-detail", kwargs={"uuid": str(actor.uuid)}
+            )
+            full_actor_url = "https://testserver.com" + actor_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.internetaak5.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url, {"toegewezenAanActor__url": full_actor_url}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(internetaak.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             response = self.client.get(
@@ -1115,14 +1111,26 @@ class InterneTaakFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_aanleidinggevend_klantcontact_url(self):
-        url = f"https://testserver.com/klantinteracties/api/v1/klantcontacten/{str(self.klantcontact5.uuid)}"
-        response = self.client.get(self.url, {"aanleidinggevendKlantcontact__url": url})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        klantcontact, klantcontact2 = KlantcontactFactory.create_batch(2)
+        internetaak = InterneTaakFactory.create(klantcontact=klantcontact)
+        InterneTaakFactory.create(klantcontact=klantcontact2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            klantcontact_detail_url = reverse(
+                "klantinteracties:klantcontact-detail",
+                kwargs={"uuid": str(klantcontact.uuid)},
+            )
+            full_klantcontact_url = "https://testserver.com" + klantcontact_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.internetaak5.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url, {"aanleidinggevendKlantcontact__url": full_klantcontact_url}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(internetaak.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             klantcontacten_url = f"https://testserver.com/klantinteracties/api/v1/klantcontacten/{str(uuid4())}"
@@ -1144,49 +1152,27 @@ class InterneTaakFilterSetTests(APITestCase):
 class DigitaalAdresFilterSetTests(APITestCase):
     url = reverse("klantinteracties:digitaaladres-list")
 
-    def setUp(self):
-        super().setUp()
-        (
-            self.betrokkene,
-            self.betrokkene2,
-            self.betrokkene3,
-            self.betrokkene4,
-            self.betrokkene5,
-        ) = BetrokkeneFactory.create_batch(5)
-        (
-            self.partij,
-            self.partij2,
-            self.partij3,
-            self.partij4,
-            self.partij5,
-        ) = PartijFactory.create_batch(5)
-        self.digitaal_adres = DigitaalAdresFactory.create(
-            partij=self.partij, betrokkene=self.betrokkene
-        )
-        self.digitaal_adres2 = DigitaalAdresFactory.create(
-            partij=self.partij2, betrokkene=self.betrokkene2
-        )
-        self.digitaal_adres3 = DigitaalAdresFactory.create(
-            partij=self.partij3, betrokkene=self.betrokkene3
-        )
-        self.digitaal_adres4 = DigitaalAdresFactory.create(
-            partij=self.partij4, betrokkene=self.betrokkene4
-        )
-        self.digitaal_adres5 = DigitaalAdresFactory.create(
-            partij=self.partij5, betrokkene=self.betrokkene5
-        )
-
     def test_filter_verstrekt_door_betrokkene_url(self):
-        betrokkene_url = f"https://testserver.com/klantinteracties/api/v1/betrokkenen/{str(self.betrokkene5.uuid)}"
-        response = self.client.get(
-            self.url, {"verstrektDoorBetrokkene__url": betrokkene_url}
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
+        DigitaalAdresFactory.create(betrokkene=betrokkene)
+        digitaal_adres2 = DigitaalAdresFactory.create(betrokkene=betrokkene2)
 
-        data = response.json()["results"]
+        with self.subTest("happy flow"):
+            betrokkene_detail_url = reverse(
+                "klantinteracties:betrokkene-detail",
+                kwargs={"uuid": str(betrokkene2.uuid)},
+            )
+            full_betrokkene_url = "https://testserver.com" + betrokkene_detail_url
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.digitaal_adres5.uuid), data[0]["uuid"])
+            response = self.client.get(
+                self.url, {"verstrektDoorBetrokkene__url": full_betrokkene_url}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(digitaal_adres2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             betrokkene_url = f"https://testserver.com/klantinteracties/api/v1/betrokkenen/{str(uuid4())}"
@@ -1205,14 +1191,26 @@ class DigitaalAdresFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_verstrekt_door_partij_url(self):
-        partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(self.partij5.uuid)}"
-        response = self.client.get(self.url, {"verstrektDoorPartij__url": partij_url})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        partij, partij2 = PartijFactory.create_batch(2)
 
-        data = response.json()["results"]
+        DigitaalAdresFactory.create(partij=partij)
+        digitaal_adres2 = DigitaalAdresFactory.create(partij=partij2)
 
-        self.assertEqual(1, len(data))
-        self.assertEqual(str(self.digitaal_adres5.uuid), data[0]["uuid"])
+        with self.subTest("happy flow"):
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(partij2.uuid)}
+            )
+            full_partij_url = "https://testserver.com" + partij_detail_url
+
+            response = self.client.get(
+                self.url, {"verstrektDoorPartij__url": full_partij_url}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(digitaal_adres2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
             url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
