@@ -17,5 +17,7 @@ class CamelizeFilterExtension(DjangoFilterExtension):
 
         for parameter in parameters:
             parameter["name"] = underscore_to_camel(parameter["name"])
+            if parameter["name"].endswith("__url"):
+                parameter["schema"] = {"type": "string", "format": "uri"}
 
         return parameters

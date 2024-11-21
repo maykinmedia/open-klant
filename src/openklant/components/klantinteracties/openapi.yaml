@@ -208,7 +208,7 @@ paths:
         name: actor__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek actor klantcontract object op basis van het actor url
       - in: query
         name: actor__uuid
@@ -219,7 +219,7 @@ paths:
         name: klantcontact__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek actor klantcontract object op basis van het klantcontact
           url
       - in: query
@@ -402,7 +402,7 @@ paths:
         name: hadKlantcontact__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek betrokkene object op basis van het klantcontact url
       - in: query
         name: hadKlantcontact__uuid
@@ -435,7 +435,7 @@ paths:
         name: verstrektedigitaalAdres__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek betrokkene object op basis van het digitaaladres url
       - in: query
         name: verstrektedigitaalAdres__uuid
@@ -452,7 +452,7 @@ paths:
         name: wasPartij__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek betrokkene object op basis van het partij url
       - in: query
         name: wasPartij__uuid
@@ -782,7 +782,7 @@ paths:
         name: categorie__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek categorie relatie object op basis van de categorie url.
       - in: query
         name: categorie__uuid
@@ -816,7 +816,7 @@ paths:
         name: partij__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek categorie relatie object op basis van de partij url.
       - in: query
         name: partij__uuid
@@ -1177,7 +1177,7 @@ paths:
         name: verstrektDoorBetrokkene__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek digitaal adres(sen) object(en) op basis van de betrokkene
           url.
       - in: query
@@ -1200,7 +1200,7 @@ paths:
         name: verstrektDoorPartij__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek digitaal adres(sen) object(en) op basis van de partij url.
       - in: query
         name: verstrektDoorPartij__uuid
@@ -1365,7 +1365,7 @@ paths:
         name: aanleidinggevendKlantcontact__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek internetaak object op basis van het aanleidingevende klantcontact
           url.
       - in: query
@@ -1418,7 +1418,7 @@ paths:
         name: toegewezenAanActor__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek internetaak object op basis van het toegewezen actor url.
       - in: query
         name: toegewezenAanActor__uuid
@@ -1591,7 +1591,7 @@ paths:
         name: hadBetrokkene__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek klantcontact object op basis van het betrokkene url.
       - in: query
         name: hadBetrokkene__uuid
@@ -1603,7 +1603,7 @@ paths:
         name: hadBetrokkene__wasPartij__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek klantcontact object op basis van de partij url.
       - in: query
         name: hadBetrokkene__wasPartij__uuid
@@ -1653,7 +1653,7 @@ paths:
         name: onderwerpobject__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek klantcontact object op basis van het onderwerpobject url.
       - in: query
         name: onderwerpobject__uuid
@@ -1701,7 +1701,7 @@ paths:
         name: wasOnderwerpobject__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek was klantcontact object op basis van het onderwerpobject
           url.
       - in: query
@@ -2349,7 +2349,7 @@ paths:
         name: vertegenwoordigdePartij__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek partij object op basis van het vertegenwoordigde partij
           url.
       - in: query
@@ -2692,7 +2692,7 @@ paths:
         name: vertegenwoordigdePartij__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek Vertegenwoordigden object op basis van het vertegenwoordigde
           partij url.
       - in: query
@@ -2704,7 +2704,7 @@ paths:
         name: vertegenwoordigendePartij__url
         schema:
           type: string
-          format: uuid
+          format: uri
         description: Zoek Vertegenwoordigden object op basis van het vertegenwoordigende
           partij url.
       - in: query
