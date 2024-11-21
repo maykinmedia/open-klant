@@ -123,10 +123,10 @@ class PartijAdminTests(WebTest):
 @disable_admin_mfa()
 class DigitaalAdresAdminTests(WebTest):
     @tag("gh-234")
-    def test_email_validation(self):
+    def test_soort_digitaal_adres_validation(self):
         """
-        Check that the admin applies conditional email validation on `adres`, only if
-        `soort_digitaal_adres` is `email`
+        Check that the admin applies conditional email/telefoonnummer validation on `adres`, only if
+        `soort_digitaal_adres` is `email` or 'telefoonnummer'
         """
         user = SuperUserFactory.create()
         self.app.set_user(user)
@@ -152,13 +152,35 @@ class DigitaalAdresAdminTests(WebTest):
                 response.context["errors"], [[_("Voer een geldig e-mailadres in.")]]
             )
 
-        with self.subTest("do not apply validation for soort_digitaal_adres != email"):
+        with self.subTest(
+            "apply validation for soort_digitaal_adres == telefoonnummer"
+        ):
             response: TestResponse = self.app.get(admin_url)
 
             form = response.form
             form["betrokkene"] = betrokkene.pk
             form["soort_digitaal_adres"] = SoortDigitaalAdres.telefoonnummer
-            form["adres"] = "0612345678"
+            form["adres"] = "invalid"
+            form["omschrijving"] = "foo"
+
+            response = form.submit()
+
+            self.assertEqual(response.status_code, 200)
+            self.assertFalse(DigitaalAdres.objects.exists())
+            self.assertEqual(
+                response.context["errors"],
+                [[_("Het opgegeven telefoonnummer is ongeldig.")]],
+            )
+
+        with self.subTest(
+            "do not apply validation for soort_digitaal_adres != email/email"
+        ):
+            response: TestResponse = self.app.get(admin_url)
+
+            form = response.form
+            form["betrokkene"] = betrokkene.pk
+            form["soort_digitaal_adres"] = SoortDigitaalAdres.overig
+            form["adres"] = "whatever"
             form["omschrijving"] = "foo"
 
             response = form.submit()

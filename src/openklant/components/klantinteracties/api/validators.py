@@ -25,6 +25,7 @@ from openklant.components.klantinteracties.models.partijen import (
     PartijIdentificator,
 )
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
+from openklant.utils.validators import validate_phone_number
 
 
 class FKUniqueTogetherValidator(UniqueTogetherValidator):
@@ -170,12 +171,12 @@ def Rekeningnummer_exists(value):
         raise serializers.ValidationError(_("Rekeningnummer object bestaat niet."))
 
 
-class OptionalEmailValidator(EmailValidator):
-    """
-    EmailValidator for SoortDigitaalAdres that only attempts to validate if
-    `SoortDigitaalAdres` is `email`
-    """
-
-    def __call__(self, value: str, soort_digitaal_adres: str):
-        if soort_digitaal_adres == SoortDigitaalAdres.email:
-            super().__call__(value)
+class SoortDigitaalAdresValidator:
+    def __call__(self, soort_digitaal_adres: SoortDigitaalAdres, value: str):
+        match soort_digitaal_adres:
+            case SoortDigitaalAdres.email:
+                EmailValidator()(value)
+            case SoortDigitaalAdres.telefoonnummer:
+                validate_phone_number(value)
+            case _:
+                return

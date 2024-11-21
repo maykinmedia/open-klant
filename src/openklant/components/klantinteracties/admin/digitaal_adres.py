@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from ..api.validators import OptionalEmailValidator
+from ..api.validators import SoortDigitaalAdresValidator
 from ..models.digitaal_adres import DigitaalAdres
 
 
@@ -12,7 +12,9 @@ class DigitaalAdresAdminForm(forms.ModelForm):
 
     def clean_adres(self):
         data = self.cleaned_data
-        OptionalEmailValidator()(data["adres"], data.get("soort_digitaal_adres"))
+        SoortDigitaalAdresValidator()(
+            soort_digitaal_adres=data.get("soort_digitaal_adres"), value=data["adres"]
+        )
         return data["adres"]
 
 

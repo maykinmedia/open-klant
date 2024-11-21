@@ -78,6 +78,7 @@ class ValidatorsTestCase(TestCase):
             "+31612345678",
             "+441134960000",  # US test number
             "+12065550100",  # US test number
+            "0612345678",
             "0031612345678",
             "09001234567",
             "080085285212",
@@ -104,7 +105,7 @@ class ValidatorsTestCase(TestCase):
 
         for valid_phone_number in valid_phone_numbers:
             with self.subTest(valid_phone_number):
-                self.assertIsNone(validate_phone_number(valid_phone_number))
+                validate_phone_number(valid_phone_number)
 
     def test_validate_no_space_validator(self):
         invalid_strings = [

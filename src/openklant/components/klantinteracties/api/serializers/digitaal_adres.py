@@ -7,7 +7,7 @@ from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
 )
 from openklant.components.klantinteracties.api.validators import (
-    OptionalEmailValidator,
+    SoortDigitaalAdresValidator,
     digitaal_adres_exists,
 )
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
@@ -98,7 +98,9 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         soort_digitaal_adres = get_field_value(
             self, self.initial_data, "soort_digitaal_adres"
         )
-        OptionalEmailValidator()(adres, soort_digitaal_adres)
+        SoortDigitaalAdresValidator()(
+            soort_digitaal_adres=soort_digitaal_adres, value=adres
+        )
         return adres
 
     @transaction.atomic
