@@ -1,5 +1,3 @@
-import uuid
-
 from django.utils.translation import gettext_lazy as _
 
 from django_filters.rest_framework import FilterSet, filters
@@ -12,7 +10,7 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     Vertegenwoordigden,
 )
-from openklant.components.utils.filters import ExpandFilter
+from openklant.components.utils.filters import ExpandFilter, URLViewFilter
 
 
 class PartijDetailFilterSet(FilterSet):
@@ -26,11 +24,11 @@ class PartijFilterSet(FilterSet):
         ),
         field_name="vertegenwoordigde__vertegenwoordigende_partij__uuid",
     )
-    vertegenwoordigde_partij__url = filters.CharFilter(
+    vertegenwoordigde_partij__url = URLViewFilter(
         help_text=_(
             "Zoek partij object op basis van het vertegenwoordigde partij url."
         ),
-        method="filter_vertegenwoordigde_partij_url",
+        field_name="vertegenwoordigde__vertegenwoordigende_partij__uuid",
     )
     partij_identificator__code_objecttype = filters.CharFilter(
         help_text=_(
@@ -90,15 +88,6 @@ class PartijFilterSet(FilterSet):
             "correspondentieadres_land",
         )
 
-    def filter_vertegenwoordigde_partij_url(self, queryset, name, value):
-        try:
-            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
-            return queryset.filter(
-                vertegenwoordigde__vertegenwoordigende_partij__uuid=url_uuid
-            )
-        except ValueError:
-            return queryset.none()
-
     def filter_identificator_code_objecttype(self, queryset, name, value):
         try:
             return queryset.filter(
@@ -142,17 +131,17 @@ class PartijFilterSet(FilterSet):
 
 
 class VertegenwoordigdenFilterSet(FilterSet):
-    vertegenwoordigende_partij__url = filters.CharFilter(
+    vertegenwoordigende_partij__url = URLViewFilter(
         help_text=_(
             "Zoek Vertegenwoordigden object op basis van het vertegenwoordigende partij url."
         ),
-        method="filter_vertegenwoordigende_partij_url",
+        field_name="vertegenwoordigende_partij__uuid",
     )
-    vertegenwoordigde_partij__url = filters.CharFilter(
+    vertegenwoordigde_partij__url = URLViewFilter(
         help_text=_(
             "Zoek Vertegenwoordigden object op basis van het vertegenwoordigde partij url."
         ),
-        method="filter_vertegenwoordigde_partij_url",
+        field_name="vertegenwoordigde_partij__uuid",
     )
 
     class Meta:
@@ -164,29 +153,14 @@ class VertegenwoordigdenFilterSet(FilterSet):
             "vertegenwoordigde_partij__url",
         )
 
-    def filter_vertegenwoordigende_partij_url(self, queryset, name, value):
-        try:
-            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
-            return queryset.filter(vertegenwoordigende_partij__uuid=url_uuid)
-        except ValueError:
-            return queryset.none()
-
-    def filter_vertegenwoordigde_partij_url(self, queryset, name, value):
-        try:
-            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
-            return queryset.filter(vertegenwoordigde_partij__uuid=url_uuid)
-        except ValueError:
-            return queryset.none()
-
 
 class CategorieRelatieFilterSet(FilterSet):
-    partij__url = filters.CharFilter(
+    partij__url = URLViewFilter(
         help_text=_("Zoek categorie relatie object op basis van de partij url."),
-        method="filter_partij_url",
+        field_name="partij__uuid",
     )
-    partij__uuid = filters.CharFilter(
+    partij__uuid = filters.UUIDFilter(
         help_text=_("Zoek categorie relatie object op basis van de partij uuid."),
-        method="filter_partij_uuid",
     )
     partij__nummer = filters.CharFilter(
         help_text=_("Zoek categorie relatie object op basis van het partij nummer."),
@@ -196,13 +170,12 @@ class CategorieRelatieFilterSet(FilterSet):
         help_text=_("Zoek categorie relatie object op basis van de categorie naam."),
         method="filter_categorie_naam",
     )
-    categorie__uuid = filters.CharFilter(
+    categorie__uuid = filters.UUIDFilter(
         help_text=_("Zoek categorie relatie object op basis van de categorie uuid."),
-        method="filter_categorie_uuid",
     )
-    categorie__url = filters.CharFilter(
+    categorie__url = URLViewFilter(
         help_text=_("Zoek categorie relatie object op basis van de categorie url."),
-        method="filter_categorie_url",
+        field_name="categorie__uuid",
     )
 
     class Meta:
@@ -218,37 +191,9 @@ class CategorieRelatieFilterSet(FilterSet):
             "eind_datum",
         )
 
-    def filter_partij_uuid(self, queryset, name, value):
-        try:
-            partij_uuid = uuid.UUID(value)
-            return queryset.filter(partij__uuid=partij_uuid)
-        except ValueError:
-            return queryset.none()
-
-    def filter_partij_url(self, queryset, name, value):
-        try:
-            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
-            return queryset.filter(partij__uuid=url_uuid)
-        except ValueError:
-            return queryset.none()
-
     def filter_partij_nummer(self, queryset, name, value):
         try:
             return queryset.filter(partij__nummer=value)
-        except ValueError:
-            return queryset.none()
-
-    def filter_categorie_uuid(self, queryset, name, value):
-        try:
-            categorie_uuid = uuid.UUID(value)
-            return queryset.filter(categorie__uuid=categorie_uuid)
-        except ValueError:
-            return queryset.none()
-
-    def filter_categorie_url(self, queryset, name, value):
-        try:
-            url_uuid = uuid.UUID(value.rstrip("/").split("/")[-1])
-            return queryset.filter(categorie__uuid=url_uuid)
         except ValueError:
             return queryset.none()
 
