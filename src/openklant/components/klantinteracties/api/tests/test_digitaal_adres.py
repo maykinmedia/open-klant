@@ -203,6 +203,41 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(existing_adres.is_standaard_adres, False)
         self.assertEqual(new_adres.is_standaard_adres, True)
 
+    def test_create_digitaal_adres_is_standaard_adres_without_partij_not_possible(self):
+        """
+        Creating a DigitaalAdres with isStandaardAdres=True should not be possible with
+        verstrektDoorPartij=None
+        """
+        betrokkene = BetrokkeneFactory.create()
+
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        data = {
+            "verstrektDoorBetrokkene": {"uuid": str(betrokkene.uuid)},
+            "verstrektDoorPartij": None,
+            "soortDigitaalAdres": "email",
+            "adres": "foo@bar.com",
+            "omschrijving": "omschrijving",
+            "isStandaardAdres": True,
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "isStandaardAdres",
+                    "code": "invalid",
+                    "reason": _(
+                        "`is_standaard_adres` kan alleen gezet worden als `verstrekt_door_partij` niet leeg is."
+                    ),
+                }
+            ],
+        )
+        self.assertEqual(DigitaalAdres.objects.count(), 0)
+
     def test_update_digitaal_adres(self):
         betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
         partij, partij2 = PartijFactory.create_batch(2)

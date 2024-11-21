@@ -116,6 +116,21 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         OptionalEmailValidator()(adres, soort_digitaal_adres)
         return adres
 
+    def validate(self, attrs):
+        partij = get_field_value(self, attrs, "partij")
+        is_standaard_adres = get_field_value(self, attrs, "is_standaard_adres")
+        if is_standaard_adres and not partij:
+            raise serializers.ValidationError(
+                {
+                    "is_standaard_adres": _(
+                        "`is_standaard_adres` kan alleen gezet worden "
+                        "als `verstrekt_door_partij` niet leeg is."
+                    )
+                }
+            )
+
+        return super().validate(attrs)
+
     @transaction.atomic
     def update(self, instance, validated_data):
         if "partij" in validated_data:
