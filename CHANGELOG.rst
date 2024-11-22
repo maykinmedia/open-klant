@@ -27,7 +27,7 @@ Change history
   even though it might be empty. This behavior is applied to all available
   ``_expand`` parameters.
 * [#258] Added correct API root paths in redoc OAS
-* [#234] Added validation for ``DigitaalAdres.adres`` whenever it's type is ``email``
+* [#234] Added validation for ``DigitaalAdres.adres`` when it's type is ``email``
 * [#227] Fixed ``partijen`` creation endpoint crash when ``partijIdentificatie`` is not provided
 * [#261] Fixed ``Onderwerpobject`` inline to use ``klantcontact``
 * [#226] Made ``betrokkene`` a non-required form field in the admin
