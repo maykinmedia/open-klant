@@ -34,6 +34,14 @@ class ActorKlantcontactInlineAdmin(admin.StackedInline):
     extra = 0
 
 
+class InterneTaakInlineAdmin(admin.StackedInline):
+    model = Actor.internetaak_set.through
+    raw_id_fields = ("internetaak",)
+    verbose_name = _("Interne taak")
+    verbose_name_plural = _("Interne taken")
+    extra = 0
+
+
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
     list_display = (
@@ -51,6 +59,7 @@ class ActorAdmin(admin.ModelAdmin):
         GeautomatiseerdeActorInlineAdmin,
         MedewerkerInlineAdmin,
         OrganisatorischeEenheidInlineAdmin,
+        InterneTaakInlineAdmin,
     )
     fieldsets = (
         (

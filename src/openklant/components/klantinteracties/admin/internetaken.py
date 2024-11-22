@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from ..models.internetaken import InterneTaak
 
@@ -10,6 +11,14 @@ class InterneTaakInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
 
 
+class ActorInlineAdmin(admin.StackedInline):
+    model = InterneTaak.actoren.through
+    raw_id_fields = ("actor",)
+    verbose_name = _("Actor")
+    verbose_name_plural = _("Actoren")
+    extra = 0
+
+
 @admin.register(InterneTaak)
 class InterneTaakAdmin(admin.ModelAdmin):
     readonly_fields = ("uuid",)
@@ -19,6 +28,7 @@ class InterneTaakAdmin(admin.ModelAdmin):
         "toegewezen_op",
         "afgehandeld_op",
     )
+    search_fields = ("nummer",)
     list_filter = (
         "actoren",
         "status",
@@ -27,3 +37,4 @@ class InterneTaakAdmin(admin.ModelAdmin):
         "uuid",
         "toegewezen_op",
     )
+    inlines = (ActorInlineAdmin,)
