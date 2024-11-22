@@ -34,7 +34,6 @@ def vcr_request_filter(request: Request):
     return request
 
 
-# TODO: add user documentation
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
     host = LIVE_SERVER_HOST
     port = LIVE_SERVER_PORT
