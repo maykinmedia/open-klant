@@ -1,7 +1,7 @@
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
-from rest_framework import serializers
+from rest_framework import serializers, validators
 
 from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
@@ -79,6 +79,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
             "verstrekt_door_partij",
             "adres",
             "soort_digitaal_adres",
+            "is_standaard_adres",
             "omschrijving",
         )
         extra_kwargs = {
@@ -90,6 +91,20 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if "soort_digitaal_adres" in self.fields:
+            # Avoid validating the UniqueConstraint for `soort_digitaal_adres` with
+            # `is_standaard_adres=True`. We want to enforce the constraint at the database
+            # level, but not via the API, because setting a new default sets all other
+            # `is_standaard_adres=False` (via DigitaalAdres.save)
+            self.fields["soort_digitaal_adres"].validators = [
+                validator
+                for validator in self.fields["soort_digitaal_adres"].validators
+                if not isinstance(validator, validators.UniqueValidator)
+            ]
+
     def validate_adres(self, adres):
         """
         Define the validator here, to avoid DRF spectacular marking the format for
@@ -100,6 +115,21 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         )
         OptionalEmailValidator()(adres, soort_digitaal_adres)
         return adres
+
+    def validate(self, attrs):
+        partij = get_field_value(self, attrs, "partij")
+        is_standaard_adres = get_field_value(self, attrs, "is_standaard_adres")
+        if is_standaard_adres and not partij:
+            raise serializers.ValidationError(
+                {
+                    "is_standaard_adres": _(
+                        "`is_standaard_adres` kan alleen gezet worden "
+                        "als `verstrekt_door_partij` niet leeg is."
+                    )
+                }
+            )
+
+        return super().validate(attrs)
 
     @transaction.atomic
     def update(self, instance, validated_data):
