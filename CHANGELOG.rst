@@ -14,7 +14,7 @@ Change history
   More information can be found in the `documentation <https://open-klant.readthedocs.io/en/latest/installation/migration.html>`
 * [#246] Added ``is_standaard_adres`` for ``DigitaalAdres``
 * Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
-* [#232] Added ``/maak-klantcontact`` convenience endpoint. This allows creating
+* [#147] Added ``/maak-klantcontact`` convenience endpoint. This allows creating
   a ``KlantContact``, a ``Betrokkene`` and a ``OnderwerpObject`` through a
   single API request
 * [#232] Added ``soortDigitaalAdres`` enum for ``DigitaalAdres``
