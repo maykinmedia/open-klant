@@ -55,10 +55,14 @@ class KlantcontactFilterSetTests(APITestCase):
             self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            url = f"https://testserver.com/klantinteracties/api/v1/klantcontact/{str(uuid4())}"
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(uuid4())}
+            )
+            fake_party_url = "https://testserver.com" + partij_detail_url
+
             response = self.client.get(
                 self.url,
-                {"hadBetrokkene__wasPartij__url": url},
+                {"hadBetrokkene__wasPartij__url": fake_party_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -108,11 +112,15 @@ class KlantcontactFilterSetTests(APITestCase):
             self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
+            betrokkene_detail_url = reverse(
+                "klantinteracties:betrokkene-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_betrokkene_url = "https://testserver.com" + betrokkene_detail_url
+
             response = self.client.get(
                 self.url,
-                {
-                    "hadBetrokkene__url": f"https://testserver.com/klantinteracties/api/v1/klantcontact/{str(uuid4())}"
-                },
+                {"hadBetrokkene__url": fake_betrokkene_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -147,10 +155,17 @@ class KlantcontactFilterSetTests(APITestCase):
             self.assertEqual(str(klantcontact2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            url = f"https://testserver.com/klantinteracties/api/v1/onderwerpobjecten/{str(uuid4())}"
+            onderwerpobject_detail_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_onderwerpobject_url = (
+                "https://testserver.com" + onderwerpobject_detail_url
+            )
+
             response = self.client.get(
                 self.url,
-                {"onderwerpobject__url": url},
+                {"onderwerpobject__url": fake_onderwerpobject_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -185,10 +200,17 @@ class KlantcontactFilterSetTests(APITestCase):
             self.assertEqual(str(klantcontact2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            url = f"https://testserver.com/klantinteracties/api/v1/onderwerpobjecten/{str(uuid4())}"
+            was_onderwerpobject_detail_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_was_onderwerpobject_url = (
+                "https://testserver.com" + was_onderwerpobject_detail_url
+            )
+
             response = self.client.get(
                 self.url,
-                {"wasOnderwerpobject__url": url},
+                {"wasOnderwerpobject__url": fake_was_onderwerpobject_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -229,10 +251,15 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            url = f"https://testserver.com/klantinteracties/api/v1/klantcontact/{str(uuid4())}"
+            klantcontact_detail_url = reverse(
+                "klantinteracties:klantcontact-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_klantcontact_url = "https://testserver.com" + klantcontact_detail_url
+
             response = self.client.get(
                 self.url,
-                {"hadKlantcontact__url": url},
+                {"hadKlantcontact__url": fake_klantcontact_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -329,10 +356,17 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            none_existing_url = f"https://testserver.com/klantinteracties/api/v1/digitaal_adres/{str(uuid4())}"
+            digitaal_adres_detail_url = reverse(
+                "klantinteracties:digitaaladres-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_digitaal_adres_url = (
+                "https://testserver.com" + digitaal_adres_detail_url
+            )
+
             response = self.client.get(
                 self.url,
-                {"verstrektedigitaalAdres__url": none_existing_url},
+                {"verstrektedigitaalAdres__url": fake_digitaal_adres_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -428,12 +462,12 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            response = self.client.get(
-                self.url,
-                {
-                    "wasPartij__url": f"https://testserver.com/klantinteracties/api/v1/partij/{str(uuid4())}"
-                },
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(uuid4())}
             )
+            fake_partij_url = "https://testserver.com" + partij_detail_url
+
+            response = self.client.get(self.url, {"wasPartij__url": fake_partij_url})
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             self.assertEqual(response.json()["count"], 0)
@@ -530,10 +564,14 @@ class PartijFilterSetTests(APITestCase):
             self.assertEqual(str(partij3.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(uuid4())}
+            )
+            fake_partij_url = "https://testserver.com" + partij_detail_url
+
             response = self.client.get(
                 self.url,
-                {"vertegenwoordigdePartij__url": partij_url},
+                {"vertegenwoordigdePartij__url": fake_partij_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -732,11 +770,14 @@ class CategorieRelatieFiltersetTests(APITestCase):
             self.assertEqual(str(categorie_relatie2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(uuid4())}
+            )
+            fake_partij_url = "https://testserver.com" + partij_detail_url
+
             response = self.client.get(
                 self.url,
-                {
-                    "partij__url": f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
-                },
+                {"partij__url": fake_partij_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -826,11 +867,15 @@ class CategorieRelatieFiltersetTests(APITestCase):
             self.assertEqual(str(categorie_relatie.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
+            categorie_detail_url = reverse(
+                "klantinteracties:categorie-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_categorie_url = "https://testserver.com" + categorie_detail_url
+
             response = self.client.get(
                 self.url,
-                {
-                    "categorie__url": f"https://testserver.com/klantinteracties/api/v1/categorieen/{str(uuid4())}"
-                },
+                {"categorie__url": fake_categorie_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -931,10 +976,15 @@ class ActorKlantcontactFilterSetTests(APITestCase):
             self.assertEqual(str(actor_klantcontact.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            url = f"https://testserver.com/klantinteracties/api/v1/klantcontacten/{str(uuid4())}"
+            klantcontact_detail_url = reverse(
+                "klantinteracties:klantcontact-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_klantcontact_url = "https://testserver.com" + klantcontact_detail_url
+
             response = self.client.get(
                 self.url,
-                {"klantcontact__url": url},
+                {"klantcontact__url": fake_klantcontact_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -969,11 +1019,14 @@ class ActorKlantcontactFilterSetTests(APITestCase):
             self.assertEqual(str(actor_klantcontact.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
+            actor_detail_url = reverse(
+                "klantinteracties:actor-detail", kwargs={"uuid": str(uuid4())}
+            )
+            fake_actor_url = "https://testserver.com" + actor_detail_url
+
             response = self.client.get(
                 self.url,
-                {
-                    "actor__url": f"https://testserver.com/klantinteracties/api/v1/klantcontacten/{str(uuid4())}"
-                },
+                {"actor__url": fake_actor_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1014,10 +1067,14 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
             self.assertEqual(str(vertegenwoordigden.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            vertegenwoordigde_partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(uuid4())}
+            )
+            fake_partij_url = "https://testserver.com" + partij_detail_url
+
             response = self.client.get(
                 self.url,
-                {"vertegenwoordigendePartij__url": vertegenwoordigde_partij_url},
+                {"vertegenwoordigendePartij__url": fake_partij_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1053,10 +1110,14 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
             self.assertEqual(str(vertegenwoordigden.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            partij_url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(uuid4())}
+            )
+            fake_partij_url = "https://testserver.com" + partij_detail_url
+
             response = self.client.get(
                 self.url,
-                {"vertegenwoordigdePartij__url": partij_url},
+                {"vertegenwoordigdePartij__url": fake_partij_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1094,11 +1155,13 @@ class InterneTaakFilterSetTests(APITestCase):
             self.assertEqual(str(internetaak.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
+            actor_detail_url = reverse(
+                "klantinteracties:actor-detail", kwargs={"uuid": str(uuid4())}
+            )
+            fake_actor_url = "https://testserver.com" + actor_detail_url
+
             response = self.client.get(
-                self.url,
-                {
-                    "toegewezenAanActor__url": f"https://testserver.com/klantinteracties/api/v1/actoren/{str(uuid4())}"
-                },
+                self.url, {"toegewezenAanActor__url": fake_actor_url}
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1133,10 +1196,15 @@ class InterneTaakFilterSetTests(APITestCase):
             self.assertEqual(str(internetaak.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            klantcontacten_url = f"https://testserver.com/klantinteracties/api/v1/klantcontacten/{str(uuid4())}"
+            klantcontact_detail_url = reverse(
+                "klantinteracties:klantcontact-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_klantcontact_url = "https://testserver.com" + klantcontact_detail_url
+
             response = self.client.get(
                 self.url,
-                {"aanleidinggevendKlantcontact__url": klantcontacten_url},
+                {"aanleidinggevendKlantcontact__url": fake_klantcontact_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1175,10 +1243,15 @@ class DigitaalAdresFilterSetTests(APITestCase):
             self.assertEqual(str(digitaal_adres2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            betrokkene_url = f"https://testserver.com/klantinteracties/api/v1/betrokkenen/{str(uuid4())}"
+            betrokkene_detail_url = reverse(
+                "klantinteracties:betrokkene-detail",
+                kwargs={"uuid": str(uuid4())},
+            )
+            fake_betrokkene_url = "https://testserver.com" + betrokkene_detail_url
+
             response = self.client.get(
                 self.url,
-                {"verstrektDoorBetrokkene__url": betrokkene_url},
+                {"verstrektDoorBetrokkene__url": fake_betrokkene_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1213,10 +1286,14 @@ class DigitaalAdresFilterSetTests(APITestCase):
             self.assertEqual(str(digitaal_adres2.uuid), data[0]["uuid"])
 
         with self.subTest("no_matches_found_return_nothing"):
-            url = f"https://testserver.com/klantinteracties/api/v1/partijen/{str(uuid4())}"
+            partij_detail_url = reverse(
+                "klantinteracties:partij-detail", kwargs={"uuid": str(uuid4())}
+            )
+            fake_partij_url = "https://testserver.com" + partij_detail_url
+
             response = self.client.get(
                 self.url,
-                {"verstrektDoorPartij__url": url},
+                {"verstrektDoorPartij__url": fake_partij_url},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
