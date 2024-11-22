@@ -1,0 +1,67 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://localhost:8000/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://localhost:8000/klanten/api/v1/klanten/ace470b2-ef75-45ce-8b16-106481b8f0f7","bronorganisatie":"710426380","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"Anthony","voorvoegselAchternaam":"","achternaam":"Hopkins","telefoonnummer":"","emailadres":"","adres":null,"subject":"http://localhost:8010/subject/1","subjectType":null,"aanmaakkanaal":"","geverifieerd":false}]}'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '461'
+      Content-Type:
+      - application/json
+      Referrer-Policy:
+      - same-origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://localhost:8010/subject/1
+  response:
+    body:
+      string: '{"inpBsn": "024325818", "anpIdentificatie": "107", "inpANummer": "",
+        "geslachtsnaam": "Wever", "voorvoegselGeslachtsnaam": "", "voorletters": "W",
+        "voornamen": "Willy", "geslachtsaanduiding": "", "geboortedatum": "2010-06-02",
+        "verblijfsadres": null, "subVerblijfBuitenland": null}'
+    headers:
+      Content-type:
+      - application/json
+      Date:
+      - Thu, 14 Nov 2024 14:35:13 GMT
+      Server:
+      - BaseHTTP/0.6 Python/3.10.0
+    status:
+      code: 200
+      message: OK
+version: 1

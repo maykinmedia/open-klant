@@ -9,6 +9,8 @@ Change history
 **New features**
 
 * Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
+* [#197] Added a ``migrate_to_v2`` management command which allows users of version ``1.0.0`` to migrate to version ``2.4.0``
+  More information can be found in the `documentation <https://open-klant.readthedocs.io/en/latest/installation/migration.html>`
 
 **Bugfixes/QoL**:
 

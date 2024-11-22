@@ -28,3 +28,4 @@ Open Klant `is`_ and only uses open source.
    :hidden:
 
    installation/index
+   development/index

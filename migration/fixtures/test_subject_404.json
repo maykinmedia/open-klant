@@ -1,0 +1,23 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "016752934",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "http://localhost:8010",
+            "subject_type": null,
+            "telefoonnummer": "",
+            "uuid": "b27668f2-01ac-447e-a7d1-83ec80e42abe",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 1181
+    }
+]

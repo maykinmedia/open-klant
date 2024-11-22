@@ -1,0 +1,23 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "560893723",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "foobar",
+            "subject_type": null,
+            "telefoonnummer": "",
+            "uuid": "01f05b35-acdf-40d1-8d73-20ec7cfcdadb",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 1180
+    }
+]

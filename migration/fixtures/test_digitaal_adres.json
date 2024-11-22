@@ -1,0 +1,39 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "215906846",
+            "emailadres": "example@maykinmedia.nl",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "",
+            "subject_type": "natuurlijk_persoon",
+            "telefoonnummer": "",
+            "uuid": "dbfdb3f2-e153-49ea-9e26-e55220605c14",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 101
+    },
+    {
+        "fields": {
+            "anp_identificatie": "0",
+            "geboortedatum": "1981-04-15",
+            "geslachtsaanduiding": "",
+            "geslachtsnaam": "Greene",
+            "inp_a_nummer": "",
+            "inp_bsn": "",
+            "klant": 101,
+            "voorletters": "",
+            "voornamen": "Lori",
+            "voorvoegsel_geslachtsnaam": ""
+        },
+        "model": "klanten.natuurlijkpersoon",
+        "pk": 34
+    }
+]

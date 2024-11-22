@@ -15,3 +15,4 @@ this.
    :caption: Further reading
 
    config
+   migration

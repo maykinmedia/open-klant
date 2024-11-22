@@ -1,0 +1,39 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "Potter",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "719250341",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "",
+            "subject_type": "natuurlijk_persoon",
+            "telefoonnummer": "",
+            "uuid": "7853958c-4ff1-4b62-bb81-1277346692bf",
+            "voornaam": "Harry",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 773
+    },
+    {
+        "fields": {
+            "anp_identificatie": "0",
+            "geboortedatum": "2005-09-30",
+            "geslachtsaanduiding": "",
+            "geslachtsnaam": "Huffman",
+            "inp_a_nummer": "",
+            "inp_bsn": "024325818",
+            "klant": 773,
+            "voorletters": "H",
+            "voornamen": "Frank",
+            "voorvoegsel_geslachtsnaam": ""
+        },
+        "model": "klanten.natuurlijkpersoon",
+        "pk": 698
+    }
+]

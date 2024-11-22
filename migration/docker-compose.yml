@@ -1,0 +1,42 @@
+# Stripped version of https://github.com/maykinmedia/open-klant/blob/1.0.0/docker-compose.yml
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./docker-init-db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+    # Note the missing database data directory. This make it easier to rerecord
+    # cassettes as it will start with a clean database whenever
+    # `docker compose down` is used (e.g the container is recreated on the next
+    # startup).
+
+  web:
+    image: maykinmedia/open-klant:1.0.0
+    environment:
+      - DJANGO_SETTINGS_MODULE=openklant.conf.docker
+      - IS_HTTPS=no
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_HOST=db
+      - ALLOWED_HOSTS=*
+      - CACHE_DEFAULT=redis:6379/0
+      - CACHE_AXES=redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-django-insecure-$8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - NOTIFICATIONS_DISABLED=True
+    volumes:
+      - ./fixtures:/app/src/openklant/fixtures/migration:ro
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+      - redis
+
+  redis:
+    image: redis
+
+volumes:
+  log:

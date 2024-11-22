@@ -1,0 +1,23 @@
+[
+    {
+        "fields": {
+            "aanmaakkanaal": "",
+            "achternaam": "",
+            "bedrijfsnaam": "",
+            "bronorganisatie": "892036175",
+            "emailadres": "",
+            "functie": "",
+            "geverifieerd": false,
+            "klantnummer": "0",
+            "subject": "",
+            "subject_type": null,
+            "telefoonnummer": "",
+            "uuid": "c59c00b3-3445-4731-8a6b-ee26992a5358",
+            "voornaam": "",
+            "voorvoegsel_achternaam": "",
+            "website_url": ""
+        },
+        "model": "klanten.klant",
+        "pk": 1179
+    }
+]
