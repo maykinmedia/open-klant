@@ -14,8 +14,8 @@ created. This dummy token will be removed after the command ran (be it successfu
 
 An example of how one might want to run this command can be seen below:
 
-```
-$ ACCESS_TOKEN="openklant-v1-token" ./src/manage.py migrate_to_v2 \
-    https://example.openklant.nl \
-    https://example.klantinteracties.nl
-```
+    .. code-block:: bash
+
+        $ ACCESS_TOKEN="openklant-v1-token" ./src/manage.py migrate_to_v2 \
+            https://example.openklant.nl \
+            https://example.klantinteracties.nl
