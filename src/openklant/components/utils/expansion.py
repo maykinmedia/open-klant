@@ -64,16 +64,26 @@ class InclusionNode:
         return dict where children are grouped by their label
         """
         results = {}
+
         for child in self._children:
-            child_result = child.display()
-            if child.many:
-                results.setdefault(child.label, []).append(child_result)
-            else:
+            child_result: Optional[dict] = child.display()
+
+            if not child.many:
                 results[child.label] = child_result
+                continue
+
+            child_results: list = results.setdefault(child.label, [])
+
+            if child_result is None:
+                continue
+
+            if child_result is not None:
+                child_results.append(child_result)
+
         return results
 
-    def display(self) -> dict:
-        data = self.value.copy()
+    def display(self) -> Optional[dict]:
+        data = self.value.copy() if self.value is not None else None
         if self._children:
             data[EXPAND_KEY] = self.display_children()
         return data
@@ -111,6 +121,7 @@ class InclusionTree:
 
         for node in root_nodes:
             result[node.id] = node.display_children()
+
         return result
 
 
@@ -168,14 +179,23 @@ class ExpandLoader(InclusionLoader):
         entries = self._inclusions((), serializer, serializer.instance)
 
         for obj, inclusion_serializer, parent, path, many in entries:
-            data = inclusion_serializer(instance=obj, context=serializer.context).data
-            tree.add_node(
-                id=data["url"],
-                value=data,
+            tree_kwargs = dict(
+                id=None,
+                value=None,
                 label=path[-1],
                 many=many,
                 parent_id=parent.get_absolute_api_url(request=request),
             )
+
+            if obj:
+                serializer = inclusion_serializer(
+                    instance=obj, context=serializer.context
+                )
+                data: dict | list = serializer.data
+
+                tree_kwargs.update(dict(value=data, id=data["url"]))
+
+            tree.add_node(**tree_kwargs)
 
         result = tree.display_tree()
 
@@ -204,11 +224,17 @@ class ExpandLoader(InclusionLoader):
         self,
         path: Tuple[str, ...],
         field: Field,
-        instance: models.Model,
+        instance: Optional[models.Model],
         name: str,
         inclusion_serializers: Dict[str, Union[str, Type[Serializer]]],
     ) -> Iterator[
-        Tuple[models.Model, Type[Serializer], models.Model, Tuple[str, ...], bool]
+        Tuple[
+            Optional[models.Model],
+            Type[Serializer],
+            models.Model,
+            Tuple[str, ...],
+            bool,
+        ]
     ]:
         """
         change return of this generator from (obj, serializer_class) to
@@ -237,6 +263,8 @@ class ExpandLoader(InclusionLoader):
             True if hasattr(field, "child_relation") else getattr(field, "many", False)
         )
 
+        obj: Optional[models.Model] = None
+
         for obj in self._some_related_field_inclusions(
             new_path, field, instance, inclusion_serializer
         ):
@@ -250,6 +278,9 @@ class ExpandLoader(InclusionLoader):
                 inclusion_serializers,
             ):
                 yield entry
+        else:
+            if new_path in self.allowed_paths:
+                yield obj, inclusion_serializer, instance, new_path, many
 
     def _some_related_field_inclusions(
         self,
