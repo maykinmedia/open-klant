@@ -26,10 +26,6 @@ asn1crypto==1.5.1
     #   webauthn
 astroid==3.2.4
     # via pylint
-async-timeout==5.0.1
-    # via
-    #   -r requirements/base.txt
-    #   redis
 attrs==23.2.0
     # via
     #   -r requirements/base.txt
