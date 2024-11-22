@@ -78,6 +78,8 @@ class PartijTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
         with self.subTest("test_categorie_relatie_with_categorie_names"):
             categorie = CategorieFactory.create(naam="test-categorie-naam")
@@ -1820,6 +1822,8 @@ class PartijIdentificatorTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_partij_indetificator(self):
         list_url = reverse("klantinteracties:partijidentificator-list")
@@ -1995,6 +1999,8 @@ class CategorieRelatieTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_categorie_relatie(self):
         list_url = reverse("klantinteracties:categorierelatie-list")
@@ -2139,6 +2145,8 @@ class CategorieTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_categorie(self):
         list_url = reverse("klantinteracties:categorie-list")
@@ -2232,6 +2240,8 @@ class VertegenwoordigdenTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_vertegenwoordigden(self):
         list_url = reverse("klantinteracties:vertegenwoordigden-list")

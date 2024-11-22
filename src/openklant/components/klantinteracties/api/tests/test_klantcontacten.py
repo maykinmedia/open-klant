@@ -86,6 +86,8 @@ class KlantContactTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
         with self.subTest("test_had_betrokken_actoren"):
             data = response.json()
@@ -397,6 +399,8 @@ class BetrokkeneTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_betrokkene_with_partij(self):
         klantcontact = KlantcontactFactory.create()
@@ -834,6 +838,8 @@ class BijlageTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_bijlage(self):
         list_url = reverse("klantinteracties:bijlage-list")
@@ -1071,6 +1077,8 @@ class OnderwerpobjectTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_onderwerpobject(self):
         list_url = reverse("klantinteracties:onderwerpobject-list")
@@ -1349,6 +1357,8 @@ class ActorKlantcontactTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_actorklantcontact(self):
         list_url = reverse("klantinteracties:actorklantcontact-list")

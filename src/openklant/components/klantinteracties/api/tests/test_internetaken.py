@@ -50,6 +50,8 @@ class InterneTaakTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     @freeze_time("2024-01-01T12:00:00Z")
     def test_create_internetaak(self):

@@ -52,6 +52,8 @@ class DigitaalAdresTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_digitaal_adres(self):
         list_url = reverse("klantinteracties:digitaaladres-list")

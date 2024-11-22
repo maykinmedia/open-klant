@@ -227,7 +227,7 @@ class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "klantinteracties:categorie-detail",
+                "view_name": "klantinteracties:categorierelatie-detail",
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van deze categorie binnen deze API."),
             },
