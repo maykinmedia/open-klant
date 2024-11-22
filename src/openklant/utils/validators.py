@@ -23,13 +23,10 @@ def validate_charfield_entry(value, allow_apostrophe=False):
     return value
 
 
-def validate_phone_number(value):
-    try:
-        int(value.strip().lstrip("0+").replace("-", "").replace(" ", ""))
-    except (ValueError, TypeError):
-        raise ValidationError(_("Het opgegeven mobiele telefoonnummer is ongeldig."))
-
-    return value
+validate_phone_number = RegexValidator(
+    regex="(0[8-9]00[0-9]{4,7})|(0[1-9][0-9]{8})|(\\+[0-9]{9,20}|1400|140[0-9]{2,3})",
+    message=_("Het opgegeven telefoonnummer is ongeldig."),
+)
 
 
 class CustomRegexValidator(RegexValidator):

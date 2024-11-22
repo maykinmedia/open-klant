@@ -98,58 +98,149 @@ class DigitaalAdresTests(APITestCase):
     @tag("gh-234")
     def test_create_digitaal_adres_email_validation(self):
         list_url = reverse("klantinteracties:digitaaladres-list")
-        data = {
-            "verstrektDoorBetrokkene": None,
-            "verstrektDoorPartij": None,
-            "soortDigitaalAdres": SoortDigitaalAdres.email,
-            "adres": "invalid",
-            "omschrijving": "omschrijving",
-        }
 
-        response = self.client.post(list_url, data)
+        with self.subTest("invalid email create"):
+            data = {
+                "verstrektDoorBetrokkene": None,
+                "verstrektDoorPartij": None,
+                "soortDigitaalAdres": SoortDigitaalAdres.email,
+                "adres": "invalid",
+                "omschrijving": "omschrijving",
+            }
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        data = response.json()
-        self.assertEqual(
-            data["invalidParams"],
-            [
-                {
-                    "name": "adres",
-                    "code": "invalid",
-                    "reason": _("Voer een geldig e-mailadres in."),
-                }
-            ],
-        )
+            response = self.client.post(list_url, data)
 
-        digitaal_adres = DigitaalAdresFactory.create(
-            soort_digitaal_adres=SoortDigitaalAdres.email, adres="foo@bar.com"
-        )
-        detail_url = reverse(
-            "klantinteracties:digitaaladres-detail",
-            kwargs={"uuid": str(digitaal_adres.uuid)},
-        )
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(
+                data["invalidParams"],
+                [
+                    {
+                        "name": "adres",
+                        "code": "invalid",
+                        "reason": _("Voer een geldig e-mailadres in."),
+                    }
+                ],
+            )
 
-        response = self.client.patch(detail_url, {"adres": "invalid"})
+        with self.subTest("invalid email update"):
+            digitaal_adres = DigitaalAdresFactory.create(
+                soort_digitaal_adres=SoortDigitaalAdres.email, adres="foo@bar.com"
+            )
+            detail_url = reverse(
+                "klantinteracties:digitaaladres-detail",
+                kwargs={"uuid": str(digitaal_adres.uuid)},
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        data = response.json()
-        self.assertEqual(
-            data["invalidParams"],
-            [
-                {
-                    "name": "adres",
-                    "code": "invalid",
-                    "reason": _("Voer een geldig e-mailadres in."),
-                }
-            ],
-        )
+            response = self.client.patch(detail_url, {"adres": "invalid"})
 
-        with self.subTest("no validation applied if soort is not email"):
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(
+                data["invalidParams"],
+                [
+                    {
+                        "name": "adres",
+                        "code": "invalid",
+                        "reason": _("Voer een geldig e-mailadres in."),
+                    }
+                ],
+            )
+
+    @tag("gh-234")
+    def test_create_digitaal_adres_telefoon_validation(self):
+        list_url = reverse("klantinteracties:digitaaladres-list")
+
+        with self.subTest("create telefeoonnummer"):
+            data = {
+                "verstrektDoorBetrokkene": None,
+                "verstrektDoorPartij": None,
+                "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
+                "adres": "invalid",
+                "omschrijving": "omschrijving",
+            }
+
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(
+                data["invalidParams"],
+                [
+                    {
+                        "name": "adres",
+                        "code": "invalid",
+                        "reason": _("Het opgegeven telefoonnummer is ongeldig."),
+                    }
+                ],
+            )
+
+        with self.subTest("invalid telefoonnummer update"):
+            digitaal_adres = DigitaalAdresFactory.create(
+                soort_digitaal_adres=SoortDigitaalAdres.telefoonnummer, adres="+311234"
+            )
+            detail_url = reverse(
+                "klantinteracties:digitaaladres-detail",
+                kwargs={"uuid": str(digitaal_adres.uuid)},
+            )
+
+            response = self.client.patch(detail_url, {"adres": "invalid"})
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            self.assertEqual(
+                data["invalidParams"],
+                [
+                    {
+                        "name": "adres",
+                        "code": "invalid",
+                        "reason": _("Het opgegeven telefoonnummer is ongeldig."),
+                    }
+                ],
+            )
+
+    @tag("gh-234")
+    def test_create_digitaal_adres_overig_no_validation(self):
+        list_url = reverse("klantinteracties:digitaaladres-list")
+
+        with self.subTest(
+            "no validation applied if soort is not email or telefoonnummer create"
+        ):
+            data = {
+                "verstrektDoorBetrokkene": None,
+                "verstrektDoorPartij": None,
+                "soortDigitaalAdres": SoortDigitaalAdres.overig,
+                "adres": "whatever",
+                "omschrijving": "omschrijving",
+            }
+
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+            response_data = response.json()
+
+            self.assertEqual(
+                response_data["soortDigitaalAdres"], SoortDigitaalAdres.overig
+            )
+            self.assertEqual(response_data["adres"], "whatever")
+
+        with self.subTest(
+            "no validation applied if soort is not email or telefoonnummer update"
+        ):
+            digitaal_adres = DigitaalAdresFactory.create(
+                soort_digitaal_adres=SoortDigitaalAdres.overig, adres="overig"
+            )
+            detail_url = reverse(
+                "klantinteracties:digitaaladres-detail",
+                kwargs={"uuid": str(digitaal_adres.uuid)},
+            )
+
             response = self.client.patch(
                 detail_url,
                 {
-                    "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
-                    "adres": "0612345678",
+                    "soortDigitaalAdres": SoortDigitaalAdres.overig,
+                    "adres": "whatever",
                 },
             )
 
@@ -158,9 +249,9 @@ class DigitaalAdresTests(APITestCase):
             digitaal_adres.refresh_from_db()
 
             self.assertEqual(
-                digitaal_adres.soort_digitaal_adres, SoortDigitaalAdres.telefoonnummer
+                digitaal_adres.soort_digitaal_adres, SoortDigitaalAdres.overig
             )
-            self.assertEqual(digitaal_adres.adres, "0612345678")
+            self.assertEqual(digitaal_adres.adres, "whatever")
 
     def test_create_digitaal_adres_is_standaard_adres(self):
         """

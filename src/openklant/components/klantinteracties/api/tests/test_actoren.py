@@ -60,7 +60,7 @@ class ActorTests(APITestCase):
             "actorIdentificatie": {
                 "functie": "functie",
                 "emailadres": "phil@bozeman.com",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         }
 
@@ -87,7 +87,7 @@ class ActorTests(APITestCase):
             {
                 "functie": "functie",
                 "emailadres": "phil@bozeman.com",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         )
 
@@ -107,7 +107,7 @@ class ActorTests(APITestCase):
                 "omschrijving": "omschrijving",
                 "emailadres": "phil@bozeman.com",
                 "faxnummer": "316893487573",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         }
 
@@ -135,7 +135,7 @@ class ActorTests(APITestCase):
                 "omschrijving": "omschrijving",
                 "emailadres": "phil@bozeman.com",
                 "faxnummer": "316893487573",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         )
 
@@ -197,7 +197,7 @@ class ActorTests(APITestCase):
             actor=actor,
             functie="functie",
             emailadres="phil@bozeman.com",
-            telefoonnummer="3168234723",
+            telefoonnummer="+31618234723",
         )
 
         detail_url = reverse(
@@ -223,7 +223,7 @@ class ActorTests(APITestCase):
             {
                 "functie": "functie",
                 "emailadres": "phil@bozeman.com",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         )
 
@@ -240,7 +240,7 @@ class ActorTests(APITestCase):
             "actorIdentificatie": {
                 "functie": "vocalist",
                 "emailadres": "phil@whitechapel.com",
-                "telefoonnummer": "315834573",
+                "telefoonnummer": "+31583457312",
             },
         }
 
@@ -267,7 +267,7 @@ class ActorTests(APITestCase):
             {
                 "functie": "vocalist",
                 "emailadres": "phil@whitechapel.com",
-                "telefoonnummer": "315834573",
+                "telefoonnummer": "+31583457312",
             },
         )
 
@@ -286,7 +286,7 @@ class ActorTests(APITestCase):
             omschrijving="omschrijving",
             emailadres="phil@bozeman.com",
             faxnummer="316893487573",
-            telefoonnummer="3168234723",
+            telefoonnummer="+31618234723",
         )
 
         detail_url = reverse(
@@ -313,7 +313,7 @@ class ActorTests(APITestCase):
                 "omschrijving": "omschrijving",
                 "emailadres": "phil@bozeman.com",
                 "faxnummer": "316893487573",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         )
 
@@ -331,7 +331,7 @@ class ActorTests(APITestCase):
                 "omschrijving": "changed",
                 "emailadres": "phil@whitechapel.com",
                 "faxnummer": "316853458345",
-                "telefoonnummer": "3169456732",
+                "telefoonnummer": "+31619456732",
             },
         }
 
@@ -359,7 +359,7 @@ class ActorTests(APITestCase):
                 "omschrijving": "changed",
                 "emailadres": "phil@whitechapel.com",
                 "faxnummer": "316853458345",
-                "telefoonnummer": "3169456732",
+                "telefoonnummer": "+31619456732",
             },
         )
 
@@ -461,7 +461,7 @@ class ActorTests(APITestCase):
             actor=actor,
             functie="functie",
             emailadres="phil@bozeman.com",
-            telefoonnummer="3168234723",
+            telefoonnummer="+31618234723",
         )
 
         detail_url = reverse(
@@ -487,7 +487,7 @@ class ActorTests(APITestCase):
             {
                 "functie": "functie",
                 "emailadres": "phil@bozeman.com",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         )
 
@@ -547,7 +547,7 @@ class ActorTests(APITestCase):
             actor=actor,
             functie="functie",
             emailadres="phil@bozeman.com",
-            telefoonnummer="3168234723",
+            telefoonnummer="+31618234723",
         )
         detail_url = reverse(
             "klantinteracties:actor-detail", kwargs={"uuid": str(actor.uuid)}
@@ -572,7 +572,7 @@ class ActorTests(APITestCase):
             {
                 "functie": "functie",
                 "emailadres": "phil@bozeman.com",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         )
 
@@ -604,7 +604,7 @@ class ActorTests(APITestCase):
             {
                 "functie": "functie",
                 "emailadres": "phil@bozeman.com",
-                "telefoonnummer": "3168234723",
+                "telefoonnummer": "+31618234723",
             },
         )
 
