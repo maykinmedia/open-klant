@@ -28,7 +28,7 @@ Change history
   ``_expand`` parameters.
 * [#258] Added correct API root paths in redoc OAS
 * [#234] Added validation for ``DigitaalAdres.adres`` whenever it's type is ``email``
-* [#227] Fixed ``partijIdentificatie`` crashing when not provided
+* [#227] Fixed ``partijen`` creation endpoint crash when ``partijIdentificatie`` is not provided
 * [#261] Fixed ``Onderwerpobject`` inline to use ``klantcontact``
 * [#226] Made ``betrokkene`` a non-required form field in the admin
 * [#229] Fixed partijen admin search
