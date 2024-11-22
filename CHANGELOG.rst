@@ -10,12 +10,12 @@ Change history
 
 * [#197] Added a ``migrate_to_v2`` management command which allows users of version ``1.0.0`` to migrate to version ``2.4.0``
   More information can be found in the `documentation <https://open-klant.readthedocs.io/en/latest/installation/migration.html>`
-* [#246] Add ``is_standaard_adres`` for ``DigitaalAdres``
+* [#246] Added ``is_standaard_adres`` for ``DigitaalAdres``
 * Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
-* [#232] added ``/maak-klantcontact`` convenience endpoint. This allows creating
+* [#232] Added ``/maak-klantcontact`` convenience endpoint. This allows creating
   a ``KlantContact``, a ``Betrokkene`` and a ``OnderwerpObject`` through a
   single API request
-* [#232] added ``soortDigitaalAdres`` enum for ``DigitaalAdres``
+* [#232] Added ``soortDigitaalAdres`` enum for ``DigitaalAdres``
 
 **Bugfixes/QoL**:
 
@@ -24,18 +24,18 @@ Change history
 * [#243] Fix expand query parameters. Shows the ``_expand`` field in the response body
   even though it might be empty. This behavior is applied to all available
   ``_expand`` parameters.
-* [#258] Use correct API root in redoc OAS
-* [#234] Validate ``DigitaalAdres.adres`` if type is ``email``
+* [#258] Added correct API root paths in redoc OAS
+* [#234] Added validation for ``DigitaalAdres.adres`` whenever it's type is ``email``
 * [#227] Fixed ``partijIdentificatie`` crashing when not provided
 * [#261] Fixed ``Onderwerpobject`` inline to use ``klantcontact``
-* [#226] Make ``betrokkene`` a non-required form field in the admin
-* [#229] Fix partijen admin search
+* [#226] Made ``betrokkene`` a non-required form field in the admin
+* [#229] Fixed partijen admin search
 
 **Project maintenance**
 
 * [#247] Added CI check to verify open API framework is updated to the latest version
 * Upgraded commonground-api-common to 1.13.4
-* [#13] Implement open-api-workflows
+* [#13] Implemented open-api-workflows
 
 2.3.0
 =====
