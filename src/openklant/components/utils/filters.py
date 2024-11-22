@@ -36,6 +36,9 @@ class URLViewFilter(filters.Filter):
 
     def filter(self, qs, value: OpenApiTypes.URI) -> QuerySet:
         if value:
-            value = uuid.UUID(value.rstrip("/").split("/")[-1])
+            try:
+                value = uuid.UUID(value.rstrip("/").split("/")[-1])
+            except ValueError:
+                return qs.none()
 
         return super().filter(qs, value)

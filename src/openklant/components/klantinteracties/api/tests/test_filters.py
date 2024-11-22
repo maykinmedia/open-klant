@@ -68,9 +68,21 @@ class KlantcontactFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"hadBetrokkene__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            partij_list_url = reverse("klantinteracties:partij-list")
+            fake_party_url = "https://testserver.com" + partij_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"hadBetrokkene__wasPartij__url": fake_party_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_partij_uuid(self):
         klantcontact = KlantcontactFactory.create()
@@ -126,9 +138,23 @@ class KlantcontactFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"hadBetrokkene__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            betrokkene_list_url = reverse("klantinteracties:betrokkene-list")
+            fake_betrokkene_url = (
+                "https://testserver.com" + betrokkene_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"hadBetrokkene__url": fake_betrokkene_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_onderwerpobject__url(self):
         klantcontact = KlantcontactFactory.create()
@@ -171,9 +197,23 @@ class KlantcontactFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"onderwerpobject__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            onderwerpobject_list_url = reverse("klantinteracties:onderwerpobject-list")
+            fake_onderwerpobject_url = (
+                "https://testserver.com" + onderwerpobject_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"onderwerpobject__url": fake_onderwerpobject_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_was_onderwerpobject__url(self):
         klantcontact = KlantcontactFactory.create()
@@ -216,11 +256,27 @@ class KlantcontactFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"wasOnderwerpobject__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            was_onderwerpobject_list_url = reverse(
+                "klantinteracties:onderwerpobject-list"
+            )
+            fake_was_onderwerpobject_url = (
+                "https://testserver.com" + was_onderwerpobject_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"wasOnderwerpobject__url": fake_was_onderwerpobject_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
 
 class BetrokkeneFilterSetTests(APITestCase):
@@ -265,9 +321,23 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"hadKlantcontact__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            klantcontact_list_url = reverse("klantinteracties:klantcontact-list")
+            fake_klantcontact_url = (
+                "https://testserver.com" + klantcontact_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"hadKlantcontact__url": fake_klantcontact_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_had_klantcontact_uuid(self):
         klantcontact = KlantcontactFactory.create()
@@ -296,7 +366,7 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"hadKlantcontact__uuid": "ValueError"}
             )
@@ -372,11 +442,25 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"verstrektedigitaalAdres__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            digitaaladres_list_url = reverse("klantinteracties:digitaaladres-list")
+            fake_digitaaladres_url = (
+                "https://testserver.com" + digitaaladres_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"verstrektedigitaalAdres__url": fake_digitaaladres_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_verstrektedigitaal_adres_uuid(self):
         betrokkene = BetrokkeneFactory.create()
@@ -405,7 +489,7 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"verstrektedigitaalAdres__uuid": "ValueError"}
             )
@@ -472,9 +556,21 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"wasPartij__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            partij_list_url = reverse("klantinteracties:partij-list")
+            fake_partij_url = "https://testserver.com" + partij_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"wasPartij__url": fake_partij_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_was_partij_uuid(self):
         partij = PartijFactory.create()
@@ -503,7 +599,7 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"wasPartij__uuid": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -577,11 +673,23 @@ class PartijFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"vertegenwoordigdePartij__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            partij_list_url = reverse("klantinteracties:partij-list")
+            fake_partij_url = "https://testserver.com" + partij_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"vertegenwoordigdePartij__url": fake_partij_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_partij_identificator_code_objecttype(self):
         partij, partij2 = PartijFactory.create_batch(2)
@@ -783,9 +891,21 @@ class CategorieRelatieFiltersetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"partij__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            partij_list_url = reverse("klantinteracties:partij-list")
+            fake_partij_url = "https://testserver.com" + partij_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"partij__url": fake_partij_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_partij_uuid(self):
         partij, partij2 = PartijFactory.create_batch(2)
@@ -813,7 +933,7 @@ class CategorieRelatieFiltersetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"partij__uuid": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -881,9 +1001,23 @@ class CategorieRelatieFiltersetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"categorie__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            categorie_list_url = reverse("klantinteracties:categorie-list")
+            fake_categorie_url = (
+                "https://testserver.com" + categorie_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"categorie__url": fake_categorie_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_categorie_uuid(self):
         categorie = CategorieFactory.create()
@@ -912,7 +1046,7 @@ class CategorieRelatieFiltersetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"categorie__uuid": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -990,9 +1124,23 @@ class ActorKlantcontactFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"klantcontact__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            klantcontact_list_url = reverse("klantinteracties:klantcontact-list")
+            fake_klantcontact_url = (
+                "https://testserver.com" + klantcontact_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"klantcontact__url": fake_klantcontact_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_actor_url(self):
         actor = ActorFactory.create()
@@ -1032,9 +1180,21 @@ class ActorKlantcontactFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(self.url, {"actor__url": "ValueError"})
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            actor_list_url = reverse("klantinteracties:actor-list")
+            fake_actor_url = "https://testserver.com" + actor_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"actor__url": fake_actor_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
 
 class VertegenwoordigdenFiltersetTests(APITestCase):
@@ -1078,11 +1238,23 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"vertegenwoordigendePartij__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            partij_list_url = reverse("klantinteracties:partij-list")
+            fake_partij_url = "https://testserver.com" + partij_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"vertegenwoordigendePartij__url": fake_partij_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_vertegenwoordigde_partij_url(self):
         partij, partij2, partij3, partij4 = PartijFactory.create_batch(4)
@@ -1123,11 +1295,23 @@ class VertegenwoordigdenFiltersetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"vertegenwoordigdePartij__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            partij_list_url = reverse("klantinteracties:partij-list")
+            fake_partij_url = "https://testserver.com" + partij_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"vertegenwoordigdePartij__url": fake_partij_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
 
 class InterneTaakFilterSetTests(APITestCase):
@@ -1167,11 +1351,23 @@ class InterneTaakFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"toegewezenAanActor__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            actor_list_url = reverse("klantinteracties:actor-list")
+            fake_actor_url = "https://testserver.com" + actor_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"toegewezenAanActor__url": fake_actor_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_aanleidinggevend_klantcontact_url(self):
         klantcontact, klantcontact2 = KlantcontactFactory.create_batch(2)
@@ -1210,11 +1406,25 @@ class InterneTaakFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"aanleidinggevendKlantcontact__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            klantcontact_list_url = reverse("klantinteracties:klantcontact-list")
+            fake_klantcontact_url = (
+                "https://testserver.com" + klantcontact_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"aanleidinggevendKlantcontact__url": fake_klantcontact_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
 
 class DigitaalAdresFilterSetTests(APITestCase):
@@ -1257,11 +1467,25 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"verstrektDoorBetrokkene__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            betrokkene_list_url = reverse("klantinteracties:betrokkene-list")
+            fake_betrokkene_url = (
+                "https://testserver.com" + betrokkene_list_url + "/not-a-uuid"
+            )
+
+            response = self.client.get(
+                self.url,
+                {"verstrektDoorBetrokkene__url": fake_betrokkene_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
 
     def test_filter_verstrekt_door_partij_url(self):
         partij, partij2 = PartijFactory.create_batch(2)
@@ -1299,8 +1523,20 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
-        with self.subTest("invalid_url_results_in_400"):
+        with self.subTest("no url as value restults in 400"):
             response = self.client.get(
                 self.url, {"verstrektDoorPartij__url": "ValueError"}
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("invalid_uuid_results_nothing"):
+            partij_list_url = reverse("klantinteracties:partij-list")
+            fake_partij_url = "https://testserver.com" + partij_list_url + "/not-a-uuid"
+
+            response = self.client.get(
+                self.url,
+                {"verstrektDoorPartij__url": fake_partij_url},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
