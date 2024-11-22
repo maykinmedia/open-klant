@@ -123,11 +123,7 @@ class PartijAdminTests(WebTest):
 @disable_admin_mfa()
 class DigitaalAdresAdminTests(WebTest):
     @tag("gh-234")
-    def test_soort_digitaal_adres_validation(self):
-        """
-        Check that the admin applies conditional email/telefoonnummer validation on `adres`, only if
-        `soort_digitaal_adres` is `email` or 'telefoonnummer'
-        """
+    def test_email_validation(self):
         user = SuperUserFactory.create()
         self.app.set_user(user)
 
@@ -135,55 +131,66 @@ class DigitaalAdresAdminTests(WebTest):
 
         admin_url = reverse("admin:klantinteracties_digitaaladres_add")
 
-        with self.subTest("apply validation for soort_digitaal_adres == email"):
-            response: TestResponse = self.app.get(admin_url)
+        response: TestResponse = self.app.get(admin_url)
 
-            form = response.form
-            form["betrokkene"] = betrokkene.pk
-            form["soort_digitaal_adres"] = SoortDigitaalAdres.email
-            form["adres"] = "invalid"
-            form["omschrijving"] = "foo"
+        form = response.form
+        form["betrokkene"] = betrokkene.pk
+        form["soort_digitaal_adres"] = SoortDigitaalAdres.email
+        form["adres"] = "invalid"
+        form["omschrijving"] = "foo"
 
-            response = form.submit()
+        response = form.submit()
 
-            self.assertEqual(response.status_code, 200)
-            self.assertFalse(DigitaalAdres.objects.exists())
-            self.assertEqual(
-                response.context["errors"], [[_("Voer een geldig e-mailadres in.")]]
-            )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(DigitaalAdres.objects.exists())
+        self.assertEqual(
+            response.context["errors"], [[_("Voer een geldig e-mailadres in.")]]
+        )
 
-        with self.subTest(
-            "apply validation for soort_digitaal_adres == telefoonnummer"
-        ):
-            response: TestResponse = self.app.get(admin_url)
+    @tag("gh-234")
+    def test_telefoonnummer_validation(self):
+        user = SuperUserFactory.create()
+        self.app.set_user(user)
 
-            form = response.form
-            form["betrokkene"] = betrokkene.pk
-            form["soort_digitaal_adres"] = SoortDigitaalAdres.telefoonnummer
-            form["adres"] = "invalid"
-            form["omschrijving"] = "foo"
+        betrokkene = BetrokkeneFactory.create()
 
-            response = form.submit()
+        admin_url = reverse("admin:klantinteracties_digitaaladres_add")
 
-            self.assertEqual(response.status_code, 200)
-            self.assertFalse(DigitaalAdres.objects.exists())
-            self.assertEqual(
-                response.context["errors"],
-                [[_("Het opgegeven telefoonnummer is ongeldig.")]],
-            )
+        response: TestResponse = self.app.get(admin_url)
 
-        with self.subTest(
-            "do not apply validation for soort_digitaal_adres != email/email"
-        ):
-            response: TestResponse = self.app.get(admin_url)
+        form = response.form
+        form["betrokkene"] = betrokkene.pk
+        form["soort_digitaal_adres"] = SoortDigitaalAdres.telefoonnummer
+        form["adres"] = "invalid"
+        form["omschrijving"] = "foo"
 
-            form = response.form
-            form["betrokkene"] = betrokkene.pk
-            form["soort_digitaal_adres"] = SoortDigitaalAdres.overig
-            form["adres"] = "whatever"
-            form["omschrijving"] = "foo"
+        response = form.submit()
 
-            response = form.submit()
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(DigitaalAdres.objects.exists())
+        self.assertEqual(
+            response.context["errors"],
+            [[_("Het opgegeven telefoonnummer is ongeldig.")]],
+        )
 
-            self.assertEqual(response.status_code, 302)
-            self.assertTrue(DigitaalAdres.objects.exists())
+    @tag("gh-234")
+    def test_overig_has_no_validation(self):
+        user = SuperUserFactory.create()
+        self.app.set_user(user)
+
+        betrokkene = BetrokkeneFactory.create()
+
+        admin_url = reverse("admin:klantinteracties_digitaaladres_add")
+
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.form
+        form["betrokkene"] = betrokkene.pk
+        form["soort_digitaal_adres"] = SoortDigitaalAdres.overig
+        form["adres"] = "whatever"
+        form["omschrijving"] = "foo"
+
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(DigitaalAdres.objects.exists())

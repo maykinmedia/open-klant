@@ -94,7 +94,7 @@ class DigitaalAdresTests(APITestCase):
             self.assertEqual(data["omschrijving"], "omschrijving")
 
     @tag("gh-234")
-    def test_create_digitaal_adres_validation(self):
+    def test_create_digitaal_adres_email_validation(self):
         list_url = reverse("klantinteracties:digitaaladres-list")
 
         with self.subTest("invalid email create"):
@@ -145,6 +145,10 @@ class DigitaalAdresTests(APITestCase):
                 ],
             )
 
+    @tag("gh-234")
+    def test_create_digitaal_adres_telefoon_validation(self):
+        list_url = reverse("klantinteracties:digitaaladres-list")
+
         with self.subTest("create telefeoonnummer"):
             data = {
                 "verstrektDoorBetrokkene": None,
@@ -170,7 +174,6 @@ class DigitaalAdresTests(APITestCase):
             )
 
         with self.subTest("invalid telefoonnummer update"):
-
             digitaal_adres = DigitaalAdresFactory.create(
                 soort_digitaal_adres=SoortDigitaalAdres.telefoonnummer, adres="+311234"
             )
@@ -193,6 +196,10 @@ class DigitaalAdresTests(APITestCase):
                     }
                 ],
             )
+
+    @tag("gh-234")
+    def test_create_digitaal_adres_overig_no_validation(self):
+        list_url = reverse("klantinteracties:digitaaladres-list")
 
         with self.subTest(
             "no validation applied if soort is not email or telefoonnummer create"
@@ -219,6 +226,14 @@ class DigitaalAdresTests(APITestCase):
         with self.subTest(
             "no validation applied if soort is not email or telefoonnummer update"
         ):
+            digitaal_adres = DigitaalAdresFactory.create(
+                soort_digitaal_adres=SoortDigitaalAdres.overig, adres="overig"
+            )
+            detail_url = reverse(
+                "klantinteracties:digitaaladres-detail",
+                kwargs={"uuid": str(digitaal_adres.uuid)},
+            )
+
             response = self.client.patch(
                 detail_url,
                 {
