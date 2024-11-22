@@ -1,6 +1,7 @@
 # Helpers
 pip-tools
 gitpython
+bump2version
 
 # Debug tooling
 django-debug-toolbar
