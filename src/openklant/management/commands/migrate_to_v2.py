@@ -37,6 +37,8 @@ PARTIJEN_PATH = reverse_lazy(
     kwargs=dict(version=settings.REST_FRAMEWORK["DEFAULT_VERSION"]),
 )
 
+MIGRATION_TOKEN_IDENTIFIER = "Migration application"
+
 
 def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | None]:
     klanten_path = "/klanten/api/v1/klanten"
@@ -80,15 +82,14 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
     return klanten, next_url
 
 
-def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
+def _save_klanten(url: str, token: TokenAuth, klanten: list[Klant]) -> list[str]:
     if not klanten:
         logger.info("No klanten to save, moving on...")
         return []
 
     logger.info(f"Trying to create {len(klanten)} klanten through the V2 API")
 
-    dummy_token = _generate_dummy_token()
-    openklant_client = OpenKlantClient(url, dummy_token)
+    openklant_client = OpenKlantClient(url, token)
     created_klanten = []
 
     for klant in klanten:
@@ -124,7 +125,23 @@ def _save_klanten(url: str, klanten: list[Klant]) -> list[str]:
 
 
 def _generate_dummy_token() -> str:
-    token_auth, _ = TokenAuth.objects.get_or_create(application="Migration application")
+    try:
+        token_auth, _ = TokenAuth.objects.get_or_create(
+            application=MIGRATION_TOKEN_IDENTIFIER
+        )
+    except TokenAuth.MultipleObjectsReturned:
+        dummy_tokens = TokenAuth.objects.get_or_create(
+            application=MIGRATION_TOKEN_IDENTIFIER
+        )
+
+        token_auth = dummy_tokens.first()
+        deletion_tokens = dummy_tokens.exclude(pk=token_auth.pk)
+        deletion_tokens.delete()
+
+        logger.warning(
+            f"Removed existing migration dummy tokens: {deletion_tokens}"
+        )
+
     return token_auth.token
 
 
@@ -165,12 +182,20 @@ class Command(BaseCommand):
         if not access_token:
             raise ImproperlyConfigured("An access token is required to acces V1")
 
+        dummy_token = _generate_dummy_token()
         results = []
 
-        while next_url is not None:
-            klanten, next_url = _retrieve_klanten(
-                v1_url if next_url == "" else next_url, access_token
+        try:
+            while next_url is not None:
+                klanten, next_url = _retrieve_klanten(
+                    v1_url if next_url == "" else next_url, access_token
+                )
+                results.extend(_save_klanten(v2_url, dummy_token, klanten))
+        finally:
+            dummy_tokens = TokenAuth.objects.filter(
+                application=MIGRATION_TOKEN_IDENTIFIER
             )
-            results.extend(_save_klanten(v2_url, klanten))
+
+            dummy_tokens.delete()
 
         return "\n".join(results)

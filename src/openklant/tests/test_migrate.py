@@ -19,6 +19,7 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     Persoon,
 )
+from openklant.components.token.models import TokenAuth
 from openklant.migration.utils import generate_jwt_token
 from openklant.tests.vcr import VCRMixin
 
@@ -33,6 +34,7 @@ def vcr_request_filter(request: Request):
     return request
 
 
+# TODO: add user documentation
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
     host = LIVE_SERVER_HOST
     port = LIVE_SERVER_PORT
@@ -417,3 +419,34 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(context_manager.exception.returncode, 1)
         self.assertIn("Invalid URL(s)", context_manager.exception.args[0])
+
+    def test_existing_dummy_tokens(self):
+        stdout = StringIO()
+
+        token_application = "Migration application"
+
+        TokenAuth(application=token_application)
+        TokenAuth(application=token_application)
+        TokenAuth(application=token_application)
+
+        call_command(
+            "migrate_to_v2",
+            "http://localhost:8000",
+            self.live_server_url,
+            stdout=stdout,
+        )
+
+        partij = Partij.objects.get()
+
+        output = stdout.getvalue().splitlines()
+
+        partij_url = reverse(
+            "klantinteracties:partij-detail",
+            kwargs={"uuid": str(partij.uuid)},
+        )
+
+        self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
+
+        migration_tokens = TokenAuth.objects.filter(application=token_application)
+
+        self.assertEqual(migration_tokens.count(), 0)
