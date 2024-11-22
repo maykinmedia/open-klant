@@ -138,9 +138,7 @@ def _generate_dummy_token() -> str:
         deletion_tokens = dummy_tokens.exclude(pk=token_auth.pk)
         deletion_tokens.delete()
 
-        logger.warning(
-            f"Removed existing migration dummy tokens: {deletion_tokens}"
-        )
+        logger.warning(f"Removed existing migration dummy tokens: {deletion_tokens}")
 
     return token_auth.token
 
