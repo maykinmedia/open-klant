@@ -58,6 +58,7 @@ class DigitaalAdres(APIMixin, models.Model):
         _("omschrijving"),
         help_text=_("Omschrijving van het digitaal adres."),
         max_length=40,
+        blank=True,
     )
 
     class Meta:
