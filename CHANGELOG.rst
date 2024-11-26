@@ -8,6 +8,8 @@ Change history
 
 **New features**
 
+* [#256] Added the ``hadBetrokkene__wasPartij__url`` and ``hadBetrokkene__wasPartij__uuid``
+  query parameters to allow filtering ``KlantenContact`` by ``Partij``
 * [#287] Added admin inlines for the ``InterneTaak`` and ``Actor`` to allow managing
   the relations between both. Also added search fields for both admins to search for both relations.
 * [#197] Added a ``migrate_to_v2`` management command which allows users of version ``1.0.0`` to migrate to version ``2.4.0``
