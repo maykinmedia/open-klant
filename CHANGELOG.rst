@@ -2,19 +2,45 @@
 Change history
 ==============
 
-2.x.x
+2.4.0
 =====
-*TBD*
+*November, 26, 2024*
 
 **New features**
 
-* Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
+* [#256] Added the ``hadBetrokkene__wasPartij__url`` and ``hadBetrokkene__wasPartij__uuid``
+  query parameters to allow filtering ``KlantenContact`` by ``Partij``
+* [#251] Added admin inlines for the ``InterneTaak`` and ``Actor`` to allow managing
+  the relations between both. Also added search fields for both admins to search for both relations.
 * [#197] Added a ``migrate_to_v2`` management command which allows users of version ``1.0.0`` to migrate to version ``2.4.0``
   More information can be found in the `documentation <https://open-klant.readthedocs.io/en/latest/installation/migration.html>`
+* [#246] Added ``isStandaardAdres`` for ``DigitaalAdres``
+* Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
+* [#147] Added ``/maak-klantcontact`` convenience endpoint. This allows creating
+  a ``KlantContact``, a ``Betrokkene`` and a ``OnderwerpObject`` through a
+  single API request
+* [#232] Added ``soortDigitaalAdres`` enum for ``DigitaalAdres``
 
 **Bugfixes/QoL**:
 
-* [#258] Use correct API root in redoc OAS
+* [#235] Added extra validation for phone numbers for ``DigitaalAdres.adres``
+  when ``DigitaalAdres.soortDigitaalAdres`` is ``telefoonnummer``.
+* [#243] Fix expand query parameters. Shows the ``_expand`` field in the response body
+  even though it might be empty. This behavior is applied to all available
+  ``_expand`` parameters.
+* [#258] Added correct API root paths in redoc OAS
+* [#234] Added validation for ``DigitaalAdres.adres`` when it's type is ``email``
+* [#227] Fixed ``partijen`` creation endpoint crash when ``partijIdentificatie`` is not provided
+* [#261] Fixed ``Onderwerpobject`` admin inline to use ``klantcontact`` instead of
+  ``was_klantcontact``
+* [#226] Made ``betrokkene`` a non-required form field in the admin
+* [#229] Fixed partijen admin search
+
+**Project maintenance**
+
+* [#247] Added CI check to verify open API framework is updated to the latest version
+* Upgraded commonground-api-common to 1.13.4
+* [#13] Implemented open-api-workflows
 
 2.3.0
 =====

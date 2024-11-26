@@ -3489,8 +3489,11 @@ components:
             contact met de gemeente.
         adres:
           type: string
-          description: Digitaal adres waarmee een persoon of organisatie bereikt kan
-            worden.
+          description: 'Validatie van dit veld is afhankelijk van het opgegeven `soortDigitaalAdres`.
+            De validatie die toegepast wordt voor  e-mailadressen is te lezen via
+            de volgende URL: https://github.com/django/django/blob/4.2/django/core/validators.py#L174.Voor
+            telefoonnummers wordt de volgende regex expressie toegepast ter validatie:
+            `(0[8-9]00[0-9]{4,7})|(0[1-9][0-9]{8})|(\+[0-9]{9,20}|1400|140[0-9]{2,3})`.'
           maxLength: 80
         soortDigitaalAdres:
           allOf:
@@ -4898,8 +4901,11 @@ components:
             contact met de gemeente.
         adres:
           type: string
-          description: Digitaal adres waarmee een persoon of organisatie bereikt kan
-            worden.
+          description: 'Validatie van dit veld is afhankelijk van het opgegeven `soortDigitaalAdres`.
+            De validatie die toegepast wordt voor  e-mailadressen is te lezen via
+            de volgende URL: https://github.com/django/django/blob/4.2/django/core/validators.py#L174.Voor
+            telefoonnummers wordt de volgende regex expressie toegepast ter validatie:
+            `(0[8-9]00[0-9]{4,7})|(0[1-9][0-9]{8})|(\+[0-9]{9,20}|1400|140[0-9]{2,3})`.'
           maxLength: 80
         soortDigitaalAdres:
           allOf:

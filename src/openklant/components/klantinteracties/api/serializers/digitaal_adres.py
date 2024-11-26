@@ -84,6 +84,16 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
+            "adres": {
+                "help_text": _(
+                    "Validatie van dit veld is afhankelijk van het opgegeven "
+                    "`soortDigitaalAdres`. De validatie die toegepast wordt voor "
+                    " e-mailadressen is te lezen via de volgende URL: "
+                    "https://github.com/django/django/blob/4.2/django/core/validators.py#L174."
+                    "Voor telefoonnummers wordt de volgende regex expressie toegepast ter "
+                    "validatie: `(0[8-9]00[0-9]{4,7})|(0[1-9][0-9]{8})|(\\+[0-9]{9,20}|1400|140[0-9]{2,3})`."
+                )
+            },
             "url": {
                 "view_name": "klantinteracties:digitaaladres-detail",
                 "lookup_field": "uuid",
