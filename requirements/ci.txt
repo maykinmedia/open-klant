@@ -99,7 +99,7 @@ click-repl==0.3.0
     #   celery
 codecov==2.1.13
     # via -r requirements/ci.in
-commonground-api-common @ git+https://github.com/maykinmedia/commonground-api-common@feature/update-notifs-client
+commonground-api-common==2.0.1
     # via
     #   -r requirements/base.txt
     #   open-api-framework
@@ -165,7 +165,6 @@ django==4.2.15
     #   notifications-api-common
     #   open-api-framework
     #   zgw-consumers
-    #   zgw-consumers-oas
 django-admin-index==3.1.1
     # via
     #   -r requirements/base.txt
@@ -327,10 +326,7 @@ face==20.1.1
 factory-boy==3.3.0
     # via -r requirements/test-tools.in
 faker==32.1.0
-    # via
-    #   -r requirements/base.txt
-    #   factory-boy
-    #   zgw-consumers-oas
+    # via factory-boy
 flake8==7.1.0
     # via -r requirements/test-tools.in
 flower==2.0.1
@@ -536,7 +532,6 @@ pyyaml==6.0.1
     #   drf-yasg
     #   oyaml
     #   vcrpy
-    #   zgw-consumers-oas
 qrcode==7.4.2
     # via
     #   -r requirements/base.txt
@@ -566,7 +561,10 @@ requests==2.32.3
     #   sphinx
     #   zgw-consumers
 requests-mock==1.12.1
-    # via -r requirements/test-tools.in
+    # via
+    #   -r requirements/base.txt
+    #   -r requirements/test-tools.in
+    #   commonground-api-common
 rpds-py==0.19.1
     # via
     #   -r requirements/base.txt
@@ -634,7 +632,6 @@ typing-extensions==4.12.2
     #   mozilla-django-oidc-db
     #   qrcode
     #   zgw-consumers
-    #   zgw-consumers-oas
 tzdata==2024.1
     # via
     #   -r requirements/base.txt
@@ -696,7 +693,3 @@ zgw-consumers==0.35.1
     #   commonground-api-common
     #   notifications-api-common
     #   open-api-framework
-zgw-consumers-oas==1.0.0
-    # via
-    #   -r requirements/base.txt
-    #   commonground-api-common
