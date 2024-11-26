@@ -31,7 +31,8 @@ Change history
 * [#258] Added correct API root paths in redoc OAS
 * [#234] Added validation for ``DigitaalAdres.adres`` when it's type is ``email``
 * [#227] Fixed ``partijen`` creation endpoint crash when ``partijIdentificatie`` is not provided
-* [#261] Fixed ``Onderwerpobject`` inline to use ``klantcontact``
+* [#261] Fixed ``Onderwerpobject`` admin inline to use ``klantcontact`` instead of
+  ``was_klantcontact``
 * [#226] Made ``betrokkene`` a non-required form field in the admin
 * [#229] Fixed partijen admin search
 
