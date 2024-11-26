@@ -14,7 +14,7 @@ Change history
   the relations between both. Also added search fields for both admins to search for both relations.
 * [#197] Added a ``migrate_to_v2`` management command which allows users of version ``1.0.0`` to migrate to version ``2.4.0``
   More information can be found in the `documentation <https://open-klant.readthedocs.io/en/latest/installation/migration.html>`
-* [#246] Added ``is_standaard_adres`` for ``DigitaalAdres``
+* [#246] Added ``isStandaardAdres`` for ``DigitaalAdres``
 * Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
 * [#147] Added ``/maak-klantcontact`` convenience endpoint. This allows creating
   a ``KlantContact``, a ``Betrokkene`` and a ``OnderwerpObject`` through a
