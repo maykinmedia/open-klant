@@ -1,6 +1,11 @@
+import uuid
+
+from django import forms
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from django_filters import filters
+from django_filters.rest_framework import filters
+from drf_spectacular.types import OpenApiTypes
 
 from .expansion import get_expand_options_for_serializer
 
@@ -21,3 +26,19 @@ class ExpandFilter(filters.BaseInFilter, filters.ChoiceFilter):
 
     def filter(self, qs, value):
         return qs
+
+
+class URLViewFilter(filters.Filter):
+    field_class = forms.URLField
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def filter(self, qs, value: OpenApiTypes.URI) -> QuerySet:
+        if value:
+            try:
+                value = uuid.UUID(value.rstrip("/").split("/")[-1])
+            except ValueError:
+                return qs.none()
+
+        return super().filter(qs, value)
