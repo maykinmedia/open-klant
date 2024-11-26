@@ -4,7 +4,7 @@ Change history
 
 2.4.0
 =====
-*November, 22, 2024*
+*November, 26, 2024*
 
 **New features**
 
