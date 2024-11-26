@@ -15,11 +15,13 @@ class BetrokkeneInlineAdmin(admin.StackedInline):
         "contactnaam_achternaam",
     )
     autocomplete_fields = ("partij",)
+    readonly_fields = ("uuid",)
     fieldsets = [
         (
             None,
             {
                 "fields": [
+                    "uuid",
                     "partij",
                     "klantcontact",
                     "rol",
@@ -70,16 +72,19 @@ class BetrokkeneInlineAdmin(admin.StackedInline):
 @admin.register(Betrokkene)
 class BetrokkeneAdmin(admin.ModelAdmin):
     search_fields = (
+        "uuid",
         "contactnaam_voorletters",
         "contactnaam_voorvoegsel_achternaam",
         "contactnaam_achternaam",
     )
     autocomplete_fields = ("partij",)
+    readonly_fields = ("uuid",)
     fieldsets = [
         (
             None,
             {
                 "fields": [
+                    "uuid",
                     "partij",
                     "klantcontact",
                     "rol",
@@ -159,8 +164,12 @@ class KlantcontactAdmin(admin.ModelAdmin):
         BijlageInlineAdmin,
         InterneTaakInlineAdmin,
     ]
-    search_fields = ("nummer",)
+    search_fields = (
+        "nummer",
+        "uuid",
+    )
     date_hierarchy = "plaatsgevonden_op"
+    readonly_fields = ("uuid",)
 
     @admin.display(empty_value="---")
     def betrokkene_namen(self, obj):

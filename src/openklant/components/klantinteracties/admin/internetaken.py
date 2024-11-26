@@ -28,7 +28,10 @@ class InterneTaakAdmin(admin.ModelAdmin):
         "toegewezen_op",
         "afgehandeld_op",
     )
-    search_fields = ("nummer",)
+    search_fields = (
+        "nummer",
+        "uuid",
+    )
     list_filter = (
         "actoren",
         "status",
