@@ -9,7 +9,6 @@ init_sentry()
 #
 INSTALLED_APPS = INSTALLED_APPS + [
     # Project applications.
-    "django_setup_configuration",
     "openklant.accounts",
     "openklant.utils",
     "openklant.components.token",
