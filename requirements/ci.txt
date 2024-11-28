@@ -247,7 +247,7 @@ django-sessionprofile==3.0.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
-django-setup-configuration @ git+https://github.com/maykinmedia/django-setup-configuration@c3cb480223d23d1220bd4aca0c57eb07aacaf637
+django-setup-configuration==0.4.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
