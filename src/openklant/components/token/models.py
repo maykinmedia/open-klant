@@ -1,12 +1,14 @@
-import binascii
-import os
-
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from openklant.components.token.utils import generate_token
+
 
 class TokenAuth(models.Model):
-    token = models.CharField(_("token"), max_length=40)
+    identifier = models.SlugField(unique=True)
+
+    token = models.CharField(_("token"), max_length=40, unique=True)
+
     contact_person = models.CharField(
         _("contact person"),
         max_length=200,
@@ -51,8 +53,5 @@ class TokenAuth(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.token:
-            self.token = self.generate_token()
+            self.token = generate_token()
         return super().save(*args, **kwargs)
-
-    def generate_token(self):
-        return binascii.hexlify(os.urandom(20)).decode()
