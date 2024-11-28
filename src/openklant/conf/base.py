@@ -9,6 +9,7 @@ init_sentry()
 #
 INSTALLED_APPS = INSTALLED_APPS + [
     # Project applications.
+    "django_setup_configuration",
     "openklant.accounts",
     "openklant.utils",
     "openklant.components.token",
@@ -42,3 +43,10 @@ SITE_TITLE = "API dashboard"
 # Django-Admin-Index
 #
 ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
+
+#
+# Django setup configuration
+#
+SETUP_CONFIGURATION_STEPS = (
+    "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
+)
