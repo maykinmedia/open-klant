@@ -1,0 +1,10 @@
+tokens_config_enable: true
+
+tokens_config:
+  group:
+    - identifier: token-1
+      contact_person: Person 1
+      email: person-1@example.com
+    - identifier: token-2
+      contact_person: Person 2
+      email: person-2@example.com

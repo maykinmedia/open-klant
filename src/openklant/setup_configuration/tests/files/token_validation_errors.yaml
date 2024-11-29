@@ -1,0 +1,17 @@
+tokens_config_enable: true
+
+tokens_config:
+  group:
+    - identifier: token-1
+      contact_person: Person 1
+      email: invalid
+      organization: Organization XYZ
+      application: Application XYZ
+      administration: Administration XYZ
+
+    - identifier: token-2
+      contact_person: Person 2
+      email: person-2@example.com
+      organization: Organization ZYX
+      application: Application ZYX
+      administration: Administration ZYX
