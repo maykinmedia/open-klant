@@ -173,5 +173,55 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(second_token.application, "Application ZYX")
         self.assertEqual(second_token.administration, "Administration ZYX")
 
-    def test_impodent_configuration_step(self):
-        raise NotImplementedError
+    def test_idempotent_step(self):
+        test_file_path = str(TEST_FILES / "token_idempotent.yaml")
+
+        execute_single_step(
+            TokenAuthConfigurationStep, yaml_source=test_file_path
+        )
+
+        tokens = TokenAuth.objects.order_by("created")
+
+        self.assertEqual(tokens.count(), 2)
+
+        first_token: TokenAuth = tokens[0]
+
+        self.assertEqual(first_token.identifier, "token-1")
+        self.assertEqual(first_token.contact_person, "Person 1")
+        self.assertEqual(first_token.email, "person-1@example.com")
+        self.assertEqual(first_token.organization, "Organization XYZ")
+        self.assertEqual(first_token.application, "Application XYZ")
+        self.assertEqual(first_token.administration, "Administration XYZ")
+
+        second_token: TokenAuth = tokens[1]
+
+        self.assertEqual(second_token.identifier, "token-2")
+        self.assertEqual(second_token.contact_person, "Person 2")
+        self.assertEqual(second_token.email, "person-2@example.com")
+        self.assertEqual(second_token.organization, "Organization ZYX")
+        self.assertEqual(second_token.application, "Application ZYX")
+        self.assertEqual(second_token.administration, "Administration ZYX")
+
+        execute_single_step(
+            TokenAuthConfigurationStep, yaml_source=test_file_path
+        )
+
+        self.assertEqual(TokenAuth.objects.count(), 2)
+
+        first_token.refresh_from_db()
+
+        self.assertEqual(first_token.identifier, "token-1")
+        self.assertEqual(first_token.contact_person, "Person 1")
+        self.assertEqual(first_token.email, "person-1@example.com")
+        self.assertEqual(first_token.organization, "Organization XYZ")
+        self.assertEqual(first_token.application, "Application XYZ")
+        self.assertEqual(first_token.administration, "Administration XYZ")
+
+        second_token.refresh_from_db()
+
+        self.assertEqual(second_token.identifier, "token-2")
+        self.assertEqual(second_token.contact_person, "Person 2")
+        self.assertEqual(second_token.email, "person-2@example.com")
+        self.assertEqual(second_token.organization, "Organization ZYX")
+        self.assertEqual(second_token.application, "Application ZYX")
+        self.assertEqual(second_token.administration, "Administration ZYX")
