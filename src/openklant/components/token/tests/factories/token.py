@@ -7,7 +7,7 @@ from openklant.components.token.models import TokenAuth
 
 
 class TokenAuthFactory(DjangoModelFactory):
-    identifier = factory.LazyAttribute(lambda: f"token-{random_hex()}")
+    identifier = factory.LazyAttribute(lambda _: f"token-{random_hex()}")
     contact_person = factory.Faker("name")
     email = factory.Faker("email")
 
