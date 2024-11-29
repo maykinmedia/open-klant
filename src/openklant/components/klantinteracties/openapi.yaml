@@ -3510,7 +3510,6 @@ components:
           maxLength: 40
       required:
       - adres
-      - omschrijving
       - soortDigitaalAdres
       - url
       - uuid
