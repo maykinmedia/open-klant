@@ -2,9 +2,9 @@ from typing import Any, Self
 
 from django.core.exceptions import ValidationError
 
-from pydantic import Field, ValidationError as PydanticValidationError
-from django_setup_configuration.models import ConfigurationModel
 from django_setup_configuration.fields import DjangoModelRef
+from django_setup_configuration.models import ConfigurationModel
+from pydantic import Field, ValidationError as PydanticValidationError
 from pydantic_core import InitErrorDetails, PydanticCustomError
 
 from openklant.components.token.models import TokenAuth
@@ -41,12 +41,11 @@ class TokenAuthConfigurationModel(ConfigurationModel):
                 str(exception),
                 list(
                     InitErrorDetails(
-                        input=error,
-                        type=PydanticCustomError('custom_error', error)
+                        input=error, type=PydanticCustomError("custom_error", error)
                     )
                     for _, errors in exception.message_dict.items()
                     for error in errors
-                )
+                ),
             ) from exception
 
         return model

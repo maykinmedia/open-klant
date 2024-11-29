@@ -1,12 +1,15 @@
 import logging
 
 from django.db import DatabaseError
+
 from django_setup_configuration.configuration import BaseConfigurationStep
 from pydantic import ValidationError
 
 from openklant.components.token.models import TokenAuth
-from openklant.setup_configuration.models import TokenAuthGroupConfigurationModel, TokenAuthConfigurationModel
-
+from openklant.setup_configuration.models import (
+    TokenAuthConfigurationModel,
+    TokenAuthGroupConfigurationModel,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +20,7 @@ class TokenAuthConfigurationStep(
     """
     Configure configuration groups for the Objects API backend
     """
+
     namespace = "tokens_config"
     enable_setting = "tokens_config_enable"
 
@@ -41,9 +45,10 @@ class TokenAuthConfigurationStep(
                 logger.debug(f"Configuring {model.identifier}")
 
                 TokenAuth.objects.update_or_create(
-                    identifier=model.identifier,
-                    defaults=defaults
+                    identifier=model.identifier, defaults=defaults
                 )
             except DatabaseError:
-                logger.exception(f"Failed configuring token {model.identifier}. Continuing..")
+                logger.exception(
+                    f"Failed configuring token {model.identifier}. Continuing.."
+                )
                 continue

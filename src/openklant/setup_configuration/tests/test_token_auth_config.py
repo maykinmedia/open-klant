@@ -8,7 +8,6 @@ from openklant.components.token.models import TokenAuth
 from openklant.components.token.tests.factories.token import TokenAuthFactory
 from openklant.setup_configuration.steps import TokenAuthConfigurationStep
 
-
 TEST_FILES = (Path(__file__).parent / "files").resolve()
 
 
@@ -16,9 +15,7 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_empty_database(self):
         test_file_path = str(TEST_FILES / "token_empty_database.yaml")
 
-        execute_single_step(
-            TokenAuthConfigurationStep, yaml_source=test_file_path
-        )
+        execute_single_step(TokenAuthConfigurationStep, yaml_source=test_file_path)
 
         tokens = TokenAuth.objects.order_by("created")
 
@@ -147,9 +144,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         test_file_path = str(TEST_FILES / "token_validation_errors.yaml")
 
-        execute_single_step(
-            TokenAuthConfigurationStep, yaml_source=test_file_path
-        )
+        execute_single_step(TokenAuthConfigurationStep, yaml_source=test_file_path)
 
         tokens = TokenAuth.objects.order_by("created")
 
@@ -176,9 +171,7 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_idempotent_step(self):
         test_file_path = str(TEST_FILES / "token_idempotent.yaml")
 
-        execute_single_step(
-            TokenAuthConfigurationStep, yaml_source=test_file_path
-        )
+        execute_single_step(TokenAuthConfigurationStep, yaml_source=test_file_path)
 
         tokens = TokenAuth.objects.order_by("created")
 
@@ -202,9 +195,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(second_token.application, "Application ZYX")
         self.assertEqual(second_token.administration, "Administration ZYX")
 
-        execute_single_step(
-            TokenAuthConfigurationStep, yaml_source=test_file_path
-        )
+        execute_single_step(TokenAuthConfigurationStep, yaml_source=test_file_path)
 
         self.assertEqual(TokenAuth.objects.count(), 2)
 

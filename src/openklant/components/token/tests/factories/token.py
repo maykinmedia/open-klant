@@ -1,5 +1,4 @@
 import factory
-
 from django_otp.util import random_hex
 from factory.django import DjangoModelFactory
 
