@@ -129,3 +129,11 @@ Provide the envvars via the process manager
 
 If you use a process manager (such as supervisor/systemd), use their techniques
 to define the envvars. The component will pick them up out of the box.
+
+
+Initial configuration
+=====================
+
+Open Klant supports the ``setup_configuration`` management command, which allows
+configuration via yaml files. Further details using this command can be read at
+:ref:`installation_configuration_cli`.

@@ -16,3 +16,4 @@ this.
 
    config
    migration
+   setup_configuration
