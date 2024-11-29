@@ -40,7 +40,7 @@ class RekeningnummerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Rekeningnummer
-        fields = ("uuid", "partij", "iban", "bic")
+        fields = ("uuid", "url", "partij", "iban", "bic")
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {

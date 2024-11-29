@@ -76,7 +76,7 @@ class PersoonSerializer(
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
-                "view_name": "contactgegevens:organisatie-detail",
+                "view_name": "contactgegevens:persoon-detail",
                 "lookup_field": "uuid",
                 "help_text": "De unieke URL van deze organisatie binnen deze API.",
             },

@@ -5248,6 +5248,11 @@ components:
           format: uuid
           readOnly: true
           description: Unieke (technische) identificatiecode van de interne taak.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze rekeningnummer binnen deze API.
         partij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -5297,6 +5302,11 @@ components:
           format: uuid
           readOnly: true
           description: Unieke (technische) identificatiecode van de interne taak.
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De unieke URL van deze rekeningnummer binnen deze API.
         partij:
           allOf:
           - $ref: '#/components/schemas/PartijForeignKey'
@@ -5320,6 +5330,7 @@ components:
       required:
       - iban
       - partij
+      - url
       - uuid
     RekeningnummerForeignKey:
       type: object

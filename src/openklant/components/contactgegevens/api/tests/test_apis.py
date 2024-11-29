@@ -9,6 +9,52 @@ from openklant.components.token.tests.api_testcase import APITestCase
 
 
 class PersoonTests(APITestCase):
+    def test_persoon_detail(self):
+        persoon = PersoonFactory.create(
+            geboortedatum="1980-02-23",
+            overlijdensdatum="2020-09-05",
+            geslachtsnaam="Doe",
+            geslacht="m",
+            voorvoegsel="",
+            voornamen="John",
+            adres_nummeraanduiding_id="nummeraanduiding_id",
+            adres_adresregel1="adresregel1",
+            adres_adresregel2="adresregel2",
+            adres_adresregel3="adresregel3",
+            adres_land="5001",
+            land="5001",
+        )
+        detail_url = reverse(
+            "contactgegevens:persoon-detail",
+            kwargs={"uuid": str(persoon.uuid)},
+        )
+
+        expected_adres = {
+            "nummeraanduidingId": "nummeraanduiding_id",
+            "adresregel1": "adresregel1",
+            "adresregel2": "adresregel2",
+            "adresregel3": "adresregel3",
+            "land": "5001",
+        }
+        expected_data = {
+            "uuid": str(persoon.uuid),
+            "url": "http://testserver" + detail_url,
+            "geboortedatum": "1980-02-23",
+            "overlijdensdatum": "2020-09-05",
+            "geslachtsnaam": "Doe",
+            "geslacht": "m",
+            "voorvoegsel": "",
+            "voornamen": "John",
+            "adres": expected_adres,
+            "land": "5001",
+        }
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data, expected_data)
+
     def test_create_persoon(self):
         list_url = reverse("contactgegevens:persoon-list")
 
@@ -52,7 +98,7 @@ class PersoonTests(APITestCase):
         self.assertEqual(data["land"], "5001")
 
     def test_update_persoon(self):
-        persoon = PersoonFactory(
+        persoon = PersoonFactory.create(
             geboortedatum="1972-05-05",
             overlijdensdatum=None,
             geslachtsnaam="Townsend",
@@ -132,7 +178,7 @@ class PersoonTests(APITestCase):
         self.assertEqual(data["land"], "6713")
 
     def test_update_partial_persoon(self):
-        persoon = PersoonFactory(
+        persoon = PersoonFactory.create(
             geboortedatum="1972-05-05",
             overlijdensdatum=None,
             geslachtsnaam="Townsend",
@@ -214,6 +260,46 @@ class PersoonTests(APITestCase):
 
 
 class OrganisatiesTests(APITestCase):
+    def test_organisatie_detail(self):
+        organisatie = OrganisatieFactory.create(
+            handelsnaam="Devin Townsend",
+            oprichtingsdatum="1980-02-23",
+            opheffingsdatum="2020-09-05",
+            adres_nummeraanduiding_id="nummeraanduiding_id",
+            adres_adresregel1="adresregel1",
+            adres_adresregel2="adresregel2",
+            adres_adresregel3="adresregel3",
+            adres_land="5001",
+            land="5001",
+        )
+        detail_url = reverse(
+            "contactgegevens:organisatie-detail",
+            kwargs={"uuid": str(organisatie.uuid)},
+        )
+
+        expected_adres = {
+            "nummeraanduidingId": "nummeraanduiding_id",
+            "adresregel1": "adresregel1",
+            "adresregel2": "adresregel2",
+            "adresregel3": "adresregel3",
+            "land": "5001",
+        }
+        expected_data = {
+            "uuid": str(organisatie.uuid),
+            "url": "http://testserver" + detail_url,
+            "oprichtingsdatum": "1980-02-23",
+            "opheffingsdatum": "2020-09-05",
+            "handelsnaam": "Devin Townsend",
+            "adres": expected_adres,
+            "land": "5001",
+        }
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data, expected_data)
+
     def test_create_organisatie(self):
         list_url = reverse("contactgegevens:organisatie-list")
 
@@ -252,7 +338,7 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(data["land"], "5001")
 
     def test_update_organisatie(self):
-        organisatie = OrganisatieFactory(
+        organisatie = OrganisatieFactory.create(
             handelsnaam="Devin Townsend",
             oprichtingsdatum="1996-03-12",
             opheffingsdatum=None,
@@ -320,7 +406,7 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(data["land"], "6713")
 
     def test_update_partial_organisatie(self):
-        organisatie = OrganisatieFactory(
+        organisatie = OrganisatieFactory.create(
             handelsnaam="Devin Townsend",
             oprichtingsdatum="1996-03-12",
             opheffingsdatum=None,

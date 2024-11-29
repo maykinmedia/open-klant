@@ -44,6 +44,8 @@ class ActorTests(APITestCase):
         response = self.client.get(detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["url"], "http://testserver" + detail_url)
 
     def test_create_actor_medewerker(self):
         list_url = reverse("klantinteracties:actor-list")
