@@ -1540,3 +1540,41 @@ class DigitaalAdresFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_adres_exact_parameter(self):
+        betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
+        DigitaalAdresFactory.create(betrokkene=betrokkene, adres="adres_1234")
+        DigitaalAdresFactory.create(betrokkene=betrokkene2, adres="adres_5678")
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 2)
+
+        response = self.client.get(self.url, {"adres": "adres_1234"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["adres"], "adres_1234")
+
+    def test_filter_adres_icontains_parameter(self):
+        betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
+        DigitaalAdresFactory.create(betrokkene=betrokkene, adres="adres_1234")
+        DigitaalAdresFactory.create(betrokkene=betrokkene2, adres="adres_5678")
+
+        response = self.client.get(self.url, {"adres__icontains": "adres_1234"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["adres"], "adres_1234")
+
+        response = self.client.get(self.url, {"adres__icontains": "adres_5678"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["adres"], "adres_5678")
+
+        response = self.client.get(self.url, {"adres__icontains": "adres"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 2)

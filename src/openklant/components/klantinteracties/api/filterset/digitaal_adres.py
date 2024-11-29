@@ -53,6 +53,7 @@ class DigitaalAdresFilterSet(FilterSet):
         ),
     )
     adres__icontains = filters.CharFilter(
+        field_name="adres",
         lookup_expr="icontains",
         help_text=_(
             "Zoek digitaal adres(sen) object(en) op basis van adres die de opgegeven waarden bevat."
