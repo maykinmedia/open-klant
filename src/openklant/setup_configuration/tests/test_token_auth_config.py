@@ -26,7 +26,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(first_token.identifier, "token-1")
         self.assertEqual(
-            first_token.token, "06c76243e011f788c069e0436e529c10b7753609"
+            first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
         )
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
@@ -38,7 +38,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(second_token.identifier, "token-2")
         self.assertEqual(
-            second_token.token, "90fd511f069605ace65b32143d0b7e3554054792"
+            second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067"
         )
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
@@ -49,14 +49,14 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_existing_tokens(self):
         TokenAuthFactory(
             identifier="token-1",
-            token="877caee40349810d47c762882085cb46fc7b4786",
+            token="ba9d233e95e04c4a8a661a27daffe7c9bd019067",
             contact_person="Person 4",
             email="person-4@example.com",
         )
 
         TokenAuthFactory(
             identifier="token-2",
-            token="03032ceb4352020fa84355a4a4652978942c496d",
+            token="795cb35c930d27b98297df761f0fa52182348875",
             contact_person="Person 2",
             email="person-2@example.com",
         )
@@ -73,7 +73,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(first_token.identifier, "token-1")
         self.assertEqual(
-            first_token.token, "06c76243e011f788c069e0436e529c10b7753609"
+            first_token.token, "18b2b74ef994314b84021d47b9422e82b685d82f"
         )
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
@@ -85,7 +85,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(second_token.identifier, "token-2")
         self.assertEqual(
-            second_token.token, "03032ceb4352020fa84355a4a4652978942c496d"
+            second_token.token, "795cb35c930d27b98297df761f0fa52182348875",
         )
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
@@ -97,7 +97,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(third_token.identifier, "token-3")
         self.assertEqual(
-            third_token.token, "90fd511f069605ace65b32143d0b7e3554054792"
+            third_token.token, "e882642bd0ec2482adcdc97258c2e6f98cb06d85"
         )
         self.assertEqual(third_token.contact_person, "Person 3")
         self.assertEqual(third_token.email, "person-3@example.com")
@@ -108,7 +108,7 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_with_all_fields(self):
         TokenAuthFactory(
             identifier="token-1",
-            token="877caee40349810d47c762882085cb46fc7b4786",
+            token="7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799",
             contact_person="Person 4",
             email="person-4@example.com",
             application="overwritten@example.com",
@@ -118,7 +118,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         TokenAuthFactory(
             identifier="token-2",
-            token="03032ceb4352020fa84355a4a4652978942c496d",
+            token="ba9d233e95e04c4a8a661a27daffe7c9bd019067",
             contact_person="Person 2",
             email="person-2@example.com",
         )
@@ -135,7 +135,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(first_token.identifier, "token-1")
         self.assertEqual(
-            first_token.token, "06c76243e011f788c069e0436e529c10b7753609"
+            first_token.token, "18b2b74ef994314b84021d47b9422e82b685d82f"
         )
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
@@ -147,7 +147,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(second_token.identifier, "token-2")
         self.assertEqual(
-            second_token.token, "03032ceb4352020fa84355a4a4652978942c496d"
+            second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067"
         )
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
@@ -159,7 +159,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(third_token.identifier, "token-3")
         self.assertEqual(
-            third_token.token, "90fd511f069605ace65b32143d0b7e3554054792"
+            third_token.token, "e882642bd0ec2482adcdc97258c2e6f98cb06d85"
         )
         self.assertEqual(third_token.contact_person, "Person 3")
         self.assertEqual(third_token.email, "person-3@example.com")
@@ -170,7 +170,7 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_invalid_email(self):
         TokenAuthFactory(
             identifier="token-1",
-            token="03032ceb4352020fa84355a4a4652978942c496d",
+            token="7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799",
             contact_person="Person 4",
             email="person-4@example.com",
         )
@@ -188,7 +188,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(token.identifier, "token-1")
         self.assertEqual(
-            token.token, "03032ceb4352020fa84355a4a4652978942c496d"
+            token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
         )
         self.assertEqual(token.contact_person, "Person 4")
         self.assertEqual(token.email, "person-4@example.com")
@@ -199,7 +199,7 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_invalid_token(self):
         TokenAuthFactory(
             identifier="token-1",
-            token="03032ceb4352020fa84355a4a4652978942c496d",
+            token="7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799",
             contact_person="Person 4",
             email="person-4@example.com",
         )
@@ -217,7 +217,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(token.identifier, "token-1")
         self.assertEqual(
-            token.token, "03032ceb4352020fa84355a4a4652978942c496d"
+            token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
         )
         self.assertEqual(token.contact_person, "Person 4")
         self.assertEqual(token.email, "person-4@example.com")
@@ -228,7 +228,7 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_invalid_identifier(self):
         TokenAuthFactory(
             identifier="token-1",
-            token="877caee40349810d47c762882085cb46fc7b4786",
+            token="7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799",
             contact_person="Person 4",
             email="person-4@example.com",
         )
@@ -246,7 +246,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(token.identifier, "token-1")
         self.assertEqual(
-            token.token, "877caee40349810d47c762882085cb46fc7b4786"
+            token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
         )
         self.assertEqual(token.contact_person, "Person 4")
         self.assertEqual(token.email, "person-4@example.com")
@@ -267,7 +267,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(first_token.identifier, "token-1")
         self.assertEqual(
-            first_token.token, "06c76243e011f788c069e0436e529c10b7753609"
+            first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
         )
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
@@ -279,7 +279,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(second_token.identifier, "token-2")
         self.assertEqual(
-            second_token.token, "90fd511f069605ace65b32143d0b7e3554054792"
+            second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067"
         )
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
@@ -295,7 +295,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(first_token.identifier, "token-1")
         self.assertEqual(
-            first_token.token, "06c76243e011f788c069e0436e529c10b7753609"
+            first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
         )
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
@@ -307,7 +307,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(second_token.identifier, "token-2")
         self.assertEqual(
-            second_token.token, "90fd511f069605ace65b32143d0b7e3554054792"
+            second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067"
         )
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")

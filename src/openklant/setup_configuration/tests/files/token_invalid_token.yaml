@@ -11,7 +11,7 @@ tokens_config:
       administration: Administration XYZ
 
     - identifier: token-2
-      token: 90fd511f069605ace65b32143d0b7e3554054792
+      token: ba9d233e95e04c4a8a661a27daffe7c9bd019067
       contact_person: Person 2
       email: person-2@example.com
       organization: Organization ZYX

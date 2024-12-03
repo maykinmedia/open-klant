@@ -1,11 +1,10 @@
-import binascii
-import os
+import secrets
 
 from typing import Iterable
 
 
 def _generate_token() -> str:
-    return binascii.hexlify(os.urandom(20)).decode()
+    return secrets.token_hex(20)
 
 
 def get_token(existing_tokens: Iterable[str]) -> str:

@@ -3,7 +3,7 @@ tokens_config_enable: true
 tokens_config:
   items:
     - identifier: token-1
-      token: 06c76243e011f788c069e0436e529c10b7753609
+      token: ba9d233e95e04c4a8a661a27daffe7c9bd019067
       contact_person: Person 1
       email: invalid
       organization: Organization XYZ
@@ -11,7 +11,7 @@ tokens_config:
       administration: Administration XYZ
 
     - identifier: token-2
-      token: 90fd511f069605ace65b32143d0b7e3554054792
+      token: 795cb35c930d27b98297df761f0fa52182348875
       contact_person: Person 2
       email: person-2@example.com
       organization: Organization ZYX
