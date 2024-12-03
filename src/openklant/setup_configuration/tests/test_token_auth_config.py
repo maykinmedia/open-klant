@@ -92,6 +92,9 @@ class TokenAuthConfigurationStepTests(TestCase):
             identifier="token-1",
             contact_person="Person 4",
             email="person-4@example.com",
+            application="overwritten@example.com",
+            organization="Overwritten inc.",
+            administration="HR",
         )
 
         TokenAuthFactory(
