@@ -5,7 +5,7 @@ tokens_config:
     - identifier: token-1
       token: 06c76243e011f788c069e0436e529c10b7753609
       contact_person: Person 1
-      email: person-1@example.com
+      email: invalid
       organization: Organization XYZ
       application: Application XYZ
       administration: Administration XYZ

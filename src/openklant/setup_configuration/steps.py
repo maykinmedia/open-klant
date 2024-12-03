@@ -1,16 +1,14 @@
 import logging
 
+from django.core.exceptions import ValidationError
 from django.db import DatabaseError
 
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
-from pydantic import ValidationError
 
 from openklant.components.token.models import TokenAuth
-from openklant.setup_configuration.models import (
-    TokenAuthConfigurationModel,
-    TokenAuthGroupConfigurationModel,
-)
+from openklant.setup_configuration.models import TokenAuthGroupConfigurationModel
+
 
 logger = logging.getLogger(__name__)
 
@@ -32,8 +30,13 @@ class TokenAuthConfigurationStep(
         for model in model.group:
             logger.info(f"Configuring {model.identifier}")
 
+            model_kwargs = model.model_dump()
+            token_instance = TokenAuth(**model_kwargs)
+
             try:
-                TokenAuthConfigurationModel.model_validate(model)
+                token_instance.full_clean(
+                    exclude=("id",), validate_unique=False
+                )
             except ValidationError as exception:
                 exception_message = (
                     f"Validation error(s) occured for {model.identifier}."
@@ -42,13 +45,15 @@ class TokenAuthConfigurationStep(
 
             logger.debug(f"No validation errors found for {model.identifier}")
 
-            defaults = model.model_dump(exclude="identifier")
-
             try:
                 logger.debug(f"Saving {model.identifier}")
 
                 TokenAuth.objects.update_or_create(
-                    identifier=model.identifier, defaults=defaults
+                    identifier=model.identifier,
+                    defaults={
+                        key: value for key, value in model_kwargs.items()
+                        if key != "identifier"
+                    }
                 )
             except DatabaseError as exception:
                 exception_message = f"Failed configuring token {model.identifier}."

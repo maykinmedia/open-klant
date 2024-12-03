@@ -3,6 +3,7 @@ tokens_config_enable: true
 tokens_config:
   group:
     - identifier: token-1
+      token: 06c76243e011f788c069e0436e529c10b7753609
       contact_person: Person 1
       email: person-1@example.com
       organization: Organization XYZ
@@ -10,6 +11,7 @@ tokens_config:
       administration: Administration XYZ
 
     - identifier: token-3
+      token: 90fd511f069605ace65b32143d0b7e3554054792
       contact_person: Person 3
       email: person-3@example.com
       organization: Organization ZYX
