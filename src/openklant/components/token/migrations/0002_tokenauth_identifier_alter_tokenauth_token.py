@@ -12,35 +12,20 @@ from openklant.components.token.utils import get_token
 logger = logging.getLogger(__name__)
 
 
-def _generate_unique_identifier(
-    token: models.Model, existing_identifiers: Set[str]
-) -> str:
-    identifier = f"token-{token.pk}"
-    count = token.pk
-
-    while identifier in existing_identifiers:
-        identifier = f"token-{count}"
-
-    return identifier
-
-
 def _generate_unique_identifiers(apps: StateApps, schema_editor) -> None:
     TokenAuth = apps.get_model("token", "TokenAuth")
 
-    existing_identifiers = set(TokenAuth.objects.values_list("identifier", flat=True))
+    count = 1
 
-    for token in TokenAuth.objects.all():
-        if token.identifier:
-            continue
+    for token in TokenAuth.objects.filter(identifier__isnull=True):
+        while TokenAuth.objects.filter(identifier=f"token-{count}").exists():
+            count += 1
 
-        identifier = _generate_unique_identifier(token, existing_identifiers)
-
+        identifier = f"token-{count}"
         logger.debug(f"Generated {identifier} for token {token.pk}")
 
         token.identifier = identifier
         token.save(update_fields=("identifier",))
-
-        existing_identifiers.add(identifier)
 
 
 def _generate_unique_tokens(apps: StateApps, schema_editor) -> None:
