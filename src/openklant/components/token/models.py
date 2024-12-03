@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from openklant.components.token.utils import generate_token
+from openklant.components.token.utils import get_token
 
 
 class TokenAuth(models.Model):
@@ -53,5 +53,7 @@ class TokenAuth(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.token:
-            self.token = generate_token()
+            existing_tokens = TokenAuth.objects.values_list("token", flat=True)
+            self.token = get_token(existing_tokens=existing_tokens)
+
         return super().save(*args, **kwargs)

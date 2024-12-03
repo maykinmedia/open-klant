@@ -7,7 +7,7 @@ from django.db import migrations, models
 from django.db.migrations.state import StateApps
 from django.db.models.aggregates import Count
 
-from openklant.components.token.utils import generate_token
+from openklant.components.token.utils import get_token
 
 logger = logging.getLogger(__name__)
 
@@ -43,15 +43,6 @@ def _generate_unique_identifiers(apps: StateApps, schema_editor) -> None:
         existing_identifiers.add(identifier)
 
 
-def _generate_unique_token(existing_tokens: Set[str]) -> str:
-    _token = generate_token()
-
-    while _token in existing_tokens:
-        _token = generate_token()
-
-    return _token
-
-
 def _generate_unique_tokens(apps: StateApps, schema_editor) -> None:
     TokenAuth = apps.get_model("token", "TokenAuth")
 
@@ -73,7 +64,7 @@ def _generate_unique_tokens(apps: StateApps, schema_editor) -> None:
     )
 
     for token in duplicate_tokens:
-        _token = _generate_unique_token(existing_tokens)
+        _token: str = get_token(existing_tokens=existing_tokens)
 
         logger.debug(f"Generated a new token for {token.pk}")
 
