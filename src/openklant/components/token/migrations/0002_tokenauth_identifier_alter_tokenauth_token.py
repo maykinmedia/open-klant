@@ -83,7 +83,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="tokenauth",
             name="identifier",
-            field=models.CharField(blank=True),
+            field=models.CharField(null=True, blank=True),
         ),
         migrations.RunPython(
             _generate_unique_identifiers, reverse_code=migrations.RunPython.noop
