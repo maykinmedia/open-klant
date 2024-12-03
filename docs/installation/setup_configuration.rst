@@ -5,6 +5,7 @@ Open Klant configuration (CLI)
 ==============================
 
 After deploying Open Klant, it needs to be configured to be fully functional.
+The django management command ``setup_configuration`` assist with this configuration.
 You can get the full command documentation with:
 
 .. code-block:: bash
@@ -19,14 +20,14 @@ Preparation
 ===========
 
 The command executes the list of pluggable configuration steps, and each step
-has required specific variables, that should be prepared.
-Here is the description of all available configuration steps and the variables,
-used by each step.
+requires specific configuration information, that should be prepared.
+Here is the description of all available configuration steps and the configuration
+format, used by each step.
 
 Token configuration
 ----------------------
 
-Create a YAML configuration file with your settings:
+Create a (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
 
@@ -44,9 +45,6 @@ Create a YAML configuration file with your settings:
         - identifier: token-2
           contact_person: Person 2
           email: person-2@example.com
-
-.. note:: Invalid entries will be skipped and logged according to the configured
-   logging settings.
 
 Execution
 =========
