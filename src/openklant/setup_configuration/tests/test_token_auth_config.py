@@ -2,6 +2,7 @@ from pathlib import Path
 
 from django.test import TestCase
 
+from django_setup_configuration.exceptions import ConfigurationRunFailed
 from django_setup_configuration.test_utils import execute_single_step
 
 from openklant.components.token.models import TokenAuth
@@ -147,11 +148,12 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         test_file_path = str(TEST_FILES / "token_validation_errors.yaml")
 
-        execute_single_step(TokenAuthConfigurationStep, yaml_source=test_file_path)
+        with self.assertRaises(ConfigurationRunFailed):
+            execute_single_step(TokenAuthConfigurationStep, yaml_source=test_file_path)
 
         tokens = TokenAuth.objects.order_by("created")
 
-        self.assertEqual(tokens.count(), 2)
+        self.assertEqual(tokens.count(), 1)
 
         first_token: TokenAuth = tokens[0]
 
@@ -161,15 +163,6 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(first_token.organization, "")
         self.assertEqual(first_token.application, "")
         self.assertEqual(first_token.administration, "")
-
-        second_token: TokenAuth = tokens[1]
-
-        self.assertEqual(second_token.identifier, "token-2")
-        self.assertEqual(second_token.contact_person, "Person 2")
-        self.assertEqual(second_token.email, "person-2@example.com")
-        self.assertEqual(second_token.organization, "Organization ZYX")
-        self.assertEqual(second_token.application, "Application ZYX")
-        self.assertEqual(second_token.administration, "Administration ZYX")
 
     def test_idempotent_step(self):
         test_file_path = str(TEST_FILES / "token_idempotent.yaml")
