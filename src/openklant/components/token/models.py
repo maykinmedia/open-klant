@@ -5,7 +5,9 @@ from openklant.components.token.utils import get_token
 
 
 class TokenAuth(models.Model):
-    identifier = models.SlugField(unique=True)
+    identifier = models.SlugField(
+        unique=True, help_text=_("A human-friendly label to refer to this token")
+    )
 
     token = models.CharField(_("token"), max_length=40, unique=True)
 
