@@ -30,7 +30,16 @@ class TokenAuthConfigurationStep(
         for model in model.items:
             logger.info(f"Configuring {model.identifier}")
 
-            model_kwargs = model.model_dump()
+            model_kwargs = dict(
+                identifier=model.identifier,
+                token=model.token,
+                contact_person=model.contact_person,
+                email=model.email,
+                organization=model.organization,
+                application=model.application,
+                administration=model.administration,
+            )
+
             token_instance = TokenAuth(**model_kwargs)
 
             try:
