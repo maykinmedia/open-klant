@@ -1,12 +1,11 @@
 import factory
-from django_otp.util import random_hex
 from factory.django import DjangoModelFactory
 
 from openklant.components.token.models import TokenAuth
 
 
 class TokenAuthFactory(DjangoModelFactory):
-    identifier = factory.LazyAttribute(lambda _: f"token-{random_hex()}")
+    identifier = factory.Sequence(lambda sequence: f"token-{sequence}")
     contact_person = factory.Faker("name")
     email = factory.Faker("email")
 
