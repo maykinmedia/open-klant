@@ -20,4 +20,4 @@ class TokenAuthConfigurationModel(ConfigurationModel):
 
 
 class TokenAuthGroupConfigurationModel(ConfigurationModel):
-    group: list[TokenAuthConfigurationModel] = Field(default_factory=list)
+    items: list[TokenAuthConfigurationModel] = Field()

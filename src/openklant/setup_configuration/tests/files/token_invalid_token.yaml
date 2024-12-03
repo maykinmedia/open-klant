@@ -1,7 +1,7 @@
 tokens_config_enable: true
 
 tokens_config:
-  group:
+  items:
     - identifier: token-1
       token: foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar
       contact_person: Person 1

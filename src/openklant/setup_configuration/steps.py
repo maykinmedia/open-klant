@@ -27,7 +27,7 @@ class TokenAuthConfigurationStep(
     config_model = TokenAuthGroupConfigurationModel
 
     def execute(self, model: TokenAuthGroupConfigurationModel) -> None:
-        for model in model.group:
+        for model in model.items:
             logger.info(f"Configuring {model.identifier}")
 
             model_kwargs = model.model_dump()

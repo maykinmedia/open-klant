@@ -1,7 +1,7 @@
 tokens_config_enable: true
 
 tokens_config:
-  group:
+  items:
     - identifier: foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar
       token: 06c76243e011f788c069e0436e529c10b7753609
       contact_person: Person 1
