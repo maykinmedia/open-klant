@@ -11,16 +11,15 @@ from openklant.components.token.models import TokenAuth
 
 
 class TokenAuthConfigurationModel(ConfigurationModel):
-    organization = DjangoModelRef(TokenAuth, "organization", default="")
-    application = DjangoModelRef(TokenAuth, "application", default="")
-    administration = DjangoModelRef(TokenAuth, "administration", default="")
-
     class Meta:
         django_model_refs = {
             TokenAuth: (
                 "identifier",
                 "contact_person",
                 "email",
+                "organization",
+                "application",
+                "administration",
             )
         }
 
