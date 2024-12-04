@@ -1,7 +1,7 @@
 import logging
 
 from django.core.exceptions import ValidationError
-from django.db import DatabaseError
+from django.db import IntegrityError
 
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
@@ -62,7 +62,7 @@ class TokenAuthConfigurationStep(
                         if key != "identifier"
                     },
                 )
-            except DatabaseError as exception:
+            except IntegrityError as exception:
                 exception_message = f"Failed configuring token {item.identifier}."
                 raise ConfigurationRunFailed(exception_message) from exception
 
