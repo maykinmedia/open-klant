@@ -9,7 +9,6 @@ from django_setup_configuration.exceptions import ConfigurationRunFailed
 from openklant.components.token.models import TokenAuth
 from openklant.setup_configuration.models import TokenAuthGroupConfigurationModel
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -43,9 +42,7 @@ class TokenAuthConfigurationStep(
             token_instance = TokenAuth(**model_kwargs)
 
             try:
-                token_instance.full_clean(
-                    exclude=("id",), validate_unique=False
-                )
+                token_instance.full_clean(exclude=("id",), validate_unique=False)
             except ValidationError as exception:
                 exception_message = (
                     f"Validation error(s) occured for {model.identifier}."
@@ -60,9 +57,10 @@ class TokenAuthConfigurationStep(
                 TokenAuth.objects.update_or_create(
                     identifier=model.identifier,
                     defaults={
-                        key: value for key, value in model_kwargs.items()
+                        key: value
+                        for key, value in model_kwargs.items()
                         if key != "identifier"
-                    }
+                    },
                 )
             except DatabaseError as exception:
                 exception_message = f"Failed configuring token {model.identifier}."

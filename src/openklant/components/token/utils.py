@@ -1,5 +1,4 @@
 import secrets
-
 from typing import Iterable
 
 

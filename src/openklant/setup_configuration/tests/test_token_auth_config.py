@@ -25,9 +25,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         first_token: TokenAuth = tokens[0]
 
         self.assertEqual(first_token.identifier, "token-1")
-        self.assertEqual(
-            first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
-        )
+        self.assertEqual(first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799")
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
         self.assertEqual(first_token.organization, "")
@@ -37,9 +35,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         second_token: TokenAuth = tokens[1]
 
         self.assertEqual(second_token.identifier, "token-2")
-        self.assertEqual(
-            second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067"
-        )
+        self.assertEqual(second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067")
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
         self.assertEqual(second_token.organization, "")
@@ -72,9 +68,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         first_token: TokenAuth = tokens[0]
 
         self.assertEqual(first_token.identifier, "token-1")
-        self.assertEqual(
-            first_token.token, "18b2b74ef994314b84021d47b9422e82b685d82f"
-        )
+        self.assertEqual(first_token.token, "18b2b74ef994314b84021d47b9422e82b685d82f")
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
         self.assertEqual(first_token.organization, "")
@@ -85,7 +79,8 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         self.assertEqual(second_token.identifier, "token-2")
         self.assertEqual(
-            second_token.token, "795cb35c930d27b98297df761f0fa52182348875",
+            second_token.token,
+            "795cb35c930d27b98297df761f0fa52182348875",
         )
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
@@ -96,9 +91,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         third_token: TokenAuth = tokens[2]
 
         self.assertEqual(third_token.identifier, "token-3")
-        self.assertEqual(
-            third_token.token, "e882642bd0ec2482adcdc97258c2e6f98cb06d85"
-        )
+        self.assertEqual(third_token.token, "e882642bd0ec2482adcdc97258c2e6f98cb06d85")
         self.assertEqual(third_token.contact_person, "Person 3")
         self.assertEqual(third_token.email, "person-3@example.com")
         self.assertEqual(third_token.organization, "")
@@ -134,9 +127,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         first_token: TokenAuth = tokens[0]
 
         self.assertEqual(first_token.identifier, "token-1")
-        self.assertEqual(
-            first_token.token, "18b2b74ef994314b84021d47b9422e82b685d82f"
-        )
+        self.assertEqual(first_token.token, "18b2b74ef994314b84021d47b9422e82b685d82f")
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
         self.assertEqual(first_token.organization, "Organization XYZ")
@@ -146,9 +137,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         second_token: TokenAuth = tokens[1]
 
         self.assertEqual(second_token.identifier, "token-2")
-        self.assertEqual(
-            second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067"
-        )
+        self.assertEqual(second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067")
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
         self.assertEqual(second_token.organization, "")
@@ -158,9 +147,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         third_token: TokenAuth = tokens[2]
 
         self.assertEqual(third_token.identifier, "token-3")
-        self.assertEqual(
-            third_token.token, "e882642bd0ec2482adcdc97258c2e6f98cb06d85"
-        )
+        self.assertEqual(third_token.token, "e882642bd0ec2482adcdc97258c2e6f98cb06d85")
         self.assertEqual(third_token.contact_person, "Person 3")
         self.assertEqual(third_token.email, "person-3@example.com")
         self.assertEqual(third_token.organization, "Organization ZYX")
@@ -187,9 +174,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         token: TokenAuth = tokens[0]
 
         self.assertEqual(token.identifier, "token-1")
-        self.assertEqual(
-            token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
-        )
+        self.assertEqual(token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799")
         self.assertEqual(token.contact_person, "Person 4")
         self.assertEqual(token.email, "person-4@example.com")
         self.assertEqual(token.organization, "")
@@ -216,9 +201,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         token: TokenAuth = tokens[0]
 
         self.assertEqual(token.identifier, "token-1")
-        self.assertEqual(
-            token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
-        )
+        self.assertEqual(token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799")
         self.assertEqual(token.contact_person, "Person 4")
         self.assertEqual(token.email, "person-4@example.com")
         self.assertEqual(token.organization, "")
@@ -245,9 +228,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         token: TokenAuth = tokens[0]
 
         self.assertEqual(token.identifier, "token-1")
-        self.assertEqual(
-            token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
-        )
+        self.assertEqual(token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799")
         self.assertEqual(token.contact_person, "Person 4")
         self.assertEqual(token.email, "person-4@example.com")
         self.assertEqual(token.organization, "")
@@ -266,9 +247,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         first_token: TokenAuth = tokens[0]
 
         self.assertEqual(first_token.identifier, "token-1")
-        self.assertEqual(
-            first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
-        )
+        self.assertEqual(first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799")
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
         self.assertEqual(first_token.organization, "Organization XYZ")
@@ -278,9 +257,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         second_token: TokenAuth = tokens[1]
 
         self.assertEqual(second_token.identifier, "token-2")
-        self.assertEqual(
-            second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067"
-        )
+        self.assertEqual(second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067")
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
         self.assertEqual(second_token.organization, "Organization ZYX")
@@ -294,9 +271,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         first_token.refresh_from_db()
 
         self.assertEqual(first_token.identifier, "token-1")
-        self.assertEqual(
-            first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799"
-        )
+        self.assertEqual(first_token.token, "7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799")
         self.assertEqual(first_token.contact_person, "Person 1")
         self.assertEqual(first_token.email, "person-1@example.com")
         self.assertEqual(first_token.organization, "Organization XYZ")
@@ -306,9 +281,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         second_token.refresh_from_db()
 
         self.assertEqual(second_token.identifier, "token-2")
-        self.assertEqual(
-            second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067"
-        )
+        self.assertEqual(second_token.token, "ba9d233e95e04c4a8a661a27daffe7c9bd019067")
         self.assertEqual(second_token.contact_person, "Person 2")
         self.assertEqual(second_token.email, "person-2@example.com")
         self.assertEqual(second_token.organization, "Organization ZYX")

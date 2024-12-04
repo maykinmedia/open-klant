@@ -11,10 +11,7 @@ class TokenAuth(models.Model):
     )
 
     token = models.CharField(
-        _("token"),
-        max_length=40,
-        unique=True,
-        validators=[validate_non_empty_chars]
+        _("token"), max_length=40, unique=True, validators=[validate_non_empty_chars]
     )
 
     contact_person = models.CharField(
