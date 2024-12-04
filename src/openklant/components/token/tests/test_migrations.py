@@ -53,7 +53,7 @@ class BaseMigrationTest(TransactionTestCase):
 class TestTokenAuthUniqueness(BaseMigrationTest):
     app = "token"
     migrate_from = "0001_initial"
-    migrate_to = "0002_tokenauth_identifier_alter_tokenauth_token"
+    migrate_to = "0002_identifier_migration"
 
     def test_migrate_tokens_to_unique_values(self):
         TokenAuth = self.old_app_state.get_model("token", "TokenAuth")
