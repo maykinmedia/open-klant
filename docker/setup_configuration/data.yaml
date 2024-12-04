@@ -8,3 +8,10 @@ openklant_tokens:
       organization: Organization XYZ
       application: Application XYZ
       administration: Administration XYZ
+
+oidc_db_config_enable: true
+oidc_db_config_admin_auth:
+  oidc_rp_client_id: client-id
+  oidc_rp_client_secret: secret
+  endpoint_config:
+    oidc_op_discovery_endpoint: https://keycloak.local/protocol/openid-connect/
