@@ -1,0 +1,11 @@
+tokens_config_enable: true
+
+tokens_config:
+  items:
+    - identifier: token-1
+      token: ba9d233e95e04c4a8a661a27daffe7c9bd019067
+      contact_person: Person 1
+      email: test@example.com
+      organization: Organization XYZ
+      application: Application XYZ
+      administration: Administration XYZ

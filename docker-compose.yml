@@ -17,7 +17,7 @@ services:
   web:
     image: maykinmedia/open-klant:latest
     build: .
-    environment: &web-env
+    environment: &web_env
       - DJANGO_SETTINGS_MODULE=openklant.conf.docker
       - IS_HTTPS=no
       - DB_NAME=postgres
@@ -31,8 +31,29 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - DISABLE_2FA=true
+
+      # Django-setup-configuration
+      - RUN_SETUP_CONFIG=${RUN_SETUP_CONFIG:-true}
+    volumes: &web_volumes
+      - media:/app/media
+      - private_media:/app/private_media
+      - log:/app/log
+      - ./docker/setup_configuration:/app/setup_configuration
     ports:
       - 8000:8000
+    depends_on:
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
+      web-init:
+        condition: service_completed_successfully
+
+  web-init:
+    build: .
+    environment: *web_env
+    command: /setup_configuration.sh
+    volumes: *web_volumes
     depends_on:
       - db
       - redis
@@ -43,4 +64,5 @@ services:
 volumes:
   db:
   log:
-
+  media:
+  private_media:
