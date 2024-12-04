@@ -26,17 +26,17 @@ class TokenAuthConfigurationStep(
     config_model = TokenAuthGroupConfigurationModel
 
     def execute(self, model: TokenAuthGroupConfigurationModel) -> None:
-        for model in model.items:
-            logger.info(f"Configuring {model.identifier}")
+        for item in model.items:
+            logger.info(f"Configuring {item.identifier}")
 
             model_kwargs = dict(
-                identifier=model.identifier,
-                token=model.token,
-                contact_person=model.contact_person,
-                email=model.email,
-                organization=model.organization,
-                application=model.application,
-                administration=model.administration,
+                identifier=item.identifier,
+                token=item.token,
+                contact_person=item.contact_person,
+                email=item.email,
+                organization=item.organization,
+                application=item.application,
+                administration=item.administration,
             )
 
             token_instance = TokenAuth(**model_kwargs)
@@ -45,17 +45,17 @@ class TokenAuthConfigurationStep(
                 token_instance.full_clean(exclude=("id",), validate_unique=False)
             except ValidationError as exception:
                 exception_message = (
-                    f"Validation error(s) occured for {model.identifier}."
+                    f"Validation error(s) occured for {item.identifier}."
                 )
                 raise ConfigurationRunFailed(exception_message) from exception
 
-            logger.debug(f"No validation errors found for {model.identifier}")
+            logger.debug(f"No validation errors found for {item.identifier}")
 
             try:
-                logger.debug(f"Saving {model.identifier}")
+                logger.debug(f"Saving {item.identifier}")
 
                 TokenAuth.objects.update_or_create(
-                    identifier=model.identifier,
+                    identifier=item.identifier,
                     defaults={
                         key: value
                         for key, value in model_kwargs.items()
@@ -63,7 +63,7 @@ class TokenAuthConfigurationStep(
                     },
                 )
             except DatabaseError as exception:
-                exception_message = f"Failed configuring token {model.identifier}."
+                exception_message = f"Failed configuring token {item.identifier}."
                 raise ConfigurationRunFailed(exception_message) from exception
 
-            logger.info(f"Configured {model.identifier}")
+            logger.info(f"Configured {item.identifier}")
