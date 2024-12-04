@@ -1,6 +1,5 @@
-tokens_config_enable: true
-
-tokens_config:
+openklant_tokens_config_enable: true
+openklant_tokens:
   items:
     - identifier: token-1
       token: foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar

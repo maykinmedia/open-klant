@@ -1,6 +1,5 @@
-tokens_config_enable: true
-
-tokens_config:
+openklant_tokens_config_enable: true
+openklant_tokens:
   items:
     - identifier: token-1
       token: 18b2b74ef994314b84021d47b9422e82b685d82f

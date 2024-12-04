@@ -31,9 +31,8 @@ Create a (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
 
-    tokens_config_enable: true
-
-    tokens_config:
+    openklant_tokens_config_enable: true
+    openklant_tokens:
       group:
         - identifier: token-1
           contact_person: Person 1
