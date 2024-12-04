@@ -10,7 +10,7 @@ You can get the full command documentation with:
 
 .. code-block:: bash
 
-    ./src/manage.py setup_configuration --help
+    python ./src/manage.py setup_configuration --help
 
 .. warning:: This command is declarative - if configuration is manually changed after
    running the command and you then run the exact same command again, the manual
@@ -57,7 +57,7 @@ is run afterwards.
 
 .. code-block:: bash
 
-    ./src/manage.py setup_configuration --yaml-file /path/to/config.yaml
+    python ./src/manage.py setup_configuration --yaml-file /path/to/config.yaml
 
 .. note:: Due to a cache-bug in the underlying framework, you need to restart all
    replicas for part of this change to take effect everywhere.
