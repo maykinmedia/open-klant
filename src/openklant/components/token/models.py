@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.token.utils import get_token
-from openklant.components.token.validators import validate_non_empty_chars
+from openklant.components.token.validators import validate_whitespace
 
 
 class TokenAuth(models.Model):
@@ -11,7 +11,7 @@ class TokenAuth(models.Model):
     )
 
     token = models.CharField(
-        _("token"), max_length=40, unique=True, validators=[validate_non_empty_chars]
+        _("token"), max_length=40, unique=True, validators=[validate_whitespace]
     )
 
     contact_person = models.CharField(

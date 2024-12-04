@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 max_length=40,
                 unique=True,
                 validators=[
-                    openklant.components.token.validators.validate_non_empty_chars
+                    openklant.components.token.validators.validate_whitespace
                 ],
                 verbose_name="token",
             ),
