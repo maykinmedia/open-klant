@@ -1,3 +1,4 @@
 open-api-framework
 
 django-setup-configuration
+mozilla-django-oidc-db[setup-configuration]
