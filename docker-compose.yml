@@ -28,7 +28,7 @@ services:
       CACHE_AXES: redis:6379/0
       SUBPATH: ${SUBPATH:-/}
       SECRET_KEY: ${SECRET_KEY:-django-insecure-f8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b}
-      CELERY_BROKER_UR: =redis://redis:6379/0
+      CELERY_BROKER_UR: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       DISABLE_2FA: true
 
