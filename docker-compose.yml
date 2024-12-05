@@ -7,7 +7,7 @@ services:
     # See: https://hub.docker.com/_/postgres/
     image: postgres
     environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
+      POSTGRES_HOST_AUTH_METHOD: trust
     # NOTE: this works for bitnami, not sure if this works for regular
     # postgres image
     volumes:
@@ -17,22 +17,46 @@ services:
   web:
     image: maykinmedia/open-klant:latest
     build: .
-    environment: &web-env
-      - DJANGO_SETTINGS_MODULE=openklant.conf.docker
-      - IS_HTTPS=no
-      - DB_NAME=postgres
-      - DB_USER=postgres
-      - DB_HOST=db
-      - ALLOWED_HOSTS=*
-      - CACHE_DEFAULT=redis:6379/0
-      - CACHE_AXES=redis:6379/0
-      - SUBPATH=${SUBPATH:-/}
-      - SECRET_KEY=${SECRET_KEY:-django-insecure-f8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b}
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - DISABLE_2FA=true
+    environment: &web_env
+      DJANGO_SETTINGS_MODULE: openklant.conf.docker
+      IS_HTTPS: no
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_HOST: db
+      ALLOWED_HOSTS: '*'
+      CACHE_DEFAULT: redis:6379/0
+      CACHE_AXES: redis:6379/0
+      SUBPATH: ${SUBPATH:-/}
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-f8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b}
+      CELERY_BROKER_UR: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DISABLE_2FA: true
+
+    volumes:
+      - media:/app/media
+      - private_media:/app/private_media
+      - log:/app/log
     ports:
       - 8000:8000
+    depends_on:
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
+      web-init:
+        condition: service_completed_successfully
+
+  web-init:
+    build: .
+    environment:
+      <<: *web_env
+      #
+      # Django-setup-configuration
+      RUN_SETUP_CONFIG: ${RUN_SETUP_CONFIG:-true}
+    command: /setup_configuration.sh
+    volumes:
+      - log:/app/log
+      - ./docker/setup_configuration:/app/setup_configuration
     depends_on:
       - db
       - redis
@@ -43,4 +67,5 @@ services:
 volumes:
   db:
   log:
-
+  media:
+  private_media:

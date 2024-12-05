@@ -42,3 +42,10 @@ SITE_TITLE = "API dashboard"
 # Django-Admin-Index
 #
 ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
+
+#
+# Django setup configuration
+#
+SETUP_CONFIGURATION_STEPS = (
+    "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
+)

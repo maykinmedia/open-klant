@@ -6,7 +6,7 @@ from .models import TokenAuth
 @admin.register(TokenAuth)
 class TokenAuthAdmin(admin.ModelAdmin):
     list_display = (
-        "token",
+        "identifier",
         "contact_person",
         "organization",
         "administration",

@@ -5,11 +5,9 @@ from openklant.components.token.models import TokenAuth
 
 
 class TokenAuthFactory(DjangoModelFactory):
+    identifier = factory.Sequence(lambda sequence: f"token-{sequence}")
     contact_person = factory.Faker("name")
     email = factory.Faker("email")
-    organization = factory.Faker("name")
-    application = factory.Faker("word")
-    administration = factory.Faker("word")
 
     class Meta:
         model = TokenAuth

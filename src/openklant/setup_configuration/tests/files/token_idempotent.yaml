@@ -1,0 +1,18 @@
+openklant_tokens_config_enable: true
+openklant_tokens:
+  items:
+    - identifier: token-1
+      token: 7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799
+      contact_person: Person 1
+      email: person-1@example.com
+      organization: Organization XYZ
+      application: Application XYZ
+      administration: Administration XYZ
+
+    - identifier: token-2
+      token: ba9d233e95e04c4a8a661a27daffe7c9bd019067
+      contact_person: Person 2
+      email: person-2@example.com
+      organization: Organization ZYX
+      application: Application ZYX
+      administration: Administration ZYX
