@@ -45,3 +45,22 @@ class SoortPartij(TextChoices):
 class Klantcontrol(TextChoices):
     vertegenwoordiger = "vertegenwoordiger", _("Vertegenwoordiger")
     klant = "klant", _("Klant")
+
+
+class PartijIdentificatorCodeSoortObjectId(TextChoices):
+    bsn = "bsn", _("Burgerservicenummer")
+    vestigingsnummer = "vestigingsnummer", _("Vestigingsnummer")
+    kvknummer = "kvk_nummer", _("KVK Nummer")
+    rsin = "rsin", _("Rsin Nummer")
+
+
+class PartijIdentificatorCodeObjectType(TextChoices):
+    natuurlijk_persoon = "natuurlijk_persoon", _("NatuurlijkPersoon")
+    niet_natuurlijk_persoon = "niet_natuurlijk_persoon", _("NietNatuurlijkPersoon")
+    vestiging = "vestiging", _("Vestiging")
+
+
+class PartijIdentificatorCodeRegister(TextChoices):
+    brp = "brp", _("BRP")
+    hr = "hr", _("HR")
+    overige = "overige", _("Overige")
