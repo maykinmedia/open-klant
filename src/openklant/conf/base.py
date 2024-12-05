@@ -48,4 +48,5 @@ ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 #
 SETUP_CONFIGURATION_STEPS = (
     "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
+    "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
 )
