@@ -33,7 +33,7 @@ Create a (single) YAML configuration file with your settings:
 
     openklant_tokens_config_enable: true
     openklant_tokens:
-      group:
+      items:
         - identifier: token-1
           contact_person: Person 1
           email: person-1@example.com
