@@ -56,10 +56,12 @@ Create or update the (single) YAML configuration file with your settings:
    ...
     oidc_db_config_enable: true
     oidc_db_config_admin_auth:
-      oidc_rp_client_id: client-id
-      oidc_rp_client_secret: secret
-      endpoint_config:
-        oidc_op_discovery_endpoint: https://keycloak.local/protocol/openid-connect/
+    items:
+      - identifier: admin-oidc
+        oidc_rp_client_id: client-id
+        oidc_rp_client_secret: secret
+        endpoint_config:
+          oidc_op_discovery_endpoint: https://keycloak.local/protocol/openid-connect/
    ...
 
 More details about configuring mozilla-django-oidc-db through ``setup_configuration``
