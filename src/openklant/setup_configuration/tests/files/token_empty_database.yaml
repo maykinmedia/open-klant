@@ -1,5 +1,5 @@
-openklant_tokens_config_enable: true
-openklant_tokens:
+zgw_tokens_tokenauth_config_enable: true
+zgw_tokens_tokenauth:
   items:
     - identifier: token-1
       token: 7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799
