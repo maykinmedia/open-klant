@@ -1,5 +1,5 @@
-openklant_tokens_config_enable: true
-openklant_tokens:
+zgw_tokens_tokenauth_config_enable: true
+zgw_tokens_tokenauth:
   items:
     - identifier: token-1
       token: foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar

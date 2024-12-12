@@ -19,8 +19,8 @@ class TokenAuthConfigurationStep(
     Configure configuration groups for the Objects API backend
     """
 
-    namespace = "openklant_tokens"
-    enable_setting = "openklant_tokens_config_enable"
+    namespace = "zgw_tokens_tokenauth"
+    enable_setting = "zgw_tokens_tokenauth_config_enable"
 
     verbose_name = "Configuration to set up authentication tokens for Open Klant"
     config_model = TokenAuthGroupConfigurationModel

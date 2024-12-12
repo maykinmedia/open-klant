@@ -1,5 +1,4 @@
 from django_setup_configuration.models import ConfigurationModel
-from pydantic import Field
 
 from openklant.components.token.models import TokenAuth
 
@@ -20,4 +19,4 @@ class TokenAuthConfigurationModel(ConfigurationModel):
 
 
 class TokenAuthGroupConfigurationModel(ConfigurationModel):
-    items: list[TokenAuthConfigurationModel] = Field()
+    items: list[TokenAuthConfigurationModel]
