@@ -31,8 +31,8 @@ Create a (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
 
-    zgw_tokens_tokenauth_config_enable: true
-    zgw_tokens_tokenauth:
+    tokenauth_config_enable: true
+    tokenauth:
       items:
         - identifier: token-1
           token: ba9d233e95e04c4a8a661a27daffe7c9bd019067
