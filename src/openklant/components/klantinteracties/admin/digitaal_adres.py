@@ -21,6 +21,9 @@ class DigitaalAdresAdminForm(forms.ModelForm):
 @admin.register(DigitaalAdres)
 class DigitaalAdresAdmin(admin.ModelAdmin):
     readonly_fields = ("uuid",)
-    search_fields = ("adres",)
+    search_fields = (
+        "adres",
+        "uuid",
+    )
     autocomplete_fields = ("partij",)
     form = DigitaalAdresAdminForm
