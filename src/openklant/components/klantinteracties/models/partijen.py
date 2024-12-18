@@ -17,11 +17,7 @@ from .constants import (
     SoortPartij,
 )
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
-from .validators import (
-    PartijIdentificatorCodeObjectTypeValidator,
-    PartijIdentificatorCodeSoortObjectIdValidator,
-    PartijIdentificatorObjectIdValidator,
-)
+from .validators import PartijIdentificatorValidator
 
 
 class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
@@ -427,20 +423,12 @@ class PartijIdentificator(models.Model):
     def clean(self):
         super().clean()
 
-        # Overige no validation
-        if (
-            self.partij_identificator_code_register
-            != PartijIdentificatorCodeRegister.overige
-        ):
-            PartijIdentificatorCodeObjectTypeValidator.validate(
-                self.partij_identificator_code_register,
-                self.partij_identificator_code_objecttype,
-            )
-            PartijIdentificatorCodeSoortObjectIdValidator.validate(
-                self.partij_identificator_code_objecttype,
-                self.partij_identificator_code_soort_object_id,
-            )
-        PartijIdentificatorObjectIdValidator.validate(
+        partij_validator = PartijIdentificatorValidator(
+            self.partij_identificator_code_register,
+            self.partij_identificator_code_objecttype,
             self.partij_identificator_code_soort_object_id,
             self.partij_identificator_object_id,
         )
+        partij_validator.validate_code_object_type()
+        partij_validator.validate_code_soort_object_id()
+        partij_validator.validate_object_id()

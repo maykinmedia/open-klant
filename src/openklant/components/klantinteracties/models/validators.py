@@ -8,102 +8,100 @@ from .constants import (
 )
 
 
-class PartijIdentificatorCodeObjectTypeValidator:
-
-    CODE_REGISTER = {
-        PartijIdentificatorCodeRegister.brp: [
-            PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-        ],
-        PartijIdentificatorCodeRegister.hr: [
-            PartijIdentificatorCodeObjectType.vestiging,
-            PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon,
-        ],
-        PartijIdentificatorCodeRegister.overige: [],
+class PartijIdentificatorValidator:
+    REGISTER_MAPPINGS = {
+        PartijIdentificatorCodeRegister.brp: {
+            PartijIdentificatorCodeObjectType.natuurlijk_persoon: [
+                PartijIdentificatorCodeSoortObjectId.bsn,
+            ],
+        },
+        PartijIdentificatorCodeRegister.hr: {
+            PartijIdentificatorCodeObjectType.vestiging: [
+                PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
+            ],
+            PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: [
+                PartijIdentificatorCodeSoortObjectId.rsin,
+                PartijIdentificatorCodeSoortObjectId.kvknummer,
+            ],
+        },
+        PartijIdentificatorCodeRegister.overige: {},
     }
 
-    @staticmethod
-    def validate(code_register, code_object_type):
-        if not code_object_type:
+    def __init__(
+        self,
+        code_register: str,
+        code_object_type: str,
+        code_soort_object_id: str,
+        object_id: str,
+    ):
+        self.code_register = code_register
+        self.code_object_type = code_object_type
+        self.code_soort_object_id = code_soort_object_id
+        self.object_id = object_id
+
+    def validate_code_object_type(self) -> None:
+        """Validates the CodeObjectType based on the provided CodeRegister"""
+        if not self.code_object_type:
             return
 
-        if (
-            code_object_type
-            not in PartijIdentificatorCodeObjectTypeValidator.CODE_REGISTER.get(
-                code_register, []
-            )
-        ):
+        if self.code_register == PartijIdentificatorCodeRegister.overige:
+            return
+
+        if self.code_object_type not in self.REGISTERS.get(self.code_register, {}):
             raise ValidationError(
-                _("ObjectType keuzes zijn beperkt op basis van Register")
+                _("ObjectType keuzes zijn beperkt op basis van CodeRegister")
             )
 
-
-class PartijIdentificatorCodeSoortObjectIdValidator:
-
-    CODE_OBJECT_TYPE = {
-        PartijIdentificatorCodeObjectType.natuurlijk_persoon: [
-            PartijIdentificatorCodeSoortObjectId.bsn,
-        ],
-        PartijIdentificatorCodeObjectType.vestiging: [
-            PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
-        ],
-        PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: [
-            PartijIdentificatorCodeSoortObjectId.rsin,
-            PartijIdentificatorCodeSoortObjectId.kvknummer,
-        ],
-    }
-
-    @staticmethod
-    def validate(code_object_type, code_soort_object_id):
-        if not code_soort_object_id:
+    def validate_code_soort_object_id(self) -> None:
+        """Validates the CodeSoortObjectId based on register and CodeObjectType"""
+        if not self.code_soort_object_id:
             return
 
-        if (
-            code_soort_object_id
-            not in PartijIdentificatorCodeSoortObjectIdValidator.CODE_OBJECT_TYPE.get(
-                code_object_type, []
-            )
-        ):
+        if self.code_object_type == PartijIdentificatorCodeObjectType.overige:
+            return
+
+        register = self.REGISTERS.get(self.code_register)
+        allowed_codes = register.get(self.code_object_type, []) if register else []
+
+        if self.code_soort_object_id not in allowed_codes:
             raise ValidationError(
-                _(
-                    "CodeSoortObjectIdValidator keuzes zijn beperkt op basis van CodeObjectType"
-                )
+                _("CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType")
             )
 
-
-class PartijIdentificatorObjectIdValidator:
-
-    @staticmethod
-    def validate(code_soort_object_id, object_id):
-        if not object_id:
+    def validate_object_id(self) -> None:
+        """Validates the object ID based on the SoortObjectId."""
+        if not self.object_id:
+            return
+        if self.code_soort_object_id == PartijIdentificatorCodeSoortObjectId.overige:
             return
 
-        method_name = f"validate_{code_soort_object_id}"
-        if hasattr(PartijIdentificatorObjectIdValidator, method_name):
-            method = getattr(PartijIdentificatorObjectIdValidator, method_name)
-            method(object_id)
+        method_name = f"_validate_{self.code_soort_object_id}"
+        validator = getattr(self, method_name, None)
+        if validator:
+            validator()
         else:
             raise ValidationError("Ongeldige Partij Identificator CodeSoortObjectId")
 
-    @staticmethod
-    def validate_bsn(object_id):
-        if len(object_id) not in [8, 9]:
+    def _validate_bsn(self) -> None:
+        """Validates the BSN Object ID length."""
+        if len(self.object_id) not in [8, 9]:
             raise ValidationError(
-                _("De lengte van de ObjectId moet tussen 8 en 9 liggen.")
+                _("De lengte van de ObjectId moet tussen 8 en 9 liggen")
             )
 
-    @staticmethod
-    def validate_vestigingsnummer(object_id):
-        if len(object_id) != 12:
-            raise ValidationError(_("De lengte van de ObjectId moet 12 tekens zijn."))
+    def _validate_vestigingsnummer(self) -> None:
+        """Validates the VestigingsNummer Object ID length."""
+        if len(self.object_id) not in [12]:
+            raise ValidationError(_("De lengte van de ObjectId moet 12 tekens zijn"))
 
-    @staticmethod
-    def validate_rsin(object_id):
-        if len(object_id) not in [8, 9]:
+    def _validate_rsin(self) -> None:
+        """Validates the Rsin Object ID length."""
+        if len(self.object_id) not in [8, 9]:
             raise ValidationError(
-                _("De lengte van de ObjectId moet tussen 8 en 9 liggen.")
+                _("De lengte van de ObjectId moet tussen 8 en 9 liggen")
             )
 
-    @staticmethod
-    def validate_kvknummer(object_id):
-        if len(object_id) != 8:
-            raise ValidationError(_("De lengte van de ObjectId moet 8 tekens zijn."))
+    def _validate_kvknummer(self) -> None:
+        """Validates the KvkNummer Object ID length."""
+        if len(self.object_id) not in [8]:
+            raise ValidationError(_("De lengte van de ObjectId moet 8 tekens zijn"))

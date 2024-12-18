@@ -48,16 +48,18 @@ class Klantcontrol(TextChoices):
 
 
 class PartijIdentificatorCodeSoortObjectId(TextChoices):
-    bsn = "bsn", _("Burgerservicenummer")
-    vestigingsnummer = "vestigingsnummer", _("Vestigingsnummer")
-    kvknummer = "kvk_nummer", _("KVK Nummer")
-    rsin = "rsin", _("Rsin Nummer")
+    bsn = "bsn", _("Bsn")
+    vestigingsnummer = "vestigings_nummer", _("VestigingsNummer")
+    kvknummer = "kvk_nummer", _("KvkNummer")
+    rsin = "rsin", _("Rsin")
+    overige = "overige", _("Overige")
 
 
 class PartijIdentificatorCodeObjectType(TextChoices):
     natuurlijk_persoon = "natuurlijk_persoon", _("NatuurlijkPersoon")
     niet_natuurlijk_persoon = "niet_natuurlijk_persoon", _("NietNatuurlijkPersoon")
     vestiging = "vestiging", _("Vestiging")
+    overige = "overige", _("Overige")
 
 
 class PartijIdentificatorCodeRegister(TextChoices):
