@@ -2123,7 +2123,7 @@ class PartijIdentificatorTests(APITestCase):
         }
 
         with self.assertRaisesMessage(
-            ValidationError, "ObjectType keuzes zijn beperkt op basis van Register"
+            ValidationError, "ObjectType keuzes zijn beperkt op basis van CodeRegister."
         ):
             self.client.post(url, data)
 
@@ -2143,7 +2143,7 @@ class PartijIdentificatorTests(APITestCase):
 
         with self.assertRaisesMessage(
             ValidationError,
-            "CodeSoortObjectIdValidator keuzes zijn beperkt op basis van CodeObjectType",
+            "CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType.",
         ):
             self.client.post(url, data)
 
