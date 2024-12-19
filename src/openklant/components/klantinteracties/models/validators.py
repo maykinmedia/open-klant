@@ -62,7 +62,6 @@ class PartijIdentificatorValidator:
 
     def validate_code_soort_object_id(self) -> None:
         """Validates the CodeSoortObjectId based on register and CodeObjectType"""
-
         if not self.code_soort_object_id:
             return
 

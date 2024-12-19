@@ -6,12 +6,7 @@ from django.utils.translation import gettext as _
 from rest_framework import status
 from vng_api_common.tests import reverse
 
-from openklant.components.klantinteracties.models.constants import (
-    PartijIdentificatorCodeObjectType,
-    PartijIdentificatorCodeRegister,
-    PartijIdentificatorCodeSoortObjectId,
-    SoortPartij,
-)
+from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
@@ -1883,10 +1878,10 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
                 "objectId": "123456788",
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeRegister": "brp",
             },
         }
 
@@ -1899,10 +1894,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
                 "objectId": "123456788",
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeRegister": "brp",
             },
         )
 
@@ -1911,10 +1906,10 @@ class PartijIdentificatorTests(APITestCase):
         partij_identificator = PartijIdentificatorFactory.create(
             partij=partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn,
+            partij_identificator_code_objecttype="natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="123456788",
-            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp,
+            partij_identificator_code_register="brp",
         )
 
         detail_url = reverse(
@@ -1929,10 +1924,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
                 "objectId": "123456788",
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeRegister": "brp",
             },
         )
 
@@ -1940,10 +1935,10 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij2.uuid)},
             "anderePartijIdentificator": "changed",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
                 "objectId": "123456789",
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeRegister": "brp",
             },
         }
 
@@ -1956,10 +1951,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
                 "objectId": "123456789",
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeRegister": "brp",
             },
         )
 
@@ -1968,10 +1963,10 @@ class PartijIdentificatorTests(APITestCase):
         partij_identificator = PartijIdentificatorFactory.create(
             partij=partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn,
+            partij_identificator_code_objecttype="natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="123456788",
-            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp,
+            partij_identificator_code_register="brp",
         )
 
         detail_url = reverse(
@@ -1986,10 +1981,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
                 "objectId": "123456788",
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeRegister": "brp",
             },
         )
 
@@ -2006,10 +2001,10 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(
             data["partijIdentificator"],
             {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
                 "objectId": "123456788",
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeRegister": "brp",
             },
         )
 
@@ -2034,9 +2029,9 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
-                "objectId": 12,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "123456789",
                 "codeRegister": "test",
             },
         }
@@ -2062,9 +2057,9 @@ class PartijIdentificatorTests(APITestCase):
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
                 "codeObjecttype": "test",
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
-                "objectId": 12,
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeSoortObjectId": "bsn",
+                "objectId": "123456789",
+                "codeRegister": "brp",
             },
         }
         response = self.client.post(url, data)
@@ -2088,10 +2083,10 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
+                "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "test",
-                "objectId": 12,
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "objectId": "123456789",
+                "codeRegister": "brp",
             },
         }
         response = self.client.post(url, data)
@@ -2115,10 +2110,10 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
-                "objectId": 12,
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeObjecttype": "niet_natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "123456789",
+                "codeRegister": "brp",
             },
         }
 
@@ -2134,13 +2129,12 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.kvknummer,
-                "objectId": 12,
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "kvk_nummer",
+                "objectId": "123456789",
+                "codeRegister": "brp",
             },
         }
-
         with self.assertRaisesMessage(
             ValidationError,
             "CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType.",
@@ -2154,10 +2148,10 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
-                "objectId": 12,
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "12",
+                "codeRegister": "brp",
             },
         }
 
@@ -2174,28 +2168,28 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
-                "objectId": 123456789,
-                "codeRegister": PartijIdentificatorCodeRegister.brp,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "123456789",
+                "codeRegister": "brp",
             },
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(
             response.data["partij_identificator"]["code_objecttype"],
-            PartijIdentificatorCodeObjectType.natuurlijk_persoon,
+            "natuurlijk_persoon",
         )
         self.assertEqual(
             response.data["partij_identificator"]["code_soort_object_id"],
-            PartijIdentificatorCodeSoortObjectId.bsn,
+            "bsn",
         )
         self.assertEqual(
             response.data["partij_identificator"]["object_id"], "123456789"
         )
         self.assertEqual(
             response.data["partij_identificator"]["code_register"],
-            PartijIdentificatorCodeRegister.brp,
+            "brp",
         )
 
     def test_valid_overige_validation_partij_identificator(self):
@@ -2206,28 +2200,28 @@ class PartijIdentificatorTests(APITestCase):
             "identificeerdePartij": {"uuid": str(partij.uuid)},
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
-                "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
                 "objectId": 123456789,
-                "codeRegister": PartijIdentificatorCodeRegister.overige,
+                "codeRegister": "overige",
             },
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(
             response.data["partij_identificator"]["code_objecttype"],
-            PartijIdentificatorCodeObjectType.natuurlijk_persoon,
+            "natuurlijk_persoon",
         )
         self.assertEqual(
             response.data["partij_identificator"]["code_soort_object_id"],
-            PartijIdentificatorCodeSoortObjectId.bsn,
+            "bsn",
         )
         self.assertEqual(
             response.data["partij_identificator"]["object_id"], "123456789"
         )
         self.assertEqual(
             response.data["partij_identificator"]["code_register"],
-            PartijIdentificatorCodeRegister.overige,
+            "overige",
         )
 
 
