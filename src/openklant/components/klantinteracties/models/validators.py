@@ -49,7 +49,10 @@ class PartijIdentificatorValidator:
         if not self.code_object_type:
             return
 
-        if self.code_register == PartijIdentificatorCodeRegister.overige:
+        if (
+            not self.code_register
+            or self.code_register == PartijIdentificatorCodeRegister.overige
+        ):
             return
 
         if self.code_object_type not in self.REGISTERS.get(self.code_register, {}):
@@ -63,7 +66,10 @@ class PartijIdentificatorValidator:
         if not self.code_soort_object_id:
             return
 
-        if self.code_object_type == PartijIdentificatorCodeObjectType.overige:
+        if (
+            not self.code_object_type
+            or self.code_object_type == PartijIdentificatorCodeObjectType.overige
+        ):
             return
 
         if not any(
@@ -79,7 +85,10 @@ class PartijIdentificatorValidator:
         if not self.object_id:
             return
 
-        if self.code_soort_object_id == PartijIdentificatorCodeSoortObjectId.overige:
+        if (
+            not self.code_soort_object_id
+            or self.code_soort_object_id == PartijIdentificatorCodeSoortObjectId.overige
+        ):
             return
 
         method_name = f"_validate_{self.code_soort_object_id}"
