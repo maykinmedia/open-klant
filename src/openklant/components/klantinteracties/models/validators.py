@@ -9,23 +9,26 @@ from .constants import (
 
 
 class PartijIdentificatorValidator:
-    OBJECT_TYPE_BRP = {
-        PartijIdentificatorCodeObjectType.natuurlijk_persoon: [
-            PartijIdentificatorCodeSoortObjectId.bsn,
-        ],
-    }
-    OBJECT_TYPE_HR = {
-        PartijIdentificatorCodeObjectType.vestiging: [
-            PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
-        ],
-        PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: [
-            PartijIdentificatorCodeSoortObjectId.rsin,
-            PartijIdentificatorCodeSoortObjectId.kvknummer,
-        ],
-    }
-    REGISTER_MAPPINGS = {
-        PartijIdentificatorCodeRegister.brp: OBJECT_TYPE_BRP,
-        PartijIdentificatorCodeRegister.hr: OBJECT_TYPE_HR,
+    REGISTERS = {
+        PartijIdentificatorCodeRegister.brp: {
+            PartijIdentificatorCodeObjectType.natuurlijk_persoon: [
+                PartijIdentificatorCodeSoortObjectId.bsn,
+                PartijIdentificatorCodeSoortObjectId.overige,
+            ],
+            PartijIdentificatorCodeObjectType.overige: [],
+        },
+        PartijIdentificatorCodeRegister.hr: {
+            PartijIdentificatorCodeObjectType.vestiging: [
+                PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
+                PartijIdentificatorCodeSoortObjectId.overige,
+            ],
+            PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: [
+                PartijIdentificatorCodeSoortObjectId.rsin,
+                PartijIdentificatorCodeSoortObjectId.kvknummer,
+                PartijIdentificatorCodeSoortObjectId.overige,
+            ],
+            PartijIdentificatorCodeObjectType.overige: [],
+        },
         PartijIdentificatorCodeRegister.overige: {},
     }
 
@@ -49,25 +52,24 @@ class PartijIdentificatorValidator:
         if self.code_register == PartijIdentificatorCodeRegister.overige:
             return
 
-        if self.code_object_type not in self.REGISTER_MAPPINGS.get(
-            self.code_register, {}
-        ):
+        if self.code_object_type not in self.REGISTERS.get(self.code_register, {}):
             raise ValidationError(
                 _("ObjectType keuzes zijn beperkt op basis van CodeRegister.")
             )
 
     def validate_code_soort_object_id(self) -> None:
         """Validates the CodeSoortObjectId based on register and CodeObjectType"""
+
         if not self.code_soort_object_id:
             return
 
         if self.code_object_type == PartijIdentificatorCodeObjectType.overige:
             return
 
-        register = self.REGISTER_MAPPINGS.get(self.code_register)
-        allowed_codes = register.get(self.code_object_type, []) if register else []
-
-        if self.code_soort_object_id not in allowed_codes:
+        if not any(
+            self.code_soort_object_id in d.get(self.code_object_type, [])
+            for d in self.REGISTERS.values()
+        ):
             raise ValidationError(
                 _("CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType.")
             )
@@ -76,6 +78,7 @@ class PartijIdentificatorValidator:
         """Validates the object ID based on the SoortObjectId"""
         if not self.object_id:
             return
+
         if self.code_soort_object_id == PartijIdentificatorCodeSoortObjectId.overige:
             return
 

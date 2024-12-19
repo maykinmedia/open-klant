@@ -2121,11 +2121,12 @@ class PartijIdentificatorTests(APITestCase):
                 "codeRegister": PartijIdentificatorCodeRegister.brp,
             },
         }
-
-        with self.assertRaisesMessage(
-            ValidationError, "ObjectType keuzes zijn beperkt op basis van CodeRegister."
-        ):
+        with self.assertRaises(ValidationError) as command_error:
             self.client.post(url, data)
+        self.assertTrue(
+            "ObjectType keuzes zijn beperkt op basis van CodeRegister."
+            in str(command_error.exception)
+        )
 
     def test_invalid_validation_partij_identificator_code_soort_object_id(self):
         url = reverse("klantinteracties:partijidentificator-list")
@@ -2140,12 +2141,12 @@ class PartijIdentificatorTests(APITestCase):
                 "codeRegister": PartijIdentificatorCodeRegister.brp,
             },
         }
-
-        with self.assertRaisesMessage(
-            ValidationError,
-            "CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType.",
-        ):
+        with self.assertRaises(ValidationError) as command_error:
             self.client.post(url, data)
+        self.assertTrue(
+            "CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType."
+            in str(command_error.exception)
+        )
 
     def test_invalid_validation_partij_identificator_object_id(self):
         url = reverse("klantinteracties:partijidentificator-list")
@@ -2160,11 +2161,12 @@ class PartijIdentificatorTests(APITestCase):
                 "codeRegister": PartijIdentificatorCodeRegister.brp,
             },
         }
-
-        with self.assertRaisesMessage(
-            ValidationError, "De lengte van de ObjectId moet tussen 8 en 9 liggen."
-        ):
+        with self.assertRaises(ValidationError) as command_error:
             self.client.post(url, data)
+        self.assertTrue(
+            "De lengte van de ObjectId moet tussen 8 en 9 liggen."
+            in str(command_error.exception)
+        )
 
     def test_valid_validation_partij_identificator(self):
         # All validations pass
@@ -2207,7 +2209,7 @@ class PartijIdentificatorTests(APITestCase):
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
                 "codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon,
-                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.rsin,
+                "codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn,
                 "objectId": 123456789,
                 "codeRegister": PartijIdentificatorCodeRegister.overige,
             },
@@ -2220,7 +2222,7 @@ class PartijIdentificatorTests(APITestCase):
         )
         self.assertEqual(
             response.data["partij_identificator"]["code_soort_object_id"],
-            PartijIdentificatorCodeSoortObjectId.rsin,
+            PartijIdentificatorCodeSoortObjectId.bsn,
         )
         self.assertEqual(
             response.data["partij_identificator"]["object_id"], "123456789"
