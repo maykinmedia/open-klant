@@ -429,6 +429,9 @@ class PartijIdentificator(models.Model):
             self.partij_identificator_code_soort_object_id,
             self.partij_identificator_object_id,
         )
-        partij_validator.validate_code_object_type()
-        partij_validator.validate_code_soort_object_id()
-        partij_validator.validate_object_id()
+        try:
+            partij_validator.validate_code_object_type()
+            partij_validator.validate_code_soort_object_id()
+            partij_validator.validate_object_id()
+        except ValidationError as err:
+            raise ValidationError("eeeeeeeeeeeeeeeeeeeeeee")
