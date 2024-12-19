@@ -754,6 +754,40 @@ class PartijFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_identificator_object_id(self):
+        partij, partij2 = PartijFactory.create_batch(2)
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="123456789",
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij2,
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="987654321",
+        )
+
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"partijIdentificator__objectId": "123456789"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(partij.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"partijIdentificator__objectId": "object-id-8584395394"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
     def test_filter_identificator_code_register(self):
         partij, partij2 = PartijFactory.create_batch(2)
         PartijIdentificatorFactory.create(
