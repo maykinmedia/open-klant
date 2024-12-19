@@ -56,9 +56,7 @@ class PartijIdentificatorValidator:
             return
 
         if self.code_object_type not in self.REGISTERS.get(self.code_register, {}):
-            raise ValidationError(
-                _("ObjectType keuzes zijn beperkt op basis van CodeRegister.")
-            )
+            raise ValidationError("ERRORE")
 
     def validate_code_soort_object_id(self) -> None:
         """Validates the CodeSoortObjectId based on register and CodeObjectType"""
@@ -75,9 +73,7 @@ class PartijIdentificatorValidator:
             self.code_soort_object_id in d.get(self.code_object_type, [])
             for d in self.REGISTERS.values()
         ):
-            raise ValidationError(
-                _("CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType.")
-            )
+            raise ValidationError("ERRORE")
 
     def validate_object_id(self) -> None:
         """Validates the object ID based on the SoortObjectId"""
@@ -95,28 +91,24 @@ class PartijIdentificatorValidator:
         if validator:
             validator()
         else:
-            raise ValidationError("Ongeldige Partij Identificator CodeSoortObjectId.")
+            raise ValidationError("ERRORE")
 
     def _validate_bsn(self) -> None:
         """Validates the BSN Object ID length"""
         if len(self.object_id) not in [8, 9]:
-            raise ValidationError(
-                _("De lengte van de ObjectId moet tussen 8 en 9 liggen.")
-            )
+            raise ValidationError("ERRORE")
 
     def _validate_vestigingsnummer(self) -> None:
         """Validates the VestigingsNummer Object ID length"""
         if len(self.object_id) not in [12]:
-            raise ValidationError(_("De lengte van de ObjectId moet 12 tekens zijn."))
+            raise ValidationError("ERRORE")
 
     def _validate_rsin(self) -> None:
         """Validates the Rsin Object ID length"""
         if len(self.object_id) not in [8, 9]:
-            raise ValidationError(
-                _("De lengte van de ObjectId moet tussen 8 en 9 liggen.")
-            )
+            raise ValidationError("ERRORE")
 
     def _validate_kvknummer(self) -> None:
         """Validates the KvkNummer Object ID length"""
         if len(self.object_id) not in [8]:
-            raise ValidationError(_("De lengte van de ObjectId moet 8 tekens zijn."))
+            raise ValidationError("ERRORE")
