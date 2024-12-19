@@ -2118,7 +2118,7 @@ class PartijIdentificatorTests(APITestCase):
         }
 
         # ValidationError, "ObjectType keuzes zijn beperkt op basis van CodeRegister."
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(ValidationError) as error:
             self.client.post(url, data)
 
     def test_invalid_validation_partij_identificator_code_soort_object_id(self):
@@ -2135,7 +2135,7 @@ class PartijIdentificatorTests(APITestCase):
             },
         }
         # "CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType.",
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(ValidationError) as error:
             self.client.post(url, data)
 
     def test_invalid_validation_partij_identificator_object_id(self):
@@ -2152,7 +2152,7 @@ class PartijIdentificatorTests(APITestCase):
             },
         }
         # "De lengte van de ObjectId moet tussen 8 en 9 liggen."
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(ValidationError) as error:
             self.client.post(url, data)
 
     def test_valid_validation_partij_identificator(self):
