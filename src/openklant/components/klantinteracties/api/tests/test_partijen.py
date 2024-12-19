@@ -2121,12 +2121,11 @@ class PartijIdentificatorTests(APITestCase):
                 "codeRegister": PartijIdentificatorCodeRegister.brp,
             },
         }
-        with self.assertRaises(ValidationError) as command_error:
+
+        with self.assertRaisesMessage(
+            ValidationError, "ObjectType keuzes zijn beperkt op basis van CodeRegister."
+        ):
             self.client.post(url, data)
-        self.assertTrue(
-            "ObjectType keuzes zijn beperkt op basis van CodeRegister."
-            in str(command_error.exception)
-        )
 
     def test_invalid_validation_partij_identificator_code_soort_object_id(self):
         url = reverse("klantinteracties:partijidentificator-list")
@@ -2141,12 +2140,12 @@ class PartijIdentificatorTests(APITestCase):
                 "codeRegister": PartijIdentificatorCodeRegister.brp,
             },
         }
-        with self.assertRaises(ValidationError) as command_error:
+
+        with self.assertRaisesMessage(
+            ValidationError,
+            "CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType.",
+        ):
             self.client.post(url, data)
-        self.assertTrue(
-            "CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType."
-            in str(command_error.exception)
-        )
 
     def test_invalid_validation_partij_identificator_object_id(self):
         url = reverse("klantinteracties:partijidentificator-list")
@@ -2161,12 +2160,11 @@ class PartijIdentificatorTests(APITestCase):
                 "codeRegister": PartijIdentificatorCodeRegister.brp,
             },
         }
-        with self.assertRaises(ValidationError) as command_error:
+
+        with self.assertRaisesMessage(
+            ValidationError, "De lengte van de ObjectId moet tussen 8 en 9 liggen."
+        ):
             self.client.post(url, data)
-        self.assertTrue(
-            "De lengte van de ObjectId moet tussen 8 en 9 liggen."
-            in str(command_error.exception)
-        )
 
     def test_valid_validation_partij_identificator(self):
         # All validations pass
