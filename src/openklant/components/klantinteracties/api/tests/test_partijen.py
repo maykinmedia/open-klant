@@ -1,6 +1,6 @@
 import datetime
 
-from django.core.exceptions import ValidationError
+from rest_framework.serializers import ValidationError
 from django.utils.translation import gettext as _
 
 from rest_framework import status
@@ -2118,8 +2118,9 @@ class PartijIdentificatorTests(APITestCase):
         }
 
         # ValidationError, "ObjectType keuzes zijn beperkt op basis van CodeRegister."
-        with self.assertRaises(ValidationError) as error:
-            self.client.post(url, data)
+        with self.subTest("doesn'actor_is_wrong_instance"):
+            with self.assertRaises(ValidationError):
+                self.client.post(url, data)
 
     def test_invalid_validation_partij_identificator_code_soort_object_id(self):
         url = reverse("klantinteracties:partijidentificator-list")
@@ -2135,8 +2136,9 @@ class PartijIdentificatorTests(APITestCase):
             },
         }
         # "CodeSoortObjectId keuzes zijn beperkt op basis van CodeObjectType.",
-        with self.assertRaises(ValidationError) as error:
-            self.client.post(url, data)
+        with self.subTest("doesn'actor_is_wrong_instance"):
+            with self.assertRaises(ValidationError):
+                self.client.post(url, data)
 
     def test_invalid_validation_partij_identificator_object_id(self):
         url = reverse("klantinteracties:partijidentificator-list")
@@ -2152,8 +2154,9 @@ class PartijIdentificatorTests(APITestCase):
             },
         }
         # "De lengte van de ObjectId moet tussen 8 en 9 liggen."
-        with self.assertRaises(ValidationError) as error:
-            self.client.post(url, data)
+        with self.subTest("doesn'actor_is_wrong_instance"):
+            with self.assertRaises(ValidationError):
+                self.client.post(url, data)
 
     def test_valid_validation_partij_identificator(self):
         # All validations pass
