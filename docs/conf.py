@@ -67,8 +67,8 @@ intersphinx_mapping = {
         None,
     ),
     "django": (
-        "http://docs.djangoproject.com/en/3.2/",
-        "http://docs.djangoproject.com/en/3.2/_objects/",
+        "http://docs.djangoproject.com/en/4.2/",
+        "http://docs.djangoproject.com/en/4.2/_objects/",
     ),
 }
 
@@ -77,7 +77,7 @@ intersphinx_mapping = {
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_logo = "logo.svg"
+# html_logo = "logo.svg"
 html_theme = "sphinx_rtd_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -89,6 +89,8 @@ html_css_files = [
 ]
 
 todo_include_todos = True
+
+linkcheck_retries = 3
 
 linkcheck_ignore = [
     r"urn:*",
