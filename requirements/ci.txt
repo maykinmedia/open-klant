@@ -122,8 +122,10 @@ coverage==4.5.4
 cryptography==43.0.0
     # via
     #   -r requirements/base.txt
+    #   django-digid-eherkenning
     #   django-simple-certmanager
     #   josepy
+    #   maykin-python3-saml
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
@@ -140,6 +142,7 @@ django==4.2.15
     #   django-axes
     #   django-cors-headers
     #   django-csp
+    #   django-digid-eherkenning
     #   django-filter
     #   django-formtools
     #   django-jsonform
@@ -189,6 +192,8 @@ django-csp==3.8
     # via
     #   -r requirements/base.txt
     #   open-api-framework
+django-digid-eherkenning==0.17.2
+    # via -r requirements/base.txt
 django-filter==24.2
     # via
     #   -r requirements/base.txt
@@ -246,6 +251,7 @@ django-sendfile2==0.7.1
 django-sessionprofile==3.0.0
     # via
     #   -r requirements/base.txt
+    #   django-digid-eherkenning
     #   open-api-framework
 django-setup-configuration==0.4.0
     # via
@@ -255,11 +261,13 @@ django-setup-configuration==0.4.0
 django-simple-certmanager==2.3.0
     # via
     #   -r requirements/base.txt
+    #   django-digid-eherkenning
     #   zgw-consumers
 django-solo==2.3.0
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
+    #   django-digid-eherkenning
     #   django-log-outgoing-requests
     #   mozilla-django-oidc-db
     #   notifications-api-common
@@ -344,6 +352,7 @@ furl==2.1.3
     # via
     #   -r requirements/base.txt
     #   ape-pie
+    #   django-digid-eherkenning
 glom==23.5.0
     # via
     #   -r requirements/base.txt
@@ -374,6 +383,7 @@ isodate==0.6.1
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
+    #   maykin-python3-saml
 isort==5.13.2
     # via
     #   -r requirements/test-tools.in
@@ -403,8 +413,13 @@ kombu==5.3.7
     # via
     #   -r requirements/base.txt
     #   celery
-lxml==5.2.2
-    # via pyquery
+lxml==5.3.0
+    # via
+    #   -r requirements/base.txt
+    #   django-digid-eherkenning
+    #   maykin-python3-saml
+    #   pyquery
+    #   xmlsec
 markdown==3.6
     # via sphinx-markdown-tables
 markupsafe==2.1.5
@@ -415,6 +430,10 @@ maykin-2fa==1.0.1
     # via
     #   -r requirements/base.txt
     #   open-api-framework
+maykin-python3-saml==1.16.1
+    # via
+    #   -r requirements/base.txt
+    #   django-digid-eherkenning
 mccabe==0.7.0
     # via
     #   flake8
@@ -575,6 +594,7 @@ requests==2.32.3
     #   commonground-api-common
     #   coreapi
     #   django-log-outgoing-requests
+    #   maykin-python3-saml
     #   mozilla-django-oidc
     #   open-api-framework
     #   requests-mock
@@ -707,6 +727,10 @@ wrapt==1.16.0
     #   -r requirements/base.txt
     #   elastic-apm
     #   vcrpy
+xmlsec==1.3.14
+    # via
+    #   -r requirements/base.txt
+    #   maykin-python3-saml
 yarl==1.9.4
     # via vcrpy
 zgw-consumers==0.35.1
