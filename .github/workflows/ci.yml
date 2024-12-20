@@ -129,7 +129,7 @@ jobs:
       django-settings-module: openklant.conf.ci
 
   open-api-publish:
-    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v1
+    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v3.0.2
     needs:
       - store-reusable-workflow-vars
       - open-api-ci
