@@ -1,12 +1,29 @@
 from django.utils.translation import gettext_lazy as _
-
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
+from digid_eherkenning.validators import BSNValidator
 
 from .constants import (
     PartijIdentificatorCodeObjectType,
     PartijIdentificatorCodeRegister,
     PartijIdentificatorCodeSoortObjectId,
 )
+
+
+def validate_digits(value: str) -> None:
+    if not value.isdigit():
+        raise serializers.ValidationError(
+            {
+                "partijIdentificator.objectId": _(
+                    "ObjectId Verwacht een numerieke waarde."
+                )
+            }
+        )
+
+
+def validate_length(value: str, allowed_lengths: list) -> None:
+    if not len(value) in allowed_lengths:
+        raise serializers.ValidationError(_("Ongeldige veldlengte"))
 
 
 class PartijIdentificatorValidator:
@@ -106,8 +123,10 @@ class PartijIdentificatorValidator:
         ):
             return
 
-        if validator := getattr(self, f"_validate_{self.code_soort_object_id}", None):
-            validator()
+        if validate_object_type := getattr(
+            self, f"_validate_{self.code_soort_object_id}", None
+        ):
+            validate_object_type()
         else:
             raise serializers.ValidationError(
                 {"partijIdentificator.objectId": _("Ongeldige codeSoortObjectId.")}
@@ -115,44 +134,31 @@ class PartijIdentificatorValidator:
 
     def _validate_bsn(self) -> None:
         """Validates the bsn object_id"""
-        if len(self.object_id) not in [8, 9]:
+        try:
+            bsn = BSNValidator()
+            bsn(self.object_id)
+        except ValidationError:
             raise serializers.ValidationError(
-                {
-                    "partijIdentificator.objectId": _(
-                        "De lengte van de objectId moet tussen 8 en 9 liggen."
-                    )
-                }
+                {"partijIdentificator.objectId": _("Ongeldig BSN.")}
             )
 
     def _validate_vestigingsnummer(self) -> None:
         """Validates the vestigingsNummer object_id"""
-        if len(self.object_id) not in [12]:
-            raise serializers.ValidationError(
-                {
-                    "partijIdentificator.objectId": _(
-                        "De lengte van de objectId moet 12 tekens zijn."
-                    )
-                }
-            )
+        validate_digits(self.object_id)
+        validate_length(self.object_id, [12])
 
     def _validate_rsin(self) -> None:
         """Validates the rsin object_id"""
-        if len(self.object_id) not in [8, 9]:
+        validate_digits(self.object_id)
+        try:
+            rsin = BSNValidator()
+            rsin(self.object_id)
+        except ValidationError:
             raise serializers.ValidationError(
-                {
-                    "partijIdentificator.objectId": _(
-                        "De lengte van de objectId moet tussen 8 en 9 liggen."
-                    )
-                }
+                {"partijIdentificator.objectId": _("Ongeldig RSIN.")}
             )
 
     def _validate_kvknummer(self) -> None:
         """Validates the kvkNummer object_id"""
-        if len(self.object_id) not in [8]:
-            raise serializers.ValidationError(
-                {
-                    "partijIdentificator.objectId": _(
-                        "De lengte van de objectId moet 8 tekens zijn."
-                    )
-                }
-            )
+        validate_digits(self.object_id)
+        validate_length(self.object_id, [8, 9])

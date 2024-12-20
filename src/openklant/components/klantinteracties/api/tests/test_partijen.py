@@ -1879,7 +1879,7 @@ class PartijIdentificatorTests(APITestCase):
             "partijIdentificator": {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456788",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         }
@@ -1895,7 +1895,7 @@ class PartijIdentificatorTests(APITestCase):
             {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456788",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         )
@@ -1907,7 +1907,7 @@ class PartijIdentificatorTests(APITestCase):
             andere_partij_identificator="anderePartijIdentificator",
             partij_identificator_code_objecttype="natuurlijk_persoon",
             partij_identificator_code_soort_object_id="bsn",
-            partij_identificator_object_id="123456788",
+            partij_identificator_object_id="296648875",
             partij_identificator_code_register="brp",
         )
 
@@ -1925,7 +1925,7 @@ class PartijIdentificatorTests(APITestCase):
             {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456788",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         )
@@ -1936,7 +1936,7 @@ class PartijIdentificatorTests(APITestCase):
             "partijIdentificator": {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456789",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         }
@@ -1952,7 +1952,7 @@ class PartijIdentificatorTests(APITestCase):
             {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456789",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         )
@@ -1964,7 +1964,7 @@ class PartijIdentificatorTests(APITestCase):
             andere_partij_identificator="anderePartijIdentificator",
             partij_identificator_code_objecttype="natuurlijk_persoon",
             partij_identificator_code_soort_object_id="bsn",
-            partij_identificator_object_id="123456788",
+            partij_identificator_object_id="296648875",
             partij_identificator_code_register="brp",
         )
 
@@ -1982,7 +1982,7 @@ class PartijIdentificatorTests(APITestCase):
             {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456788",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         )
@@ -2002,7 +2002,7 @@ class PartijIdentificatorTests(APITestCase):
             {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456788",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         )
@@ -2030,7 +2030,7 @@ class PartijIdentificatorTests(APITestCase):
             "partijIdentificator": {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456789",
+                "objectId": "296648875",
                 "codeRegister": "test",
             },
         }
@@ -2057,7 +2057,7 @@ class PartijIdentificatorTests(APITestCase):
             "partijIdentificator": {
                 "codeObjecttype": "test",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456789",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         }
@@ -2084,7 +2084,7 @@ class PartijIdentificatorTests(APITestCase):
             "partijIdentificator": {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "test",
-                "objectId": "123456789",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         }
@@ -2111,7 +2111,7 @@ class PartijIdentificatorTests(APITestCase):
             "partijIdentificator": {
                 "codeObjecttype": "niet_natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456789",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         }
@@ -2137,8 +2137,8 @@ class PartijIdentificatorTests(APITestCase):
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
                 "codeObjecttype": "natuurlijk_persoon",
-                "codeSoortObjectId": "kvk_nummer",
-                "objectId": "123456789",
+                "codeSoortObjectId": "kvknummer",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         }
@@ -2182,7 +2182,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
             response.data["invalid_params"][0]["reason"],
-            "De lengte van de objectId moet tussen 8 en 9 liggen.",
+            "Ongeldig BSN.",
         )
 
     def test_valid_validation_partij_identificator(self):
@@ -2195,7 +2195,7 @@ class PartijIdentificatorTests(APITestCase):
             "partijIdentificator": {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456789",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         }
@@ -2210,7 +2210,7 @@ class PartijIdentificatorTests(APITestCase):
             "bsn",
         )
         self.assertEqual(
-            response.data["partij_identificator"]["object_id"], "123456789"
+            response.data["partij_identificator"]["object_id"], "296648875"
         )
         self.assertEqual(
             response.data["partij_identificator"]["code_register"],
@@ -2227,7 +2227,7 @@ class PartijIdentificatorTests(APITestCase):
             "partijIdentificator": {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": 123456789,
+                "objectId": 296648875,
                 "codeRegister": "overige",
             },
         }
@@ -2242,7 +2242,7 @@ class PartijIdentificatorTests(APITestCase):
             "bsn",
         )
         self.assertEqual(
-            response.data["partij_identificator"]["object_id"], "123456789"
+            response.data["partij_identificator"]["object_id"], "296648875"
         )
         self.assertEqual(
             response.data["partij_identificator"]["code_register"],

@@ -728,7 +728,7 @@ class PartijFilterSetTests(APITestCase):
             partij=partij, partij_identificator_code_soort_object_id="bsn"
         )
         PartijIdentificatorFactory.create(
-            partij=partij2, partij_identificator_code_soort_object_id="kvk_nummer"
+            partij=partij2, partij_identificator_code_soort_object_id="kvknummer"
         )
 
         with self.subTest("happy flow"):
@@ -759,18 +759,18 @@ class PartijFilterSetTests(APITestCase):
         PartijIdentificatorFactory.create(
             partij=partij,
             partij_identificator_code_soort_object_id="bsn",
-            partij_identificator_object_id="123456789",
+            partij_identificator_object_id="296648875",
         )
         PartijIdentificatorFactory.create(
             partij=partij2,
             partij_identificator_code_soort_object_id="bsn",
-            partij_identificator_object_id="987654321",
+            partij_identificator_object_id="111222333",
         )
 
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"partijIdentificator__objectId": "123456789"},
+                {"partijIdentificator__objectId": "296648875"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
