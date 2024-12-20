@@ -1,4 +1,5 @@
 open-api-framework
 
+django-digid-eherkenning
 django-setup-configuration
 mozilla-django-oidc-db[setup-configuration]
