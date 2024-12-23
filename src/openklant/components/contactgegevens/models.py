@@ -80,6 +80,7 @@ class Persoon(AdresMixin):
         _("overlijdensdatum"),
         editable=True,
         null=True,
+        blank=True,
         help_text=_(
             "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard. "
             "Een datum wordt genoteerd van het meest naar het minst "
