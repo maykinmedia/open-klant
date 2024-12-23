@@ -355,9 +355,7 @@ class PartijIdentificator(models.Model):
     # Partij-identificator fields
     partij_identificator_code_objecttype = models.CharField(
         _("objecttype"),
-        help_text=_(
-            "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
-        ),
+        help_text=_("Type van het object, bijvoorbeeld: 'NATUURLIJK PERSOON'."),
         choices=PartijIdentificatorCodeObjectType.choices,
         max_length=200,
         blank=True,
@@ -365,7 +363,7 @@ class PartijIdentificator(models.Model):
     partij_identificator_code_soort_object_id = models.CharField(
         _("soort object ID"),
         help_text=_(
-            "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
+            "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Bsn'."
         ),
         choices=PartijIdentificatorCodeSoortObjectId.choices,
         max_length=200,
