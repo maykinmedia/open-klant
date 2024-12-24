@@ -53,7 +53,10 @@ class ActorAdmin(admin.ModelAdmin):
         "soort_actor",
         "indicatie_actief",
     )
-    search_fields = ("naam",)
+    search_fields = (
+        "naam",
+        "uuid",
+    )
     inlines = (
         ActorKlantcontactInlineAdmin,
         GeautomatiseerdeActorInlineAdmin,
@@ -61,11 +64,13 @@ class ActorAdmin(admin.ModelAdmin):
         OrganisatorischeEenheidInlineAdmin,
         InterneTaakInlineAdmin,
     )
+    readonly_fields = ("uuid",)
     fieldsets = (
         (
             None,
             {
                 "fields": [
+                    "uuid",
                     "naam",
                     "soort_actor",
                     "indicatie_actief",
