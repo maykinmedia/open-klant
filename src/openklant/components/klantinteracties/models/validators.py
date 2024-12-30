@@ -10,34 +10,6 @@ from .constants import (
 )
 
 
-def validate_kvknummer(value):
-    """
-    Validates that a string value is a valid KVK number.
-
-    :param value: String object representing a presumably good KVK number.
-    """
-    validator = BaseValidator(
-        value,
-        list_size=[8],
-        check_11proefnumber=True,
-    )
-    validator.validate()
-
-
-def validate_vestigingsnummer(value):
-    """
-    Validates that a string value is a valid Vestigings number.
-
-    :param value: String object representing a presumably good Vestigings number.
-    """
-    validator = BaseValidator(
-        value,
-        list_size=[12],
-        check_11proefnumber=True,
-    )
-    validator.validate()
-
-
 class PartijIdentificatorValidator:
 
     NATUURLIJK_PERSOON = [
@@ -138,11 +110,13 @@ class PartijIdentificatorValidator:
                 case PartijIdentificatorCodeSoortObjectId.bsn:
                     validate_bsn(self.object_id)
                 case PartijIdentificatorCodeSoortObjectId.vestigingsnummer:
-                    validate_vestigingsnummer(self.object_id)
+                    validator = BaseValidator(self.object_id, list_size=[12])
+                    validator.validate()
                 case PartijIdentificatorCodeSoortObjectId.rsin:
                     validate_rsin(self.object_id)
                 case PartijIdentificatorCodeSoortObjectId.kvknummer:
-                    validate_kvknummer(self.object_id)
+                    validator = BaseValidator(self.object_id, list_size=[8])
+                    validator.validate()
                 case PartijIdentificatorCodeSoortObjectId.overig:
                     return
         except ValidationError as error:
