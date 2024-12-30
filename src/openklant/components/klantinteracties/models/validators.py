@@ -55,23 +55,23 @@ class PartijIdentificatorValidator:
         PartijIdentificatorCodeRegister.brp: {
             PartijIdentificatorCodeObjectType.natuurlijk_persoon: [
                 PartijIdentificatorCodeSoortObjectId.bsn,
-                PartijIdentificatorCodeSoortObjectId.overige,
+                PartijIdentificatorCodeSoortObjectId.overig,
             ],
-            PartijIdentificatorCodeObjectType.overige: [],
+            PartijIdentificatorCodeObjectType.overig: [],
         },
         PartijIdentificatorCodeRegister.hr: {
             PartijIdentificatorCodeObjectType.vestiging: [
                 PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
-                PartijIdentificatorCodeSoortObjectId.overige,
+                PartijIdentificatorCodeSoortObjectId.overig,
             ],
             PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: [
                 PartijIdentificatorCodeSoortObjectId.rsin,
                 PartijIdentificatorCodeSoortObjectId.kvknummer,
-                PartijIdentificatorCodeSoortObjectId.overige,
+                PartijIdentificatorCodeSoortObjectId.overig,
             ],
-            PartijIdentificatorCodeObjectType.overige: [],
+            PartijIdentificatorCodeObjectType.overig: [],
         },
-        PartijIdentificatorCodeRegister.overige: {},
+        PartijIdentificatorCodeRegister.overig: {},
     }
 
     def __init__(
@@ -100,7 +100,7 @@ class PartijIdentificatorValidator:
 
         if (
             not self.code_register
-            or self.code_register == PartijIdentificatorCodeRegister.overige
+            or self.code_register == PartijIdentificatorCodeRegister.overig
         ):
             return
 
@@ -120,7 +120,7 @@ class PartijIdentificatorValidator:
 
         if (
             not self.code_objecttype
-            or self.code_objecttype == PartijIdentificatorCodeObjectType.overige
+            or self.code_objecttype == PartijIdentificatorCodeObjectType.overig
         ):
             return
 
@@ -143,7 +143,7 @@ class PartijIdentificatorValidator:
 
         if (
             not self.code_soort_object_id
-            or self.code_soort_object_id == PartijIdentificatorCodeSoortObjectId.overige
+            or self.code_soort_object_id == PartijIdentificatorCodeSoortObjectId.overig
         ):
             return
 

@@ -2217,8 +2217,8 @@ class PartijIdentificatorTests(APITestCase):
             "brp",
         )
 
-    def test_valid_overige_validation_partij_identificator(self):
-        # Overige no validation
+    def test_valid_overig_validation_partij_identificator(self):
+        # Overig no validation
         url = reverse("klantinteracties:partijidentificator-list")
         partij = PartijFactory.create()
         data = {
@@ -2228,7 +2228,7 @@ class PartijIdentificatorTests(APITestCase):
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
                 "objectId": 296648875,
-                "codeRegister": "overige",
+                "codeRegister": "overig",
             },
         }
         response = self.client.post(url, data)
@@ -2246,7 +2246,7 @@ class PartijIdentificatorTests(APITestCase):
         )
         self.assertEqual(
             response.data["partij_identificator"]["code_register"],
-            "overige",
+            "overig",
         )
 
 

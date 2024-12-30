@@ -80,12 +80,12 @@ class PartijIdentificatorValidatorTests(TestCase):
         validator = PartijIdentificatorValidator(**data)
         validator.validate_code_objecttype()
 
-    def test_overige_code_register_ok_code_objecttype(self):
+    def test_overig_code_register_ok_code_objecttype(self):
         data = {
             "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
             "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
             "object_id": "296648875",
-            "code_register": PartijIdentificatorCodeRegister.overige.value,
+            "code_register": PartijIdentificatorCodeRegister.overig.value,
         }
         validator = PartijIdentificatorValidator(**data)
         validator.validate_code_objecttype()
@@ -147,7 +147,7 @@ class PartijIdentificatorValidatorTests(TestCase):
 
     def test_oveirige_code_objecttype_ok_code_soort_object_id(self):
         data = {
-            "code_objecttype": PartijIdentificatorCodeObjectType.overige.value,
+            "code_objecttype": PartijIdentificatorCodeObjectType.overig.value,
             "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
             "object_id": "296648875",
             "code_register": PartijIdentificatorCodeRegister.brp.value,
@@ -177,10 +177,10 @@ class PartijIdentificatorValidatorTests(TestCase):
         validator = PartijIdentificatorValidator(**data)
         validator.validate_object_id()
 
-    def test_overige_code_soort_object_id_ok_object_id(self):
+    def test_overig_code_soort_object_id_ok_object_id(self):
         data = {
             "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            "code_soort_object_id": "overige",
+            "code_soort_object_id": "overig",
             "object_id": "1123",
             "code_register": PartijIdentificatorCodeRegister.brp.value,
         }

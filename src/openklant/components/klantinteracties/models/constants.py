@@ -52,17 +52,17 @@ class PartijIdentificatorCodeSoortObjectId(TextChoices):
     vestigingsnummer = "vestigingsnummer", _("VestigingsNummer")
     kvknummer = "kvknummer", _("KvkNummer")
     rsin = "rsin", _("Rsin")
-    overige = "overige", _("Overige")
+    overig = "overig", _("Overig")
 
 
 class PartijIdentificatorCodeObjectType(TextChoices):
     natuurlijk_persoon = "natuurlijk_persoon", _("NatuurlijkPersoon")
     niet_natuurlijk_persoon = "niet_natuurlijk_persoon", _("NietNatuurlijkPersoon")
     vestiging = "vestiging", _("Vestiging")
-    overige = "overige", _("Overige")
+    overig = "overig", _("Overig")
 
 
 class PartijIdentificatorCodeRegister(TextChoices):
     brp = "brp", _("BRP")
     hr = "hr", _("HR")
-    overige = "overige", _("Overige")
+    overig = "overig", _("Overig")
