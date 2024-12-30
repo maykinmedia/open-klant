@@ -36,24 +36,31 @@ def validate_vestigingsnummer(value):
 
 
 class PartijIdentificatorValidator:
+
+    NATUURLIJK_PERSOON = [
+        PartijIdentificatorCodeSoortObjectId.bsn,
+    ]
+    VESTIGING = [
+        PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
+    ]
+    NIET_NATUURLIJK_PERSOON = [
+        PartijIdentificatorCodeSoortObjectId.rsin,
+        PartijIdentificatorCodeSoortObjectId.kvknummer,
+    ]
+
     REGISTERS = {
         PartijIdentificatorCodeRegister.brp: {
-            PartijIdentificatorCodeObjectType.natuurlijk_persoon: [
-                PartijIdentificatorCodeSoortObjectId.bsn,
-            ],
-            PartijIdentificatorCodeObjectType.overig: [],
+            PartijIdentificatorCodeObjectType.natuurlijk_persoon: NATUURLIJK_PERSOON,
         },
         PartijIdentificatorCodeRegister.hr: {
-            PartijIdentificatorCodeObjectType.vestiging: [
-                PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
-            ],
-            PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: [
-                PartijIdentificatorCodeSoortObjectId.rsin,
-                PartijIdentificatorCodeSoortObjectId.kvknummer,
-            ],
-            PartijIdentificatorCodeObjectType.overig: [],
+            PartijIdentificatorCodeObjectType.vestiging: VESTIGING,
+            PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: NIET_NATUURLIJK_PERSOON,
         },
-        PartijIdentificatorCodeRegister.overig: {},
+        PartijIdentificatorCodeRegister.overig: {
+            PartijIdentificatorCodeObjectType.natuurlijk_persoon: NATUURLIJK_PERSOON,
+            PartijIdentificatorCodeObjectType.vestiging: VESTIGING,
+            PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: NIET_NATUURLIJK_PERSOON,
+        },
     }
 
     def __init__(
