@@ -88,7 +88,7 @@ class PartijIdentificatorValidator:
         ):
             return
 
-        if not self.code_soort_object_id in (
+        if self.code_soort_object_id not in (
             choices := self.REGISTERS[self.code_register].get(self.code_objecttype, [])
         ):
 
