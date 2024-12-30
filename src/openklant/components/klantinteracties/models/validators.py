@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from vng_api_commons.validators import BaseValidator, validate_rsin, validate_bsn
+from vng_api_common.validators import BaseValidator, validate_rsin, validate_bsn
 
 from .constants import (
     PartijIdentificatorCodeObjectType,
