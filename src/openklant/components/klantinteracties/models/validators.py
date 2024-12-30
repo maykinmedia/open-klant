@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from vng_api_commons.validators import BaseValidator, validate_rsin, validate_bsn
 
 from .constants import (
     PartijIdentificatorCodeObjectType,
@@ -8,47 +9,30 @@ from .constants import (
 )
 
 
-class ObjectIdValidator:
+def validate_kvknummer(value):
     """
-    Validates an ObjectId based on digit check, length, and optional 11-proof check.
+    Validates that a string value is a valid KVK number.
+
+    :param value: String object representing a presumably good KVK number.
     """
+    try:
+        validator = BaseValidator(value, list_size=[8])
+        validator.validate()
+    except:
+        raise ValidationError("Onjuist Kvk nummer.", code="invalid-code")
 
-    def __init__(
-        self, value: str, list_size: list[int] | None, check_11proefnumber: bool = False
-    ):
-        self.value = value
-        self.list_size = list_size or []
-        self.check_11proefnumber = check_11proefnumber
 
-    def validate_isdigit(self) -> None:
-        """Validates that the value contains only digits."""
-        if not self.value.isdigit():
-            raise ValidationError("Expected a numerical value", code="invalid")
+def validate_vestigingsnummer(value):
+    """
+    Validates that a string value is a valid Vestigings number.
 
-    def validate_length(self) -> None:
-        """Validates that the length of the value is within the allowed sizes."""
-        if len(self.value) not in self.list_size:
-            raise ValidationError(
-                "The length must be in: %s" % self.list_size, code="invalid"
-            )
-
-    def validate_11proefnumber(self) -> None:
-        """Validates the value based on the 11-proof check."""
-        total = 0
-        for multiplier, char in enumerate(reversed(self.value), start=1):
-            if multiplier == 1:
-                total += -multiplier * int(char)
-            else:
-                total += multiplier * int(char)
-
-        if total % 11 != 0:
-            raise ValidationError("Invalid code", code="invalid")
-
-    def validate(self) -> None:
-        self.validate_isdigit()
-        self.validate_length()
-        if self.check_11proefnumber:
-            self.validate_11proefnumber()
+    :param value: String object representing a presumably good Vestigings number.
+    """
+    try:
+        validator = BaseValidator(value, list_size=[12])
+        validator.validate()
+    except:
+        raise ValidationError("Onjuist Vestigings nummer.", code="invalid-code")
 
 
 class PartijIdentificatorValidator:
@@ -56,19 +40,16 @@ class PartijIdentificatorValidator:
         PartijIdentificatorCodeRegister.brp: {
             PartijIdentificatorCodeObjectType.natuurlijk_persoon: [
                 PartijIdentificatorCodeSoortObjectId.bsn,
-                PartijIdentificatorCodeSoortObjectId.overig,
             ],
             PartijIdentificatorCodeObjectType.overig: [],
         },
         PartijIdentificatorCodeRegister.hr: {
             PartijIdentificatorCodeObjectType.vestiging: [
                 PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
-                PartijIdentificatorCodeSoortObjectId.overig,
             ],
             PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon: [
                 PartijIdentificatorCodeSoortObjectId.rsin,
                 PartijIdentificatorCodeSoortObjectId.kvknummer,
-                PartijIdentificatorCodeSoortObjectId.overig,
             ],
             PartijIdentificatorCodeObjectType.overig: [],
         },
@@ -105,7 +86,7 @@ class PartijIdentificatorValidator:
         ):
             return
 
-        if self.code_objecttype not in self.REGISTERS.get(self.code_register, {}):
+        if self.code_objecttype not in self.REGISTERS[self.code_register]:
             raise ValidationError(
                 {
                     "partij_identificator_code_objecttype": _(
@@ -125,15 +106,14 @@ class PartijIdentificatorValidator:
         ):
             return
 
-        if not any(
-            self.code_soort_object_id in d.get(self.code_objecttype, [])
-            for d in self.REGISTERS.values()
+        if not self.code_soort_object_id in (
+            choices := self.REGISTERS[self.code_register].get(self.code_objecttype, [])
         ):
             raise ValidationError(
                 {
                     "partij_identificator_code_soort_object_id": _(
-                        "codeSoortObjectId keuzes zijn beperkt op basis van codeObjecttype."
-                    )
+                        "voor `codeObjecttype` {code_objecttype} zijn alleen deze waarden toegestaan: {choices}."
+                    ).format(code_objecttype=self.code_objecttype, choices=choices)
                 }
             )
 
@@ -142,14 +122,18 @@ class PartijIdentificatorValidator:
         if not self.object_id:
             return
 
-        if (
-            not self.code_soort_object_id
-            or self.code_soort_object_id == PartijIdentificatorCodeSoortObjectId.overig
-        ):
-            return
-
         try:
-            getattr(self, f"_validate_{self.code_soort_object_id}")()
+            match self.code_soort_object_id:
+                case PartijIdentificatorCodeSoortObjectId.bsn:
+                    validate_bsn(self.object_id)
+                case PartijIdentificatorCodeSoortObjectId.vestigingsnummer:
+                    validate_vestigingsnummer(self.object_id)
+                case PartijIdentificatorCodeSoortObjectId.rsin:
+                    validate_rsin(self.object_id)
+                case PartijIdentificatorCodeSoortObjectId.kvknummer:
+                    validate_kvknummer(self.object_id)
+                case PartijIdentificatorCodeSoortObjectId.overig:
+                    return
         except ValidationError as error:
             raise ValidationError(
                 {
@@ -158,27 +142,3 @@ class PartijIdentificatorValidator:
                     )
                 }
             )
-
-    def _validate_bsn(self) -> None:
-        """Validate BSN"""
-        validator = ObjectIdValidator(
-            self.object_id, list_size=[8, 9], check_11proefnumber=True
-        )
-        validator.validate()
-
-    def _validate_vestigingsnummer(self) -> None:
-        """Validate Vestigingsnummer"""
-        validator = ObjectIdValidator(self.object_id, list_size=[12])
-        validator.validate()
-
-    def _validate_rsin(self) -> None:
-        """Validate RSIN"""
-        validator = ObjectIdValidator(
-            self.object_id, list_size=[8, 9], check_11proefnumber=True
-        )
-        validator.validate()
-
-    def _validate_kvknummer(self) -> None:
-        """Validate Kvk_nummer"""
-        validator = ObjectIdValidator(self.object_id, list_size=[8])
-        validator.validate()
