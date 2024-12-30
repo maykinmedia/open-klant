@@ -14,34 +14,33 @@ from openklant.components.klantinteracties.models.validators import (
 
 class ObjectIdValidatorTests(TestCase):
     def test_valid(self):
-        validator = ObjectIdValidator("296648875")
-        validator.list_size = [8, 9]
-        validator.check_11proefnumber = True
+        validator = ObjectIdValidator(
+            "296648875", list_size=[8, 9], check_11proefnumber=True
+        )
         validator.validate()
 
     def test_invalid_length(self):
-        validator = ObjectIdValidator("1234")
-        validator.list_size = [8, 9]
-        validator.check_11proefnumber = True
+        validator = ObjectIdValidator(
+            "1234", list_size=[8, 9], check_11proefnumber=True
+        )
 
         with self.assertRaises(ValidationError) as error:
             validator.validate()
         self.assertTrue("The length must be in: [8, 9]" in str(error.exception))
 
     def test_invalid_isdigit(self):
-        validator = ObjectIdValidator("1234TEST")
-        validator.list_size = [8, 9]
-        validator.check_11proefnumber = True
+        validator = ObjectIdValidator(
+            "1234TEST", list_size=[8, 9], check_11proefnumber=True
+        )
 
         with self.assertRaises(ValidationError) as error:
             validator.validate()
         self.assertTrue("Expected a numerical value" in str(error.exception))
 
     def test_invalid_11proefnumber(self):
-        validator = ObjectIdValidator("123456789")
-        validator.list_size = [8, 9]
-        validator.check_11proefnumber = True
-
+        validator = ObjectIdValidator(
+            "123456789", list_size=[8, 9], check_11proefnumber=True
+        )
         with self.assertRaises(ValidationError) as error:
             validator.validate()
         self.assertTrue("Invalid code" in str(error.exception))

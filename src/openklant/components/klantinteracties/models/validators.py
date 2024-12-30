@@ -13,11 +13,12 @@ class ObjectIdValidator:
     Validates an ObjectId based on digit check, length, and optional 11-proof check.
     """
 
-    list_size = []
-    check_11proefnumber = False
-
-    def __init__(self, value: str):
+    def __init__(
+        self, value: str, list_size: list[int] | None, check_11proefnumber: bool = False
+    ):
         self.value = value
+        self.list_size = list_size or []
+        self.check_11proefnumber = check_11proefnumber
 
     def validate_isdigit(self) -> None:
         """Validates that the value contains only digits."""
@@ -160,26 +161,24 @@ class PartijIdentificatorValidator:
 
     def _validate_bsn(self) -> None:
         """Validate BSN"""
-        validator = ObjectIdValidator(self.object_id)
-        validator.list_size = [8, 9]
-        validator.check_11proefnumber = True
+        validator = ObjectIdValidator(
+            self.object_id, list_size=[8, 9], check_11proefnumber=True
+        )
         validator.validate()
 
     def _validate_vestigingsnummer(self) -> None:
         """Validate Vestigingsnummer"""
-        validator = ObjectIdValidator(self.object_id)
-        validator.list_size = [12]
+        validator = ObjectIdValidator(self.object_id, list_size=[12])
         validator.validate()
 
     def _validate_rsin(self) -> None:
         """Validate RSIN"""
-        validator = ObjectIdValidator(self.object_id)
-        validator.list_size = [8, 9]
-        validator.check_11proefnumber = True
+        validator = ObjectIdValidator(
+            self.object_id, list_size=[8, 9], check_11proefnumber=True
+        )
         validator.validate()
 
     def _validate_kvknummer(self) -> None:
         """Validate Kvk_nummer"""
-        validator = ObjectIdValidator(self.object_id)
-        validator.list_size = [8]
+        validator = ObjectIdValidator(self.object_id, list_size=[8])
         validator.validate()
