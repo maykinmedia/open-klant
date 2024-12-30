@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from vng_api_common.validators import BaseValidator, validate_rsin, validate_bsn
+
+from vng_api_common.validators import BaseValidator, validate_bsn, validate_rsin
 
 from .constants import (
     PartijIdentificatorCodeObjectType,
@@ -15,11 +16,12 @@ def validate_kvknummer(value):
 
     :param value: String object representing a presumably good KVK number.
     """
-    try:
-        validator = BaseValidator(value, list_size=[8])
-        validator.validate()
-    except:
-        raise ValidationError("Onjuist Kvk nummer.", code="invalid-code")
+    validator = BaseValidator(
+        value,
+        list_size=[8],
+        check_11proefnumber=True,
+    )
+    validator.validate()
 
 
 def validate_vestigingsnummer(value):
@@ -28,24 +30,25 @@ def validate_vestigingsnummer(value):
 
     :param value: String object representing a presumably good Vestigings number.
     """
-    try:
-        validator = BaseValidator(value, list_size=[12])
-        validator.validate()
-    except:
-        raise ValidationError("Onjuist Vestigings nummer.", code="invalid-code")
+    validator = BaseValidator(
+        value,
+        list_size=[12],
+        check_11proefnumber=True,
+    )
+    validator.validate()
 
 
 class PartijIdentificatorValidator:
 
     NATUURLIJK_PERSOON = [
-        PartijIdentificatorCodeSoortObjectId.bsn,
+        PartijIdentificatorCodeSoortObjectId.bsn.value,
     ]
     VESTIGING = [
-        PartijIdentificatorCodeSoortObjectId.vestigingsnummer,
+        PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
     ]
     NIET_NATUURLIJK_PERSOON = [
-        PartijIdentificatorCodeSoortObjectId.rsin,
-        PartijIdentificatorCodeSoortObjectId.kvknummer,
+        PartijIdentificatorCodeSoortObjectId.rsin.value,
+        PartijIdentificatorCodeSoortObjectId.kvknummer.value,
     ]
 
     REGISTERS = {
@@ -116,6 +119,7 @@ class PartijIdentificatorValidator:
         if not self.code_soort_object_id in (
             choices := self.REGISTERS[self.code_register].get(self.code_objecttype, [])
         ):
+
             raise ValidationError(
                 {
                     "partij_identificator_code_soort_object_id": _(

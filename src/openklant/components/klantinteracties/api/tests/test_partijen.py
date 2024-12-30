@@ -2154,7 +2154,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
             response.data["invalid_params"][0]["reason"],
-            "codeSoortObjectId keuzes zijn beperkt op basis van codeObjecttype.",
+            "voor `codeObjecttype` natuurlijk_persoon zijn alleen deze waarden toegestaan: ['bsn'].",
         )
 
     def test_invalid_validation_partij_identificator_object_id(self):
@@ -2182,7 +2182,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
             response.data["invalid_params"][0]["reason"],
-            "ObjectId ongeldig, reden: The length must be in: [8, 9]",
+            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8, 9]",
         )
 
     def test_valid_validation_partij_identificator(self):
