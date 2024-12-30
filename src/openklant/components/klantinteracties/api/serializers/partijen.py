@@ -406,14 +406,10 @@ class PartijIdentificatorSerializer(
     def validate(self, attrs):
         partij_identificator = get_field_value(self, attrs, "partij_identificator")
         PartijIdentificatorValidator(
-            code_register=partij_identificator["partij_identificator_code_register"],
-            code_objecttype=partij_identificator[
-                "partij_identificator_code_objecttype"
-            ],
-            code_soort_object_id=partij_identificator[
-                "partij_identificator_code_soort_object_id"
-            ],
-            object_id=partij_identificator["partij_identificator_object_id"],
+            code_register=partij_identificator["code_register"],
+            code_objecttype=partij_identificator["code_objecttype"],
+            code_soort_object_id=partij_identificator["code_soort_object_id"],
+            object_id=partij_identificator["object_id"],
         ).validate()
         return super().validate(attrs)
 
