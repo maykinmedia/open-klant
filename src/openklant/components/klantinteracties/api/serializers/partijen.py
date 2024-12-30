@@ -405,7 +405,16 @@ class PartijIdentificatorSerializer(
 
     def validate(self, attrs):
         partij_identificator = get_field_value(self, attrs, "partij_identificator")
-        PartijIdentificatorValidator(**partij_identificator).validate()
+        PartijIdentificatorValidator(
+            code_register=partij_identificator["partij_identificator_code_register"],
+            code_objecttype=partij_identificator[
+                "partij_identificator_code_objecttype"
+            ],
+            code_soort_object_id=partij_identificator[
+                "partij_identificator_code_soort_object_id"
+            ],
+            object_id=partij_identificator["partij_identificator_object_id"],
+        ).validate()
         return super().validate(attrs)
 
     @transaction.atomic

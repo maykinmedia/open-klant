@@ -420,4 +420,9 @@ class PartijIdentificator(models.Model):
 
     def clean(self):
         super().clean()
-        PartijIdentificatorValidator(**self.partij_identificator).validate()
+        PartijIdentificatorValidator(
+            code_register=self.partij_identificator_code_register,
+            code_objecttype=self.partij_identificator_code_objecttype,
+            code_soort_object_id=self.partij_identificator_code_soort_object_id,
+            object_id=self.partij_identificator_object_id,
+        ).validate()
