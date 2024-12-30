@@ -7,43 +7,8 @@ from openklant.components.klantinteracties.models.constants import (
     PartijIdentificatorCodeSoortObjectId,
 )
 from openklant.components.klantinteracties.models.validators import (
-    ObjectIdValidator,
     PartijIdentificatorValidator,
 )
-
-
-class ObjectIdValidatorTests(TestCase):
-    def test_valid(self):
-        validator = ObjectIdValidator(
-            "296648875", list_size=[8, 9], check_11proefnumber=True
-        )
-        validator.validate()
-
-    def test_invalid_length(self):
-        validator = ObjectIdValidator(
-            "1234", list_size=[8, 9], check_11proefnumber=True
-        )
-
-        with self.assertRaises(ValidationError) as error:
-            validator.validate()
-        self.assertTrue("The length must be in: [8, 9]" in str(error.exception))
-
-    def test_invalid_isdigit(self):
-        validator = ObjectIdValidator(
-            "1234TEST", list_size=[8, 9], check_11proefnumber=True
-        )
-
-        with self.assertRaises(ValidationError) as error:
-            validator.validate()
-        self.assertTrue("Expected a numerical value" in str(error.exception))
-
-    def test_invalid_11proefnumber(self):
-        validator = ObjectIdValidator(
-            "123456789", list_size=[8, 9], check_11proefnumber=True
-        )
-        with self.assertRaises(ValidationError) as error:
-            validator.validate()
-        self.assertTrue("Invalid code" in str(error.exception))
 
 
 class PartijIdentificatorValidatorTests(TestCase):
@@ -133,7 +98,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_code_soort_object_id"][0],
-            "codeSoortObjectId keuzes zijn beperkt op basis van codeObjecttype.",
+            "voor `codeObjecttype` natuurlijk_persoon zijn alleen deze waarden toegestaan: ['bsn']",
         )
 
     def test_oveirige_code_objecttype_ok_code_soort_object_id(self):
@@ -222,7 +187,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: The length must be in: [8, 9]",
+            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8, 9]",
         )
 
     def test_object_id_invalid_digit_bsn(self):
@@ -237,7 +202,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: Expected a numerical value",
+            "ObjectId ongeldig, reden: Voer een numerieke waarde in",
         )
 
     def test_object_id_invalid_proef11_bsn(self):
@@ -252,7 +217,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: Invalid code",
+            "ObjectId ongeldig, reden: Onjuist BSN nummer.",
         )
 
     def test_object_id_invalid_vestigingsnummer(self):
@@ -267,7 +232,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: The length must be in: [12]",
+            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [12]",
         )
 
     def test_object_id_invalid_rsin(self):
@@ -282,7 +247,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: The length must be in: [8, 9]",
+            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8, 9]",
         )
 
     def test_object_id_invalid_kvknummer(self):
@@ -297,5 +262,5 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: The length must be in: [8]",
+            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8]",
         )

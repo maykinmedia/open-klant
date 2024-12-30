@@ -95,7 +95,7 @@ class PartijIdentificatorValidator:
             raise ValidationError(
                 {
                     "partij_identificator_code_soort_object_id": _(
-                        "voor `codeObjecttype` {code_objecttype} zijn alleen deze waarden toegestaan: {choices}."
+                        "voor `codeObjecttype` {code_objecttype} zijn alleen deze waarden toegestaan: {choices}"
                     ).format(code_objecttype=self.code_objecttype, choices=choices)
                 }
             )

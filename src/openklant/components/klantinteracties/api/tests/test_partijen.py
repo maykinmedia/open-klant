@@ -2154,7 +2154,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
             response.data["invalid_params"][0]["reason"],
-            "voor `codeObjecttype` natuurlijk_persoon zijn alleen deze waarden toegestaan: ['bsn'].",
+            "voor `codeObjecttype` natuurlijk_persoon zijn alleen deze waarden toegestaan: ['bsn']",
         )
 
     def test_invalid_validation_partij_identificator_object_id(self):
