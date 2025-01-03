@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/sh
 #
 # Compile the dependencies for production, CI and development.
 #
@@ -7,39 +6,33 @@
 #
 #     ./bin/compile_dependencies.sh
 #
-# Any extra flags/arguments passed to this wrapper script are passed down to pip-compile.
+# Any extra flags/arguments passed to this wrapper script are passed down to uv pip compile.
 # E.g. to update a package:
 #
 #     ./bin/compile_dependencies.sh --upgrade-package django
-
 set -ex
 
-toplevel=$(git rev-parse --show-toplevel)
+command -v uv || (echo "uv not found on PATH. Install it https://astral.sh/uv" >&2 && exit 1)
 
-cd $toplevel
+root_dir=$(git rev-parse --show-toplevel)
 
-export CUSTOM_COMPILE_COMMAND="./bin/compile_dependencies.sh"
+export UV_CUSTOM_COMPILE_COMMAND="./bin/compile_dependencies.sh"
 
 # Base (& prod) deps
-pip-compile \
-    --no-emit-index-url \
+uv pip compile \
+    --output-file "$root_dir/requirements/base.txt" \
     "$@" \
-    requirements/base.in
+    "$root_dir/requirements/base.in"
 
 # Dependencies for testing
-pip-compile \
-    --no-emit-index-url \
-    --output-file requirements/ci.txt \
+uv pip compile \
+    --output-file "$root_dir/requirements/ci.txt" \
     "$@" \
-    requirements/base.txt \
-    requirements/test-tools.in \
-    requirements/ci.in
+    "$root_dir/requirements/test-tools.in" \
+    "$root_dir/requirements/docs.in"
 
 # Dev depedencies - exact same set as CI + some extra tooling
-pip-compile \
-    --no-emit-index-url \
-    --output-file requirements/dev.txt \
+uv pip compile \
+    --output-file "$root_dir/requirements/dev.txt" \
     "$@" \
-    requirements/base.txt \
-    requirements/test-tools.in \
-    requirements/dev.in
+    "$root_dir/requirements/dev.in"

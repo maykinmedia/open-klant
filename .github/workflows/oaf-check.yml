@@ -14,7 +14,7 @@ on:
 
 jobs:
   open-api-workflow-check-oas:
-    uses: maykinmedia/open-api-workflows/.github/workflows/oaf-check.yml@v2
+    uses: maykinmedia/open-api-workflows/.github/workflows/oaf-check.yml@v4
 
     with:
       python-version: '3.11'
