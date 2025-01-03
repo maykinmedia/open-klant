@@ -182,7 +182,7 @@ dill==0.3.8
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-django==4.2.15
+django==4.2.17
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -506,7 +506,7 @@ itypes==1.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   coreapi
-jinja2==3.1.4
+jinja2==3.1.5
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -583,7 +583,7 @@ notifications-api-common==0.3.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.9.1
+open-api-framework==0.9.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -897,7 +897,7 @@ tomlkit==0.13.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-tornado==6.4.1
+tornado==6.4.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -947,7 +947,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-waitress==3.0.0
+waitress==3.0.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
