@@ -1,3 +1,6 @@
+-c base.txt
+-r base.txt
+
 # Dependencies only relevant for (unit) testing
 django-webtest
 factory-boy
@@ -9,15 +12,10 @@ requests-mock
 tblib
 vcrpy
 waitress>=2.1.1
+codecov
+pytest
 
 # Code formatting
 black
 isort
 flake8
-
-# Documentation
-sphinx
-sphinx_rtd_theme
-recommonmark
-sphinx-markdown-tables
-sphinx-tabs
