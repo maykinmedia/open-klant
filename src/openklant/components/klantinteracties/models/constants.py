@@ -49,7 +49,7 @@ class Klantcontrol(TextChoices):
 
 class PartijIdentificatorCodeSoortObjectId(TextChoices):
     bsn = "bsn", _("Bsn")
-    vestigingsnummer = "vestigingsnummer", _("VestigingsNummer")
+    vestigingsnummer = "vestigingsnummer", _("Vestigingsnummer")
     kvk_nummer = "kvk_nummer", _("Kvk Nummer")
     rsin = "rsin", _("Rsin")
     overig = "overig", _("Overig")

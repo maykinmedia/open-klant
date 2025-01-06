@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 blank=True,
                 choices=[
                     ("bsn", "Bsn"),
-                    ("vestigingsnummer", "VestigingsNummer"),
+                    ("vestigingsnummer", "Vestigingsnummer"),
                     ("kvk_nummer", "Kvk Nummer"),
                     ("rsin", "Rsin"),
                     ("overig", "Overig"),
