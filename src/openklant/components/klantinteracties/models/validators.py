@@ -20,7 +20,7 @@ class PartijIdentificatorValidator:
     ]
     NIET_NATUURLIJK_PERSOON = [
         PartijIdentificatorCodeSoortObjectId.rsin.value,
-        PartijIdentificatorCodeSoortObjectId.kvknummer.value,
+        PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
     ]
 
     REGISTERS = {
@@ -114,7 +114,7 @@ class PartijIdentificatorValidator:
                     validator.validate()
                 case PartijIdentificatorCodeSoortObjectId.rsin:
                     validate_rsin(self.object_id)
-                case PartijIdentificatorCodeSoortObjectId.kvknummer:
+                case PartijIdentificatorCodeSoortObjectId.kvk_nummer:
                     validator = BaseValidator(self.object_id, list_size=[8])
                     validator.validate()
                 case PartijIdentificatorCodeSoortObjectId.overig:

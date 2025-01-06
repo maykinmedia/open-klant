@@ -728,7 +728,7 @@ class PartijFilterSetTests(APITestCase):
             partij=partij, partij_identificator_code_soort_object_id="bsn"
         )
         PartijIdentificatorFactory.create(
-            partij=partij2, partij_identificator_code_soort_object_id="kvknummer"
+            partij=partij2, partij_identificator_code_soort_object_id="kvk_nummer"
         )
 
         with self.subTest("happy flow"):

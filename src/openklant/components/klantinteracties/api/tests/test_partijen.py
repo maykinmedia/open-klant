@@ -2137,7 +2137,7 @@ class PartijIdentificatorTests(APITestCase):
             "anderePartijIdentificator": "anderePartijIdentificator",
             "partijIdentificator": {
                 "codeObjecttype": "natuurlijk_persoon",
-                "codeSoortObjectId": "kvknummer",
+                "codeSoortObjectId": "kvk_nummer",
                 "objectId": "296648875",
                 "codeRegister": "brp",
             },

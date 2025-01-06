@@ -166,10 +166,10 @@ class PartijIdentificatorValidatorTests(TestCase):
         )
         validator.validate_object_id()
 
-    def test_object_id_valid_kvknummer(self):
+    def test_object_id_valid_kvk_nummer(self):
         validator = PartijIdentificatorValidator(
             code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvknummer.value,
+            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
             object_id="12345678",
             code_register=PartijIdentificatorCodeRegister.brp.value,
         )
@@ -250,11 +250,11 @@ class PartijIdentificatorValidatorTests(TestCase):
             "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8, 9]",
         )
 
-    def test_object_id_invalid_kvknummer(self):
+    def test_object_id_invalid_kvk_nummer(self):
         with self.assertRaises(ValidationError) as error:
             validator = PartijIdentificatorValidator(
                 code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
-                code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvknummer.value,
+                code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
                 object_id="1234",
                 code_register=PartijIdentificatorCodeRegister.brp.value,
             )
