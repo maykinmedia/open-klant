@@ -23,7 +23,7 @@ class PartijIdentificatorValidator:
         PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
     ]
 
-    REGISTERS = {
+    ALLOWED_OBJECT_TYPES_FOR_REGISTRIES = {
         PartijIdentificatorCodeRegister.brp: {
             PartijIdentificatorCodeObjectType.natuurlijk_persoon: NATUURLIJK_PERSOON,
         },
@@ -68,7 +68,10 @@ class PartijIdentificatorValidator:
         ):
             return
 
-        if self.code_objecttype not in self.REGISTERS[self.code_register]:
+        if (
+            self.code_objecttype
+            not in self.ALLOWED_OBJECT_TYPES_FOR_REGISTRIES[self.code_register]
+        ):
             raise ValidationError(
                 {
                     "partij_identificator_code_objecttype": _(
@@ -89,7 +92,9 @@ class PartijIdentificatorValidator:
             return
 
         if self.code_soort_object_id not in (
-            choices := self.REGISTERS[self.code_register].get(self.code_objecttype, [])
+            choices := self.ALLOWED_OBJECT_TYPES_FOR_REGISTRIES[self.code_register].get(
+                self.code_objecttype, []
+            )
         ):
 
             raise ValidationError(

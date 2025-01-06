@@ -101,7 +101,7 @@ class PartijIdentificatorValidatorTests(TestCase):
             "voor `codeObjecttype` natuurlijk_persoon zijn alleen deze waarden toegestaan: ['bsn']",
         )
 
-    def test_oveirige_code_objecttype_ok_code_soort_object_id(self):
+    def test_overig_code_objecttype_ok_code_soort_object_id(self):
         validator = PartijIdentificatorValidator(
             code_objecttype=PartijIdentificatorCodeObjectType.overig.value,
             code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
