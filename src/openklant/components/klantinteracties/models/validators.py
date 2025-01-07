@@ -1,13 +1,20 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from vng_api_common.validators import BaseValidator, validate_bsn, validate_rsin
+from vng_api_common.validators import (
+    BaseIdentifierValidator,
+    validate_bsn,
+    validate_rsin,
+)
 
 from .constants import (
     PartijIdentificatorCodeObjectType,
     PartijIdentificatorCodeRegister,
     PartijIdentificatorCodeSoortObjectId,
 )
+
+VESTIGINGSNUMMER_LENGTH = 12
+KVK_NUMMER_LENGTH = 8
 
 
 class PartijIdentificatorValidator:
@@ -115,12 +122,18 @@ class PartijIdentificatorValidator:
                 case PartijIdentificatorCodeSoortObjectId.bsn:
                     validate_bsn(self.object_id)
                 case PartijIdentificatorCodeSoortObjectId.vestigingsnummer:
-                    validator = BaseValidator(self.object_id, list_size=[12])
+                    validator = BaseIdentifierValidator(
+                        self.object_id,
+                        identifier_length=VESTIGINGSNUMMER_LENGTH,
+                    )
                     validator.validate()
                 case PartijIdentificatorCodeSoortObjectId.rsin:
                     validate_rsin(self.object_id)
                 case PartijIdentificatorCodeSoortObjectId.kvk_nummer:
-                    validator = BaseValidator(self.object_id, list_size=[8])
+                    validator = BaseIdentifierValidator(
+                        self.object_id,
+                        identifier_length=KVK_NUMMER_LENGTH,
+                    )
                     validator.validate()
                 case PartijIdentificatorCodeSoortObjectId.overig:
                     return
