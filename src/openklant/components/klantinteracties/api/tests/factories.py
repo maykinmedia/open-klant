@@ -13,7 +13,7 @@ class KlantContactDataFactory(factory.DictFactory):
 
 
 class BezoekAdresDataFactory(factory.DictFactory):
-    nummeraanduidingId = "4a282b5c-16d7-401d-9737-28e98c865ab2"
+    nummeraanduidingId = "1234567890000001"
     adresregel1 = "adres1"
     adresregel2 = "adres2"
     adresregel3 = "adres3"
@@ -21,7 +21,7 @@ class BezoekAdresDataFactory(factory.DictFactory):
 
 
 class CorrespondentieAdresDataFactory(factory.DictFactory):
-    nummeraanduidingId = "c06918d9-899b-4d98-a10d-08436ebc6c20"
+    nummeraanduidingId = "1234567890000002"
     adresregel1 = "adres1"
     adresregel2 = "adres2"
     adresregel3 = "adres3"
