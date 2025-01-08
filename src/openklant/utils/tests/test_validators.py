@@ -2,12 +2,12 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from openklant.utils.validators import (
+    validate_bag_id,
     validate_charfield_entry,
     validate_iban,
     validate_no_space,
     validate_phone_number,
     validate_postal_code,
-    validate_bag_id,
 )
 
 
