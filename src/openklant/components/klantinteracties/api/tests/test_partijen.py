@@ -110,14 +110,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
             "bezoekadres": {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -156,7 +156,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -166,7 +166,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -212,7 +212,7 @@ class PartijTests(APITestCase):
             self.assertEqual(
                 response_data["bezoekadres"],
                 {
-                    "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                    "nummeraanduidingId": "1234567890000001",
                     "adresregel1": "adres1",
                     "adresregel2": "adres2",
                     "adresregel3": "adres3",
@@ -222,7 +222,7 @@ class PartijTests(APITestCase):
             self.assertEqual(
                 response_data["correspondentieadres"],
                 {
-                    "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                    "nummeraanduidingId": "1234567890000001",
                     "adresregel1": "adres1",
                     "adresregel2": "adres2",
                     "adresregel3": "adres3",
@@ -391,14 +391,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
             "bezoekadres": {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -434,7 +434,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             response_data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -444,7 +444,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             response_data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -483,14 +483,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
             "bezoekadres": {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -522,7 +522,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             response_data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -532,7 +532,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             response_data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -558,14 +558,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
             "bezoekadres": {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -604,7 +604,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             response_data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -614,7 +614,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             response_data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -648,12 +648,12 @@ class PartijTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            bezoekadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            bezoekadres_nummeraanduiding_id="1234567890000001",
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
             bezoekadres_land="NL",
-            correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            correspondentieadres_nummeraanduiding_id="1234567890000001",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
@@ -708,7 +708,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -718,7 +718,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -750,14 +750,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ger",
             "indicatieActief": False,
             "bezoekadres": {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -810,7 +810,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -820,7 +820,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -928,14 +928,14 @@ class PartijTests(APITestCase):
                 "voorkeurstaal": "ger",
                 "indicatieActief": False,
                 "bezoekadres": {
-                    "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                    "nummeraanduidingId": "1234567890000002",
                     "adresregel1": "changed",
                     "adresregel2": "changed",
                     "adresregel3": "changed",
                     "land": "NL",
                 },
                 "correspondentieadres": {
-                    "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                    "nummeraanduidingId": "1234567890000003",
                     "adresregel1": "changed",
                     "adresregel2": "changed",
                     "adresregel3": "changed",
@@ -960,7 +960,7 @@ class PartijTests(APITestCase):
             self.assertEqual(
                 data["bezoekadres"],
                 {
-                    "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                    "nummeraanduidingId": "1234567890000002",
                     "adresregel1": "changed",
                     "adresregel2": "changed",
                     "adresregel3": "changed",
@@ -970,7 +970,7 @@ class PartijTests(APITestCase):
             self.assertEqual(
                 data["correspondentieadres"],
                 {
-                    "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                    "nummeraanduidingId": "1234567890000003",
                     "adresregel1": "changed",
                     "adresregel2": "changed",
                     "adresregel3": "changed",
@@ -988,12 +988,12 @@ class PartijTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            bezoekadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            bezoekadres_nummeraanduiding_id="1234567890000001",
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
             bezoekadres_land="NL",
-            correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            correspondentieadres_nummeraanduiding_id="1234567890000001",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
@@ -1025,7 +1025,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1035,7 +1035,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1067,14 +1067,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ger",
             "indicatieActief": False,
             "bezoekadres": {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1107,7 +1107,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1117,7 +1117,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1147,12 +1147,12 @@ class PartijTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            bezoekadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            bezoekadres_nummeraanduiding_id="1234567890000001",
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
             bezoekadres_land="NL",
-            correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            correspondentieadres_nummeraanduiding_id="1234567890000001",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
@@ -1178,7 +1178,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1188,7 +1188,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1209,14 +1209,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ger",
             "indicatieActief": False,
             "bezoekadres": {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1244,7 +1244,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1254,7 +1254,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1276,12 +1276,12 @@ class PartijTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            bezoekadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            bezoekadres_nummeraanduiding_id="1234567890000001",
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
             bezoekadres_land="NL",
-            correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            correspondentieadres_nummeraanduiding_id="1234567890000001",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
@@ -1323,7 +1323,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1333,7 +1333,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1369,14 +1369,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ger",
             "indicatieActief": False,
             "bezoekadres": {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1410,7 +1410,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1420,7 +1420,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1454,12 +1454,12 @@ class PartijTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            bezoekadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            bezoekadres_nummeraanduiding_id="1234567890000001",
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
             bezoekadres_land="NL",
-            correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            correspondentieadres_nummeraanduiding_id="1234567890000001",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
@@ -1493,7 +1493,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1503,7 +1503,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1539,14 +1539,14 @@ class PartijTests(APITestCase):
             "voorkeurstaal": "ger",
             "indicatieActief": False,
             "bezoekadres": {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "NL",
             },
             "correspondentieadres": {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1579,7 +1579,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1589,7 +1589,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "nummeraanduidingId": "1234567890000003",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -1619,12 +1619,12 @@ class PartijTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            bezoekadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            bezoekadres_nummeraanduiding_id="1234567890000001",
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
             bezoekadres_land="NL",
-            correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            correspondentieadres_nummeraanduiding_id="1234567890000001",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
@@ -1662,7 +1662,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1672,7 +1672,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1719,7 +1719,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["bezoekadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
@@ -1729,7 +1729,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["correspondentieadres"],
             {
-                "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",

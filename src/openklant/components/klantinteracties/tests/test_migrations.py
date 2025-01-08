@@ -246,3 +246,194 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertEqual(partij1.correspondentieadres_land, "NL")
         self.assertEqual(partij2.bezoekadres_land, "CA")
         self.assertEqual(partij2.correspondentieadres_land, "CA")
+
+
+class TestValidateBagId(BaseMigrationTest):
+    app = "klantinteracties"
+    migrate_from = "0026_alter_betrokkene_bezoekadres_land_and_more"
+    migrate_to = "0027_alter_betrokkene_bezoekadres_nummeraanduiding_id_and_more"
+
+    def test_ok_migration_betrokkene_model(self):
+
+        Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        Betrokkene.objects.create(
+            partij=None,
+            klantcontact=Klantcontact.objects.create(vertrouwelijk=False),
+            initiator=False,
+            bezoekadres_nummeraanduiding_id="1234567890000001",
+            correspondentieadres_nummeraanduiding_id="1234567890000002",
+        )
+
+        self._perform_migration()
+
+        Betrokkene = self.apps.get_model("klantinteracties", "Betrokkene")
+
+        records = Betrokkene.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_nummeraanduiding_id, "1234567890000001")
+        self.assertEqual(
+            records[0].correspondentieadres_nummeraanduiding_id, "1234567890000002"
+        )
+
+    def test_ok_migration_betrokkene_model_empty_value(self):
+
+        Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        Betrokkene.objects.create(
+            partij=None,
+            klantcontact=Klantcontact.objects.create(vertrouwelijk=False),
+            initiator=False,
+            bezoekadres_nummeraanduiding_id="",
+            correspondentieadres_nummeraanduiding_id="",
+        )
+
+        self._perform_migration()
+
+        Betrokkene = self.apps.get_model("klantinteracties", "Betrokkene")
+
+        records = Betrokkene.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_nummeraanduiding_id, "")
+        self.assertEqual(records[0].correspondentieadres_nummeraanduiding_id, "")
+
+    def test_ko_migration_betrokkene_model_wrong_code(self):
+
+        Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        Betrokkene.objects.create(
+            partij=None,
+            klantcontact=Klantcontact.objects.create(vertrouwelijk=False),
+            initiator=False,
+            bezoekadres_nummeraanduiding_id="123456",
+            correspondentieadres_nummeraanduiding_id="789",
+        )
+
+        with self.assertRaises(IntegrityError) as error:
+            self._perform_migration()
+
+        self.assertEqual(
+            (
+                "The migration cannot proceed due to 1 records that don't comply with the "
+                "Betrokkene model's requirements. Possible data inconsistency or mapping error."
+            ),
+            str(error.exception),
+        )
+
+        records = Betrokkene.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_nummeraanduiding_id, "123456")
+        self.assertEqual(records[0].correspondentieadres_nummeraanduiding_id, "789")
+
+        # Update manually
+        betrokken = records.get(pk=records[0].pk)
+        betrokken.bezoekadres_nummeraanduiding_id = "1234567890000001"
+        betrokken.correspondentieadres_nummeraanduiding_id = "1234567890000002"
+        betrokken.save()
+
+        # Re-Run the migration
+        self._perform_migration()
+
+        Betrokkene = self.apps.get_model("klantinteracties", "Betrokkene")
+
+        records = Betrokkene.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_nummeraanduiding_id, "1234567890000001")
+        self.assertEqual(
+            records[0].correspondentieadres_nummeraanduiding_id, "1234567890000002"
+        )
+        self.assertNotEqual(records[0].bezoekadres_nummeraanduiding_id, "123456")
+        self.assertNotEqual(records[0].correspondentieadres_nummeraanduiding_id, "789")
+
+    def test_ok_migration_partij_model(self):
+
+        Partij = self.old_app_state.get_model("klantinteracties", "Partij")
+
+        Partij.objects.create(
+            indicatie_actief=True,
+            bezoekadres_nummeraanduiding_id="1234567890000001",
+            correspondentieadres_nummeraanduiding_id="1234567890000002",
+        )
+
+        self._perform_migration()
+
+        Partij = self.apps.get_model("klantinteracties", "Partij")
+
+        records = Partij.objects.all()
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_nummeraanduiding_id, "1234567890000001")
+        self.assertEqual(
+            records[0].correspondentieadres_nummeraanduiding_id, "1234567890000002"
+        )
+
+    def test_ok_migration_partij_model_empty_value(self):
+
+        Partij = self.old_app_state.get_model("klantinteracties", "Partij")
+
+        Partij.objects.create(
+            indicatie_actief=True,
+            bezoekadres_nummeraanduiding_id="",
+            correspondentieadres_nummeraanduiding_id="",
+        )
+
+        self._perform_migration()
+
+        Partij = self.apps.get_model("klantinteracties", "Partij")
+
+        records = Partij.objects.all()
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_nummeraanduiding_id, "")
+        self.assertEqual(records[0].correspondentieadres_nummeraanduiding_id, "")
+
+    def test_ko_migration_partij_model_wrong_code(self):
+
+        Partij = self.old_app_state.get_model("klantinteracties", "Partij")
+
+        Partij.objects.create(
+            indicatie_actief=True,
+            bezoekadres_nummeraanduiding_id="ABC",
+            correspondentieadres_nummeraanduiding_id="DEF",
+        )
+
+        with self.assertRaises(IntegrityError) as error:
+            self._perform_migration()
+
+        self.assertEqual(
+            (
+                "The migration cannot proceed due to 1 records that don't comply with the "
+                "Partij model's requirements. Possible data inconsistency or mapping error."
+            ),
+            str(error.exception),
+        )
+
+        records = Partij.objects.all()
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_nummeraanduiding_id, "ABC")
+        self.assertEqual(records[0].correspondentieadres_nummeraanduiding_id, "DEF")
+
+        # Update manually
+        partij1 = records.get(pk=records[0].pk)
+        partij1.bezoekadres_nummeraanduiding_id = "1234567890000001"
+        partij1.correspondentieadres_nummeraanduiding_id = "1234567890000002"
+        partij1.save()
+
+        # Re-Run the migration
+        self._perform_migration()
+
+        Partij = self.apps.get_model("klantinteracties", "Partij")
+
+        records = Partij.objects.all()
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_nummeraanduiding_id, "1234567890000001")
+        self.assertEqual(
+            records[0].correspondentieadres_nummeraanduiding_id, "1234567890000002"
+        )
+        self.assertNotEqual(records[0].bezoekadres_nummeraanduiding_id, "ABC")
+        self.assertNotEqual(records[0].correspondentieadres_nummeraanduiding_id, "DEF")

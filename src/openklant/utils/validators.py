@@ -70,3 +70,7 @@ validate_iban = CustomRegexValidator(
 validate_no_space = CustomRegexValidator(
     regex="^[\S]+$", message=_("Geen spaties toegestaan")  # noqa
 )
+
+validate_bag_id = CustomRegexValidator(
+    regex="^[0-9]{16}$", message=_("Ongeldige nummeraanduiding BAG-ID")
+)
