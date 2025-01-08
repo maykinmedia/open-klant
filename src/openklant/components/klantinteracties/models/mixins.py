@@ -13,7 +13,7 @@ class BezoekadresMixin(models.Model):
         help_text=_(
             "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
         ),
-        max_length=16,
+        max_length=255,
         validators=[validate_bag_id],
         blank=True,
     )
@@ -82,7 +82,7 @@ class CorrespondentieadresMixin(models.Model):
         help_text=_(
             "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
         ),
-        max_length=16,
+        max_length=255,
         validators=[validate_bag_id],
         blank=True,
     )
