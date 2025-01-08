@@ -4,15 +4,17 @@ from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
 
+from openklant.utils.validators import validate_bag_id
+
 
 class BezoekadresMixin(models.Model):
-    # TODO: Check if this is correct.
     bezoekadres_nummeraanduiding_id = models.CharField(
         _("nummeraanduiding ID"),
         help_text=_(
             "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
         ),
-        max_length=255,
+        max_length=16,
+        validators=[validate_bag_id],
         blank=True,
     )
     bezoekadres_adresregel1 = models.CharField(
@@ -75,13 +77,13 @@ class BezoekadresMixin(models.Model):
 
 
 class CorrespondentieadresMixin(models.Model):
-    # TODO: Check if this is correct.
     correspondentieadres_nummeraanduiding_id = models.CharField(
         _("nummeraanduiding ID"),
         help_text=_(
             "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
         ),
-        max_length=255,
+        max_length=16,
+        validators=[validate_bag_id],
         blank=True,
     )
     correspondentieadres_adresregel1 = models.CharField(
