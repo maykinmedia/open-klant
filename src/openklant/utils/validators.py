@@ -14,7 +14,7 @@ def validate_country(value) -> None:
     """
     if not value.upper() in COUNTRIES_DICT.keys():
         raise ValidationError(
-            _("Ongeldige landcode, de code moet behoren tot de ISO 3166-standaard.")
+            _("Ongeldige landcode, de code moet behoren tot de ISO 3166-standaard")
         )
 
 
