@@ -114,14 +114,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "partijIdentificatie": {
                 "contactnaam": {
@@ -160,7 +160,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -170,7 +170,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -216,7 +216,7 @@ class PartijTests(APITestCase):
                     "adresregel1": "adres1",
                     "adresregel2": "adres2",
                     "adresregel3": "adres3",
-                    "land": "6030",
+                    "land": "NL",
                 },
             )
             self.assertEqual(
@@ -226,7 +226,7 @@ class PartijTests(APITestCase):
                     "adresregel1": "adres1",
                     "adresregel2": "adres2",
                     "adresregel3": "adres3",
-                    "land": "6030",
+                    "land": "NL",
                 },
             )
             self.assertEqual(
@@ -395,14 +395,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "soortPartij": "persoon",
             "partijIdentificatie": {
@@ -438,7 +438,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -448,7 +448,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -487,14 +487,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "soortPartij": "organisatie",
             "partijIdentificatie": {
@@ -526,7 +526,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -536,7 +536,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -562,14 +562,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "soortPartij": "contactpersoon",
             "partijIdentificatie": {
@@ -608,7 +608,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -618,7 +618,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -652,12 +652,12 @@ class PartijTests(APITestCase):
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
-            bezoekadres_land="6030",
+            bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
-            correspondentieadres_land="6030",
+            correspondentieadres_land="NL",
         )
         PersoonFactory.create(
             partij=partij,
@@ -712,7 +712,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -722,7 +722,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -754,14 +754,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "partijIdentificatie": {
                 "contactnaam": {
@@ -814,7 +814,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -824,7 +824,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -932,14 +932,14 @@ class PartijTests(APITestCase):
                     "adresregel1": "changed",
                     "adresregel2": "changed",
                     "adresregel3": "changed",
-                    "land": "3060",
+                    "land": "NL",
                 },
                 "correspondentieadres": {
                     "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
                     "adresregel1": "changed",
                     "adresregel2": "changed",
                     "adresregel3": "changed",
-                    "land": "3060",
+                    "land": "NL",
                 },
             }
 
@@ -964,7 +964,7 @@ class PartijTests(APITestCase):
                     "adresregel1": "changed",
                     "adresregel2": "changed",
                     "adresregel3": "changed",
-                    "land": "3060",
+                    "land": "NL",
                 },
             )
             self.assertEqual(
@@ -974,7 +974,7 @@ class PartijTests(APITestCase):
                     "adresregel1": "changed",
                     "adresregel2": "changed",
                     "adresregel3": "changed",
-                    "land": "3060",
+                    "land": "NL",
                 },
             )
 
@@ -992,12 +992,12 @@ class PartijTests(APITestCase):
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
-            bezoekadres_land="6030",
+            bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
-            correspondentieadres_land="6030",
+            correspondentieadres_land="NL",
         )
         PersoonFactory.create(
             partij=partij,
@@ -1029,7 +1029,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1039,7 +1039,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1071,14 +1071,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "partijIdentificatie": {
                 "contactnaam": {
@@ -1111,7 +1111,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1121,7 +1121,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1151,12 +1151,12 @@ class PartijTests(APITestCase):
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
-            bezoekadres_land="6030",
+            bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
-            correspondentieadres_land="6030",
+            correspondentieadres_land="NL",
         )
         OrganisatieFactory(partij=partij, naam="Whitechapel")
         detail_url = reverse(
@@ -1182,7 +1182,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1192,7 +1192,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(data["partijIdentificatie"], {"naam": "Whitechapel"})
@@ -1213,14 +1213,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "partijIdentificatie": {
                 "naam": "The Acacia Strain",
@@ -1248,7 +1248,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1258,7 +1258,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1280,12 +1280,12 @@ class PartijTests(APITestCase):
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
-            bezoekadres_land="6030",
+            bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
-            correspondentieadres_land="6030",
+            correspondentieadres_land="NL",
         )
         organisatie = PartijFactory.create(soort_partij="organisatie")
         ContactpersoonFactory.create(
@@ -1327,7 +1327,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1337,7 +1337,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1373,14 +1373,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "partijIdentificatie": {
                 "werkteVoorPartij": {"uuid": str(organisatie2.uuid)},
@@ -1414,7 +1414,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1424,7 +1424,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1458,12 +1458,12 @@ class PartijTests(APITestCase):
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
-            bezoekadres_land="6030",
+            bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
-            correspondentieadres_land="6030",
+            correspondentieadres_land="NL",
         )
         organisatie = PartijFactory.create(soort_partij="organisatie")
         ContactpersoonFactory.create(
@@ -1497,7 +1497,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1507,7 +1507,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1543,14 +1543,14 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "partijIdentificatie": {
                 "contactnaam": {
@@ -1583,7 +1583,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1593,7 +1593,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1623,12 +1623,12 @@ class PartijTests(APITestCase):
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
-            bezoekadres_land="6030",
+            bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
-            correspondentieadres_land="6030",
+            correspondentieadres_land="NL",
         )
         digitaal_adres = DigitaalAdresFactory.create(partij=partij)
         digitaal_adres2 = DigitaalAdresFactory.create(partij=None)
@@ -1666,7 +1666,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1676,7 +1676,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1723,7 +1723,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1733,7 +1733,7 @@ class PartijTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(

@@ -15,6 +15,8 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "openklant.components.token",
     "openklant.components.klantinteracties",
     "openklant.components.contactgegevens",
+    # Django libraries
+    "localflavor",
 ]
 # `django.contrib.sites` is installed by Open API Framework by default
 # but we don't want to rely on it anymore (e.g. when generating the label for 2FA)

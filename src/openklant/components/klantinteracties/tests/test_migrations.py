@@ -1,0 +1,248 @@
+from django.db import IntegrityError
+
+from openklant.tests.test_migrate import BaseMigrationTest
+
+
+class TestCountryConverter(BaseMigrationTest):
+    app = "klantinteracties"
+    migrate_from = (
+        "0025_alter_partijidentificator_partij_identificator_code_objecttype_and_more"
+    )
+    migrate_to = "0026_alter_betrokkene_bezoekadres_land_and_more"
+
+    def test_ok_migration_betrokkene_model(self):
+
+        Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        Betrokkene.objects.create(
+            partij=None,
+            klantcontact=Klantcontact.objects.create(vertrouwelijk=False),
+            initiator=False,
+            bezoekadres_land="6030",
+            correspondentieadres_land="6030",
+        )
+
+        self._perform_migration()
+
+        Betrokkene = self.apps.get_model("klantinteracties", "Betrokkene")
+
+        records = Betrokkene.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_land, "NL")
+        self.assertEqual(records[0].correspondentieadres_land, "NL")
+        self.assertNotEqual(records[0].bezoekadres_land, "6030")
+        self.assertNotEqual(records[0].correspondentieadres_land, "6030")
+
+    def test_ok_migration_betrokkene_model_empty_code(self):
+
+        Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        betrokken1 = Betrokkene.objects.create(
+            partij=None,
+            klantcontact=Klantcontact.objects.create(vertrouwelijk=False, nummer=123),
+            initiator=False,
+            bezoekadres_land="",
+            correspondentieadres_land="",
+        )
+
+        betrokken2 = Betrokkene.objects.create(
+            partij=None,
+            klantcontact=Klantcontact.objects.create(vertrouwelijk=False, nummer=456),
+            initiator=False,
+            bezoekadres_land="6030",
+            correspondentieadres_land="6030",
+        )
+
+        self._perform_migration()
+
+        Betrokkene = self.apps.get_model("klantinteracties", "Betrokkene")
+
+        records = Betrokkene.objects.all()
+        betrokken1 = records.get(pk=betrokken1.pk)
+        betrokken2 = records.get(pk=betrokken2.pk)
+
+        self.assertEqual(records.count(), 2)
+        self.assertEqual(betrokken1.bezoekadres_land, "")
+        self.assertEqual(betrokken1.correspondentieadres_land, "")
+        self.assertEqual(betrokken2.bezoekadres_land, "NL")
+        self.assertEqual(betrokken2.correspondentieadres_land, "NL")
+        self.assertNotEqual(betrokken2.bezoekadres_land, "6030")
+        self.assertNotEqual(betrokken2.correspondentieadres_land, "6030")
+
+    def test_ko_migration_betrokkene_model_wrong_code(self):
+
+        Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        betrokken1 = Betrokkene.objects.create(
+            partij=None,
+            klantcontact=Klantcontact.objects.create(vertrouwelijk=False, nummer=123),
+            initiator=False,
+            bezoekadres_land="9999",
+            correspondentieadres_land="9999",
+        )
+
+        betrokken2 = Betrokkene.objects.create(
+            partij=None,
+            klantcontact=Klantcontact.objects.create(vertrouwelijk=False, nummer=456),
+            initiator=False,
+            bezoekadres_land="5001",
+            correspondentieadres_land="5001",
+        )
+
+        with self.assertRaises(IntegrityError) as error:
+            self._perform_migration()
+
+        self.assertEqual(
+            (
+                "The migration cannot proceed due to 1 records that don't comply with the "
+                "Betrokkene model's requirements. Possible data inconsistency or mapping error."
+            ),
+            str(error.exception),
+        )
+
+        records = Betrokkene.objects.all()
+        betrokken1 = records.get(pk=betrokken1.pk)
+        betrokken2 = records.get(pk=betrokken2.pk)
+
+        self.assertEqual(records.count(), 2)
+        self.assertEqual(betrokken1.bezoekadres_land, "9999")
+        self.assertEqual(betrokken1.correspondentieadres_land, "9999")
+        self.assertEqual(betrokken2.bezoekadres_land, "5001")
+        self.assertEqual(betrokken2.correspondentieadres_land, "5001")
+
+        # Update manually
+        betrokken1 = records.get(pk=betrokken1.pk)
+        betrokken1.bezoekadres_land = "6030"
+        betrokken1.correspondentieadres_land = "6030"
+        betrokken1.save()
+
+        # Re-Run the migration
+        self._perform_migration()
+
+        Betrokkene = self.apps.get_model("klantinteracties", "Betrokkene")
+
+        records = Betrokkene.objects.all()
+        betrokken1 = records.get(pk=betrokken1.pk)
+        betrokken2 = records.get(pk=betrokken2.pk)
+
+        self.assertEqual(records.count(), 2)
+        self.assertEqual(betrokken1.bezoekadres_land, "NL")
+        self.assertEqual(betrokken1.correspondentieadres_land, "NL")
+        self.assertEqual(betrokken2.bezoekadres_land, "CA")
+        self.assertEqual(betrokken2.correspondentieadres_land, "CA")
+
+    def test_ok_migration_partij_model(self):
+
+        Partij = self.old_app_state.get_model("klantinteracties", "Partij")
+
+        Partij.objects.create(
+            indicatie_actief=True,
+            bezoekadres_land="6030",
+            correspondentieadres_land="6030",
+        )
+
+        self._perform_migration()
+
+        Partij = self.apps.get_model("klantinteracties", "Partij")
+
+        records = Partij.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].bezoekadres_land, "NL")
+        self.assertEqual(records[0].correspondentieadres_land, "NL")
+        self.assertNotEqual(records[0].bezoekadres_land, "6030")
+        self.assertNotEqual(records[0].correspondentieadres_land, "6030")
+
+    def test_ok_migration_partij_model_empty_code(self):
+
+        Partij = self.old_app_state.get_model("klantinteracties", "Partij")
+
+        partij1 = Partij.objects.create(
+            indicatie_actief=True,
+            bezoekadres_land="",
+            correspondentieadres_land="",
+            nummer=123,
+        )
+        partij2 = Partij.objects.create(
+            indicatie_actief=True,
+            bezoekadres_land="6030",
+            correspondentieadres_land="6030",
+            nummer=456,
+        )
+
+        self._perform_migration()
+
+        Partij = self.apps.get_model("klantinteracties", "Partij")
+
+        records = Partij.objects.all()
+        partij1 = records.get(pk=partij1.pk)
+        partij2 = records.get(pk=partij2.pk)
+
+        self.assertEqual(records.count(), 2)
+        self.assertEqual(partij1.bezoekadres_land, "")
+        self.assertEqual(partij1.correspondentieadres_land, "")
+        self.assertEqual(partij2.bezoekadres_land, "NL")
+        self.assertEqual(partij2.correspondentieadres_land, "NL")
+        self.assertNotEqual(partij2.bezoekadres_land, "6030")
+        self.assertNotEqual(partij2.correspondentieadres_land, "6030")
+
+    def test_ko_migration_partij_model_wrong_code(self):
+
+        Partij = self.old_app_state.get_model("klantinteracties", "Partij")
+
+        partij1 = Partij.objects.create(
+            indicatie_actief=True,
+            bezoekadres_land="9999",
+            correspondentieadres_land="9999",
+            nummer=123,
+        )
+        partij2 = Partij.objects.create(
+            indicatie_actief=True,
+            bezoekadres_land="5001",
+            correspondentieadres_land="5001",
+            nummer=456,
+        )
+
+        with self.assertRaises(IntegrityError) as error:
+            self._perform_migration()
+
+        self.assertEqual(
+            (
+                "The migration cannot proceed due to 1 records that don't comply with the "
+                "Partij model's requirements. Possible data inconsistency or mapping error."
+            ),
+            str(error.exception),
+        )
+
+        records = Partij.objects.all()
+        partij1 = records.get(pk=partij1.pk)
+        partij2 = records.get(pk=partij2.pk)
+
+        self.assertEqual(records.count(), 2)
+        self.assertEqual(partij1.bezoekadres_land, "9999")
+        self.assertEqual(partij1.correspondentieadres_land, "9999")
+        self.assertEqual(partij2.bezoekadres_land, "5001")
+        self.assertEqual(partij2.correspondentieadres_land, "5001")
+
+        # Update manually
+        partij1 = records.get(pk=partij1.pk)
+        partij1.bezoekadres_land = "6030"
+        partij1.correspondentieadres_land = "6030"
+        partij1.save()
+
+        # Re-Run the migration
+        self._perform_migration()
+
+        Partij = self.apps.get_model("klantinteracties", "Partij")
+
+        records = Partij.objects.all()
+        partij1 = records.get(pk=partij1.pk)
+        partij2 = records.get(pk=partij2.pk)
+
+        self.assertEqual(records.count(), 2)
+        self.assertEqual(partij1.bezoekadres_land, "NL")
+        self.assertEqual(partij1.correspondentieadres_land, "NL")
+        self.assertEqual(partij2.bezoekadres_land, "CA")
+        self.assertEqual(partij2.correspondentieadres_land, "CA")

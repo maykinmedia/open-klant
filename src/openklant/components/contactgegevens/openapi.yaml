@@ -367,10 +367,10 @@ components:
           description: De adres gegevens van een organisatie.
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
       required:
       - handelsnaam
       - url
@@ -400,10 +400,10 @@ components:
           maxLength: 80
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
     PaginatedOrganisatieList:
       type: object
       required:
@@ -494,10 +494,10 @@ components:
           description: De adres gegevens van een organisatie.
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
     PatchedPersoon:
       type: object
       description: |-
@@ -560,10 +560,10 @@ components:
           description: De adres gegevens van een organisatie.
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
     Persoon:
       type: object
       description: |-
@@ -626,10 +626,10 @@ components:
           description: De adres gegevens van een organisatie.
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
       required:
       - geboortedatum
       - geslachtsnaam
@@ -660,10 +660,10 @@ components:
           maxLength: 80
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
   securitySchemes:
     tokenAuth:
       type: apiKey

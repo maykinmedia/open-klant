@@ -21,8 +21,8 @@ class PersoonTests(APITestCase):
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
-            adres_land="5001",
-            land="5001",
+            adres_land="CA",
+            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:persoon-detail",
@@ -34,7 +34,7 @@ class PersoonTests(APITestCase):
             "adresregel1": "adresregel1",
             "adresregel2": "adresregel2",
             "adresregel3": "adresregel3",
-            "land": "5001",
+            "land": "CA",
         }
         expected_data = {
             "uuid": str(persoon.uuid),
@@ -46,7 +46,7 @@ class PersoonTests(APITestCase):
             "voorvoegsel": "",
             "voornamen": "John",
             "adres": expected_adres,
-            "land": "5001",
+            "land": "CA",
         }
 
         response = self.client.get(detail_url)
@@ -68,9 +68,9 @@ class PersoonTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
-            "land": "5001",
+            "land": "CA",
         }
 
         response = self.client.post(list_url, data)
@@ -92,10 +92,10 @@ class PersoonTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "5001")
+        self.assertEqual(data["land"], "CA")
 
     def test_update_persoon(self):
         persoon = PersoonFactory.create(
@@ -109,8 +109,8 @@ class PersoonTests(APITestCase):
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
-            adres_land="5001",
-            land="5001",
+            adres_land="CA",
+            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:persoon-detail",
@@ -136,10 +136,10 @@ class PersoonTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "5001")
+        self.assertEqual(data["land"], "CA")
 
         data = {
             "geboortedatum": "1972-05-06",
@@ -153,12 +153,13 @@ class PersoonTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "6713",
+                "land": "FR",
             },
-            "land": "6713",
+            "land": "FR",
         }
         response = self.client.put(detail_url, data)
         data = response.json()
+
         self.assertEqual(data["geboortedatum"], "1972-05-06")
         self.assertEqual(data["overlijdensdatum"], "2023-11-22")
         self.assertEqual(data["geslachtsnaam"], "changed")
@@ -172,10 +173,10 @@ class PersoonTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "6713",
+                "land": "FR",
             },
         )
-        self.assertEqual(data["land"], "6713")
+        self.assertEqual(data["land"], "FR")
 
     def test_update_partial_persoon(self):
         persoon = PersoonFactory.create(
@@ -189,8 +190,8 @@ class PersoonTests(APITestCase):
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
-            adres_land="5001",
-            land="5001",
+            adres_land="CA",
+            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:persoon-detail",
@@ -216,10 +217,10 @@ class PersoonTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "5001")
+        self.assertEqual(data["land"], "CA")
 
         data = {
             "overlijdensdatum": "2023-11-22",
@@ -240,10 +241,10 @@ class PersoonTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "5001")
+        self.assertEqual(data["land"], "CA")
 
     def test_list_pagination_pagesize_param(self):
         list_url = reverse("contactgegevens:persoon-list")
@@ -269,8 +270,8 @@ class OrganisatiesTests(APITestCase):
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
-            adres_land="5001",
-            land="5001",
+            adres_land="CA",
+            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:organisatie-detail",
@@ -282,7 +283,7 @@ class OrganisatiesTests(APITestCase):
             "adresregel1": "adresregel1",
             "adresregel2": "adresregel2",
             "adresregel3": "adresregel3",
-            "land": "5001",
+            "land": "CA",
         }
         expected_data = {
             "uuid": str(organisatie.uuid),
@@ -291,7 +292,7 @@ class OrganisatiesTests(APITestCase):
             "opheffingsdatum": "2020-09-05",
             "handelsnaam": "Devin Townsend",
             "adres": expected_adres,
-            "land": "5001",
+            "land": "CA",
         }
 
         response = self.client.get(detail_url)
@@ -311,9 +312,9 @@ class OrganisatiesTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
-            "land": "5001",
+            "land": "CA",
         }
 
         response = self.client.post(list_url, data)
@@ -332,10 +333,10 @@ class OrganisatiesTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "5001")
+        self.assertEqual(data["land"], "CA")
 
     def test_update_organisatie(self):
         organisatie = OrganisatieFactory.create(
@@ -346,8 +347,8 @@ class OrganisatiesTests(APITestCase):
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
-            adres_land="5001",
-            land="5001",
+            adres_land="CA",
+            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:organisatie-detail",
@@ -370,10 +371,10 @@ class OrganisatiesTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "5001")
+        self.assertEqual(data["land"], "CA")
 
         data = {
             "handelsnaam": "changed",
@@ -384,9 +385,9 @@ class OrganisatiesTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "6713",
+                "land": "FR",
             },
-            "land": "6713",
+            "land": "FR",
         }
         response = self.client.put(detail_url, data)
         data = response.json()
@@ -400,10 +401,10 @@ class OrganisatiesTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "6713",
+                "land": "FR",
             },
         )
-        self.assertEqual(data["land"], "6713")
+        self.assertEqual(data["land"], "FR")
 
     def test_update_partial_organisatie(self):
         organisatie = OrganisatieFactory.create(
@@ -414,8 +415,8 @@ class OrganisatiesTests(APITestCase):
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
-            adres_land="5001",
-            land="5001",
+            adres_land="CA",
+            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:organisatie-detail",
@@ -438,10 +439,10 @@ class OrganisatiesTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "5001")
+        self.assertEqual(data["land"], "CA")
 
         data = {
             "opheffingsdatum": "2023-11-22",
@@ -460,10 +461,10 @@ class OrganisatiesTests(APITestCase):
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
-                "land": "5001",
+                "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "5001")
+        self.assertEqual(data["land"], "CA")
 
     def test_list_pagination_pagesize_param(self):
         list_url = reverse("contactgegevens:organisatie-list")
