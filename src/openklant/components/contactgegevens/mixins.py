@@ -13,7 +13,7 @@ class AdresMixin(models.Model):
         help_text=_(
             "Identificatie van het adres bij de Basisregistratie Adressen en Gebouwen."
         ),
-        max_length=255,
+        max_length=16,
         validators=[validate_bag_id],
         blank=True,
     )
