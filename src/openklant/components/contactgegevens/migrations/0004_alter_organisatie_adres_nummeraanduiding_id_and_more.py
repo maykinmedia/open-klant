@@ -73,7 +73,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(_check_nummeraanduiding_length),
+        migrations.RunPython(
+            code=_check_nummeraanduiding_length,
+            reverse_code=migrations.RunPython.noop,
+        ),
         migrations.AlterField(
             model_name="organisatie",
             name="adres_nummeraanduiding_id",
