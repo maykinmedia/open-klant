@@ -2,6 +2,20 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
+from .constants import COUNTRIES_DICT
+
+
+def validate_country(value) -> None:
+    """
+    Validate an ISO 3166-1 alpha-2 country code
+
+    :param value:
+    :return: None if validation passed. Otherwise, raises a ``ValidationError`` exception.
+    """
+    if not value.upper() in COUNTRIES_DICT.keys():
+        raise ValidationError(
+            _("Ongeldige landcode, de code moet behoren tot de ISO 3166-standaard.")
+        )
 
 
 def validate_charfield_entry(value, allow_apostrophe=False):
