@@ -12,19 +12,19 @@ from openklant.utils.converters import nl_code_to_iso_code_country_converter
 logger = logging.getLogger(__name__)
 
 
-def _update_records(records, name):
-    logger.info("Start updating records for %s", name)
+def _update_records(records, class_name):
+    logger.info("Start updating records for %s", class_name)
     for record in records:
         updated = False
         if record.bezoekadres_land:
             value = nl_code_to_iso_code_country_converter(record.bezoekadres_land)
             if not value:
                 logger.warning(
-                    "No match found for the nl_code: %s for object %s with pk: %s and uuid %s",
-                    record.bezoekadres_land,
-                    name,
+                    "%s object (pk: %s, uuid: %s) has no match for the nl_code '%s'",
+                    class_name,
                     record.pk,
                     record.uuid,
+                    record.adres_land,
                 )
             record.bezoekadres_land = value
             updated = True
@@ -34,18 +34,18 @@ def _update_records(records, name):
             )
             if not value:
                 logger.warning(
-                    "No match found for the nl_code: %s for object %s with pk: %s and uuid %s",
-                    record.bezoekadres_land,
-                    name,
+                    "%s object (pk: %s, uuid: %s) has no match for the nl_code '%s'",
+                    class_name,
                     record.pk,
                     record.uuid,
+                    record.adres_land,
                 )
             record.correspondentieadres_land = value
             updated = True
         if updated:
             logger.debug(
                 "Object %s pk: %s uuid %s updated",
-                name,
+                class_name,
                 record.pk,
                 record.uuid,
             )
