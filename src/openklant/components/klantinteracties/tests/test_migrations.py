@@ -1,7 +1,4 @@
 from openklant.tests.test_migrate import BaseMigrationTest
-from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
-    KlantcontactFactory,
-)
 
 
 class TestCountryConverter(BaseMigrationTest):
