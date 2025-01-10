@@ -33,7 +33,7 @@ def _update_records(records, class_name):
                     class_name,
                     record.pk,
                     record.uuid,
-                    record.adres_land,
+                    record.land,
                 )
             record.land = value
             updated = True

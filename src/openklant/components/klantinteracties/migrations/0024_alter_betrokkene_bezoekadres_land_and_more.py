@@ -24,7 +24,7 @@ def _update_records(records, class_name):
                     class_name,
                     record.pk,
                     record.uuid,
-                    record.adres_land,
+                    record.bezoekadres_land,
                 )
             record.bezoekadres_land = value
             updated = True
@@ -38,7 +38,7 @@ def _update_records(records, class_name):
                     class_name,
                     record.pk,
                     record.uuid,
-                    record.adres_land,
+                    record.correspondentieadres_land,
                 )
             record.correspondentieadres_land = value
             updated = True
