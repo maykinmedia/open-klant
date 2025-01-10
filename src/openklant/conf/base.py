@@ -1,4 +1,5 @@
 from open_api_framework.conf.base import *  # noqa
+from open_api_framework.conf.utils import config  # noqa
 
 from .api import *  # noqa
 
@@ -50,3 +51,28 @@ SETUP_CONFIGURATION_STEPS = (
     "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
 )
+
+#
+# Celery
+#
+
+# Add (by default) 5 (soft), 15 (hard) minute timeouts to all Celery tasks.
+CELERY_TASK_TIME_LIMIT = config(
+    "CELERY_TASK_HARD_TIME_LIMIT",
+    default=15 * 60,
+    help_text=(
+        "Defaults to: ``900`` seconds. "
+        "If a celery task exceeds this time limit, the worker processing the task will "
+        "be killed and replaced with a new one."
+    ),
+    group="Celery",
+)  # hard
+CELERY_TASK_SOFT_TIME_LIMIT = config(
+    "CELERY_TASK_SOFT_TIME_LIMIT",
+    default=5 * 60,
+    help_text=(
+        "Defaults to: ``300`` seconds. "
+        "If a celery task exceeds this time limit, the ``SoftTimeLimitExceeded`` exception will be raised."
+    ),
+    group="Celery",
+)  # soft
