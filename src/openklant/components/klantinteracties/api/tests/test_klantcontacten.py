@@ -414,14 +414,14 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "c06918d9-899b-4d98-a10d-08436ebc6c20",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "contactnaam": {
                 "voorletters": "P",
@@ -448,7 +448,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -458,7 +458,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -487,14 +487,14 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "c06918d9-899b-4d98-a10d-08436ebc6c20",
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
             "contactnaam": {
                 "voorletters": "P",
@@ -521,7 +521,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -531,7 +531,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -559,12 +559,12 @@ class BetrokkeneTests(APITestCase):
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
-            bezoekadres_land="6030",
+            bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="c06918d9-899b-4d98-a10d-08436ebc6c20",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
-            correspondentieadres_land="6030",
+            correspondentieadres_land="NL",
             contactnaam_voorletters="P",
             contactnaam_voornaam="Phil",
             contactnaam_voorvoegsel_achternaam="",
@@ -588,7 +588,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -598,7 +598,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -624,14 +624,14 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "correspondentieadres": {
                 "nummeraanduidingId": "c06918d9-899b-4d98-a10d-08436ebc6c20",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
             "contactnaam": {
                 "voorletters": "changed",
@@ -658,7 +658,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -668,7 +668,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -696,12 +696,12 @@ class BetrokkeneTests(APITestCase):
             bezoekadres_adresregel1="adres1",
             bezoekadres_adresregel2="adres2",
             bezoekadres_adresregel3="adres3",
-            bezoekadres_land="6030",
+            bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="c06918d9-899b-4d98-a10d-08436ebc6c20",
             correspondentieadres_adresregel1="adres1",
             correspondentieadres_adresregel2="adres2",
             correspondentieadres_adresregel3="adres3",
-            correspondentieadres_land="6030",
+            correspondentieadres_land="NL",
             contactnaam_voorletters="P",
             contactnaam_voornaam="Phil",
             contactnaam_voorvoegsel_achternaam="",
@@ -725,7 +725,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -735,7 +735,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -759,7 +759,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         }
 
@@ -775,7 +775,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
-                "land": "3060",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -785,7 +785,7 @@ class BetrokkeneTests(APITestCase):
                 "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
-                "land": "6030",
+                "land": "NL",
             },
         )
         self.assertEqual(
@@ -1578,14 +1578,14 @@ class MaakKlantcontactEndpointTests(APITestCase):
                     "adresregel1": "adres1",
                     "adresregel2": "adres2",
                     "adresregel3": "adres3",
-                    "land": "6030",
+                    "land": "NL",
                 },
                 "correspondentieadres": {
                     "nummeraanduidingId": "c06918d9-899b-4d98-a10d-08436ebc6c20",
                     "adresregel1": "adres1",
                     "adresregel2": "adres2",
                     "adresregel3": "adres3",
-                    "land": "6030",
+                    "land": "NL",
                 },
                 "contactnaam": {
                     "voorletters": "P",

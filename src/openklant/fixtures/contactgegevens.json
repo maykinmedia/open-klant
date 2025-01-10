@@ -7,12 +7,12 @@
         "adres_adresregel1": "Keizersgracht 117",
         "adres_adresregel2": "1015 CJ Amsterdam",
         "adres_adresregel3": "Noord-Holland",
-        "adres_land": "6030",
+        "adres_land": "NL",
         "uuid": "9df246f7-027b-4305-bf43-043b3b926ed3",
         "handelsnaam": "Maykin Media",
         "oprichtingsdatum": "2008-01-01",
         "opheffingsdatum": null,
-        "land": "6030"
+        "land": "NL"
     }
 },
 {
@@ -23,7 +23,7 @@
         "adres_adresregel1": "Keizersgracht 117",
         "adres_adresregel2": "1015 CJ Amsterdam",
         "adres_adresregel3": "Noord-Holland",
-        "adres_land": "6030",
+        "adres_land": "NL",
         "uuid": "729ff687-e6ab-4627-9a0b-5eca4098b746",
         "geboortedatum": "2000-01-01",
         "overlijdensdatum": null,
@@ -31,7 +31,7 @@
         "geslacht": "v",
         "voorvoegsel": "van",
         "voornamen": "Nagihan",
-        "land": "6030"
+        "land": "NL"
     }
 }
 ]
