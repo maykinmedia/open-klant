@@ -10,7 +10,30 @@ from django.db.models.functions import Length
 logger = logging.getLogger(__name__)
 
 
-def _check_nummeraanduiding_length(apps, schema_editor):
+def _log_records(records, model_name):
+    logger.info("--- START %s INFO ---", model_name)
+    logger.info(
+        "Found %s records for %s that have adres_nummeraanduiding_id length > 16 chars",
+        model_name,
+        records.count(),
+    )
+
+    for record in records:
+        logger.warning(
+            json.dumps(
+                {
+                    "model_name": model_name,
+                    "pk": record.pk,
+                    "uuid": str(record.uuid),
+                    "adres_nummeraanduiding_id": record.adres_nummeraanduiding_id,
+                }
+            )
+        )
+
+    logger.info("--- END %s INFO ---", model_name)
+
+
+def _check_field_length(apps, schema_editor):
 
     Organisatie = apps.get_model("contactgegevens", "Organisatie")
     Persoon = apps.get_model("contactgegevens", "Persoon")
@@ -19,46 +42,12 @@ def _check_nummeraanduiding_length(apps, schema_editor):
         length=Length("adres_nummeraanduiding_id")
     ).filter(length__gt=16)
 
-    logger.info("--- START Organisatie INFO ---")
-    logger.info(
-        "Found %s records for Organisatie that have adres_nummeraanduiding_id length > 16 chars",
-        organisatie_queryset.count(),
-    )
-
-    for record in organisatie_queryset:
-        logger.warning(
-            json.dumps(
-                {
-                    "pk": record.pk,
-                    "uuid": str(record.uuid),
-                    "adres_nummeraanduiding_id": record.adres_nummeraanduiding_id,
-                }
-            )
-        )
-
-    logger.info("--- END Organisatie INFO ---")
-
     persoon_queryset = Persoon.objects.annotate(
         length=Length("adres_nummeraanduiding_id")
     ).filter(length__gt=16)
 
-    logger.info("--- START Persoon INFO ---")
-    logger.info(
-        "Found %s records for Persoon that have adres_nummeraanduiding_id length > 16 chars",
-        persoon_queryset.count(),
-    )
-
-    for record in persoon_queryset:
-        logger.warning(
-            json.dumps(
-                {
-                    "pk": record.pk,
-                    "uuid": str(record.uuid),
-                    "adres_nummeraanduiding_id": record.adres_nummeraanduiding_id,
-                }
-            )
-        )
-    logger.info("--- END Persoon INFO ---")
+    _log_records(organisatie_queryset, "Organisatie")
+    _log_records(persoon_queryset, "Persoon")
 
     if organisatie_queryset or persoon_queryset:
         raise CommandError(
@@ -74,7 +63,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(
-            code=_check_nummeraanduiding_length,
+            code=_check_field_length,
             reverse_code=migrations.RunPython.noop,
         ),
         migrations.AlterField(

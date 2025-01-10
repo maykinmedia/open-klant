@@ -10,7 +10,32 @@ from django.db.models.functions import Length
 logger = logging.getLogger(__name__)
 
 
-def _check_nummeraanduiding_length(apps, schema_editor):
+def _log_records(records, model_name):
+    logger.info("--- START %s INFO ---", model_name)
+    logger.info(
+        "Found %s records for %s that have bezoekadres_nummeraanduiding_id "
+        "or correspondentieadres_nummeraanduiding_id length > 16 chars",
+        model_name,
+        records.count(),
+    )
+
+    for record in records:
+        logger.warning(
+            json.dumps(
+                {
+                    "model_name": model_name,
+                    "pk": record.pk,
+                    "uuid": str(record.uuid),
+                    "bezoekadres_nummeraanduiding_id": record.bezoekadres_nummeraanduiding_id,
+                    "correspondentieadres_nummeraanduiding_id": record.correspondentieadres_nummeraanduiding_id,
+                }
+            )
+        )
+
+    logger.info("--- END %s INFO ---", model_name)
+
+
+def _check_field_length(apps, schema_editor):
 
     Betrokkene = apps.get_model("klantinteracties", "Betrokkene")
     Partij = apps.get_model("klantinteracties", "Partij")
@@ -20,50 +45,13 @@ def _check_nummeraanduiding_length(apps, schema_editor):
         length2=Length("correspondentieadres_nummeraanduiding_id"),
     ).filter(models.Q(length1__gt=16) | models.Q(length2__gt=16))
 
-    logger.info("--- START Betrokkene INFO ---")
-    logger.info(
-        "Found %s records for Betrokkene that have bezoekadres_nummeraanduiding_id or correspondentieadres_nummeraanduiding_id length > 16 chars",
-        betrokkene_queryset.count(),
-    )
-
-    for record in betrokkene_queryset:
-        logger.warning(
-            json.dumps(
-                {
-                    "pk": record.pk,
-                    "uuid": str(record.uuid),
-                    "bezoekadres_nummeraanduiding_id": record.bezoekadres_nummeraanduiding_id,
-                    "correspondentieadres_nummeraanduiding_id": record.correspondentieadres_nummeraanduiding_id,
-                }
-            )
-        )
-
-    logger.info("--- END Betrokkene INFO ---")
-
     partij_queryset = Partij.objects.annotate(
         length1=Length("bezoekadres_nummeraanduiding_id"),
         length2=Length("correspondentieadres_nummeraanduiding_id"),
     ).filter(models.Q(length1__gt=16) | models.Q(length2__gt=16))
 
-    logger.info("--- START Partij INFO ---")
-    logger.info(
-        "Found %s records for Partij that have bezoekadres_nummeraanduiding_id or correspondentieadres_nummeraanduiding_id length > 16 chars",
-        partij_queryset.count(),
-    )
-
-    for record in partij_queryset:
-        logger.info(
-            json.dumps(
-                {
-                    "pk": record.pk,
-                    "uuid": str(record.uuid),
-                    "bezoekadres_nummeraanduiding_id": record.bezoekadres_nummeraanduiding_id,
-                    "correspondentieadres_nummeraanduiding_id": record.correspondentieadres_nummeraanduiding_id,
-                }
-            )
-        )
-
-    logger.warning("--- END Partij INFO ---")
+    _log_records(betrokkene_queryset, "Betrokkene")
+    _log_records(partij_queryset, "Partij")
 
     if betrokkene_queryset or partij_queryset:
         raise CommandError(
@@ -79,7 +67,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(
-            code=_check_nummeraanduiding_length,
+            code=_check_field_length,
             reverse_code=migrations.RunPython.noop,
         ),
         migrations.AlterField(
