@@ -14,8 +14,8 @@ def _log_records(records, model_name):
     logger.info("--- START %s INFO ---", model_name)
     logger.info(
         "Found %s records for %s that have adres_nummeraanduiding_id length > 16 chars",
-        model_name,
         records.count(),
+        model_name,
     )
 
     for record in records:

@@ -15,8 +15,8 @@ def _log_records(records, model_name):
     logger.info(
         "Found %s records for %s that have bezoekadres_nummeraanduiding_id "
         "or correspondentieadres_nummeraanduiding_id length > 16 chars",
-        model_name,
         records.count(),
+        model_name,
     )
 
     for record in records:
