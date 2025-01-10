@@ -1,8 +1,9 @@
-from django.core.validators import MinLengthValidator, validate_integer
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
+
 from openklant.utils.validators import validate_country
 
 
