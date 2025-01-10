@@ -3,11 +3,11 @@ from django.test import TestCase
 
 from openklant.utils.validators import (
     validate_charfield_entry,
+    validate_country,
     validate_iban,
     validate_no_space,
     validate_phone_number,
     validate_postal_code,
-    validate_country,
 )
 
 
