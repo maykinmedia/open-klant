@@ -126,6 +126,7 @@ jobs:
     with:
       main-branch: 'master'
       run-docs: true
+      apt-packages: 'gdal-bin'
       python-version: '3.11'
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
       django-settings-module: openklant.conf.ci
