@@ -120,14 +120,9 @@ jobs:
         id: image-name
 
   open-api-ci:
-    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v3.0.2
+    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@feature/fix-gdal-bin-dependencies
     needs:
       - store-reusable-workflow-vars
-    run: |
-          sudo apt-get update \
-          && sudo apt-get install -y --no-install-recommends \
-            libgdal-dev \
-            gdal-bin
     with:
       main-branch: 'master'
       run-docs: true
