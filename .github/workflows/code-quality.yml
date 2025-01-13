@@ -22,6 +22,7 @@ jobs:
   open-api-workflow-code-quality:
     uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@v1
     with:
+      apt-packages: 'gdal-bin'
       python-version: '3.11'
       node-version: '18'
 
