@@ -108,6 +108,8 @@ jobs:
               exit 1
           fi
 
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends libgdal-dev gdal-bin
+
   store-reusable-workflow-vars:
     name: create values which can be passed through a reusable workflow
     runs-on: ubuntu-latest
