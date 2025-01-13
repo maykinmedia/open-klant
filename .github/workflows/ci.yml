@@ -71,6 +71,7 @@ jobs:
       - name: Set up backend environment
         uses: maykinmedia/setup-django-backend@v1.3
         with:
+          apt-packages: 'gdal-bin'
           python-version: '3.11'
           setup-node: true
 
@@ -93,6 +94,7 @@ jobs:
       - name: Set up backend environment
         uses: maykinmedia/setup-django-backend@v1.3
         with:
+          apt-packages: 'gdal-bin'
           python-version: '3.11'
           setup-node: false
 
@@ -122,6 +124,7 @@ jobs:
     needs:
       - store-reusable-workflow-vars
     with:
+      apt-packages: 'gdal-bin'
       main-branch: 'master'
       run-docs: true
       python-version: '3.11'
