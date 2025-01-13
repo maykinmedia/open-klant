@@ -71,7 +71,6 @@ jobs:
       - name: Set up backend environment
         uses: maykinmedia/setup-django-backend@v1.3
         with:
-          apt-packages: 'libgdal-dev gdal-bin'
           python-version: '3.11'
           setup-node: true
 
@@ -94,14 +93,11 @@ jobs:
       - name: Set up backend environment
         uses: maykinmedia/setup-django-backend@v1.3
         with:
-          apt-packages: 'libgdal-dev gdal-bin'
           python-version: '3.11'
           setup-node: false
 
       - name: Generate environment variable documentation using OAf and check if it was updated
         run: |
-          sudo apt-get update && sudo apt-get install -y --no-install-recommends libgdal-dev gdal-bin
-          
           bin/generate_envvar_docs.sh
           changes=$(git diff docs/installation/config.rst)
           if [ ! -z "$changes" ]; then
@@ -109,7 +105,6 @@ jobs:
               echo "Please update the environment documentation by running \`bin/generate_envvar_docs.sh\`"
               exit 1
           fi
-
 
   store-reusable-workflow-vars:
     name: create values which can be passed through a reusable workflow
@@ -123,7 +118,7 @@ jobs:
         id: image-name
 
   open-api-ci:
-    uses: tests/open-api-workflows/.github/workflows/ci.yml@feature/fix-gdal-bin-dependencies
+    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v3.0.2
     needs:
       - store-reusable-workflow-vars
     with:
