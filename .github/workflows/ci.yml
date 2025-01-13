@@ -123,12 +123,11 @@ jobs:
         id: image-name
 
   open-api-ci:
-    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v3.0.2
+    uses: tests/open-api-workflows/.github/workflows/ci.yml@feature/fix-gdal-bin-dependencies
     needs:
       - store-reusable-workflow-vars
     with:
       main-branch: 'master'
-      apt-packages: 'libgdal-dev gdal-bin'
       run-docs: true
       python-version: '3.11'
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
