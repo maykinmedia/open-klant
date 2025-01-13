@@ -71,6 +71,7 @@ jobs:
       - name: Set up backend environment
         uses: maykinmedia/setup-django-backend@v1.3
         with:
+          apt-packages: 'libgdal-dev gdal-bin'
           python-version: '3.11'
           setup-node: true
 
