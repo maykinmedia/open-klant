@@ -100,6 +100,8 @@ jobs:
 
       - name: Generate environment variable documentation using OAf and check if it was updated
         run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends libgdal-dev gdal-bin
+          
           bin/generate_envvar_docs.sh
           changes=$(git diff docs/installation/config.rst)
           if [ ! -z "$changes" ]; then
@@ -108,7 +110,6 @@ jobs:
               exit 1
           fi
 
-          sudo apt-get update && sudo apt-get install -y --no-install-recommends libgdal-dev gdal-bin
 
   store-reusable-workflow-vars:
     name: create values which can be passed through a reusable workflow
