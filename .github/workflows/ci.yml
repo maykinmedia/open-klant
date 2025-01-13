@@ -128,6 +128,7 @@ jobs:
       - store-reusable-workflow-vars
     with:
       main-branch: 'master'
+      apt-packages: 'libgdal-dev gdal-bin'
       run-docs: true
       python-version: '3.11'
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
