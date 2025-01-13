@@ -49,6 +49,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         postgresql-client \
         gettext \
         binutils \
+        # commonground-api-common > 2.3.0
+        libgdal-dev \ 
+        gdal-bin \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install pip "setuptools>=70.0.0"
