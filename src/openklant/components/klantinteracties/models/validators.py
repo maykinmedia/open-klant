@@ -69,6 +69,7 @@ class PartijIdentificatorValidator:
         if not self.code_objecttype:
             return
 
+        # pass if top level is null or 'overig'
         if (
             not self.code_register
             or self.code_register == PartijIdentificatorCodeRegister.overig
@@ -92,6 +93,7 @@ class PartijIdentificatorValidator:
         if not self.code_soort_object_id:
             return
 
+        # pass if top level is null or 'overig'
         if (
             not self.code_objecttype
             or self.code_objecttype == PartijIdentificatorCodeObjectType.overig
