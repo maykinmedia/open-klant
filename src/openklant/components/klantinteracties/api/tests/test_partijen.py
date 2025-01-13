@@ -2182,7 +2182,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
             response.data["invalid_params"][0]["reason"],
-            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8, 9]",
+            "ObjectId ongeldig, reden: Waarde moet 9 tekens lang zijn",
         )
 
     def test_valid_validation_partij_identificator(self):

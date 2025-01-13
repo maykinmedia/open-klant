@@ -187,7 +187,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8, 9]",
+            "ObjectId ongeldig, reden: Waarde moet 9 tekens lang zijn",
         )
 
     def test_object_id_invalid_digit_bsn(self):
@@ -217,7 +217,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: Onjuist BSN nummer.",
+            "ObjectId ongeldig, reden: Onjuist BSN nummer",
         )
 
     def test_object_id_invalid_vestigingsnummer(self):
@@ -232,7 +232,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [12]",
+            "ObjectId ongeldig, reden: Waarde moet 12 tekens lang zijn",
         )
 
     def test_object_id_invalid_rsin(self):
@@ -247,7 +247,7 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8, 9]",
+            "ObjectId ongeldig, reden: Waarde moet 9 tekens lang zijn",
         )
 
     def test_object_id_invalid_kvk_nummer(self):
@@ -262,5 +262,5 @@ class PartijIdentificatorValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "ObjectId ongeldig, reden: De lengte van de waarde moet gelijk zijn aan een van deze waarden: [8]",
+            "ObjectId ongeldig, reden: Waarde moet 8 tekens lang zijn",
         )
