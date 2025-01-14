@@ -340,10 +340,10 @@
         "uuid": "dd328a2e-7b8e-4809-be28-f9f894c11c34",
         "partij": 1,
         "andere_partij_identificator": "",
-        "partij_identificator_code_objecttype": "INGESCHREVEN NATUURLIJK PERSOON",
-        "partij_identificator_code_soort_object_id": "Burgerservicenummer",
-        "partij_identificator_object_id": "123456788",
-        "partij_identificator_code_register": "BRP"
+        "partij_identificator_code_objecttype": "natuurlijk_persoon",
+        "partij_identificator_code_soort_object_id": "bsn",
+        "partij_identificator_object_id": "296648875",
+        "partij_identificator_code_register": "brp"
     }
 },
 {

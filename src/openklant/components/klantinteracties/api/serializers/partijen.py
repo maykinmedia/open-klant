@@ -42,6 +42,10 @@ from openklant.components.klantinteracties.models.partijen import (
     Vertegenwoordigden,
 )
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
+from openklant.components.klantinteracties.models.validators import (
+    PartijIdentificatorValidator,
+)
+from openklant.utils.serializers import get_field_value
 
 
 class PartijForeignkeyBaseSerializer(serializers.HyperlinkedModelSerializer):
@@ -398,6 +402,16 @@ class PartijIdentificatorSerializer(
                 "help_text": "De unieke URL van deze partij indentificator binnen deze API.",
             },
         }
+
+    def validate(self, attrs):
+        partij_identificator = get_field_value(self, attrs, "partij_identificator")
+        PartijIdentificatorValidator(
+            code_register=partij_identificator["code_register"],
+            code_objecttype=partij_identificator["code_objecttype"],
+            code_soort_object_id=partij_identificator["code_soort_object_id"],
+            object_id=partij_identificator["object_id"],
+        ).validate()
+        return super().validate(attrs)
 
     @transaction.atomic
     def update(self, instance, validated_data):
