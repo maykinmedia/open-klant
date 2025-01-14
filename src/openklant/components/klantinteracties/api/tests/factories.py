@@ -17,7 +17,7 @@ class BezoekAdresDataFactory(factory.DictFactory):
     adresregel1 = "adres1"
     adresregel2 = "adres2"
     adresregel3 = "adres3"
-    land = "6030"
+    land = "NL"
 
 
 class CorrespondentieAdresDataFactory(factory.DictFactory):
@@ -25,7 +25,7 @@ class CorrespondentieAdresDataFactory(factory.DictFactory):
     adresregel1 = "adres1"
     adresregel2 = "adres2"
     adresregel3 = "adres3"
-    land = "6030"
+    land = "NL"
 
 
 class ContactNaamDataFactory(factory.DictFactory):
