@@ -3503,7 +3503,7 @@ components:
         isStandaardAdres:
           type: boolean
           description: Geeft aan of dit digitaal adres het standaard adres is voor
-            het `soort_digitaal_adres`
+            het `soortDigitaalAdres`
         omschrijving:
           type: string
           description: Omschrijving van het digitaal adres.
@@ -4914,7 +4914,7 @@ components:
         isStandaardAdres:
           type: boolean
           description: Geeft aan of dit digitaal adres het standaard adres is voor
-            het `soort_digitaal_adres`
+            het `soortDigitaalAdres`
         omschrijving:
           type: string
           description: Omschrijving van het digitaal adres.
