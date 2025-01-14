@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from openklant.utils.validators import (
+    validate_bag_id,
     validate_charfield_entry,
     validate_iban,
     validate_no_space,
@@ -147,3 +148,28 @@ class ValidatorsTestCase(TestCase):
         self.assertIsNone(validate_iban("ab1299999999999"))
         self.assertIsNone(validate_iban("ab129"))
         self.assertIsNone(validate_iban("ab12aaaaaaaaaa"))
+
+    def test_validate_bag_id(self):
+        """
+        Test Basisregistratie Adressen en Gebouwen ID
+        """
+        invalid_ids = [
+            "",
+            "1",
+            "1000 AAA",
+            "1000AAA",
+            "000000000000000",
+            "AAAAAAAAAAAAAAAA",
+            "1234-1234-1234-1234",
+            "123A123A123A123A",
+        ]
+        for bag_id in invalid_ids:
+            self.assertRaisesMessage(
+                ValidationError,
+                "Ongeldige nummeraanduiding BAG-ID",
+                validate_bag_id,
+                bag_id,
+            )
+
+        self.assertIsNone(validate_bag_id("1234567890000001"))
+        self.assertIsNone(validate_bag_id("1111111111111111"))
