@@ -2,7 +2,7 @@
 Open Klant
 ==========
 
-:Version: 2.4.0
+:Version: 2.5.0
 :Source: https://github.com/maykinmedia/open-klant
 :Keywords: klanten, klantinteracties, contactmomenten, api, common ground
 :License: EUPL
@@ -39,15 +39,17 @@ Open Klant versie   API versie      Release datum   API specificatie
 ==================  ==============  =============   ================
 master/latest       n/a             n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.4.0..master>`_)
-2.4.0               0.0.3+          2024-11-22      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.4.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.5.0..master>`_)
+2.5.0               0.0.4           2025-01-28      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.5.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.5.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.4.0..2.5.0>`_)
+2.4.0               0.0.3           2024-11-22      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.4.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.4.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
-
                                                     (`diff <https://github.com/maykinmedia/open-klant/compare/2.3.0..2.4.0>`_)
-2.3.0               0.0.3+          2024-09-05      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.3.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+2.3.0               0.0.3           2024-09-05      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.3.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.3.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     (`diff <https://github.com/maykinmedia/open-klant/compare/2.1.0..2.3.0>`_)
-2.1.0               0.0.3+          2024-07-16      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.1.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+2.1.0               0.0.3           2024-07-16      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.1.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.1.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     (`diff <https://github.com/maykinmedia/open-klant/compare/2.0.0..2.1.0>`_)
 2.0.0               0.0.3           2024-03-15      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.0.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
