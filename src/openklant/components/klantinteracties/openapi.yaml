@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: klantinteracties
-  version: 0.0.3
+  version: 0.0.4
   description: |2
 
     Description WIP.
