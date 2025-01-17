@@ -57,7 +57,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.1.2
+commonground-api-common==2.4.1
     # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
@@ -100,7 +100,6 @@ django==4.2.17
     #   drf-nested-routers
     #   drf-spectacular
     #   drf-spectacular-sidecar
-    #   drf-yasg
     #   maykin-2fa
     #   mozilla-django-oidc
     #   mozilla-django-oidc-db
@@ -172,7 +171,6 @@ djangorestframework==3.15.2
     #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-spectacular
-    #   drf-yasg
     #   notifications-api-common
     #   open-api-framework
 djangorestframework-camel-case==1.4.2
@@ -186,11 +184,11 @@ djangorestframework-inclusions==1.2.0
 drf-nested-routers==0.94.1
     # via commonground-api-common
 drf-spectacular==0.27.2
-    # via open-api-framework
+    # via
+    #   commonground-api-common
+    #   open-api-framework
 drf-spectacular-sidecar==2024.7.1
     # via drf-spectacular
-drf-yasg==1.21.7
-    # via commonground-api-common
 ecs-logging==2.2.0
     # via elastic-apm
 elastic-apm==6.23.0
@@ -208,9 +206,7 @@ humanize==4.10.0
 idna==3.7
     # via requests
 inflection==0.5.1
-    # via
-    #   drf-spectacular
-    #   drf-yasg
+    # via drf-spectacular
 iso-639==0.4.5
     # via commonground-api-common
 isodate==0.6.1
@@ -245,8 +241,6 @@ orderedmultidict==1.0.1
     # via furl
 oyaml==1.0
     # via commonground-api-common
-packaging==24.1
-    # via drf-yasg
 phonenumberslite==8.13.42
     # via django-two-factor-auth
 prometheus-client==0.20.0
@@ -286,13 +280,10 @@ python-dotenv==1.0.1
     #   open-api-framework
     #   pydantic-settings
 pytz==2024.1
-    # via
-    #   drf-yasg
-    #   flower
+    # via flower
 pyyaml==6.0.1
     # via
     #   drf-spectacular
-    #   drf-yasg
     #   oyaml
     #   pydantic-settings
 qrcode==7.4.2
@@ -345,7 +336,6 @@ uritemplate==4.1.1
     # via
     #   coreapi
     #   drf-spectacular
-    #   drf-yasg
 urllib3==2.2.2
     # via
     #   elastic-apm

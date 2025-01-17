@@ -340,6 +340,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze actor binnen deze API.
+          minLength: 1
+          maxLength: 1000
         handelsnaam:
           type: string
           description: De naam waaronder een bedrijf of vestiging handelt.
@@ -375,18 +377,6 @@ components:
       - uuid
     OrganisatieAdres:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         nummeraanduidingId:
           type: string
@@ -477,6 +467,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze actor binnen deze API.
+          minLength: 1
+          maxLength: 1000
         handelsnaam:
           type: string
           description: De naam waaronder een bedrijf of vestiging handelt.
@@ -523,6 +515,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze organisatie binnen deze API.
+          minLength: 1
+          maxLength: 1000
         geboortedatum:
           type: string
           format: date
@@ -587,6 +581,8 @@ components:
           format: uri
           readOnly: true
           description: De unieke URL van deze organisatie binnen deze API.
+          minLength: 1
+          maxLength: 1000
         geboortedatum:
           type: string
           format: date
@@ -641,18 +637,6 @@ components:
       - uuid
     PersoonAdres:
       type: object
-      description: |-
-        Generate a serializer out of a GegevensGroepType.
-
-        Usage::
-
-        >>> class VerlengingSerializer(GegevensGroepSerializer):
-        ...     class Meta:
-        ...         model = Zaak
-        ...         gegevensgroep = 'verlenging'
-        >>>
-
-        Where ``Zaak.verlenging`` is a :class:``GegevensGroepType``.
       properties:
         nummeraanduidingId:
           type: string
