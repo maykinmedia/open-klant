@@ -494,6 +494,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     )
     partij_identificatoren = PartijIdentificatorSerializer(
         many=True,
+        required=False,
         source="partijidentificator_set",
         help_text=_("Partij-identificatoren die hoorde bij deze partij."),
     )
