@@ -370,7 +370,7 @@ class PartijIdentificatorSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     identificeerde_partij = PartijForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("Partij-identificator die hoorde bij een partij."),
         source="partij",
@@ -492,8 +492,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     vertegenwoordigden = serializers.SerializerMethodField(
         help_text=_("Partijen die een andere partijen vertegenwoordigden."),
     )
-    partij_identificatoren = PartijIdentificatorForeignkeySerializer(
-        read_only=True,
+    partij_identificatoren = PartijIdentificatorSerializer(
         many=True,
         source="partijidentificator_set",
         help_text=_("Partij-identificatoren die hoorde bij deze partij."),
@@ -737,6 +736,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         partij_identificatie = validated_data.pop("partij_identificatie", None)
         digitale_adressen = validated_data.pop("digitaaladres_set")
         rekeningnummers = validated_data.pop("rekeningnummer_set")
+        partij_identificatoren = validated_data.pop("partijidentificator_set", [])
 
         if voorkeurs_digitaal_adres := validated_data.pop(
             "voorkeurs_digitaal_adres", None
@@ -813,6 +813,15 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 )
                 rekeningnummer.partij = partij
                 rekeningnummer.save()
+
+        if partij_identificatoren:
+            for partij_identificator in partij_identificatoren:
+                partij_identificator["partij"] = {"uuid": str(partij.uuid)}
+                partij_identificator_serializer = PartijIdentificatorSerializer(
+                    data=partij_identificator
+                )
+                partij_identificator_serializer.is_valid(raise_exception=True)
+                partij_identificator_serializer.create(partij_identificator)
 
         return partij
 
