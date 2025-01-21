@@ -131,6 +131,17 @@ class PartijTests(APITestCase):
                     "achternaam": "Bozeman",
                 }
             },
+            "partijIdentificatoren": [
+                {
+                    "anderePartijIdentificator": "string",
+                    "partijIdentificator": {
+                        "codeObjecttype": "natuurlijk_persoon",
+                        "codeSoortObjectId": "bsn",
+                        "objectId": "296648875",
+                        "codeRegister": "brp",
+                    },
+                }
+            ],
         }
 
         response = self.client.post(list_url, data)
@@ -174,18 +185,14 @@ class PartijTests(APITestCase):
             },
         )
         self.assertEqual(
-            data["partijIdentificatie"],
+            data["partijIdentificatoren"][0]["partijIdentificator"],
             {
-                "volledigeNaam": "Phil Bozeman",
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                },
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "296648875",
+                "codeRegister": "brp",
             },
         )
-
         with self.subTest("create_partij_without_foreignkey_relations"):
             data["nummer"] = "1298329192"
             data["digitaleAdressen"] = []
