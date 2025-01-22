@@ -425,9 +425,14 @@ class PartijIdentificatorSerializer(
 
     @transaction.atomic
     def create(self, validated_data):
-        partij_uuid = str(validated_data.pop("partij").get("uuid"))
-        validated_data["partij"] = Partij.objects.get(uuid=partij_uuid)
+        partij = validated_data.pop("partij", None)
+        if not partij:
+            raise serializers.ValidationError(
+                {"identificeerde_partij": _("Dit veld is vereist.")},
+                code="required",
+            )
 
+        validated_data["partij"] = Partij.objects.get(uuid=str(partij.get("uuid")))
         return super().create(validated_data)
 
 
@@ -721,12 +726,16 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         if partij_identificatoren:
             partij.partijidentificator_set.all().delete()
             for partij_identificator in partij_identificatoren:
-                partij_identificator["partij"] = {"uuid": str(partij.uuid)}
+                partij_identificator["identificeerde_partij"] = {
+                    "uuid": str(partij.uuid)
+                }
                 partij_identificator_serializer = PartijIdentificatorSerializer(
                     data=partij_identificator
                 )
                 partij_identificator_serializer.is_valid(raise_exception=True)
-                partij_identificator_serializer.create(partij_identificator)
+                partij_identificator_serializer.create(
+                    partij_identificator_serializer.validated_data
+                )
 
         if partij_identificatie:
             serializer_class = self.discriminator.mapping[
@@ -828,12 +837,16 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
         if partij_identificatoren:
             for partij_identificator in partij_identificatoren:
-                partij_identificator["partij"] = {"uuid": str(partij.uuid)}
+                partij_identificator["identificeerde_partij"] = {
+                    "uuid": str(partij.uuid)
+                }
                 partij_identificator_serializer = PartijIdentificatorSerializer(
                     data=partij_identificator
                 )
                 partij_identificator_serializer.is_valid(raise_exception=True)
-                partij_identificator_serializer.create(partij_identificator)
+                partij_identificator_serializer.create(
+                    partij_identificator_serializer.validated_data
+                )
 
         return partij
 
