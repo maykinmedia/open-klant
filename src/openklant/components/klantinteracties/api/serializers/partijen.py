@@ -571,6 +571,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     def update(self, instance, validated_data):
         method = self.context.get("request").method
         partij_identificatie = validated_data.pop("partij_identificatie", None)
+        partij_identificatoren = validated_data.pop("partijidentificator_set", [])
 
         if "digitaaladres_set" in validated_data:
             existing_digitale_adressen = instance.digitaaladres_set.all()
@@ -716,6 +717,17 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             instance.vertegenwoordigde.set(vertegenwoordigde)
 
         partij = super().update(instance, validated_data)
+
+        if partij_identificatoren:
+            partij.partijidentificator_set.all().delete()
+            for partij_identificator in partij_identificatoren:
+                partij_identificator["partij"] = {"uuid": str(partij.uuid)}
+                partij_identificator_serializer = PartijIdentificatorSerializer(
+                    data=partij_identificator
+                )
+                partij_identificator_serializer.is_valid(raise_exception=True)
+                partij_identificator_serializer.create(partij_identificator)
+
 
         if partij_identificatie:
             serializer_class = self.discriminator.mapping[

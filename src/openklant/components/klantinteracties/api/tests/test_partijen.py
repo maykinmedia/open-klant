@@ -680,6 +680,14 @@ class PartijTests(APITestCase):
         rekeningnummer = RekeningnummerFactory.create(partij=partij)
         rekeningnummer2 = RekeningnummerFactory.create()
 
+        partij_identificator = PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype="natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="296648875",
+            partij_identificator_code_register="brp",
+        )
+
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -745,6 +753,16 @@ class PartijTests(APITestCase):
             },
         )
 
+        self.assertEqual(
+            data["partijIdentificatoren"][0]["partijIdentificator"],
+            {
+                "codeObjecttype": partij_identificator.partij_identificator_code_objecttype,
+                "codeSoortObjectId": partij_identificator.partij_identificator_code_soort_object_id,
+                "objectId": partij_identificator.partij_identificator_object_id,
+                "codeRegister": partij_identificator.partij_identificator_code_register,
+            },
+        )
+
         data = {
             "nummer": "6427834668",
             "interneNotitie": "changed",
@@ -778,6 +796,17 @@ class PartijTests(APITestCase):
                     "achternaam": "Bennette",
                 }
             },
+            "partijIdentificatoren": [
+                {
+                    "anderePartijIdentificator": "string",
+                    "partijIdentificator": {
+                        "codeObjecttype": "niet_natuurlijk_persoon",
+                        "codeSoortObjectId": "rsin",
+                        "objectId": "296648875",
+                        "codeRegister": "hr",
+                    },
+                }
+            ],
         }
 
         response = self.client.put(detail_url, data)
@@ -844,6 +873,16 @@ class PartijTests(APITestCase):
                     "voorvoegselAchternaam": "",
                     "achternaam": "Bennette",
                 },
+            },
+        )
+        self.assertEqual(len(data["partijIdentificatoren"]), 1)
+        self.assertEqual(
+            data["partijIdentificatoren"][0]["partijIdentificator"],
+            {
+                "codeObjecttype": "niet_natuurlijk_persoon",
+                "codeSoortObjectId": "rsin",
+                "objectId": "296648875",
+                "codeRegister": "hr",
             },
         )
 
