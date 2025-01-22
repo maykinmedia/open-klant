@@ -3065,8 +3065,7 @@ components:
         partijIdentificatoren:
           type: array
           items:
-            $ref: '#/components/schemas/PartijIdentificatorForeignkey'
-          readOnly: true
+            $ref: '#/components/schemas/PartijIdentificator'
           description: Partij-identificatoren die hoorde bij deze partij.
         soortPartij:
           allOf:
@@ -3107,7 +3106,6 @@ components:
       - categorieRelaties
       - digitaleAdressen
       - indicatieActief
-      - partijIdentificatoren
       - rekeningnummers
       - soortPartij
       - url
@@ -4755,25 +4753,7 @@ components:
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
       required:
-      - identificeerdePartij
       - partijIdentificator
-      - url
-      - uuid
-    PartijIdentificatorForeignkey:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: Unieke (technische) identificatiecode van de partij-identificator.
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          description: De unieke URL van deze partij indentificator binnen deze API.
-          minLength: 1
-          maxLength: 1000
-      required:
       - url
       - uuid
     PartijIdentificatorGroepType:
