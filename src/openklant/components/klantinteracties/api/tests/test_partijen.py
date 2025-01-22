@@ -1024,6 +1024,105 @@ class PartijTests(APITestCase):
                 },
             )
 
+    def test_update_partij_partijidentificator_empty_list(self):
+        partij = PartijFactory.create(
+            nummer="1298329191",
+            interne_notitie="interneNotitie",
+            voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
+            soort_partij="persoon",
+            indicatie_geheimhouding=True,
+            voorkeurstaal="ndl",
+            indicatie_actief=True,
+            bezoekadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            bezoekadres_adresregel1="adres1",
+            bezoekadres_adresregel2="adres2",
+            bezoekadres_adresregel3="adres3",
+            bezoekadres_land="6030",
+            correspondentieadres_nummeraanduiding_id="095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            correspondentieadres_adresregel1="adres1",
+            correspondentieadres_adresregel2="adres2",
+            correspondentieadres_adresregel3="adres3",
+            correspondentieadres_land="6030",
+        )
+        PersoonFactory.create(
+            partij=partij,
+            contactnaam_voorletters="P",
+            contactnaam_voornaam="Phil",
+            contactnaam_voorvoegsel_achternaam="",
+            contactnaam_achternaam="Bozeman",
+        )
+
+        digitaal_adres2 = DigitaalAdresFactory.create()
+        rekeningnummer2 = RekeningnummerFactory.create()
+
+        partij_identificator = PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype="natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="296648875",
+            partij_identificator_code_register="brp",
+        )
+
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+        response = self.client.get(detail_url)
+        data = response.json()
+        self.assertEqual(partij.partijidentificator_set.all().count(), 1)
+        self.assertEqual(
+            data["partijIdentificatoren"][0]["partijIdentificator"],
+            {
+                "codeObjecttype": partij_identificator.partij_identificator_code_objecttype,
+                "codeSoortObjectId": partij_identificator.partij_identificator_code_soort_object_id,
+                "objectId": partij_identificator.partij_identificator_object_id,
+                "codeRegister": partij_identificator.partij_identificator_code_register,
+            },
+        )
+
+        data = {
+            "nummer": "6427834668",
+            "interneNotitie": "changed",
+            "digitaleAdressen": [{"uuid": str(digitaal_adres2.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres2.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer2.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer2.uuid)},
+            "soortPartij": "persoon",
+            "indicatieGeheimhouding": None,
+            "voorkeurstaal": "ger",
+            "indicatieActief": False,
+            "bezoekadres": {
+                "nummeraanduidingId": "f78sd8f-uh45-34km-2o3n-aasdasdasc9g",
+                "adresregel1": "changed",
+                "adresregel2": "changed",
+                "adresregel3": "changed",
+                "land": "3060",
+            },
+            "correspondentieadres": {
+                "nummeraanduidingId": "sd76f7sd-j4nr-a9s8-83ec-sad89f79a7sd",
+                "adresregel1": "changed",
+                "adresregel2": "changed",
+                "adresregel3": "changed",
+                "land": "3060",
+            },
+            "partijIdentificatie": {
+                "contactnaam": {
+                    "voorletters": "V",
+                    "voornaam": "Vincent",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bennette",
+                }
+            },
+            "partijIdentificatoren": [],
+        }
+
+        response = self.client.put(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        self.assertEqual(len(data["partijIdentificatoren"]), 0)
+        self.assertEqual(partij.partijidentificator_set.all().count(), 0)
+
     def test_update_partij_persoon(self):
         partij = PartijFactory.create(
             nummer="1298329191",
