@@ -576,7 +576,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     def update(self, instance, validated_data):
         method = self.context.get("request").method
         partij_identificatie = validated_data.pop("partij_identificatie", None)
-        partij_identificatoren = validated_data.pop("partijidentificator_set", [])
+        partij_identificatoren = validated_data.pop("partijidentificator_set", None)
 
         if "digitaaladres_set" in validated_data:
             existing_digitale_adressen = instance.digitaaladres_set.all()
@@ -723,7 +723,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
         partij = super().update(instance, validated_data)
 
-        if partij_identificatoren:
+        if partij_identificatoren is not None:
             partij.partijidentificator_set.all().delete()
             for partij_identificator in partij_identificatoren:
                 partij_identificator["identificeerde_partij"] = {
@@ -757,7 +757,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         partij_identificatie = validated_data.pop("partij_identificatie", None)
         digitale_adressen = validated_data.pop("digitaaladres_set")
         rekeningnummers = validated_data.pop("rekeningnummer_set")
-        partij_identificatoren = validated_data.pop("partijidentificator_set", [])
+        partij_identificatoren = validated_data.pop("partijidentificator_set", None)
 
         if voorkeurs_digitaal_adres := validated_data.pop(
             "voorkeurs_digitaal_adres", None
@@ -835,7 +835,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 rekeningnummer.partij = partij
                 rekeningnummer.save()
 
-        if partij_identificatoren:
+        if partij_identificatoren is not None:
             for partij_identificator in partij_identificatoren:
                 partij_identificator["identificeerde_partij"] = {
                     "uuid": str(partij.uuid)
