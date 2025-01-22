@@ -1946,6 +1946,30 @@ class PartijIdentificatorTests(APITestCase):
             },
         )
 
+    def test_create_partij_indetificator_invalid_without_identificeerdePartij(self):
+        list_url = reverse("klantinteracties:partijidentificator-list")
+        data = {
+            "anderePartijIdentificator": "anderePartijIdentificator",
+            "partijIdentificator": {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "296648875",
+                "codeRegister": "brp",
+            },
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data["code"], "invalid")
+        self.assertEqual(response.data["title"], "Invalid input.")
+        self.assertEqual(
+            response.data["invalid_params"][0]["name"], "identificeerdePartij"
+        )
+        self.assertEqual(response.data["invalid_params"][0]["code"], "required")
+        self.assertEqual(
+            response.data["invalid_params"][0]["reason"], "Dit veld is vereist."
+        )
+
     def test_update_partij_indetificator(self):
         partij, partij2 = PartijFactory.create_batch(2)
         partij_identificator = PartijIdentificatorFactory.create(
