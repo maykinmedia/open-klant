@@ -2045,7 +2045,7 @@ class PartijIdentificatorTests(APITestCase):
             },
         )
 
-    def test_create_partij_indetificator_invalid_without_identificeerdePartij(self):
+    def test_create_partij_indentificator_invalid_without_identificeerdePartij(self):
         list_url = reverse("klantinteracties:partijidentificator-list")
         data = {
             "anderePartijIdentificator": "anderePartijIdentificator",
