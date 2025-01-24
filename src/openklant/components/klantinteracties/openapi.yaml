@@ -2136,7 +2136,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PartijIdentificator'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2189,7 +2188,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PartijIdentificator'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -3066,6 +3064,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PartijIdentificator'
+          nullable: true
           description: Partij-identificatoren die hoorde bij deze partij.
         soortPartij:
           allOf:
@@ -4726,7 +4725,6 @@ components:
         uuid:
           type: string
           format: uuid
-          readOnly: true
           description: Unieke (technische) identificatiecode van de partij-identificator.
         url:
           type: string
@@ -4753,9 +4751,7 @@ components:
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
       required:
-      - partijIdentificator
       - url
-      - uuid
     PartijIdentificatorGroepType:
       type: object
       properties:
@@ -5250,7 +5246,6 @@ components:
         uuid:
           type: string
           format: uuid
-          readOnly: true
           description: Unieke (technische) identificatiecode van de partij-identificator.
         url:
           type: string
