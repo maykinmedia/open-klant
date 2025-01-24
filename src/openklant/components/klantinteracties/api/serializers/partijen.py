@@ -751,9 +751,14 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                     data=partij_identificator
                 )
                 partij_identificator_serializer.is_valid(raise_exception=True)
-                partij_identificator_serializer.create(
-                    partij_identificator_serializer.validated_data
-                )
+                if "uuid" in partij_identificator:
+                    PartijIdentificator.objects.filter(
+                        uuid=partij_identificator["uuid"]
+                    ).update(partij=partij)
+                else:
+                    partij_identificator_serializer.create(
+                        partij_identificator_serializer.validated_data
+                    )
 
         if partij_identificatie:
             serializer_class = self.discriminator.mapping[
