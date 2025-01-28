@@ -2,6 +2,44 @@
 Change history
 ==============
 
+2.5.0
+=====
+*January, 28, 2025*
+
+**New features**
+
+* Add support for setup configuration
+    * [#293] Configuring access tokens
+    * [#294] Admin authentication via OIDC
+
+**Bugfixes/QoL**:
+
+* Add UUID to Klantinteracties admin search fields and fieldsets
+* [#254] Fix incorrect URLs being returned in API responses for ``Persoon``, ``Bijlage`` and ``CategorieRelatie``
+* [#265] Fix ``adres__icontains`` for GET requests on ``digitaleadressen`` endpoint
+* [#272] Make ``digitaalAdres.omschrijving`` not required
+* [#252] Make ``Persoon.overlijdensdatum`` optional via admin interface
+* Point help text for ``DigitaalAdres.is_standaard_adres`` to correctly cased field name
+* [maykinmedia/charts#148] Add timeouts to celery tasks
+
+
+**Project maintenance**
+
+* [#66] Update zgw-consumers to 0.35.1
+* [#66] Update commonground-api-common to 2.1.2
+* [#66] Update notifications-api-common to 0.3.1
+* Update open-api-framework to 0.9.2
+* [maykinmedia/open-api-framework#92] Make sure documentation is built in CI
+* [maykinmedia/open-api-framework#92] Fix pushing of Docker latest tag
+* Fix code-analysis workflow
+* [maykinmedia/open-api-framework#81] Switch from pip-compile to UV
+* [maykinmedia/open-api-framework#93] Security updates for third party libraries
+
+**Documentation**
+
+* Add documentation for OpenKlant v2 semantic information model
+
+
 2.4.0
 =====
 *November, 26, 2024*
