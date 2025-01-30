@@ -370,13 +370,13 @@ class PartijIdentificatorSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     identificeerde_partij = PartijForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("Partij-identificator die hoorde bij een partij."),
         source="partij",
     )
     partij_identificator = PartijIdentificatorGroepTypeSerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Gegevens die een partij in een basisregistratie "
@@ -395,7 +395,7 @@ class PartijIdentificatorSerializer(
         )
 
         extra_kwargs = {
-            "uuid": {"read_only": True},
+            "uuid": {"required": False, "validators": [partij_identificator_exists]},
             "url": {
                 "view_name": "klantinteracties:partijidentificator-detail",
                 "lookup_field": "uuid",
@@ -403,15 +403,17 @@ class PartijIdentificatorSerializer(
             },
         }
 
-    def validate(self, attrs):
-        partij_identificator = get_field_value(self, attrs, "partij_identificator")
-        PartijIdentificatorValidator(
-            code_register=partij_identificator["code_register"],
-            code_objecttype=partij_identificator["code_objecttype"],
-            code_soort_object_id=partij_identificator["code_soort_object_id"],
-            object_id=partij_identificator["object_id"],
-        ).validate()
-        return super().validate(attrs)
+    def validate_partij_identificator(self, value):
+        if value:
+            PartijIdentificatorValidator(
+                code_register=get_field_value(self, value, "code_register"),
+                code_objecttype=get_field_value(self, value, "code_objecttype"),
+                code_soort_object_id=get_field_value(
+                    self, value, "code_soort_object_id"
+                ),
+                object_id=get_field_value(self, value, "object_id"),
+            ).validate()
+        return value
 
     @transaction.atomic
     def update(self, instance, validated_data):
@@ -425,9 +427,14 @@ class PartijIdentificatorSerializer(
 
     @transaction.atomic
     def create(self, validated_data):
-        partij_uuid = str(validated_data.pop("partij").get("uuid"))
-        validated_data["partij"] = Partij.objects.get(uuid=partij_uuid)
+        partij = validated_data.pop("partij", None)
+        if not partij:
+            raise serializers.ValidationError(
+                {"identificeerde_partij": _("Dit veld is vereist.")},
+                code="required",
+            )
 
+        validated_data["partij"] = Partij.objects.get(uuid=str(partij.get("uuid")))
         return super().create(validated_data)
 
 
@@ -492,9 +499,10 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     vertegenwoordigden = serializers.SerializerMethodField(
         help_text=_("Partijen die een andere partijen vertegenwoordigden."),
     )
-    partij_identificatoren = PartijIdentificatorForeignkeySerializer(
-        read_only=True,
+    partij_identificatoren = PartijIdentificatorSerializer(
         many=True,
+        required=False,
+        allow_null=True,
         source="partijidentificator_set",
         help_text=_("Partij-identificatoren die hoorde bij deze partij."),
     )
@@ -567,11 +575,27 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             if vertegenwoordigende
         ]
 
+    def validate_partij_identificatoren(self, value):
+        if not value:
+            return value
+
+        for identificator in value:
+            if {"uuid", "partij_identificator"} <= identificator.keys():
+                raise serializers.ValidationError(
+                    {
+                        "partij_identificatoren": _(
+                            "Slechts één van deze twee sleutels `uuid` of `partij_identificator` is toegestaan."
+                        )
+                    }
+                )
+        return value
+
     @transaction.atomic
     def update(self, instance, validated_data):
+
         method = self.context.get("request").method
         partij_identificatie = validated_data.pop("partij_identificatie", None)
-
+        partij_identificatoren = validated_data.pop("partijidentificator_set", None)
         if "digitaaladres_set" in validated_data:
             existing_digitale_adressen = instance.digitaaladres_set.all()
             digitaal_adres_uuids = [
@@ -717,6 +741,25 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
         partij = super().update(instance, validated_data)
 
+        if partij_identificatoren is not None:
+            partij.partijidentificator_set.all().delete()
+            for partij_identificator in partij_identificatoren:
+                partij_identificator["identificeerde_partij"] = {
+                    "uuid": str(partij.uuid)
+                }
+                partij_identificator_serializer = PartijIdentificatorSerializer(
+                    data=partij_identificator
+                )
+                partij_identificator_serializer.is_valid(raise_exception=True)
+                if "uuid" in partij_identificator:
+                    PartijIdentificator.objects.filter(
+                        uuid=partij_identificator["uuid"]
+                    ).update(partij=partij)
+                else:
+                    partij_identificator_serializer.create(
+                        partij_identificator_serializer.validated_data
+                    )
+
         if partij_identificatie:
             serializer_class = self.discriminator.mapping[
                 validated_data.get("soort_partij")
@@ -737,6 +780,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         partij_identificatie = validated_data.pop("partij_identificatie", None)
         digitale_adressen = validated_data.pop("digitaaladres_set")
         rekeningnummers = validated_data.pop("rekeningnummer_set")
+        partij_identificatoren = validated_data.pop("partijidentificator_set", None)
 
         if voorkeurs_digitaal_adres := validated_data.pop(
             "voorkeurs_digitaal_adres", None
@@ -813,6 +857,24 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 )
                 rekeningnummer.partij = partij
                 rekeningnummer.save()
+
+        if partij_identificatoren is not None:
+            for partij_identificator in partij_identificatoren:
+                partij_identificator["identificeerde_partij"] = {
+                    "uuid": str(partij.uuid)
+                }
+                partij_identificator_serializer = PartijIdentificatorSerializer(
+                    data=partij_identificator
+                )
+                partij_identificator_serializer.is_valid(raise_exception=True)
+                if "uuid" in partij_identificator:
+                    PartijIdentificator.objects.filter(
+                        uuid=partij_identificator["uuid"]
+                    ).update(partij=partij)
+                else:
+                    partij_identificator_serializer.create(
+                        partij_identificator_serializer.validated_data
+                    )
 
         return partij
 
