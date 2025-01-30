@@ -3204,7 +3204,8 @@ components:
           type: string
           description: Identificatie van het adres bij de Basisregistratie Adressen
             en Gebouwen.
-          maxLength: 255
+          pattern: ^[0-9]{16}$
+          maxLength: 16
         adresregel1:
           type: string
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
@@ -3334,7 +3335,8 @@ components:
           type: string
           description: Identificatie van het adres bij de Basisregistratie Adressen
             en Gebouwen.
-          maxLength: 255
+          pattern: ^[0-9]{16}$
+          maxLength: 16
         adresregel1:
           type: string
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
@@ -4629,7 +4631,8 @@ components:
           type: string
           description: Identificatie van het adres bij de Basisregistratie Adressen
             en Gebouwen.
-          maxLength: 255
+          pattern: ^[0-9]{16}$
+          maxLength: 16
         adresregel1:
           type: string
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
@@ -4658,7 +4661,8 @@ components:
           type: string
           description: Identificatie van het adres bij de Basisregistratie Adressen
             en Gebouwen.
-          maxLength: 255
+          pattern: ^[0-9]{16}$
+          maxLength: 16
         adresregel1:
           type: string
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie

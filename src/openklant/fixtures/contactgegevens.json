@@ -3,7 +3,7 @@
     "model": "contactgegevens.organisatie",
     "pk": 1,
     "fields": {
-        "adres_nummeraanduiding_id": "e25988cd-daa7-43f7-ba8b-f226c5a3ec76",
+        "adres_nummeraanduiding_id": "1234567890000001",
         "adres_adresregel1": "Keizersgracht 117",
         "adres_adresregel2": "1015 CJ Amsterdam",
         "adres_adresregel3": "Noord-Holland",
@@ -19,7 +19,7 @@
     "model": "contactgegevens.persoon",
     "pk": 1,
     "fields": {
-        "adres_nummeraanduiding_id": "ed28d31b-8831-48c4-bf5b-ec312d149f72",
+        "adres_nummeraanduiding_id": "1234567890000002",
         "adres_adresregel1": "Keizersgracht 117",
         "adres_adresregel2": "1015 CJ Amsterdam",
         "adres_adresregel3": "Noord-Holland",

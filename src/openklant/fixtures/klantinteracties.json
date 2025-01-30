@@ -151,7 +151,7 @@
     "model": "klantinteracties.betrokkene",
     "pk": 3,
     "fields": {
-        "bezoekadres_nummeraanduiding_id": "ccbcee63-fb73-4c8b-9601-9d51d120a5b8",
+        "bezoekadres_nummeraanduiding_id": "1234567890000001",
         "bezoekadres_adresregel1": "Keizersgracht 117",
         "bezoekadres_adresregel2": "1015 CJ Amsterdam",
         "bezoekadres_adresregel3": "",
@@ -227,7 +227,7 @@
     "model": "klantinteracties.partij",
     "pk": 2,
     "fields": {
-        "bezoekadres_nummeraanduiding_id": "ae758bf9-6a34-4adc-8482-147738c9509d",
+        "bezoekadres_nummeraanduiding_id": "1234567890000002",
         "bezoekadres_adresregel1": "Keizersgracht 117",
         "bezoekadres_adresregel2": "1015 CJ Amsterdam",
         "bezoekadres_adresregel3": "",

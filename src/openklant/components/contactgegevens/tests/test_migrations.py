@@ -193,3 +193,142 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(persoon1.adres_land, "6030")
         self.assertNotEqual(persoon2.land, "5001")
         self.assertNotEqual(persoon2.adres_land, "5001")
+
+
+class TestValidateBagId(BaseMigrationTest):
+    app = "contactgegevens"
+    migrate_from = "0004_alter_organisatie_adres_land_alter_organisatie_land_and_more"
+    migrate_to = "0005_alter_organisatie_adres_nummeraanduiding_id_and_more"
+
+    def test_ok_migration_organisatie_model(self):
+
+        Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
+
+        Organisatie.objects.create(adres_nummeraanduiding_id="1234567890000001")
+
+        self._perform_migration()
+
+        Organisatie = self.apps.get_model("contactgegevens", "Organisatie")
+
+        records = Organisatie.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].adres_nummeraanduiding_id, "1234567890000001")
+
+    def test_ok_migration_organisatie_model_empty_value(self):
+
+        Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
+
+        Organisatie.objects.create(adres_nummeraanduiding_id="")
+
+        self._perform_migration()
+
+        Organisatie = self.apps.get_model("contactgegevens", "Organisatie")
+
+        records = Organisatie.objects.all()
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].adres_nummeraanduiding_id, "")
+
+    def test_ko_migration_organisatie_model_wrong_code(self):
+
+        Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
+        org1 = Organisatie.objects.create(adres_nummeraanduiding_id="123456")
+
+        with self.assertRaises(IntegrityError) as error:
+            self._perform_migration()
+
+        self.assertEqual(
+            (
+                "The migration cannot proceed due to 1 records that don't comply with the "
+                "Organisatie model's requirements. Possible data inconsistency or mapping error."
+            ),
+            str(error.exception),
+        )
+
+        records = Organisatie.objects.all()
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].adres_nummeraanduiding_id, "123456")
+
+        # Update manually
+        org1 = records.get(pk=records[0].pk)
+        org1.adres_nummeraanduiding_id = "1234567890000001"
+        org1.save()
+
+        # Re-Run the migration
+        self._perform_migration()
+        Organisatie = self.apps.get_model("contactgegevens", "Organisatie")
+
+        records = Organisatie.objects.all()
+        org1 = records.get(pk=records[0].pk)
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].adres_nummeraanduiding_id, "1234567890000001")
+        self.assertNotEqual(records[0].adres_nummeraanduiding_id, "123456")
+
+    def test_ok_migrate_persoon_model(self):
+
+        Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
+
+        Persoon.objects.create(
+            adres_nummeraanduiding_id="1234567890000001", geboortedatum="1980-02-23"
+        )
+
+        self._perform_migration()
+        Persoon = self.apps.get_model("contactgegevens", "Persoon")
+
+        records = Persoon.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].adres_nummeraanduiding_id, "1234567890000001")
+
+    def test_ok_migration_persoon_model_empty_value(self):
+
+        Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
+
+        Persoon.objects.create(adres_nummeraanduiding_id="", geboortedatum="1980-02-23")
+
+        self._perform_migration()
+
+        Persoon = self.apps.get_model("contactgegevens", "Persoon")
+
+        records = Persoon.objects.all()
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].adres_nummeraanduiding_id, "")
+
+    def test_ko_migration_persoon_model_wrong_code(self):
+
+        Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
+        persoon1 = Persoon.objects.create(
+            adres_nummeraanduiding_id="123456", geboortedatum="1980-02-23"
+        )
+
+        with self.assertRaises(IntegrityError) as error:
+            self._perform_migration()
+
+        self.assertEqual(
+            (
+                "The migration cannot proceed due to 1 records that don't comply with the "
+                "Persoon model's requirements. Possible data inconsistency or mapping error."
+            ),
+            str(error.exception),
+        )
+
+        records = Persoon.objects.all()
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].adres_nummeraanduiding_id, "123456")
+
+        # Update manually
+        persoon1 = records.get(pk=records[0].pk)
+        persoon1.adres_nummeraanduiding_id = "1234567890000001"
+        persoon1.save()
+
+        # Re-Run the migration
+        self._perform_migration()
+        Persoon = self.apps.get_model("contactgegevens", "Persoon")
+
+        records = Persoon.objects.all()
+
+        self.assertEqual(records.count(), 1)
+        self.assertEqual(records[0].adres_nummeraanduiding_id, "1234567890000001")
+        self.assertNotEqual(records[0].adres_nummeraanduiding_id, "123456")

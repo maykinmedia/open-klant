@@ -17,7 +17,7 @@ class PersoonTests(APITestCase):
             geslacht="m",
             voorvoegsel="",
             voornamen="John",
-            adres_nummeraanduiding_id="nummeraanduiding_id",
+            adres_nummeraanduiding_id="1234567890000001",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
@@ -30,7 +30,7 @@ class PersoonTests(APITestCase):
         )
 
         expected_adres = {
-            "nummeraanduidingId": "nummeraanduiding_id",
+            "nummeraanduidingId": "1234567890000001",
             "adresregel1": "adresregel1",
             "adresregel2": "adresregel2",
             "adresregel3": "adresregel3",
@@ -64,7 +64,7 @@ class PersoonTests(APITestCase):
             "geslacht": "m",
             "voornamen": "Devin",
             "adres": {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -88,7 +88,7 @@ class PersoonTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -105,7 +105,7 @@ class PersoonTests(APITestCase):
             geslacht="m",
             voorvoegsel="",
             voornamen="Devin",
-            adres_nummeraanduiding_id="nummeraanduiding_id",
+            adres_nummeraanduiding_id="1234567890000001",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
@@ -132,7 +132,7 @@ class PersoonTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -149,7 +149,7 @@ class PersoonTests(APITestCase):
             "voorvoegsel": "changed",
             "voornamen": "changed",
             "adres": {
-                "nummeraanduidingId": "changed",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -169,7 +169,7 @@ class PersoonTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "changed",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -186,7 +186,7 @@ class PersoonTests(APITestCase):
             geslacht="m",
             voorvoegsel="",
             voornamen="Devin",
-            adres_nummeraanduiding_id="nummeraanduiding_id",
+            adres_nummeraanduiding_id="1234567890000001",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
@@ -213,7 +213,7 @@ class PersoonTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -237,7 +237,7 @@ class PersoonTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -266,7 +266,7 @@ class OrganisatiesTests(APITestCase):
             handelsnaam="Devin Townsend",
             oprichtingsdatum="1980-02-23",
             opheffingsdatum="2020-09-05",
-            adres_nummeraanduiding_id="nummeraanduiding_id",
+            adres_nummeraanduiding_id="1234567890000001",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
@@ -279,7 +279,7 @@ class OrganisatiesTests(APITestCase):
         )
 
         expected_adres = {
-            "nummeraanduidingId": "nummeraanduiding_id",
+            "nummeraanduidingId": "1234567890000001",
             "adresregel1": "adresregel1",
             "adresregel2": "adresregel2",
             "adresregel3": "adresregel3",
@@ -308,7 +308,7 @@ class OrganisatiesTests(APITestCase):
             "handelsnaam": "Devin Townsend",
             "oprichtingsdatum": "1996-03-12",
             "adres": {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -329,7 +329,7 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -343,7 +343,7 @@ class OrganisatiesTests(APITestCase):
             handelsnaam="Devin Townsend",
             oprichtingsdatum="1996-03-12",
             opheffingsdatum=None,
-            adres_nummeraanduiding_id="nummeraanduiding_id",
+            adres_nummeraanduiding_id="1234567890000001",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
@@ -367,7 +367,7 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -381,7 +381,7 @@ class OrganisatiesTests(APITestCase):
             "oprichtingsdatum": "1996-03-13",
             "opheffingsdatum": "2023-11-22",
             "adres": {
-                "nummeraanduidingId": "changed",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -397,7 +397,7 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "changed",
+                "nummeraanduidingId": "1234567890000002",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
@@ -411,7 +411,7 @@ class OrganisatiesTests(APITestCase):
             handelsnaam="Devin Townsend",
             oprichtingsdatum="1996-03-12",
             opheffingsdatum=None,
-            adres_nummeraanduiding_id="nummeraanduiding_id",
+            adres_nummeraanduiding_id="1234567890000001",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
@@ -435,7 +435,7 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
@@ -457,7 +457,7 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(
             data["adres"],
             {
-                "nummeraanduidingId": "nummeraanduiding_id",
+                "nummeraanduidingId": "1234567890000001",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
