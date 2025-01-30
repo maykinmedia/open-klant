@@ -19,6 +19,7 @@ handler500 = "openklant.utils.views.server_error"
 admin.site.site_header = "openklant admin"
 admin.site.site_title = "openklant admin"
 admin.site.index_title = "Welcome to the openklant admin"
+admin.site.enable_nav_sidebar = False
 
 # # This will cause users not to be able to login any longer without the OTP setup. There are some
 # # issues in this package that need to be resolved.
