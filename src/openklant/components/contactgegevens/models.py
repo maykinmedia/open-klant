@@ -1,11 +1,12 @@
 import uuid
 
-from django.core.validators import MinLengthValidator, validate_integer
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.contactgegevens.constants import GeslachtChoices
 from openklant.components.contactgegevens.mixins import AdresMixin
+from openklant.utils.validators import validate_country
 
 
 class Organisatie(AdresMixin):
@@ -42,14 +43,13 @@ class Organisatie(AdresMixin):
     land = models.CharField(
         _("land"),
         help_text=_(
-            "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) "
-            "aangeeft alwaar de ingeschrevene verblijft."
+            "ISO 3166-code die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft."
         ),
         validators=[
-            MinLengthValidator(limit_value=4),
-            validate_integer,
+            MinLengthValidator(limit_value=2),
+            validate_country,
         ],
-        max_length=4,
+        max_length=2,
         blank=True,
     )
 
@@ -128,14 +128,13 @@ class Persoon(AdresMixin):
     land = models.CharField(
         _("land"),
         help_text=_(
-            "Een code, opgenomen in Tabel 34, Landentabel, die het land (buiten Nederland) "
-            "aangeeft alwaar de ingeschrevene verblijft."
+            "ISO 3166-code die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft."
         ),
         validators=[
-            MinLengthValidator(limit_value=4),
-            validate_integer,
+            MinLengthValidator(limit_value=2),
+            validate_country,
         ],
-        max_length=4,
+        max_length=2,
         blank=True,
     )
 

@@ -3222,10 +3222,10 @@ components:
           maxLength: 80
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
     BetrokkeneForeignKey:
       type: object
       properties:
@@ -3352,10 +3352,10 @@ components:
           maxLength: 80
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
     Bijlage:
       type: object
       description: |-
@@ -4647,10 +4647,10 @@ components:
           maxLength: 80
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
     PartijCorrespondentieadres:
       type: object
       properties:
@@ -4676,10 +4676,10 @@ components:
           maxLength: 80
         land:
           type: string
-          description: Een code, opgenomen in Tabel 34, Landentabel, die het land
-            (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft.
-          maxLength: 4
-          minLength: 4
+          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+            de ingeschrevene verblijft.
+          maxLength: 2
+          minLength: 2
     PartijForeignKey:
       type: object
       properties:

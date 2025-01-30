@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from openklant.utils.validators import (
     validate_charfield_entry,
+    validate_country,
     validate_iban,
     validate_no_space,
     validate_phone_number,
@@ -147,3 +148,22 @@ class ValidatorsTestCase(TestCase):
         self.assertIsNone(validate_iban("ab1299999999999"))
         self.assertIsNone(validate_iban("ab129"))
         self.assertIsNone(validate_iban("ab12aaaaaaaaaa"))
+
+    def test_validate_country(self):
+        invalid_codes = [
+            "",
+            "1",
+            "10",
+            "ZZ",
+            "1Z",
+            "nl",
+        ]
+        for code in invalid_codes:
+            self.assertRaisesMessage(
+                ValidationError,
+                "Ongeldige landcode, de code moet behoren tot de ISO 3166-standaard",
+                validate_country,
+                code,
+            )
+
+        validate_country("NL")
