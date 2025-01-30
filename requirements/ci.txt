@@ -231,7 +231,9 @@ django-jsonform==2.22.0
     #   mozilla-django-oidc-db
     #   open-api-framework
 django-localflavor==4.0
-    # via -r requirements/base.txt
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 django-log-outgoing-requests==0.6.1
     # via
     #   -c requirements/base.txt
@@ -624,6 +626,7 @@ python-dotenv==1.0.1
     #   pydantic-settings
 python-stdnum==1.20
     # via
+    #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-localflavor
 pytz==2024.1
