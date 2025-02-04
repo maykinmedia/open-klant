@@ -1,10 +1,18 @@
-from django.core.validators import MinLengthValidator
+from django.core.validators import (
+    MaxValueValidator,
+    MinLengthValidator,
+    MinValueValidator,
+)
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
 
-from openklant.utils.validators import validate_bag_id, validate_country
+from openklant.utils.validators import (
+    validate_bag_id,
+    validate_country,
+    validate_postal_code,
+)
 
 
 class BezoekadresMixin(models.Model):
@@ -16,6 +24,44 @@ class BezoekadresMixin(models.Model):
         max_length=16,
         validators=[validate_bag_id],
         blank=True,
+    )
+    bezoekadres_straatnaam = models.CharField(
+        _("straatnaam"),
+        help_text=_("Straatnaam in het Basisregistratie Adressen en Gebouwen."),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+    bezoekadres_huisnummer = models.IntegerField(
+        _("huisnummer"),
+        help_text=_("Huisnummer in het Basisregistratie Adressen en Gebouwen."),
+        validators=[MinValueValidator(1), MaxValueValidator(99999)],
+        blank=True,
+        null=True,
+    )
+    bezoekadres_huisnummertoevoeging = models.CharField(
+        _("huisnummertoevoeging"),
+        help_text=_(
+            "Huisnummertoevoeging in het Basisregistratie Adressen en Gebouwen."
+        ),
+        max_length=20,
+        blank=True,
+        null=True,
+    )
+    bezoekadres_postcode = models.CharField(
+        _("postcode"),
+        help_text=_("Postcode in het Basisregistratie Adressen en Gebouwen."),
+        validators=[validate_postal_code],
+        max_length=6,
+        blank=True,
+        null=True,
+    )
+    bezoekadres_stad = models.CharField(
+        _("stad"),
+        help_text=_("Stad in het Basisregistratie Adressen en Gebouwen."),
+        max_length=255,
+        blank=True,
+        null=True,
     )
     bezoekadres_adresregel1 = models.CharField(
         _("adresregel 1"),
@@ -57,6 +103,11 @@ class BezoekadresMixin(models.Model):
     bezoekadres = GegevensGroepType(
         {
             "nummeraanduiding_id": bezoekadres_nummeraanduiding_id,
+            "straatnaam": bezoekadres_straatnaam,
+            "huisnummer": bezoekadres_huisnummer,
+            "huisnummertoevoeging": bezoekadres_huisnummertoevoeging,
+            "postcode": bezoekadres_postcode,
+            "stad": bezoekadres_stad,
             "adresregel_1": bezoekadres_adresregel1,
             "adresregel_2": bezoekadres_adresregel2,
             "adresregel_3": bezoekadres_adresregel3,
@@ -64,6 +115,11 @@ class BezoekadresMixin(models.Model):
         },
         optional=(
             "nummeraanduiding_id",
+            "straatnaam",
+            "huisnummer",
+            "huisnummertoevoeging",
+            "postcode",
+            "stad",
             "adresregel_1",
             "adresregel_2",
             "adresregel_3",
@@ -84,6 +140,44 @@ class CorrespondentieadresMixin(models.Model):
         max_length=16,
         validators=[validate_bag_id],
         blank=True,
+    )
+    correspondentieadres_straatnaam = models.CharField(
+        _("straatnaam"),
+        help_text=_("Straatnaam in het Basisregistratie Adressen en Gebouwen."),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+    correspondentieadres_huisnummer = models.IntegerField(
+        _("huisnummer"),
+        help_text=_("Huisnummer in het Basisregistratie Adressen en Gebouwen."),
+        validators=[MinValueValidator(1), MaxValueValidator(99999)],
+        blank=True,
+        null=True,
+    )
+    correspondentieadres_huisnummertoevoeging = models.CharField(
+        _("huisnummertoevoeging"),
+        help_text=_(
+            "Huisnummertoevoeging in het Basisregistratie Adressen en Gebouwen."
+        ),
+        max_length=20,
+        blank=True,
+        null=True,
+    )
+    correspondentieadres_postcode = models.CharField(
+        _("postcode"),
+        help_text=_("Postcode in het Basisregistratie Adressen en Gebouwen."),
+        validators=[validate_postal_code],
+        max_length=6,
+        blank=True,
+        null=True,
+    )
+    correspondentieadres_stad = models.CharField(
+        _("stad"),
+        help_text=_("Stad in het Basisregistratie Adressen en Gebouwen."),
+        max_length=255,
+        blank=True,
+        null=True,
     )
     correspondentieadres_adresregel1 = models.CharField(
         _("adresregel 1"),
@@ -125,6 +219,11 @@ class CorrespondentieadresMixin(models.Model):
     correspondentieadres = GegevensGroepType(
         {
             "nummeraanduiding_id": correspondentieadres_nummeraanduiding_id,
+            "straatnaam": correspondentieadres_straatnaam,
+            "huisnummer": correspondentieadres_huisnummer,
+            "huisnummertoevoeging": correspondentieadres_huisnummertoevoeging,
+            "postcode": correspondentieadres_postcode,
+            "stad": correspondentieadres_stad,
             "adresregel_1": correspondentieadres_adresregel1,
             "adresregel_2": correspondentieadres_adresregel2,
             "adresregel_3": correspondentieadres_adresregel3,
@@ -132,6 +231,11 @@ class CorrespondentieadresMixin(models.Model):
         },
         optional=(
             "nummeraanduiding_id",
+            "straatnaam",
+            "huisnummer",
+            "huisnummertoevoeging",
+            "postcode",
+            "stad",
             "adresregel_1",
             "adresregel_2",
             "adresregel_3",
