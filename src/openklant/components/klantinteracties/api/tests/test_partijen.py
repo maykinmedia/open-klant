@@ -95,6 +95,47 @@ class PartijTests(APITestCase):
                 data["categorieRelaties"][0]["categorieNaam"], "test-categorie-naam"
             )
 
+        self.assertEqual(data["partijIdentificatoren"], [])
+
+    def test_read_partij_and_partij_identificatoren(self):
+        partij = PartijFactory.create()
+        partij_identificator = PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype="natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="296648875",
+            partij_identificator_code_register="brp",
+            andere_partij_identificator="society",
+        )
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(
+            data["partijIdentificatoren"],
+            [
+                {
+                    "uuid": str(partij_identificator.uuid),
+                    "url": f"http://testserver/klantinteracties/api/v1/partij-identificatoren/{str(partij_identificator.uuid)}",
+                    "identificeerdePartij": {
+                        "uuid": str(partij.uuid),
+                        "url": f"http://testserver/klantinteracties/api/v1/partijen/{str(partij.uuid)}",
+                    },
+                    "anderePartijIdentificator": "society",
+                    "partijIdentificator": {
+                        "codeObjecttype": "natuurlijk_persoon",
+                        "codeSoortObjectId": "bsn",
+                        "objectId": "296648875",
+                        "codeRegister": "brp",
+                    },
+                }
+            ],
+        )
+
     def test_create_partij(self):
         digitaal_adres, digitaal_adres2 = DigitaalAdresFactory.create_batch(2)
         rekeningnummer, rekeningnummer2 = RekeningnummerFactory.create_batch(2)
