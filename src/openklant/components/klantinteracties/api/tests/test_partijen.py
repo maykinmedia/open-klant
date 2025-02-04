@@ -115,15 +115,16 @@ class PartijTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
+        url = "http://testserver/klantinteracties/api/v1"
         self.assertEqual(
             data["partijIdentificatoren"],
             [
                 {
                     "uuid": str(partij_identificator.uuid),
-                    "url": f"http://testserver/klantinteracties/api/v1/partij-identificatoren/{str(partij_identificator.uuid)}",
+                    "url": f"{url}/partij-identificatoren/{str(partij_identificator.uuid)}",
                     "identificeerdePartij": {
                         "uuid": str(partij.uuid),
-                        "url": f"http://testserver/klantinteracties/api/v1/partijen/{str(partij.uuid)}",
+                        "url": f"{url}/partijen/{str(partij.uuid)}",
                     },
                     "anderePartijIdentificator": "society",
                     "partijIdentificator": {
