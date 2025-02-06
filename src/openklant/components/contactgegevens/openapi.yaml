@@ -386,25 +386,30 @@ components:
           maxLength: 16
         straatnaam:
           type: string
-          description: Straatnaam in het Basisregistratie Adressen en Gebouwen.
+          description: Straatnaam van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
           maxLength: 255
         huisnummer:
           type: integer
           maximum: 99999
           minimum: 1
-          description: Huisnummer in het Basisregistratie Adressen en Gebouwen.
+          description: Huisnummer van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
         huisnummertoevoeging:
           type: string
-          description: Huisnummertoevoeging in het Basisregistratie Adressen en Gebouwen.
+          description: Huisnummertoevoeging van het adres (indien het een Nederlands
+            adres betreft zonder BAG-id).
           maxLength: 20
         postcode:
           type: string
-          description: Postcode in het Basisregistratie Adressen en Gebouwen.
+          description: Postcode van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
           pattern: ^[1-9][0-9]{3} ?[a-zA-Z]{2}$
           maxLength: 6
         stad:
           type: string
-          description: Stad in het Basisregistratie Adressen en Gebouwen.
+          description: Stad van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
           maxLength: 255
         adresregel1:
           type: string
@@ -669,25 +674,30 @@ components:
           maxLength: 16
         straatnaam:
           type: string
-          description: Straatnaam in het Basisregistratie Adressen en Gebouwen.
+          description: Straatnaam van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
           maxLength: 255
         huisnummer:
           type: integer
           maximum: 99999
           minimum: 1
-          description: Huisnummer in het Basisregistratie Adressen en Gebouwen.
+          description: Huisnummer van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
         huisnummertoevoeging:
           type: string
-          description: Huisnummertoevoeging in het Basisregistratie Adressen en Gebouwen.
+          description: Huisnummertoevoeging van het adres (indien het een Nederlands
+            adres betreft zonder BAG-id).
           maxLength: 20
         postcode:
           type: string
-          description: Postcode in het Basisregistratie Adressen en Gebouwen.
+          description: Postcode van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
           pattern: ^[1-9][0-9]{3} ?[a-zA-Z]{2}$
           maxLength: 6
         stad:
           type: string
-          description: Stad in het Basisregistratie Adressen en Gebouwen.
+          description: Stad van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
           maxLength: 255
         adresregel1:
           type: string

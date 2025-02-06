@@ -27,14 +27,18 @@ class BezoekadresMixin(models.Model):
     )
     bezoekadres_straatnaam = models.CharField(
         _("straatnaam"),
-        help_text=_("Straatnaam in het Basisregistratie Adressen en Gebouwen."),
+        help_text=_(
+            "Straatnaam van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
+        ),
         max_length=255,
         blank=True,
         null=True,
     )
     bezoekadres_huisnummer = models.IntegerField(
         _("huisnummer"),
-        help_text=_("Huisnummer in het Basisregistratie Adressen en Gebouwen."),
+        help_text=_(
+            "Huisnummer van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
+        ),
         validators=[MinValueValidator(1), MaxValueValidator(99999)],
         blank=True,
         null=True,
@@ -42,7 +46,7 @@ class BezoekadresMixin(models.Model):
     bezoekadres_huisnummertoevoeging = models.CharField(
         _("huisnummertoevoeging"),
         help_text=_(
-            "Huisnummertoevoeging in het Basisregistratie Adressen en Gebouwen."
+            "Huisnummertoevoeging van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
         ),
         max_length=20,
         blank=True,
@@ -50,7 +54,9 @@ class BezoekadresMixin(models.Model):
     )
     bezoekadres_postcode = models.CharField(
         _("postcode"),
-        help_text=_("Postcode in het Basisregistratie Adressen en Gebouwen."),
+        help_text=_(
+            "Postcode van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
+        ),
         validators=[validate_postal_code],
         max_length=6,
         blank=True,
@@ -58,7 +64,9 @@ class BezoekadresMixin(models.Model):
     )
     bezoekadres_stad = models.CharField(
         _("stad"),
-        help_text=_("Stad in het Basisregistratie Adressen en Gebouwen."),
+        help_text=_(
+            "Stad van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
+        ),
         max_length=255,
         blank=True,
         null=True,
@@ -143,14 +151,18 @@ class CorrespondentieadresMixin(models.Model):
     )
     correspondentieadres_straatnaam = models.CharField(
         _("straatnaam"),
-        help_text=_("Straatnaam in het Basisregistratie Adressen en Gebouwen."),
+        help_text=_(
+            "Straatnaam van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
+        ),
         max_length=255,
         blank=True,
         null=True,
     )
     correspondentieadres_huisnummer = models.IntegerField(
         _("huisnummer"),
-        help_text=_("Huisnummer in het Basisregistratie Adressen en Gebouwen."),
+        help_text=_(
+            "Huisnummer van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
+        ),
         validators=[MinValueValidator(1), MaxValueValidator(99999)],
         blank=True,
         null=True,
@@ -158,7 +170,7 @@ class CorrespondentieadresMixin(models.Model):
     correspondentieadres_huisnummertoevoeging = models.CharField(
         _("huisnummertoevoeging"),
         help_text=_(
-            "Huisnummertoevoeging in het Basisregistratie Adressen en Gebouwen."
+            "Huisnummertoevoeging van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
         ),
         max_length=20,
         blank=True,
@@ -166,7 +178,9 @@ class CorrespondentieadresMixin(models.Model):
     )
     correspondentieadres_postcode = models.CharField(
         _("postcode"),
-        help_text=_("Postcode in het Basisregistratie Adressen en Gebouwen."),
+        help_text=_(
+            "Postcode van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
+        ),
         validators=[validate_postal_code],
         max_length=6,
         blank=True,
@@ -174,7 +188,9 @@ class CorrespondentieadresMixin(models.Model):
     )
     correspondentieadres_stad = models.CharField(
         _("stad"),
-        help_text=_("Stad in het Basisregistratie Adressen en Gebouwen."),
+        help_text=_(
+            "Stad van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
+        ),
         max_length=255,
         blank=True,
         null=True,
