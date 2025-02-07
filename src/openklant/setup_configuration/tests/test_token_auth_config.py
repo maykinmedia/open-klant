@@ -2,7 +2,10 @@ from pathlib import Path
 
 from django.test import TestCase
 
-from django_setup_configuration.exceptions import ConfigurationRunFailed
+from django_setup_configuration.exceptions import (
+    ConfigurationRunFailed,
+    PrerequisiteFailed,
+)
 from django_setup_configuration.test_utils import execute_single_step
 
 from openklant.components.token.models import TokenAuth
@@ -218,7 +221,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         test_file_path = str(TEST_FILES / "token_invalid_identifier.yaml")
 
-        with self.assertRaises(ConfigurationRunFailed):
+        with self.assertRaises(PrerequisiteFailed):
             execute_single_step(TokenAuthConfigurationStep, yaml_source=test_file_path)
 
         tokens = TokenAuth.objects.order_by("created")
