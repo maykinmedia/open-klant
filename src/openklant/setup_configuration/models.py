@@ -16,6 +16,14 @@ class TokenAuthConfigurationModel(ConfigurationModel):
                 "administration",
             )
         }
+        extra_kwargs = {
+            "identifier": {"examples": ["open-inwoner"]},
+            "token": {"examples": ["modify-this"]},
+            "contact_person": {"examples": ["John Doe"]},
+            "email": {"examples": ["person@municipality.nl"]},
+            "organization": {"examples": ["Municipality name"]},
+            "application": {"examples": ["Open Inwoner"]},
+        }
 
 
 class TokenAuthGroupConfigurationModel(ConfigurationModel):
