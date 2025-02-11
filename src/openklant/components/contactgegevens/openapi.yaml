@@ -390,11 +390,10 @@ components:
             zonder BAG-id).
           maxLength: 255
         huisnummer:
-          type: integer
-          maximum: 99999
-          minimum: 1
+          type: string
           description: Huisnummer van het adres (indien het een Nederlands adres betreft
             zonder BAG-id).
+          maxLength: 5
         huisnummertoevoeging:
           type: string
           description: Huisnummertoevoeging van het adres (indien het een Nederlands
@@ -678,11 +677,10 @@ components:
             zonder BAG-id).
           maxLength: 255
         huisnummer:
-          type: integer
-          maximum: 99999
-          minimum: 1
+          type: string
           description: Huisnummer van het adres (indien het een Nederlands adres betreft
             zonder BAG-id).
+          maxLength: 5
         huisnummertoevoeging:
           type: string
           description: Huisnummertoevoeging van het adres (indien het een Nederlands
