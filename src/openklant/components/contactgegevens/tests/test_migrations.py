@@ -332,3 +332,65 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertEqual(records.count(), 1)
         self.assertEqual(records[0].adres_nummeraanduiding_id, "1234567890000001")
         self.assertNotEqual(records[0].adres_nummeraanduiding_id, "123456")
+
+
+class TestNewAadresFields(BaseMigrationTest):
+    app = "contactgegevens"
+    migrate_from = "0005_alter_organisatie_adres_nummeraanduiding_id_and_more"
+    migrate_to = "0006_organisatie_adres_huisnummer_and_more"
+
+    def test_ok_migration_organisatie_model(self):
+
+        Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
+        org = Organisatie.objects.create(adres_nummeraanduiding_id="1234567890000001")
+        self.assertFalse(hasattr(org, "adres_straatnaam"))
+        self.assertFalse(hasattr(org, "adres_huisnummer"))
+        self.assertFalse(hasattr(org, "adres_huisnummertoevoeging"))
+        self.assertFalse(hasattr(org, "adres_postcode"))
+        self.assertFalse(hasattr(org, "adres_stad"))
+
+        self._perform_migration()
+
+        Organisatie = self.apps.get_model("contactgegevens", "Organisatie")
+        org = Organisatie.objects.get()
+
+        self.assertTrue(hasattr(org, "adres_straatnaam"))
+        self.assertTrue(hasattr(org, "adres_huisnummer"))
+        self.assertTrue(hasattr(org, "adres_huisnummertoevoeging"))
+        self.assertTrue(hasattr(org, "adres_postcode"))
+        self.assertTrue(hasattr(org, "adres_stad"))
+        self.assertEqual(org.adres_straatnaam, "")
+        self.assertEqual(org.adres_huisnummer, "")
+        self.assertEqual(org.adres_huisnummertoevoeging, "")
+        self.assertEqual(org.adres_postcode, "")
+        self.assertEqual(org.adres_stad, "")
+
+    def test_ok_migration_persoon_model(self):
+
+        Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
+
+        persoon = Persoon.objects.create(
+            adres_nummeraanduiding_id="1234567890000001", geboortedatum="1980-02-23"
+        )
+
+        self.assertFalse(hasattr(persoon, "adres_straatnaam"))
+        self.assertFalse(hasattr(persoon, "adres_huisnummer"))
+        self.assertFalse(hasattr(persoon, "adres_huisnummertoevoeging"))
+        self.assertFalse(hasattr(persoon, "adres_postcode"))
+        self.assertFalse(hasattr(persoon, "adres_stad"))
+
+        self._perform_migration()
+        Persoon = self.apps.get_model("contactgegevens", "Persoon")
+
+        persoon = Persoon.objects.get()
+
+        self.assertTrue(hasattr(persoon, "adres_straatnaam"))
+        self.assertTrue(hasattr(persoon, "adres_huisnummer"))
+        self.assertTrue(hasattr(persoon, "adres_huisnummertoevoeging"))
+        self.assertTrue(hasattr(persoon, "adres_postcode"))
+        self.assertTrue(hasattr(persoon, "adres_stad"))
+        self.assertEqual(persoon.adres_straatnaam, "")
+        self.assertEqual(persoon.adres_huisnummer, "")
+        self.assertEqual(persoon.adres_huisnummertoevoeging, "")
+        self.assertEqual(persoon.adres_postcode, "")
+        self.assertEqual(persoon.adres_stad, "")

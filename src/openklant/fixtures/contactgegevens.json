@@ -4,6 +4,11 @@
     "pk": 1,
     "fields": {
         "adres_nummeraanduiding_id": "1234567890000001",
+        "adres_straatnaam":"",
+        "adres_huisnummer":"",
+        "adres_huisnummertoevoeging":"",
+        "adres_postcode":"",
+        "adres_stad":"",
         "adres_adresregel1": "Keizersgracht 117",
         "adres_adresregel2": "1015 CJ Amsterdam",
         "adres_adresregel3": "Noord-Holland",
@@ -20,6 +25,11 @@
     "pk": 1,
     "fields": {
         "adres_nummeraanduiding_id": "1234567890000002",
+        "adres_straatnaam":"",
+        "adres_huisnummer":"",
+        "adres_huisnummertoevoeging":"",
+        "adres_postcode":"",
+        "adres_stad":"",
         "adres_adresregel1": "Keizersgracht 117",
         "adres_adresregel2": "1015 CJ Amsterdam",
         "adres_adresregel3": "Noord-Holland",
