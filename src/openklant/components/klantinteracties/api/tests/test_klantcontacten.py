@@ -412,7 +412,7 @@ class BetrokkeneTests(APITestCase):
             "bezoekadres": {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -424,7 +424,7 @@ class BetrokkeneTests(APITestCase):
             "correspondentieadres": {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -456,7 +456,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -471,7 +471,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -505,7 +505,7 @@ class BetrokkeneTests(APITestCase):
             "bezoekadres": {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -517,7 +517,7 @@ class BetrokkeneTests(APITestCase):
             "correspondentieadres": {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -549,7 +549,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -564,7 +564,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -597,7 +597,7 @@ class BetrokkeneTests(APITestCase):
             partij=partij,
             bezoekadres_nummeraanduiding_id="1234567890000001",
             bezoekadres_straatnaam="straat",
-            bezoekadres_huisnummer=10,
+            bezoekadres_huisnummer="10",
             bezoekadres_huisnummertoevoeging="A2",
             bezoekadres_postcode="1008DG",
             bezoekadres_stad="Amsterdam",
@@ -607,7 +607,7 @@ class BetrokkeneTests(APITestCase):
             bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="1234567890000002",
             correspondentieadres_straatnaam="straat",
-            correspondentieadres_huisnummer=10,
+            correspondentieadres_huisnummer="10",
             correspondentieadres_huisnummertoevoeging="A2",
             correspondentieadres_postcode="1008DG",
             correspondentieadres_stad="Amsterdam",
@@ -636,7 +636,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -651,7 +651,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -682,7 +682,7 @@ class BetrokkeneTests(APITestCase):
             "bezoekadres": {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "changed",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "changed",
                 "postcode": "1001AB",
                 "stad": "Amsterdam",
@@ -694,7 +694,7 @@ class BetrokkeneTests(APITestCase):
             "correspondentieadres": {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "changed",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "changed",
                 "postcode": "1001AB",
                 "stad": "Amsterdam",
@@ -726,7 +726,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "changed",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "changed",
                 "postcode": "1001AB",
                 "stad": "Amsterdam",
@@ -741,7 +741,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "changed",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "changed",
                 "postcode": "1001AB",
                 "stad": "Amsterdam",
@@ -774,7 +774,7 @@ class BetrokkeneTests(APITestCase):
             partij=partij,
             bezoekadres_nummeraanduiding_id="1234567890000001",
             bezoekadres_straatnaam="straat",
-            bezoekadres_huisnummer=10,
+            bezoekadres_huisnummer="10",
             bezoekadres_huisnummertoevoeging="A2",
             bezoekadres_postcode="1008DG",
             bezoekadres_stad="Amsterdam",
@@ -784,7 +784,7 @@ class BetrokkeneTests(APITestCase):
             bezoekadres_land="NL",
             correspondentieadres_nummeraanduiding_id="1234567890000002",
             correspondentieadres_straatnaam="straat",
-            correspondentieadres_huisnummer=10,
+            correspondentieadres_huisnummer="10",
             correspondentieadres_huisnummertoevoeging="A2",
             correspondentieadres_postcode="1008DG",
             correspondentieadres_stad="Amsterdam",
@@ -813,7 +813,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -828,7 +828,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -857,7 +857,7 @@ class BetrokkeneTests(APITestCase):
             "bezoekadres": {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "changed",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "changed",
                 "postcode": "1001AB",
                 "stad": "Amsterdam",
@@ -878,7 +878,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000001",
                 "straatnaam": "changed",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "changed",
                 "postcode": "1001AB",
                 "stad": "Amsterdam",
@@ -893,7 +893,7 @@ class BetrokkeneTests(APITestCase):
             {
                 "nummeraanduidingId": "1234567890000002",
                 "straatnaam": "straat",
-                "huisnummer": 10,
+                "huisnummer": "10",
                 "huisnummertoevoeging": "A2",
                 "postcode": "1008DG",
                 "stad": "Amsterdam",
@@ -1691,7 +1691,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "bezoekadres": {
                     "nummeraanduidingId": "1234567890000001",
                     "straatnaam": "straat",
-                    "huisnummer": 10,
+                    "huisnummer": "10",
                     "huisnummertoevoeging": "A2",
                     "postcode": "1008DG",
                     "stad": "Amsterdam",
@@ -1703,7 +1703,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "correspondentieadres": {
                     "nummeraanduidingId": "1234567890000002",
                     "straatnaam": "straat",
-                    "huisnummer": 10,
+                    "huisnummer": "10",
                     "huisnummertoevoeging": "A2",
                     "postcode": "1008DG",
                     "stad": "Amsterdam",
