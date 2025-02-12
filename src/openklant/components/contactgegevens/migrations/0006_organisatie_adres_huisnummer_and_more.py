@@ -77,12 +77,11 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 blank=True,
                 help_text="Postcode van het adres (indien het een Nederlands adres betreft zonder BAG-id).",
-                max_length=6,
+                max_length=7,
                 null=True,
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
-                        message="Ongeldige postcode",
-                        regex="^[1-9][0-9]{3} ?[a-zA-Z]{2}$",
+                        message="Ongeldige postcode", regex="^[1-9][0-9]{3} ?[A-Z]{2}$"
                     )
                 ],
                 verbose_name="postcode",
@@ -139,12 +138,11 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 blank=True,
                 help_text="Postcode van het adres (indien het een Nederlands adres betreft zonder BAG-id).",
-                max_length=6,
+                max_length=7,
                 null=True,
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
-                        message="Ongeldige postcode",
-                        regex="^[1-9][0-9]{3} ?[a-zA-Z]{2}$",
+                        message="Ongeldige postcode", regex="^[1-9][0-9]{3} ?[A-Z]{2}$"
                     )
                 ],
                 verbose_name="postcode",
@@ -203,11 +201,10 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 blank=True,
                 help_text="Postcode van het adres (indien het een Nederlands adres betreft zonder BAG-id).",
-                max_length=6,
+                max_length=7,
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
-                        message="Ongeldige postcode",
-                        regex="^[1-9][0-9]{3} ?[a-zA-Z]{2}$",
+                        message="Ongeldige postcode", regex="^[1-9][0-9]{3} ?[A-Z]{2}$"
                     )
                 ],
                 verbose_name="postcode",
@@ -260,11 +257,10 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 blank=True,
                 help_text="Postcode van het adres (indien het een Nederlands adres betreft zonder BAG-id).",
-                max_length=6,
+                max_length=7,
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
-                        message="Ongeldige postcode",
-                        regex="^[1-9][0-9]{3} ?[a-zA-Z]{2}$",
+                        message="Ongeldige postcode", regex="^[1-9][0-9]{3} ?[A-Z]{2}$"
                     )
                 ],
                 verbose_name="postcode",

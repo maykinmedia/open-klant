@@ -103,7 +103,7 @@ def create_prefixed_mixin(prefix: str):
                 "Postcode van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
             ),
             validators=[validate_postal_code],
-            max_length=6,
+            max_length=7,
             blank=True,
         ),
         "stad": models.CharField(

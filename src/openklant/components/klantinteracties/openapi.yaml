@@ -3265,8 +3265,8 @@ components:
           type: string
           description: Postcode van het adres (indien het een Nederlands adres betreft
             zonder BAG-id).
-          pattern: ^[1-9][0-9]{3} ?[a-zA-Z]{2}$
-          maxLength: 6
+          pattern: ^[1-9][0-9]{3} ?[A-Z]{2}$
+          maxLength: 7
         stad:
           type: string
           description: Stad van het adres (indien het een Nederlands adres betreft
@@ -3422,8 +3422,8 @@ components:
           type: string
           description: Postcode van het adres (indien het een Nederlands adres betreft
             zonder BAG-id).
-          pattern: ^[1-9][0-9]{3} ?[a-zA-Z]{2}$
-          maxLength: 6
+          pattern: ^[1-9][0-9]{3} ?[A-Z]{2}$
+          maxLength: 7
         stad:
           type: string
           description: Stad van het adres (indien het een Nederlands adres betreft
@@ -4744,8 +4744,8 @@ components:
           type: string
           description: Postcode van het adres (indien het een Nederlands adres betreft
             zonder BAG-id).
-          pattern: ^[1-9][0-9]{3} ?[a-zA-Z]{2}$
-          maxLength: 6
+          pattern: ^[1-9][0-9]{3} ?[A-Z]{2}$
+          maxLength: 7
         stad:
           type: string
           description: Stad van het adres (indien het een Nederlands adres betreft
@@ -4800,8 +4800,8 @@ components:
           type: string
           description: Postcode van het adres (indien het een Nederlands adres betreft
             zonder BAG-id).
-          pattern: ^[1-9][0-9]{3} ?[a-zA-Z]{2}$
-          maxLength: 6
+          pattern: ^[1-9][0-9]{3} ?[A-Z]{2}$
+          maxLength: 7
         stad:
           type: string
           description: Stad van het adres (indien het een Nederlands adres betreft
