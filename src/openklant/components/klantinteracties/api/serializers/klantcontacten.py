@@ -134,7 +134,7 @@ class BetrokkeneSerializer(
     )
 
     was_partij = PartijForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         source="partij",
         help_text=_("Betrokkene bij klantcontact die een partij was."),
@@ -183,6 +183,12 @@ class BetrokkeneSerializer(
     volledige_naam = serializers.SerializerMethodField(
         help_text="De voledige naam van de betrokkene.",
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request and request.method in ["PUT", "PATCH"]:
+            self.fields["was_partij"].required = True
 
     class Meta:
         model = Betrokkene
@@ -336,12 +342,12 @@ class OnderwerpobjectSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     klantcontact = KlantcontactForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
     )
     was_klantcontact = KlantcontactForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("'Onderwerpobject' was 'Klantcontact'"),
     )
@@ -353,6 +359,13 @@ class OnderwerpobjectSerializer(
             "identificeren."
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request and request.method in ["PUT", "PATCH"]:
+            self.fields["klantcontact"].required = True
+            self.fields["was_klantcontact"].required = True
 
     class Meta:
         model = Onderwerpobject
@@ -419,7 +432,7 @@ class BijlageSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     was_bijlage_van_klantcontact = KlantcontactForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
         source="klantcontact",
@@ -432,6 +445,12 @@ class BijlageSerializer(
             "uniek identificeren."
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request and request.method in ["PUT", "PATCH"]:
+            self.fields["was_bijlage_van_klantcontact"].required = True
 
     class Meta:
         model = Bijlage

@@ -332,26 +332,6 @@ class PartijTests(APITestCase):
             response_data["invalidParams"],
             [
                 {
-                    "name": "digitaleAdressen",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "voorkeursDigitaalAdres",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "rekeningnummers",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "voorkeursRekeningnummer",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
                     "name": "soortPartij",
                     "code": "required",
                     "reason": _("This field is required."),
@@ -843,6 +823,7 @@ class PartijTests(APITestCase):
         with self.subTest(
             "test_voorkeurs_digitaal_adres_must_be_part_of_digitale_adressen"
         ):
+
             data["voorkeursDigitaalAdres"] = {"uuid": str(digitaal_adres.uuid)}
             response = self.client.put(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

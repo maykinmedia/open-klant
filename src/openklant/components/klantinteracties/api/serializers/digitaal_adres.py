@@ -42,7 +42,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     verstrekt_door_partij = PartijForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Digitaal adres dat een partij verstrekte voor gebruik bij "
@@ -51,7 +51,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         source="partij",
     )
     verstrekt_door_betrokkene = BetrokkeneForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Digitaal adres dat een betrokkene bij klantcontact verstrekte voor gebruik bij "
@@ -69,6 +69,13 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         "verstrekt_door_betrokkene.had_klantcontact.leidde_tot_interne_taken": f"{SERIALIZER_PATH}"
         ".internetaken.InterneTaakSerializer",
     }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request and request.method in ["PUT", "PATCH"]:
+            self.fields["verstrekt_door_partij"].required = True
+            self.fields["verstrekt_door_betrokkene"].required = True
 
     class Meta:
         model = DigitaalAdres
