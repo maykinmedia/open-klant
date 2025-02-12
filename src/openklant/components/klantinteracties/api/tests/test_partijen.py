@@ -344,19 +344,28 @@ class PartijTests(APITestCase):
             ],
         )
 
-        digitaal_adres = DigitaalAdresFactory()
-
         data = {
-            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
-            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
-            "rekeningnummers": [],
-            "voorkeursRekeningnummer": None,
             "soortPartij": "persoon",
             "indicatieActief": True,
         }
 
         response = self.client.post(list_url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response_data = response.json()
+
+        self.assertEqual(response_data["betrokkenen"], [])
+        self.assertEqual(response_data["categorieRelaties"], [])
+        self.assertEqual(response_data["digitaleAdressen"], [])
+        self.assertEqual(response_data["voorkeursDigitaalAdres"], None)
+        self.assertEqual(response_data["vertegenwoordigden"], [])
+        self.assertEqual(response_data["rekeningnummers"], [])
+        self.assertEqual(response_data["voorkeursRekeningnummer"], None)
+        self.assertEqual(response_data["partijIdentificatoren"], [])
+        self.assertEqual(response_data["soortPartij"], "persoon")
+        self.assertEqual(response_data["indicatieGeheimhouding"], None)
+        self.assertEqual(response_data["voorkeurstaal"], "")
+        self.assertEqual(response_data["indicatieActief"], True)
+        self.assertEqual(response_data["partijIdentificatie"], None)
 
     def test_create_persoon(self):
         list_url = reverse("klantinteracties:partij-list")
