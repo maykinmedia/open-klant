@@ -134,7 +134,7 @@ class BetrokkeneSerializer(
     )
 
     was_partij = PartijForeignKeySerializer(
-        required=False,
+        required=True,
         allow_null=True,
         source="partij",
         help_text=_("Betrokkene bij klantcontact die een partij was."),
@@ -186,9 +186,9 @@ class BetrokkeneSerializer(
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        request = self.context.get("request")
-        if request and request.method in ["PUT", "PATCH"]:
-            self.fields["was_partij"].required = True
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["was_partij"].required = False
 
     class Meta:
         model = Betrokkene
@@ -342,12 +342,12 @@ class OnderwerpobjectSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     klantcontact = KlantcontactForeignKeySerializer(
-        required=False,
+        required=True,
         allow_null=True,
         help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
     )
     was_klantcontact = KlantcontactForeignKeySerializer(
-        required=False,
+        required=True,
         allow_null=True,
         help_text=_("'Onderwerpobject' was 'Klantcontact'"),
     )
@@ -362,10 +362,10 @@ class OnderwerpobjectSerializer(
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        request = self.context.get("request")
-        if request and request.method in ["PUT", "PATCH"]:
-            self.fields["klantcontact"].required = True
-            self.fields["was_klantcontact"].required = True
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["klantcontact"].required = False
+            self.fields["was_klantcontact"].required = False
 
     class Meta:
         model = Onderwerpobject
@@ -432,7 +432,7 @@ class BijlageSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     was_bijlage_van_klantcontact = KlantcontactForeignKeySerializer(
-        required=False,
+        required=True,
         allow_null=True,
         help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
         source="klantcontact",
@@ -448,9 +448,9 @@ class BijlageSerializer(
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        request = self.context.get("request")
-        if request and request.method in ["PUT", "PATCH"]:
-            self.fields["was_bijlage_van_klantcontact"].required = True
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["was_bijlage_van_klantcontact"].required = False
 
     class Meta:
         model = Bijlage

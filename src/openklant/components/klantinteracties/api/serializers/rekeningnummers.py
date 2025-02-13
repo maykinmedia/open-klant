@@ -33,16 +33,16 @@ class RekeningnummerSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     partij = PartijForeignKeySerializer(
-        required=False,
+        required=True,
         allow_null=True,
         help_text=_("Rekeningnummer van een partij"),
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        request = self.context.get("request")
-        if request and request.method in ["PUT", "PATCH"]:
-            self.fields["partij"].required = True
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["partij"].required = False
 
     class Meta:
         model = Rekeningnummer
