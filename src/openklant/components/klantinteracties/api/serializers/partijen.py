@@ -248,30 +248,37 @@ class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if partij := validated_data.pop("partij", None):
-            validated_data["partij"] = Partij.objects.get(uuid=str(partij.get("uuid")))
 
-        if categorie := validated_data.pop("categorie", None):
+        if "partij" in validated_data:
+            validated_data["partij"] = Partij.objects.get(
+                uuid=str(validated_data["partij"].get("uuid"))
+            )
+
+        if "categorie" in validated_data:
             validated_data["categorie"] = Categorie.objects.get(
-                uuid=str(categorie.get("uuid"))
+                uuid=str(validated_data["categorie"].get("uuid"))
             )
 
         return super().update(instance, validated_data)
 
     @transaction.atomic
     def create(self, validated_data):
-        begin_datum = validated_data.get(
-            "begin_datum", datetime.datetime.today().strftime("%Y-%m-%d")
-        )
+        if "begin_datum" in validated_data:
+            begin_datum = validated_data["begin_datum"]
+            validated_data["begin_datum"] = (
+                begin_datum
+                if begin_datum
+                else datetime.datetime.today().strftime("%Y-%m-%d")
+            )
 
-        validated_data["begin_datum"] = begin_datum
+        if "partij" in validated_data:
+            validated_data["partij"] = Partij.objects.get(
+                uuid=str(validated_data["partij"].get("uuid"))
+            )
 
-        if partij := validated_data.pop("partij", None):
-            validated_data["partij"] = Partij.objects.get(uuid=str(partij.get("uuid")))
-
-        if categorie := validated_data.pop("categorie", None):
+        if "categorie" in validated_data:
             validated_data["categorie"] = Categorie.objects.get(
-                uuid=str(categorie.get("uuid"))
+                uuid=str(validated_data["categorie"].get("uuid"))
             )
 
         return super().create(validated_data)
