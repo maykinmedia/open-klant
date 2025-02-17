@@ -13,207 +13,211 @@ from openklant.components.klantinteracties.models.validators import (
 
 class PartijIdentificatorValidatorTests(TestCase):
     def test_valid(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="296648875",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                "object_id": "296648875",
+                "code_register": PartijIdentificatorCodeRegister.brp.value,
+            }
         )
-        validator.validate()
 
     # Start section validate_code_objecttype
 
     def test_valid_code_objecttype_null(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype="",
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="296648875",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": "",
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                "object_id": "296648875",
+                "code_register": PartijIdentificatorCodeRegister.brp.value,
+            }
         )
-        validator.validate_code_objecttype()
 
     def test_valid_code_objecttype_top_level_null_or_overig(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="296648875",
-            code_register="",
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                "object_id": "296648875",
+                "code_register": "",
+            }
         )
-        validator.validate_code_objecttype()
 
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="296648875",
-            code_register=PartijIdentificatorCodeRegister.overig.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                "object_id": "296648875",
+                "code_register": PartijIdentificatorCodeRegister.overig.value,
+            }
         )
-        validator.validate_code_objecttype()
 
     def test_invalid_code_objecttype_not_found_in_top_level(self):
         with self.assertRaises(ValidationError) as error:
-            validator = PartijIdentificatorValidator(
-                code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
-                code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-                object_id="296648875",
-                code_register=PartijIdentificatorCodeRegister.brp.value,
+            PartijIdentificatorValidator()(
+                {
+                    "code_objecttype": PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                    "object_id": "296648875",
+                    "code_register": PartijIdentificatorCodeRegister.brp.value,
+                }
             )
-            validator.validate_code_objecttype()
 
-        details = error.exception.message_dict
+        details = error.exception.message
         self.assertEqual(
-            details["partij_identificator_code_objecttype"][0],
+            details,
             "voor `codeRegister` brp zijn alleen deze waarden toegestaan: ['natuurlijk_persoon']",
         )
 
     # Start section validate_code_soort_object_id
 
     def test_valid_code_soort_object_id_null(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id="",
-            object_id="12345678",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": "",
+                "object_id": "12345678",
+                "code_register": PartijIdentificatorCodeRegister.brp.value,
+            }
         )
-        validator.validate_code_soort_object_id()
-
-    def test_valid_code_soort_object_id_top_level_null_or_overig(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype="",
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="296648875",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
-        )
-        validator.validate_code_soort_object_id()
-
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.overig.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="296648875",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
-        )
-        validator.validate_code_soort_object_id()
 
     def test_invalid_code_soort_object_id_not_found_in_top_level(self):
         with self.assertRaises(ValidationError) as error:
-            validator = PartijIdentificatorValidator(
-                code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-                code_soort_object_id=PartijIdentificatorCodeSoortObjectId.rsin.value,
-                object_id="296648875",
-                code_register=PartijIdentificatorCodeRegister.brp.value,
+            PartijIdentificatorValidator()(
+                {
+                    "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.rsin.value,
+                    "object_id": "296648875",
+                    "code_register": PartijIdentificatorCodeRegister.brp.value,
+                }
             )
-            validator.validate_code_soort_object_id()
-        details = error.exception.message_dict
+
+        details = error.exception.message
         self.assertEqual(
-            details["partij_identificator_code_soort_object_id"][0],
+            details,
             "voor `codeObjecttype` natuurlijk_persoon zijn alleen deze waarden toegestaan: ['bsn', 'overig']",
         )
 
     # Start section validate_object_id
 
     def test_valid_object_id_null(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                "object_id": "",
+                "code_register": PartijIdentificatorCodeRegister.brp.value,
+            }
         )
-        validator.validate_object_id()
 
     def test_valid_object_id_top_level_null_or_overig(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id="",
-            object_id="1123",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": "",
+                "object_id": "1123",
+                "code_register": PartijIdentificatorCodeRegister.brp.value,
+            }
         )
-        validator.validate_object_id()
 
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.overig.value,
-            object_id="1123",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.overig.value,
+                "object_id": "1123",
+                "code_register": PartijIdentificatorCodeRegister.brp.value,
+            }
         )
-        validator.validate_object_id()
 
     def test_valid_object_id_bsn(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="296648875",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                "object_id": "296648875",
+                "code_register": PartijIdentificatorCodeRegister.brp.value,
+            }
         )
-        validator.validate_object_id()
 
     def test_valid_object_id_vestigingsnummer(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.vestiging.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
-            object_id="296648875154",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
+                "object_id": "296648875154",
+                "code_register": PartijIdentificatorCodeRegister.hr.value,
+            }
         )
-        validator.validate_object_id()
 
     def test_valid_object_id_rsin(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.rsin.value,
-            object_id="296648875",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.rsin.value,
+                "object_id": "296648875",
+                "code_register": PartijIdentificatorCodeRegister.hr.value,
+            }
         )
-        validator.validate_object_id()
 
     def test_valid_object_id_kvk_nummer(self):
-        validator = PartijIdentificatorValidator(
-            code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
-            object_id="12345678",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
+        PartijIdentificatorValidator()(
+            {
+                "code_objecttype": PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+                "object_id": "12345678",
+                "code_register": PartijIdentificatorCodeRegister.hr.value,
+            }
         )
-        validator.validate_object_id()
 
     def test_invalid_object_id_len_bsn(self):
         with self.assertRaises(ValidationError) as error:
-            validator = PartijIdentificatorValidator(
-                code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-                code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-                object_id="123",
-                code_register=PartijIdentificatorCodeRegister.brp.value,
+            PartijIdentificatorValidator()(
+                {
+                    "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                    "object_id": "123",
+                    "code_register": PartijIdentificatorCodeRegister.brp.value,
+                }
             )
-            validator.validate_object_id()
-        details = error.exception.message_dict
+
+        details = error.exception.message
         self.assertEqual(
-            details["partij_identificator_object_id"][0],
+            details,
             "Deze waarde is ongeldig, reden: Waarde moet 9 tekens lang zijn",
         )
 
     def test_invalid_object_id_digit_bsn(self):
         with self.assertRaises(ValidationError) as error:
-            validator = PartijIdentificatorValidator(
-                code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-                code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-                object_id="123TEST123",
-                code_register=PartijIdentificatorCodeRegister.brp.value,
+            PartijIdentificatorValidator()(
+                {
+                    "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                    "object_id": "123TEST123",
+                    "code_register": PartijIdentificatorCodeRegister.brp.value,
+                }
             )
-            validator.validate_object_id()
-        details = error.exception.message_dict
+
+        details = error.exception.message
         self.assertEqual(
-            details["partij_identificator_object_id"][0],
+            details,
             "Deze waarde is ongeldig, reden: Voer een numerieke waarde in",
         )
 
     def test_invalid_object_id_proef11_bsn(self):
         with self.assertRaises(ValidationError) as error:
-            validator = PartijIdentificatorValidator(
-                code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-                code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-                object_id="123456789",
-                code_register=PartijIdentificatorCodeRegister.brp.value,
+            PartijIdentificatorValidator()(
+                {
+                    "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                    "object_id": "123456789",
+                    "code_register": PartijIdentificatorCodeRegister.brp.value,
+                }
             )
-            validator.validate_object_id()
-        details = error.exception.message_dict
+
+        details = error.exception.message
         self.assertEqual(
-            details["partij_identificator_object_id"][0],
+            details,
             "Deze waarde is ongeldig, reden: Onjuist BSN nummer",
         )
 
@@ -299,13 +303,14 @@ class PartijIdentificatorValidatorTests(TestCase):
             ],
         ]
         for case in valid_cases:
-            validator = PartijIdentificatorValidator(
-                code_register=case[0],
-                code_objecttype=case[1],
-                code_soort_object_id=case[2],
-                object_id=case[3],
+            PartijIdentificatorValidator()(
+                {
+                    "code_register": case[0],
+                    "code_objecttype": case[1],
+                    "code_soort_object_id": case[2],
+                    "object_id": case[3],
+                },
             )
-            validator.validate()
 
     def test_not_allowed_cases(self):
         invalid_cases = [
@@ -330,10 +335,11 @@ class PartijIdentificatorValidatorTests(TestCase):
         ]
         for case in invalid_cases:
             with self.assertRaises(ValidationError):
-                validator = PartijIdentificatorValidator(
-                    code_register=case[0],
-                    code_objecttype=case[1],
-                    code_soort_object_id=case[2],
-                    object_id=case[3],
+                PartijIdentificatorValidator()(
+                    {
+                        "code_register": case[0],
+                        "code_objecttype": case[1],
+                        "code_soort_object_id": case[2],
+                        "object_id": case[3],
+                    },
                 )
-                validator.validate()

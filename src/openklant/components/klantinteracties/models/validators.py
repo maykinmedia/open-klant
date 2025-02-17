@@ -17,6 +17,41 @@ VESTIGINGSNUMMER_LENGTH = 12
 KVK_NUMMER_LENGTH = 8
 
 
+class UniquePartijIdentificatorValidator:
+    def __call__(self, attrs):
+        if sub_identificator_van := attrs.get("sub_identificator_van", None):
+            self.check_sub_identificator_van_kvk_nummer(sub_identificator_van)
+        else:
+            if partij_identificator := attrs.get("partij_identificator", None):
+                self.check_partij_identificator_vestigingsnummer(
+                    partij_identificator["code_soort_object_id"]
+                )
+
+    def check_sub_identificator_van_kvk_nummer(self, sub_identificator_van):
+        if (
+            sub_identificator_van.partij_identificator_code_soort_object_id
+            == PartijIdentificatorCodeSoortObjectId.kvk_nummer.value
+        ):
+            raise ValidationError(
+                _(
+                    "Je kunt de `sub_identificator_van` alleen koppelen als deze "
+                    "een `CodeSoortObjectId` van `kvk_nummer` heeft."
+                )
+            )
+
+    def check_partij_identificator_vestigingsnummer(self, code_soort_object_id):
+        if (
+            code_soort_object_id
+            == PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
+        ):
+            raise ValidationError(
+                _(
+                    "verplicht om een `sub_identificator_van` te selecteren voor de "
+                    "identifier met `CodeSoortObjectId` naar `vestigingsnummer`."
+                )
+            )
+
+
 class PartijIdentificatorValidator:
 
     NATUURLIJK_PERSOON = [
@@ -49,18 +84,13 @@ class PartijIdentificatorValidator:
         ],
     }
 
-    def __init__(
-        self,
-        code_register: str,
-        code_objecttype: str,
-        code_soort_object_id: str,
-        object_id: str,
-    ) -> None:
-        """Initialize validator"""
-        self.code_register = code_register
-        self.code_objecttype = code_objecttype
-        self.code_soort_object_id = code_soort_object_id
-        self.object_id = object_id
+    def __call__(self, attrs):
+        self.code_register = attrs.get("code_register", "")
+        self.code_objecttype = attrs.get("code_objecttype", "")
+        self.code_soort_object_id = attrs.get("code_soort_object_id", "")
+        self.object_id = attrs.get("object_id", "")
+
+        self.validate()
 
     def validate(self) -> None:
         """Run all validations"""
@@ -83,11 +113,9 @@ class PartijIdentificatorValidator:
             choices := self.ALLOWED_OBJECT_TYPES_FOR_REGISTRIES[self.code_register]
         ):
             raise ValidationError(
-                {
-                    "partij_identificator_code_objecttype": _(
-                        "voor `codeRegister` {code_register} zijn alleen deze waarden toegestaan: {choices}"
-                    ).format(code_register=self.code_register, choices=choices)
-                }
+                _(
+                    "voor `codeRegister` {code_register} zijn alleen deze waarden toegestaan: {choices}"
+                ).format(code_register=self.code_register, choices=choices)
             )
 
     def validate_code_soort_object_id(self) -> None:
@@ -109,11 +137,9 @@ class PartijIdentificatorValidator:
         ):
 
             raise ValidationError(
-                {
-                    "partij_identificator_code_soort_object_id": _(
-                        "voor `codeObjecttype` {code_objecttype} zijn alleen deze waarden toegestaan: {choices}"
-                    ).format(code_objecttype=self.code_objecttype, choices=choices)
-                }
+                _(
+                    "voor `codeObjecttype` {code_objecttype} zijn alleen deze waarden toegestaan: {choices}"
+                ).format(code_objecttype=self.code_objecttype, choices=choices)
             )
 
     def validate_object_id(self) -> None:
@@ -143,9 +169,5 @@ class PartijIdentificatorValidator:
                     return
         except ValidationError as error:
             raise ValidationError(
-                {
-                    "partij_identificator_object_id": _(
-                        "Deze waarde is ongeldig, reden: %s" % (error.message)
-                    )
-                }
+                _("Deze waarde is ongeldig, reden: %s" % (error.message))
             )
