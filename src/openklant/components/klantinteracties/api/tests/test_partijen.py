@@ -6,7 +6,10 @@ from rest_framework import status
 from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.constants import SoortPartij
-from openklant.components.klantinteracties.models.partijen import Partij
+from openklant.components.klantinteracties.models.partijen import (
+    Partij,
+    PartijIdentificator,
+)
 from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
 )
@@ -1848,8 +1851,18 @@ class PartijTests(APITestCase):
 class PartijIdentificatorTests(APITestCase):
     def test_list_partij_indetificator(self):
         list_url = reverse("klantinteracties:partijidentificator-list")
-        PartijIdentificatorFactory.create_batch(2)
-
+        PartijIdentificator.objects.create(
+            partij_identificator_code_objecttype="natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="296648875",
+            partij_identificator_code_register="brp",
+        )
+        PartijIdentificator.objects.create(
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="rsin",
+            partij_identificator_object_id="296648875",
+            partij_identificator_code_register="hr",
+        )
         response = self.client.get(list_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -2121,7 +2134,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["title"], "Invalid input.")
         self.assertEqual(
             response.data["invalid_params"][0]["name"],
-            "partijIdentificatorCodeObjecttype",
+            "partijIdentificator.nonFieldErrors",
         )
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
@@ -2149,7 +2162,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["title"], "Invalid input.")
         self.assertEqual(
             response.data["invalid_params"][0]["name"],
-            "partijIdentificatorCodeSoortObjectId",
+            "partijIdentificator.nonFieldErrors",
         )
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
@@ -2177,7 +2190,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["title"], "Invalid input.")
         self.assertEqual(
             response.data["invalid_params"][0]["name"],
-            "partijIdentificatorObjectId",
+            "partijIdentificator.nonFieldErrors",
         )
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
@@ -2205,7 +2218,7 @@ class PartijIdentificatorTests(APITestCase):
         self.assertEqual(response.data["title"], "Invalid input.")
         self.assertEqual(
             response.data["invalid_params"][0]["name"],
-            "partijIdentificatorCodeObjecttype",
+            "partijIdentificator.nonFieldErrors",
         )
         self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
