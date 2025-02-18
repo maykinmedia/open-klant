@@ -38,6 +38,12 @@ class RekeningnummerSerializer(serializers.HyperlinkedModelSerializer):
         help_text=_("Rekeningnummer van een partij"),
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["partij"].required = False
+
     class Meta:
         model = Rekeningnummer
         fields = ("uuid", "url", "partij", "iban", "bic")

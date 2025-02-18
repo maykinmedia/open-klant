@@ -210,6 +210,7 @@ class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
         ),
     )
     begin_datum = serializers.DateField(
+        required=True,
         allow_null=True,
         help_text=_(
             "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard. "
@@ -217,6 +218,14 @@ class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
             "significante onderdeel. Een voorbeeld: 2022-02-21"
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["begin_datum"].required = False
+            self.fields["partij"].required = False
+            self.fields["categorie"].required = False
 
     class Meta:
         model = CategorieRelatie
@@ -239,35 +248,38 @@ class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if "partij" in validated_data:
-            if partij := validated_data.pop("partij", None):
-                partij = Partij.objects.get(uuid=str(partij.get("uuid")))
 
-            validated_data["partij"] = partij
+        if "partij" in validated_data:
+            validated_data["partij"] = Partij.objects.get(
+                uuid=str(validated_data["partij"].get("uuid"))
+            )
 
         if "categorie" in validated_data:
-            if categorie := validated_data.pop("categorie", None):
-                categorie = Categorie.objects.get(uuid=str(categorie.get("uuid")))
-
-            validated_data["categorie"] = categorie
+            validated_data["categorie"] = Categorie.objects.get(
+                uuid=str(validated_data["categorie"].get("uuid"))
+            )
 
         return super().update(instance, validated_data)
 
     @transaction.atomic
     def create(self, validated_data):
-        if not validated_data.get("begin_datum"):
-            validated_data["begin_datum"] = datetime.datetime.today().strftime(
-                "%Y-%m-%d"
+        if "begin_datum" in validated_data:
+            begin_datum = validated_data["begin_datum"]
+            validated_data["begin_datum"] = (
+                begin_datum
+                if begin_datum
+                else datetime.datetime.today().strftime("%Y-%m-%d")
             )
 
-        if partij := validated_data.pop("partij"):
-            partij = Partij.objects.get(uuid=str(partij.get("uuid")))
+        if "partij" in validated_data:
+            validated_data["partij"] = Partij.objects.get(
+                uuid=str(validated_data["partij"].get("uuid"))
+            )
 
-        if categorie := validated_data.pop("categorie"):
-            categorie = Categorie.objects.get(uuid=str(categorie.get("uuid")))
-
-        validated_data["partij"] = partij
-        validated_data["categorie"] = categorie
+        if "categorie" in validated_data:
+            validated_data["categorie"] = Categorie.objects.get(
+                uuid=str(validated_data["categorie"].get("uuid"))
+            )
 
         return super().create(validated_data)
 
@@ -298,6 +310,12 @@ class PersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
         help_text="De voledige naam van het persoon.",
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["contactnaam"].required = False
+
     class Meta:
         model = Persoon
         fields = (
@@ -327,6 +345,12 @@ class ContactpersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerial
     volledige_naam = serializers.SerializerMethodField(
         help_text="De voledige naam van het constact persoon.",
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["werkte_voor_partij"].required = False
 
     class Meta:
         model = Contactpersoon
@@ -383,6 +407,13 @@ class PartijIdentificatorSerializer(
             "of ander extern register uniek identificeren."
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["identificeerde_partij"].required = False
+            self.fields["partij_identificator"].required = False
 
     class Meta:
         model = PartijIdentificator
@@ -525,6 +556,15 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         # 2 levels
         "betrokkenen.had_klantcontact": f"{SERIALIZER_PATH}.klantcontacten.KlantcontactSerializer",
     }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["digitale_adressen"].required = False
+            self.fields["voorkeurs_digitaal_adres"].required = False
+            self.fields["rekeningnummers"].required = False
+            self.fields["voorkeurs_rekeningnummer"].required = False
 
     class Meta:
         model = Partij
@@ -735,8 +775,8 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     @transaction.atomic
     def create(self, validated_data):
         partij_identificatie = validated_data.pop("partij_identificatie", None)
-        digitale_adressen = validated_data.pop("digitaaladres_set")
-        rekeningnummers = validated_data.pop("rekeningnummer_set")
+        digitale_adressen = validated_data.pop("digitaaladres_set", [])
+        rekeningnummers = validated_data.pop("rekeningnummer_set", [])
 
         if voorkeurs_digitaal_adres := validated_data.pop(
             "voorkeurs_digitaal_adres", None
