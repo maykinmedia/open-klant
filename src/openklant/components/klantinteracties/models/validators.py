@@ -17,42 +17,74 @@ VESTIGINGSNUMMER_LENGTH = 12
 KVK_NUMMER_LENGTH = 8
 
 
-class UniquePartijIdentificatorValidator:
+class SubIdentificatorValidator:
+    """
+    Validator to check the reference to the sub_identificator_van
+
+    Allowed cases:
+        - if `sub_identificator_van` exist, it must have the `partij_identificator_code_soort_object_id`
+          equal to `kvk_nummer` and the `partij_identificator_code_soort_object_id` must be `vestigingsnummer`.
+
+        - if not `sub_identificator_van` exist, `partij_identificator_code_soort_object_id`
+          can't be `vestigingsnummer`.
+    """
+
     def __call__(self, attrs):
-        if sub_identificator_van := attrs.get("sub_identificator_van", None):
-            self.check_sub_identificator_van_kvk_nummer(sub_identificator_van)
+        sub_identificator_van = attrs.get("sub_identificator_van", None)
+        partij_identificator = attrs.get("partij_identificator", None)
+
+        if sub_identificator_van:
+            if (
+                sub_identificator_van.partij_identificator_code_soort_object_id
+                != PartijIdentificatorCodeSoortObjectId.kvk_nummer.value
+            ):
+                raise ValidationError(
+                    _(
+                        "Je kunt de `sub_identificator_van` alleen koppelen als deze "
+                        "een `CodeSoortObjectId` van `kvk_nummer` heeft."
+                    )
+                )
+
+            if (
+                partij_identificator
+                and partij_identificator["code_soort_object_id"]
+                != PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
+            ):
+                raise ValidationError(
+                    _(
+                        "Je kunt de `sub_identificator_van` alleen koppelen als je een"
+                        "`CodeTypeObjectId` van `vestigingsnummer` hebt."
+                    )
+                )
         else:
-            if partij_identificator := attrs.get("partij_identificator", None):
-                self.check_partij_identificator_vestigingsnummer(
-                    partij_identificator["code_soort_object_id"]
+            if (
+                partij_identificator
+                and partij_identificator["code_soort_object_id"]
+                == PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
+            ):
+                raise ValidationError(
+                    _(
+                        "verplicht om een `sub_identificator_van` te selecteren voor de "
+                        "identifier met `CodeSoortObjectId` naar `vestigingsnummer`."
+                    )
                 )
-
-    def check_sub_identificator_van_kvk_nummer(self, sub_identificator_van):
-        if (
-            sub_identificator_van.partij_identificator_code_soort_object_id
-            == PartijIdentificatorCodeSoortObjectId.kvk_nummer.value
-        ):
-            raise ValidationError(
-                _(
-                    "Je kunt de `sub_identificator_van` alleen koppelen als deze "
-                    "een `CodeSoortObjectId` van `kvk_nummer` heeft."
-                )
-            )
-
-    def check_partij_identificator_vestigingsnummer(self, code_soort_object_id):
-        if (
-            code_soort_object_id
-            == PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
-        ):
-            raise ValidationError(
-                _(
-                    "verplicht om een `sub_identificator_van` te selecteren voor de "
-                    "identifier met `CodeSoortObjectId` naar `vestigingsnummer`."
-                )
-            )
 
 
 class PartijIdentificatorValidator:
+    """
+    Validator for `partij_identificator` fields which checks that the basic hierarchy is respected
+
+    REGISTRIES = {
+        "brp": {
+            "natuurlijk_persoon": ["bsn", "overig"],
+        },
+        "hr": {
+            "niet_natuurlijk_persoon": ["rsin", "kvk_nummer", "overig"],
+            "vestiging": ["vestigingsnummer", "overig"],
+        },
+        "overig": {},
+    }
+    """
 
     NATUURLIJK_PERSOON = [
         PartijIdentificatorCodeSoortObjectId.bsn.value,

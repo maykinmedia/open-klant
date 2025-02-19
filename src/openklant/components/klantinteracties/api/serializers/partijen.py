@@ -44,7 +44,7 @@ from openklant.components.klantinteracties.models.partijen import (
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 from openklant.components.klantinteracties.models.validators import (
     PartijIdentificatorValidator,
-    UniquePartijIdentificatorValidator,
+    SubIdentificatorValidator,
 )
 
 
@@ -410,7 +410,7 @@ class PartijIdentificatorSerializer(
                 "help_text": "De unieke URL van deze partij indentificator binnen deze API.",
             },
         }
-        validators = [UniquePartijIdentificatorValidator()]
+        validators = [SubIdentificatorValidator()]
 
     def validate(self, attrs):
         if sub_identificator_van := attrs.get("sub_identificator_van", None):
@@ -418,7 +418,7 @@ class PartijIdentificatorSerializer(
                 uuid=sub_identificator_van["uuid"]
             )
 
-        UniquePartijIdentificatorValidator()(attrs)
+        SubIdentificatorValidator()(attrs)
         return super().validate(attrs)
 
     @transaction.atomic
