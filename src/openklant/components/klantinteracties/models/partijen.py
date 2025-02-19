@@ -17,7 +17,6 @@ from .constants import (
     SoortPartij,
 )
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
-from .validators import PartijIdentificatorValidator, UniquePartijIdentificatorValidator
 
 
 class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
@@ -416,10 +415,7 @@ class PartijIdentificator(models.Model):
         verbose_name = _("partij identificator")
         verbose_name_plural = _("partij identificatoren")
         constraints = [
-            models.CheckConstraint(
-                check=~models.Q(sub_identificator_van=models.F("id")),
-                name="check_sub_identificator_van_not_self",
-            ),
+            # TODO: cahnge msg
             models.UniqueConstraint(
                 fields=[
                     "sub_identificator_van",
@@ -431,6 +427,7 @@ class PartijIdentificator(models.Model):
                 condition=models.Q(sub_identificator_van__isnull=False),
                 name="scoped_identificator_globally_unique",
             ),
+            # TODO: cahnge msg
             models.UniqueConstraint(
                 fields=[
                     "partij_identificator_code_objecttype",
@@ -441,6 +438,11 @@ class PartijIdentificator(models.Model):
                 name="non_scoped_identificator_globally_unique",
                 condition=models.Q(sub_identificator_van__isnull=True),
             ),
+            # TODO: cahnge msg
+            models.CheckConstraint(
+                check=~models.Q(sub_identificator_van=models.F("id")),
+                name="check_sub_identificator_van_not_self",
+            ),
         ]
 
     def __str__(self):
@@ -448,13 +450,3 @@ class PartijIdentificator(models.Model):
         object = self.partij_identificator_object_id
 
         return f"{soort_object} - {object}"
-
-    def clean(self):
-        super().clean()
-        PartijIdentificatorValidator()(self.partij_identificator)
-        UniquePartijIdentificatorValidator()(
-            {
-                "sub_identificator_van": self.sub_identificator_van,
-                "partij_identificator": self.partij_identificator,
-            }
-        )
