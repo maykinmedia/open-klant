@@ -6,6 +6,10 @@ from openklant.components.klantinteracties.models.constants import (
     PartijIdentificatorCodeRegister,
     PartijIdentificatorCodeSoortObjectId,
 )
+from openklant.components.klantinteracties.models.partijen import PartijIdentificator
+from openklant.components.klantinteracties.models.tests.factories.partijen import (
+    PartijIdentificatorFactory,
+)
 from openklant.components.klantinteracties.models.validators import (
     PartijIdentificatorTypesValidator,
     PartijIdentificatorUniquenessValidator,
@@ -363,3 +367,143 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
                     }
                 )
                 validator.validate()
+
+
+class PartijIdentificatorUniquenessValidatorTests(TestCase):
+
+    def test_valid_global_uniqueness(self):
+        PartijIdentificatorUniquenessValidator(
+            queryset=PartijIdentificator.objects.all(),
+            partij_identificator={
+                "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                "object_id": "296648875",
+                "code_register": PartijIdentificatorCodeRegister.brp.value,
+            },
+            sub_identificator_van=None,
+            instance=None,
+        ).check()
+
+    def test_valid_relation_sub_identificator_van(self):
+        # check self relation and sub_identificator_van allowed cases
+        sub_identificator_van = PartijIdentificatorFactory.create(
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_object_id="12345678",
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
+        )
+        PartijIdentificatorUniquenessValidator(
+            queryset=PartijIdentificator.objects.all(),
+            partij_identificator={
+                "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
+                "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
+                "object_id": "296648875154",
+                "code_register": PartijIdentificatorCodeRegister.hr.value,
+            },
+            sub_identificator_van=sub_identificator_van,
+            instance=None,
+        ).check()
+
+    def test_invalid_self_relation_sub_identificator_van(self):
+        partij_identificator = PartijIdentificatorFactory.create(
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_object_id="12345678",
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
+        )
+        with self.assertRaises(ValidationError) as error:
+            PartijIdentificatorUniquenessValidator(
+                queryset=PartijIdentificator.objects.all(),
+                partij_identificator={
+                    "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
+                    "object_id": "296648875154",
+                    "code_register": PartijIdentificatorCodeRegister.hr.value,
+                },
+                sub_identificator_van=partij_identificator,
+                instance=partij_identificator,
+            ).check()
+
+        details = error.exception.message_dict
+        self.assertEqual(
+            details["sub_identificator_van"][0],
+            "Kan zichzelf niet selecteren als `sub_identificator_van`.",
+        )
+
+    def test_invalid_sub_identificator_van_type_not_allowed(self):
+        # sub_identificator_van type not allowed
+        sub_identificator_van = PartijIdentificatorFactory.create(
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_object_id="296648875",
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+        with self.assertRaises(ValidationError) as error:
+            PartijIdentificatorUniquenessValidator(
+                queryset=PartijIdentificator.objects.all(),
+                partij_identificator={
+                    "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
+                    "object_id": "296648875154",
+                    "code_register": PartijIdentificatorCodeRegister.hr.value,
+                },
+                sub_identificator_van=sub_identificator_van,
+                instance=None,
+            ).check()
+
+        details = error.exception.message_dict
+        self.assertEqual(
+            details["sub_identificator_van"][0],
+            "Het is alleen mogelijk om sub_identifier_vans te selecteren die CodeSoortObjectId = `kvk_nummer` hebben.",
+        )
+
+    def test_invalid_partij_identificator_type_not_allowed_for_sub_identificator_van(
+        self,
+    ):
+        # partij identificator type not allowed for sub_identificator_van
+        sub_identificator_van = PartijIdentificatorFactory.create(
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_object_id="12345678",
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
+        )
+        with self.assertRaises(ValidationError) as error:
+            PartijIdentificatorUniquenessValidator(
+                queryset=PartijIdentificator.objects.all(),
+                partij_identificator={
+                    "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
+                    "object_id": "296648875",
+                    "code_register": PartijIdentificatorCodeRegister.brp.value,
+                },
+                sub_identificator_van=sub_identificator_van,
+                instance=None,
+            ).check()
+
+        details = error.exception.message_dict
+        self.assertEqual(
+            details["sub_identificator_van"][0],
+            "Alleen een identifier met code_soort_object_id kan een `sub_identificator_van' hebben.",
+        )
+
+    def test_invalid_partij_identificator_vestigingsnummer_require_sub_identificator_van(
+        self,
+    ):
+        with self.assertRaises(ValidationError) as error:
+            PartijIdentificatorUniquenessValidator(
+                queryset=PartijIdentificator.objects.all(),
+                partij_identificator={
+                    "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
+                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
+                    "object_id": "296648875154",
+                    "code_register": PartijIdentificatorCodeRegister.hr.value,
+                },
+                sub_identificator_van=None,
+                instance=None,
+            ).check()
+
+        details = error.exception.message_dict
+        self.assertTrue(
+            "`sub_identifier_van` met CodeSoortObjectId = `kvk_nummer` te kiezen."
+            in details["sub_identificator_van"][0]
+        )

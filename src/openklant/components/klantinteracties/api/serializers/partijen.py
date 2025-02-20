@@ -365,7 +365,16 @@ class PartijIdentificatorGroepTypeSerializer(GegevensGroepSerializer):
     class Meta:
         model = PartijIdentificator
         gegevensgroep = "partij_identificator"
-        validators = []
+        extra_kwargs = {
+            "code_register": {"required": True},
+            "code_objecttype": {"required": True},
+            "code_soort_object_id": {"required": True},
+            "object_id": {"required": True},
+        }
+
+    def validate(self, attrs):
+        PartijIdentificatorTypesValidator(partij_identificator=attrs).validate()
+        return super().validate(attrs)
 
 
 class PartijIdentificatorSerializer(
@@ -414,13 +423,12 @@ class PartijIdentificatorSerializer(
         instance = getattr(self, "instance", None)
         partij_identificator = get_field_value(self, attrs, "partij_identificator")
         sub_identificator_van = get_field_value(self, attrs, "sub_identificator_van")
-        if sub_identificator_van:
+        partij = get_field_value(self, attrs, "partij")
+        if "sub_identificator_van" in attrs and sub_identificator_van:
             sub_identificator_van = PartijIdentificator.objects.get(
                 uuid=sub_identificator_van["uuid"]
             )
-        PartijIdentificatorTypesValidator(
-            partij_identificator=partij_identificator
-        ).validate()
+
         PartijIdentificatorUniquenessValidator(
             queryset=(
                 PartijIdentificator.objects.exclude(pk=instance.pk)
@@ -437,7 +445,12 @@ class PartijIdentificatorSerializer(
     def update(self, instance, validated_data):
         if partij := validated_data.get("partij", None):
             validated_data["partij"] = Partij.objects.get(uuid=partij["uuid"])
-
+        # TODO FAI QUESTO test
+        breakpoint()
+        if sub_identificator_van := validated_data.get("sub_identificator_van", None):
+            validated_data["sub_identificator_van"] = PartijIdentificator.objects.get(
+                uuid=sub_identificator_van["uuid"]
+            )
         return super().update(instance, validated_data)
 
     @transaction.atomic

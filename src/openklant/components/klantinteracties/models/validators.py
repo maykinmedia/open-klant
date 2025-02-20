@@ -27,6 +27,7 @@ class PartijIdentificatorUniquenessValidator:
     def check(self):
         self.check_self_relation()
         self.check_sub_identificator_van()
+        self.check_identificator_partij_unique()
         self.check_identificator_globally_unique()
 
     def check_self_relation(self):
@@ -91,6 +92,17 @@ class PartijIdentificatorUniquenessValidator:
                         )
                     }
                 )
+
+    def check_identificator_partij_unique(self):
+        return
+        if self.queryset.filter(**filters).exists():
+            raise ValidationError(
+                {
+                    "__all__": _(
+                        "`PartijIdentificator` moet uniek zijn, er bestaat er al een met deze gegevenscombinatie."
+                    )
+                }
+            )
 
     def check_identificator_globally_unique(self):
         """
@@ -168,10 +180,10 @@ class PartijIdentificatorTypesValidator:
 
     def __init__(self, partij_identificator: dict) -> None:
         """Initialize validator"""
-        self.code_register = partij_identificator.get("code_register", "")
-        self.code_objecttype = partij_identificator.get("code_objecttype", "")
-        self.code_soort_object_id = partij_identificator.get("code_soort_object_id", "")
-        self.object_id = partij_identificator.get("object_id", "")
+        self.code_register = partij_identificator["code_register"]
+        self.code_objecttype = partij_identificator["code_objecttype"]
+        self.code_soort_object_id = partij_identificator["code_soort_object_id"]
+        self.object_id = partij_identificator["object_id"]
 
     def validate(self) -> None:
         """Run all validations"""
