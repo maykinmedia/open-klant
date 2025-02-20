@@ -1,12 +1,11 @@
 from django import forms
 from django.contrib import admin
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 from openklant.components.klantinteracties.models.validators import (
-    PartijIdentificatorValidator,
-    SubIdentificatorValidator,
+    PartijIdentificatorTypesValidator,
+    PartijIdentificatorUniquenessValidator,
 )
 
 from ..models.constants import SoortPartij
@@ -41,17 +40,24 @@ class PartijIdentificatorAdminForm(forms.ModelForm):
             "code_register": cleaned_data["partij_identificator_code_register"],
         }
 
-        if sub_identificator_van == self.instance:
-            # TODO MESSAGE
-            raise ValidationError({"sub_identificator_van": "your_error_message 1"})
+        PartijIdentificatorTypesValidator(
+            partij_identificator=partij_identificator
+        ).validate()
 
-        PartijIdentificatorValidator()(partij_identificator)
-        SubIdentificatorValidator()(
-            {
-                "sub_identificator_van": sub_identificator_van,
-                "partij_identificator": partij_identificator,
-            }
-        )
+        queryset = PartijIdentificator.objects.exclude()
+        if self.instance:
+            queryset = queryset.exclude(pk=self.instance.pk)
+        PartijIdentificatorUniquenessValidator(
+            queryset=(
+                PartijIdentificator.objects.exclude(pk=self.instance.pk)
+                if self.instance
+                else PartijIdentificator.objects.all()
+            ),
+            partij_identificator=partij_identificator,
+            sub_identificator_van=sub_identificator_van,
+            instance=self.instance,
+        ).check()
+
         return cleaned_data
 
 
