@@ -414,36 +414,6 @@ class PartijIdentificator(models.Model):
     class Meta:
         verbose_name = _("partij identificator")
         verbose_name_plural = _("partij identificatoren")
-        constraints = [
-            # TODO: cahnge msg
-            models.UniqueConstraint(
-                fields=[
-                    "sub_identificator_van",
-                    "partij_identificator_code_objecttype",
-                    "partij_identificator_code_soort_object_id",
-                    "partij_identificator_object_id",
-                    "partij_identificator_code_register",
-                ],
-                condition=models.Q(sub_identificator_van__isnull=False),
-                name="scoped_identificator_globally_unique",
-            ),
-            # TODO: cahnge msg
-            models.UniqueConstraint(
-                fields=[
-                    "partij_identificator_code_objecttype",
-                    "partij_identificator_code_soort_object_id",
-                    "partij_identificator_object_id",
-                    "partij_identificator_code_register",
-                ],
-                name="non_scoped_identificator_globally_unique",
-                condition=models.Q(sub_identificator_van__isnull=True),
-            ),
-            # TODO: cahnge msg
-            models.CheckConstraint(
-                check=~models.Q(sub_identificator_van=models.F("id")),
-                name="check_sub_identificator_van_not_self",
-            ),
-        ]
 
     def __str__(self):
         soort_object = self.partij_identificator_code_soort_object_id
