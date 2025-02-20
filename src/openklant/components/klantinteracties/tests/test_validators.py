@@ -6,7 +6,6 @@ from openklant.components.klantinteracties.models.constants import (
     PartijIdentificatorCodeRegister,
     PartijIdentificatorCodeSoortObjectId,
 )
-from openklant.components.klantinteracties.models.partijen import PartijIdentificator
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
     PartijIdentificatorFactory,
 )
@@ -373,7 +372,6 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
 
     def test_valid_global_uniqueness(self):
         PartijIdentificatorUniquenessValidator(
-            queryset=PartijIdentificator.objects.all(),
             partij_identificator={
                 "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
                 "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
@@ -382,7 +380,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
             },
             sub_identificator_van=None,
             instance=None,
-        ).check()
+        ).validate()
 
     def test_valid_relation_sub_identificator_van(self):
         # check self relation and sub_identificator_van allowed cases
@@ -393,7 +391,6 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
             partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
         )
         PartijIdentificatorUniquenessValidator(
-            queryset=PartijIdentificator.objects.all(),
             partij_identificator={
                 "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
                 "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
@@ -402,7 +399,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
             },
             sub_identificator_van=sub_identificator_van,
             instance=None,
-        ).check()
+        ).validate()
 
     def test_invalid_self_relation_sub_identificator_van(self):
         partij_identificator = PartijIdentificatorFactory.create(
@@ -413,7 +410,6 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
         )
         with self.assertRaises(ValidationError) as error:
             PartijIdentificatorUniquenessValidator(
-                queryset=PartijIdentificator.objects.all(),
                 partij_identificator={
                     "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
                     "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
@@ -422,7 +418,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
                 },
                 sub_identificator_van=partij_identificator,
                 instance=partij_identificator,
-            ).check()
+            ).validate()
 
         details = error.exception.message_dict
         self.assertEqual(
@@ -440,7 +436,6 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
         )
         with self.assertRaises(ValidationError) as error:
             PartijIdentificatorUniquenessValidator(
-                queryset=PartijIdentificator.objects.all(),
                 partij_identificator={
                     "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
                     "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
@@ -449,7 +444,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
                 },
                 sub_identificator_van=sub_identificator_van,
                 instance=None,
-            ).check()
+            ).validate()
 
         details = error.exception.message_dict
         self.assertEqual(
@@ -457,41 +452,11 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
             "Het is alleen mogelijk om sub_identifier_vans te selecteren die CodeSoortObjectId = `kvk_nummer` hebben.",
         )
 
-    def test_invalid_partij_identificator_type_not_allowed_for_sub_identificator_van(
-        self,
-    ):
-        # partij identificator type not allowed for sub_identificator_van
-        sub_identificator_van = PartijIdentificatorFactory.create(
-            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
-            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
-            partij_identificator_object_id="12345678",
-            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
-        )
-        with self.assertRaises(ValidationError) as error:
-            PartijIdentificatorUniquenessValidator(
-                queryset=PartijIdentificator.objects.all(),
-                partij_identificator={
-                    "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-                    "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
-                    "object_id": "296648875",
-                    "code_register": PartijIdentificatorCodeRegister.brp.value,
-                },
-                sub_identificator_van=sub_identificator_van,
-                instance=None,
-            ).check()
-
-        details = error.exception.message_dict
-        self.assertEqual(
-            details["sub_identificator_van"][0],
-            "Alleen een identifier met code_soort_object_id kan een `sub_identificator_van' hebben.",
-        )
-
     def test_invalid_partij_identificator_vestigingsnummer_require_sub_identificator_van(
         self,
     ):
         with self.assertRaises(ValidationError) as error:
             PartijIdentificatorUniquenessValidator(
-                queryset=PartijIdentificator.objects.all(),
                 partij_identificator={
                     "code_objecttype": PartijIdentificatorCodeObjectType.vestiging.value,
                     "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
@@ -500,7 +465,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
                 },
                 sub_identificator_van=None,
                 instance=None,
-            ).check()
+            ).validate()
 
         details = error.exception.message_dict
         self.assertTrue(

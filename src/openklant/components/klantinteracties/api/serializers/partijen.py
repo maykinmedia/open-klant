@@ -46,7 +46,7 @@ from openklant.components.klantinteracties.models.validators import (
     PartijIdentificatorTypesValidator,
     PartijIdentificatorUniquenessValidator,
 )
-from openklant.utils.serializers import get_field_value
+from openklant.utils.serializers import get_field_instance_by_uuid, get_field_value
 
 
 class PartijForeignkeyBaseSerializer(serializers.HyperlinkedModelSerializer):
@@ -422,48 +422,24 @@ class PartijIdentificatorSerializer(
     def validate(self, attrs):
         instance = getattr(self, "instance", None)
         partij_identificator = get_field_value(self, attrs, "partij_identificator")
-        sub_identificator_van = get_field_value(self, attrs, "sub_identificator_van")
-        partij = get_field_value(self, attrs, "partij")
-        if "sub_identificator_van" in attrs and sub_identificator_van:
-            sub_identificator_van = PartijIdentificator.objects.get(
-                uuid=sub_identificator_van["uuid"]
-            )
+
+        sub_identificator_van = get_field_instance_by_uuid(
+            self, attrs, "sub_identificator_van", PartijIdentificator
+        )
+        partij = get_field_instance_by_uuid(self, attrs, "partij", Partij)
 
         PartijIdentificatorUniquenessValidator(
-            queryset=(
-                PartijIdentificator.objects.exclude(pk=instance.pk)
-                if instance
-                else PartijIdentificator.objects.all()
-            ),
+            instance=instance,
             partij_identificator=partij_identificator,
             sub_identificator_van=sub_identificator_van,
-            instance=instance,
-        ).check()
+            partij=partij,
+        ).validate()
+
+        attrs["sub_identificator_van"] = get_field_instance_by_uuid(
+            self, attrs, "sub_identificator_van", PartijIdentificator
+        )
+        attrs["partij"] = get_field_instance_by_uuid(self, attrs, "partij", Partij)
         return super().validate(attrs)
-
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        if partij := validated_data.get("partij", None):
-            validated_data["partij"] = Partij.objects.get(uuid=partij["uuid"])
-        # TODO FAI QUESTO test
-        breakpoint()
-        if sub_identificator_van := validated_data.get("sub_identificator_van", None):
-            validated_data["sub_identificator_van"] = PartijIdentificator.objects.get(
-                uuid=sub_identificator_van["uuid"]
-            )
-        return super().update(instance, validated_data)
-
-    @transaction.atomic
-    def create(self, validated_data):
-        if sub_identificator_van := validated_data.get("sub_identificator_van", None):
-            validated_data["sub_identificator_van"] = PartijIdentificator.objects.get(
-                uuid=sub_identificator_van["uuid"]
-            )
-
-        if partij := validated_data.get("partij", None):
-            validated_data["partij"] = Partij.objects.get(uuid=partij["uuid"])
-
-        return super().create(validated_data)
 
 
 class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):

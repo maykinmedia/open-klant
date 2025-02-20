@@ -30,7 +30,6 @@ class PartijIdentificatorAdminForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        sub_identificator_van = cleaned_data["sub_identificator_van"]
         partij_identificator = {
             "code_objecttype": cleaned_data["partij_identificator_code_objecttype"],
             "code_soort_object_id": cleaned_data[
@@ -47,16 +46,13 @@ class PartijIdentificatorAdminForm(forms.ModelForm):
         queryset = PartijIdentificator.objects.exclude()
         if self.instance:
             queryset = queryset.exclude(pk=self.instance.pk)
+
         PartijIdentificatorUniquenessValidator(
-            queryset=(
-                PartijIdentificator.objects.exclude(pk=self.instance.pk)
-                if self.instance
-                else PartijIdentificator.objects.all()
-            ),
-            partij_identificator=partij_identificator,
-            sub_identificator_van=sub_identificator_van,
             instance=self.instance,
-        ).check()
+            partij_identificator=partij_identificator,
+            sub_identificator_van=cleaned_data["sub_identificator_van"],
+            partij=cleaned_data["partij"],
+        ).validate()
 
         return cleaned_data
 
