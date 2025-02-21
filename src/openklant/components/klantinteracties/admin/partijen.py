@@ -1,7 +1,12 @@
+from django import forms
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
+from openklant.components.klantinteracties.models.validators import (
+    PartijIdentificatorTypesValidator,
+    PartijIdentificatorUniquenessValidator,
+)
 
 from ..models.constants import SoortPartij
 from ..models.digitaal_adres import DigitaalAdres
@@ -16,6 +21,40 @@ from ..models.partijen import (
     Persoon,
     Vertegenwoordigden,
 )
+
+
+class PartijIdentificatorAdminForm(forms.ModelForm):
+    class Meta:
+        model = PartijIdentificator
+        fields = "__all__"
+
+    def clean(self):
+        cleaned_data = super().clean()
+        partij_identificator = {
+            "code_objecttype": cleaned_data["partij_identificator_code_objecttype"],
+            "code_soort_object_id": cleaned_data[
+                "partij_identificator_code_soort_object_id"
+            ],
+            "object_id": cleaned_data["partij_identificator_object_id"],
+            "code_register": cleaned_data["partij_identificator_code_register"],
+        }
+
+        PartijIdentificatorTypesValidator(
+            partij_identificator=partij_identificator
+        ).validate()
+
+        queryset = PartijIdentificator.objects.exclude()
+        if self.instance:
+            queryset = queryset.exclude(pk=self.instance.pk)
+
+        PartijIdentificatorUniquenessValidator(
+            instance=self.instance,
+            partij_identificator=partij_identificator,
+            sub_identificator_van=cleaned_data["sub_identificator_van"],
+            partij=cleaned_data["partij"],
+        ).validate()
+
+        return cleaned_data
 
 
 class CategorieRelatieInlineAdmin(admin.StackedInline):
@@ -34,6 +73,7 @@ class CategorieRelatieInlineAdmin(admin.StackedInline):
 class PartijIdentificatorInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
     model = PartijIdentificator
+    form = PartijIdentificatorAdminForm
     extra = 0
 
 

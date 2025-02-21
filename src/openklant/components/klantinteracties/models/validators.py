@@ -7,6 +7,8 @@ from vng_api_common.validators import (
     validate_rsin,
 )
 
+from openklant.components.klantinteracties.models.partijen import PartijIdentificator
+
 from .constants import (
     PartijIdentificatorCodeObjectType,
     PartijIdentificatorCodeRegister,
@@ -17,7 +19,147 @@ VESTIGINGSNUMMER_LENGTH = 12
 KVK_NUMMER_LENGTH = 8
 
 
-class PartijIdentificatorValidator:
+class PartijIdentificatorUniquenessValidator:
+    def __init__(self, *args, **kwargs):
+        self.partij_identificator = kwargs.get("partij_identificator")
+        self.sub_identificator_van = kwargs.get("sub_identificator_van")
+        self.instance = kwargs.get("instance")
+        self.partij = kwargs.get("partij")
+        self.queryset = PartijIdentificator.objects.all()
+
+        if self.instance:
+            self.queryset = self.queryset.exclude(pk=self.instance.pk)
+
+        if not self.partij_identificator:
+            raise ValueError("partij_identificator is required")
+
+    def validate(self):
+        self.validate_not_self_assigned()
+        if (
+            self.partij_identificator["code_soort_object_id"]
+            == PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
+        ):
+            self.validate_sub_identificator_van_for_vestigingsnummer()
+        self.validate_unique_partij_identificator_locally()
+        self.validate_unique_partij_identificator_globally()
+
+    def validate_not_self_assigned(self):
+        """
+        Validation that the current instance does not assign itself as 'sub_identificator_van'.
+        """
+        if self.sub_identificator_van and self.sub_identificator_van == self.instance:
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Kan zichzelf niet selecteren als `sub_identificator_van`."
+                    )
+                }
+            )
+
+    def validate_sub_identificator_van_for_vestigingsnummer(self):
+        """
+        - Validation that if the `sub_identificator_van` is not selected raise a error, for
+        partij_identificator with CodeSoortObjectId = `vestigingsnummer`.
+
+        - Validation that when the partij_identificator has CodeSoortObjectId = `vestigingsnummer`,
+        the `sub_identificator_van` must have CodeSoortObjectId = `kvk_nummer`.
+
+        """
+        if not self.sub_identificator_van:
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Voor de Identificator met CodeSoortObjectId = `vestigingsnummer` is het verplicht om"
+                        " een `sub_identifier_van` met CodeSoortObjectId = `kvk_nummer` te kiezen."
+                    )
+                }
+            )
+
+        if (
+            self.sub_identificator_van.partij_identificator_code_soort_object_id
+            != PartijIdentificatorCodeSoortObjectId.kvk_nummer.value
+        ):
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Het is alleen mogelijk om sub_identifier_vans te selecteren"
+                        " die CodeSoortObjectId = `kvk_nummer` hebben."
+                    )
+                }
+            )
+
+    def validate_unique_partij_identificator_locally(self):
+        """
+        Validation that a single Partij can only have a single partij_identificator_code_soort_object_id type locally
+        """
+        return  # TODO unlock after feedback
+        if (
+            self.partij
+            and self.queryset.filter(partij=self.partij)
+            .filter(
+                partij_identificator_code_soort_object_id=self.partij_identificator[
+                    "code_soort_object_id"
+                ]
+            )
+            .exists()
+        ):
+            raise ValidationError(
+                {
+                    "partij_identificator_code_soort_object_id": _(
+                        "Er is al een PartyIdentificator met dit CodeSoortObjectId = '%s' voor deze Partij."
+                        % (self.partij_identificator["code_soort_object_id"])
+                    )
+                }
+            )
+
+    def validate_unique_partij_identificator_globally(self):
+        """
+        Validation that a single partij_identifier combination occurs only once globally
+        """
+        filters = {
+            "partij_identificator_code_objecttype": self.partij_identificator[
+                "code_objecttype"
+            ],
+            "partij_identificator_code_soort_object_id": self.partij_identificator[
+                "code_soort_object_id"
+            ],
+            "partij_identificator_object_id": self.partij_identificator["object_id"],
+            "partij_identificator_code_register": self.partij_identificator[
+                "code_register"
+            ],
+        }
+
+        if self.sub_identificator_van is None:
+            filters["sub_identificator_van__isnull"] = True
+        else:
+            filters["sub_identificator_van"] = self.sub_identificator_van
+
+        if self.queryset.filter(**filters).exists():
+            raise ValidationError(
+                {
+                    "__all__": _(
+                        "`PartijIdentificator` moet uniek zijn, er bestaat er al een met deze gegevenscombinatie."
+                    )
+                }
+            )
+        return
+
+
+class PartijIdentificatorTypesValidator:
+    """
+    Validator for `partij_identificator` fields which checks that the basic hierarchy is respected
+
+    REGISTRIES = {
+        "brp": {
+            "natuurlijk_persoon": ["bsn", "overig"],
+        },
+        "hr": {
+            "niet_natuurlijk_persoon": ["rsin", "kvk_nummer", "overig"],
+            "vestiging": ["vestigingsnummer", "overig"],
+        },
+        "overig": {},
+    }
+    """
 
     NATUURLIJK_PERSOON = [
         PartijIdentificatorCodeSoortObjectId.bsn.value,
@@ -49,18 +191,12 @@ class PartijIdentificatorValidator:
         ],
     }
 
-    def __init__(
-        self,
-        code_register: str,
-        code_objecttype: str,
-        code_soort_object_id: str,
-        object_id: str,
-    ) -> None:
+    def __init__(self, partij_identificator: dict) -> None:
         """Initialize validator"""
-        self.code_register = code_register
-        self.code_objecttype = code_objecttype
-        self.code_soort_object_id = code_soort_object_id
-        self.object_id = object_id
+        self.code_register = partij_identificator["code_register"]
+        self.code_objecttype = partij_identificator["code_objecttype"]
+        self.code_soort_object_id = partij_identificator["code_soort_object_id"]
+        self.object_id = partij_identificator["object_id"]
 
     def validate(self) -> None:
         """Run all validations"""

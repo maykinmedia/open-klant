@@ -84,6 +84,7 @@ class PartijIdentificatorFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
     partij = factory.SubFactory(PartijFactory)
     andere_partij_identificator = factory.Faker("word")
+    sub_identificator_van = None
 
     class Meta:
         model = PartijIdentificator

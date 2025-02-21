@@ -17,7 +17,6 @@ from .constants import (
     SoortPartij,
 )
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
-from .validators import PartijIdentificatorValidator
 
 
 class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
@@ -335,6 +334,15 @@ class PartijIdentificator(models.Model):
             "Unieke (technische) identificatiecode van de partij-identificator."
         ),
     )
+    sub_identificator_van = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        verbose_name=_("sub identificator van"),
+        help_text=_("Expresses that one PartijIdentificator is bound to another one"),
+        blank=True,
+        null=True,
+        related_name="parent_partij_identificator",
+    )
     partij = models.ForeignKey(
         Partij,
         on_delete=models.CASCADE,
@@ -412,16 +420,3 @@ class PartijIdentificator(models.Model):
         object = self.partij_identificator_object_id
 
         return f"{soort_object} - {object}"
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
-
-    def clean(self):
-        super().clean()
-        PartijIdentificatorValidator(
-            code_register=self.partij_identificator_code_register,
-            code_objecttype=self.partij_identificator_code_objecttype,
-            code_soort_object_id=self.partij_identificator_code_soort_object_id,
-            object_id=self.partij_identificator_object_id,
-        ).validate()
