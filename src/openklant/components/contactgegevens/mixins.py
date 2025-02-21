@@ -1,3 +1,3 @@
-from openklant.components.utils.mixins import create_prefixed_mixin
+from openklant.components.utils.mixins import create_prefixed_adresmixin
 
-AdresMixin = create_prefixed_mixin("adres")
+AdresMixin = create_prefixed_adresmixin("adres")

@@ -3,10 +3,10 @@ from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
 
-from openklant.components.utils.mixins import create_prefixed_mixin
+from openklant.components.utils.mixins import create_prefixed_adresmixin
 
-BezoekadresMixin = create_prefixed_mixin("bezoekadres")
-CorrespondentieadresMixin = create_prefixed_mixin("correspondentieadres")
+BezoekadresMixin = create_prefixed_adresmixin("bezoekadres")
+CorrespondentieadresMixin = create_prefixed_adresmixin("correspondentieadres")
 
 
 class ContactnaamMixin(models.Model):

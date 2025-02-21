@@ -57,7 +57,7 @@ class ExpandMixin:
         return request.GET.get(self.expand_param)
 
 
-def create_prefixed_mixin(prefix: str):
+def create_prefixed_adresmixin(prefix: str):
     """Dynamically mreate a Mixin with a prefix for Adres fields"""
 
     base_fields = {
