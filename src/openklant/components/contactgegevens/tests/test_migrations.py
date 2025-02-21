@@ -354,11 +354,6 @@ class TestNewAadresFields(BaseMigrationTest):
         Organisatie = self.apps.get_model("contactgegevens", "Organisatie")
         org = Organisatie.objects.get()
 
-        self.assertTrue(hasattr(org, "adres_straatnaam"))
-        self.assertTrue(hasattr(org, "adres_huisnummer"))
-        self.assertTrue(hasattr(org, "adres_huisnummertoevoeging"))
-        self.assertTrue(hasattr(org, "adres_postcode"))
-        self.assertTrue(hasattr(org, "adres_stad"))
         self.assertEqual(org.adres_straatnaam, "")
         self.assertEqual(org.adres_huisnummer, "")
         self.assertEqual(org.adres_huisnummertoevoeging, "")
@@ -384,11 +379,6 @@ class TestNewAadresFields(BaseMigrationTest):
 
         persoon = Persoon.objects.get()
 
-        self.assertTrue(hasattr(persoon, "adres_straatnaam"))
-        self.assertTrue(hasattr(persoon, "adres_huisnummer"))
-        self.assertTrue(hasattr(persoon, "adres_huisnummertoevoeging"))
-        self.assertTrue(hasattr(persoon, "adres_postcode"))
-        self.assertTrue(hasattr(persoon, "adres_stad"))
         self.assertEqual(persoon.adres_straatnaam, "")
         self.assertEqual(persoon.adres_huisnummer, "")
         self.assertEqual(persoon.adres_huisnummertoevoeging, "")

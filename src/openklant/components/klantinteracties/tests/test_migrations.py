@@ -473,19 +473,6 @@ class TestNewAadresFields(BaseMigrationTest):
 
         betrokkene = Betrokkene.objects.get()
 
-        self.assertTrue(hasattr(betrokkene, "bezoekadres_straatnaam"))
-        self.assertTrue(hasattr(betrokkene, "bezoekadres_huisnummer"))
-        self.assertTrue(hasattr(betrokkene, "bezoekadres_huisnummertoevoeging"))
-        self.assertTrue(hasattr(betrokkene, "bezoekadres_postcode"))
-        self.assertTrue(hasattr(betrokkene, "bezoekadres_stad"))
-        self.assertTrue(hasattr(betrokkene, "correspondentieadres_straatnaam"))
-        self.assertTrue(hasattr(betrokkene, "correspondentieadres_huisnummer"))
-        self.assertTrue(
-            hasattr(betrokkene, "correspondentieadres_huisnummertoevoeging")
-        )
-        self.assertTrue(hasattr(betrokkene, "correspondentieadres_postcode"))
-        self.assertTrue(hasattr(betrokkene, "correspondentieadres_stad"))
-
         self.assertEqual(betrokkene.bezoekadres_straatnaam, "")
         self.assertEqual(betrokkene.bezoekadres_huisnummer, "")
         self.assertEqual(betrokkene.bezoekadres_huisnummertoevoeging, "")
@@ -523,17 +510,6 @@ class TestNewAadresFields(BaseMigrationTest):
         Partij = self.apps.get_model("klantinteracties", "Partij")
 
         partij = Partij.objects.get()
-        self.assertTrue(hasattr(partij, "bezoekadres_straatnaam"))
-        self.assertTrue(hasattr(partij, "bezoekadres_huisnummer"))
-        self.assertTrue(hasattr(partij, "bezoekadres_huisnummertoevoeging"))
-        self.assertTrue(hasattr(partij, "bezoekadres_postcode"))
-        self.assertTrue(hasattr(partij, "bezoekadres_stad"))
-
-        self.assertTrue(hasattr(partij, "correspondentieadres_straatnaam"))
-        self.assertTrue(hasattr(partij, "correspondentieadres_huisnummer"))
-        self.assertTrue(hasattr(partij, "correspondentieadres_huisnummertoevoeging"))
-        self.assertTrue(hasattr(partij, "correspondentieadres_postcode"))
-        self.assertTrue(hasattr(partij, "correspondentieadres_stad"))
 
         self.assertEqual(partij.bezoekadres_straatnaam, "")
         self.assertEqual(partij.bezoekadres_huisnummer, "")
