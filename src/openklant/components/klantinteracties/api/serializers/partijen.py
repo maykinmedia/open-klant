@@ -373,7 +373,7 @@ class PartijIdentificatorGroepTypeSerializer(GegevensGroepSerializer):
         }
 
     def validate(self, attrs):
-        PartijIdentificatorTypesValidator(partij_identificator=attrs).validate()
+        PartijIdentificatorTypesValidator(partij_identificator=attrs)()
         return super().validate(attrs)
 
 
@@ -433,7 +433,7 @@ class PartijIdentificatorSerializer(
             partij_identificator=partij_identificator,
             sub_identificator_van=sub_identificator_van,
             partij=partij,
-        ).validate()
+        )()
 
         attrs["sub_identificator_van"] = get_field_instance_by_uuid(
             self, attrs, "sub_identificator_van", PartijIdentificator

@@ -52,7 +52,7 @@ class PartijIdentificatorAdminForm(forms.ModelForm):
             partij_identificator=partij_identificator,
             sub_identificator_van=cleaned_data["sub_identificator_van"],
             partij=cleaned_data["partij"],
-        ).validate()
+        )()
 
         return cleaned_data
 

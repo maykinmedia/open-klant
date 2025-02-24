@@ -2501,7 +2501,7 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(response.data["title"], "Invalid input.")
         self.assertEqual(
             response.data["invalid_params"][0]["reason"],
-            "Kan zichzelf niet selecteren als `sub_identificator_van`.",
+            "Kan zichzelf niet selecteren als `subIdentificatorVan`.",
         )
 
     def test_vestigingsnummer_valid_create(self):
@@ -2545,7 +2545,7 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(response.data["code"], "invalid")
         self.assertEqual(response.data["title"], "Invalid input.")
         self.assertTrue(
-            "`sub_identifier_van` met CodeSoortObjectId = `kvk_nummer` te kiezen."
+            "`sub_identifier_van` met codeSoortObjectId = `kvk_nummer` te kiezen."
             in response.data["invalid_params"][0]["reason"]
         )
 
@@ -2754,7 +2754,7 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(response.data["code"], "invalid")
         self.assertEqual(response.data["title"], "Invalid input.")
         self.assertTrue(
-            "`sub_identifier_van` met CodeSoortObjectId = `kvk_nummer` te kiezen."
+            "`sub_identifier_van` met codeSoortObjectId = `kvk_nummer` te kiezen."
             in response.data["invalid_params"][0]["reason"]
         )
 

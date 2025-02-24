@@ -18,15 +18,14 @@ from openklant.components.klantinteracties.models.validators import (
 
 class PartijIdentificatorTypesValidatorTests(TestCase):
     def test_valid(self):
-        validator = PartijIdentificatorTypesValidator(
+        PartijIdentificatorTypesValidator(
             partij_identificator={
                 "code_objecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
                 "code_soort_object_id": PartijIdentificatorCodeSoortObjectId.bsn.value,
                 "object_id": "296648875",
                 "code_register": PartijIdentificatorCodeRegister.brp.value,
             }
-        )
-        validator.validate()
+        )()
 
     # Start section validate_code_objecttype
 
@@ -325,15 +324,14 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
             ],
         ]
         for case in valid_cases:
-            validator = PartijIdentificatorTypesValidator(
+            PartijIdentificatorTypesValidator(
                 partij_identificator={
                     "code_register": case[0],
                     "code_objecttype": case[1],
                     "code_soort_object_id": case[2],
                     "object_id": case[3],
                 },
-            )
-            validator.validate()
+            )()
 
     def test_not_allowed_cases(self):
         invalid_cases = [
@@ -358,15 +356,14 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
         ]
         for case in invalid_cases:
             with self.assertRaises(ValidationError):
-                validator = PartijIdentificatorTypesValidator(
+                PartijIdentificatorTypesValidator(
                     partij_identificator={
                         "code_register": case[0],
                         "code_objecttype": case[1],
                         "code_soort_object_id": case[2],
                         "object_id": case[3],
                     }
-                )
-                validator.validate()
+                )()
 
 
 class PartijIdentificatorUniquenessValidatorTests(TestCase):
@@ -381,7 +378,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
             },
             sub_identificator_van=None,
             instance=None,
-        ).validate()
+        )()
 
     def test_valid_relation_sub_identificator_van(self):
         # check self relation and sub_identificator_van allowed cases
@@ -403,7 +400,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
             sub_identificator_van=sub_identificator_van,
             instance=None,
             partij=partij,
-        ).validate()
+        )()
 
     def test_invalid_self_relation_sub_identificator_van(self):
         partij_identificator = PartijIdentificatorFactory.create(
@@ -422,12 +419,12 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
                 },
                 sub_identificator_van=partij_identificator,
                 instance=partij_identificator,
-            ).validate()
+            )()
 
         details = error.exception.message_dict
         self.assertEqual(
             details["sub_identificator_van"][0],
-            "Kan zichzelf niet selecteren als `sub_identificator_van`.",
+            "Kan zichzelf niet selecteren als `subIdentificatorVan`.",
         )
 
     def test_invalid_sub_identificator_van_type_not_allowed(self):
@@ -448,7 +445,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
                 },
                 sub_identificator_van=sub_identificator_van,
                 instance=None,
-            ).validate()
+            )()
 
         details = error.exception.message_dict
         self.assertEqual(
@@ -469,10 +466,10 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
                 },
                 sub_identificator_van=None,
                 instance=None,
-            ).validate()
+            )()
 
         details = error.exception.message_dict
         self.assertTrue(
-            "`sub_identifier_van` met CodeSoortObjectId = `kvk_nummer` te kiezen."
+            "`sub_identifier_van` met codeSoortObjectId = `kvk_nummer` te kiezen."
             in details["sub_identificator_van"][0]
         )

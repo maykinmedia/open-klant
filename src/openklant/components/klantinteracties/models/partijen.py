@@ -338,7 +338,11 @@ class PartijIdentificator(models.Model):
         "self",
         on_delete=models.SET_NULL,
         verbose_name=_("sub identificator van"),
-        help_text=_("Expresses that one PartijIdentificator is bound to another one"),
+        help_text=_(
+            "The parent PartijIdentificator under which this PartijIdentificator is unique "
+            "(e.g. the parent identificator could specify a KVK number and the child "
+            "identificator could specify a vestigingsnummer that is unique for the KVK number)."
+        ),
         blank=True,
         null=True,
         related_name="parent_partij_identificator",

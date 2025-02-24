@@ -19,7 +19,11 @@ class Migration(migrations.Migration):
             name="sub_identificator_van",
             field=models.ForeignKey(
                 blank=True,
-                help_text="Expresses that one PartijIdentificator is bound to another one",
+                help_text=(
+                    "The parent PartijIdentificator under which this PartijIdentificator is unique "
+                    "(e.g. the parent identificator could specify a KVK number and the child identificator "
+                    "could specify a vestigingsnummer that is unique for the KVK number)."
+                ),
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
                 related_name="parent_partij_identificator",
