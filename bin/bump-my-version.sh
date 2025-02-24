@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Script to bump the version. Arguments are forwarded to bumpversion.
+# Script to bump the version. Arguments are forwarded to bump-my-version.
 #
 # Usage:
 #
-#   ./bin/bumpversion.sh minor|patch|pre|build
+#   ./bin/bumpversion.sh bump minor|patch|pre|build
 #
 
 set -eu -o pipefail
@@ -18,8 +18,8 @@ if [ -z $VIRTUAL_ENV ]; then
     exit 1
 fi
 
-# Forward all arguments to bumpversion binary
-bumpversion "$@"
+# Forward all arguments to bump-my-version binary
+bump-my-version "$@"
 
 # Run npm install to update the package-lock.json version number
 npm i
