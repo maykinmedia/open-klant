@@ -58,11 +58,12 @@ class PartijIdentificatorUniquenessValidator:
 
     def validate_sub_identificator_van_for_vestigingsnummer(self):
         """
-        - Validation that if the `sub_identificator_van` is not selected raise a error, for
-        partij_identificator with CodeSoortObjectId = `vestigingsnummer`.
-
-        - Validation that when the partij_identificator has CodeSoortObjectId = `vestigingsnummer`,
-        the `sub_identificator_van` must have CodeSoortObjectId = `kvk_nummer`.
+        - Validation that when the partij_identificator has CodeSoortObjectId = `vestigingsnummer`:
+            - if the `sub_identificator_van` is not selected
+            - the `sub_identificator_van` must have CodeSoortObjectId = `kvk_nummer`.
+            - cannot be assigned to a null Partij
+            - cannot be assigned to a Partij that doesn't have another partij_identificator
+              with CodeSoortObjectId = `kvk_nummer`
 
         """
         if not self.sub_identificator_van:
@@ -84,6 +85,31 @@ class PartijIdentificatorUniquenessValidator:
                     "sub_identificator_van": _(
                         "Het is alleen mogelijk om sub_identifier_vans te selecteren"
                         " die CodeSoortObjectId = `kvk_nummer` hebben."
+                    )
+                }
+            )
+
+        if not self.partij:
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Het is niet mogelijk om een partij_identificator te maken zonder de partij"
+                        "waartoe deze behoort te specificeren."
+                    )
+                }
+            )
+
+        if (
+            not self.queryset.filter(partij=self.partij)
+            .filter(
+                partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value
+            )
+            .exists()
+        ):
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Je moet een `sub_identifier_van` selecteren die tot dezelfde partij behoort."
                     )
                 }
             )

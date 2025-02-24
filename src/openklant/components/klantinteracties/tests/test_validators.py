@@ -7,6 +7,7 @@ from openklant.components.klantinteracties.models.constants import (
     PartijIdentificatorCodeSoortObjectId,
 )
 from openklant.components.klantinteracties.models.tests.factories.partijen import (
+    PartijFactory,
     PartijIdentificatorFactory,
 )
 from openklant.components.klantinteracties.models.validators import (
@@ -384,7 +385,9 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
 
     def test_valid_relation_sub_identificator_van(self):
         # check self relation and sub_identificator_van allowed cases
+        partij = PartijFactory.create()
         sub_identificator_van = PartijIdentificatorFactory.create(
+            partij=partij,
             partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
             partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
             partij_identificator_object_id="12345678",
@@ -399,6 +402,7 @@ class PartijIdentificatorUniquenessValidatorTests(TestCase):
             },
             sub_identificator_van=sub_identificator_van,
             instance=None,
+            partij=partij,
         ).validate()
 
     def test_invalid_self_relation_sub_identificator_van(self):
