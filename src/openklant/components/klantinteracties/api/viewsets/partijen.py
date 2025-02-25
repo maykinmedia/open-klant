@@ -26,6 +26,7 @@ from openklant.components.klantinteracties.models.partijen import (
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.mixins import ExpandMixin
+from openklant.utils.decorators import handle_db_exceptions
 
 
 @extend_schema(tags=["partijen"])
@@ -252,3 +253,7 @@ class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @handle_db_exceptions
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
