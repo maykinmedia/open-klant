@@ -39,6 +39,7 @@ release = openklant.__version__
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.todo",
+    "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
     "django_setup_configuration.documentation.setup_config_example",
@@ -110,3 +111,15 @@ linkcheck_ignore = [
     r"https://.*kvk\.nl*",
     r"https://gdpr.eu*",
 ]
+
+extlinks = {
+    "open-klant": ("https://github.com/maykinmedia/open-klant/issues/%s", "#%s"),
+    "open-api-framework": (
+        "https://github.com/maykinmedia/open-api-framework/issues/%s",
+        "#%s",
+    ),
+    "charts": (
+        "https://github.com/maykinmedia/charts/issues/%s",
+        "#%s",
+    ),
+}

@@ -136,7 +136,7 @@ coreschema==0.0.4
     #   coreapi
 coverage==4.5.4
     # via codecov
-cryptography==43.0.0
+cryptography==44.0.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -149,7 +149,7 @@ cssselect==1.2.0
     # via pyquery
 dill==0.3.8
     # via pylint
-django==4.2.17
+django==4.2.19
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -593,7 +593,7 @@ pyjwt==2.9.0
     #   zgw-consumers
 pylint==3.2.6
     # via -r requirements/test-tools.in
-pyopenssl==24.2.1
+pyopenssl==25.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -766,6 +766,7 @@ typing-extensions==4.12.2
     #   mozilla-django-oidc-db
     #   pydantic
     #   pydantic-core
+    #   pyopenssl
     #   qrcode
     #   zgw-consumers
 tzdata==2024.1

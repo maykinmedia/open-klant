@@ -2,6 +2,44 @@
 Change history
 ==============
 
+2.6.0
+=====
+*March, 4, 2025*
+
+**New features**
+
+* [:open-klant:`233`] Fix set of values for PartijIdentificatoren (ENUM)
+* [:open-klant:`267`] Enforce uniqueness of Partij and PartijIdentificatoren
+* [:open-klant:`309`] Add separate fields for Dutch addresses next to address lines 1 to 3
+* [:open-klant:`310`] Update BAG ID fields with new validations
+* [:open-klant:`311`] Update country codes fields with ISO 3166
+
+.. warning::
+
+    Issues ``#311``, ``#310``, ``#267`` modify existing fields and add new constraints to models, which can cause them to break,
+    as some previous values will no longer be valid. 
+    During migration, invalid values are logged so that they can be fixed manually and then migrations have to be executed again.
+
+
+**Project maintenance**
+
+* Upgrading dependencies:
+
+  * Upgrade open-api-framework to 0.9.3
+  * Upgrade Django to 4.2.19
+  * Upgrade cryptography to 44.0.1
+  * [:open-klant:`324`] Upgrade django-setup-configuration to 0.7.1
+  * [:open-klant:`324`] Upgrade mozilla-django-oidc-db to 0.22.0
+* [:open-api-framework:`79`] Disable admin nav sidebar
+* [:open-api-framework:`99`] Add quick-start workflow to test docker-compose.yml
+* [:open-api-framework:`107`] Add release template
+* [:open-klant:`299`] Add Nginx to Open Klant helm chart
+
+**Documentation**
+
+* [:open-klant:`324`] Update documentation for setup-configuration
+
+
 2.5.0
 =====
 *January, 28, 2025*
