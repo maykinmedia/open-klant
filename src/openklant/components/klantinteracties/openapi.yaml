@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: klantinteracties
-  version: 0.0.4
+  version: 0.1.0
   description: |2
 
     Description WIP.
@@ -4758,7 +4758,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorForeignkey'
           nullable: true
-          description: Relatie sub_identificator_van
+          description: The parent PartijIdentificator under which this PartijIdentificator
+            is unique (e.g. the parent identificator could specify a KVK number and
+            the child identificator could specify a vestigingsnummer that is unique
+            for the KVK number).
       required:
       - identificeerdePartij
       - partijIdentificator
@@ -5310,7 +5313,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorForeignkey'
           nullable: true
-          description: Relatie sub_identificator_van
+          description: The parent PartijIdentificator under which this PartijIdentificator
+            is unique (e.g. the parent identificator could specify a KVK number and
+            the child identificator could specify a vestigingsnummer that is unique
+            for the KVK number).
     PatchedRekeningnummer:
       type: object
       properties:
