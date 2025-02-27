@@ -365,12 +365,6 @@ components:
           - $ref: '#/components/schemas/OrganisatieAdres'
           nullable: true
           description: De adres gegevens van een organisatie.
-        land:
-          type: string
-          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
-            de ingeschrevene verblijft.
-          maxLength: 2
-          minLength: 2
       required:
       - handelsnaam
       - url
@@ -519,12 +513,6 @@ components:
           - $ref: '#/components/schemas/OrganisatieAdres'
           nullable: true
           description: De adres gegevens van een organisatie.
-        land:
-          type: string
-          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
-            de ingeschrevene verblijft.
-          maxLength: 2
-          minLength: 2
     PatchedPersoon:
       type: object
       description: |-
@@ -585,12 +573,6 @@ components:
           - $ref: '#/components/schemas/PersoonAdres'
           nullable: true
           description: De adres gegevens van een organisatie.
-        land:
-          type: string
-          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
-            de ingeschrevene verblijft.
-          maxLength: 2
-          minLength: 2
     Persoon:
       type: object
       description: |-
@@ -651,12 +633,6 @@ components:
           - $ref: '#/components/schemas/PersoonAdres'
           nullable: true
           description: De adres gegevens van een organisatie.
-        land:
-          type: string
-          description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
-            de ingeschrevene verblijft.
-          maxLength: 2
-          minLength: 2
       required:
       - geboortedatum
       - geslachtsnaam

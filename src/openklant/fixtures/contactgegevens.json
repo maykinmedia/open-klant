@@ -16,8 +16,7 @@
         "uuid": "9df246f7-027b-4305-bf43-043b3b926ed3",
         "handelsnaam": "Maykin Media",
         "oprichtingsdatum": "2008-01-01",
-        "opheffingsdatum": null,
-        "land": "NL"
+        "opheffingsdatum": null
     }
 },
 {
@@ -40,8 +39,7 @@
         "geslachtsnaam": "Schalkwijk",
         "geslacht": "v",
         "voorvoegsel": "van",
-        "voornamen": "Nagihan",
-        "land": "NL"
+        "voornamen": "Nagihan"
     }
 }
 ]

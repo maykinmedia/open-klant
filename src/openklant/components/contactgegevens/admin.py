@@ -19,7 +19,6 @@ class PersoonAdmin(admin.ModelAdmin):
                     "geslachtsnaam",
                     "geboortedatum",
                     "overlijdensdatum",
-                    "land",
                 ]
             },
         ),
@@ -55,7 +54,6 @@ class OrganisatieAdmin(admin.ModelAdmin):
                     "handelsnaam",
                     "oprichtingsdatum",
                     "opheffingsdatum",
-                    "land",
                 ]
             },
         ),
