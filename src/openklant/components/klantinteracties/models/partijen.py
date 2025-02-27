@@ -460,15 +460,14 @@ class PartijIdentificator(models.Model):
         ]
 
     def clean_sub_identificator_van(self):
-        if self.sub_identificator_van:
-            if self.sub_identificator_van == self:
-                raise ValidationError(
-                    {
-                        "sub_identificator_van": _(
-                            "Een `Partijidentificator` kan geen `subIdentificatorVan` zijn van zichzelf."
-                        )
-                    }
-                )
+        if self.sub_identificator_van and self.sub_identificator_van == self:
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Een `Partijidentificator` kan geen `subIdentificatorVan` zijn van zichzelf."
+                    )
+                }
+            )
 
     def save(self, *args, **kwargs):
         self.full_clean()

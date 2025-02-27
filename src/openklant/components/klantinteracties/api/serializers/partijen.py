@@ -7,6 +7,7 @@ from drf_spectacular.utils import extend_schema_field
 from glom import PathAccessError, glom
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
+from vng_api_common.utils import get_help_text
 
 from openklant.components.klantinteracties.api.polymorphism import (
     Discriminator,
@@ -395,7 +396,9 @@ class PartijIdentificatorSerializer(
     sub_identificator_van = PartijIdentificatorForeignkeySerializer(
         required=False,
         allow_null=True,
-        help_text=_("Relatie sub_identificator_van"),
+        help_text=get_help_text(
+            "klantinteracties.PartijIdentificator", "sub_identificator_van"
+        ),
     )
 
     class Meta:
