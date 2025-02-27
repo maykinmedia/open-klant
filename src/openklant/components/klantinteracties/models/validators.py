@@ -7,6 +7,8 @@ from vng_api_common.validators import (
     validate_rsin,
 )
 
+from openklant.components.klantinteracties.models.partijen import PartijIdentificator
+
 from .constants import (
     PartijIdentificatorCodeObjectType,
     PartijIdentificatorCodeRegister,
@@ -17,7 +19,67 @@ VESTIGINGSNUMMER_LENGTH = 12
 KVK_NUMMER_LENGTH = 8
 
 
-class PartijIdentificatorValidator:
+class PartijIdentificatorUniquenessValidator:
+    def __init__(
+        self,
+        code_soort_object_id: str | None = "",
+        sub_identificator_van: PartijIdentificator | None = None,
+    ):
+        self.code_soort_object_id = code_soort_object_id
+        self.sub_identificator_van = sub_identificator_van
+
+    def __call__(self):
+        if (
+            self.code_soort_object_id
+            == PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
+        ):
+            self.validate_sub_identificator_van_for_vestigingsnummer()
+
+    def validate_sub_identificator_van_for_vestigingsnummer(self):
+        """
+        - Validation that when the partij_identificator has CodeSoortObjectId = `vestigingsnummer`:
+            - `sub_identificator_van` is required
+            - `sub_identificator_van` must have CodeSoortObjectId = `kvk_nummer`
+        """
+        if not self.sub_identificator_van:
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Voor een PartijIdentificator met codeSoortObjectId = `vestigingsnummer` is het verplicht om"
+                        " een `sub_identifier_van` met codeSoortObjectId = `kvk_nummer` te kiezen."
+                    )
+                }
+            )
+
+        if (
+            self.sub_identificator_van.partij_identificator_code_soort_object_id
+            != PartijIdentificatorCodeSoortObjectId.kvk_nummer.value
+        ):
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Het is alleen mogelijk om een subIdentifierVan te selecteren met "
+                        "codeSoortObjectId = `kvk_nummer`."
+                    )
+                }
+            )
+
+
+class PartijIdentificatorTypesValidator:
+    """
+    Validator for `partij_identificator` fields which checks that the basic hierarchy is respected
+
+    REGISTRIES = {
+        "brp": {
+            "natuurlijk_persoon": ["bsn", "overig"],
+        },
+        "hr": {
+            "niet_natuurlijk_persoon": ["rsin", "kvk_nummer", "overig"],
+            "vestiging": ["vestigingsnummer", "overig"],
+        },
+        "overig": {},
+    }
+    """
 
     NATUURLIJK_PERSOON = [
         PartijIdentificatorCodeSoortObjectId.bsn.value,
@@ -49,7 +111,7 @@ class PartijIdentificatorValidator:
         ],
     }
 
-    def __init__(
+    def __call__(
         self,
         code_register: str,
         code_objecttype: str,
@@ -62,8 +124,6 @@ class PartijIdentificatorValidator:
         self.code_soort_object_id = code_soort_object_id
         self.object_id = object_id
 
-    def validate(self) -> None:
-        """Run all validations"""
         self.validate_code_objecttype()
         self.validate_code_soort_object_id()
         self.validate_object_id()

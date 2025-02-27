@@ -7,6 +7,7 @@ from drf_spectacular.utils import extend_schema_field
 from glom import PathAccessError, glom
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
+from vng_api_common.utils import get_help_text
 
 from openklant.components.klantinteracties.api.polymorphism import (
     Discriminator,
@@ -43,9 +44,11 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 from openklant.components.klantinteracties.models.validators import (
-    PartijIdentificatorValidator,
+    PartijIdentificatorTypesValidator,
+    PartijIdentificatorUniquenessValidator,
 )
-from openklant.utils.serializers import get_field_value
+from openklant.utils.decorators import handle_db_exceptions
+from openklant.utils.serializers import get_field_instance_by_uuid, get_field_value
 
 
 class PartijForeignkeyBaseSerializer(serializers.HyperlinkedModelSerializer):
@@ -364,6 +367,13 @@ class PartijIdentificatorGroepTypeSerializer(GegevensGroepSerializer):
     class Meta:
         model = PartijIdentificator
         gegevensgroep = "partij_identificator"
+        extra_kwargs = {
+            "code_register": {"required": True},
+            "code_objecttype": {"required": True},
+            "code_soort_object_id": {"required": True},
+            "object_id": {"required": True},
+        }
+        validators = []
 
 
 class PartijIdentificatorSerializer(
@@ -383,6 +393,13 @@ class PartijIdentificatorSerializer(
             "of ander extern register uniek identificeren."
         ),
     )
+    sub_identificator_van = PartijIdentificatorForeignkeySerializer(
+        required=False,
+        allow_null=True,
+        help_text=get_help_text(
+            "klantinteracties.PartijIdentificator", "sub_identificator_van"
+        ),
+    )
 
     class Meta:
         model = PartijIdentificator
@@ -392,8 +409,8 @@ class PartijIdentificatorSerializer(
             "identificeerde_partij",
             "andere_partij_identificator",
             "partij_identificator",
+            "sub_identificator_van",
         )
-
         extra_kwargs = {
             "uuid": {"read_only": True},
             "url": {
@@ -405,29 +422,35 @@ class PartijIdentificatorSerializer(
 
     def validate(self, attrs):
         partij_identificator = get_field_value(self, attrs, "partij_identificator")
-        PartijIdentificatorValidator(
-            code_register=partij_identificator["code_register"],
+        sub_identificator_van = get_field_instance_by_uuid(
+            self, attrs, "sub_identificator_van", PartijIdentificator
+        )
+        partij = get_field_instance_by_uuid(self, attrs, "partij", Partij)
+
+        PartijIdentificatorTypesValidator()(
             code_objecttype=partij_identificator["code_objecttype"],
             code_soort_object_id=partij_identificator["code_soort_object_id"],
             object_id=partij_identificator["object_id"],
-        ).validate()
+            code_register=partij_identificator["code_register"],
+        )
+        PartijIdentificatorUniquenessValidator(
+            code_soort_object_id=partij_identificator["code_soort_object_id"],
+            sub_identificator_van=sub_identificator_van,
+        )()
+
+        attrs["sub_identificator_van"] = sub_identificator_van
+        attrs["partij"] = partij
+
         return super().validate(attrs)
 
+    @handle_db_exceptions
     @transaction.atomic
     def update(self, instance, validated_data):
-        if "partij" in validated_data:
-            if partij := validated_data.pop("partij", None):
-                validated_data["partij"] = Partij.objects.get(
-                    uuid=str(partij.get("uuid"))
-                )
-
         return super().update(instance, validated_data)
 
+    @handle_db_exceptions
     @transaction.atomic
     def create(self, validated_data):
-        partij_uuid = str(validated_data.pop("partij").get("uuid"))
-        validated_data["partij"] = Partij.objects.get(uuid=partij_uuid)
-
         return super().create(validated_data)
 
 

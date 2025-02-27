@@ -4754,6 +4754,11 @@ components:
           nullable: true
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
+        subIdentificatorVan:
+          allOf:
+          - $ref: '#/components/schemas/PartijIdentificatorForeignkey'
+          nullable: true
+          description: Relatie sub_identificator_van
       required:
       - identificeerdePartij
       - partijIdentificator
@@ -4804,6 +4809,11 @@ components:
           oneOf:
           - $ref: '#/components/schemas/CodeRegisterEnum'
           - $ref: '#/components/schemas/BlankEnum'
+      required:
+      - codeObjecttype
+      - codeRegister
+      - codeSoortObjectId
+      - objectId
     PartijPolymorphic:
       type: object
       properties:
@@ -5296,6 +5306,11 @@ components:
           nullable: true
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
+        subIdentificatorVan:
+          allOf:
+          - $ref: '#/components/schemas/PartijIdentificatorForeignkey'
+          nullable: true
+          description: Relatie sub_identificator_van
     PatchedRekeningnummer:
       type: object
       properties:

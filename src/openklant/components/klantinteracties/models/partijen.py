@@ -17,7 +17,6 @@ from .constants import (
     SoortPartij,
 )
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
-from .validators import PartijIdentificatorValidator
 
 
 class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
@@ -335,6 +334,19 @@ class PartijIdentificator(models.Model):
             "Unieke (technische) identificatiecode van de partij-identificator."
         ),
     )
+    sub_identificator_van = models.ForeignKey(
+        "self",
+        on_delete=models.PROTECT,
+        verbose_name=_("sub identificator van"),
+        help_text=_(
+            "The parent PartijIdentificator under which this PartijIdentificator is unique "
+            "(e.g. the parent identificator could specify a KVK number and the child "
+            "identificator could specify a vestigingsnummer that is unique for the KVK number)."
+        ),
+        blank=True,
+        null=True,
+        related_name="parent_partij_identificator",
+    )
     partij = models.ForeignKey(
         Partij,
         on_delete=models.CASCADE,
@@ -407,11 +419,55 @@ class PartijIdentificator(models.Model):
         verbose_name = _("partij identificator")
         verbose_name_plural = _("partij identificatoren")
 
-    def __str__(self):
-        soort_object = self.partij_identificator_code_soort_object_id
-        object = self.partij_identificator_object_id
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "partij_identificator_code_objecttype",
+                    "partij_identificator_code_soort_object_id",
+                    "partij_identificator_object_id",
+                    "partij_identificator_code_register",
+                ],
+                condition=models.Q(sub_identificator_van__isnull=True),
+                name="non_scoped_identificator_globally_unique",
+                violation_error_message=_(
+                    "`PartijIdentificator` moet uniek zijn, er bestaat er al een met deze gegevenscombinatie."
+                ),
+            ),
+            models.UniqueConstraint(
+                fields=[
+                    "partij",
+                    "partij_identificator_code_soort_object_id",
+                ],
+                name="non_scoped_identificator_locally_unique",
+                violation_error_message=_(
+                    "`CodeSoortObjectId` moet uniek zijn voor de Partij."
+                ),
+            ),
+            models.UniqueConstraint(
+                fields=[
+                    "sub_identificator_van",
+                    "partij_identificator_code_objecttype",
+                    "partij_identificator_code_soort_object_id",
+                    "partij_identificator_object_id",
+                    "partij_identificator_code_register",
+                ],
+                condition=models.Q(sub_identificator_van__isnull=False),
+                name="scoped_identificator_globally_unique",
+                violation_error_message=_(
+                    "`PartijIdentificator` moet uniek zijn, er bestaat er al een met deze gegevenscombinatie."
+                ),
+            ),
+        ]
 
-        return f"{soort_object} - {object}"
+    def clean_sub_identificator_van(self):
+        if self.sub_identificator_van and self.sub_identificator_van == self:
+            raise ValidationError(
+                {
+                    "sub_identificator_van": _(
+                        "Een `Partijidentificator` kan geen `subIdentificatorVan` zijn van zichzelf."
+                    )
+                }
+            )
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -419,9 +475,7 @@ class PartijIdentificator(models.Model):
 
     def clean(self):
         super().clean()
-        PartijIdentificatorValidator(
-            code_register=self.partij_identificator_code_register,
-            code_objecttype=self.partij_identificator_code_objecttype,
-            code_soort_object_id=self.partij_identificator_code_soort_object_id,
-            object_id=self.partij_identificator_object_id,
-        ).validate()
+        self.clean_sub_identificator_van()
+
+    def __str__(self):
+        return f"{self.partij_identificator_code_soort_object_id} - {self.partij_identificator_object_id}"

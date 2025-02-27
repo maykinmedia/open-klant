@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.db.models import Model
 from django.utils.module_loading import import_string
 
 from rest_framework.serializers import Serializer
@@ -69,3 +70,24 @@ def get_field_value(
     if serializer.instance:
         return getattr(serializer.instance, field_name, None)
     return None
+
+
+def get_field_instance_by_uuid(
+    serializer: Serializer,
+    attrs: dict[str, Any],
+    field_name: str,
+    model_class: type[Model],
+):
+    """
+    Retrieves an instance of the specified model using the UUID present in the serializer data.
+
+    :param serializer: The serializer instance used to validate the data.
+    :param attrs: The dictionary of attributes from the validated data.
+    :param field_name: The name of the field from which to extract the value.
+    :param model_class: The Django model class from which to retrieve the instance.
+    :return: The instance or None if not present returned from get_field_value method
+    """
+    field_value = get_field_value(serializer, attrs, field_name)
+    if field_value and not isinstance(field_value, model_class):
+        field_value = model_class.objects.get(uuid=field_value["uuid"])
+    return field_value
