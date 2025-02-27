@@ -3,8 +3,6 @@ from open_api_framework.conf.utils import config  # noqa
 
 from .api import *  # noqa
 
-init_sentry()
-
 #
 # APPLICATIONS enabled for this project
 #
