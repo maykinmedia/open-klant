@@ -507,7 +507,7 @@ notifications-api-common==0.3.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.9.2
+open-api-framework==0.9.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -837,4 +837,3 @@ zgw-consumers==0.35.1
     #   -r requirements/base.txt
     #   commonground-api-common
     #   notifications-api-common
-    #   open-api-framework
