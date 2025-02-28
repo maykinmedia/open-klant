@@ -31,7 +31,6 @@ class OrganisatieSerializer(
             "oprichtingsdatum",
             "opheffingsdatum",
             "adres",
-            "land",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
@@ -71,7 +70,6 @@ class PersoonSerializer(
             "voorvoegsel",
             "voornamen",
             "adres",
-            "land",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},

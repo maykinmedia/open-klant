@@ -1,12 +1,10 @@
 import uuid
 
-from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.contactgegevens.constants import GeslachtChoices
 from openklant.components.contactgegevens.mixins import AdresMixin
-from openklant.utils.validators import validate_country
 
 
 class Organisatie(AdresMixin):
@@ -39,18 +37,6 @@ class Organisatie(AdresMixin):
             "Een datum wordt genoteerd van het meest naar het minst "
             "significante onderdeel. Een voorbeeld: 2022-02-21"
         ),
-    )
-    land = models.CharField(
-        _("land"),
-        help_text=_(
-            "ISO 3166-code die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft."
-        ),
-        validators=[
-            MinLengthValidator(limit_value=2),
-            validate_country,
-        ],
-        max_length=2,
-        blank=True,
     )
 
     class Meta:
@@ -123,18 +109,6 @@ class Persoon(AdresMixin):
             "is case-insensitive."
         ),
         max_length=200,
-        blank=True,
-    )
-    land = models.CharField(
-        _("land"),
-        help_text=_(
-            "ISO 3166-code die het land (buiten Nederland) aangeeft alwaar de ingeschrevene verblijft."
-        ),
-        validators=[
-            MinLengthValidator(limit_value=2),
-            validate_country,
-        ],
-        max_length=2,
         blank=True,
     )
 

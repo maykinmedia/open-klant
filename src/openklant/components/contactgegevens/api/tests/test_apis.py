@@ -18,11 +18,15 @@ class PersoonTests(APITestCase):
             voorvoegsel="",
             voornamen="John",
             adres_nummeraanduiding_id="1234567890000001",
+            adres_straatnaam="straat",
+            adres_huisnummer=10,
+            adres_huisnummertoevoeging="A2",
+            adres_postcode="1008 DG",
+            adres_stad="Amsterdam",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
             adres_land="CA",
-            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:persoon-detail",
@@ -31,6 +35,11 @@ class PersoonTests(APITestCase):
 
         expected_adres = {
             "nummeraanduidingId": "1234567890000001",
+            "straatnaam": "straat",
+            "huisnummer": 10,
+            "huisnummertoevoeging": "A2",
+            "postcode": "1008 DG",
+            "stad": "Amsterdam",
             "adresregel1": "adresregel1",
             "adresregel2": "adresregel2",
             "adresregel3": "adresregel3",
@@ -46,7 +55,6 @@ class PersoonTests(APITestCase):
             "voorvoegsel": "",
             "voornamen": "John",
             "adres": expected_adres,
-            "land": "CA",
         }
 
         response = self.client.get(detail_url)
@@ -65,12 +73,16 @@ class PersoonTests(APITestCase):
             "voornamen": "Devin",
             "adres": {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
-            "land": "CA",
         }
 
         response = self.client.post(list_url, data)
@@ -89,13 +101,17 @@ class PersoonTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "CA")
 
     def test_update_persoon(self):
         persoon = PersoonFactory.create(
@@ -106,11 +122,15 @@ class PersoonTests(APITestCase):
             voorvoegsel="",
             voornamen="Devin",
             adres_nummeraanduiding_id="1234567890000001",
+            adres_straatnaam="straat",
+            adres_huisnummer=10,
+            adres_huisnummertoevoeging="A2",
+            adres_postcode="1008 DG",
+            adres_stad="Amsterdam",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
             adres_land="CA",
-            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:persoon-detail",
@@ -133,13 +153,17 @@ class PersoonTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "CA")
 
         data = {
             "geboortedatum": "1972-05-06",
@@ -150,12 +174,16 @@ class PersoonTests(APITestCase):
             "voornamen": "changed",
             "adres": {
                 "nummeraanduidingId": "1234567890000002",
+                "straatnaam": "changed",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "changed",
+                "postcode": "1001 AB",
+                "stad": "Amsterdam",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "FR",
             },
-            "land": "FR",
         }
         response = self.client.put(detail_url, data)
         data = response.json()
@@ -170,13 +198,17 @@ class PersoonTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000002",
+                "straatnaam": "changed",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "changed",
+                "postcode": "1001 AB",
+                "stad": "Amsterdam",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "FR",
             },
         )
-        self.assertEqual(data["land"], "FR")
 
     def test_update_partial_persoon(self):
         persoon = PersoonFactory.create(
@@ -187,11 +219,15 @@ class PersoonTests(APITestCase):
             voorvoegsel="",
             voornamen="Devin",
             adres_nummeraanduiding_id="1234567890000001",
+            adres_straatnaam="straat",
+            adres_huisnummer=10,
+            adres_huisnummertoevoeging="A2",
+            adres_postcode="1008 DG",
+            adres_stad="Amsterdam",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
             adres_land="CA",
-            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:persoon-detail",
@@ -214,13 +250,17 @@ class PersoonTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "CA")
 
         data = {
             "overlijdensdatum": "2023-11-22",
@@ -238,13 +278,17 @@ class PersoonTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "CA")
 
     def test_list_pagination_pagesize_param(self):
         list_url = reverse("contactgegevens:persoon-list")
@@ -267,11 +311,15 @@ class OrganisatiesTests(APITestCase):
             oprichtingsdatum="1980-02-23",
             opheffingsdatum="2020-09-05",
             adres_nummeraanduiding_id="1234567890000001",
+            adres_straatnaam="straat",
+            adres_huisnummer=10,
+            adres_huisnummertoevoeging="A2",
+            adres_postcode="1008 DG",
+            adres_stad="Amsterdam",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
             adres_land="CA",
-            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:organisatie-detail",
@@ -280,6 +328,11 @@ class OrganisatiesTests(APITestCase):
 
         expected_adres = {
             "nummeraanduidingId": "1234567890000001",
+            "straatnaam": "straat",
+            "huisnummer": 10,
+            "huisnummertoevoeging": "A2",
+            "postcode": "1008 DG",
+            "stad": "Amsterdam",
             "adresregel1": "adresregel1",
             "adresregel2": "adresregel2",
             "adresregel3": "adresregel3",
@@ -292,7 +345,6 @@ class OrganisatiesTests(APITestCase):
             "opheffingsdatum": "2020-09-05",
             "handelsnaam": "Devin Townsend",
             "adres": expected_adres,
-            "land": "CA",
         }
 
         response = self.client.get(detail_url)
@@ -309,12 +361,16 @@ class OrganisatiesTests(APITestCase):
             "oprichtingsdatum": "1996-03-12",
             "adres": {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
-            "land": "CA",
         }
 
         response = self.client.post(list_url, data)
@@ -330,13 +386,17 @@ class OrganisatiesTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "CA")
 
     def test_update_organisatie(self):
         organisatie = OrganisatieFactory.create(
@@ -344,11 +404,15 @@ class OrganisatiesTests(APITestCase):
             oprichtingsdatum="1996-03-12",
             opheffingsdatum=None,
             adres_nummeraanduiding_id="1234567890000001",
+            adres_straatnaam="straat",
+            adres_huisnummer=10,
+            adres_huisnummertoevoeging="A2",
+            adres_postcode="1008 DG",
+            adres_stad="Amsterdam",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
             adres_land="CA",
-            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:organisatie-detail",
@@ -368,13 +432,17 @@ class OrganisatiesTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "CA")
 
         data = {
             "handelsnaam": "changed",
@@ -382,12 +450,16 @@ class OrganisatiesTests(APITestCase):
             "opheffingsdatum": "2023-11-22",
             "adres": {
                 "nummeraanduidingId": "1234567890000002",
+                "straatnaam": "changed",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "changed",
+                "postcode": "1001 AB",
+                "stad": "Amsterdam",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "FR",
             },
-            "land": "FR",
         }
         response = self.client.put(detail_url, data)
         data = response.json()
@@ -398,13 +470,17 @@ class OrganisatiesTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000002",
+                "straatnaam": "changed",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "changed",
+                "postcode": "1001 AB",
+                "stad": "Amsterdam",
                 "adresregel1": "changed",
                 "adresregel2": "changed",
                 "adresregel3": "changed",
                 "land": "FR",
             },
         )
-        self.assertEqual(data["land"], "FR")
 
     def test_update_partial_organisatie(self):
         organisatie = OrganisatieFactory.create(
@@ -412,11 +488,15 @@ class OrganisatiesTests(APITestCase):
             oprichtingsdatum="1996-03-12",
             opheffingsdatum=None,
             adres_nummeraanduiding_id="1234567890000001",
+            adres_straatnaam="straat",
+            adres_huisnummer=10,
+            adres_huisnummertoevoeging="A2",
+            adres_postcode="1008 DG",
+            adres_stad="Amsterdam",
             adres_adresregel1="adresregel1",
             adres_adresregel2="adresregel2",
             adres_adresregel3="adresregel3",
             adres_land="CA",
-            land="CA",
         )
         detail_url = reverse(
             "contactgegevens:organisatie-detail",
@@ -436,13 +516,17 @@ class OrganisatiesTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "CA")
 
         data = {
             "opheffingsdatum": "2023-11-22",
@@ -458,13 +542,17 @@ class OrganisatiesTests(APITestCase):
             data["adres"],
             {
                 "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
                 "adresregel1": "adresregel1",
                 "adresregel2": "adresregel2",
                 "adresregel3": "adresregel3",
                 "land": "CA",
             },
         )
-        self.assertEqual(data["land"], "CA")
 
     def test_list_pagination_pagesize_param(self):
         list_url = reverse("contactgegevens:organisatie-list")

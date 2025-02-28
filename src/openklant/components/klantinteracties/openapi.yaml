@@ -3206,6 +3206,33 @@ components:
             en Gebouwen.
           pattern: ^[0-9]{16}$
           maxLength: 16
+        straatnaam:
+          type: string
+          description: Straatnaam van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          maxLength: 255
+        huisnummer:
+          type: integer
+          maximum: 99999
+          minimum: 1
+          description: Huisnummer van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+        huisnummertoevoeging:
+          type: string
+          description: Huisnummertoevoeging van het adres (indien het een Nederlands
+            adres betreft zonder BAG-id).
+          maxLength: 20
+        postcode:
+          type: string
+          description: Postcode van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          pattern: ^[1-9][0-9]{3} [A-Z]{2}$
+          maxLength: 7
+        stad:
+          type: string
+          description: Stad van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          maxLength: 255
         adresregel1:
           type: string
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
@@ -3337,6 +3364,33 @@ components:
             en Gebouwen.
           pattern: ^[0-9]{16}$
           maxLength: 16
+        straatnaam:
+          type: string
+          description: Straatnaam van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          maxLength: 255
+        huisnummer:
+          type: integer
+          maximum: 99999
+          minimum: 1
+          description: Huisnummer van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+        huisnummertoevoeging:
+          type: string
+          description: Huisnummertoevoeging van het adres (indien het een Nederlands
+            adres betreft zonder BAG-id).
+          maxLength: 20
+        postcode:
+          type: string
+          description: Postcode van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          pattern: ^[1-9][0-9]{3} [A-Z]{2}$
+          maxLength: 7
+        stad:
+          type: string
+          description: Stad van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          maxLength: 255
         adresregel1:
           type: string
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
@@ -4633,6 +4687,33 @@ components:
             en Gebouwen.
           pattern: ^[0-9]{16}$
           maxLength: 16
+        straatnaam:
+          type: string
+          description: Straatnaam van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          maxLength: 255
+        huisnummer:
+          type: integer
+          maximum: 99999
+          minimum: 1
+          description: Huisnummer van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+        huisnummertoevoeging:
+          type: string
+          description: Huisnummertoevoeging van het adres (indien het een Nederlands
+            adres betreft zonder BAG-id).
+          maxLength: 20
+        postcode:
+          type: string
+          description: Postcode van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          pattern: ^[1-9][0-9]{3} [A-Z]{2}$
+          maxLength: 7
+        stad:
+          type: string
+          description: Stad van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          maxLength: 255
         adresregel1:
           type: string
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
@@ -4663,6 +4744,33 @@ components:
             en Gebouwen.
           pattern: ^[0-9]{16}$
           maxLength: 16
+        straatnaam:
+          type: string
+          description: Straatnaam van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          maxLength: 255
+        huisnummer:
+          type: integer
+          maximum: 99999
+          minimum: 1
+          description: Huisnummer van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+        huisnummertoevoeging:
+          type: string
+          description: Huisnummertoevoeging van het adres (indien het een Nederlands
+            adres betreft zonder BAG-id).
+          maxLength: 20
+        postcode:
+          type: string
+          description: Postcode van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          pattern: ^[1-9][0-9]{3} [A-Z]{2}$
+          maxLength: 7
+        stad:
+          type: string
+          description: Stad van het adres (indien het een Nederlands adres betreft
+            zonder BAG-id).
+          maxLength: 255
         adresregel1:
           type: string
           description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
@@ -4758,7 +4866,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorForeignkey'
           nullable: true
-          description: Relatie sub_identificator_van
+          description: The parent PartijIdentificator under which this PartijIdentificator
+            is unique (e.g. the parent identificator could specify a KVK number and
+            the child identificator could specify a vestigingsnummer that is unique
+            for the KVK number).
       required:
       - identificeerdePartij
       - partijIdentificator
@@ -5310,7 +5421,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorForeignkey'
           nullable: true
-          description: Relatie sub_identificator_van
+          description: The parent PartijIdentificator under which this PartijIdentificator
+            is unique (e.g. the parent identificator could specify a KVK number and
+            the child identificator could specify a vestigingsnummer that is unique
+            for the KVK number).
     PatchedRekeningnummer:
       type: object
       properties:

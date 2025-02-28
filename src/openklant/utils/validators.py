@@ -59,7 +59,7 @@ class CustomRegexValidator(RegexValidator):
 
 
 validate_postal_code = CustomRegexValidator(
-    regex="^[1-9][0-9]{3} ?[a-zA-Z]{2}$", message=_("Ongeldige postcode")
+    regex="^[1-9][0-9]{3} [A-Z]{2}$", message=_("Ongeldige postcode")
 )
 
 # Doesn't truely validate if IBAN is valid but validated the basic pattern.
