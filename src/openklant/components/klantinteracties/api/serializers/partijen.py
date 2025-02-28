@@ -545,6 +545,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         "digitale_adressen": f"{SERIALIZER_PATH}.digitaal_adres.DigitaalAdresSerializer",
         "betrokkenen": f"{SERIALIZER_PATH}.klantcontacten.BetrokkeneSerializer",
         "categorie_relaties": f"{SERIALIZER_PATH}.partijen.CategorieRelatieSerializer",
+        "partij_identificatoren": f"{SERIALIZER_PATH}.partijen.PartijIdentificatorSerializer",
         # 2 levels
         "betrokkenen.had_klantcontact": f"{SERIALIZER_PATH}.klantcontacten.KlantcontactSerializer",
     }

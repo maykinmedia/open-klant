@@ -2308,6 +2308,7 @@ paths:
             - betrokkenen.hadKlantcontact
             - categorieRelaties
             - digitaleAdressen
+            - partijIdentificatoren
         description: |+
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
@@ -2432,6 +2433,7 @@ paths:
             - betrokkenen.hadKlantcontact
             - categorieRelaties
             - digitaleAdressen
+            - partijIdentificatoren
         description: |+
           Sluit de gespecifieerde gerelateerde resources in in het antwoord.
 
@@ -3819,6 +3821,12 @@ components:
                 readOnly: true
                 description: 'De Categorie relaties van een partij: Let op: Dit attribuut
                   is EXPERIMENTEEL.'
+              partij_identificatoren:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartijIdentificator'
+                readOnly: true
+                description: Partij-identificatoren die hoorde bij deze partij.
     GeautomatiseerdeActor:
       type: object
       properties:
@@ -4758,7 +4766,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorForeignkey'
           nullable: true
-          description: Relatie sub_identificator_van
+          description: The parent PartijIdentificator under which this PartijIdentificator
+            is unique (e.g. the parent identificator could specify a KVK number and
+            the child identificator could specify a vestigingsnummer that is unique
+            for the KVK number).
       required:
       - identificeerdePartij
       - partijIdentificator
@@ -5310,7 +5321,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorForeignkey'
           nullable: true
-          description: Relatie sub_identificator_van
+          description: The parent PartijIdentificator under which this PartijIdentificator
+            is unique (e.g. the parent identificator could specify a KVK number and
+            the child identificator could specify a vestigingsnummer that is unique
+            for the KVK number).
     PatchedRekeningnummer:
       type: object
       properties:

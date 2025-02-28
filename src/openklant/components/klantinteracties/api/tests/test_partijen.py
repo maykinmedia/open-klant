@@ -1805,6 +1805,54 @@ class PartijTests(APITestCase):
             received_adressen[0]["url"], f"http://testserver{expected_url}"
         )
 
+    def test_partij_identificator_inclusion_param(self):
+        partij = PartijFactory.create()
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+
+        response = self.client.get(detail_url, data={"expand": "partijIdentificatoren"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+
+        self.assertEqual(partij.partijidentificator_set.count(), 0)
+        self.assertEqual(response_data["_expand"], {"partijIdentificatoren": []})
+
+        partij_identificator = PartijIdentificator.objects.create(
+            partij=partij,
+            partij_identificator_code_objecttype="natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="296648875",
+            partij_identificator_code_register="brp",
+        )
+
+        response = self.client.get(detail_url, data={"expand": "partijIdentificatoren"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+
+        partij_identificatoren = response_data["_expand"]["partijIdentificatoren"]
+        self.assertEqual(len(partij_identificatoren), 1)
+        test_url = "http://testserver/klantinteracties/api/v1"
+        self.assertEqual(
+            partij_identificatoren[0],
+            {
+                "uuid": str(partij_identificator.uuid),
+                "url": f"{test_url}/partij-identificatoren/{str(partij_identificator.uuid)}",
+                "identificeerdePartij": {
+                    "uuid": str(partij.uuid),
+                    "url": f"{test_url}/partijen/{str(partij.uuid)}",
+                },
+                "anderePartijIdentificator": "",
+                "partijIdentificator": {
+                    "codeObjecttype": "natuurlijk_persoon",
+                    "codeSoortObjectId": "bsn",
+                    "objectId": "296648875",
+                    "codeRegister": "brp",
+                },
+                "subIdentificatorVan": None,
+            },
+        )
+
 
 class PartijIdentificatorTests(APITestCase):
     def test_list_partij_identificator(self):
