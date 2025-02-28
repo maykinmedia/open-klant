@@ -1,4 +1,8 @@
-from django.core.validators import MinLengthValidator, validate_integer
+from django.core.validators import (
+    MaxValueValidator,
+    MinLengthValidator,
+    MinValueValidator,
+)
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -78,16 +82,14 @@ def create_prefixed_adresmixin(prefix: str):
             max_length=255,
             blank=True,
         ),
-        "huisnummer": models.CharField(
+        "huisnummer": models.IntegerField(
             _("huisnummer"),
             help_text=_(
                 "Huisnummer van het adres (indien het een Nederlands adres betreft zonder BAG-id)."
             ),
-            validators=[
-                validate_integer,
-            ],
-            max_length=5,
+            validators=[MinValueValidator(1), MaxValueValidator(99999)],
             blank=True,
+            null=True,
         ),
         "huisnummertoevoeging": models.CharField(
             _("huisnummertoevoeging"),

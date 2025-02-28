@@ -15,7 +15,7 @@ class KlantContactDataFactory(factory.DictFactory):
 class BezoekAdresDataFactory(factory.DictFactory):
     nummeraanduidingId = "1234567890000001"
     straatnaam = "straat"
-    huisnummer = "10"
+    huisnummer = 10
     huisnummertoevoeging = "A2"
     postcode = "1008 DG"
     stad = "Amsterdam"
@@ -28,7 +28,7 @@ class BezoekAdresDataFactory(factory.DictFactory):
 class CorrespondentieAdresDataFactory(factory.DictFactory):
     nummeraanduidingId = "1234567890000002"
     straatnaam = "straat"
-    huisnummer = "10"
+    huisnummer = 10
     huisnummertoevoeging = "A2"
     postcode = "1008 DG"
     stad = "Amsterdam"

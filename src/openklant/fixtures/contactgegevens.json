@@ -5,7 +5,7 @@
     "fields": {
         "adres_nummeraanduiding_id": "1234567890000001",
         "adres_straatnaam":"",
-        "adres_huisnummer":"",
+        "adres_huisnummer":1,
         "adres_huisnummertoevoeging":"",
         "adres_postcode":"",
         "adres_stad":"",
@@ -25,7 +25,7 @@
     "fields": {
         "adres_nummeraanduiding_id": "1234567890000002",
         "adres_straatnaam":"",
-        "adres_huisnummer":"",
+        "adres_huisnummer":1,
         "adres_huisnummertoevoeging":"",
         "adres_postcode":"",
         "adres_stad":"",
