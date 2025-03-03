@@ -13,6 +13,9 @@ from openklant.components.klantinteracties.models.tests.factories.actoren import
     ActorKlantcontactFactory,
     MedewerkerFactory,
 )
+from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
+    DigitaalAdresFactory,
+)
 from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     BetrokkeneFactory,
     BijlageFactory,
@@ -390,10 +393,10 @@ class BetrokkeneTests(APITestCase):
         self.assertEqual(len(data["results"]), 2)
 
     def test_read_betrokkene(self):
-        klantcontact = BetrokkeneFactory.create()
+        betrokkene = BetrokkeneFactory.create()
         detail_url = reverse(
             "klantinteracties:betrokkene-detail",
-            kwargs={"uuid": str(klantcontact.uuid)},
+            kwargs={"uuid": str(betrokkene.uuid)},
         )
 
         response = self.client.get(detail_url)
@@ -401,6 +404,23 @@ class BetrokkeneTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(data["url"], "http://testserver" + detail_url)
+
+        with self.subTest("test_expand_digitale_adressen"):
+            digitaal_adres = DigitaalAdresFactory(
+                betrokkene=betrokkene,
+                adres="test",
+                soort_digitaal_adres="email",
+            )
+            response = self.client.get(detail_url, data={"expand": "digitaleAdressen"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            digitaal_adressen = data["_expand"]["digitaleAdressen"]
+            self.assertEqual(len(digitaal_adressen), 1)
+            self.assertEqual(digitaal_adressen[0]["uuid"], str(digitaal_adres.uuid))
+            self.assertEqual(
+                digitaal_adressen[0]["verstrektDoorBetrokkene"]["uuid"],
+                str(betrokkene.uuid),
+            )
 
     def test_create_betrokkene_with_partij(self):
         klantcontact = KlantcontactFactory.create()

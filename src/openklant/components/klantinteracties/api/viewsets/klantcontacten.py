@@ -5,6 +5,7 @@ from vng_api_common.pagination import DynamicPageSizePagination
 
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
     ActorKlantcontactFilterSet,
+    BetrokkeneDetailFilterSet,
     BetrokkeneFilterSet,
     KlantcontactDetailFilterSet,
     KlantcontactFilterSet,
@@ -110,7 +111,7 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
         description="Verwijder een betrokkene.",
     ),
 )
-class BetrokkeneViewSet(viewsets.ModelViewSet):
+class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
     """
     Ofwel betrokkenheid van een partij bij een klantcontact, eventueel aangevuld met
     specifiek voor opvolging van dat klantcontact te gebruiken contactgegevens, ofwel
@@ -129,9 +130,17 @@ class BetrokkeneViewSet(viewsets.ModelViewSet):
     serializer_class = BetrokkeneSerializer
     lookup_field = "uuid"
     pagination_class = DynamicPageSizePagination
-    filterset_class = BetrokkeneFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @property
+    def filterset_class(self):
+        """
+        support expand in the detail endpoint
+        """
+        if self.detail:
+            return BetrokkeneDetailFilterSet
+        return BetrokkeneFilterSet
 
 
 @extend_schema(tags=["onderwerpobjecten"])
