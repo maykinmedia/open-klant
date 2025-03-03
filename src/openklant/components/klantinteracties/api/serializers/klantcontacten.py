@@ -184,6 +184,10 @@ class BetrokkeneSerializer(
         help_text="De voledige naam van de betrokkene.",
     )
 
+    inclusion_serializers = {
+        "digitale_adressen": f"{SERIALIZER_PATH}.digitaal_adres.DigitaalAdresSerializer",
+    }
+
     class Meta:
         model = Betrokkene
         fields = (
