@@ -19,7 +19,6 @@ class PersoonAdmin(admin.ModelAdmin):
                     "geslachtsnaam",
                     "geboortedatum",
                     "overlijdensdatum",
-                    "land",
                 ]
             },
         ),
@@ -27,6 +26,11 @@ class PersoonAdmin(admin.ModelAdmin):
             _("Adres gegevens"),
             {
                 "fields": [
+                    "adres_straatnaam",
+                    "adres_huisnummer",
+                    "adres_huisnummertoevoeging",
+                    "adres_postcode",
+                    "adres_stad",
                     "adres_adresregel1",
                     "adres_adresregel2",
                     "adres_adresregel3",
@@ -50,7 +54,6 @@ class OrganisatieAdmin(admin.ModelAdmin):
                     "handelsnaam",
                     "oprichtingsdatum",
                     "opheffingsdatum",
-                    "land",
                 ]
             },
         ),
@@ -58,6 +61,11 @@ class OrganisatieAdmin(admin.ModelAdmin):
             _("Adres gegevens"),
             {
                 "fields": [
+                    "adres_straatnaam",
+                    "adres_huisnummer",
+                    "adres_huisnummertoevoeging",
+                    "adres_postcode",
+                    "adres_stad",
                     "adres_adresregel1",
                     "adres_adresregel2",
                     "adres_adresregel3",

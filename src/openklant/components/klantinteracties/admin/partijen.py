@@ -160,6 +160,11 @@ class PartijAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "bezoekadres_nummeraanduiding_id",
+                    "bezoekadres_straatnaam",
+                    "bezoekadres_huisnummer",
+                    "bezoekadres_huisnummertoevoeging",
+                    "bezoekadres_postcode",
+                    "bezoekadres_stad",
                     "bezoekadres_adresregel1",
                     "bezoekadres_adresregel2",
                     "bezoekadres_adresregel3",
@@ -172,6 +177,11 @@ class PartijAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "correspondentieadres_nummeraanduiding_id",
+                    "correspondentieadres_straatnaam",
+                    "correspondentieadres_huisnummer",
+                    "correspondentieadres_huisnummertoevoeging",
+                    "correspondentieadres_postcode",
+                    "correspondentieadres_stad",
                     "correspondentieadres_adresregel1",
                     "correspondentieadres_adresregel2",
                     "correspondentieadres_adresregel3",
