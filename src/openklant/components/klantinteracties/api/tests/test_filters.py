@@ -630,6 +630,33 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_digitale_adressen_inclusion_param(self):
+        betrokkene = BetrokkeneFactory.create()
+        response = self.client.get(self.url, data={"expand": "digitaleAdressen"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        results = response.json()["results"]
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["_expand"], {"digitaleAdressen": []})
+
+        digitaal_adres = DigitaalAdresFactory(
+            betrokkene=betrokkene,
+            adres="test",
+            soort_digitaal_adres="email",
+        )
+
+        response = self.client.get(self.url, data={"expand": "digitaleAdressen"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        results = response.json()["results"]
+        self.assertEqual(len(results), 1)
+        digitaal_adressen = results[0]["_expand"]["digitaleAdressen"]
+        self.assertEqual(len(digitaal_adressen), 1)
+        self.assertEqual(digitaal_adressen[0]["uuid"], str(digitaal_adres.uuid))
+        self.assertEqual(
+            digitaal_adressen[0]["verstrektDoorBetrokkene"]["uuid"],
+            str(betrokkene.uuid),
+        )
+
 
 class PartijFilterSetTests(APITestCase):
     url = reverse("klantinteracties:partij-list")
