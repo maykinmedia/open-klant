@@ -1,6 +1,6 @@
 {
   "name": "openklant",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "openklant project",
   "main": "src/static/openklant/js/openklant.js",
   "directories": {
