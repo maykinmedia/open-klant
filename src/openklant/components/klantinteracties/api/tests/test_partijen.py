@@ -10,17 +10,21 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     PartijIdentificator,
 )
-from openklant.components.klantinteracties.models.tests.factories import (
+from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
+    DigitaalAdresFactory,
+)
+from openklant.components.klantinteracties.models.tests.factories.partijen import (
     CategorieFactory,
     CategorieRelatieFactory,
     ContactpersoonFactory,
-    DigitaalAdresFactory,
     OrganisatieFactory,
     PartijFactory,
     PartijIdentificatorFactory,
     PersoonFactory,
-    RekeningnummerFactory,
     VertegenwoordigdenFactory,
+)
+from openklant.components.klantinteracties.models.tests.factories.rekeningnummer import (
+    RekeningnummerFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase
 
@@ -2144,12 +2148,9 @@ class PartijTests(APITestCase):
 
     def test_get_partij_and_partij_identificatoren(self):
         partij = PartijFactory.create()
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = BsnPartijIdentificatorFactory.create(
             partij=partij,
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
         )
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
@@ -2411,81 +2412,11 @@ class PartijIdentificatorTests(APITestCase):
             },
         )
 
-    def test_create_partij_identificator_without_partij(self):
-        with self.subTest("with identificeerdePartij not explicitly specified"):
-            list_url = reverse("klantinteracties:partijidentificator-list")
-            data = {
-                "anderePartijIdentificator": "anderePartijIdentificator",
-                "partijIdentificator": {
-                    "codeObjecttype": "natuurlijk_persoon",
-                    "codeSoortObjectId": "bsn",
-                    "objectId": "296648875",
-                    "codeRegister": "brp",
-                },
-            }
-
-            response = self.client.post(list_url, data)
-            self.assertEqual(
-                response.status_code, status.HTTP_201_CREATED, response.data
-            )
-            data = response.json()
-
-            self.assertEqual(data["identificeerdePartij"], None)
-            self.assertEqual(
-                data["anderePartijIdentificator"], "anderePartijIdentificator"
-            )
-            self.assertEqual(
-                data["partijIdentificator"],
-                {
-                    "codeObjecttype": "natuurlijk_persoon",
-                    "codeSoortObjectId": "bsn",
-                    "objectId": "296648875",
-                    "codeRegister": "brp",
-                },
-            )
-
-        with self.subTest("with identificeerdePartij explicitly set to null"):
-            list_url = reverse("klantinteracties:partijidentificator-list")
-            data = {
-                "identificeerdePartij": None,
-                "anderePartijIdentificator": "anderePartijIdentificator",
-                "partijIdentificator": {
-                    "codeObjecttype": "natuurlijk_persoon",
-                    "codeSoortObjectId": "bsn",
-                    "objectId": "111222333",
-                    "codeRegister": "brp",
-                },
-            }
-
-            response = self.client.post(list_url, data)
-            self.assertEqual(
-                response.status_code, status.HTTP_201_CREATED, response.data
-            )
-            data = response.json()
-
-            self.assertEqual(data["identificeerdePartij"], None)
-            self.assertEqual(
-                data["anderePartijIdentificator"], "anderePartijIdentificator"
-            )
-            self.assertEqual(
-                data["partijIdentificator"],
-                {
-                    "codeObjecttype": "natuurlijk_persoon",
-                    "codeSoortObjectId": "bsn",
-                    "objectId": "111222333",
-                    "codeRegister": "brp",
-                },
-            )
-
     def test_update_partij_identificator(self):
         partij, partij2 = PartijFactory.create_batch(2)
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = BsnPartijIdentificatorFactory.create(
             partij=partij,
-            andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
         )
 
         detail_url = reverse(
@@ -2534,58 +2465,12 @@ class PartijIdentificatorTests(APITestCase):
             },
         )
 
-    def test_update_partij_identificator_with_partij_null(self):
-        partij = PartijFactory.create()
-        partij_identificator = PartijIdentificatorFactory.create(
-            partij=partij,
-            andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
-            partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
-        )
-
-        detail_url = reverse(
-            "klantinteracties:partijidentificator-detail",
-            kwargs={"uuid": str(partij_identificator.uuid)},
-        )
-
-        data = {
-            "identificeerdePartij": None,
-            "anderePartijIdentificator": "changed",
-            "partijIdentificator": {
-                "codeObjecttype": "natuurlijk_persoon",
-                "codeSoortObjectId": "bsn",
-                "objectId": "296648875",
-                "codeRegister": "brp",
-            },
-        }
-
-        response = self.client.put(detail_url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.json()
-
-        self.assertEqual(data["identificeerdePartij"], None)
-        self.assertEqual(data["anderePartijIdentificator"], "changed")
-        self.assertEqual(
-            data["partijIdentificator"],
-            {
-                "codeObjecttype": "natuurlijk_persoon",
-                "codeSoortObjectId": "bsn",
-                "objectId": "296648875",
-                "codeRegister": "brp",
-            },
-        )
-
     def test_partial_update_partij_identificator(self):
         partij = PartijFactory.create()
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = BsnPartijIdentificatorFactory.create(
             partij=partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
         )
 
         detail_url = reverse(
@@ -2781,13 +2666,10 @@ class PartijIdentificatorTests(APITestCase):
         # all partij_identificator fields required
         partij = PartijFactory.create()
         list_url = reverse("klantinteracties:partijidentificator-list")
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = BsnPartijIdentificatorFactory.create(
             partij=partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="123456782",
-            partij_identificator_code_register="brp",
         )
 
         data = {
@@ -2837,13 +2719,10 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(PartijIdentificator.objects.all().count(), 1)
 
     def test_valid_create_with_sub_identificator_van(self):
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = KvkNummerPartijIdentificatorFactory.create(
             partij=self.partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
         data = {
             "identificeerdePartij": {"uuid": str(self.partij.uuid)},
@@ -2859,10 +2738,25 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
 
+    def test_invalid_create_partij_required(self):
+        data = {
+            "partijIdentificator": {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "296648875",
+                "codeRegister": "brp",
+            },
+        }
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "identificeerdePartij")
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(error["reason"], "Dit veld is vereist.")
+
     def test_invalid_create_duplicate_code_soort_object_id_for_partij(self):
-        PartijIdentificatorFactory.create(
+        BsnPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="296648875",
         )
 
         data = {
@@ -2884,13 +2778,10 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
     def test_valid_update_partij(self):
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = BsnPartijIdentificatorFactory.create(
             partij=PartijFactory.create(),
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="123456782",
-            partij_identificator_code_register="brp",
         )
         data = {
             "identificeerdePartij": {"uuid": str(self.partij.uuid)},
@@ -2909,22 +2800,15 @@ class PartijIdentificatorUniquenessTests(APITestCase):
 
     def test_invalid_update_partij(self):
         new_partij = PartijFactory.create()
-        PartijIdentificatorFactory.create(
+        BsnPartijIdentificatorFactory.create(
             partij=new_partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="123456782",
-            partij_identificator_code_register="brp",
         )
-
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = BsnPartijIdentificatorFactory.create(
             partij=self.partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
         )
         data = {
             "identificeerdePartij": {"uuid": str(new_partij.uuid)},
@@ -2961,15 +2845,11 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
     def test_valid_update_check_uniqueness_values(self):
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = BsnPartijIdentificatorFactory.create(
             partij=self.partij,
             andere_partij_identificator="anderePartijIdentificator",
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="123456782",
-            partij_identificator_code_register="brp",
         )
-
         data = {
             "identificeerdePartij": {"uuid": str(self.partij.uuid)},
             "anderePartijIdentificator": "changed",
@@ -3001,20 +2881,13 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
     def test_invalid_update_check_uniqueness_exists(self):
-        partij_identificator_a = PartijIdentificatorFactory.create(
+        partij_identificator_a = BsnPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="123456782",
-            partij_identificator_code_register="brp",
         )
-
-        partij_identificator_b = PartijIdentificatorFactory.create(
+        partij_identificator_b = BsnPartijIdentificatorFactory.create(
             partij=PartijFactory.create(),
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
         )
         # update partij_identificator_a with partij_identificator_b data
         detail_url = reverse(
@@ -3043,21 +2916,15 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
     def test_valid_check_uniqueness_sub_identificator_van(self):
-        PartijIdentificatorFactory.create(
+        BsnPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
         )
         # Same values, but sub_identifier_van is set
         partij = PartijFactory.create()
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
             partij=partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
         data = {
@@ -3075,20 +2942,14 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(PartijIdentificator.objects.all().count(), 3)
 
     def test_invalid_check_uniqueness_sub_identificator_van(self):
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
-        PartijIdentificatorFactory.create(
+        BsnPartijIdentificatorFactory.create(
             partij=self.partij,
             sub_identificator_van=sub_identificator_van,
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
         )
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
         # Same values and same sub_identificator_van
@@ -3113,12 +2974,9 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
 
     def test_vestigingsnummer_valid_create(self):
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
 
         data = {
@@ -3161,14 +3019,33 @@ class PartijIdentificatorUniquenessTests(APITestCase):
             ),
         )
 
+    def test_vestigingsnummer_invalid_create_without_partij(self):
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
+            partij=self.partij,
+            partij_identificator_object_id="12345678",
+        )
+
+        data = {
+            "sub_identificator_van": {"uuid": str(sub_identificator_van.uuid)},
+            "partijIdentificator": {
+                "codeObjecttype": "vestiging",
+                "codeSoortObjectId": "vestigingsnummer",
+                "objectId": "296648875154",
+                "codeRegister": "hr",
+            },
+        }
+
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "identificeerdePartij")
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(error["reason"], "Dit veld is vereist.")
+
     def test_vestigingsnummer_valid_create_external_partij(self):
         partij = PartijFactory.create()
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
             partij=partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
 
         # sub_identificator_van partij is different from vestigingsnummer partij
@@ -3187,13 +3064,11 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
 
     def test_vestigingsnummer_invalid_create_invalid_sub_identificator_van(self):
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = BsnPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
-            partij_identificator_code_register="brp",
         )
+
         data = {
             "identificeerdePartij": {"uuid": str(self.partij.uuid)},
             "sub_identificator_van": {"uuid": str(sub_identificator_van.uuid)},
@@ -3215,20 +3090,14 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
     def test_vestigingsnummer_valid_update(self):
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = VestigingsnummerPartijIdentificatorFactory.create(
             partij=self.partij,
             sub_identificator_van=sub_identificator_van,
-            partij_identificator_code_objecttype="vestiging",
-            partij_identificator_code_soort_object_id="vestigingsnummer",
             partij_identificator_object_id="111122223333",
-            partij_identificator_code_register="hr",
         )
 
         self.assertEqual(PartijIdentificator.objects.count(), 2)
@@ -3257,20 +3126,14 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
     def test_vestigingsnummer_invalid_update_set_sub_identificator_van_null(self):
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = VestigingsnummerPartijIdentificatorFactory.create(
             partij=self.partij,
             sub_identificator_van=sub_identificator_van,
-            partij_identificator_code_objecttype="vestiging",
-            partij_identificator_code_soort_object_id="vestigingsnummer",
             partij_identificator_object_id="111122223333",
-            partij_identificator_code_register="hr",
         )
 
         self.assertEqual(PartijIdentificator.objects.count(), 2)
@@ -3296,20 +3159,14 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
     def test_invalid_vestigingsnummer_and_kvk_nummer_combination_unique(self):
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
-        PartijIdentificatorFactory.create(
+        VestigingsnummerPartijIdentificatorFactory.create(
             partij=self.partij,
             sub_identificator_van=sub_identificator_van,
-            partij_identificator_code_objecttype="vestiging",
-            partij_identificator_code_soort_object_id="vestigingsnummer",
             partij_identificator_object_id="296648875154",
-            partij_identificator_code_register="hr",
         )
         # Same sub_identificator_van and same data_values
         data = {
@@ -3338,12 +3195,9 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
     def test_valid_protect_delete(self):
-        partij_identificator = PartijIdentificatorFactory.create(
+        partij_identificator = KvkNummerPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
         detail_url = reverse(
             "klantinteracties:partijidentificator-detail",
@@ -3355,20 +3209,14 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(PartijIdentificator.objects.all().count(), 0)
 
     def test_invalid_protect_delete(self):
-        sub_identificator_van = PartijIdentificatorFactory.create(
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
             partij=self.partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="kvk_nummer",
             partij_identificator_object_id="12345678",
-            partij_identificator_code_register="hr",
         )
-        PartijIdentificatorFactory.create(
+        VestigingsnummerPartijIdentificatorFactory.create(
             partij=self.partij,
             sub_identificator_van=sub_identificator_van,
-            partij_identificator_code_objecttype="vestiging",
-            partij_identificator_code_soort_object_id="vestigingsnummer",
             partij_identificator_object_id="296648875154",
-            partij_identificator_code_register="hr",
         )
         detail_url = reverse(
             "klantinteracties:partijidentificator-detail",
