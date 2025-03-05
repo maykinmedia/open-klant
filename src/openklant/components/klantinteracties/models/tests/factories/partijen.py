@@ -18,10 +18,10 @@ from openklant.components.klantinteracties.models.tests.factories.digitaal_adres
 )
 
 from ...constants import (
-    SoortPartij,
     PartijIdentificatorCodeObjectType,
     PartijIdentificatorCodeRegister,
     PartijIdentificatorCodeSoortObjectId,
+    SoortPartij,
 )
 
 
