@@ -427,24 +427,24 @@ class PartijIdentificatorSerializer(
             self, attrs, "sub_identificator_van", PartijIdentificator
         )
         partij = get_field_instance_by_uuid(self, attrs, "partij", Partij)
-
-        PartijIdentificatorTypesValidator()(
-            code_objecttype=partij_identificator["code_objecttype"],
-            code_soort_object_id=partij_identificator["code_soort_object_id"],
-            object_id=partij_identificator["object_id"],
-            code_register=partij_identificator["code_register"],
-        )
-        PartijIdentificatorUniquenessValidator(
-            code_soort_object_id=partij_identificator["code_soort_object_id"],
-            sub_identificator_van=sub_identificator_van,
-        )()
+        if partij_identificator:
+            PartijIdentificatorTypesValidator()(
+                code_objecttype=partij_identificator["code_objecttype"],
+                code_soort_object_id=partij_identificator["code_soort_object_id"],
+                object_id=partij_identificator["object_id"],
+                code_register=partij_identificator["code_register"],
+            )
+            PartijIdentificatorUniquenessValidator(
+                code_soort_object_id=partij_identificator["code_soort_object_id"],
+                sub_identificator_van=sub_identificator_van,
+            )()
 
         attrs["sub_identificator_van"] = sub_identificator_van
         attrs["partij"] = partij
 
         return super().validate(attrs)
 
-    def assert_partij(self, partij):
+    def validate_partij(self, partij):
         if not partij:
             raise serializers.ValidationError(
                 {"identificeerdePartij": _("Dit veld is vereist.")},
@@ -454,13 +454,13 @@ class PartijIdentificatorSerializer(
     @handle_db_exceptions
     @transaction.atomic
     def update(self, instance, validated_data):
-        self.assert_partij(validated_data["partij"])
+        self.validate_partij(validated_data["partij"])
         return super().update(instance, validated_data)
 
     @handle_db_exceptions
     @transaction.atomic
     def create(self, validated_data):
-        self.assert_partij(validated_data["partij"])
+        self.validate_partij(validated_data["partij"])
         return super().create(validated_data)
 
 
@@ -634,6 +634,11 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         return attrs
 
     def update_or_create_partij_identificator(self, partij_identificator):
+        sub_identificator_van = partij_identificator["sub_identificator_van"]
+        if isinstance(sub_identificator_van, PartijIdentificator):
+            partij_identificator["sub_identificator_van"] = {
+                "uuid": sub_identificator_van.uuid
+            }
         partij_identificator_serializer = PartijIdentificatorSerializer(
             data=partij_identificator
         )

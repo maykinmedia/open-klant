@@ -3091,8 +3091,8 @@ components:
         partijIdentificatoren:
           type: array
           items:
-            $ref: '#/components/schemas/PartijIdentificatorForeignkey'
-          readOnly: true
+            $ref: '#/components/schemas/PartijIdentificator'
+          nullable: true
           description: Partij-identificatoren die hoorde bij deze partij.
         soortPartij:
           allOf:
@@ -3133,7 +3133,6 @@ components:
       - categorieRelaties
       - digitaleAdressen
       - indicatieActief
-      - partijIdentificatoren
       - rekeningnummers
       - soortPartij
       - url
@@ -4901,7 +4900,6 @@ components:
         uuid:
           type: string
           format: uuid
-          readOnly: true
           description: Unieke (technische) identificatiecode van de partij-identificator.
         url:
           type: string
@@ -4938,7 +4936,6 @@ components:
       required:
       - partijIdentificator
       - url
-      - uuid
     PartijIdentificatorForeignkey:
       type: object
       properties:
@@ -5455,7 +5452,6 @@ components:
         uuid:
           type: string
           format: uuid
-          readOnly: true
           description: Unieke (technische) identificatiecode van de partij-identificator.
         url:
           type: string
