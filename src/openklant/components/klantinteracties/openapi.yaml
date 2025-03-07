@@ -4,7 +4,17 @@ info:
   version: 0.1.1
   description: |2
 
-    Description WIP.
+    **Warning: Difference between `PUT` and `PATCH`**
+
+    Both `PUT` and `PATCH` methods are used to update the fields in a resource,
+    but there is a key difference in how they handle required fields:
+
+    > The `PUT` method requires you to specify **all mandatory fields** when updating a resource.
+    If any mandatory field is missing, the update will fail.
+
+    > The `PATCH` method, on the other hand, allows you to update only the fields you specify.
+    Some mandatory fields can be left out, and the resource will only be updated with the provided data,
+    leaving other fields unchanged.
   contact:
     email: standaarden.ondersteuning@vng.nl
     url: https://zaakgerichtwerken.vng.cloud
@@ -5772,24 +5782,6 @@ tags:
 - name: categorieën
 - name: digitale adressen
 - name: interne taken
-  description: |
-    Deze API publiceert notificaties op het kanaal `internetaken`.
-
-    **Main resource**
-
-    `internetaak`
-
-
-
-    **Kenmerken**
-
-    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
-    * `gevraagde_handeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
-    * `toelichting`: Toelichting die, aanvullend bij de inhoud van het klantcontact dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan het kunnen afhandelen van de taak.
-    * `status`: Aanduiding van de vordering bij afhandeling van de interne taak.
-
-    **Resources en acties**
-    - `internetaak`: create, update, destroy
 - name: klanten contacten
 - name: onderwerpobjecten
 - name: partij-identificatoren
@@ -5811,5 +5803,33 @@ tags:
 
     **Resources en acties**
     - `partij`: create, update, destroy
+  description: |2
+
+    **Atomicity in Partij and PartijIdentificator**
+
+    Starting from version **2.7.0**, the `Partij` endpoint has been modified to handle
+    `PartijIdentificator` objects more effectively,
+    allowing them to be processed within the same request.
+    This ensures that both entities are handled atomically, preventing incomplete,
+    and offering better control over the uniqueness of `PartijIdentificator` objects.
+
+    For `POST`, `PATCH`, and `PUT` requests for `Partij`,
+    it is possible to send a list of `PartijIdentificator` objects.
+
+    **Warnings:**
+
+    - In all requests, `PartijIdentificator` objects should not contain the **UUID**
+    of the parent `Partij`, because it is automatically assigned.
+    - `POST` request:
+        - If the **UUID** is provided in the `PartijIdentificator` object,
+        the endpoint will treat it as an update operation for the existing `PartijIdentificator`,
+        applying the provided data and linking the parent `Partij` to the new one created.
+        - If the **UUID** is **not** specified, the system will create a new resource
+        for the `PartijIdentificator` respecting all uniqueness constraints.
+    - `PATCH` or `PUT` requests:
+        - If the **UUID** is provided in the `PartijIdentificator` object,
+        the system will update the specified resource with the new data.
+        - If the **UUID** is **not** specified, the system will `DELETE` all `PartijIdentificator`
+        objects related to the parent and `CREATE` new ones with the passed data.
 - name: rekeningnummers
 - name: vertegenwoordigingen
