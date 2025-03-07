@@ -103,6 +103,10 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["verstrekt_door_partij"].required = False
+            self.fields["verstrekt_door_betrokkene"].required = False
 
         if "soort_digitaal_adres" in self.fields:
             # Avoid validating the UniqueConstraint for `soort_digitaal_adres` with

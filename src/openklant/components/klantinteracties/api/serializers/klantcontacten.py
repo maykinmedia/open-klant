@@ -184,6 +184,12 @@ class BetrokkeneSerializer(
         help_text="De voledige naam van de betrokkene.",
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["was_partij"].required = False
+
     class Meta:
         model = Betrokkene
         fields = (
@@ -354,6 +360,13 @@ class OnderwerpobjectSerializer(
         ),
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["klantcontact"].required = False
+            self.fields["was_klantcontact"].required = False
+
     class Meta:
         model = Onderwerpobject
         fields = (
@@ -432,6 +445,12 @@ class BijlageSerializer(
             "uniek identificeren."
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and request.method == "POST":
+            self.fields["was_bijlage_van_klantcontact"].required = False
 
     class Meta:
         model = Bijlage
