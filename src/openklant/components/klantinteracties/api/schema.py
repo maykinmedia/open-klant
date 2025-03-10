@@ -15,13 +15,13 @@ description = _(
     """
 **Warning: Difference between `PUT` and `PATCH`**
 
-Both `PUT` and `PATCH` methods are used to update the fields in a resource,
+Both `PUT` and `PATCH` methods can be used to update the fields in a resource,
 but there is a key difference in how they handle required fields:
 
-> The `PUT` method requires you to specify **all mandatory fields** when updating a resource.
-If any mandatory field is missing, the update will fail.
+* The `PUT` method requires you to specify **all mandatory fields** when updating a resource.
+If any mandatory field is missing, the update will fail. Optional fields are left unchanged if they are not specified.
 
-> The `PATCH` method, on the other hand, allows you to update only the fields you specify.
+* The `PATCH` method, on the other hand, allows you to update only the fields you specify.
 Some mandatory fields can be left out, and the resource will only be updated with the provided data,
 leaving other fields unchanged.
 """
@@ -30,10 +30,9 @@ partijen_description = _(
     """
 **Atomicity in Partij and PartijIdentificator**
 
-Starting from version **2.7.0**, the `Partij` endpoint has been modified to handle
-`PartijIdentificator` objects more effectively,
+The `Partij` endpoint handles `PartijIdentificator` objects more effectively,
 allowing them to be processed within the same request.
-This ensures that both entities are handled atomically, preventing incomplete,
+This ensures that both entities are handled atomically, preventing incompleteness,
 and offering better control over the uniqueness of `PartijIdentificator` objects.
 
 For `POST`, `PATCH`, and `PUT` requests for `Partij`,
@@ -47,11 +46,11 @@ of the parent `Partij`, because it is automatically assigned.
     - If the **UUID** is provided in the `PartijIdentificator` object,
     the endpoint will treat it as an update operation for the existing `PartijIdentificator`,
     applying the provided data and linking the parent `Partij` to the new one created.
-    - If the **UUID** is **not** specified, the system will create a new resource
-    for the `PartijIdentificator` respecting all uniqueness constraints.
+    - If the **UUID** is **not** specified, the system will create a new
+    `PartijIdentificator` instance respecting all uniqueness constraints.
 - `PATCH` or `PUT` requests:
     - If the **UUID** is provided in the `PartijIdentificator` object,
-    the system will update the specified resource with the new data.
+    the system will update the specified instance with the new data.
     - If the **UUID** is **not** specified, the system will `DELETE` all `PartijIdentificator`
     objects related to the parent and `CREATE` new ones with the passed data.
 """
