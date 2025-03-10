@@ -8,10 +8,7 @@ from openklant.components.klantinteracties.kanalen import (
     KANAAL_PARTIJ,
 )
 
-# TODO: write a propper description
-description = """
-Description WIP.
-description = _(
+DESCRIPTION = _(
     """
 **Warning: Difference between `PUT` and `PATCH`**
 
@@ -26,8 +23,36 @@ Some mandatory fields can be left out, and the resource will only be updated wit
 leaving other fields unchanged.
 """
 )
-partijen_description = _(
+PARTIJ_IDENTIFICATOR_DESCRIPTION_CREATE = _(
     """
+**Warnings:**
+
+Handles `partijIdentificatoren` creation with atomicity guarantees.
+
+- If the `UUID` is provided in the `PartijIdentificator` object,
+the endpoint will treat it as an update operation for the existing `PartijIdentificator`,
+applying the provided data and linking the parent `Partij` to the new one created.
+- If the `UUID` is **not** specified, the system will create a new
+`PartijIdentificator` instance respecting all uniqueness constraints.
+    """
+)
+
+PARTIJ_IDENTIFICATOR_DESCRIPTION_UPDATE = _(
+    """
+**Warnings:**
+
+Handles `partijIdentificatoren` updates with atomicity guarantees.
+
+- If the `UUID` is provided in the `PartijIdentificator` object,
+the system will update the specified instance with the new data.
+- If the `UUID` is **not** specified, the system will `DELETE` all `PartijIdentificator`
+objects related to the parent and `CREATE` new ones with the new passed data.
+    """
+)
+
+PARTIJEN_DESCRIPTION = (
+    _(
+        """
 **Atomicity in Partij and PartijIdentificator**
 
 The `Partij` endpoint handles `PartijIdentificator` objects more effectively,
@@ -37,28 +62,15 @@ and offering better control over the uniqueness of `PartijIdentificator` objects
 
 For `POST`, `PATCH`, and `PUT` requests for `Partij`,
 it is possible to send a list of `PartijIdentificator` objects.
-
-**Warnings:**
-
-- In all requests, `PartijIdentificator` objects should not contain the **UUID**
-of the parent `Partij`, because it is automatically assigned.
-- `POST` request:
-    - If the **UUID** is provided in the `PartijIdentificator` object,
-    the endpoint will treat it as an update operation for the existing `PartijIdentificator`,
-    applying the provided data and linking the parent `Partij` to the new one created.
-    - If the **UUID** is **not** specified, the system will create a new
-    `PartijIdentificator` instance respecting all uniqueness constraints.
-- `PATCH` or `PUT` requests:
-    - If the **UUID** is provided in the `PartijIdentificator` object,
-    the system will update the specified instance with the new data.
-    - If the **UUID** is **not** specified, the system will `DELETE` all `PartijIdentificator`
-    objects related to the parent and `CREATE` new ones with the passed data.
 """
+    )
+    + notification_documentation(KANAAL_PARTIJ)
 )
+
 
 custom_settings = {
     "TITLE": "klantinteracties",
-    "DESCRIPTION": description,
+    "DESCRIPTION": DESCRIPTION,
     "VERSION": settings.KLANTINTERACTIES_API_VERSION,
     "SERVERS": [{"url": "/klantinteracties/api/v1"}],
     "TAGS": [
@@ -80,7 +92,7 @@ custom_settings = {
             "name": "partijen",
             "description": f"{notification_documentation(KANAAL_PARTIJ)}",
         },
-        {"name": "partijen", "description": partijen_description},
+        {"name": "partijen", "description": PARTIJEN_DESCRIPTION},
         {"name": "rekeningnummers"},
         {"name": "vertegenwoordigingen"},
     ],
