@@ -392,6 +392,19 @@ paths:
         schema:
           type: string
       - in: query
+        name: expand
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - digitaleAdressen
+        description: |+
+          Sluit de gespecifieerde gerelateerde resources in in het antwoord.
+
+        explode: false
+        style: form
+      - in: query
         name: hadKlantcontact__nummer
         schema:
           type: string
@@ -467,7 +480,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedBetrokkeneList'
+                $ref: '#/components/schemas/PaginatedExpandBetrokkeneList'
           description: ''
     post:
       operationId: betrokkenenCreate
@@ -496,6 +509,19 @@ paths:
       description: Een specifiek betrokkene opvragen.
       summary: Een specifiek betrokkene opvragen.
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - digitaleAdressen
+        description: |+
+          Sluit de gespecifieerde gerelateerde resources in in het antwoord.
+
+        explode: false
+        style: form
       - in: path
         name: uuid
         schema:
@@ -513,7 +539,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Betrokkene'
+                $ref: '#/components/schemas/ExpandBetrokkene'
           description: ''
     put:
       operationId: betrokkenenUpdate
@@ -3791,6 +3817,22 @@ components:
       required:
       - url
       - uuid
+    ExpandBetrokkene:
+      allOf:
+      - $ref: '#/components/schemas/Betrokkene'
+      - type: object
+        properties:
+          _expand:
+            type: object
+            description: Display details of the linked resources requested in the
+              `expand` parameter
+            properties:
+              digitale_adressen:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DigitaalAdres'
+                readOnly: true
+                description: Digitale adressen van de betrokkene bij klantcontact.
     ExpandDigitaalAdres:
       allOf:
       - $ref: '#/components/schemas/DigitaalAdres'
@@ -4437,6 +4479,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DigitaalAdres'
+    PaginatedExpandBetrokkeneList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpandBetrokkene'
     PaginatedExpandDigitaalAdresList:
       type: object
       required:

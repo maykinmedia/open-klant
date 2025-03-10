@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django_filters.rest_framework import FilterSet, filters
 
 from openklant.components.klantinteracties.api.serializers.klantcontacten import (
+    BetrokkeneSerializer,
     KlantcontactSerializer,
 )
 from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
@@ -84,6 +85,10 @@ class KlantcontactFilterSet(FilterSet):
         )
 
 
+class BetrokkeneDetailFilterSet(FilterSet):
+    expand = ExpandFilter(serializer_class=BetrokkeneSerializer)
+
+
 class BetrokkeneFilterSet(FilterSet):
     had_klantcontact__nummer = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact nummer"),
@@ -122,6 +127,7 @@ class BetrokkeneFilterSet(FilterSet):
         help_text=_("Zoek betrokkene object op basis van het partij uuid"),
         field_name="partij__uuid",
     )
+    expand = ExpandFilter(serializer_class=BetrokkeneSerializer)
 
     class Meta:
         model = Betrokkene
