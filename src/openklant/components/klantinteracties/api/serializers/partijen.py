@@ -603,25 +603,17 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
     def validate_partij_identificatoren(self, attrs):
         if attrs:
-            if (
-                len(
-                    Counter(
-                        item["partij"] for item in attrs if item["partij"] is not None
-                    )
-                )
-                > 0
-            ):
+            if any(item["partij"] is not None for item in attrs):
                 raise serializers.ValidationError(
                     {
                         "identificeerdePartij": _(
                             "Het veld `identificeerde_partij` wordt automatisch ingesteld en"
-                            " hoeft niet te worden opgegeven."
+                            " dient niet te worden opgegeven."
                         )
                     },
                     code="invalid",
                 )
-
-            uuid_list = [item["uuid"] for item in attrs if "uuid" in attrs]
+            uuid_list = [item["uuid"] for item in attrs if "uuid" in item]
             if uuid_list and max(Counter(uuid_list).values()) > 1:
                 raise serializers.ValidationError(
                     {
@@ -655,6 +647,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 partij_identificator_serializer.validated_data
             )
 
+    @handle_db_exceptions
     @transaction.atomic
     def update(self, instance, validated_data):
         method = self.context.get("request").method
@@ -831,6 +824,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
         return partij
 
+    @handle_db_exceptions
     @transaction.atomic
     def create(self, validated_data):
         partij_identificatie = validated_data.pop("partij_identificatie", None)

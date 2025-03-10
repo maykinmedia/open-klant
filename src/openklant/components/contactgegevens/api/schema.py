@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-description = _(
+DESCRIPTION = _(
     """
 **Warning: Difference between `PUT` and `PATCH`**
 
@@ -19,7 +19,7 @@ leaving other fields unchanged.
 
 custom_settings = {
     "TITLE": "contactgegevens",
-    "DESCRIPTION": description,
+    "DESCRIPTION": DESCRIPTION,
     "VERSION": settings.CONTACTGEGEVENS_API_VERSION,
     "SERVERS": [{"url": "/contactgegevens/api/v1"}],
     "TAGS": [
