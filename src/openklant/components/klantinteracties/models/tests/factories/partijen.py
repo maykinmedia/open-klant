@@ -103,6 +103,7 @@ class BsnPartijIdentificatorFactory(PartijIdentificatorFactory):
         PartijIdentificatorCodeSoortObjectId.bsn.value
     )
     partij_identificator_code_register = PartijIdentificatorCodeRegister.brp.value
+    partij_identificator_object_id = "296648875"
 
 
 class KvkNummerPartijIdentificatorFactory(PartijIdentificatorFactory):
@@ -113,6 +114,7 @@ class KvkNummerPartijIdentificatorFactory(PartijIdentificatorFactory):
         PartijIdentificatorCodeSoortObjectId.kvk_nummer.value
     )
     partij_identificator_code_register = PartijIdentificatorCodeRegister.hr.value
+    partij_identificator_object_id = "12345678"
 
 
 class VestigingsnummerPartijIdentificatorFactory(PartijIdentificatorFactory):
@@ -123,3 +125,4 @@ class VestigingsnummerPartijIdentificatorFactory(PartijIdentificatorFactory):
         PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
     )
     partij_identificator_code_register = PartijIdentificatorCodeRegister.hr.value
+    partij_identificator_object_id = "296648875154"
