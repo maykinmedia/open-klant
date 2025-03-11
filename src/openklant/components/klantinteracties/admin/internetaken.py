@@ -22,6 +22,16 @@ class ActorInlineAdmin(admin.StackedInline):
 @admin.register(InterneTaak)
 class InterneTaakAdmin(admin.ModelAdmin):
     readonly_fields = ("uuid",)
+    fields = (
+        "uuid",
+        "klantcontact",
+        "nummer",
+        "gevraagde_handeling",
+        "toelichting",
+        "status",
+        "toegewezen_op",
+        "afgehandeld_op",
+    )
     list_display = (
         "nummer",
         "status",

@@ -2,7 +2,6 @@ from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.utils import extend_schema_serializer
-from glom import PathAccessError, glom
 from rest_framework import serializers
 
 from openklant.components.klantinteracties.api.serializers.actoren import (
@@ -37,13 +36,6 @@ class InterneTaakForeignKeySerializer(serializers.HyperlinkedModelSerializer):
 
 @extend_schema_serializer(deprecate_fields=["toegewezen_aan_actor"])
 class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
-    toegewezen_aan_actor = ActorForeignKeySerializer(
-        required=False,
-        allow_null=False,
-        help_text=_("Eerste actor die een interne taak toegewezen kreeg."),
-        source="actoren.first",
-        many=False,
-    )
     toegewezen_aan_actoren = ActorForeignKeySerializer(
         required=False,
         allow_null=False,
@@ -66,7 +58,6 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             "nummer",
             "gevraagde_handeling",
             "aanleidinggevend_klantcontact",
-            "toegewezen_aan_actor",
             "toegewezen_aan_actoren",
             "toelichting",
             "status",
@@ -82,52 +73,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
 
-    def to_representation(self, instance):
-        response = super().to_representation(instance)
-        response["toegewezen_aan_actor"] = ActorForeignKeySerializer(
-            instance.actoren.order_by("internetakenactorenthoughmodel__pk").first(),
-            context={**self.context},
-        ).data
-
-        response["toegewezen_aan_actoren"] = ActorForeignKeySerializer(
-            instance.actoren.all().order_by("internetakenactorenthoughmodel__pk"),
-            context={**self.context},
-            many=True,
-        ).data
-        return response
-
-    # TODO: remove when depricated actoren field gets removed
-    def _validate_actoren(self):
-        toegewezen_aan_actor = "toegewezen_aan_actor" in self.initial_data
-        toegewezen_aan_actoren = "toegewezen_aan_actoren" in self.initial_data
-
-        if toegewezen_aan_actor == toegewezen_aan_actoren:
-            if toegewezen_aan_actor:
-                message = _(
-                    "`toegewezen_aan_actor` en `toegewezen_aan_actoren` mag niet beiden gebruikt worden."
-                )
-            else:
-                message = _(
-                    "`toegewezen_aan_actor` of `toegewezen_aan_actoren` is required (mag niet beiden gebruiken)."
-                )
-
-                # If patch don't raise required error
-                if self.context.get("request").method == "PATCH":
-                    return
-
-            raise serializers.ValidationError(message)
-
-    # TODO: remove when depricated actoren field gets removed
-    def _get_actoren(self, actoren):
-        if isinstance(actoren, list):
-            actor_uuids = [str(actor.get("uuid")) for actor in actoren]
-        else:
-            actor_uuids = [glom(actoren, "first.uuid", skip_exc=PathAccessError)]
-
-        return [Actor.objects.get(uuid=uuid) for uuid in actor_uuids]
-
     def validate(self, attrs):
-        self._validate_actoren()
         status = attrs.get("status", None)
         if status is None and self.instance is not None:
             status = self.instance.status
@@ -154,19 +100,21 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         internetaak = super().create(validated_data)
+
         if actoren:
-            for actor in self._get_actoren(actoren):
-                internetaak.actoren.add(actor)
+            actoren = [actor["uuid"] for actor in actoren]
+            actoren_qs = Actor.objects.filter(uuid__in=actoren)
+            internetaak.actoren.set(actoren_qs)
 
         return internetaak
 
     @transaction.atomic
     def update(self, instance, validated_data):
         if "actoren" in validated_data:
-            actoren = validated_data.pop("actoren")
             instance.actoren.clear()
-            for actor in self._get_actoren(actoren):
-                instance.actoren.add(actor)
+            actoren = [actor["uuid"] for actor in validated_data.pop("actoren")]
+            actoren_qs = Actor.objects.filter(uuid__in=actoren)
+            instance.actoren.set(actoren_qs)
 
         if "klantcontact" in validated_data:
             if klantcontact := validated_data.pop("klantcontact", None):
