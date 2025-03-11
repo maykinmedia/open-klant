@@ -57,7 +57,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.4.1
+commonground-api-common==2.5.2
     # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
@@ -238,7 +238,7 @@ mozilla-django-oidc-db==0.22.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
-notifications-api-common==0.3.1
+notifications-api-common==0.6.0
     # via commonground-api-common
 open-api-framework==0.9.3
     # via -r requirements/base.in
@@ -368,7 +368,7 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.16.0
     # via elastic-apm
-zgw-consumers==0.35.1
+zgw-consumers==0.37.0
     # via
     #   commonground-api-common
     #   notifications-api-common
