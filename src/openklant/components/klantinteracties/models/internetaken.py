@@ -21,7 +21,6 @@ class InterneTaak(models.Model):
         "klantinteracties.Actor",
         verbose_name=_("actoren"),
         help_text=_("De actoren aan wie de interne taak werd toegewezen."),
-        through="klantinteracties.InterneTakenActorenThoughModel",
     )
     klantcontact = models.ForeignKey(
         Klantcontact,
