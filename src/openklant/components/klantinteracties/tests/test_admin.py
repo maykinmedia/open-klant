@@ -38,7 +38,6 @@ from ..models import (
     ActorKlantcontact,
     DigitaalAdres,
     InterneTaak,
-    InterneTakenActorenThoughModel,
     Klantcontact,
     Medewerker,
     SoortActor,
@@ -285,7 +284,6 @@ class ActorenAdminTests(WebTest):
     def test_actor_create(self):
         assert not Actor.objects.exists()
         assert not Medewerker.objects.exists()
-        assert not InterneTakenActorenThoughModel.objects.exists()
         assert not ActorKlantcontact.objects.exists()
 
         self.app.set_user(self.user)
@@ -300,7 +298,7 @@ class ActorenAdminTests(WebTest):
         form = response.forms["actor_form"]
         form["actorklantcontact_set-TOTAL_FORMS"] = 1
         form["medewerker-TOTAL_FORMS"] = 1
-        form["internetakenactorenthoughmodel_set-TOTAL_FORMS"] = 1
+        form["InterneTaak_actoren-TOTAL_FORMS"] = 1
 
         form["naam"] = "Richard"
         form["soort_actor"].select(text=SoortActor.medewerker.label)
@@ -319,7 +317,7 @@ class ActorenAdminTests(WebTest):
 
         add_dynamic_field(
             form,
-            "internetakenactorenthoughmodel_set-0-internetaak",
+            "InterneTaak_actoren-0-internetaak",
             str(internetaak.pk),
         )
 
@@ -358,12 +356,9 @@ class ActorenAdminTests(WebTest):
         self.assertEqual(created_medewerker.emailadres, "example@test.com")
         self.assertEqual(created_medewerker.telefoonnummer, "+31618234723")
 
-        created_internetaak_actoren_m2m: InterneTakenActorenThoughModel = (
-            InterneTakenActorenThoughModel.objects.get()
-        )
+        actor_internetaak = created_actor.internetaak_set.first()
 
-        self.assertEqual(created_internetaak_actoren_m2m.actor, created_actor)
-        self.assertEqual(created_internetaak_actoren_m2m.internetaak, internetaak)
+        self.assertEqual(actor_internetaak, internetaak)
 
     def test_actor_update(self):
         self.app.set_user(self.user)
@@ -411,7 +406,7 @@ class ActorenAdminTests(WebTest):
         form["medewerker-0-emailadres"] = "changed@email.com"
         form["medewerker-0-telefoonnummer"] = "+31618239999"
 
-        form["internetakenactorenthoughmodel_set-0-internetaak"] = str(internetaak2.pk)
+        form["InterneTaak_actoren-0-internetaak"] = str(internetaak2.pk)
 
         add_response: TestResponse = form.submit(name="_save")
 
@@ -442,11 +437,9 @@ class ActorenAdminTests(WebTest):
         self.assertEqual(medewerker.emailadres, "changed@email.com")
         self.assertEqual(medewerker.telefoonnummer, "+31618239999")
 
-        interetaak_actoren: InterneTakenActorenThoughModel = (
-            actor.internetakenactorenthoughmodel_set.get()
-        )
+        actor_internetaak = actor.internetaak_set.first()
 
-        self.assertEqual(interetaak_actoren.internetaak, internetaak2)
+        self.assertEqual(actor_internetaak, internetaak2)
 
     def test_actor_delete(self):
         self.app.set_user(self.user)
@@ -543,7 +536,6 @@ class IntereTaakAdminTests(WebTest):
 
     def test_interetaak_create(self):
         assert not InterneTaak.objects.exists()
-        assert not InterneTakenActorenThoughModel.objects.exists()
 
         self.app.set_user(self.user)
 
@@ -555,8 +547,7 @@ class IntereTaakAdminTests(WebTest):
         response: TestResponse = self.app.get(admin_url)
 
         form = response.forms["internetaak_form"]
-        form["internetakenactorenthoughmodel_set-TOTAL_FORMS"] = 1
-
+        form["InterneTaak_actoren-TOTAL_FORMS"] = 1
         form["klantcontact"].select(text=str(klantcontact))
         form["nummer"] = "0000000001"
         form["gevraagde_handeling"] = "Terugbellen"
@@ -565,7 +556,7 @@ class IntereTaakAdminTests(WebTest):
         form["afgehandeld_op_0"] = "2024-01-01"
         form["afgehandeld_op_1"] = "16:30:00"
 
-        add_dynamic_field(form, "internetakenactorenthoughmodel_set-0-actor", actor.pk)
+        add_dynamic_field(form, "InterneTaak_actoren-0-actor", actor.pk)
 
         with freeze_time("2024-01-01 18:00:00+00:00"):
             add_response: TestResponse = form.submit(name="_save")
@@ -592,7 +583,6 @@ class IntereTaakAdminTests(WebTest):
 
     def test_interetaak_create_number_automatically_sets_itself(self):
         assert not InterneTaak.objects.exists()
-        assert not InterneTakenActorenThoughModel.objects.exists()
 
         self.app.set_user(self.user)
 
@@ -650,7 +640,7 @@ class IntereTaakAdminTests(WebTest):
         form["afgehandeld_op_0"] = "2024-01-01"
         form["afgehandeld_op_1"] = "16:30:00"
 
-        form["internetakenactorenthoughmodel_set-0-actor"] = actor2.pk
+        form["InterneTaak_actoren-0-actor"] = actor2.pk
 
         with freeze_time("2024-01-01 18:00:00+00:00"):
             add_response: TestResponse = form.submit(name="_save")
