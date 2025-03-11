@@ -96,13 +96,3 @@ class InterneTaak(models.Model):
 
     def __str__(self):
         return f"{self.klantcontact} - ({self.nummer})"
-
-
-class InterneTakenActorenThoughModel(models.Model):
-    actor = models.ForeignKey("klantinteracties.Actor", on_delete=models.CASCADE)
-    internetaak = models.ForeignKey(
-        "klantinteracties.InterneTaak", on_delete=models.CASCADE
-    )
-
-    class Meta:
-        ordering = ("pk",)
