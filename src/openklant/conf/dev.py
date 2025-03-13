@@ -1,5 +1,4 @@
 import os
-import sys
 import warnings
 
 os.environ.setdefault("DEBUG", "yes")
@@ -106,9 +105,6 @@ warnings.filterwarnings(
     RuntimeWarning,
     r"django\.db\.models\.fields",
 )
-
-if "test" in sys.argv:
-    NOTIFICATIONS_DISABLED = True
 
 # Override settings with local settings.
 try:

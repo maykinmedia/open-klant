@@ -79,7 +79,6 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
             "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
             "soortPartij": "persoon",
-            "interne_notitie": "interne_notitie",
             "voorkeurstaal": "ndl",
             "indicatie_actief": True,
         }
@@ -99,9 +98,9 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "create",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": data["nummer"],
-                    "interneNotitie": data["interneNotitie"],
-                    "soortPartij": data["soortPartij"],
+                    "nummer": "123456789",
+                    "interneNotitie": "interneNotitie",
+                    "soortPartij": "persoon",
                 },
             }
         )
@@ -121,9 +120,9 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": data["nummer"],
-                    "interneNotitie": data["interneNotitie"],
-                    "soortPartij": data["soortPartij"],
+                    "nummer": "123456789",
+                    "interneNotitie": "interneNotitie",
+                    "soortPartij": "persoon",
                 },
             }
         )
@@ -143,9 +142,9 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "partial_update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": data["nummer"],
-                    "interneNotitie": data["interneNotitie"],
-                    "soortPartij": data["soortPartij"],
+                    "nummer": "1298329191",
+                    "interneNotitie": "interneNotitie",
+                    "soortPartij": "persoon",
                 },
             }
         )
@@ -164,9 +163,9 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "destroy",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": self.partij.nummer,
-                    "interneNotitie": self.partij.interne_notitie,
-                    "soortPartij": self.partij.soort_partij,
+                    "nummer": "1298329191",
+                    "interneNotitie": "interneNotitie",
+                    "soortPartij": "organisatie",
                 },
             }
         )
@@ -182,7 +181,13 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
         super().setUpTestData()
         cls.actor = ActorFactory.create()
         cls.klantcontact = KlantcontactFactory.create()
-        cls.internetaak = InterneTaakFactory.create(klantcontact=cls.klantcontact)
+        cls.internetaak = InterneTaakFactory.create(
+            klantcontact=cls.klantcontact,
+            nummer="1298329191",
+            gevraagde_handeling="test",
+            toelichting="test",
+            status="te_verwerken",
+        )
 
         cls.list_url = reverse("klantinteracties:internetaak-list")
         cls.detail_url = reverse(
@@ -213,11 +218,10 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "create",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": data["nummer"],
-                    "gevraagdeHandeling": data["gevraagdeHandeling"],
-                    "toelichting": data["toelichting"],
-                    "status": data["status"],
-                    "klantcontact.uuid": data["aanleidinggevendKlantcontact"]["uuid"],
+                    "nummer": "1312312312",
+                    "gevraagdeHandeling": "gevraagdeHandeling",
+                    "toelichting": "toelichting",
+                    "status": "verwerkt",
                 },
             }
         )
@@ -237,11 +241,10 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": data["nummer"],
-                    "gevraagdeHandeling": data["gevraagdeHandeling"],
-                    "toelichting": data["toelichting"],
-                    "status": data["status"],
-                    "klantcontact.uuid": data["aanleidinggevendKlantcontact"]["uuid"],
+                    "nummer": "1312312312",
+                    "gevraagdeHandeling": "gevraagdeHandeling",
+                    "toelichting": "toelichting",
+                    "status": "verwerkt",
                 },
             }
         )
@@ -261,11 +264,10 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "partial_update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": data["nummer"],
-                    "gevraagdeHandeling": data["gevraagdeHandeling"],
-                    "toelichting": data["toelichting"],
-                    "status": data["status"],
-                    "klantcontact.uuid": data["aanleidinggevendKlantcontact"]["uuid"],
+                    "nummer": "123456789",
+                    "gevraagdeHandeling": "test",
+                    "toelichting": "test",
+                    "status": "te_verwerken",
                 },
             }
         )
@@ -284,11 +286,10 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "destroy",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": self.internetaak.nummer,
-                    "gevraagdeHandeling": self.internetaak.gevraagde_handeling,
-                    "toelichting": self.internetaak.toelichting,
-                    "status": self.internetaak.status,
-                    "klantcontact.uuid": self.internetaak.klantcontact.uuid,
+                    "nummer": "1298329191",
+                    "gevraagdeHandeling": "test",
+                    "toelichting": "test",
+                    "status": "te_verwerken",
                 },
             }
         )

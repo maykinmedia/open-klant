@@ -1,3 +1,5 @@
+from django.utils.translation import gettext_lazy as _
+
 from notifications_api_common.settings import *  # noqa
 from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config  # noqa
@@ -51,7 +53,6 @@ ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 # Django setup configuration
 #
 SETUP_CONFIGURATION_STEPS = (
-    "django_setup_configuration.contrib.sites.steps.SitesConfigurationStep",
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
@@ -82,3 +83,24 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
     ),
     group="Celery",
 )  # soft
+
+# Notifications
+NOTIFICATIONS_DISABLED = config(
+    "NOTIFICATIONS_DISABLED",
+    default=True,
+    help_text=(
+        "Indicates whether or not notifications should be sent to the Notificaties API "
+        "for operations on the API endpoints."
+    ),
+)
+
+SITE_DOMAIN = config(
+    "SITE_DOMAIN",
+    default="example.com",
+    help_text=("Defines the primary domain where the application is hosted."),
+)
+
+FORCE_TRANSLATION_STRINGS = [
+    _("A page number within the paginated result set."),
+    _("Number of results to return per page."),
+]

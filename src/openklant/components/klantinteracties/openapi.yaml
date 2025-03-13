@@ -46,13 +46,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -228,13 +228,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       tags:
@@ -428,13 +428,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -645,13 +645,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       tags:
@@ -822,13 +822,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -992,13 +992,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       tags:
@@ -1173,13 +1173,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -1419,13 +1419,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -1687,13 +1687,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -1934,13 +1934,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       tags:
@@ -2088,13 +2088,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -2354,13 +2354,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -2573,13 +2573,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -2728,13 +2728,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: Number of results to return per page.
         schema:
           type: integer
       - in: query
@@ -5776,9 +5776,44 @@ tags:
 - name: categorieën
 - name: digitale adressen
 - name: interne taken
+  description: |
+    Deze API publiceert notificaties op het kanaal `internetaken`.
+
+    **Main resource**
+
+    `internetaak`
+
+
+
+    **Kenmerken**
+
+    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+    * `gevraagde_handeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
+    * `toelichting`: Toelichting die, aanvullend bij de inhoud van het klantcontact dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan het kunnen afhandelen van de taak.
+    * `status`: Aanduiding van de vordering bij afhandeling van de interne taak.
+
+    **Resources en acties**
+    - `internetaak`: create, update, destroy
 - name: klanten contacten
 - name: onderwerpobjecten
 - name: partij-identificatoren
 - name: partijen
+  description: |
+    Deze API publiceert notificaties op het kanaal `partijen`.
+
+    **Main resource**
+
+    `partij`
+
+
+
+    **Kenmerken**
+
+    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
+    * `interne_notitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
+    * `soort_partij`: Geeft aan van welke specifieke soort partij sprake is.
+
+    **Resources en acties**
+    - `partij`: create, update, destroy
 - name: rekeningnummers
 - name: vertegenwoordigingen

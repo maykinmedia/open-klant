@@ -1,6 +1,7 @@
+from notifications_api_common.kanalen import Kanaal
+
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.partijen import Partij
-from openklant.utils.kanaal import Kanaal
 
 KANAAL_PARTIJ = Kanaal(
     "partijen",
@@ -20,6 +21,5 @@ KANAAL_INTERNETAAK = Kanaal(
         "gevraagde_handeling",
         "toelichting",
         "status",
-        "klantcontact.uuid",
     ),
 )

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Generates the documentation for environment variables
-src/manage.py generate_envvar_docs --file docs/installation/config.rst --exclude-group Celery
+src/manage.py generate_envvar_docs --file docs/installation/config/env_configuration.rst --exclude-group Celery
