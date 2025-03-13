@@ -1,3 +1,4 @@
+from notifications_api_common.settings import *  # noqa
 from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config  # noqa
 
@@ -7,6 +8,8 @@ from .api import *  # noqa
 # APPLICATIONS enabled for this project
 #
 INSTALLED_APPS = INSTALLED_APPS + [
+    # External applications.
+    "vng_api_common.notifications",
     # Project applications.
     "openklant.accounts",
     "openklant.utils",
@@ -48,6 +51,9 @@ ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 # Django setup configuration
 #
 SETUP_CONFIGURATION_STEPS = (
+    "django_setup_configuration.contrib.sites.steps.SitesConfigurationStep",
+    "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
+    "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
 )

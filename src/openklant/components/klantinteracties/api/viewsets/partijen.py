@@ -1,5 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
 
@@ -16,6 +17,7 @@ from openklant.components.klantinteracties.api.serializers.partijen import (
     PartijSerializer,
     VertegenwoordigdenSerializer,
 )
+from openklant.components.klantinteracties.kanalen import KANAAL_PARTIJ
 from openklant.components.klantinteracties.models.partijen import (
     Categorie,
     CategorieRelatie,
@@ -56,7 +58,7 @@ from openklant.utils.decorators import handle_db_exceptions
         description="Verwijder een partij.",
     ),
 )
-class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
+class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet):
     """Persoon of organisatie waarmee de gemeente een relatie heeft."""
 
     queryset = (
@@ -76,6 +78,7 @@ class PartijViewSet(ExpandMixin, viewsets.ModelViewSet):
     pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+    notifications_kanaal = KANAAL_PARTIJ
 
     @property
     def filterset_class(self):
