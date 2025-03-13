@@ -217,7 +217,6 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "gevraagdeHandeling": data["gevraagdeHandeling"],
                     "toelichting": data["toelichting"],
                     "status": data["status"],
-                    "klantcontact.uuid": data["aanleidinggevendKlantcontact"]["uuid"],
                 },
             }
         )
@@ -241,7 +240,6 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "gevraagdeHandeling": data["gevraagdeHandeling"],
                     "toelichting": data["toelichting"],
                     "status": data["status"],
-                    "klantcontact.uuid": data["aanleidinggevendKlantcontact"]["uuid"],
                 },
             }
         )
@@ -265,7 +263,6 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "gevraagdeHandeling": data["gevraagdeHandeling"],
                     "toelichting": data["toelichting"],
                     "status": data["status"],
-                    "klantcontact.uuid": data["aanleidinggevendKlantcontact"]["uuid"],
                 },
             }
         )
@@ -288,7 +285,6 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "gevraagdeHandeling": self.internetaak.gevraagde_handeling,
                     "toelichting": self.internetaak.toelichting,
                     "status": self.internetaak.status,
-                    "klantcontact.uuid": self.internetaak.klantcontact.uuid,
                 },
             }
         )

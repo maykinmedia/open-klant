@@ -51,7 +51,6 @@ ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 # Django setup configuration
 #
 SETUP_CONFIGURATION_STEPS = (
-    "django_setup_configuration.contrib.sites.steps.SitesConfigurationStep",
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
@@ -82,3 +81,6 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
     ),
     group="Celery",
 )  # soft
+
+# Notifications
+NOTIFICATIONS_DISABLED = True
