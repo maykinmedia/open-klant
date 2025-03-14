@@ -49,7 +49,7 @@ billiard==4.2.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
-black==24.4.2
+black==25.1.0
     # via -r requirements/test-tools.in
 bleach==6.1.0
     # via
@@ -386,7 +386,7 @@ factory-boy==3.3.0
     # via -r requirements/test-tools.in
 faker==32.1.0
     # via factory-boy
-flake8==7.1.0
+flake8==7.1.2
     # via -r requirements/test-tools.in
 flower==2.0.1
     # via

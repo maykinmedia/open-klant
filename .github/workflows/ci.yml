@@ -54,7 +54,7 @@ jobs:
 
     strategy:
       matrix:
-        postgres: ['13', '14', '15', '16']
+        postgres: ['13', '14', '15', '16', '17']
 
     services:
       postgres:
@@ -120,7 +120,7 @@ jobs:
         id: image-name
 
   open-api-ci:
-    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v3.0.2
+    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v5
     needs:
       - store-reusable-workflow-vars
     with:
@@ -131,7 +131,7 @@ jobs:
       django-settings-module: openklant.conf.ci
 
   open-api-publish:
-    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v3.0.2
+    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v5
     needs:
       - store-reusable-workflow-vars
       - open-api-ci

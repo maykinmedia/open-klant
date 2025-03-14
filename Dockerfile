@@ -16,7 +16,7 @@ RUN pip install -r requirements/production.txt
 
 
 # Stage 2 - build frontend
-FROM node:16-bookworm-slim AS frontend-build
+FROM node:20-bookworm-slim AS frontend-build
 
 WORKDIR /app
 

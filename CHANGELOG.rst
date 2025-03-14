@@ -2,6 +2,18 @@
 Change history
 ==============
 
+2.x.x
+=====
+*March, 31, 2025*
+
+**Project maintenance**
+
+* Confirm support for Postgres 17
+* Upgrade nodejs version in Docker image to 20
+* Upgrade dependencies
+
+  * Development tools: black to 25.1.0, flake to 7.1.2 and isort to 6.0.1
+
 2.6.0
 =====
 *March, 4, 2025*
@@ -17,7 +29,7 @@ Change history
 .. warning::
 
     Issues ``#311``, ``#310``, ``#267`` modify existing fields and add new constraints to models, which can cause them to break,
-    as some previous values will no longer be valid. 
+    as some previous values will no longer be valid.
     During migration, invalid values are logged so that they can be fixed manually and then migrations have to be executed again.
 
 
