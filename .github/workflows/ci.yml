@@ -40,7 +40,7 @@ jobs:
           git fetch --all
 
           # Get the list of files that were changed between the base branch and the current commit
-          CHANGED_FILES=$(git diff --name-only origin/$BASE_REF...HEAD)
+          CHANGED_FILES=$(git diff --name-only $BASE_REF...HEAD)
           if echo "$CHANGED_FILES" | grep -q "^src/.*\.py$"; then
             echo "Files were changed!"
             echo "any_changed=true" >> $GITHUB_OUTPUT
@@ -62,7 +62,7 @@ jobs:
           git fetch --all
 
           # Get the list of files that were changed between the base branch and the current commit
-          CHANGED_FILES=$(git diff --name-only origin/$BASE_REF...HEAD)
+          CHANGED_FILES=$(git diff --name-only $BASE_REF...HEAD)
           if echo "$CHANGED_FILES" | grep -q "^requirements/.*\.txt$"; then
             echo "Files were changed!"
             echo "any_changed=true" >> $GITHUB_OUTPUT
