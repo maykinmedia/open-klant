@@ -46,13 +46,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -228,13 +228,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       tags:
@@ -428,13 +428,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -645,13 +645,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       tags:
@@ -822,13 +822,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -992,13 +992,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       tags:
@@ -1173,13 +1173,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -1419,13 +1419,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -1687,13 +1687,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -1934,13 +1934,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       tags:
@@ -2088,13 +2088,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -2354,13 +2354,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -2573,13 +2573,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query
@@ -2728,13 +2728,13 @@ paths:
       - name: page
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: Een pagina binnen de gepagineerde set resultaten.
         schema:
           type: integer
       - name: pageSize
         required: false
         in: query
-        description: Number of results to return per page.
+        description: Het aantal resultaten terug te geven per pagina.
         schema:
           type: integer
       - in: query

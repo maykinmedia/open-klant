@@ -1,5 +1,3 @@
-from django.utils.translation import gettext_lazy as _
-
 from notifications_api_common.settings import *  # noqa
 from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config  # noqa
@@ -93,14 +91,3 @@ NOTIFICATIONS_DISABLED = config(
         "for operations on the API endpoints."
     ),
 )
-
-SITE_DOMAIN = config(
-    "SITE_DOMAIN",
-    default="example.com",
-    help_text=("Defines the primary domain where the application is hosted."),
-)
-
-FORCE_TRANSLATION_STRINGS = [
-    _("A page number within the paginated result set."),
-    _("Number of results to return per page."),
-]
