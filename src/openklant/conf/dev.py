@@ -111,3 +111,6 @@ try:
     from .local import *  # noqa
 except ImportError:
     pass
+
+if "test" in sys.argv:
+    NOTIFICATIONS_DISABLED = True
