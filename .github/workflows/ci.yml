@@ -97,7 +97,7 @@ jobs:
       - name: Generate environment variable documentation using OAf and check if it was updated
         run: |
           bin/generate_envvar_docs.sh
-          changes=$(git diff docs/installation/config/index.rst)
+          changes=$(git diff docs/installation/config/env_configuration.rst)
           if [ ! -z "$changes" ]; then
               echo $changes
               echo "Please update the environment documentation by running \`bin/generate_envvar_docs.sh\`"

@@ -19,9 +19,6 @@ INSTALLED_APPS = INSTALLED_APPS + [
     # Django libraries
     "localflavor",
 ]
-# `django.contrib.sites` is installed by Open API Framework by default
-# but we don't want to rely on it anymore (e.g. when generating the label for 2FA)
-INSTALLED_APPS.remove("django.contrib.sites")
 
 MIDDLEWARE = MIDDLEWARE + ["openklant.utils.middleware.APIVersionHeaderMiddleware"]
 
@@ -83,6 +80,7 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
 )  # soft
 
 # Notifications
+# Override the default to be `True`, to make notifications opt-in
 NOTIFICATIONS_DISABLED = config(
     "NOTIFICATIONS_DISABLED",
     default=True,
