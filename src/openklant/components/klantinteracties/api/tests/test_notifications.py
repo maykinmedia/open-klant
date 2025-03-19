@@ -9,22 +9,12 @@ from vng_api_common.tests import reverse
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
-from openklant.components.klantinteracties.models.tests.factories.actoren import (
+from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
     DigitaalAdresFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.internetaken import (
     InterneTaakFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     KlantcontactFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
     PartijFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.rekeningnummer import (
     RekeningnummerFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase

@@ -8,21 +8,15 @@ from openklant.components.klantinteracties.models import (
     Klantcontact,
     Onderwerpobject,
 )
-from openklant.components.klantinteracties.models.tests.factories.actoren import (
+from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
     ActorKlantcontactFactory,
-    MedewerkerFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
-    DigitaalAdresFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     BetrokkeneFactory,
     BijlageFactory,
+    DigitaalAdresFactory,
     KlantcontactFactory,
+    MedewerkerFactory,
     OnderwerpobjectFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
     PartijFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase
