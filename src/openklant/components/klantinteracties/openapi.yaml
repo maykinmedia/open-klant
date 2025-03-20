@@ -4871,7 +4871,6 @@ components:
             the child identificator could specify a vestigingsnummer that is unique
             for the KVK number).
       required:
-      - identificeerdePartij
       - partijIdentificator
       - url
       - uuid
