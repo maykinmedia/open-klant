@@ -353,6 +353,7 @@ class PartijIdentificator(models.Model):
         verbose_name=_("partij"),
         help_text=_("'Partij' had 'PartijIdentificator'"),
         null=True,
+        blank=True,
     )
     andere_partij_identificator = models.CharField(
         _("andere partij indetificator"),
