@@ -134,7 +134,7 @@ coreschema==0.0.4
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   coreapi
-coverage==4.5.4
+coverage==7.7.0
     # via codecov
 cryptography==44.0.1
     # via
