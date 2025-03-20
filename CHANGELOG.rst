@@ -14,6 +14,16 @@ Change history
 
   * Development tools: black to 25.1.0, flake to 7.1.2 and isort to 6.0.1
 
+
+2.6.1
+=====
+*March, 21, 2025*
+
+**Bugfixes**
+
+* [:open-klant:`369`] Ensure PartijIdentificator.partij can be null
+
+
 2.6.0
 =====
 *March, 4, 2025*
