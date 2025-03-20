@@ -380,7 +380,7 @@ class PartijIdentificatorSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     identificeerde_partij = PartijForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("Partij-identificator die hoorde bij een partij."),
         source="partij",
