@@ -2,6 +2,15 @@
 Change history
 ==============
 
+2.6.1
+=====
+*March, 21, 2025*
+
+**Bugfixes**
+
+* [:open-klant:`369`] Ensure PartijIdentificator.partij can be null
+
+
 2.6.0
 =====
 *March, 4, 2025*
@@ -17,7 +26,7 @@ Change history
 .. warning::
 
     Issues ``#311``, ``#310``, ``#267`` modify existing fields and add new constraints to models, which can cause them to break,
-    as some previous values will no longer be valid. 
+    as some previous values will no longer be valid.
     During migration, invalid values are logged so that they can be fixed manually and then migrations have to be executed again.
 
 
