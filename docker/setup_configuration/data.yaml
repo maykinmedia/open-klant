@@ -19,3 +19,22 @@ oidc_db_config_admin_auth:
         oidc_op_authorization_endpoint: https://example.com/realms/test/protocol/openid-connect/auth
         oidc_op_token_endpoint: https://example.com/realms/test/protocol/openid-connect/token
         oidc_op_user_endpoint: https://example.com/realms/test/protocol/openid-connect/userinfo
+
+zgw_consumers_config_enable: true
+zgw_consumers:
+  services:
+  - identifier: open-notificaties
+    label: Open Notificaties
+    api_root: https://notificaties.gemeente.local/api/v1/
+    api_type: nrc
+    auth_type: zgw
+    client_id: open-klant
+    user_id: open-klant
+    secret: open-klant-secret
+
+notifications_config_enable: true
+notifications_config:
+  notifications_api_service_identifier: open-notificaties
+  notification_delivery_max_retries: 1
+  notification_delivery_retry_backoff: 2
+  notification_delivery_retry_backoff_max: 3

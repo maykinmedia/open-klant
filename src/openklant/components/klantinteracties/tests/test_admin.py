@@ -10,23 +10,15 @@ from maykin_2fa.test import disable_admin_mfa
 from webtest import TestResponse
 
 from openklant.accounts.tests.factories import SuperUserFactory
-from openklant.components.klantinteracties.models.tests.factories.actoren import (
+from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
     ActorKlantcontactFactory,
-    GeautomatiseerdeActorFactory,
-    MedewerkerFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
-    DigitaalAdresFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.internetaken import (
-    InterneTaakFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     BetrokkeneFactory,
+    DigitaalAdresFactory,
+    GeautomatiseerdeActorFactory,
+    InterneTaakFactory,
     KlantcontactFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
+    MedewerkerFactory,
     PartijFactory,
     PersoonFactory,
 )

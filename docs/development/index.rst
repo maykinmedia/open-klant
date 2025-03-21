@@ -1,7 +1,8 @@
 .. _development_index:
 
+===========
 Development
-============
+===========
 
 **Open Klant** is open-source software. We'd love to have you
 contribute!

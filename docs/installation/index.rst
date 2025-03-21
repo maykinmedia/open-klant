@@ -1,5 +1,6 @@
 .. _installation_index:
 
+============
 Installation
 ============
 
@@ -14,6 +15,5 @@ this.
    :maxdepth: 1
    :caption: Further reading
 
-   config
+   config/index
    migration
-   setup_configuration

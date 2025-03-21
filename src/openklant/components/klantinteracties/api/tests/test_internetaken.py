@@ -3,13 +3,9 @@ from rest_framework import status
 from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
-from openklant.components.klantinteracties.models.tests.factories.actoren import (
+from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.internetaken import (
     InterneTaakFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     KlantcontactFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase

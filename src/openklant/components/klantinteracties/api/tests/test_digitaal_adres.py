@@ -6,13 +6,9 @@ from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models import DigitaalAdres
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
-    DigitaalAdresFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
+from openklant.components.klantinteracties.models.tests.factories import (
     BetrokkeneFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
+    DigitaalAdresFactory,
     PartijFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase

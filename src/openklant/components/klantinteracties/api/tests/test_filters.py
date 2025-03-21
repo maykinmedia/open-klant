@@ -3,24 +3,16 @@ from uuid import uuid4
 from rest_framework import status
 from vng_api_common.tests import reverse
 
-from openklant.components.klantinteracties.models.tests.factories.actoren import (
+from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
     ActorKlantcontactFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
-    DigitaalAdresFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.internetaken import (
-    InterneTaakFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     BetrokkeneFactory,
-    KlantcontactFactory,
-    OnderwerpobjectFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
     CategorieFactory,
     CategorieRelatieFactory,
+    DigitaalAdresFactory,
+    InterneTaakFactory,
+    KlantcontactFactory,
+    OnderwerpobjectFactory,
     PartijFactory,
     PartijIdentificatorFactory,
     VertegenwoordigdenFactory,
