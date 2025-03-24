@@ -12,6 +12,7 @@ from maykin_2fa.urls import urlpatterns, webauthn_urlpatterns
 from mozilla_django_oidc_db.views import AdminLoginFailure
 
 from openklant.accounts.views.password_reset import PasswordResetView
+from openklant.components.views import ComponentIndexView
 
 monkeypatch_admin()
 
@@ -65,10 +66,11 @@ urlpatterns = [
     # separate apps
     re_path(
         r"^(?P<component>klantinteracties|contactgegevens)/$",
-        TemplateView.as_view(template_name="index.html"),
+        ComponentIndexView.as_view(),
         name="main",
     ),
     path("ref/", include("vng_api_common.urls")),
+    path("ref/", include("notifications_api_common.urls")),
     path("oidc/", include("mozilla_django_oidc.urls")),
 ]
 

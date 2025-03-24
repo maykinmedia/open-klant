@@ -1,4 +1,5 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
 
@@ -8,6 +9,7 @@ from openklant.components.klantinteracties.api.filterset.internetaken import (
 from openklant.components.klantinteracties.api.serializers.internetaken import (
     InterneTaakSerializer,
 )
+from openklant.components.klantinteracties.kanalen import KANAAL_INTERNETAAK
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
@@ -40,7 +42,7 @@ from openklant.components.token.permission import TokenPermissions
         description="Verwijder een interne taak.",
     ),
 )
-class InterneTaakViewSet(viewsets.ModelViewSet):
+class InterneTaakViewSet(NotificationViewSetMixin, viewsets.ModelViewSet):
     """Iets dat door een actor moet worden gedaan om opvolging te geven aan een klantcontact."""
 
     queryset = (
@@ -54,3 +56,4 @@ class InterneTaakViewSet(viewsets.ModelViewSet):
     filterset_class = InternetaakFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+    notifications_kanaal = KANAAL_INTERNETAAK

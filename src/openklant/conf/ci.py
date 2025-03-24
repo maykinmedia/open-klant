@@ -61,3 +61,5 @@ warnings.filterwarnings(
     RuntimeWarning,
     r"django\.db\.models\.fields",
 )
+
+NOTIFICATIONS_DISABLED = True
