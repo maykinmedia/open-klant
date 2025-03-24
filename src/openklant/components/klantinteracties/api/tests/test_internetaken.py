@@ -56,7 +56,7 @@ class InterneTaakTests(APITestCase):
 
         list_url = reverse("klantinteracties:internetaak-list")
         data = {
-            "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            "toegewezenAanActoren": [{"uuid": str(actor.uuid)}],
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
             "nummer": "1312312312",
             "gevraagdeHandeling": "gevraagdeHandeling",
@@ -70,7 +70,6 @@ class InterneTaakTests(APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor.uuid))
         self.assertEqual(len(response_data["toegewezenAanActoren"]), 1)
         self.assertEqual(
             response_data["toegewezenAanActoren"][0]["uuid"],
@@ -127,7 +126,7 @@ class InterneTaakTests(APITestCase):
 
         list_url = reverse("klantinteracties:internetaak-list")
         data = {
-            "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            "toegewezenAanActoren": [{"uuid": str(actor.uuid)}],
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
             "nummer": "1312312312",
             "gevraagdeHandeling": "gevraagdeHandeling",
@@ -141,7 +140,6 @@ class InterneTaakTests(APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor.uuid))
         self.assertEqual(len(response_data["toegewezenAanActoren"]), 1)
         self.assertEqual(
             response_data["toegewezenAanActoren"][0]["uuid"],
@@ -177,7 +175,7 @@ class InterneTaakTests(APITestCase):
 
         list_url = reverse("klantinteracties:internetaak-list")
         data = {
-            "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            "toegewezenAanActoren": [{"uuid": str(actor.uuid)}],
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
             "nummer": "1312312312",
             "gevraagdeHandeling": "gevraagdeHandeling",
@@ -192,7 +190,6 @@ class InterneTaakTests(APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor.uuid))
         self.assertEqual(len(response_data["toegewezenAanActoren"]), 1)
         self.assertEqual(
             response_data["toegewezenAanActoren"][0]["uuid"],
@@ -238,14 +235,13 @@ class InterneTaakTests(APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor2.uuid))
         self.assertEqual(
             response_data["toegewezenAanActoren"][0]["uuid"],
-            str(actor2.uuid),
+            str(actor.uuid),
         )
         self.assertEqual(
             response_data["toegewezenAanActoren"][1]["uuid"],
-            str(actor.uuid),
+            str(actor2.uuid),
         )
         self.assertEqual(
             response_data["aanleidinggevendKlantcontact"]["uuid"],
@@ -278,7 +274,6 @@ class InterneTaakTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor.uuid))
         self.assertEqual(len(data["toegewezenAanActoren"]), 1)
         self.assertEqual(
             data["toegewezenAanActoren"][0]["uuid"],
@@ -307,7 +302,6 @@ class InterneTaakTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor2.uuid))
         self.assertEqual(len(data["toegewezenAanActoren"]), 1)
         self.assertEqual(
             data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact2.uuid)
@@ -337,7 +331,7 @@ class InterneTaakTests(APITestCase):
             "changing_status_back_to_te_verwerken_clears_afgehandeld_op_field"
         ):
             data = {
-                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
+                "toegewezenAanActoren": [{"uuid": str(actor2.uuid)}],
                 "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
                 "gevraagdeHandeling": "changed",
                 "status": "te_verwerken",
@@ -351,7 +345,7 @@ class InterneTaakTests(APITestCase):
 
         with self.subTest("with_afgehandeld_op_data_value"):
             data = {
-                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
+                "toegewezenAanActoren": [{"uuid": str(actor2.uuid)}],
                 "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
                 "gevraagdeHandeling": "changed",
                 "status": "verwerkt",
@@ -361,7 +355,7 @@ class InterneTaakTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             data = response.json()
 
-            self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor2.uuid))
+            self.assertEqual(data["toegewezenAanActoren"][0]["uuid"], str(actor2.uuid))
             self.assertEqual(
                 data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact2.uuid)
             )
@@ -377,7 +371,7 @@ class InterneTaakTests(APITestCase):
 
         with self.subTest("validate_afgehandeld_op_error_with_te_verwerken_status"):
             data = {
-                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
+                "toegewezenAanActoren": [{"uuid": str(actor2.uuid)}],
                 "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
                 "gevraagdeHandeling": "changed",
                 "status": "te_verwerken",
@@ -390,42 +384,6 @@ class InterneTaakTests(APITestCase):
             self.assertEqual(
                 data["invalidParams"][0]["reason"],
                 "De Internetaak kan geen afgehandeld op datum bevatten als de status niet op 'verwerkt' staat.",
-            )
-
-        with self.subTest("validate_acoren_field_required_neither_fields"):
-            # no toegewezen_aan_actoren and toegewezen_aan_actor
-            data = {
-                "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
-                "gevraagdeHandeling": "changed",
-                "status": "te_verwerken",
-                "afgehandeldOp": "2024-01-01T01:00:00Z",
-            }
-            response = self.client.put(detail_url, data)
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            data = response.json()
-            self.assertEqual(data["invalidParams"][0]["name"], "nonFieldErrors")
-            self.assertEqual(
-                data["invalidParams"][0]["reason"],
-                "`toegewezen_aan_actor` of `toegewezen_aan_actoren` is required (mag niet beiden gebruiken).",
-            )
-
-        with self.subTest("validate_acoren_field_required_both_fields"):
-            # no toegewezen_aan_actoren and toegewezen_aan_actor
-            data = {
-                "toegewezenAanActor": {"uuid": str(actor2.uuid)},
-                "toegewezenAanActoren": [{"uuid": str(actor2.uuid)}],
-                "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
-                "gevraagdeHandeling": "changed",
-                "status": "te_verwerken",
-                "afgehandeldOp": "2024-01-01T01:00:00Z",
-            }
-            response = self.client.put(detail_url, data)
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            data = response.json()
-            self.assertEqual(data["invalidParams"][0]["name"], "nonFieldErrors")
-            self.assertEqual(
-                data["invalidParams"][0]["reason"],
-                "`toegewezen_aan_actor` en `toegewezen_aan_actoren` mag niet beiden gebruikt worden.",
             )
 
     @freeze_time("2024-01-01T12:00:00Z")
@@ -447,7 +405,6 @@ class InterneTaakTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor.uuid))
         self.assertEqual(len(data["toegewezenAanActoren"]), 1)
         self.assertEqual(
             data["toegewezenAanActoren"][0]["uuid"],
@@ -477,15 +434,14 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
 
-        self.assertEqual(response_data["toegewezenAanActor"]["uuid"], str(actor3.uuid))
         self.assertEqual(len(response_data["toegewezenAanActoren"]), 2)
         self.assertEqual(
             response_data["toegewezenAanActoren"][0]["uuid"],
-            str(actor3.uuid),
+            str(actor2.uuid),
         )
         self.assertEqual(
             response_data["toegewezenAanActoren"][1]["uuid"],
-            str(actor2.uuid),
+            str(actor3.uuid),
         )
         self.assertEqual(
             response_data["aanleidinggevendKlantcontact"]["uuid"],
@@ -498,27 +454,6 @@ class InterneTaakTests(APITestCase):
         self.assertTrue(
             InterneTaak.objects.filter(afgehandeld_op="2024-01-01T12:00:00Z").exists()
         )
-
-        with self.subTest(
-            "update_toegewezen_aan_actor_resoltes_in_one_actor_being_set"
-        ):
-            # no toegewezen_aan_actoren and toegewezen_aan_actor
-            del data["toegewezenAanActoren"]
-            data = {
-                "toegewezenAanActor": {"uuid": str(actor.uuid)},
-            }
-            response = self.client.patch(detail_url, data)
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
-            response_data = response.json()
-
-            self.assertEqual(
-                response_data["toegewezenAanActor"]["uuid"], str(actor.uuid)
-            )
-            self.assertEqual(len(response_data["toegewezenAanActoren"]), 1)
-            self.assertEqual(
-                response_data["toegewezenAanActoren"][0]["uuid"],
-                str(actor.uuid),
-            )
 
     def test_partial_update_internetaak(self):
         actor = ActorFactory.create()
@@ -538,7 +473,11 @@ class InterneTaakTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor.uuid))
+        self.assertEqual(len(data["toegewezenAanActoren"]), 1)
+        self.assertEqual(
+            data["toegewezenAanActoren"][0]["uuid"],
+            str(actor.uuid),
+        )
         self.assertEqual(
             data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
@@ -555,7 +494,6 @@ class InterneTaakTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["toegewezenAanActor"]["uuid"], str(actor.uuid))
         self.assertEqual(
             data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
