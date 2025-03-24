@@ -444,23 +444,14 @@ class PartijIdentificatorSerializer(
 
         return super().validate(attrs)
 
-    def validate_partij(self, partij):
-        if not partij:
-            raise serializers.ValidationError(
-                {"identificeerdePartij": _("Dit veld is vereist.")},
-                code="required",
-            )
-
     @handle_db_exceptions
     @transaction.atomic
     def update(self, instance, validated_data):
-        self.validate_partij(validated_data["partij"])
         return super().update(instance, validated_data)
 
     @handle_db_exceptions
     @transaction.atomic
     def create(self, validated_data):
-        self.validate_partij(validated_data["partij"])
         return super().create(validated_data)
 
 

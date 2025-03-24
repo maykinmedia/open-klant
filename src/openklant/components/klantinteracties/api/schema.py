@@ -62,6 +62,8 @@ and offering better control over the uniqueness of `PartijIdentificator` objects
 
 For `POST`, `PATCH`, and `PUT` requests for `Partij`,
 it is possible to send a list of `PartijIdentificator` objects.
+
+
 """
     )
     + notification_documentation(KANAAL_PARTIJ)
@@ -88,10 +90,6 @@ custom_settings = {
         {"name": "klanten contacten"},
         {"name": "onderwerpobjecten"},
         {"name": "partij-identificatoren"},
-        {
-            "name": "partijen",
-            "description": f"{notification_documentation(KANAAL_PARTIJ)}",
-        },
         {"name": "partijen", "description": PARTIJEN_DESCRIPTION},
         {"name": "rekeningnummers"},
         {"name": "vertegenwoordigingen"},

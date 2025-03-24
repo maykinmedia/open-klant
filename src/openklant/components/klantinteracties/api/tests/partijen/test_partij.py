@@ -8,23 +8,19 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     PartijIdentificator,
 )
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
-    DigitaalAdresFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
+from openklant.components.klantinteracties.models.tests.factories import (
     BsnPartijIdentificatorFactory,
     CategorieFactory,
     CategorieRelatieFactory,
     ContactpersoonFactory,
+    DigitaalAdresFactory,
     KvkNummerPartijIdentificatorFactory,
     OrganisatieFactory,
     PartijFactory,
     PersoonFactory,
+    RekeningnummerFactory,
     VertegenwoordigdenFactory,
     VestigingsnummerPartijIdentificatorFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.rekeningnummer import (
-    RekeningnummerFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase
 

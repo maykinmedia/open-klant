@@ -455,21 +455,6 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
 
-    def test_invalid_create_partij_required(self):
-        data = {
-            "partijIdentificator": {
-                "codeObjecttype": "natuurlijk_persoon",
-                "codeSoortObjectId": "bsn",
-                "objectId": "296648875",
-                "codeRegister": "brp",
-            },
-        }
-        response = self.client.post(self.list_url, data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        error = get_validation_errors(response, "identificeerdePartij")
-        self.assertEqual(error["code"], "required")
-        self.assertEqual(error["reason"], "Dit veld is vereist.")
-
     def test_invalid_create_duplicate_code_soort_object_id_for_partij(self):
         BsnPartijIdentificatorFactory.create(partij=self.partij)
 
@@ -713,27 +698,6 @@ class PartijIdentificatorUniquenessTests(APITestCase):
             ),
         )
 
-    def test_vestigingsnummer_invalid_create_without_partij(self):
-        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
-            partij=self.partij
-        )
-
-        data = {
-            "sub_identificator_van": {"uuid": str(sub_identificator_van.uuid)},
-            "partijIdentificator": {
-                "codeObjecttype": "vestiging",
-                "codeSoortObjectId": "vestigingsnummer",
-                "objectId": "296648875154",
-                "codeRegister": "hr",
-            },
-        }
-
-        response = self.client.post(self.list_url, data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        error = get_validation_errors(response, "identificeerdePartij")
-        self.assertEqual(error["code"], "required")
-        self.assertEqual(error["reason"], "Dit veld is vereist.")
-
     def test_vestigingsnummer_valid_create_external_partij(self):
         partij = PartijFactory.create()
         sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
@@ -915,3 +879,105 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         )
 
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
+
+    def test_create_partij_identificator_without_partij(self):
+        with self.subTest("with identificeerdePartij not explicitly specified"):
+            list_url = reverse("klantinteracties:partijidentificator-list")
+            data = {
+                "anderePartijIdentificator": "anderePartijIdentificator",
+                "partijIdentificator": {
+                    "codeObjecttype": "natuurlijk_persoon",
+                    "codeSoortObjectId": "bsn",
+                    "objectId": "296648875",
+                    "codeRegister": "brp",
+                },
+            }
+
+            response = self.client.post(list_url, data)
+            self.assertEqual(
+                response.status_code, status.HTTP_201_CREATED, response.data
+            )
+            data = response.json()
+
+            self.assertEqual(data["identificeerdePartij"], None)
+            self.assertEqual(
+                data["anderePartijIdentificator"], "anderePartijIdentificator"
+            )
+            self.assertEqual(
+                data["partijIdentificator"],
+                {
+                    "codeObjecttype": "natuurlijk_persoon",
+                    "codeSoortObjectId": "bsn",
+                    "objectId": "296648875",
+                    "codeRegister": "brp",
+                },
+            )
+
+        with self.subTest("with identificeerdePartij explicitly set to null"):
+            list_url = reverse("klantinteracties:partijidentificator-list")
+            data = {
+                "identificeerdePartij": None,
+                "anderePartijIdentificator": "anderePartijIdentificator",
+                "partijIdentificator": {
+                    "codeObjecttype": "natuurlijk_persoon",
+                    "codeSoortObjectId": "bsn",
+                    "objectId": "111222333",
+                    "codeRegister": "brp",
+                },
+            }
+
+            response = self.client.post(list_url, data)
+            self.assertEqual(
+                response.status_code, status.HTTP_201_CREATED, response.data
+            )
+            data = response.json()
+
+            self.assertEqual(data["identificeerdePartij"], None)
+            self.assertEqual(
+                data["anderePartijIdentificator"], "anderePartijIdentificator"
+            )
+            self.assertEqual(
+                data["partijIdentificator"],
+                {
+                    "codeObjecttype": "natuurlijk_persoon",
+                    "codeSoortObjectId": "bsn",
+                    "objectId": "111222333",
+                    "codeRegister": "brp",
+                },
+            )
+
+    def test_update_partij_identificator_with_partij_null(self):
+        partij = PartijFactory.create()
+        partij_identificator = BsnPartijIdentificatorFactory.create(partij=partij)
+
+        detail_url = reverse(
+            "klantinteracties:partijidentificator-detail",
+            kwargs={"uuid": str(partij_identificator.uuid)},
+        )
+
+        data = {
+            "identificeerdePartij": None,
+            "anderePartijIdentificator": "changed",
+            "partijIdentificator": {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "296648875",
+                "codeRegister": "brp",
+            },
+        }
+
+        response = self.client.put(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        self.assertEqual(data["identificeerdePartij"], None)
+        self.assertEqual(data["anderePartijIdentificator"], "changed")
+        self.assertEqual(
+            data["partijIdentificator"],
+            {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "296648875",
+                "codeRegister": "brp",
+            },
+        )

@@ -5820,23 +5820,6 @@ tags:
 - name: onderwerpobjecten
 - name: partij-identificatoren
 - name: partijen
-  description: |
-    Deze API publiceert notificaties op het kanaal `partijen`.
-
-    **Main resource**
-
-    `partij`
-
-
-
-    **Kenmerken**
-
-    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
-    * `interne_notitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
-    * `soort_partij`: Geeft aan van welke specifieke soort partij sprake is.
-
-    **Resources en acties**
-- name: partijen
   description: |2
 
     **Atomicity in Partij and PartijIdentificator**
@@ -5848,6 +5831,8 @@ tags:
 
     For `POST`, `PATCH`, and `PUT` requests for `Partij`,
     it is possible to send a list of `PartijIdentificator` objects.
+
+
     Deze API publiceert notificaties op het kanaal `partijen`.
 
     **Main resource**

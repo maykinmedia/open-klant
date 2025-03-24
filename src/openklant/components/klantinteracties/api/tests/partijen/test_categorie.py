@@ -3,7 +3,7 @@ import datetime
 from rest_framework import status
 from vng_api_common.tests import reverse
 
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
+from openklant.components.klantinteracties.models.tests.factories import (
     CategorieFactory,
     CategorieRelatieFactory,
     PartijFactory,
