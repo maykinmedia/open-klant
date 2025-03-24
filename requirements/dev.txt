@@ -39,6 +39,11 @@ astroid==3.2.4
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
+async-timeout==5.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   redis
 attrs==23.2.0
     # via
     #   -c requirements/ci.txt
@@ -138,7 +143,7 @@ codecov==2.1.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-commonground-api-common==2.4.1
+commonground-api-common==2.5.5
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -418,6 +423,11 @@ elastic-apm==6.23.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
+exceptiongroup==1.2.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   pytest
 face==20.1.1
     # via
     #   -c requirements/ci.txt
@@ -577,12 +587,12 @@ mypy-extensions==1.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   black
-notifications-api-common==0.3.1
+notifications-api-common==0.7.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.9.3
+open-api-framework==0.9.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -903,6 +913,16 @@ tblib==3.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+tomli==2.2.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   black
+    #   build
+    #   pip-tools
+    #   pylint
+    #   pytest
+    #   sphinx
 tomlkit==0.13.0
     # via
     #   -c requirements/ci.txt
@@ -917,6 +937,10 @@ typing-extensions==4.12.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   asgiref
+    #   astroid
+    #   black
+    #   django-solo
     #   faker
     #   mozilla-django-oidc-db
     #   pydantic
@@ -1001,7 +1025,7 @@ yarl==1.9.4
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   vcrpy
-zgw-consumers==0.35.1
+zgw-consumers==0.37.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

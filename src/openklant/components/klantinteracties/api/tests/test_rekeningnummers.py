@@ -1,10 +1,8 @@
 from rest_framework import status
 from vng_api_common.tests import reverse
 
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
+from openklant.components.klantinteracties.models.tests.factories import (
     PartijFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.rekeningnummer import (
     RekeningnummerFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase

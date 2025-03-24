@@ -16,6 +16,8 @@ asgiref==3.8.1
     #   django-cors-headers
 asn1crypto==1.5.1
     # via webauthn
+async-timeout==5.0.1
+    # via redis
 attrs==23.2.0
     # via
     #   glom
@@ -57,7 +59,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.4.1
+commonground-api-common==2.5.5
     # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
@@ -238,9 +240,9 @@ mozilla-django-oidc-db==0.22.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
-notifications-api-common==0.3.1
+notifications-api-common==0.7.1
     # via commonground-api-common
-open-api-framework==0.9.3
+open-api-framework==0.9.4
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
@@ -336,6 +338,8 @@ tornado==6.4.2
     # via flower
 typing-extensions==4.12.2
     # via
+    #   asgiref
+    #   django-solo
     #   mozilla-django-oidc-db
     #   pydantic
     #   pydantic-core
@@ -368,7 +372,7 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.16.0
     # via elastic-apm
-zgw-consumers==0.35.1
+zgw-consumers==0.37.0
     # via
     #   commonground-api-common
     #   notifications-api-common

@@ -10,21 +10,17 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     PartijIdentificator,
 )
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
-    DigitaalAdresFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
+from openklant.components.klantinteracties.models.tests.factories import (
     CategorieFactory,
     CategorieRelatieFactory,
     ContactpersoonFactory,
+    DigitaalAdresFactory,
     OrganisatieFactory,
     PartijFactory,
     PartijIdentificatorFactory,
     PersoonFactory,
-    VertegenwoordigdenFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.rekeningnummer import (
     RekeningnummerFactory,
+    VertegenwoordigdenFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase
 

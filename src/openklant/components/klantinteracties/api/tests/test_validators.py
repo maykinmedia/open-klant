@@ -22,25 +22,17 @@ from openklant.components.klantinteracties.api.validators import (
     partij_is_organisatie,
     partij_is_valid_instance,
 )
-from openklant.components.klantinteracties.models.tests.factories.actoren import (
+from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.digitaal_adres import (
-    DigitaalAdresFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.internetaken import (
-    InterneTaakFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.klantcontacten import (
     BetrokkeneFactory,
     BijlageFactory,
-    KlantcontactFactory,
-    OnderwerpobjectFactory,
-)
-from openklant.components.klantinteracties.models.tests.factories.partijen import (
     CategorieFactory,
     CategorieRelatieFactory,
     ContactpersoonFactory,
+    DigitaalAdresFactory,
+    InterneTaakFactory,
+    KlantcontactFactory,
+    OnderwerpobjectFactory,
     OrganisatieFactory,
     PartijFactory,
     PartijIdentificatorFactory,

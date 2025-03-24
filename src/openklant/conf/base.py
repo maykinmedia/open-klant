@@ -1,3 +1,4 @@
+from notifications_api_common.settings import *  # noqa
 from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config  # noqa
 
@@ -7,6 +8,8 @@ from .api import *  # noqa
 # APPLICATIONS enabled for this project
 #
 INSTALLED_APPS = INSTALLED_APPS + [
+    # External applications.
+    "vng_api_common.notifications",
     # Project applications.
     "openklant.accounts",
     "openklant.utils",
@@ -16,9 +19,6 @@ INSTALLED_APPS = INSTALLED_APPS + [
     # Django libraries
     "localflavor",
 ]
-# `django.contrib.sites` is installed by Open API Framework by default
-# but we don't want to rely on it anymore (e.g. when generating the label for 2FA)
-INSTALLED_APPS.remove("django.contrib.sites")
 
 MIDDLEWARE = MIDDLEWARE + ["openklant.utils.middleware.APIVersionHeaderMiddleware"]
 
@@ -48,6 +48,8 @@ ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
 # Django setup configuration
 #
 SETUP_CONFIGURATION_STEPS = (
+    "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
+    "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
 )
@@ -76,3 +78,14 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
     ),
     group="Celery",
 )  # soft
+
+# Notifications
+# Override the default to be `True`, to make notifications opt-in
+NOTIFICATIONS_DISABLED = config(
+    "NOTIFICATIONS_DISABLED",
+    default=True,
+    help_text=(
+        "Indicates whether or not notifications should be sent to the Notificaties API "
+        "for operations on the API endpoints."
+    ),
+)
