@@ -1,6 +1,6 @@
 {
   "name": "openklant",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "openklant project",
   "main": "src/static/openklant/js/openklant.js",
   "directories": {
@@ -45,7 +45,7 @@
     "karma-spec-reporter": "latest",
     "karma-webpack": "latest",
     "mini-css-extract-plugin": "latest",
-    "mocha": "^9.2.0",
+    "mocha": "^11.1.0",
     "postcss-loader": "latest",
     "postcss-selector-lint": "latest",
     "sass": "latest",

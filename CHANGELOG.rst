@@ -2,17 +2,60 @@
 Change history
 ==============
 
-2.x.x
+2.7.0
 =====
-*March, 31, 2025*
+*April, 3, 2025*
+
+
+**New features**
+
+* [:open-klant:`212`] Add ``digitaleAdressen`` as expand option for ``/betrokkenen`` endpoint
+* [:open-klant:`239`] Accept Partij Identificatoren as part of Partij creation
+* [:open-klant:`355`] Add Notifications for InterneTaak and Partij (see :ref:`installation_configuration_notificaties_api`)
+
+.. note::
+
+  Additional configuration steps have been introduced to set up external services and notifications through ``django-setup-configuration`` (see :ref:`installation_configuration_cli`)
+
+* [:open-api-framework:`59`] Remove ``django.contrib.sites`` dependency
+
+.. warning::
+
+    To save the domain of the application you have to declare the environment variable ``SITE_DOMAIN`` (see :ref:`installation_env_config` > Optional for more information)
+
+**Bugfixes**
+
+* [:open-klant:`376`] Fix camelCase naming for query parameters in GET requests
 
 **Project maintenance**
 
-* Confirm support for Postgres 17
-* Upgrade nodejs version in Docker image to 20
+* [:open-api-framework:`115`] Fix OAS check github action
+* [:open-api-framework:`116`] Fix codecov publish
+* [:open-api-framework:`117`] Upgrade version of CI dependencies
+
+  * Confirm support for Postgres 17
+  * Development tools: black to 25.1.0, flake8 to 7.1.2 and isort to 6.0.1
+  * Upgrade GHA versions
+  * Upgrade nodejs to 20
+
+* Remove ``changed-files`` actions from CI and moved in a separate script
+* Remove duplicate CodeQL workflow 
+* Fix ``bump-my-version`` for package/package-lock.json
 * Upgrade dependencies
 
-  * Development tools: black to 25.1.0, flake to 7.1.2 and isort to 6.0.1
+  * Upgrade coverage to 7.7.0
+  * Upgrade cryptography to 44.0.2
+  * Upgrade jinja2 to 3.1.6
+  * Upgrade kombu to 5.5.2
+  * Upgrade django to 4.2.20
+  * Upgrade django-setup-configuration to 0.7.2
+  * Upgrade open-api-framework to 0.9.6
+  * Upgrade notifications-api-common to 0.7.2
+  * Upgrade commonground-api-common to 2.5.5
+
+**Documentation**
+
+* Update documentation for configurations
 
 
 2.6.1
@@ -59,7 +102,7 @@ Change history
 
 **Documentation**
 
-* [:open-klant:`324`] Update documentation for setup-configuration
+* Improvements to documentation structure and configuration steps (CLI and Admin)
 
 
 2.5.0
