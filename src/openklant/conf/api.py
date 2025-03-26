@@ -4,8 +4,8 @@ from vng_api_common.conf.api import *  # noqa - imports white-listed
 # Remove the reference - we don't have a single API version.
 del API_VERSION  # noqa
 
-KLANTINTERACTIES_API_VERSION = "0.1.1"
-CONTACTGEGEVENS_API_VERSION = "1.1.0"
+KLANTINTERACTIES_API_VERSION = "0.1.2"
+CONTACTGEGEVENS_API_VERSION = "1.1.1"
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
 REST_FRAMEWORK["PAGE_SIZE"] = 100

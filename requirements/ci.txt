@@ -136,7 +136,7 @@ coreschema==0.0.4
     #   coreapi
 coverage==7.7.0
     # via codecov
-cryptography==44.0.1
+cryptography==44.0.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -149,7 +149,7 @@ cssselect==1.2.0
     # via pyquery
 dill==0.3.8
     # via pylint
-django==4.2.19
+django==4.2.20
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -289,7 +289,7 @@ django-sessionprofile==3.0.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-django-setup-configuration==0.7.1
+django-setup-configuration==0.7.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -444,7 +444,7 @@ itypes==1.2.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   coreapi
-jinja2==3.1.5
+jinja2==3.1.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -465,7 +465,7 @@ jsonschema-specifications==2023.12.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   jsonschema
-kombu==5.3.7
+kombu==5.5.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -769,11 +769,12 @@ typing-extensions==4.12.2
     #   pyopenssl
     #   qrcode
     #   zgw-consumers
-tzdata==2024.1
+tzdata==2025.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
+    #   kombu
 uritemplate==4.1.1
     # via
     #   -c requirements/base.txt
