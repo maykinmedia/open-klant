@@ -60,6 +60,12 @@ class DigitaalAdres(APIMixin, models.Model):
         max_length=40,
         blank=True,
     )
+    referentie = models.SlugField(
+        _("referentie"),
+        help_text=_("Machine-readable tag for digital address."),
+        blank=False,
+        null=False,
+    )
 
     class Meta:
         verbose_name = _("digitaal adres")
@@ -68,7 +74,12 @@ class DigitaalAdres(APIMixin, models.Model):
                 fields=["partij", "soort_digitaal_adres"],
                 condition=models.Q(is_standaard_adres=True),
                 name="unique_default_per_partij_and_soort",
-            )
+            ),
+            models.UniqueConstraint(
+                fields=["partij", "referentie"],
+                name="unique_referentie_per_parij",
+                condition=models.Q(partij__isnull=False),
+            ),
         ]
 
     def __str__(self):
