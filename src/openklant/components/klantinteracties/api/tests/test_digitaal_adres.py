@@ -60,6 +60,7 @@ class DigitaalAdresTests(APITestCase):
             "soortDigitaalAdres": SoortDigitaalAdres.email,
             "adres": "foobar@example.com",
             "omschrijving": "omschrijving",
+            "referentie": "my-referentie",
         }
 
         response = self.client.post(list_url, data)
@@ -72,6 +73,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(data["verstrektDoorPartij"], None)
         self.assertEqual(data["adres"], "foobar@example.com")
         self.assertEqual(data["omschrijving"], "omschrijving")
+        self.assertEqual(data["referentie"], "my-referentie")
         self.assertEqual(data["isStandaardAdres"], False)
 
         with self.subTest("with_betrokkene_and_partij"):
@@ -92,6 +94,7 @@ class DigitaalAdresTests(APITestCase):
             self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.email)
             self.assertEqual(data["adres"], "foobar@example.com")
             self.assertEqual(data["omschrijving"], "omschrijving")
+            self.assertEqual(data["referentie"], "my-referentie")
 
     @tag("gh-234")
     def test_create_digitaal_adres_email_validation(self):
@@ -104,6 +107,7 @@ class DigitaalAdresTests(APITestCase):
                 "soortDigitaalAdres": SoortDigitaalAdres.email,
                 "adres": "invalid",
                 "omschrijving": "omschrijving",
+                "referentie": "my-referentie",
             }
 
             response = self.client.post(list_url, data)
@@ -156,6 +160,7 @@ class DigitaalAdresTests(APITestCase):
                 "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
                 "adres": "invalid",
                 "omschrijving": "omschrijving",
+                "referentie": "my-referentie",
             }
 
             response = self.client.post(list_url, data)
@@ -210,6 +215,7 @@ class DigitaalAdresTests(APITestCase):
                 "soortDigitaalAdres": SoortDigitaalAdres.overig,
                 "adres": "whatever",
                 "omschrijving": "omschrijving",
+                "referentie": "my-referentie",
             }
 
             response = self.client.post(list_url, data)
@@ -274,6 +280,7 @@ class DigitaalAdresTests(APITestCase):
             "soortDigitaalAdres": "email",
             "adres": "foo@bar.com",
             "omschrijving": "omschrijving",
+            "referentie": "my-referentie",
             "isStandaardAdres": True,
         }
 
@@ -306,6 +313,7 @@ class DigitaalAdresTests(APITestCase):
             "soortDigitaalAdres": "email",
             "adres": "foo@bar.com",
             "omschrijving": "omschrijving",
+            "referentie": "referentie",
             "isStandaardAdres": True,
         }
 
@@ -336,6 +344,7 @@ class DigitaalAdresTests(APITestCase):
             soort_digitaal_adres=SoortDigitaalAdres.email,
             adres="foobar@example.com",
             omschrijving="omschrijving",
+            referentie="referentie",
         )
         detail_url = reverse(
             "klantinteracties:digitaaladres-detail",
@@ -349,6 +358,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.email)
         self.assertEqual(data["adres"], "foobar@example.com")
         self.assertEqual(data["omschrijving"], "omschrijving")
+        self.assertEqual(data["referentie"], "referentie")
 
         data = {
             "verstrektDoorBetrokkene": {"uuid": str(betrokkene2.uuid)},
@@ -356,6 +366,7 @@ class DigitaalAdresTests(APITestCase):
             "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
             "adres": "0721434543",
             "omschrijving": "changed",
+            "referentie": "new-referentie",
         }
 
         response = self.client.put(detail_url, data)
@@ -369,6 +380,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.telefoonnummer)
         self.assertEqual(data["adres"], "0721434543")
         self.assertEqual(data["omschrijving"], "changed")
+        self.assertEqual(data["referentie"], "new-referentie")
 
         with self.subTest("update_betrokkene_partij_to_none"):
             data = {
@@ -377,6 +389,7 @@ class DigitaalAdresTests(APITestCase):
                 "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
                 "adres": "0721434543",
                 "omschrijving": "changed",
+                "referentie": "new-referentie",
             }
 
             response = self.client.put(detail_url, data)
@@ -392,6 +405,7 @@ class DigitaalAdresTests(APITestCase):
             )
             self.assertEqual(data["adres"], "0721434543")
             self.assertEqual(data["omschrijving"], "changed")
+            self.assertEqual(data["referentie"], "new-referentie")
 
     def test_update_digitaal_adres_is_standaard_adres(self):
         """
@@ -425,6 +439,7 @@ class DigitaalAdresTests(APITestCase):
             "soortDigitaalAdres": "email",
             "isStandaardAdres": True,
             "adres": "foo@bar.com",
+            "referentie": "new-referentie",
             "omschrijving": "changed",
         }
 
