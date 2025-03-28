@@ -62,7 +62,7 @@ class DigitaalAdres(APIMixin, models.Model):
     )
     referentie = models.SlugField(
         _("referentie"),
-        help_text=_("Machine-readable tag for digital address."),
+        help_text=_("Machine-leesbare tag voor unieke identificatie van het digitaal adres."),
         blank=False,
         null=False,
     )
