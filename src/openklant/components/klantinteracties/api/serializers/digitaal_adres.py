@@ -81,6 +81,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
             "soort_digitaal_adres",
             "is_standaard_adres",
             "omschrijving",
+            "referentie",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},

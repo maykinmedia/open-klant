@@ -13,6 +13,7 @@ class DigitaalAdresFactory(factory.django.DjangoModelFactory):
     soort_digitaal_adres = factory.fuzzy.FuzzyChoice(SoortDigitaalAdres.values)
     adres = factory.Faker("word")
     omschrijving = factory.Faker("word")
+    referentie = factory.Faker("slug")
 
     class Meta:
         model = DigitaalAdres

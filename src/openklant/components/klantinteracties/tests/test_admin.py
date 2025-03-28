@@ -118,10 +118,12 @@ class PartijAdminTests(WebTest):
         response = self.app.get(url)
 
         form = response.form
+
         form["digitaaladres_set-TOTAL_FORMS"] = 1
         add_dynamic_field(form, "digitaaladres_set-0-omschrijving", "description")
         add_dynamic_field(form, "digitaaladres_set-0-soort_digitaal_adres", "email")
         add_dynamic_field(form, "digitaaladres_set-0-adres", "email@example.com")
+        add_dynamic_field(form, "digitaaladres_set-0-referentie", "refentie")
 
         response = form.submit()
         self.assertEqual(response.status_code, 302)
@@ -147,10 +149,12 @@ class DigitaalAdresAdminTests(WebTest):
         response: TestResponse = self.app.get(admin_url)
 
         form = response.form
+
         form["betrokkene"] = betrokkene.pk
         form["soort_digitaal_adres"] = SoortDigitaalAdres.email
         form["adres"] = "invalid"
         form["omschrijving"] = "foo"
+        form["referentie"] = "some-referentie"
 
         response = form.submit()
 
@@ -176,6 +180,7 @@ class DigitaalAdresAdminTests(WebTest):
         form["soort_digitaal_adres"] = SoortDigitaalAdres.telefoonnummer
         form["adres"] = "invalid"
         form["omschrijving"] = "foo"
+        form["referentie"] = "some-referentie"
 
         response = form.submit()
 
@@ -202,6 +207,7 @@ class DigitaalAdresAdminTests(WebTest):
         form["soort_digitaal_adres"] = SoortDigitaalAdres.overig
         form["adres"] = "whatever"
         form["omschrijving"] = "foo"
+        form["referentie"] = "some-referentie"
 
         response = form.submit()
 
