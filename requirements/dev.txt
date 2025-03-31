@@ -39,11 +39,6 @@ astroid==3.2.4
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-async-timeout==5.0.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   redis
 attrs==23.2.0
     # via
     #   -c requirements/ci.txt
@@ -423,11 +418,6 @@ elastic-apm==6.23.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-exceptiongroup==1.2.2
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pytest
 face==20.1.1
     # via
     #   -c requirements/ci.txt
@@ -592,7 +582,7 @@ notifications-api-common==0.7.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.9.4
+open-api-framework==0.9.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -913,16 +903,6 @@ tblib==3.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-tomli==2.2.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   black
-    #   build
-    #   pip-tools
-    #   pylint
-    #   pytest
-    #   sphinx
 tomlkit==0.13.0
     # via
     #   -c requirements/ci.txt
@@ -937,10 +917,6 @@ typing-extensions==4.12.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   asgiref
-    #   astroid
-    #   black
-    #   django-solo
     #   faker
     #   mozilla-django-oidc-db
     #   pydantic

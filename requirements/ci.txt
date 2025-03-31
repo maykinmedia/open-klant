@@ -33,11 +33,6 @@ asn1crypto==1.5.1
     #   webauthn
 astroid==3.2.4
     # via pylint
-async-timeout==5.0.1
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   redis
 attrs==23.2.0
     # via
     #   -c requirements/base.txt
@@ -382,8 +377,6 @@ elastic-apm==6.23.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-exceptiongroup==1.2.2
-    # via pytest
 face==20.1.1
     # via
     #   -c requirements/base.txt
@@ -514,7 +507,7 @@ notifications-api-common==0.7.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.9.4
+open-api-framework==0.9.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -758,12 +751,6 @@ sqlparse==0.5.1
     #   django
 tblib==3.0.0
     # via -r requirements/test-tools.in
-tomli==2.2.1
-    # via
-    #   black
-    #   pylint
-    #   pytest
-    #   sphinx
 tomlkit==0.13.0
     # via pylint
 tornado==6.4.2
@@ -775,10 +762,6 @@ typing-extensions==4.12.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   asgiref
-    #   astroid
-    #   black
-    #   django-solo
     #   faker
     #   mozilla-django-oidc-db
     #   pydantic
