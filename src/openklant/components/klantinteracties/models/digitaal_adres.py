@@ -65,7 +65,7 @@ class DigitaalAdres(APIMixin, models.Model):
         help_text=_(
             "Machine-leesbare tag voor unieke identificatie van het digitaal adres."
         ),
-        blank=False,
+        blank=True,
         null=False,
     )
 
@@ -79,8 +79,10 @@ class DigitaalAdres(APIMixin, models.Model):
             ),
             models.UniqueConstraint(
                 fields=["partij", "referentie"],
-                name="unique_referentie_per_parij",
-                condition=models.Q(partij__isnull=False),
+                name="unique_referentie_per_partij",
+                condition=(
+                    models.Q(referentie__gt="") & models.Q(partij__isnull=False)
+                ),
             ),
         ]
 

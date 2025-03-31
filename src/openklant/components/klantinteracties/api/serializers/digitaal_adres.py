@@ -100,6 +100,9 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van dit digitaal adres binnen deze API."),
             },
+            "referentie": {
+                "default": "",
+            },
         }
 
     def __init__(self, *args, **kwargs):
