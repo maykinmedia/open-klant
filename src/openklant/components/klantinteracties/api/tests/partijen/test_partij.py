@@ -2598,6 +2598,18 @@ class NestedPartijIdentificatorTests(APITestCase):
 
         self.assertEqual(Partij.objects.all().count(), 1)
 
+        # PATC and PUT allow to pass identificeerdePartij
+        data["soortPartij"] = "organisatie"
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+        # PUT same data received from POST
+        response = self.client.put(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(len(response_data["partijIdentificatoren"]), 1)
+        self.assertEqual(response_data["soortPartij"], "organisatie")
+
     def test_invalid_create_partij_identificator_globally_uniqueness(self):
         digitaal_adres = DigitaalAdresFactory.create()
         rekeningnummer = RekeningnummerFactory.create()

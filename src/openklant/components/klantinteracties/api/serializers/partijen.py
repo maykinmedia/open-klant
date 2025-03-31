@@ -592,28 +592,36 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
             if vertegenwoordigende
         ]
 
+    def check_identificeerde_partij(self, attrs):
+        if any(item["partij"] is not None for item in attrs):
+            raise serializers.ValidationError(
+                {
+                    "identificeerdePartij": _(
+                        "Het veld `identificeerde_partij` wordt automatisch ingesteld en"
+                        " dient niet te worden opgegeven."
+                    )
+                },
+                code="invalid",
+            )
+
+    def check_duplicated_uuid(self, attrs):
+        uuid_list = [item["uuid"] for item in attrs if "uuid" in item]
+        if uuid_list and max(Counter(uuid_list).values()) > 1:
+            raise serializers.ValidationError(
+                {
+                    "identificeerdePartij": _(
+                        "Duplicaat uuid kan niet worden ingevoerd voor `partij_identificatoren`."
+                    )
+                },
+                code="duplicated",
+            )
+
     def validate_partij_identificatoren(self, attrs):
         if attrs:
-            if any(item["partij"] is not None for item in attrs):
-                raise serializers.ValidationError(
-                    {
-                        "identificeerdePartij": _(
-                            "Het veld `identificeerde_partij` wordt automatisch ingesteld en"
-                            " dient niet te worden opgegeven."
-                        )
-                    },
-                    code="invalid",
-                )
-            uuid_list = [item["uuid"] for item in attrs if "uuid" in item]
-            if uuid_list and max(Counter(uuid_list).values()) > 1:
-                raise serializers.ValidationError(
-                    {
-                        "identificeerdePartij": _(
-                            "Duplicaat uuid kan niet worden ingevoerd voor `partij_identificatoren`."
-                        )
-                    },
-                    code="duplicated",
-                )
+            self.check_duplicated_uuid(attrs)
+            if "request" in self.context and self.context["request"].method == "POST":
+                self.check_identificeerde_partij(attrs)
+
         return attrs
 
     def update_or_create_partij_identificator(self, partij_identificator):

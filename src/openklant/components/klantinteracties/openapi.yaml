@@ -2433,13 +2433,47 @@ paths:
           description: ''
     post:
       operationId: partijenCreate
-      description: "\n**Warnings:**\n\nHandles `partijIdentificatoren` creation with\
-        \ atomicity guarantees.\n\n- If the `UUID` is provided in the `PartijIdentificator`\
-        \ object,\nthe endpoint will treat it as an update operation for the existing\
-        \ `PartijIdentificator`,\napplying the provided data and linking the parent\
-        \ `Partij` to the new one created.\n- If the `UUID` is **not** specified,\
-        \ the system will create a new\n`PartijIdentificator` instance respecting\
-        \ all uniqueness constraints.\n    "
+      description: |2
+
+        **Warnings:**
+
+        Handles `partijIdentificatoren` creation with atomicity guarantees.
+
+        - If the `UUID` is provided in the `PartijIdentificator` object,
+        the endpoint will treat it as an update operation for the existing `PartijIdentificator`,
+        applying the provided data and linking the parent `Partij` to the updated `PartijIdentificator`.
+        - If the `UUID` is **NOT** specified, the system will create a new
+        `PartijIdentificator` instance respecting all uniqueness constraints.
+
+        **Example:**
+
+        ```json
+        {
+          "partijIdentificatoren": [
+            {
+              "uuid": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+              "partijIdentificator": {
+                "codeObjecttype": "niet_natuurlijk_persoon",
+                "codeSoortObjectId": "rsin",
+                "objectId": "string",
+                "codeRegister": "hr"
+              }
+            },
+            {
+              "partijIdentificator": {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "string",
+                "codeRegister": "brp"
+              }
+            }
+          ]
+        }
+        ```
+
+
+        In this case, the `PartijIdentificator` with the specified `UUID` is updated and attached to the parent `Partij`,
+         while the `PartijIdentificator` without a `UUID` is created and attached to the parent `Partij`.
       summary: Maak een partij aan.
       tags:
       - partijen
@@ -2499,12 +2533,46 @@ paths:
           description: ''
     put:
       operationId: partijenUpdate
-      description: "\n**Warnings:**\n\nHandles `partijIdentificatoren` updates with\
-        \ atomicity guarantees.\n\n- If the `UUID` is provided in the `PartijIdentificator`\
-        \ object,\nthe system will update the specified instance with the new data.\n\
-        - If the `UUID` is **not** specified, the system will `DELETE` all `PartijIdentificator`\n\
-        objects related to the parent and `CREATE` new ones with the new passed data.\n\
-        \    "
+      description: |2
+
+        **Warnings:**
+
+        Handles `partijIdentificatoren` updates with atomicity guarantees.
+
+        - If the `UUID` is specified in the `PartijIdentificator` object,
+         the system will update the corresponding instance with the new data.
+        - If the `UUID` is **NOT** specified, the system will `DELETE` all `partijIdentificatoren`
+        objects related to the parent and `CREATE` new ones using the provided data.
+
+        **Example:**
+
+        ```json
+        {
+          "partijIdentificatoren": [
+            {
+              "uuid": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+              "partijIdentificator": {
+                "codeObjecttype": "niet_natuurlijk_persoon",
+                "codeSoortObjectId": "rsin",
+                "objectId": "string",
+                "codeRegister": "hr"
+              }
+            },
+            {
+              "partijIdentificator": {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "string",
+                "codeRegister": "brp"
+              }
+            }
+          ]
+        }
+        ```
+
+        In this case, all `partijIdentificatoren` without a specified `UUID` are deleted,
+        a new one is created due to the absence of a `UUID`, and the data for the `PartijIdentificator`
+        with the specified `UUID` is then updated.
       summary: Werk een partij in zijn geheel bij.
       parameters:
       - in: path
@@ -2532,12 +2600,46 @@ paths:
           description: ''
     patch:
       operationId: partijenPartialUpdate
-      description: "\n**Warnings:**\n\nHandles `partijIdentificatoren` updates with\
-        \ atomicity guarantees.\n\n- If the `UUID` is provided in the `PartijIdentificator`\
-        \ object,\nthe system will update the specified instance with the new data.\n\
-        - If the `UUID` is **not** specified, the system will `DELETE` all `PartijIdentificator`\n\
-        objects related to the parent and `CREATE` new ones with the new passed data.\n\
-        \    "
+      description: |2
+
+        **Warnings:**
+
+        Handles `partijIdentificatoren` updates with atomicity guarantees.
+
+        - If the `UUID` is specified in the `PartijIdentificator` object,
+         the system will update the corresponding instance with the new data.
+        - If the `UUID` is **NOT** specified, the system will `DELETE` all `partijIdentificatoren`
+        objects related to the parent and `CREATE` new ones using the provided data.
+
+        **Example:**
+
+        ```json
+        {
+          "partijIdentificatoren": [
+            {
+              "uuid": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+              "partijIdentificator": {
+                "codeObjecttype": "niet_natuurlijk_persoon",
+                "codeSoortObjectId": "rsin",
+                "objectId": "string",
+                "codeRegister": "hr"
+              }
+            },
+            {
+              "partijIdentificator": {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "string",
+                "codeRegister": "brp"
+              }
+            }
+          ]
+        }
+        ```
+
+        In this case, all `partijIdentificatoren` without a specified `UUID` are deleted,
+        a new one is created due to the absence of a `UUID`, and the data for the `PartijIdentificator`
+        with the specified `UUID` is then updated.
       summary: Werk een partij deels bij.
       parameters:
       - in: path
