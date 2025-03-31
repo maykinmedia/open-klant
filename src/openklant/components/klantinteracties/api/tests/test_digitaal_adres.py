@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.test import tag
 from django.utils.translation import gettext as _
 
@@ -510,3 +511,119 @@ class DigitaalAdresTests(APITestCase):
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
+
+    def test_create_digitaal_adres_referentie_empty_string(self):
+        """
+        Ensure that UniqueConstraint does not apply when `referentie` is an empty string.
+        """
+        partij = PartijFactory.create()
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        data1 = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": {"uuid": str(partij.uuid)},
+            "soortDigitaalAdres": SoortDigitaalAdres.email,
+            "adres": "foobar@example.com",
+            "omschrijving": "omschrijving",
+            "referentie": "",  # Empty string referentie
+        }
+        data2 = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": {"uuid": str(partij.uuid)},
+            "soortDigitaalAdres": SoortDigitaalAdres.email,
+            "adres": "barfoo@example.com",
+            "omschrijving": "another omschrijving",
+            "referentie": "",  # Another empty string referentie
+        }
+
+        response1 = self.client.post(list_url, data1)
+        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+
+        response2 = self.client.post(list_url, data2)
+        self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
+
+        response_data1 = response1.json()
+
+        self.assertEqual(response_data1["adres"], "foobar@example.com")
+        self.assertEqual(response_data1["referentie"], "")
+
+        response_data2 = response2.json()
+
+        self.assertEqual(response_data2["adres"], "barfoo@example.com")
+        self.assertEqual(response_data2["referentie"], "")
+
+    def test_create_digitaal_adres_verstrektDoorPartij_is_null(self):
+        """
+        Ensure that UniqueConstraint does not apply when `verstrektDoorPartij` is null.
+        """
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        data1 = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": None,
+            "soortDigitaalAdres": SoortDigitaalAdres.email,
+            "adres": "foobar@example.com",
+            "omschrijving": "omschrijving",
+            "referentie": "same-ref",
+        }
+        data2 = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": None,
+            "soortDigitaalAdres": SoortDigitaalAdres.email,
+            "adres": "barfoo@example.com",
+            "omschrijving": "another omschrijving",
+            "referentie": "same-ref",
+        }
+
+        response1 = self.client.post(list_url, data1)
+        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+
+        response2 = self.client.post(list_url, data2)
+        self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
+
+        response_data1 = response1.json()
+
+        self.assertEqual(response_data1["verstrektDoorPartij"], None)
+
+        self.assertEqual(response_data1["adres"], "foobar@example.com")
+        self.assertEqual(response_data1["referentie"], "same-ref")
+
+        response_data2 = response2.json()
+
+        self.assertEqual(response_data2["verstrektDoorPartij"], None)
+
+        self.assertEqual(response_data2["adres"], "barfoo@example.com")
+        self.assertEqual(response_data2["referentie"], "same-ref")
+
+    def test_create_digitaal_adres_if_both_verstrektDoorPartij_and_referentie_are_set(
+        self,
+    ):
+        """
+        Ensure that UniqueConstraint applies if both verstrektDoorPartij and referentie are set.
+        """
+        self.assertEqual(DigitaalAdres.objects.count(), 0)
+        partij = PartijFactory.create()
+        self.assertEqual(DigitaalAdres.objects.count(), 1)
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        data1 = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": {"uuid": str(partij.uuid)},
+            "soortDigitaalAdres": SoortDigitaalAdres.email,
+            "adres": "foobar@example.com",
+            "omschrijving": "omschrijving",
+            "referentie": "unique-ref",
+        }
+        data2 = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": {"uuid": str(partij.uuid)},
+            "soortDigitaalAdres": SoortDigitaalAdres.email,
+            "adres": "barfoo@example.com",
+            "omschrijving": "another omschrijving",
+            "referentie": "unique-ref",
+        }
+
+        response1 = self.client.post(list_url, data1)
+        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(DigitaalAdres.objects.count(), 2)
+
+        with self.assertRaises(IntegrityError):
+            self.client.post(list_url, data2)
+            self.assertEqual(DigitaalAdres.objects.count(), 2)
