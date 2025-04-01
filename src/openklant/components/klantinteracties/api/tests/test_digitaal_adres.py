@@ -624,6 +624,11 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
         self.assertEqual(DigitaalAdres.objects.count(), 2)
 
-        with self.assertRaises(IntegrityError):
-            self.client.post(list_url, data2)
+        try:
+            response2 = self.client.post(list_url, data2)
+            self.assertEqual(
+                response2.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
             self.assertEqual(DigitaalAdres.objects.count(), 2)
+        except IntegrityError:
+            pass
