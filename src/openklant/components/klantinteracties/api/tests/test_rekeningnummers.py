@@ -20,6 +20,26 @@ class RekeningnummerTests(APITestCase):
         data = response.json()
         self.assertEqual(len(data["results"]), 2)
 
+    def test_list_filters(self):
+        list_url = reverse("klantinteracties:rekeningnummer-list")
+        RekeningnummerFactory.create(bic="12345678")
+        RekeningnummerFactory.create(bic="87654321")
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 2)
+
+        response = self.client.get(list_url, {"bic": "12345678"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 1)
+        self.assertEqual(data["results"][0]["bic"], "12345678")
+
+        response = self.client.get(list_url, {"bic": "00000000"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 0)
+
     def test_list_pagination_pagesize_param(self):
         list_url = reverse("klantinteracties:rekeningnummer-list")
         RekeningnummerFactory.create_batch(10)

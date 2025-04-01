@@ -1,4 +1,3 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
@@ -178,7 +177,6 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
     serializer_class = OnderwerpobjectSerializer
     lookup_field = "uuid"
     pagination_class = DynamicPageSizePagination
-    filter_backends = [DjangoFilterBackend]
     filterset_fields = [
         "onderwerpobjectidentificator_object_id",
         "onderwerpobjectidentificator_code_objecttype",
@@ -221,7 +219,6 @@ class BijlageViewSet(viewsets.ModelViewSet):
     serializer_class = BijlageSerializer
     lookup_field = "uuid"
     pagination_class = DynamicPageSizePagination
-    filter_backends = [DjangoFilterBackend]
     filterset_fields = [
         "bijlageidentificator_object_id",
         "bijlageidentificator_code_objecttype",

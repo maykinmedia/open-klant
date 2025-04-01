@@ -18,19 +18,71 @@ class PartijIdentificatorTests(APITestCase):
         list_url = reverse("klantinteracties:partijidentificator-list")
         partij = PartijFactory.create()
         BsnPartijIdentificatorFactory.create(partij=partij)
-        PartijIdentificator.objects.create(
-            partij=partij,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
-            partij_identificator_code_soort_object_id="rsin",
-            partij_identificator_object_id="296648875",
-            partij_identificator_code_register="hr",
-        )
+        KvkNummerPartijIdentificatorFactory.create(partij=partij)
         response = self.client.get(list_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
         self.assertEqual(len(data["results"]), 2)
+
+    def test_list_filters(self):
+        list_url = reverse("klantinteracties:partijidentificator-list")
+        KvkNummerPartijIdentificatorFactory.create(
+            partij=PartijFactory.create(), partij_identificator_object_id="111222333"
+        )
+        VestigingsnummerPartijIdentificatorFactory.create(
+            partij=PartijFactory.create(), partij_identificator_object_id="123456782"
+        )
+
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 2)
+
+        with self.subTest("kvk_nummer filter"):
+            response = self.client.get(
+                list_url, {"partijIdentificatorCodeSoortObjectId": "kvk_nummer"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(len(data["results"]), 1)
+            self.assertEqual(
+                data["results"][0]["partijIdentificator"]["codeSoortObjectId"],
+                "kvk_nummer",
+            )
+
+        with self.subTest("vestigingsnummer filter"):
+            response = self.client.get(
+                list_url, {"partijIdentificatorCodeSoortObjectId": "vestigingsnummer"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(len(data["results"]), 1)
+            self.assertEqual(
+                data["results"][0]["partijIdentificator"]["codeSoortObjectId"],
+                "vestigingsnummer",
+            )
+
+        with self.subTest("ok object_id"):
+            response = self.client.get(
+                list_url, {"partijIdentificatorObjectId": "111222333"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(len(data["results"]), 1)
+            self.assertEqual(
+                data["results"][0]["partijIdentificator"]["objectId"],
+                "111222333",
+            )
+
+        with self.subTest("wrong object_id"):
+            response = self.client.get(
+                list_url, {"partijIdentificatorObjectId": "test"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(len(data["results"]), 0)
 
     def test_read(self):
         partij_identificator = PartijIdentificatorFactory.create()

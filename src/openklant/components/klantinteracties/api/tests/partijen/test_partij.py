@@ -1,3 +1,6 @@
+import datetime
+
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
 from rest_framework import status
@@ -2266,6 +2269,49 @@ class PartijTests(APITestCase):
         self.assertEqual(
             received_adressen[0]["url"], f"http://testserver{expected_url}"
         )
+
+    def test_voorkeurs_digitaal_adres_valid(self):
+        partij = PartijFactory.create()
+        digitaal_adres = DigitaalAdresFactory.create(partij=partij)
+        partij.voorkeurs_digitaal_adres = digitaal_adres
+
+        partij.clean()
+
+    def test_voorkeurs_digitaal_adres_invalid(self):
+        partij = PartijFactory.create()
+        invalid_digitaal_adres = DigitaalAdresFactory.create()
+        partij.voorkeurs_digitaal_adres = invalid_digitaal_adres
+
+        with self.assertRaises(ValidationError) as cm:
+            partij.clean()
+
+        self.assertIn(
+            "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
+            str(cm.exception),
+        )
+
+    def test_voorkeurs_adres_none_valid(self):
+        partij = PartijFactory.create()
+        partij.voorkeurs_digitaal_adres = None
+        partij.voorkeurs_rekeningnummer = None
+
+        partij.clean()
+
+    def test_voorkeurs_digitaal_adres_none_valid_rekeningnummer_valid(self):
+        partij = PartijFactory.create()
+        rekeningnummer = RekeningnummerFactory.create(partij=partij)
+        partij.voorkeurs_digitaal_adres = None
+        partij.voorkeurs_rekeningnummer = rekeningnummer
+
+        partij.clean()
+
+    def test_voorkeurs_digitaal_adres_valid_rekeningnummer_none_valid(self):
+        partij = PartijFactory.create()
+        digitaal_adres = DigitaalAdresFactory.create(partij=partij)
+        partij.voorkeurs_digitaal_adres = digitaal_adres
+        partij.voorkeurs_rekeningnummer = None
+
+        partij.clean()
 
 
 class NestedPartijIdentificatorTests(APITestCase):
