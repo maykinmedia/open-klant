@@ -2548,6 +2548,97 @@ class NestedPartijIdentificatorTests(APITestCase):
             partij_identificator.sub_identificator_van,
         )
 
+    def test_create_vestigingsnummer(self):
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
+        partij = PartijFactory.create()
+        self.assertEqual(Partij.objects.count(), 1)
+        kvk_nummer = KvkNummerPartijIdentificatorFactory.create(partij=partij)
+        data = {
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "partijIdentificatoren": [
+                {
+                    "sub_identificator_van": {"uuid": str(kvk_nummer.uuid)},
+                    "anderePartijIdentificator": "anderePartijIdentificator",
+                    "partijIdentificator": {
+                        "codeObjecttype": "vestiging",
+                        "codeSoortObjectId": "vestigingsnummer",
+                        "objectId": "444455556666",
+                        "codeRegister": "hr",
+                    },
+                }
+            ],
+            "soortPartij": "persoon",
+            "indicatieActief": True,
+        }
+
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Partij.objects.count(), 2)
+
+    def test_create_kvk_nummer_and_create_vestigingsnummer(self):
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
+        data = {
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "partijIdentificatoren": [
+                {
+                    "partijIdentificator": {
+                        "codeObjecttype": "niet_natuurlijk_persoon",
+                        "codeSoortObjectId": "kvk_nummer",
+                        "objectId": "12345678",
+                        "codeRegister": "hr",
+                    },
+                }
+            ],
+            "soortPartij": "persoon",
+            "indicatieActief": True,
+        }
+
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        partij = Partij.objects.get()
+        sub_identificator_van = PartijIdentificator.objects.get()
+
+        data = {
+            "partijIdentificatoren": [
+                {
+                    "uuid": str(sub_identificator_van.uuid),
+                    "partijIdentificator": {
+                        "codeObjecttype": "niet_natuurlijk_persoon",
+                        "codeSoortObjectId": "kvk_nummer",
+                        "objectId": "12345678",
+                        "codeRegister": "hr",
+                    },
+                },
+                {
+                    "sub_identificator_van": {"uuid": str(sub_identificator_van.uuid)},
+                    "partijIdentificator": {
+                        "codeObjecttype": "vestiging",
+                        "codeSoortObjectId": "vestigingsnummer",
+                        "objectId": "444455556666",
+                        "codeRegister": "hr",
+                    },
+                },
+            ],
+            "soortPartij": "organisatie",
+        }
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+
+        response = self.client.patch(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(len(response_data["partijIdentificatoren"]), 2)
+        self.assertEqual(response_data["soortPartij"], "organisatie")
+
     def test_invalid_create_where_partij_uuid_is_passed(self):
         digitaal_adres = DigitaalAdresFactory.create()
         rekeningnummer = RekeningnummerFactory.create()
@@ -3359,6 +3450,58 @@ class NestedPartijIdentificatorTests(APITestCase):
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
         # partij has the same data
         self.assertEqual(partij.soort_partij, "persoon")
+
+    def test_invalid_delete_sub_identificator_van_parent(self):
+        partij_a = PartijFactory.create(soort_partij="persoon")
+        partij_b = PartijFactory.create(soort_partij="persoon")
+
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij_a.uuid)}
+        )
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
+            partij=partij_a
+        )
+        VestigingsnummerPartijIdentificatorFactory.create(
+            partij=partij_b,
+            sub_identificator_van=sub_identificator_van,
+        )
+
+        partij_a.partijidentificator_set.get()
+        partij_b.partijidentificator_set.get()
+
+        # passes the new partijIdentificator = bsn and without specifying kvk_nummer,
+        # so it should be deleted, but this is not allowed
+        data = {
+            "soortPartij": "organisatie",
+            "partijIdentificatoren": [
+                {
+                    "partijIdentificator": {
+                        "codeObjecttype": "natuurlijk_persoon",
+                        "codeSoortObjectId": "bsn",
+                        "objectId": "123456782",
+                        "codeRegister": "brp",
+                    },
+                },
+            ],
+        }
+        response = self.client.patch(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            (
+                "Cannot delete some instances of model 'PartijIdentificator' because they are"
+                " referenced through protected foreign keys: 'PartijIdentificator.sub_identificator_van'."
+            ),
+        )
+        self.assertEqual(Partij.objects.all().count(), 2)
+        self.assertEqual(PartijIdentificator.objects.all().count(), 2)
+        partij_a.partijidentificator_set.get()
+        partij_b.partijidentificator_set.get()
+
+        # partij has the same data
+        self.assertEqual(partij_a.soort_partij, "persoon")
 
     def test_invalid_update_remove_sub_identificator(self):
         partij = PartijFactory.create(soort_partij="persoon")

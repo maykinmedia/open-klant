@@ -29,11 +29,11 @@ PARTIJ_IDENTIFICATOR_DESCRIPTION_CREATE = _(
 
 Handles `partijIdentificatoren` creation with atomicity guarantees.
 
-- If the `UUID` is provided in the `PartijIdentificator` object,
-the endpoint will treat it as an update operation for the existing `PartijIdentificator`,
-applying the provided data and linking the parent `Partij` to the updated `PartijIdentificator`.
+- If the `UUID` is provided in the `partijIdentificator` object,
+the endpoint will treat it as an update operation for the existing `partijIdentificator`,
+applying the provided data and linking the parent `Partij` to the updated `partijIdentificator`.
 - If the `UUID` is **NOT** specified, the system will create a new
-`PartijIdentificator` instance respecting all uniqueness constraints.
+`partijIdentificator` instance respecting all uniqueness constraints.
 
 **Example:**
 
@@ -62,8 +62,39 @@ applying the provided data and linking the parent `Partij` to the updated `Parti
 ```
 
 
-In this case, the `PartijIdentificator` with the specified `UUID` is updated and attached to the parent `Partij`,
- while the `PartijIdentificator` without a `UUID` is created and attached to the parent `Partij`.
+In this case, the `partijIdentificator` with the specified `UUID` is updated and attached to the parent `Partij`,
+ while the `partijIdentificator` without a `UUID` is created and attached to the parent `Partij`.
+
+**Warnings:**
+
+If you want to create a `partijIdentificator` with `vestigingsnummer`,
+you must first ensure that a `partijIdentificator`
+with a `kvk_nummer` already exists to assign it at the `sub_identificator_van`.
+
+**Example:**
+
+```json
+{
+  "partijIdentificatoren": [
+      {
+          "sub_identificator_van": {"uuid": "598ffc4d-737e-49a5-b5e0-cbc438a30cb5"},
+          "partijIdentificator": {
+              "codeObjecttype": "vestiging",
+              "codeSoortObjectId": "vestigingsnummer",
+              "objectId": "string",
+              "codeRegister": "hr",
+          },
+      }
+  ],
+}
+```
+
+Or, to comply with the uniqueness constraints, you must first make a `POST` request
+ to create the `partijIdentificator` with `kvk_nummer`,
+and then send a `PUT` or `PATCH` request to update the list of `partijIdentificatoren`
+ by adding the `partijIdentificator` with `vestigingsnummer`.
+See the documentation for `PUT` and `PATCH` requests in the corresponding section.
+
 """
 )
 
@@ -73,10 +104,11 @@ PARTIJ_IDENTIFICATOR_DESCRIPTION_UPDATE = _(
 
 Handles `partijIdentificatoren` updates with atomicity guarantees.
 
-- If the `UUID` is specified in the `PartijIdentificator` object,
+- If the `UUID` is specified in the `partijIdentificator` object,
  the system will update the corresponding instance with the new data.
 - If the `UUID` is **NOT** specified, the system will `DELETE` all `partijIdentificatoren`
 objects related to the parent and `CREATE` new ones using the provided data.
+This means that any `partijIdentificatoren` **not included** in the list new data will also be deleted.
 
 **Example:**
 
@@ -104,9 +136,13 @@ objects related to the parent and `CREATE` new ones using the provided data.
 }
 ```
 
-In this case, all `partijIdentificatoren` without a specified `UUID` are deleted,
-a new one is created due to the absence of a `UUID`, and the data for the `PartijIdentificator`
-with the specified `UUID` is then updated.
+In this case, assuming an initial state with 3 `partijIdentificatoren` for the current `Partij`,
+ the system will perform the following operations:
+  - All initial `partijIdentificatoren` not included in the list, as well as those
+  without a specified `UUID`, will be deleted.
+  - `partijIdentificator` with `codeSoortObjectId` = `rsin`, will be updated with the new data provided
+  - All other `partijIdentificatoren` without a specified `UUID` will be created.
+
 """
 )
 
@@ -115,13 +151,13 @@ PARTIJEN_DESCRIPTION = (
         """
 **Atomicity in Partij and PartijIdentificator**
 
-The `Partij` endpoint handles `PartijIdentificator` objects more effectively,
+The `Partij` endpoint handles `partijIdentificator` objects more effectively,
 allowing them to be processed within the same request.
 This ensures that both entities are handled atomically, preventing incompleteness,
-and offering better control over the uniqueness of `PartijIdentificator` objects.
+and offering better control over the uniqueness of `partijIdentificator` objects.
 
 For `POST`, `PATCH`, and `PUT` requests for `Partij`,
-it is possible to send a list of `PartijIdentificator` objects.
+it is possible to send a list of `partijIdentificator` objects.
 
 
 """

@@ -436,6 +436,7 @@ class PartijIdentificatorSerializer(
             )
             PartijIdentificatorUniquenessValidator(
                 code_soort_object_id=partij_identificator["code_soort_object_id"],
+                instance=self.instance if self.instance else None,
                 sub_identificator_van=sub_identificator_van,
             )()
 

@@ -981,3 +981,51 @@ class PartijIdentificatorUniquenessTests(APITestCase):
                 "codeRegister": "brp",
             },
         )
+
+    def test_invalid_update_code_soort_object_id_parent(self):
+        sub_identificator_van = KvkNummerPartijIdentificatorFactory.create(
+            partij=self.partij
+        )
+        VestigingsnummerPartijIdentificatorFactory.create(
+            partij=self.partij,
+            sub_identificator_van=sub_identificator_van,
+        )
+
+        PartijIdentificator.objects.get(
+            partij_identificator_code_soort_object_id="kvk_nummer"
+        )
+        PartijIdentificator.objects.get(
+            partij_identificator_code_soort_object_id="vestigingsnummer"
+        )
+
+        detail_url = reverse(
+            "klantinteracties:partijidentificator-detail",
+            kwargs={"uuid": str(sub_identificator_van.uuid)},
+        )
+        # Update kvk_nummer with bsn
+        data = {
+            "partijIdentificator": {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "296648875",
+                "codeRegister": "brp",
+            },
+        }
+
+        response = self.client.put(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "partijIdentificatorCodeSoortObjectId")
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            (
+                "Het is niet mogelijk om de codeSoortObjectId van deze PartijIdentificator te wijzigen, "
+                "omdat er andere PartijIdentificatoren aan gekoppeld zijn."
+            ),
+        )
+        PartijIdentificator.objects.get(
+            partij_identificator_code_soort_object_id="kvk_nummer"
+        )
+        PartijIdentificator.objects.get(
+            partij_identificator_code_soort_object_id="vestigingsnummer"
+        )

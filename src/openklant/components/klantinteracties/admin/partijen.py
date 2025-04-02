@@ -43,6 +43,7 @@ class PartijIdentificatorAdminForm(forms.ModelForm):
             code_soort_object_id=cleaned_data[
                 "partij_identificator_code_soort_object_id"
             ],
+            instance=self.instance if self.instance and self.instance.pk else None,
             sub_identificator_van=cleaned_data["sub_identificator_van"],
         )()
 
