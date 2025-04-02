@@ -75,6 +75,7 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
         .prefetch_related(
             "betrokkene_set",
             "digitaaladres_set",
+            "partijidentificator_set",
         )
     )
     serializer_class = PartijSerializer
