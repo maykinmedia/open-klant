@@ -21,9 +21,11 @@ from openklant.components.klantinteracties.models.tests.factories import (
     MedewerkerFactory,
     PartijFactory,
     PersoonFactory,
+    RekeningnummerFactory,
 )
 from openklant.utils.tests.webtest import add_dynamic_field
 
+from ..admin import PartijAdminForm
 from ..constants import SoortDigitaalAdres
 from ..models import (
     Actor,
@@ -34,6 +36,7 @@ from ..models import (
     Klantcontact,
     Medewerker,
     SoortActor,
+    SoortPartij,
     Taakstatus,
 )
 
@@ -131,6 +134,57 @@ class PartijAdminTests(WebTest):
         self.assertEqual(adres.omschrijving, "description")
         self.assertEqual(adres.adres, "email@example.com")
         self.assertIsNone(adres.betrokkene)
+
+    def test_voorkeurs_digitaal_adres_valid(self):
+        partij = PartijFactory.create()
+        digitaal_adres = DigitaalAdresFactory.create(partij=partij)
+        partij.voorkeurs_digitaal_adres = digitaal_adres
+
+        partij.clean()
+
+    def test_voorkeurs_digitaal_adres_invalid(self):
+        partij = PartijFactory.create(soort_partij=SoortPartij.persoon)
+        invalid_digitaal_adres = DigitaalAdresFactory.create()
+
+        form = PartijAdminForm(
+            data={
+                "voorkeurs_digitaal_adres": invalid_digitaal_adres.id,
+                "soort_partij": partij.soort_partij,
+            },
+            instance=partij,
+        )
+
+        self.assertFalse(
+            form.is_valid(), "Form should be invalid but it passed validation."
+        )
+        self.assertIn("voorkeurs_digitaal_adres", form.errors)
+        self.assertIn(
+            "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
+            form.errors["voorkeurs_digitaal_adres"],
+        )
+
+    def test_voorkeurs_adres_none_valid(self):
+        partij = PartijFactory.create()
+        partij.voorkeurs_digitaal_adres = None
+        partij.voorkeurs_rekeningnummer = None
+
+        partij.clean()
+
+    def test_voorkeurs_digitaal_adres_none_valid_rekeningnummer_valid(self):
+        partij = PartijFactory.create()
+        rekeningnummer = RekeningnummerFactory.create(partij=partij)
+        partij.voorkeurs_digitaal_adres = None
+        partij.voorkeurs_rekeningnummer = rekeningnummer
+
+        partij.clean()
+
+    def test_voorkeurs_digitaal_adres_valid_rekeningnummer_none_valid(self):
+        partij = PartijFactory.create()
+        digitaal_adres = DigitaalAdresFactory.create(partij=partij)
+        partij.voorkeurs_digitaal_adres = digitaal_adres
+        partij.voorkeurs_rekeningnummer = None
+
+        partij.clean()
 
 
 @disable_admin_mfa()
