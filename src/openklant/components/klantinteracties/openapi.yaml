@@ -4125,11 +4125,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
           description: Klantcontact dat leidde tot een interne taak.
-        toegewezenAanActor:
-          allOf:
-          - $ref: '#/components/schemas/ActorForeignKey'
-          description: Eerste actor die een interne taak toegewezen kreeg.
-          deprecated: true
         toegewezenAanActoren:
           type: array
           items:
@@ -5446,11 +5441,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
           description: Klantcontact dat leidde tot een interne taak.
-        toegewezenAanActor:
-          allOf:
-          - $ref: '#/components/schemas/ActorForeignKey'
-          description: Eerste actor die een interne taak toegewezen kreeg.
-          deprecated: true
         toegewezenAanActoren:
           type: array
           items:
