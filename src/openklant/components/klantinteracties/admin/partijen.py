@@ -1,12 +1,14 @@
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 from openklant.components.klantinteracties.models.validators import (
     PartijIdentificatorTypesValidator,
     PartijIdentificatorUniquenessValidator,
 )
-from django.core.exceptions import ValidationError
+
 from ..models.constants import SoortPartij
 from ..models.digitaal_adres import DigitaalAdres
 from ..models.klantcontacten import Betrokkene
@@ -21,6 +23,7 @@ from ..models.partijen import (
     Vertegenwoordigden,
 )
 
+
 class PartijAdminForm(forms.ModelForm):
     class Meta:
         model = Partij
@@ -33,7 +36,10 @@ class PartijAdminForm(forms.ModelForm):
         voorkeurs_rekeningnummer = cleaned_data.get("voorkeurs_rekeningnummer")
 
         if voorkeurs_digitaal_adres:
-            if voorkeurs_digitaal_adres not in DigitaalAdres.objects.filter(partij=self.instance).all():
+            if (
+                voorkeurs_digitaal_adres
+                not in DigitaalAdres.objects.filter(partij=self.instance).all()
+            ):
                 raise ValidationError(
                     {
                         "voorkeurs_digitaal_adres": _(
