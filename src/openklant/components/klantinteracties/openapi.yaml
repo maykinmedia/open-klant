@@ -1193,6 +1193,11 @@ paths:
         schema:
           type: integer
       - in: query
+        name: referentie
+        schema:
+          type: string
+        description: Filter op exacte referentiewaarde.
+      - in: query
         name: soortDigitaalAdres
         schema:
           type: string
@@ -3961,6 +3966,12 @@ components:
           type: string
           description: Omschrijving van het digitaal adres.
           maxLength: 40
+        referentie:
+          type: string
+          description: Machine-leesbare tag voor unieke identificatie van het digitaal
+            adres.
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
       required:
       - adres
       - soortDigitaalAdres
@@ -5418,6 +5429,12 @@ components:
           type: string
           description: Omschrijving van het digitaal adres.
           maxLength: 40
+        referentie:
+          type: string
+          description: Machine-leesbare tag voor unieke identificatie van het digitaal
+            adres.
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
     PatchedInterneTaak:
       type: object
       properties:

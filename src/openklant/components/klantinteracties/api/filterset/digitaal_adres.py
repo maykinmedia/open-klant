@@ -72,6 +72,9 @@ class DigitaalAdresFilterSet(FilterSet):
             "Zoek digitaal adres(sen) object(en) op basis van omschijving die de opgegeven waarden bevat."
         ),
     )
+    referentie = filters.CharFilter(
+        lookup_expr="exact", help_text="Filter op exacte referentiewaarde."
+    )
 
     expand = ExpandFilter(serializer_class=DigitaalAdresSerializer)
 
@@ -88,4 +91,5 @@ class DigitaalAdresFilterSet(FilterSet):
             "adres__icontains",
             "soort_digitaal_adres",
             "omschrijving",
+            "referentie",
         )

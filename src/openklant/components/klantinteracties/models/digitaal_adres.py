@@ -8,6 +8,10 @@ from openklant.components.klantinteracties.models.klantcontacten import Betrokke
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.components.utils.mixins import APIMixin
 
+REFERENTIE_UNIQUENESS_CONDITION = models.Q(referentie__gt="") & models.Q(
+    partij__isnull=False
+)
+
 
 class DigitaalAdres(APIMixin, models.Model):
     uuid = models.UUIDField(
@@ -60,6 +64,14 @@ class DigitaalAdres(APIMixin, models.Model):
         max_length=40,
         blank=True,
     )
+    referentie = models.SlugField(
+        _("referentie"),
+        help_text=_(
+            "Machine-leesbare tag voor unieke identificatie van het digitaal adres."
+        ),
+        blank=True,
+        null=False,
+    )
 
     class Meta:
         verbose_name = _("digitaal adres")
@@ -68,7 +80,12 @@ class DigitaalAdres(APIMixin, models.Model):
                 fields=["partij", "soort_digitaal_adres"],
                 condition=models.Q(is_standaard_adres=True),
                 name="unique_default_per_partij_and_soort",
-            )
+            ),
+            models.UniqueConstraint(
+                fields=["partij", "referentie"],
+                name="unique_referentie_per_partij",
+                condition=REFERENTIE_UNIQUENESS_CONDITION,
+            ),
         ]
 
     def __str__(self):
