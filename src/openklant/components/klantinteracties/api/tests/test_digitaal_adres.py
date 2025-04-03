@@ -1,9 +1,8 @@
-from django.db import IntegrityError
 from django.test import tag
 from django.utils.translation import gettext as _
 
 from rest_framework import status
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_validation_errors, reverse
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models import DigitaalAdres
@@ -408,6 +407,31 @@ class DigitaalAdresTests(APITestCase):
             self.assertEqual(data["omschrijving"], "changed")
             self.assertEqual(data["referentie"], "new-referentie")
 
+        with self.subTest("without specifying referentie"):
+            data = {
+                "verstrektDoorBetrokkene": None,
+                "verstrektDoorPartij": None,
+                "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
+                "adres": "0721434543",
+                "omschrijving": "changed",
+            }
+
+            response = self.client.put(detail_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()
+
+            self.assertIsNone(data["verstrektDoorBetrokkene"])
+            self.assertIsNone(data["verstrektDoorPartij"])
+            self.assertEqual(
+                data["soortDigitaalAdres"], SoortDigitaalAdres.telefoonnummer
+            )
+            self.assertEqual(data["adres"], "0721434543")
+            self.assertEqual(data["omschrijving"], "changed")
+            # Verify that referentie is unchanged
+            self.assertEqual(data["referentie"], "new-referentie")
+
     def test_update_digitaal_adres_is_standaard_adres(self):
         """
         Creating a DigitaalAdres with isStandaardAdres=True should make other existing
@@ -467,6 +491,7 @@ class DigitaalAdresTests(APITestCase):
             soort_digitaal_adres=SoortDigitaalAdres.email,
             adres="foobar@example.com",
             omschrijving="omschrijving",
+            referentie="foo",
         )
         detail_url = reverse(
             "klantinteracties:digitaaladres-detail",
@@ -497,6 +522,8 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(data["soortDigitaalAdres"], SoortDigitaalAdres.telefoonnummer)
         self.assertEqual(data["adres"], "0721434543")
         self.assertEqual(data["omschrijving"], "omschrijving")
+        # Verify that the referentie is unchanged
+        self.assertEqual(data["referentie"], "foo")
 
     def test_destroy_digitaal_adres(self):
         digitaal_adres = DigitaalAdresFactory.create()
@@ -593,25 +620,17 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(response_data2["adres"], "barfoo@example.com")
         self.assertEqual(response_data2["referentie"], "same-ref")
 
-    def test_create_digitaal_adres_if_both_verstrektDoorPartij_and_referentie_are_set(
+    def test_create_digitaal_adres_validate_uniqueness_if_both_verstrektDoorPartij_and_referentie_are_set(
         self,
     ):
         """
         Ensure that UniqueConstraint applies if both verstrektDoorPartij and referentie are set.
         """
-        self.assertEqual(DigitaalAdres.objects.count(), 0)
-        partij = PartijFactory.create()
-        self.assertEqual(DigitaalAdres.objects.count(), 1)
+        partij = PartijFactory.create(voorkeurs_digitaal_adres=None)
+        DigitaalAdresFactory.create(partij=partij, referentie="unique-ref")
+
         list_url = reverse("klantinteracties:digitaaladres-list")
-        data1 = {
-            "verstrektDoorBetrokkene": None,
-            "verstrektDoorPartij": {"uuid": str(partij.uuid)},
-            "soortDigitaalAdres": SoortDigitaalAdres.email,
-            "adres": "foobar@example.com",
-            "omschrijving": "omschrijving",
-            "referentie": "unique-ref",
-        }
-        data2 = {
+        data = {
             "verstrektDoorBetrokkene": None,
             "verstrektDoorPartij": {"uuid": str(partij.uuid)},
             "soortDigitaalAdres": SoortDigitaalAdres.email,
@@ -620,15 +639,49 @@ class DigitaalAdresTests(APITestCase):
             "referentie": "unique-ref",
         }
 
-        response1 = self.client.post(list_url, data1)
-        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(DigitaalAdres.objects.count(), 2)
+        response = self.client.post(list_url, data)
+        self.assertEqual(
+            response.status_code, status.HTTP_400_BAD_REQUEST, response.data
+        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "unique")
 
-        try:
-            response2 = self.client.post(list_url, data2)
-            self.assertEqual(
-                response2.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR
+        # Object should not be created due to failing validation
+        self.assertEqual(DigitaalAdres.objects.count(), 1)
+
+    def test_update_digitaal_adres_validate_uniqueness_if_both_verstrektDoorPartij_and_referentie(
+        self,
+    ):
+        """
+        Ensure that UniqueConstraint applies if both verstrektDoorPartij and referentie are set
+        when performing a PATCH
+        """
+        partij = PartijFactory.create(voorkeurs_digitaal_adres=None)
+        DigitaalAdresFactory.create(partij=partij, referentie="unique-ref")
+
+        digitaal_adres = DigitaalAdresFactory.create(
+            partij=partij, referentie="old-ref"
+        )
+
+        detail_url = reverse(
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
+        )
+
+        with self.subTest("explicitly specify partij"):
+            response = self.client.patch(detail_url, {"referentie": "unique-ref"})
+            self.assertEqual(response.status_code, 400)
+            error = get_validation_errors(response, "nonFieldErrors")
+            self.assertEqual(error["code"], "unique")
+
+        with self.subTest("without specifying partij"):
+            response2 = self.client.patch(
+                detail_url,
+                {
+                    "verstrektDoorPartij": {"uuid": str(partij.uuid)},
+                    "referentie": "unique-ref",
+                },
             )
-            self.assertEqual(DigitaalAdres.objects.count(), 2)
-        except IntegrityError:
-            pass
+            self.assertEqual(response2.status_code, 400)
+            error = get_validation_errors(response, "nonFieldErrors")
+            self.assertEqual(error["code"], "unique")

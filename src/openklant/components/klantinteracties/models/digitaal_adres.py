@@ -8,6 +8,10 @@ from openklant.components.klantinteracties.models.klantcontacten import Betrokke
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.components.utils.mixins import APIMixin
 
+REFERENTIE_UNIQUENESS_CONDITION = models.Q(referentie__gt="") & models.Q(
+    partij__isnull=False
+)
+
 
 class DigitaalAdres(APIMixin, models.Model):
     uuid = models.UUIDField(
@@ -80,9 +84,7 @@ class DigitaalAdres(APIMixin, models.Model):
             models.UniqueConstraint(
                 fields=["partij", "referentie"],
                 name="unique_referentie_per_partij",
-                condition=(
-                    models.Q(referentie__gt="") & models.Q(partij__isnull=False)
-                ),
+                condition=REFERENTIE_UNIQUENESS_CONDITION,
             ),
         ]
 

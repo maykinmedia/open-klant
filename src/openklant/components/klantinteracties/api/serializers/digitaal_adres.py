@@ -2,6 +2,7 @@ from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers, validators
+from rest_framework.validators import UniqueTogetherValidator
 
 from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
@@ -10,7 +11,10 @@ from openklant.components.klantinteracties.api.validators import (
     SoortDigitaalAdresValidator,
     digitaal_adres_exists,
 )
-from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
+from openklant.components.klantinteracties.models.digitaal_adres import (
+    REFERENTIE_UNIQUENESS_CONDITION,
+    DigitaalAdres,
+)
 from openklant.components.klantinteracties.models.klantcontacten import Betrokkene
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.utils.serializers import get_field_value
@@ -101,12 +105,29 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": _("De unieke URL van dit digitaal adres binnen deze API."),
             },
             "referentie": {
-                "default": "",
+                "allow_blank": True,
+                "required": False,
             },
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # ModelSerializers by default add UniqueTogetherValidators, which also enforce
+        # that each of the fields that are unique together are required
+        # (because of `UniqueTogetherValidator.enforce_required_fields`).
+        # In the case of `referentie` however, we do not want this field to be required,
+        # and the UniqueTogetherValidator should only apply if both `verstrekt_door_partij`
+        # and `referentie` are specified, so the automatically added validator is removed
+        # and the validation is explicitly applied in `DigitaalAdresSerializer.validate`
+        self.validators = [
+            validator
+            for validator in self.validators
+            if not (
+                isinstance(validator, UniqueTogetherValidator)
+                and set(validator.fields) == {"verstrekt_door_partij", "referentie"}
+            )
+        ]
 
         if "soort_digitaal_adres" in self.fields:
             # Avoid validating the UniqueConstraint for `soort_digitaal_adres` with
@@ -144,6 +165,25 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                     )
                 }
             )
+
+        # Manually apply validation which was removed in `__init__`, to only enforce
+        # unique together validation if both fields are specified
+        if partij and (referentie := attrs.get("referentie")):
+            # UniqueTogetherValidator cannot handle the structure of `verstrektDoorPartij`,
+            # which is of the shape `{"uuid": "<some-uuid>"}`, so instead we manually
+            # check if the queryset exists
+            partij_uuid = partij.uuid if isinstance(partij, Partij) else partij["uuid"]
+            if DigitaalAdres.objects.filter(
+                REFERENTIE_UNIQUENESS_CONDITION,
+                partij__uuid=partij_uuid,
+                referentie=referentie,
+            ).exists():
+                raise serializers.ValidationError(
+                    UniqueTogetherValidator.message.format(
+                        field_names=["verstrekt_door_partij", "referentie"],
+                    ),
+                    code="unique",
+                )
 
         return super().validate(attrs)
 
