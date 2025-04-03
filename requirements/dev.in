@@ -9,3 +9,5 @@ bump2version
 # Debug tooling
 django-debug-toolbar
 django-extensions
+django-silk
+whitenoise
