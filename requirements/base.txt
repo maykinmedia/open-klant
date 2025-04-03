@@ -16,8 +16,6 @@ asgiref==3.8.1
     #   django-cors-headers
 asn1crypto==1.5.1
     # via webauthn
-async-timeout==5.0.1
-    # via redis
 attrs==23.2.0
     # via
     #   glom
@@ -338,8 +336,6 @@ tornado==6.4.2
     # via flower
 typing-extensions==4.12.2
     # via
-    #   asgiref
-    #   django-solo
     #   mozilla-django-oidc-db
     #   pydantic
     #   pydantic-core
