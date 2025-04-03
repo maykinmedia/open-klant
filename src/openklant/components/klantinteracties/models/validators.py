@@ -23,23 +23,46 @@ class PartijIdentificatorUniquenessValidator:
     def __init__(
         self,
         code_soort_object_id: str | None = "",
+        instance: PartijIdentificator | None = None,
         sub_identificator_van: PartijIdentificator | None = None,
     ):
         self.code_soort_object_id = code_soort_object_id
         self.sub_identificator_van = sub_identificator_van
+        self.instance = instance
 
     def __call__(self):
+        if (
+            self.instance
+            and self.instance.partij_identificator_code_soort_object_id
+            != self.code_soort_object_id
+        ):
+            self.check_related_partij_identificatoren()
         if (
             self.code_soort_object_id
             == PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
         ):
             self.validate_sub_identificator_van_for_vestigingsnummer()
 
+    def check_related_partij_identificatoren(self):
+        """
+        Checking the case where the `partij_identificator` with a specific codeSoortObjectId
+        doesn't have any other `partij_identificatoren` attached to it
+        """
+        if self.instance.parent_partij_identificator.exists():
+            raise ValidationError(
+                {
+                    "partij_identificator_code_soort_object_id": _(
+                        "Het is niet mogelijk om de codeSoortObjectId van deze PartijIdentificator te wijzigen, "
+                        "omdat er andere PartijIdentificatoren aan gekoppeld zijn."
+                    )
+                }
+            )
+
     def validate_sub_identificator_van_for_vestigingsnummer(self):
         """
-        - Validation that when the partij_identificator has CodeSoortObjectId = `vestigingsnummer`:
+        - Validation that when the partij_identificator has codeSoortObjectId = `vestigingsnummer`:
             - `sub_identificator_van` is required
-            - `sub_identificator_van` must have CodeSoortObjectId = `kvk_nummer`
+            - `sub_identificator_van` must have codeSoortObjectId = `kvk_nummer`
         """
         if not self.sub_identificator_van:
             raise ValidationError(
