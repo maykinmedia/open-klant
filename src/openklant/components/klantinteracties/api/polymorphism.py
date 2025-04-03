@@ -19,15 +19,23 @@ logger = logging.getLogger(__name__)
 
 
 class Discriminator(VngDiscriminator):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.required = kwargs.get("required", False)
+
     def to_internal_value(self, data) -> OrderedDict:
         # CUSTOM CODE: try catch to support patch call functionalities
-        try:
-            discriminator_value = data[self.discriminator_field]
-        except KeyError:
+        if self.required and self.discriminator_field not in data:
             raise serializers.ValidationError(
                 {f"{self.discriminator_field}": _("Dit veld is vereist.")}
             )
-        serializer = self.mapping.get(discriminator_value)
+
+        value = data.get(self.discriminator_field)
+        if value is None:
+            return None
+
+        serializer = self.mapping.get(value)
         if serializer is None:
             return None
 
