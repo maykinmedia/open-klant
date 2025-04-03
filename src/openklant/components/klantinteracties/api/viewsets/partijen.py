@@ -10,6 +10,10 @@ from openklant.components.klantinteracties.api.filterset.partijen import (
     PartijFilterSet,
     VertegenwoordigdenFilterSet,
 )
+from openklant.components.klantinteracties.api.schema import (
+    PARTIJ_IDENTIFICATOR_DESCRIPTION_CREATE,
+    PARTIJ_IDENTIFICATOR_DESCRIPTION_UPDATE,
+)
 from openklant.components.klantinteracties.api.serializers.partijen import (
     CategorieRelatieSerializer,
     CategorieSerializer,
@@ -43,15 +47,15 @@ from openklant.utils.decorators import handle_db_exceptions
     ),
     create=extend_schema(
         summary="Maak een partij aan.",
-        description="Maak een partij aan.",
+        description=PARTIJ_IDENTIFICATOR_DESCRIPTION_CREATE,
     ),
     update=extend_schema(
         summary="Werk een partij in zijn geheel bij.",
-        description="Werk een partij in zijn geheel bij.",
+        description=PARTIJ_IDENTIFICATOR_DESCRIPTION_UPDATE,
     ),
     partial_update=extend_schema(
         summary="Werk een partij deels bij.",
-        description="Werk een partij deels bij.",
+        description=PARTIJ_IDENTIFICATOR_DESCRIPTION_UPDATE,
     ),
     destroy=extend_schema(
         summary="Verwijder een partij.",
@@ -71,6 +75,7 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
         .prefetch_related(
             "betrokkene_set",
             "digitaaladres_set",
+            "partijidentificator_set",
         )
     )
     serializer_class = PartijSerializer

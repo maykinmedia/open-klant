@@ -17,7 +17,12 @@ from openklant.components.klantinteracties.models.tests.factories.digitaal_adres
     DigitaalAdresFactory,
 )
 
-from ...constants import SoortPartij
+from ...constants import (
+    PartijIdentificatorCodeObjectType,
+    PartijIdentificatorCodeRegister,
+    PartijIdentificatorCodeSoortObjectId,
+    SoortPartij,
+)
 
 
 class PartijFactory(factory.django.DjangoModelFactory):
@@ -88,3 +93,36 @@ class PartijIdentificatorFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = PartijIdentificator
+
+
+class BsnPartijIdentificatorFactory(PartijIdentificatorFactory):
+    partij_identificator_code_objecttype = (
+        PartijIdentificatorCodeObjectType.natuurlijk_persoon.value
+    )
+    partij_identificator_code_soort_object_id = (
+        PartijIdentificatorCodeSoortObjectId.bsn.value
+    )
+    partij_identificator_code_register = PartijIdentificatorCodeRegister.brp.value
+    partij_identificator_object_id = "296648875"
+
+
+class KvkNummerPartijIdentificatorFactory(PartijIdentificatorFactory):
+    partij_identificator_code_objecttype = (
+        PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value
+    )
+    partij_identificator_code_soort_object_id = (
+        PartijIdentificatorCodeSoortObjectId.kvk_nummer.value
+    )
+    partij_identificator_code_register = PartijIdentificatorCodeRegister.hr.value
+    partij_identificator_object_id = "12345678"
+
+
+class VestigingsnummerPartijIdentificatorFactory(PartijIdentificatorFactory):
+    partij_identificator_code_objecttype = (
+        PartijIdentificatorCodeObjectType.vestiging.value
+    )
+    partij_identificator_code_soort_object_id = (
+        PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value
+    )
+    partij_identificator_code_register = PartijIdentificatorCodeRegister.hr.value
+    partij_identificator_object_id = "296648875154"
