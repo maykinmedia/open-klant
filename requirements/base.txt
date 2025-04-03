@@ -63,14 +63,14 @@ coreapi==2.3.3
     # via commonground-api-common
 coreschema==0.0.4
     # via coreapi
-cryptography==44.0.1
+cryptography==44.0.2
     # via
     #   django-simple-certmanager
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==4.2.19
+django==4.2.20
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -151,7 +151,7 @@ django-sendfile2==0.7.1
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.7.1
+django-setup-configuration==0.7.2
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
@@ -218,7 +218,7 @@ isodate==0.6.1
     # via commonground-api-common
 itypes==1.2.0
     # via coreapi
-jinja2==3.1.5
+jinja2==3.1.6
     # via coreschema
 josepy==1.14.0
     # via mozilla-django-oidc
@@ -226,7 +226,7 @@ jsonschema==4.23.0
     # via drf-spectacular
 jsonschema-specifications==2023.12.1
     # via jsonschema
-kombu==5.3.7
+kombu==5.5.2
     # via celery
 markupsafe==2.1.5
     # via jinja2
@@ -342,8 +342,10 @@ typing-extensions==4.12.2
     #   pyopenssl
     #   qrcode
     #   zgw-consumers
-tzdata==2024.1
-    # via celery
+tzdata==2025.2
+    # via
+    #   celery
+    #   kombu
 uritemplate==4.1.1
     # via
     #   coreapi
