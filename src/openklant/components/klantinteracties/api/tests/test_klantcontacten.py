@@ -44,6 +44,62 @@ class KlantContactTests(APITestCase):
             self.assertEqual(data["results"][0]["hadBetrokkenActoren"], [])
             self.assertEqual(data["results"][1]["hadBetrokkenActoren"], [])
 
+    def test_list_filters(self):
+        list_url = reverse("klantinteracties:onderwerpobject-list")
+        OnderwerpobjectFactory.create(
+            klantcontact=KlantcontactFactory.create(),
+            onderwerpobjectidentificator_code_objecttype="codeObjecttype",
+            onderwerpobjectidentificator_code_soort_object_id="codeSoortObjectId",
+            onderwerpobjectidentificator_object_id="objectId",
+            onderwerpobjectidentificator_code_register="codeRegister",
+        )
+        OnderwerpobjectFactory.create(
+            klantcontact=KlantcontactFactory.create(),
+            onderwerpobjectidentificator_code_objecttype="codeObjecttype_test",
+            onderwerpobjectidentificator_code_soort_object_id="codeSoortObjectId_test",
+            onderwerpobjectidentificator_object_id="objectId_test",
+            onderwerpobjectidentificator_code_register="codeRegister_test",
+        )
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 2)
+
+        with self.subTest("onderwerpobjectidentificatorCodeSoortObjectId filter"):
+            response = self.client.get(
+                list_url,
+                {"onderwerpobjectidentificatorCodeSoortObjectId": "codeSoortObjectId"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(len(data["results"]), 1)
+            self.assertEqual(
+                data["results"][0]["onderwerpobjectidentificator"]["codeSoortObjectId"],
+                "codeSoortObjectId",
+            )
+
+            response = self.client.get(
+                list_url,
+                {
+                    "onderwerpobjectidentificatorCodeSoortObjectId": "codeSoortObjectId_test"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(len(data["results"]), 1)
+            self.assertEqual(
+                data["results"][0]["onderwerpobjectidentificator"]["codeSoortObjectId"],
+                "codeSoortObjectId_test",
+            )
+
+            response = self.client.get(
+                list_url,
+                {"onderwerpobjectidentificatorCodeSoortObjectId": "test"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(len(data["results"]), 0)
+
     def test_list_pagination_pagesize_param(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         KlantcontactFactory.create_batch(10)
