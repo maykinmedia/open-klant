@@ -105,7 +105,7 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "voorkeurstaal": "ndl",
             "indicatieActief": True,
             "bezoekadres": {
@@ -158,7 +158,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["voorkeursRekeningnummer"]["uuid"], str(rekeningnummer.uuid)
         )
-        self.assertEqual(data["soortPartij"], "persoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.persoon.value)
         self.assertIsNone(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
@@ -224,7 +224,7 @@ class PartijTests(APITestCase):
             self.assertIsNone(response_data["voorkeursDigitaalAdres"])
             self.assertEqual(response_data["rekeningnummers"], [])
             self.assertIsNone(response_data["voorkeursRekeningnummer"])
-            self.assertEqual(response_data["soortPartij"], "persoon")
+            self.assertEqual(response_data["soortPartij"], SoortPartij.persoon.value)
             self.assertIsNone(data["indicatieGeheimhouding"])
             self.assertEqual(response_data["voorkeurstaal"], "ndl")
             self.assertTrue(response_data["indicatieActief"])
@@ -390,7 +390,8 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -433,7 +434,7 @@ class PartijTests(APITestCase):
                 "adresregel3": "adres3",
                 "land": "NL",
             },
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "partijIdentificatie": {
                 "contactnaam": {
                     "voorletters": "P",
@@ -456,7 +457,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
         self.assertEqual(response_data["rekeningnummers"], [])
         self.assertIsNone(response_data["voorkeursRekeningnummer"])
-        self.assertEqual(response_data["soortPartij"], "persoon")
+        self.assertEqual(response_data["soortPartij"], SoortPartij.persoon.value)
         self.assertTrue(response_data["indicatieGeheimhouding"])
         self.assertEqual(response_data["voorkeurstaal"], "ndl")
         self.assertTrue(response_data["indicatieActief"])
@@ -545,7 +546,7 @@ class PartijTests(APITestCase):
                 "adresregel3": "adres3",
                 "land": "NL",
             },
-            "soortPartij": "organisatie",
+            "soortPartij": SoortPartij.organisatie.value,
             "partijIdentificatie": {
                 "naam": "Whitechapel",
                 "contactpersonen": [{"id": contactpersoon.id}],
@@ -564,7 +565,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
         self.assertEqual(response_data["rekeningnummers"], [])
         self.assertIsNone(response_data["voorkeursRekeningnummer"])
-        self.assertEqual(response_data["soortPartij"], "organisatie")
+        self.assertEqual(response_data["soortPartij"], SoortPartij.organisatie.value)
         self.assertTrue(response_data["indicatieGeheimhouding"])
         self.assertEqual(response_data["voorkeurstaal"], "ndl")
         self.assertTrue(response_data["indicatieActief"])
@@ -604,7 +605,7 @@ class PartijTests(APITestCase):
         )
 
     def test_create_contactpersoon(self):
-        organisatie = PartijFactory.create(soort_partij="organisatie")
+        organisatie = PartijFactory.create(soort_partij=SoortPartij.organisatie.value)
         list_url = reverse("klantinteracties:partij-list")
         data = {
             "nummer": "1298329191",
@@ -640,7 +641,7 @@ class PartijTests(APITestCase):
                 "adresregel3": "adres3",
                 "land": "NL",
             },
-            "soortPartij": "contactpersoon",
+            "soortPartij": SoortPartij.contactpersoon.value,
             "partijIdentificatie": {
                 "werkteVoorPartij": {
                     "uuid": organisatie.uuid,
@@ -666,7 +667,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
         self.assertEqual(response_data["rekeningnummers"], [])
         self.assertIsNone(response_data["voorkeursRekeningnummer"])
-        self.assertEqual(response_data["soortPartij"], "contactpersoon")
+        self.assertEqual(response_data["soortPartij"], SoortPartij.contactpersoon.value)
         self.assertTrue(response_data["indicatieGeheimhouding"])
         self.assertEqual(response_data["voorkeurstaal"], "ndl")
         self.assertTrue(response_data["indicatieActief"])
@@ -723,7 +724,7 @@ class PartijTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -790,7 +791,7 @@ class PartijTests(APITestCase):
         )
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "persoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.persoon.value)
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
@@ -845,7 +846,7 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres2.uuid)},
             "rekeningnummers": [{"uuid": str(rekeningnummer2.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer2.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieGeheimhouding": None,
             "voorkeurstaal": "ger",
             "indicatieActief": False,
@@ -913,7 +914,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["voorkeursRekeningnummer"]["uuid"], str(rekeningnummer2.uuid)
         )
-        self.assertEqual(data["soortPartij"], "persoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.persoon.value)
         self.assertIsNone(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
         self.assertFalse(data["indicatieActief"])
@@ -1021,7 +1022,8 @@ class PartijTests(APITestCase):
                 "voorkeursDigitaalAdres": None,
                 "rekeningnummers": [],
                 "voorkeursRekeningnummer": None,
-                "soortPartij": "organisatie",
+                "soortPartij": SoortPartij.organisatie.value,
+                "partijIdentificatie": {"naam": "string"},
                 "indicatieGeheimhouding": False,
                 "voorkeurstaal": "ger",
                 "indicatieActief": False,
@@ -1061,7 +1063,7 @@ class PartijTests(APITestCase):
             self.assertIsNone(data["voorkeursDigitaalAdres"])
             self.assertEqual(data["rekeningnummers"], [])
             self.assertIsNone(data["voorkeursRekeningnummer"])
-            self.assertEqual(data["soortPartij"], "organisatie")
+            self.assertEqual(data["soortPartij"], SoortPartij.organisatie.value)
             self.assertFalse(data["indicatieGeheimhouding"])
             self.assertEqual(data["voorkeurstaal"], "ger")
             self.assertFalse(data["indicatieActief"])
@@ -1105,7 +1107,7 @@ class PartijTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
         )
 
         data = {}
@@ -1161,7 +1163,8 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
-            "soortPartij": "organisatie",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -1170,7 +1173,7 @@ class PartijTests(APITestCase):
         response_data = response.json()
 
         self.assertEqual(response_data["nummer"], "1298329191")
-        self.assertEqual(response_data["soortPartij"], "organisatie")
+        self.assertEqual(response_data["soortPartij"], SoortPartij.organisatie.value)
         self.assertEqual(
             response_data["digitaleAdressen"][0]["uuid"], str(digitaal_adres.uuid)
         )
@@ -1189,7 +1192,7 @@ class PartijTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
         )
 
         data = {}
@@ -1197,29 +1200,16 @@ class PartijTests(APITestCase):
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
         response = self.client.patch(detail_url, data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        response_data = response.json()
-        self.assertEqual(response_data["title"], "Invalid input.")
-        self.assertEqual(response_data["code"], "invalid")
-        self.assertEqual(response_data["status"], 400)
-
-        self.assertEqual(
-            response_data["invalidParams"],
-            [
-                {
-                    "name": "soortPartij",
-                    "code": "invalid",
-                    "reason": "Dit veld is vereist.",
-                }
-            ],
-        )
-        data = {
-            "soortPartij": "organisatie",
-        }
-        response = self.client.patch(detail_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
-        self.assertEqual(response_data["soortPartij"], "organisatie")
+        self.assertEqual(response_data["nummer"], "1298329191")
+        self.assertEqual(response_data["interneNotitie"], "interneNotitie")
+        self.assertEqual(response_data["voorkeursDigitaalAdres"], None)
+        self.assertEqual(response_data["voorkeursRekeningnummer"], None)
+        self.assertEqual(response_data["voorkeurstaal"], "ndl")
+        self.assertEqual(response_data["indicatieGeheimhouding"], True)
+        self.assertEqual(response_data["indicatieActief"], True)
+        self.assertEqual(response_data["soortPartij"], SoortPartij.persoon.value)
 
     def test_update_partij_persoon(self):
         partij = PartijFactory.create(
@@ -1227,7 +1217,7 @@ class PartijTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -1271,7 +1261,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertEqual(data["rekeningnummers"], [])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "persoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.persoon.value)
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
@@ -1325,7 +1315,7 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": None,
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
             "indicatieActief": False,
@@ -1373,7 +1363,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertEqual(data["rekeningnummers"], [])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "persoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.persoon.value)
         self.assertFalse(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
         self.assertFalse(data["indicatieActief"])
@@ -1426,7 +1416,7 @@ class PartijTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="organisatie",
+            soort_partij=SoortPartij.organisatie.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -1464,7 +1454,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertEqual(data["rekeningnummers"], [])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "organisatie")
+        self.assertEqual(data["soortPartij"], SoortPartij.organisatie.value)
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
@@ -1507,7 +1497,7 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": None,
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
-            "soortPartij": "organisatie",
+            "soortPartij": SoortPartij.organisatie.value,
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
             "indicatieActief": False,
@@ -1535,9 +1525,7 @@ class PartijTests(APITestCase):
                 "adresregel3": "changed",
                 "land": "NL",
             },
-            "partijIdentificatie": {
-                "naam": "The Acacia Strain",
-            },
+            "partijIdentificatie": {"naam": "string"},
         }
 
         response = self.client.put(detail_url, data)
@@ -1550,7 +1538,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertEqual(data["rekeningnummers"], [])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "organisatie")
+        self.assertEqual(data["soortPartij"], SoortPartij.organisatie.value)
         self.assertFalse(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
         self.assertFalse(data["indicatieActief"])
@@ -1584,10 +1572,7 @@ class PartijTests(APITestCase):
                 "land": "NL",
             },
         )
-        self.assertEqual(
-            data["partijIdentificatie"],
-            {"naam": "The Acacia Strain"},
-        )
+        self.assertEqual(data["partijIdentificatie"], {"naam": "string"})
 
     def test_update_partij_contactpersoon(self):
         partij = PartijFactory.create(
@@ -1595,7 +1580,7 @@ class PartijTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="contactpersoon",
+            soort_partij=SoortPartij.contactpersoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -1620,7 +1605,7 @@ class PartijTests(APITestCase):
             correspondentieadres_adresregel3="adres3",
             correspondentieadres_land="NL",
         )
-        organisatie = PartijFactory.create(soort_partij="organisatie")
+        organisatie = PartijFactory.create(soort_partij=SoortPartij.organisatie.value)
         ContactpersoonFactory.create(
             partij=partij,
             werkte_voor_partij=organisatie,
@@ -1629,7 +1614,7 @@ class PartijTests(APITestCase):
             contactnaam_voorvoegsel_achternaam="",
             contactnaam_achternaam="Bozeman",
         )
-        organisatie2 = PartijFactory.create(soort_partij="organisatie")
+        organisatie2 = PartijFactory.create(soort_partij=SoortPartij.organisatie.value)
         ContactpersoonFactory.create(
             werkte_voor_partij=organisatie2,
             contactnaam_voorletters="V",
@@ -1649,7 +1634,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertEqual(data["rekeningnummers"], [])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "contactpersoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.contactpersoon.value)
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
@@ -1707,7 +1692,7 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": None,
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
-            "soortPartij": "contactpersoon",
+            "soortPartij": SoortPartij.contactpersoon.value,
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
             "indicatieActief": False,
@@ -1756,7 +1741,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertEqual(data["rekeningnummers"], [])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "contactpersoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.contactpersoon.value)
         self.assertFalse(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
         self.assertFalse(data["indicatieActief"])
@@ -1813,7 +1798,7 @@ class PartijTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="contactpersoon",
+            soort_partij=SoortPartij.contactpersoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -1838,7 +1823,7 @@ class PartijTests(APITestCase):
             correspondentieadres_adresregel3="adres3",
             correspondentieadres_land="NL",
         )
-        organisatie = PartijFactory.create(soort_partij="organisatie")
+        organisatie = PartijFactory.create(soort_partij=SoortPartij.organisatie.value)
         ContactpersoonFactory.create(
             partij=partij,
             werkte_voor_partij=organisatie,
@@ -1859,7 +1844,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertEqual(data["rekeningnummers"], [])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "contactpersoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.contactpersoon.value)
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
@@ -1917,7 +1902,7 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": None,
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieGeheimhouding": False,
             "voorkeurstaal": "ger",
             "indicatieActief": False,
@@ -1965,7 +1950,7 @@ class PartijTests(APITestCase):
         self.assertIsNone(data["voorkeursDigitaalAdres"])
         self.assertEqual(data["rekeningnummers"], [])
         self.assertIsNone(data["voorkeursRekeningnummer"])
-        self.assertEqual(data["soortPartij"], "persoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.persoon.value)
         self.assertFalse(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ger")
         self.assertFalse(data["indicatieActief"])
@@ -2018,7 +2003,7 @@ class PartijTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -2118,7 +2103,7 @@ class PartijTests(APITestCase):
         data = {
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
         }
 
         response = self.client.patch(detail_url, data)
@@ -2135,7 +2120,7 @@ class PartijTests(APITestCase):
         self.assertEqual(
             data["voorkeursRekeningnummer"]["uuid"], str(rekeningnummer.uuid)
         )
-        self.assertEqual(data["soortPartij"], "persoon")
+        self.assertEqual(data["soortPartij"], SoortPartij.persoon.value)
         self.assertTrue(data["indicatieGeheimhouding"])
         self.assertEqual(data["voorkeurstaal"], "ndl")
         self.assertTrue(data["indicatieActief"])
@@ -2267,6 +2252,184 @@ class PartijTests(APITestCase):
             received_adressen[0]["url"], f"http://testserver{expected_url}"
         )
 
+    def test_valid_create_soort_partij(self):
+        list_url = reverse("klantinteracties:partij-list")
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
+        list_url = reverse("klantinteracties:partij-list")
+        data = {
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "soortPartij": SoortPartij.persoon.value,
+            "indicatieActief": True,
+            "partijIdentificatie": {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            },
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response_data = response.json()
+        response_data["soortPartij"] = SoortPartij.persoon.value
+        response_data["partijIdentificatie"] = {
+            "contactnaam": {
+                "voorletters": "P",
+                "voornaam": "Phil",
+                "voorvoegselAchternaam": "",
+                "achternaam": "Bozeman",
+            }
+        }
+
+    def test_invalid_create_soort_partij(self):
+        list_url = reverse("klantinteracties:partij-list")
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
+        list_url = reverse("klantinteracties:partij-list")
+        data = {
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "soortPartij": SoortPartij.persoon.value,
+            "indicatieActief": True,
+        }
+
+        with self.subTest("partijIdentificatie_not_specified"):
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "partijIdentificatie")
+            self.assertEqual(error["code"], "required")
+            self.assertEqual(
+                error["reason"],
+                "Als `soort_partij` wordt gewijzigd, moet `partij_identifiatie` ook worden opgegeven.",
+            )
+
+        with self.subTest("partijIdentificatie_null_value"):
+            data["partijIdentificatie"] = None
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "partijIdentificatie")
+            self.assertEqual(error["code"], "null")
+            self.assertEqual(error["reason"], "Dit veld mag niet leeg zijn.")
+
+        with self.subTest("partijIdentificatie_empty_value"):
+            data["partijIdentificatie"] = {}
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "partijIdentificatie.contactnaam")
+            self.assertEqual(error["code"], "required")
+            self.assertEqual(error["reason"], "Dit veld is vereist.")
+
+        with self.subTest("soortPartij_required"):
+            data.pop("soortPartij")
+            data["partijIdentificatie"] = {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            }
+
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "soortPartij")
+            self.assertEqual(error["code"], "required")
+            self.assertEqual(error["reason"], "Dit veld is vereist.")
+
+    def test_valid_update_soort_partij(self):
+        partij = PartijFactory.create(
+            nummer="1298329191",
+            interne_notitie="interneNotitie",
+            voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
+            soort_partij=SoortPartij.persoon.value,
+            indicatie_geheimhouding=True,
+            voorkeurstaal="ndl",
+            indicatie_actief=True,
+        )
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+
+        with self.subTest("same_value_soortPartij"):
+            data = {"soortPartij": SoortPartij.persoon.value}
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response.data["soort_partij"] = SoortPartij.persoon.value
+            response.data["partij_identificatie"] = None
+
+        with self.subTest("same_soortPartij_and_new_partijIdentificatie"):
+            data = {
+                "soortPartij": SoortPartij.persoon.value,
+                "partijIdentificatie": {
+                    "contactnaam": {
+                        "voorletters": "P",
+                        "voornaam": "Phil",
+                        "voorvoegselAchternaam": "",
+                        "achternaam": "Bozeman",
+                    }
+                },
+            }
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response.data["soort_partij"] = SoortPartij.persoon.value
+            response.data["partij_identificatie"] = {
+                "volledigeNaam": "Phil Bozeman",
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                },
+            }
+
+        with self.subTest("new_value_soortPartij_and_new_partijIdentificatie"):
+            data = {
+                "soortPartij": SoortPartij.organisatie.value,
+                "partijIdentificatie": {"naam": "string"},
+            }
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response.data["soort_partij"] = SoortPartij.organisatie.value
+            response.data["partij_identificatie"] = {"naam": "string"}
+
+    def test_invalid_update_soort_partij(self):
+        partij = PartijFactory.create(
+            nummer="1298329191",
+            interne_notitie="interneNotitie",
+            voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
+            soort_partij=SoortPartij.persoon.value,
+            indicatie_geheimhouding=True,
+            voorkeurstaal="ndl",
+            indicatie_actief=True,
+        )
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+
+        with self.subTest("new_soortPartij_and_null_partijIdentificatie"):
+            data = {
+                "soortPartij": SoortPartij.organisatie.value,
+            }
+
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "partijIdentificatie")
+            self.assertEqual(error["code"], "required")
+            self.assertEqual(
+                error["reason"],
+                "Als `soort_partij` wordt gewijzigd, moet `partij_identifiatie` ook worden opgegeven.",
+            )
+
 
 class NestedPartijIdentificatorTests(APITestCase):
     list_url = reverse_lazy("klantinteracties:partij-list")
@@ -2325,7 +2488,7 @@ class NestedPartijIdentificatorTests(APITestCase):
                 }
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieActief": True,
             "partijIdentificatie": {
                 "contactnaam": {
@@ -2379,7 +2542,8 @@ class NestedPartijIdentificatorTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
         self.assertEqual(Partij.objects.all().count(), 0)
@@ -2417,7 +2581,7 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieActief": True,
         }
         # object with this UUID does not exist for partijIdentificatoren
@@ -2452,7 +2616,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
         response = self.client.post(self.list_url, data)
@@ -2507,7 +2672,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2571,7 +2737,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2597,7 +2764,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2627,7 +2795,6 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 },
             ],
-            "soortPartij": "organisatie",
         }
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
@@ -2637,7 +2804,6 @@ class NestedPartijIdentificatorTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
         self.assertEqual(len(response_data["partijIdentificatoren"]), 2)
-        self.assertEqual(response_data["soortPartij"], "organisatie")
 
     def test_invalid_create_where_partij_uuid_is_passed(self):
         digitaal_adres = DigitaalAdresFactory.create()
@@ -2664,7 +2830,7 @@ class NestedPartijIdentificatorTests(APITestCase):
                 }
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieActief": True,
             "partijIdentificatie": {
                 "contactnaam": {
@@ -2690,7 +2856,8 @@ class NestedPartijIdentificatorTests(APITestCase):
         self.assertEqual(Partij.objects.all().count(), 1)
 
         # PATC and PUT allow to pass identificeerdePartij
-        data["soortPartij"] = "organisatie"
+        data["soortPartij"] = SoortPartij.organisatie.value
+        data["partijIdentificatie"] = {"naam": "string"}
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -2699,7 +2866,7 @@ class NestedPartijIdentificatorTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
         self.assertEqual(len(response_data["partijIdentificatoren"]), 1)
-        self.assertEqual(response_data["soortPartij"], "organisatie")
+        self.assertEqual(response_data["soortPartij"], SoortPartij.organisatie.value)
 
     def test_invalid_create_partij_identificator_globally_uniqueness(self):
         digitaal_adres = DigitaalAdresFactory.create()
@@ -2727,7 +2894,7 @@ class NestedPartijIdentificatorTests(APITestCase):
                 }
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieActief": True,
             "partijIdentificatie": {
                 "contactnaam": {
@@ -2774,7 +2941,7 @@ class NestedPartijIdentificatorTests(APITestCase):
                 partij_identificator_dict,
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieActief": True,
             "partijIdentificatie": {
                 "contactnaam": {
@@ -2819,7 +2986,7 @@ class NestedPartijIdentificatorTests(APITestCase):
                 },
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieActief": True,
             "partijIdentificatie": {
                 "contactnaam": {
@@ -2874,7 +3041,7 @@ class NestedPartijIdentificatorTests(APITestCase):
                 },
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.persoon.value,
             "indicatieActief": True,
             "partijIdentificatie": {
                 "contactnaam": {
@@ -2905,14 +3072,14 @@ class NestedPartijIdentificatorTests(APITestCase):
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
         )
 
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
 
-        data = {"soortPartij": "organisatie"}
+        data = {}
 
         for sub_test in [
             (lambda data: data, 0),
@@ -2924,7 +3091,6 @@ class NestedPartijIdentificatorTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             response_data = response.json()
             self.assertEqual(response_data["partijIdentificatoren"], [])
-            self.assertEqual(response_data["soortPartij"], "organisatie")
             self.assertEqual(partij.partijidentificator_set.count(), sub_test[1])
 
     def test_partially_update_where_all_partij_identificatoren_have_uuid(self):
@@ -2933,7 +3099,7 @@ class NestedPartijIdentificatorTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -2949,7 +3115,6 @@ class NestedPartijIdentificatorTests(APITestCase):
 
         # changes are only for objectId
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {
                     "uuid": str(bsn.uuid),
@@ -2987,8 +3152,6 @@ class NestedPartijIdentificatorTests(APITestCase):
         partij = Partij.objects.get(pk=partij.pk)
 
         self.assertEqual(len(response_data["partijIdentificatoren"]), 3)
-        self.assertEqual(response_data["soortPartij"], "organisatie")
-        self.assertEqual(partij.soort_partij, "organisatie")
         new_bsn = partij.partijidentificator_set.get(
             partij_identificator_code_soort_object_id="bsn"
         )
@@ -3015,7 +3178,7 @@ class NestedPartijIdentificatorTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -3028,7 +3191,6 @@ class NestedPartijIdentificatorTests(APITestCase):
 
         # changes are only for objectId
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {
                     "partijIdentificator": {
@@ -3054,8 +3216,6 @@ class NestedPartijIdentificatorTests(APITestCase):
         response_data = response.json()
         partij = Partij.objects.get(pk=partij.pk)
         self.assertEqual(len(response_data["partijIdentificatoren"]), 2)
-        self.assertEqual(response_data["soortPartij"], "organisatie")
-        self.assertEqual(partij.soort_partij, "organisatie")
         new_bsn = partij.partijidentificator_set.get(
             partij_identificator_code_soort_object_id="bsn"
         )
@@ -3076,7 +3236,7 @@ class NestedPartijIdentificatorTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -3092,7 +3252,6 @@ class NestedPartijIdentificatorTests(APITestCase):
 
         # changes are only for objectId
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {
                     "partijIdentificator": {
@@ -3129,8 +3288,6 @@ class NestedPartijIdentificatorTests(APITestCase):
         response_data = response.json()
         partij = Partij.objects.get(pk=partij.pk)
         self.assertEqual(len(response_data["partijIdentificatoren"]), 3)
-        self.assertEqual(response_data["soortPartij"], "organisatie")
-        self.assertEqual(partij.soort_partij, "organisatie")
         new_bsn = partij.partijidentificator_set.get(
             partij_identificator_code_soort_object_id="bsn"
         )
@@ -3158,7 +3315,7 @@ class NestedPartijIdentificatorTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -3176,7 +3333,6 @@ class NestedPartijIdentificatorTests(APITestCase):
         )
         # changes are only for objectId
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {  # same data as bsn object, without uuid
                     "partijIdentificator": {
@@ -3203,8 +3359,6 @@ class NestedPartijIdentificatorTests(APITestCase):
         partij = Partij.objects.get(pk=partij.pk)
 
         self.assertEqual(len(response_data["partijIdentificatoren"]), 2)
-        self.assertEqual(response_data["soortPartij"], "organisatie")
-        self.assertEqual(partij.soort_partij, "organisatie")
 
         new_bsn = partij.partijidentificator_set.get(
             partij_identificator_code_soort_object_id="bsn"
@@ -3221,7 +3375,7 @@ class NestedPartijIdentificatorTests(APITestCase):
         )
 
     def test_invalid_partially_update_globally_uniqueness(self):
-        partij_a = PartijFactory.create(soort_partij="persoon")
+        partij_a = PartijFactory.create(soort_partij=SoortPartij.persoon.value)
         partij_b = PartijFactory.create()
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij_a.uuid)}
@@ -3233,9 +3387,8 @@ class NestedPartijIdentificatorTests(APITestCase):
         )
         self.assertTrue(partij_a.partijidentificator_set.count(), 1)
         self.assertTrue(partij_b.partijidentificator_set.count(), 1)
-        self.assertEqual(partij_a.soort_partij, "persoon")
+        self.assertEqual(partij_a.soort_partij, SoortPartij.persoon.value)
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {
                     "partijIdentificator": {
@@ -3260,10 +3413,10 @@ class NestedPartijIdentificatorTests(APITestCase):
         self.assertTrue(partij_a.partijidentificator_set.count(), 1)
         self.assertTrue(partij_b.partijidentificator_set.count(), 1)
         # partij has the same data
-        self.assertEqual(partij_a.soort_partij, "persoon")
+        self.assertEqual(partij_a.soort_partij, SoortPartij.persoon.value)
 
     def test_invalid_partially_update_locally_uniqueness(self):
-        partij = PartijFactory.create(soort_partij="persoon")
+        partij = PartijFactory.create(soort_partij=SoortPartij.persoon.value)
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -3272,10 +3425,9 @@ class NestedPartijIdentificatorTests(APITestCase):
         kvk_nummer = KvkNummerPartijIdentificatorFactory.create(partij=partij)
         self.assertTrue(partij.partijidentificator_set.count(), 2)
 
-        self.assertEqual(partij.soort_partij, "persoon")
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)
 
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {  # same data as bsn object
                     "uuid": str(bsn.uuid),
@@ -3307,7 +3459,7 @@ class NestedPartijIdentificatorTests(APITestCase):
             "Partij identificator met deze Partij en Soort object ID bestaat al.",
         )
         # partij has the same data
-        self.assertEqual(partij.soort_partij, "persoon")
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)
 
     def test_update_partij_identificatoren_only_required(self):
         partij = PartijFactory.create(
@@ -3315,7 +3467,7 @@ class NestedPartijIdentificatorTests(APITestCase):
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
-            soort_partij="persoon",
+            soort_partij=SoortPartij.persoon.value,
             indicatie_geheimhouding=True,
             voorkeurstaal="ndl",
             indicatie_actief=True,
@@ -3324,7 +3476,6 @@ class NestedPartijIdentificatorTests(APITestCase):
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [{}],
         }
         with self.subTest("invalid_put_empty_dict"):
@@ -3351,7 +3502,6 @@ class NestedPartijIdentificatorTests(APITestCase):
             )
 
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {
                     "partijIdentificator": {},
@@ -3404,7 +3554,7 @@ class NestedPartijIdentificatorTests(APITestCase):
             self.assertEqual(error_soort_object_id["code"], "required")
 
     def test_invalid_update_delete_sub_identificator(self):
-        partij = PartijFactory.create(soort_partij="persoon")
+        partij = PartijFactory.create(soort_partij=SoortPartij.persoon.value)
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -3416,11 +3566,10 @@ class NestedPartijIdentificatorTests(APITestCase):
             sub_identificator_van=sub_identificator_van,
         )
 
-        self.assertEqual(partij.soort_partij, "persoon")
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)
         self.assertEqual(Partij.objects.all().count(), 1)
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {
                     "uuid": str(vestigingsnummer.uuid),
@@ -3449,11 +3598,11 @@ class NestedPartijIdentificatorTests(APITestCase):
         self.assertEqual(Partij.objects.all().count(), 1)
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
         # partij has the same data
-        self.assertEqual(partij.soort_partij, "persoon")
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)
 
     def test_invalid_delete_sub_identificator_van_parent(self):
-        partij_a = PartijFactory.create(soort_partij="persoon")
-        partij_b = PartijFactory.create(soort_partij="persoon")
+        partij_a = PartijFactory.create(soort_partij=SoortPartij.persoon.value)
+        partij_b = PartijFactory.create(soort_partij=SoortPartij.persoon.value)
 
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij_a.uuid)}
@@ -3472,7 +3621,6 @@ class NestedPartijIdentificatorTests(APITestCase):
         # passes the new partijIdentificator = bsn and without specifying kvk_nummer,
         # so it should be deleted, but this is not allowed
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {
                     "partijIdentificator": {
@@ -3501,10 +3649,10 @@ class NestedPartijIdentificatorTests(APITestCase):
         partij_b.partijidentificator_set.get()
 
         # partij has the same data
-        self.assertEqual(partij_a.soort_partij, "persoon")
+        self.assertEqual(partij_a.soort_partij, SoortPartij.persoon.value)
 
     def test_invalid_update_remove_sub_identificator(self):
-        partij = PartijFactory.create(soort_partij="persoon")
+        partij = PartijFactory.create(soort_partij=SoortPartij.persoon.value)
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -3516,12 +3664,11 @@ class NestedPartijIdentificatorTests(APITestCase):
             sub_identificator_van=sub_identificator_van,
         )
 
-        self.assertEqual(partij.soort_partij, "persoon")
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)
         self.assertEqual(Partij.objects.all().count(), 1)
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
 
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [
                 {
                     "uuid": str(sub_identificator_van.uuid),
@@ -3558,10 +3705,10 @@ class NestedPartijIdentificatorTests(APITestCase):
         self.assertEqual(Partij.objects.all().count(), 1)
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
         # partij has the same data
-        self.assertEqual(partij.soort_partij, "persoon")
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)
 
     def test_invalid_update_delete_all(self):
-        partij = PartijFactory.create(soort_partij="persoon")
+        partij = PartijFactory.create(soort_partij=SoortPartij.persoon.value)
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -3573,12 +3720,11 @@ class NestedPartijIdentificatorTests(APITestCase):
             sub_identificator_van=sub_identificator_van,
         )
 
-        self.assertEqual(partij.soort_partij, "persoon")
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)
         self.assertEqual(Partij.objects.all().count(), 1)
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
 
         data = {
-            "soortPartij": "organisatie",
             "partijIdentificatoren": [],
         }
         response = self.client.patch(detail_url, data)
@@ -3596,4 +3742,4 @@ class NestedPartijIdentificatorTests(APITestCase):
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
 
         # partij has the same data
-        self.assertEqual(partij.soort_partij, "persoon")
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)
