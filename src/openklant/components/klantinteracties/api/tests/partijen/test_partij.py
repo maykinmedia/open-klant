@@ -390,7 +390,8 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -1022,6 +1023,7 @@ class PartijTests(APITestCase):
                 "rekeningnummers": [],
                 "voorkeursRekeningnummer": None,
                 "soortPartij": SoortPartij.organisatie.value,
+                "partijIdentificatie": {"naam": "string"},
                 "indicatieGeheimhouding": False,
                 "voorkeurstaal": "ger",
                 "indicatieActief": False,
@@ -1162,6 +1164,7 @@ class PartijTests(APITestCase):
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
             "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -1522,9 +1525,7 @@ class PartijTests(APITestCase):
                 "adresregel3": "changed",
                 "land": "NL",
             },
-            "partijIdentificatie": {
-                "naam": "The Acacia Strain",
-            },
+            "partijIdentificatie": {"naam": "string"},
         }
 
         response = self.client.put(detail_url, data)
@@ -1571,10 +1572,7 @@ class PartijTests(APITestCase):
                 "land": "NL",
             },
         )
-        self.assertEqual(
-            data["partijIdentificatie"],
-            {"naam": "The Acacia Strain"},
-        )
+        self.assertEqual(data["partijIdentificatie"], {"naam": "string"})
 
     def test_update_partij_contactpersoon(self):
         partij = PartijFactory.create(
@@ -2281,6 +2279,183 @@ class PartijTests(APITestCase):
         partij = PartijFactory.create(soort_partij="random")
 
         self.assertEqual(str(partij), partij.nummer)
+    def test_valid_create_soort_partij(self):
+        list_url = reverse("klantinteracties:partij-list")
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
+        list_url = reverse("klantinteracties:partij-list")
+        data = {
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "soortPartij": SoortPartij.persoon.value,
+            "indicatieActief": True,
+            "partijIdentificatie": {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            },
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response_data = response.json()
+        response_data["soortPartij"] = SoortPartij.persoon.value
+        response_data["partijIdentificatie"] = {
+            "contactnaam": {
+                "voorletters": "P",
+                "voornaam": "Phil",
+                "voorvoegselAchternaam": "",
+                "achternaam": "Bozeman",
+            }
+        }
+
+    def test_invalid_create_soort_partij(self):
+        list_url = reverse("klantinteracties:partij-list")
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
+        list_url = reverse("klantinteracties:partij-list")
+        data = {
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "soortPartij": SoortPartij.persoon.value,
+            "indicatieActief": True,
+        }
+
+        with self.subTest("partijIdentificatie_not_specified"):
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "partijIdentificatie")
+            self.assertEqual(error["code"], "required")
+            self.assertEqual(
+                error["reason"],
+                "Als `soort_partij` wordt gewijzigd, moet `partij_identifiatie` ook worden opgegeven.",
+            )
+
+        with self.subTest("partijIdentificatie_null_value"):
+            data["partijIdentificatie"] = None
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "partijIdentificatie")
+            self.assertEqual(error["code"], "null")
+            self.assertEqual(error["reason"], "Dit veld mag niet leeg zijn.")
+
+        with self.subTest("partijIdentificatie_empty_value"):
+            data["partijIdentificatie"] = {}
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "partijIdentificatie.contactnaam")
+            self.assertEqual(error["code"], "required")
+            self.assertEqual(error["reason"], "Dit veld is vereist.")
+
+        with self.subTest("soortPartij_required"):
+            data.pop("soortPartij")
+            data["partijIdentificatie"] = {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            }
+
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "soortPartij")
+            self.assertEqual(error["code"], "required")
+            self.assertEqual(error["reason"], "Dit veld is vereist.")
+
+    def test_valid_update_soort_partij(self):
+        partij = PartijFactory.create(
+            nummer="1298329191",
+            interne_notitie="interneNotitie",
+            voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
+            soort_partij=SoortPartij.persoon.value,
+            indicatie_geheimhouding=True,
+            voorkeurstaal="ndl",
+            indicatie_actief=True,
+        )
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+
+        with self.subTest("same_value_soortPartij"):
+            data = {"soortPartij": SoortPartij.persoon.value}
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response.data["soort_partij"] = SoortPartij.persoon.value
+            response.data["partij_identificatie"] = None
+
+        with self.subTest("same_soortPartij_and_new_partijIdentificatie"):
+            data = {
+                "soortPartij": SoortPartij.persoon.value,
+                "partijIdentificatie": {
+                    "contactnaam": {
+                        "voorletters": "P",
+                        "voornaam": "Phil",
+                        "voorvoegselAchternaam": "",
+                        "achternaam": "Bozeman",
+                    }
+                },
+            }
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response.data["soort_partij"] = SoortPartij.persoon.value
+            response.data["partij_identificatie"] = {
+                "volledigeNaam": "Phil Bozeman",
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                },
+            }
+
+        with self.subTest("new_value_soortPartij_and_new_partijIdentificatie"):
+            data = {
+                "soortPartij": SoortPartij.organisatie.value,
+                "partijIdentificatie": {"naam": "string"},
+            }
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response.data["soort_partij"] = SoortPartij.organisatie.value
+            response.data["partij_identificatie"] = {"naam": "string"}
+
+    def test_invalid_update_soort_partij(self):
+        partij = PartijFactory.create(
+            nummer="1298329191",
+            interne_notitie="interneNotitie",
+            voorkeurs_digitaal_adres=None,
+            voorkeurs_rekeningnummer=None,
+            soort_partij=SoortPartij.persoon.value,
+            indicatie_geheimhouding=True,
+            voorkeurstaal="ndl",
+            indicatie_actief=True,
+        )
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
+        )
+
+        with self.subTest("new_soortPartij_and_null_partijIdentificatie"):
+            data = {
+                "soortPartij": SoortPartij.organisatie.value,
+            }
+
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "partijIdentificatie")
+            self.assertEqual(error["code"], "required")
+            self.assertEqual(
+                error["reason"],
+                "Als `soort_partij` wordt gewijzigd, moet `partij_identifiatie` ook worden opgegeven.",
+            )
 
 
 class NestedPartijIdentificatorTests(APITestCase):
@@ -2394,7 +2569,8 @@ class NestedPartijIdentificatorTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
         self.assertEqual(Partij.objects.all().count(), 0)
@@ -2467,7 +2643,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
         response = self.client.post(self.list_url, data)
@@ -2522,7 +2699,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2586,7 +2764,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2612,7 +2791,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2704,6 +2884,7 @@ class NestedPartijIdentificatorTests(APITestCase):
 
         # PATC and PUT allow to pass identificeerdePartij
         data["soortPartij"] = SoortPartij.organisatie.value
+        data["partijIdentificatie"] = {"naam": "string"}
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )

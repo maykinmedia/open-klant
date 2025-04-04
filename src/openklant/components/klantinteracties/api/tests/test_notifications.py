@@ -9,6 +9,7 @@ from vng_api_common.tests import reverse
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
+from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
     DigitaalAdresFactory,
@@ -68,7 +69,8 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": "persoon",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "voorkeurstaal": "ndl",
             "indicatie_actief": True,
         }
@@ -90,7 +92,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "kenmerken": {
                     "nummer": "123456789",
                     "interneNotitie": "interneNotitie",
-                    "soortPartij": "persoon",
+                    "soortPartij": SoortPartij.organisatie.value,
                 },
             }
         )
@@ -112,14 +114,16 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "kenmerken": {
                     "nummer": "123456789",
                     "interneNotitie": "interneNotitie",
-                    "soortPartij": "persoon",
+                    "soortPartij": SoortPartij.organisatie.value,
                 },
             }
         )
 
     def test_send_notification_partial_update_object(self, m):
         with self.captureOnCommitCallbacks(execute=True):
-            response = self.client.patch(self.detail_url, {"soortPartij": "persoon"})
+            response = self.client.patch(
+                self.detail_url, {"soortPartij": SoortPartij.organisatie.value}
+            )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
@@ -134,7 +138,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "kenmerken": {
                     "nummer": "1298329191",
                     "interneNotitie": "interneNotitie",
-                    "soortPartij": "persoon",
+                    "soortPartij": SoortPartij.organisatie.value,
                 },
             }
         )
