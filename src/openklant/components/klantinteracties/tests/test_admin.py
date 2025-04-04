@@ -21,9 +21,11 @@ from openklant.components.klantinteracties.models.tests.factories import (
     MedewerkerFactory,
     PartijFactory,
     PersoonFactory,
+    RekeningnummerFactory,
 )
 from openklant.utils.tests.webtest import add_dynamic_field
 
+from ..admin import PartijAdminForm
 from ..constants import SoortDigitaalAdres
 from ..models import (
     Actor,
@@ -34,6 +36,7 @@ from ..models import (
     Klantcontact,
     Medewerker,
     SoortActor,
+    SoortPartij,
     Taakstatus,
 )
 
@@ -131,6 +134,46 @@ class PartijAdminTests(WebTest):
         self.assertEqual(adres.omschrijving, "description")
         self.assertEqual(adres.adres, "email@example.com")
         self.assertIsNone(adres.betrokkene)
+
+    def test_voorkeurs_digitaal_adres_invalid(self):
+        partij = PartijFactory.create(soort_partij=SoortPartij.persoon)
+        invalid_digitaal_adres = DigitaalAdresFactory.create()
+
+        form = PartijAdminForm(
+            data={
+                "uuid": uuid4(),
+                "voorkeurs_digitaal_adres": invalid_digitaal_adres.id,
+                "soort_partij": partij.soort_partij,
+            },
+            instance=partij,
+        )
+
+        self.assertFalse(form.is_valid())
+        self.assertIn("voorkeurs_digitaal_adres", form.errors)
+        self.assertIn(
+            "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
+            form.errors["voorkeurs_digitaal_adres"],
+        )
+
+    def test_voorkeurs_rekeningnummer_invalid(self):
+        partij = PartijFactory.create()
+        invalid_rekeningnummer = RekeningnummerFactory.create()
+
+        form = PartijAdminForm(
+            data={
+                "uuid": uuid4(),
+                "voorkeurs_rekeningnummer": invalid_rekeningnummer.id,
+                "soort_partij": partij.soort_partij,
+            },
+            instance=partij,
+        )
+
+        self.assertFalse(form.is_valid())
+        self.assertIn("voorkeurs_rekeningnummer", form.errors)
+        self.assertIn(
+            "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn.",
+            form.errors["voorkeurs_rekeningnummer"],
+        )
 
 
 @disable_admin_mfa()

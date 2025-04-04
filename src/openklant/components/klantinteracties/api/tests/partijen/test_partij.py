@@ -2267,6 +2267,34 @@ class PartijTests(APITestCase):
             received_adressen[0]["url"], f"http://testserver{expected_url}"
         )
 
+    def test_str_representation_persoon(self):
+        persoon = PersoonFactory.create()
+        partij = persoon.partij
+
+        self.assertEqual(str(partij), f"{persoon} ({partij.nummer})")
+
+    def test_str_representation_organisatie(self):
+        organisatie = OrganisatieFactory.create()
+        partij = organisatie.partij
+
+        self.assertEqual(str(partij), f"{organisatie} ({partij.nummer})")
+
+    def test_str_representation_contactpersoon(self):
+        contactpersoon = ContactpersoonFactory.create()
+        partij = contactpersoon.partij
+
+        self.assertEqual(str(partij), f"{contactpersoon} ({partij.nummer})")
+
+    def test_str_representation_other(self):
+        partij = PartijFactory.create(soort_partij=SoortPartij.persoon)
+
+        self.assertEqual(str(partij), partij.nummer)
+
+    def test_str_representation_random_type(self):
+        partij = PartijFactory.create(soort_partij="random")
+
+        self.assertEqual(str(partij), partij.nummer)
+
 
 class NestedPartijIdentificatorTests(APITestCase):
     list_url = reverse_lazy("klantinteracties:partij-list")

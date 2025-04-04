@@ -99,23 +99,6 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         verbose_name = _("partij")
         verbose_name_plural = _("partijen")
 
-    def clean(self):
-        super().clean()
-
-        if self.voorkeurs_digitaal_adres:
-            if self.voorkeurs_digitaal_adres not in self.digitaaladres_set.all():
-                raise ValidationError(
-                    _("Het voorkeurs adres moet een gelinkte digitaal adres zijn.")
-                )
-
-        if self.voorkeurs_rekeningnummer:
-            if self.voorkeurs_rekeningnummer not in self.rekeningnummer_set.all():
-                raise ValidationError(
-                    _(
-                        "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
-                    )
-                )
-
     def save(self, *args, **kwargs):
         number_generator(self, Partij)
         return super().save(*args, **kwargs)
@@ -124,13 +107,16 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         if soort_partij := self.soort_partij:
             match (soort_partij):
                 case SoortPartij.persoon:
-                    partij = Persoon.objects.get(partij__uuid=self.uuid)
+                    partij = Persoon.objects.filter(partij=self).first()
                 case SoortPartij.organisatie:
-                    partij = Organisatie.objects.get(partij__uuid=self.uuid)
+                    partij = Organisatie.objects.filter(partij=self).first()
                 case SoortPartij.contactpersoon:
-                    partij = Contactpersoon.objects.get(partij__uuid=self.uuid)
+                    partij = Contactpersoon.objects.filter(partij=self).first()
+                case _:
+                    return self.nummer
 
-            return f"{partij} ({self.nummer})"
+            if partij:
+                return f"{partij} ({self.nummer})"
 
         return self.nummer
 
