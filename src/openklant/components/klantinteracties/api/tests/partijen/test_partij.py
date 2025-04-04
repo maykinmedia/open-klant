@@ -2290,6 +2290,11 @@ class PartijTests(APITestCase):
 
         self.assertEqual(str(partij), partij.nummer)
 
+    def test_str_representation_random_type(self):
+        partij = PartijFactory.create(soort_partij="random")
+
+        self.assertEqual(str(partij), partij.nummer)
+
 
 class NestedPartijIdentificatorTests(APITestCase):
     list_url = reverse_lazy("klantinteracties:partij-list")
