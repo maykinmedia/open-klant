@@ -424,7 +424,7 @@ class PartijTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
             "indicatieActief": True,
         }
 
@@ -1056,6 +1056,7 @@ class PartijTests(APITestCase):
                 "rekeningnummers": [],
                 "voorkeursRekeningnummer": None,
                 "soortPartij": SoortPartij.organisatie.value,
+                "partijIdentificatie": {"naam": "string"},
                 "indicatieGeheimhouding": False,
                 "voorkeurstaal": "ger",
                 "indicatieActief": False,
@@ -1183,6 +1184,7 @@ class PartijTests(APITestCase):
             "rekeningnummers": [],
             "voorkeursRekeningnummer": None,
             "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -1217,7 +1219,6 @@ class PartijTests(APITestCase):
 
         with self.subTest("set_fk_none"):
             data = {
-                "soort_partij": "organisatie",
                 "rekeningnummers": None,
                 "digitaleAdressen": None,
             }
@@ -1241,7 +1242,6 @@ class PartijTests(APITestCase):
         self.assertTrue(partij.rekeningnummer_set.exists())
         with self.subTest("set_fk_empty_list"):
             data = {
-                "soort_partij": "organisatie",
                 "rekeningnummers": [],
                 "digitaleAdressen": [],
             }
@@ -1598,9 +1598,7 @@ class PartijTests(APITestCase):
                 "adresregel3": "changed",
                 "land": "NL",
             },
-            "partijIdentificatie": {
-                "naam": "The Acacia Strain",
-            },
+            "partijIdentificatie": {"naam": "string"},
         }
 
         response = self.client.put(detail_url, data)
@@ -1647,10 +1645,7 @@ class PartijTests(APITestCase):
                 "land": "NL",
             },
         )
-        self.assertEqual(
-            data["partijIdentificatie"],
-            {"naam": "The Acacia Strain"},
-        )
+        self.assertEqual(data["partijIdentificatie"], {"naam": "string"})
 
     def test_update_partij_contactpersoon(self):
         partij = PartijFactory.create(
@@ -2181,7 +2176,6 @@ class PartijTests(APITestCase):
         data = {
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": SoortPartij.persoon.value,
         }
 
         response = self.client.patch(detail_url, data)
@@ -2388,16 +2382,9 @@ class NestedPartijIdentificatorTests(APITestCase):
                 }
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
-            "partijIdentificatie": {
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                }
-            },
         }
 
         response = self.client.post(list_url, data)
@@ -2442,7 +2429,8 @@ class NestedPartijIdentificatorTests(APITestCase):
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
             "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
         self.assertEqual(Partij.objects.all().count(), 0)
@@ -2480,7 +2468,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
         # object with this UUID does not exist for partijIdentificatoren
@@ -2515,7 +2504,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
         response = self.client.post(self.list_url, data)
@@ -2570,7 +2560,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2634,7 +2625,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2660,7 +2652,8 @@ class NestedPartijIdentificatorTests(APITestCase):
                     },
                 }
             ],
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
         }
 
@@ -2752,6 +2745,7 @@ class NestedPartijIdentificatorTests(APITestCase):
 
         # PATC and PUT allow to pass identificeerdePartij
         data["soortPartij"] = SoortPartij.organisatie.value
+        data["partijIdentificatie"] = {"naam": "string"}
         detail_url = reverse(
             "klantinteracties:partij-detail", kwargs={"uuid": str(partij.uuid)}
         )
@@ -2788,16 +2782,9 @@ class NestedPartijIdentificatorTests(APITestCase):
                 }
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
-            "partijIdentificatie": {
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                }
-            },
         }
         response = self.client.post(list_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -2835,16 +2822,9 @@ class NestedPartijIdentificatorTests(APITestCase):
                 partij_identificator_dict,
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
-            "partijIdentificatie": {
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                }
-            },
         }
         response = self.client.post(list_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -2880,16 +2860,9 @@ class NestedPartijIdentificatorTests(APITestCase):
                 },
             ],
             "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
-            "soortPartij": SoortPartij.persoon.value,
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {"naam": "string"},
             "indicatieActief": True,
-            "partijIdentificatie": {
-                "contactnaam": {
-                    "voorletters": "P",
-                    "voornaam": "Phil",
-                    "voorvoegselAchternaam": "",
-                    "achternaam": "Bozeman",
-                }
-            },
         }
         response = self.client.post(list_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
