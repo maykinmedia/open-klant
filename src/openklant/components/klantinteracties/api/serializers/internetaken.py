@@ -84,13 +84,13 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
+        actoren_query = instance.actoren.order_by("internetakenactorenthoughmodel__pk")
         response["toegewezen_aan_actor"] = ActorForeignKeySerializer(
-            instance.actoren.order_by("internetakenactorenthoughmodel__pk").first(),
-            context={**self.context},
+            actoren_query.first(), context={**self.context}
         ).data
 
         response["toegewezen_aan_actoren"] = ActorForeignKeySerializer(
-            instance.actoren.all().order_by("internetakenactorenthoughmodel__pk"),
+            actoren_query.all(),
             context={**self.context},
             many=True,
         ).data
