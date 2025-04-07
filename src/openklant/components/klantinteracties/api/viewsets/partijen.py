@@ -70,11 +70,16 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
             "organisatie",
             "persoon",
             "contactpersoon",
+            "voorkeurs_digitaal_adres",
+            "voorkeurs_rekeningnummer",
         )
         .prefetch_related(
             "betrokkene_set",
             "digitaaladres_set",
+            "categorierelatie_set",
             "partijidentificator_set",
+            "rekeningnummer_set",
+            "vertegenwoordigende",
         )
     )
     serializer_class = PartijSerializer
@@ -246,7 +251,10 @@ class CategorieViewSet(viewsets.ModelViewSet):
 class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     """Gegevens die een partij in een basisregistratie of ander extern register uniek identificeren."""
 
-    queryset = PartijIdentificator.objects.order_by("-pk").select_related("partij")
+    queryset = PartijIdentificator.objects.order_by("-pk").select_related(
+        "partij",
+        "sub_identificator_van",
+    )
     serializer_class = PartijIdentificatorSerializer
     lookup_field = "uuid"
     pagination_class = DynamicPageSizePagination

@@ -41,10 +41,14 @@ from openklant.components.token.permission import TokenPermissions
 class ActorViewSet(viewsets.ModelViewSet):
     """Iets dat of iemand die voor de gemeente werkzaamheden uitvoert."""
 
-    queryset = Actor.objects.order_by("-pk").select_related(
-        "geautomatiseerdeactor",
-        "medewerker",
-        "organisatorischeeenheid",
+    queryset = (
+        Actor.objects.order_by("-pk")
+        .select_related(
+            "geautomatiseerdeactor",
+            "medewerker",
+            "organisatorischeeenheid",
+        )
+        .prefetch_related("actorklantcontact_set")
     )
     serializer_class = ActorSerializer
     lookup_field = "uuid"

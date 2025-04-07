@@ -66,6 +66,8 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
         "bijlage_set",
         "betrokkene_set",
         "internetaak_set",
+        "actorklantcontact_set",
+        "onderwerpobject_set",
     )
     serializer_class = KlantcontactSerializer
     lookup_field = "uuid"
