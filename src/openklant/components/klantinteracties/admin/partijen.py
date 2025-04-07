@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
@@ -21,6 +22,46 @@ from ..models.partijen import (
     Persoon,
     Vertegenwoordigden,
 )
+
+
+class PartijAdminForm(forms.ModelForm):
+    class Meta:
+        model = Partij
+        fields = "__all__"
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        voorkeurs_digitaal_adres = cleaned_data.get("voorkeurs_digitaal_adres")
+        voorkeurs_rekeningnummer = cleaned_data.get("voorkeurs_rekeningnummer")
+
+        if voorkeurs_digitaal_adres:
+            if (
+                voorkeurs_digitaal_adres
+                not in DigitaalAdres.objects.filter(partij=self.instance).all()
+            ):
+                raise ValidationError(
+                    {
+                        "voorkeurs_digitaal_adres": _(
+                            "Het voorkeurs adres moet een gelinkte digitaal adres zijn."
+                        )
+                    }
+                )
+
+        if voorkeurs_rekeningnummer:
+            if (
+                voorkeurs_rekeningnummer
+                not in Rekeningnummer.objects.filter(partij=self.instance).all()
+            ):
+                raise ValidationError(
+                    {
+                        "voorkeurs_rekeningnummer": _(
+                            "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
+                        )
+                    }
+                )
+
+        return cleaned_data
 
 
 class PartijIdentificatorAdminForm(forms.ModelForm):
@@ -115,6 +156,7 @@ class OrganisatieInlineAdmin(admin.StackedInline):
 
 @admin.register(Partij)
 class PartijAdmin(admin.ModelAdmin):
+    form = PartijAdminForm
     list_display = (
         "nummer",
         "get_name",
