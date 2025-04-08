@@ -21,6 +21,10 @@ If any mandatory field is missing, the update will fail. Optional fields are lef
 * The `PATCH` method, on the other hand, allows you to update only the fields you specify.
 Some mandatory fields can be left out, and the resource will only be updated with the provided data,
 leaving other fields unchanged.
+
+**Warning: `POST`**
+
+Fields that allow `null` values are `NOT` required when creating a new resource.
 """
 )
 PARTIJ_IDENTIFICATOR_DESCRIPTION_CREATE = _(

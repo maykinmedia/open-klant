@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 
+from openklant.components.klantinteracties.api.polymorphism import (
+    RequiredNullableFieldsSerializer,
+)
 from openklant.components.klantinteracties.api.validators import Rekeningnummer_exists
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
@@ -27,7 +30,10 @@ class RekeningnummerForeignKeySerializer(serializers.HyperlinkedModelSerializer)
         }
 
 
-class RekeningnummerSerializer(serializers.HyperlinkedModelSerializer):
+class RekeningnummerSerializer(
+    serializers.HyperlinkedModelSerializer,
+    RequiredNullableFieldsSerializer,
+):
     from openklant.components.klantinteracties.api.serializers.partijen import (
         PartijForeignKeySerializer,
     )

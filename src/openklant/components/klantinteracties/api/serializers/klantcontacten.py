@@ -5,6 +5,9 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 
+from openklant.components.klantinteracties.api.polymorphism import (
+    RequiredNullableFieldsSerializer,
+)
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorForeignKeySerializer,
     ActorSerializer,
@@ -127,7 +130,9 @@ class ContactnaamSerializer(GegevensGroepSerializer):
 
 
 class BetrokkeneSerializer(
-    NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
+    NestedGegevensGroepMixin,
+    serializers.HyperlinkedModelSerializer,
+    RequiredNullableFieldsSerializer,
 ):
     from openklant.components.klantinteracties.api.serializers.partijen import (
         PartijForeignKeySerializer,
@@ -337,7 +342,9 @@ class OnderwerpobjectidentificatorSerializer(GegevensGroepSerializer):
 
 
 class OnderwerpobjectSerializer(
-    NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
+    NestedGegevensGroepMixin,
+    serializers.HyperlinkedModelSerializer,
+    RequiredNullableFieldsSerializer,
 ):
     klantcontact = KlantcontactForeignKeySerializer(
         required=True,
@@ -420,7 +427,9 @@ class BijlageIdentificatorSerializer(GegevensGroepSerializer):
 
 
 class BijlageSerializer(
-    NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
+    NestedGegevensGroepMixin,
+    serializers.HyperlinkedModelSerializer,
+    RequiredNullableFieldsSerializer,
 ):
     was_bijlage_van_klantcontact = KlantcontactForeignKeySerializer(
         required=True,

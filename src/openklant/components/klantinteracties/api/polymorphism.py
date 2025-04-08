@@ -153,3 +153,18 @@ class PolymorphicSerializer(
     def to_representation(self, instance):
         self.discriminator.context = self.context
         return super().to_representation(instance)
+
+
+class RequiredNullableFieldsSerializer(serializers.Serializer):
+    """
+    Serializer that makes all fields with `required=True` and `allow_null=True`
+    non-required during creation.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request and request.method == "POST":
+            for field_name, field in self.fields.items():
+                if field.required and field.allow_null:
+                    field.required = False

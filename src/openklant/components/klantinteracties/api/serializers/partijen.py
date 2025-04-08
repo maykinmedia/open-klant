@@ -13,6 +13,7 @@ from vng_api_common.utils import get_help_text
 from openklant.components.klantinteracties.api.polymorphism import (
     Discriminator,
     PolymorphicSerializer,
+    RequiredNullableFieldsSerializer,
 )
 from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
@@ -198,7 +199,9 @@ class CategorieSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
+class CategorieRelatieSerializer(
+    serializers.HyperlinkedModelSerializer, RequiredNullableFieldsSerializer
+):
     """Let op: Dit endpoint is EXPERIMENTEEL."""
 
     partij = PartijForeignkeyBaseSerializer(
@@ -288,7 +291,11 @@ class PersoonContactSerializer(GegevensGroepSerializer):
         gegevensgroep = "contactnaam"
 
 
-class PersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
+class PersoonSerializer(
+    NestedGegevensGroepMixin,
+    serializers.ModelSerializer,
+    RequiredNullableFieldsSerializer,
+):
     contactnaam = PersoonContactSerializer(
         required=True,
         allow_null=True,
@@ -313,7 +320,11 @@ class PersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
         return obj.get_full_name()
 
 
-class ContactpersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
+class ContactpersoonSerializer(
+    NestedGegevensGroepMixin,
+    serializers.ModelSerializer,
+    RequiredNullableFieldsSerializer,
+):
     werkte_voor_partij = PartijPolymorphicSerializer(
         required=True,
         allow_null=True,
@@ -378,7 +389,9 @@ class PartijIdentificatorGroepTypeSerializer(GegevensGroepSerializer):
 
 
 class PartijIdentificatorSerializer(
-    NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
+    NestedGegevensGroepMixin,
+    serializers.HyperlinkedModelSerializer,
+    RequiredNullableFieldsSerializer,
 ):
     identificeerde_partij = PartijForeignKeySerializer(
         required=False,
@@ -456,7 +469,11 @@ class PartijIdentificatorSerializer(
         return super().create(validated_data)
 
 
-class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
+class PartijSerializer(
+    NestedGegevensGroepMixin,
+    PolymorphicSerializer,
+    RequiredNullableFieldsSerializer,
+):
     from openklant.components.klantinteracties.api.serializers.rekeningnummers import (
         RekeningnummerForeignKeySerializer,
     )
@@ -828,8 +845,8 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     @transaction.atomic
     def create(self, validated_data):
         partij_identificatie = validated_data.pop("partij_identificatie", None)
-        digitale_adressen = validated_data.pop("digitaaladres_set")
-        rekeningnummers = validated_data.pop("rekeningnummer_set")
+        digitale_adressen = validated_data.pop("digitaaladres_set", None)
+        rekeningnummers = validated_data.pop("rekeningnummer_set", None)
         partij_identificatoren = validated_data.pop("partijidentificator_set", None)
 
         if voorkeurs_digitaal_adres := validated_data.pop(

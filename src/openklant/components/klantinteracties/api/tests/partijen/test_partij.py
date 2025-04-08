@@ -351,26 +351,6 @@ class PartijTests(APITestCase):
             response_data["invalidParams"],
             [
                 {
-                    "name": "digitaleAdressen",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "voorkeursDigitaalAdres",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "rekeningnummers",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "voorkeursRekeningnummer",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
                     "name": "soortPartij",
                     "code": "required",
                     "reason": _("This field is required."),

@@ -4,6 +4,9 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers, validators
 from rest_framework.validators import UniqueTogetherValidator
 
+from openklant.components.klantinteracties.api.polymorphism import (
+    RequiredNullableFieldsSerializer,
+)
 from openklant.components.klantinteracties.api.serializers.constants import (
     SERIALIZER_PATH,
 )
@@ -37,7 +40,9 @@ class DigitaalAdresForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
+class DigitaalAdresSerializer(
+    serializers.HyperlinkedModelSerializer, RequiredNullableFieldsSerializer
+):
     from openklant.components.klantinteracties.api.serializers.klantcontacten import (
         BetrokkeneForeignKeySerializer,
     )
