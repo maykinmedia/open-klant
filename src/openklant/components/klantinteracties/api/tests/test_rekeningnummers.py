@@ -66,6 +66,50 @@ class RekeningnummerTests(APITestCase):
         data = response.json()
         self.assertEqual(data["url"], "http://testserver" + detail_url)
 
+    def test_create_only_required(self):
+        response = self.client.post(reverse("klantinteracties:rekeningnummer-list"), {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "iban",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+            ],
+        )
+
+    def test_update_only_required(self):
+        rekeningnummer = RekeningnummerFactory.create(
+            partij=PartijFactory.create(),
+            iban="NL18BANK23481326",
+            bic="1734723742",
+        )
+        detail_url = reverse(
+            "klantinteracties:rekeningnummer-detail",
+            kwargs={"uuid": str(rekeningnummer.uuid)},
+        )
+        # PUT
+        response = self.client.put(detail_url, {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "iban",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+            ],
+        )
+        # PATCH
+        response = self.client.patch(detail_url, {})
+        data = response.json()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     def test_create_rekeningnummer(self):
         list_url = reverse("klantinteracties:rekeningnummer-list")
         data = {

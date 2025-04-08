@@ -202,18 +202,19 @@ class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
     """Let op: Dit endpoint is EXPERIMENTEEL."""
 
     partij = PartijForeignkeyBaseSerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("De partij waar de categorie relatie aan gelinkt is."),
     )
     categorie = CategorieForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "De categorie waar de categorie relatie aan gelinkt is: Let op: Dit attribuut is EXPERIMENTEEL."
         ),
     )
     begin_datum = serializers.DateField(
+        required=False,
         allow_null=True,
         help_text=_(
             "Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard. "
@@ -259,15 +260,14 @@ class CategorieRelatieSerializer(serializers.HyperlinkedModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        if not validated_data.get("begin_datum"):
+        if not validated_data.get("begin_datum", None):
             validated_data["begin_datum"] = datetime.datetime.today().strftime(
                 "%Y-%m-%d"
             )
-
-        if partij := validated_data.pop("partij"):
+        if partij := validated_data.pop("partij", None):
             partij = Partij.objects.get(uuid=str(partij.get("uuid")))
 
-        if categorie := validated_data.pop("categorie"):
+        if categorie := validated_data.pop("categorie", None):
             categorie = Categorie.objects.get(uuid=str(categorie.get("uuid")))
 
         validated_data["partij"] = partij
@@ -290,7 +290,7 @@ class PersoonContactSerializer(GegevensGroepSerializer):
 
 class PersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
     contactnaam = PersoonContactSerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Naam die een persoon wil gebruiken tijdens contact met de gemeente. "
@@ -315,7 +315,7 @@ class PersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
 
 class ContactpersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerializer):
     werkte_voor_partij = PartijPolymorphicSerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("Organisatie waarvoor een contactpersoon werkte."),
     )
@@ -356,7 +356,7 @@ class ContactpersoonSerializer(NestedGegevensGroepMixin, serializers.ModelSerial
 
     @transaction.atomic
     def create(self, validated_data):
-        if partij := validated_data.pop("werkte_voor_partij"):
+        if partij := validated_data.pop("werkte_voor_partij", None):
             partij = Partij.objects.get(uuid=str(partij.get("uuid")))
 
         validated_data["werkte_voor_partij"] = partij
@@ -387,7 +387,7 @@ class PartijIdentificatorSerializer(
         source="partij",
     )
     partij_identificator = PartijIdentificatorGroepTypeSerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Gegevens die een partij in een basisregistratie "
@@ -486,7 +486,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         source="categorierelatie_set",
     )
     digitale_adressen = DigitaalAdresForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Digitaal adresen dat een partij verstrekte voor gebruik bij "
@@ -496,21 +496,21 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         many=True,
     )
     voorkeurs_digitaal_adres = DigitaalAdresForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Digitaal adres waarop een partij bij voorkeur door de gemeente benaderd wordt."
         ),
     )
     rekeningnummers = RekeningnummerForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("Rekeningnummers van een partij"),
         source="rekeningnummer_set",
         many=True,
     )
     voorkeurs_rekeningnummer = RekeningnummerForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("Rekeningsnummer die een partij bij voorkeur gebruikt."),
     )
@@ -828,8 +828,8 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     @transaction.atomic
     def create(self, validated_data):
         partij_identificatie = validated_data.pop("partij_identificatie", None)
-        digitale_adressen = validated_data.pop("digitaaladres_set")
-        rekeningnummers = validated_data.pop("rekeningnummer_set")
+        digitale_adressen = validated_data.pop("digitaaladres_set", None)
+        rekeningnummers = validated_data.pop("rekeningnummer_set", None)
         partij_identificatoren = validated_data.pop("partijidentificator_set", None)
 
         if voorkeurs_digitaal_adres := validated_data.pop(

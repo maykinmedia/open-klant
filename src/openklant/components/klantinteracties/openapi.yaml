@@ -686,7 +686,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Bijlage'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -739,7 +738,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Bijlage'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -880,7 +878,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CategorieRelatie'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -935,7 +932,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CategorieRelatie'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -1980,7 +1976,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Onderwerpobject'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2033,7 +2028,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Onderwerpobject'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2177,7 +2171,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PartijIdentificator'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2230,7 +2223,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PartijIdentificator'
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -3305,15 +3297,11 @@ components:
       required:
       - betrokkenen
       - categorieRelaties
-      - digitaleAdressen
       - indicatieActief
-      - rekeningnummers
       - soortPartij
       - url
       - uuid
       - vertegenwoordigden
-      - voorkeursDigitaalAdres
-      - voorkeursRekeningnummer
     Betrokkene:
       type: object
       description: |-
@@ -3395,7 +3383,6 @@ components:
       - url
       - uuid
       - volledigeNaam
-      - wasPartij
     BetrokkeneCorrespondentieadres:
       type: object
       properties:
@@ -3553,7 +3540,6 @@ components:
       - url
       - uuid
       - volledigeNaam
-      - wasPartij
     Bezoekadres:
       type: object
       properties:
@@ -3644,7 +3630,6 @@ components:
       required:
       - url
       - uuid
-      - wasBijlageVanKlantcontact
     BijlageForeignKey:
       type: object
       properties:
@@ -3776,9 +3761,6 @@ components:
             Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
             Een voorbeeld: 2022-02-21'
       required:
-      - beginDatum
-      - categorie
-      - partij
       - url
       - uuid
     CategorieRelatieForeignKey:
@@ -3893,7 +3875,6 @@ components:
           description: De voledige naam van het constact persoon.
       required:
       - volledigeNaam
-      - werkteVoorPartij
     ContactpersoonPersoon:
       type: object
       properties:
@@ -3977,8 +3958,6 @@ components:
       - soortDigitaalAdres
       - url
       - uuid
-      - verstrektDoorBetrokkene
-      - verstrektDoorPartij
     DigitaalAdresForeignKey:
       type: object
       properties:
@@ -4380,10 +4359,8 @@ components:
           description: Gegevens die een onderwerpobject in een extern register uniek
             identificeren.
       required:
-      - klantcontact
       - url
       - uuid
-      - wasKlantcontact
     OnderwerpobjectForeignKey:
       type: object
       properties:
@@ -4441,7 +4418,6 @@ components:
       - klantcontact
       - url
       - uuid
-      - wasKlantcontact
     Onderwerpobjectidentificator:
       type: object
       properties:
@@ -5114,7 +5090,6 @@ components:
             the child identificator could specify a vestigingsnummer that is unique
             for the KVK number).
       required:
-      - partijIdentificator
       - url
     PartijIdentificatorForeignkey:
       type: object
@@ -5748,7 +5723,6 @@ components:
           readOnly: true
           description: De voledige naam van het persoon.
       required:
-      - contactnaam
       - volledigeNaam
     PersoonContact:
       type: object
@@ -5811,7 +5785,6 @@ components:
           minLength: 8
       required:
       - iban
-      - partij
       - url
       - uuid
     RekeningnummerForeignKey:

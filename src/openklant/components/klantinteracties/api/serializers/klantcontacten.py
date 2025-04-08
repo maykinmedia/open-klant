@@ -134,7 +134,7 @@ class BetrokkeneSerializer(
     )
 
     was_partij = PartijForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         source="partij",
         help_text=_("Betrokkene bij klantcontact die een partij was."),
@@ -340,12 +340,12 @@ class OnderwerpobjectSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     klantcontact = KlantcontactForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
     )
     was_klantcontact = KlantcontactForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("'Onderwerpobject' was 'Klantcontact'"),
     )
@@ -423,7 +423,7 @@ class BijlageSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
     was_bijlage_van_klantcontact = KlantcontactForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
         source="klantcontact",

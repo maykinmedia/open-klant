@@ -46,7 +46,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     verstrekt_door_partij = PartijForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Digitaal adres dat een partij verstrekte voor gebruik bij "
@@ -55,7 +55,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         source="partij",
     )
     verstrekt_door_betrokkene = BetrokkeneForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_(
             "Digitaal adres dat een betrokkene bij klantcontact verstrekte voor gebruik bij "

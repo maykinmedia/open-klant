@@ -33,7 +33,7 @@ class RekeningnummerSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     partij = PartijForeignKeySerializer(
-        required=True,
+        required=False,
         allow_null=True,
         help_text=_("Rekeningnummer van een partij"),
     )
