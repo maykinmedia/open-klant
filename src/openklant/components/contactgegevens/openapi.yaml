@@ -15,6 +15,10 @@ info:
     * The `PATCH` method, on the other hand, allows you to update only the fields you specify.
     Some mandatory fields can be left out, and the resource will only be updated with the provided data,
     leaving other fields unchanged.
+
+    **Warning: `POST`**
+
+    Fields that allow `null` values are `NOT` required when creating a new resource.
   contact:
     email: standaarden.ondersteuning@vng.nl
     url: https://zaakgerichtwerken.vng.cloud
