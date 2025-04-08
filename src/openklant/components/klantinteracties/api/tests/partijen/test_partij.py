@@ -2279,6 +2279,7 @@ class PartijTests(APITestCase):
         partij = PartijFactory.create(soort_partij="random")
 
         self.assertEqual(str(partij), partij.nummer)
+
     def test_valid_create_soort_partij(self):
         list_url = reverse("klantinteracties:partij-list")
         digitaal_adres = DigitaalAdresFactory.create()
