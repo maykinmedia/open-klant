@@ -39,7 +39,15 @@ def validate_charfield_entry(value, allow_apostrophe=False):
 
 
 validate_phone_number = RegexValidator(
-    regex="(0[8-9]00[0-9]{4,7})|(0[1-9][0-9]{8})|(\\+[0-9]{9,20}|1400|140[0-9]{2,3})",
+    regex=r"^("
+    r"0[8-9]00[0-9]{4,8}"  # starting with 08 or 09, followed by 00 and then 4 to 8 digits
+    r"|0[1-9][0-9]{8}"  # starting with 0, followed by a digit from 1-9 and then exactly 8 digits
+    r"|\+31[0-9]{10}"  # starting with +31 followed by 10 digits (Dutch format)
+    r"|\+[0-9]{9,20}"  # starting with + followed by 9 to 20 digits (international numbers)
+    r"|00[0-9]{11}"  # starting with 00, followed by 11 digits
+    r"|1400"  # specific short number for services
+    r"|140[0-9]{2,3}"  # starting with 140 and followed by 2 or 3 digits
+    r")$",
     message=_("Het opgegeven telefoonnummer is ongeldig."),
 )
 
