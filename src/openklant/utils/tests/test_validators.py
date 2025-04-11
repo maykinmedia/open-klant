@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.test import TestCase
+from django.test import SimpleTestCase
 
 from openklant.utils.validators import (
     validate_bag_id,
@@ -12,7 +12,7 @@ from openklant.utils.validators import (
 )
 
 
-class ValidatorsTestCase(TestCase):
+class ValidatorsTestCase(SimpleTestCase):
     """
     Validates the functions defined in ``utils.validators`` module.
     """
