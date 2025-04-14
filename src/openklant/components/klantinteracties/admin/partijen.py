@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib import admin
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
@@ -32,32 +31,51 @@ class PartijAdminForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        voorkeurs_digitaal_adres = cleaned_data.get("voorkeurs_digitaal_adres")
-        voorkeurs_rekeningnummer = cleaned_data.get("voorkeurs_rekeningnummer")
-
-        if voorkeurs_digitaal_adres:
-            if (
-                voorkeurs_digitaal_adres
-                not in DigitaalAdres.objects.filter(partij=self.instance).all()
-            ):
-                raise ValidationError(
+        if voorkeurs_digitaal_adres := cleaned_data.get("voorkeurs_digitaal_adres"):
+            if not self.instance.pk:
+                raise forms.ValidationError(
                     {
-                        "voorkeurs_digitaal_adres": _(
-                            "Het voorkeurs adres moet een gelinkte digitaal adres zijn."
-                        )
+                        "voorkeurs_digitaal_adres": [
+                            _(
+                                "Om de `voorkeurs_digitaal_adres` te selecteren,"
+                                " moet je eerst de Partij aanmaken en opslaan."
+                            )
+                        ]
                     }
                 )
 
-        if voorkeurs_rekeningnummer:
-            if (
-                voorkeurs_rekeningnummer
-                not in Rekeningnummer.objects.filter(partij=self.instance).all()
-            ):
-                raise ValidationError(
+            if voorkeurs_digitaal_adres not in self.instance.digitaaladres_set.all():
+                raise forms.ValidationError(
                     {
-                        "voorkeurs_rekeningnummer": _(
-                            "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
-                        )
+                        "voorkeurs_digitaal_adres": [
+                            _(
+                                "Het voorkeurs adres moet een gelinkte digitaal adres zijn."
+                            )
+                        ]
+                    }
+                )
+
+        if voorkeurs_rekeningnummer := cleaned_data.get("voorkeurs_rekeningnummer"):
+            if not self.instance.pk:
+                raise forms.ValidationError(
+                    {
+                        "voorkeurs_rekeningnummer": [
+                            _(
+                                "Om de `voorkeurs_rekeningnummer` te selecteren,"
+                                " moet je eerst de Partij aanmaken en opslaan."
+                            )
+                        ]
+                    }
+                )
+
+            if voorkeurs_rekeningnummer not in self.instance.rekeningnummer_set.all():
+                raise forms.ValidationError(
+                    {
+                        "voorkeurs_rekeningnummer": [
+                            _(
+                                "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
+                            )
+                        ]
                     }
                 )
 
