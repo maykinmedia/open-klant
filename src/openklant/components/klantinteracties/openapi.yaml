@@ -32,22 +32,32 @@ paths:
         name: actoridentificatorCodeObjecttype
         schema:
           type: string
+        description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+          PERSOON''.'
       - in: query
         name: actoridentificatorCodeRegister
         schema:
           type: string
+        description: 'Binnen het landschap van registers unieke omschrijving van het
+          register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
       - in: query
         name: actoridentificatorCodeSoortObjectId
         schema:
           type: string
+        description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''Burgerservicenummer''.'
       - in: query
         name: actoridentificatorObjectId
         schema:
           type: string
+        description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''123456788''.'
       - in: query
         name: indicatieActief
         schema:
           type: boolean
+        description: Geeft aan of aan de actor nog betrokken mag worden bij nieuwe
+          klantcontacten. Voor niet-actieve is dit niet toegestaan.
       - in: query
         name: naam
         schema:
@@ -223,6 +233,7 @@ paths:
         schema:
           type: string
           format: uuid
+        description: Unieke (technische) identificatiecode van de actor.
       - in: query
         name: klantcontact__url
         schema:
@@ -235,6 +246,7 @@ paths:
         schema:
           type: string
           format: uuid
+        description: Unieke (technische) identificatiecode van de betrokkene bij klantcontact.
       - name: page
         required: false
         in: query
@@ -389,18 +401,27 @@ paths:
         name: contactnaamAchternaam
         schema:
           type: string
+        description: Een achternaam die de persoon wil gebruiken tijdens communicatie
+          met de gemeente.
       - in: query
         name: contactnaamVoorletters
         schema:
           type: string
+        description: Een afkorting van de voornamen. Meestal de beginletter, maar
+          in sommige gevallen de beginletter gecombineerd met de tweede letter van
+          een voornaam.
       - in: query
         name: contactnaamVoornaam
         schema:
           type: string
+        description: De voornaam die de persoon wil gebruiken tijdens communicatie
+          met de gemeente.
       - in: query
         name: contactnaamVoorvoegselAchternaam
         schema:
           type: string
+        description: Een eventueel voorvoegsel dat hoort bij de achternaam die de
+          persoon wil gebruiken tijdens communicatie met de gemeente.
       - in: query
         name: expand
         schema:
@@ -435,6 +456,8 @@ paths:
         name: organisatienaam
         schema:
           type: string
+        description: Naam van de organisatie waarmee de betrokkene bij klantcontact
+          een relatie had.
       - name: page
         required: false
         in: query
@@ -805,6 +828,9 @@ paths:
         schema:
           type: string
           format: date
+        description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+          Een voorbeeld: 2022-02-21'
       - in: query
         name: categorie__naam
         schema:
@@ -827,6 +853,9 @@ paths:
         schema:
           type: string
           format: date
+        description: 'Aanduiding van datum volgens de NEN-ISO 8601:2019-standaard.
+          Een datum wordt genoteerd van het meest naar het minst significante onderdeel.
+          Een voorbeeld: 2022-02-21'
       - name: page
         required: false
         in: query
@@ -1414,19 +1443,25 @@ paths:
         name: actoren__naam
         schema:
           type: string
+        description: Naam van de actor.
       - in: query
         name: klantcontact__nummer
         schema:
           type: string
+        description: Uniek identificerend nummer dat tijdens communicatie tussen mensen
+          kan worden gebruikt om het specifieke klantcontact aan te duiden.
       - in: query
         name: klantcontact__uuid
         schema:
           type: string
           format: uuid
+        description: Unieke (technische) identificatiecode van de betrokkene bij klantcontact.
       - in: query
         name: nummer
         schema:
           type: string
+        description: Uniek identificerend nummer dat tijdens communicatie tussen mensen
+          kan worden gebruikt om de specifieke interne taak aan te duiden.
       - name: page
         required: false
         in: query
@@ -1466,6 +1501,7 @@ paths:
         schema:
           type: string
           format: date-time
+        description: Datum en tijdstip waarop de interne taak aan een actor werd toegewezen.
       tags:
       - interne taken
       security:
@@ -1650,6 +1686,8 @@ paths:
         name: indicatieContactGelukt
         schema:
           type: boolean
+        description: Geeft, indien bekend, aan of de poging contact tussen de gemeente
+          en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
       - in: query
         name: inhoud
         schema:
@@ -1659,10 +1697,13 @@ paths:
         name: kanaal
         schema:
           type: string
+        description: Communicatiekanaal dat bij het klantcontact werd gebruikt.
       - in: query
         name: nummer
         schema:
           type: string
+        description: Uniek identificerend nummer dat tijdens communicatie tussen mensen
+          kan worden gebruikt om het specifieke klantcontact aan te duiden.
       - in: query
         name: onderwerp
         schema:
@@ -1672,18 +1713,26 @@ paths:
         name: onderwerpobject__onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
+        description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+          PERSOON''.'
       - in: query
         name: onderwerpobject__onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
+        description: 'Binnen het landschap van registers unieke omschrijving van het
+          register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
       - in: query
         name: onderwerpobject__onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
+        description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''Burgerservicenummer''.'
       - in: query
         name: onderwerpobject__onderwerpobjectidentificatorObjectId
         schema:
           type: string
+        description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''123456788''.'
       - in: query
         name: onderwerpobject__url
         schema:
@@ -1695,6 +1744,7 @@ paths:
         schema:
           type: string
           format: uuid
+        description: Unieke (technische) identificatiecode van het onderwerpdeel.
       - name: page
         required: false
         in: query
@@ -1712,26 +1762,41 @@ paths:
         schema:
           type: string
           format: date-time
+        description: Datum en tijdstip waarop het klantontact plaatsvond. Als het
+          klantcontact een gesprek betrof, is dit het moment waarop het gesprek begon.
+          Als het klantcontact verzending of ontvangst van informatie betrof, is dit
+          bij benadering het moment waarop informatie door gemeente verzonden of ontvangen
+          werd.
       - in: query
         name: vertrouwelijk
         schema:
           type: boolean
+        description: Geeft aan of onderwerp, inhoud en kenmerken van het klantcontact
+          vertrouwelijk moeten worden behandeld.
       - in: query
         name: wasOnderwerpobject__onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
+        description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+          PERSOON''.'
       - in: query
         name: wasOnderwerpobject__onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
+        description: 'Binnen het landschap van registers unieke omschrijving van het
+          register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
       - in: query
         name: wasOnderwerpobject__onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
+        description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''Burgerservicenummer''.'
       - in: query
         name: wasOnderwerpobject__onderwerpobjectidentificatorObjectId
         schema:
           type: string
+        description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''123456788''.'
       - in: query
         name: wasOnderwerpobject__url
         schema:
@@ -1744,6 +1809,7 @@ paths:
         schema:
           type: string
           format: uuid
+        description: Unieke (technische) identificatiecode van het onderwerpdeel.
       tags:
       - klanten contacten
       security:
@@ -2289,22 +2355,32 @@ paths:
         name: bezoekadresAdresregel1
         schema:
           type: string
+        description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
       - in: query
         name: bezoekadresAdresregel2
         schema:
           type: string
+        description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
       - in: query
         name: bezoekadresAdresregel3
         schema:
           type: string
+        description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
       - in: query
         name: bezoekadresLand
         schema:
           type: string
+        description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+          de ingeschrevene verblijft.
       - in: query
         name: bezoekadresNummeraanduidingId
         schema:
           type: string
+        description: Identificatie van het adres bij de Basisregistratie Adressen
+          en Gebouwen.
       - in: query
         name: categorierelatie__categorie__naam
         schema:
@@ -2314,22 +2390,32 @@ paths:
         name: correspondentieadresAdresregel1
         schema:
           type: string
+        description: Eerste deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
       - in: query
         name: correspondentieadresAdresregel2
         schema:
           type: string
+        description: Tweede deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
       - in: query
         name: correspondentieadresAdresregel3
         schema:
           type: string
+        description: Derde deel van het adres dat niet voorkomt in de Basisregistratie
+          Adressen en Gebouwen.
       - in: query
         name: correspondentieadresLand
         schema:
           type: string
+        description: ISO 3166-code die het land (buiten Nederland) aangeeft alwaar
+          de ingeschrevene verblijft.
       - in: query
         name: correspondentieadresNummeraanduidingId
         schema:
           type: string
+        description: Identificatie van het adres bij de Basisregistratie Adressen
+          en Gebouwen.
       - in: query
         name: expand
         schema:
@@ -2350,14 +2436,22 @@ paths:
         name: indicatieActief
         schema:
           type: boolean
+        description: Geeft aan of de contactgegevens van de partij nog gebruikt morgen
+          worden om contact op te nemen. Gegevens van niet-actieve partijen mogen
+          hiervoor niet worden gebruikt.
       - in: query
         name: indicatieGeheimhouding
         schema:
           type: boolean
+        description: Geeft aan of de verstrekker van partijgegevens heeft aangegeven
+          dat deze gegevens als geheim beschouwd moeten worden. Als dit niet aangegeven
+          is dan wordt dit ingevuld als `null`.
       - in: query
         name: nummer
         schema:
           type: string
+        description: Uniek identificerend nummer dat tijdens communicatie tussen mensen
+          kan worden gebruikt om de specifieke partij aan te duiden.
       - name: page
         required: false
         in: query
@@ -2915,6 +3009,7 @@ paths:
         schema:
           type: string
           format: uuid
+        description: Unieke (technische) identificatiecode van de partij.
       - in: query
         name: vertegenwoordigendePartij__url
         schema:
@@ -2927,6 +3022,7 @@ paths:
         schema:
           type: string
           format: uuid
+        description: Unieke (technische) identificatiecode van de partij.
       tags:
       - vertegenwoordigingen
       security:

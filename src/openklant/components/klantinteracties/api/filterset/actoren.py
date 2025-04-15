@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
-from django_filters.rest_framework import FilterSet, filters
+from django_filters.rest_framework import filters
+from vng_api_common.filtersets import FilterSet
 
 from openklant.components.klantinteracties.models.actoren import Actor
 
