@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.test import TestCase
+from django.test import SimpleTestCase
 
 from openklant.utils.validators import (
     validate_bag_id,
@@ -12,7 +12,7 @@ from openklant.utils.validators import (
 )
 
 
-class ValidatorsTestCase(TestCase):
+class ValidatorsTestCase(SimpleTestCase):
     """
     Validates the functions defined in ``utils.validators`` module.
     """
@@ -83,6 +83,8 @@ class ValidatorsTestCase(TestCase):
             "1400",
             "14012",
             "14079",
+            "0313028612",
+            "0313028600",
         ]
         invalid_phone_numbers = [
             "0695azerty",
@@ -91,6 +93,11 @@ class ValidatorsTestCase(TestCase):
             "onetwothreefour",
             "020 753 0523",
             "+311234",
+            "031302860000",
+            "03130286000",
+            "00311234567",
+            "00313223344555",
+            "316123456789",
         ]
         for invalid_phone_number in invalid_phone_numbers:
             with self.subTest(invalid_phone_number):
