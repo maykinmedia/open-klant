@@ -36,6 +36,30 @@ class KlantcontactFilterSet(FilterSet):
         help_text=_("Zoek klantcontact object op basis van de partij uuid."),
         field_name="betrokkene__partij__uuid",
     )
+    had_betrokkene__was_partij__partij_identificator__code_objecttype = filters.CharFilter(
+        help_text=_(
+            "Zoek klantcontact object op basis van het partij identificator objecttype."
+        ),
+        method="filter_betrokkene_partij_identificator_code_objecttype",
+    )
+    had_betrokkene__was_partij__partij_identificator__code_soort_object_id = filters.CharFilter(
+        help_text=_(
+            "Zoek klantcontact object op basis van het partij identificator soort object ID."
+        ),
+        method="filter_betrokkene_partij_identificator_code_soort_object_id",
+    )
+    had_betrokkene__was_partij__partij_identificator__object_id = filters.CharFilter(
+        help_text=_(
+            "Zoek klantcontact object op basis van het partij identificator object ID."
+        ),
+        method="filter_betrokkene_partij_identificator_object_id",
+    )
+    had_betrokkene__was_partij__partij_identificator__code_register = filters.CharFilter(
+        help_text=_(
+            "Zoek klantcontact object op basis van het partij identificator register."
+        ),
+        method="filter_betrokkene_partij_identificator_code_register",
+    )
     onderwerpobject__url = URLViewFilter(
         help_text=_("Zoek klantcontact object op basis van het onderwerpobject url."),
         field_name="onderwerpobject__uuid",
@@ -64,6 +88,10 @@ class KlantcontactFilterSet(FilterSet):
             "had_betrokkene__uuid",
             "had_betrokkene__was_partij__url",
             "had_betrokkene__was_partij__uuid",
+            "had_betrokkene__was_partij__partij_identificator__code_objecttype",
+            "had_betrokkene__was_partij__partij_identificator__code_soort_object_id",
+            "had_betrokkene__was_partij__partij_identificator__object_id",
+            "had_betrokkene__was_partij__partij_identificator__code_register",
             "onderwerpobject__uuid",
             "onderwerpobject__url",
             "onderwerpobject__onderwerpobjectidentificator_code_objecttype",
@@ -84,6 +112,42 @@ class KlantcontactFilterSet(FilterSet):
             "vertrouwelijk",
             "plaatsgevonden_op",
         )
+
+    def filter_betrokkene_partij_identificator_code_objecttype(
+        self, queryset, name, value
+    ):
+        try:
+            return queryset.filter(betrokkene__partij__partijidentificator__partij_identificator_code_objecttype=value)
+        except ValueError:
+            return queryset.none()
+
+    def filter_betrokkene_partij_identificator_code_soort_object_id(
+        self, queryset, name, value
+    ):
+        try:
+            return queryset.filter(
+                betrokkene__partij__partijidentificator__partij_identificator_code_soort_object_id=value
+            )
+        except ValueError:
+            return queryset.none()
+
+    def filter_betrokkene_partij_identificator_object_id(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                betrokkene__partij__partijidentificator__partij_identificator_object_id=value
+            )
+        except ValueError:
+            return queryset.none()
+
+    def filter_betrokkene_partij_identificator_code_register(
+        self, queryset, name, value
+    ):
+        try:
+            return queryset.filter(
+                betrokkene__partij__partijidentificator__partij_identificator_code_register=value
+            )
+        except ValueError:
+            return queryset.none()
 
 
 class BetrokkeneDetailFilterSet(FilterSet):
