@@ -93,6 +93,165 @@ class KlantcontactFilterSetTests(APITestCase):
         self.assertEqual(1, len(data))
         self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
 
+    def test_filter_partij_identificator_code_objecttype(self):
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        partij = PartijFactory.create()
+        partij2 = PartijFactory.create()
+        PartijIdentificatorFactory.create(
+            partij=partij, partij_identificator_code_objecttype="natuurlijk_persoon"
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij2,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+        )
+        BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
+        BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
+
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij__partijIdentificator__codeObjecttype": "niet_natuurlijk_persoon"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact2.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij__partijIdentificator__codeObjecttype": "objecttype-8584395394"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_partij_identificator_soort_object_id(self):
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        partij = PartijFactory.create()
+        partij2 = PartijFactory.create()
+        PartijIdentificatorFactory.create(
+            partij=partij, partij_identificator_code_soort_object_id="bsn"
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij2, partij_identificator_code_soort_object_id="kvk_nummer"
+        )
+        BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
+        BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
+
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij__partijIdentificator__codeSoortObjectId": "bsn"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij__partijIdentificator__codeSoortObjectId": "soort-object-id-8584395394"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_identificator_object_id(self):
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        partij = PartijFactory.create()
+        partij2 = PartijFactory.create()
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="296648875",
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij2,
+            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_object_id="111222333",
+        )
+        BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
+        BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
+
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij__partijIdentificator__objectId": "296648875"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij__partijIdentificator__objectId": "object-id-8584395394"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_identificator_code_register(self):
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        partij = PartijFactory.create()
+        partij2 = PartijFactory.create()
+        PartijIdentificatorFactory.create(
+            partij=partij, partij_identificator_code_register="brp"
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij2, partij_identificator_code_register="hr"
+        )
+        BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
+        BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
+
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"hadBetrokkene__wasPartij__partijIdentificator__code_register": "hr"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact2.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij__partijIdentificator__codeRegister": "register-8584395394"
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
     def test_filter_betrokkene_url(self):
         klantcontact = KlantcontactFactory.create()
         klantcontact2 = KlantcontactFactory.create()
