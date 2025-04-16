@@ -227,50 +227,26 @@ class PartijIdentificatorTests(APITestCase):
         )
 
     def test_update_only_required(self):
-        # partij_identificator is required
         partij = PartijFactory.create()
         partij_identificator = BsnPartijIdentificatorFactory.create(
             partij=partij,
             andere_partij_identificator="anderePartijIdentificator",
         )
-
-        data = {
-            "andere_partij_identificator": "test",
-        }
         detail_url = reverse(
             "klantinteracties:partijidentificator-detail",
             kwargs={"uuid": str(partij_identificator.uuid)},
         )
-
-        response = self.client.put(detail_url, data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        error = get_validation_errors(response, "partijIdentificator")
-        self.assertEqual(error["code"], "required")
-        self.assertEqual(error["reason"], "Dit veld is vereist.")
-
-        data = {
-            "identificeerdePartij": {"uuid": str(partij.uuid)},
-            "anderePartijIdentificator": "changed",
-            "partijIdentificator": {
-                "codeObjecttype": "natuurlijk_persoon",
-                "codeSoortObjectId": "bsn",
-                "objectId": "123456782",
-                "codeRegister": "brp",
-            },
-        }
-
-        response = self.client.put(detail_url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = self.client.put(detail_url, {})
         data = response.json()
-
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data["identificeerdePartij"]["uuid"], str(partij.uuid))
-        self.assertEqual(data["anderePartijIdentificator"], "changed")
+        self.assertEqual(data["anderePartijIdentificator"], "anderePartijIdentificator")
         self.assertEqual(
             data["partijIdentificator"],
             {
                 "codeObjecttype": "natuurlijk_persoon",
                 "codeSoortObjectId": "bsn",
-                "objectId": "123456782",
+                "objectId": "296648875",
                 "codeRegister": "brp",
             },
         )

@@ -52,6 +52,63 @@ class DigitaalAdresTests(APITestCase):
         data = response.json()
         self.assertEqual(data["url"], "http://testserver" + detail_url)
 
+    def test_create_only_required(self):
+        response = self.client.post(reverse("klantinteracties:digitaaladres-list"), {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "adres",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+                {
+                    "name": "soortDigitaalAdres",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+            ],
+        )
+
+    def test_update_only_required(self):
+        digitaal_adres = DigitaalAdresFactory.create(
+            betrokkene=BetrokkeneFactory.create(),
+            partij=PartijFactory.create(),
+            soort_digitaal_adres=SoortDigitaalAdres.email,
+            adres="foobar@example.com",
+            omschrijving="omschrijving",
+            referentie="referentie",
+        )
+        detail_url = reverse(
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
+        )
+        # PUT
+        response = self.client.put(detail_url, {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "adres",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+                {
+                    "name": "soortDigitaalAdres",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+            ],
+        )
+        # PATCH
+        response = self.client.patch(detail_url, {})
+        data = response.json()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     def test_create_digitaal_adres(self):
         list_url = reverse("klantinteracties:digitaaladres-list")
         data = {

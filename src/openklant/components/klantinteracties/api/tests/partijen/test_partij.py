@@ -351,26 +351,6 @@ class PartijTests(APITestCase):
             response_data["invalidParams"],
             [
                 {
-                    "name": "digitaleAdressen",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "voorkeursDigitaalAdres",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "rekeningnummers",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "voorkeursRekeningnummer",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
                     "name": "soortPartij",
                     "code": "required",
                     "reason": _("This field is required."),
@@ -1121,26 +1101,6 @@ class PartijTests(APITestCase):
         self.assertEqual(
             response_data["invalidParams"],
             [
-                {
-                    "name": "digitaleAdressen",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "voorkeursDigitaalAdres",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "rekeningnummers",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
-                {
-                    "name": "voorkeursRekeningnummer",
-                    "code": "required",
-                    "reason": _("This field is required."),
-                },
                 {
                     "name": "soortPartij",
                     "code": "required",
@@ -3356,27 +3316,17 @@ class NestedPartijIdentificatorTests(APITestCase):
             "partijIdentificatoren": [{}],
         }
         with self.subTest("invalid_put_empty_dict"):
-            # PUT, partijIdentificatoren is not required, but the dict partijIdentificator for the object it is
             response = self.client.put(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            error = get_validation_errors(
-                response, "partijIdentificatoren.0.partijIdentificator"
-            )
+            error = get_validation_errors(response, "indicatieActief")
             self.assertEqual(error["code"], "required")
             self.assertEqual(
                 error["reason"],
                 "Dit veld is vereist.",
             )
         with self.subTest("invalid_patch_empty_dict"):
-            # PATCH, partijIdentificatoren is not required, but the dict partijIdentificator is
             response = self.client.patch(detail_url, data)
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            error = get_validation_errors(response, "partijIdentificator")
-            self.assertEqual(error["code"], "required")
-            self.assertEqual(
-                error["reason"],
-                "Dit veld is vereist.",
-            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = {
             "soortPartij": "organisatie",

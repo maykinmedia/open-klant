@@ -36,6 +36,42 @@ class CategorieRelatieTests(APITestCase):
         data = response.json()
         self.assertEqual(data["url"], "http://testserver" + detail_url)
 
+    def test_create_only_required(self):
+        list_url = reverse("klantinteracties:categorierelatie-list")
+        response = self.client.post(list_url, {})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        self.assertEqual(data["partij"], None)
+        self.assertEqual(data["categorie"], None)
+
+    def test_update_only_required(self):
+        partij = PartijFactory.create()
+        categorie = CategorieFactory.create()
+        categorie_relatie = CategorieRelatieFactory.create(
+            partij=partij,
+            categorie=categorie,
+            begin_datum="2024-01-11",
+            eind_datum=None,
+        )
+        detail_url = reverse(
+            "klantinteracties:categorierelatie-detail",
+            kwargs={"uuid": str(categorie_relatie.uuid)},
+        )
+
+        # PUT
+        response = self.client.put(detail_url, {})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["partij"]["uuid"], str(partij.uuid))
+        self.assertEqual(data["categorie"]["uuid"], str(categorie.uuid))
+
+        # PATCH
+        response = self.client.patch(detail_url, {})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["partij"]["uuid"], str(partij.uuid))
+        self.assertEqual(data["categorie"]["uuid"], str(categorie.uuid))
+
     def test_create_categorie_relatie(self):
         list_url = reverse("klantinteracties:categorierelatie-list")
         partij = PartijFactory.create()

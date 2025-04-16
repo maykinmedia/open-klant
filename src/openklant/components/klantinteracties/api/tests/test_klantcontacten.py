@@ -566,6 +566,69 @@ class BetrokkeneTests(APITestCase):
         self.assertTrue(data["initiator"])
         self.assertEqual(data["hadKlantcontact"]["uuid"], str(klantcontact.uuid))
 
+    def test_create_only_required(self):
+        response = self.client.post(reverse("klantinteracties:betrokkene-list"), {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "hadKlantcontact",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+                {
+                    "name": "rol",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+                {
+                    "name": "initiator",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+            ],
+        )
+
+    def test_update_only_required(self):
+        betrokkene = BetrokkeneFactory.create(
+            klantcontact=KlantcontactFactory.create(),
+            partij=PartijFactory.create(),
+        )
+        detail_url = reverse(
+            "klantinteracties:betrokkene-detail",
+            kwargs={"uuid": str(betrokkene.uuid)},
+        )
+        # PUT
+        response = self.client.put(detail_url, {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        data = response.json()
+        self.assertEqual(
+            data["invalidParams"],
+            [
+                {
+                    "name": "hadKlantcontact",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+                {
+                    "name": "rol",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+                {
+                    "name": "initiator",
+                    "code": "required",
+                    "reason": "Dit veld is vereist.",
+                },
+            ],
+        )
+        # PATCH
+        response = self.client.patch(detail_url, {})
+        data = response.json()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     def test_create_betrokkene(self):
         klantcontact = KlantcontactFactory.create()
         list_url = reverse("klantinteracties:betrokkene-list")
