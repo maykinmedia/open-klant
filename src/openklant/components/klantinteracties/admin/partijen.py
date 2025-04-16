@@ -257,33 +257,38 @@ class PartijAdmin(admin.ModelAdmin):
             super()
             .get_queryset(request)
             .select_related(
+                "voorkeurs_rekeningnummer",
                 "voorkeurs_digitaal_adres",
+                "organisatie",
+                "persoon",
+                "contactpersoon",
             )
         )
 
     @admin.display(empty_value="---")
     def get_name(self, obj):
         match obj.soort_partij:
-            case SoortPartij.persoon:
+            case SoortPartij.persoon.value:
                 return self.get_personen(obj)
-            case SoortPartij.contactpersoon:
+            case SoortPartij.contactpersoon.value:
                 return self.get_contactpersonen(obj)
-            case SoortPartij.organisatie:
+            case SoortPartij.organisatie.value:
                 return self.get_organisaties(obj)
 
     get_name.short_description = _("naam")
 
     def get_personen(self, obj):
-        if persoon := obj.persoon:
-            return persoon.get_full_name()
+        return obj.persoon.get_full_name() if hasattr(obj, "persoon") else "---"
 
     def get_contactpersonen(self, obj):
-        if contactpersoon := obj.contactpersoon:
-            return contactpersoon.get_full_name()
+        return (
+            obj.contactpersoon.get_full_name()
+            if hasattr(obj, "contactpersoon")
+            else "---"
+        )
 
     def get_organisaties(self, obj):
-        if organisatie := obj.organisatie:
-            return organisatie.naam
+        return obj.organisatie.naam if hasattr(obj, "organisatie") else "---"
 
 
 @admin.register(Categorie)
