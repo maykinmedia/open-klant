@@ -145,7 +145,8 @@ class PartijAdminTests(WebTest):
             data={
                 "uuid": uuid4(),
                 "voorkeurs_digitaal_adres": invalid_digitaal_adres.id,
-                "soort_partij": partij.soort_partij,
+                "soort_partij": SoortPartij.organisatie,
+                "organisatie-TOTAL_FORMS": "1",
             },
             instance=partij,
         )
@@ -165,7 +166,8 @@ class PartijAdminTests(WebTest):
             data={
                 "uuid": uuid4(),
                 "voorkeurs_rekeningnummer": invalid_rekeningnummer.id,
-                "soort_partij": partij.soort_partij,
+                "soort_partij": SoortPartij.organisatie,
+                "organisatie-TOTAL_FORMS": "1",
             },
             instance=partij,
         )
@@ -175,6 +177,55 @@ class PartijAdminTests(WebTest):
         self.assertIn(
             "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn.",
             form.errors["voorkeurs_rekeningnummer"],
+        )
+
+    def test_valid_soort_partij(self):
+        form = PartijAdminForm(
+            data={
+                "uuid": uuid4(),
+                "soort_partij": SoortPartij.organisatie,
+                "organisatie-TOTAL_FORMS": "1",
+            },
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_soort_partij(self):
+        form = PartijAdminForm(
+            data={
+                "uuid": uuid4(),
+                "soort_partij": SoortPartij.organisatie,
+            },
+        )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["soort_partij"][0],
+            "Zodra de `SoortPartij` is geselecteerd, moet de `PartijIdentificatie` ook worden aangemaakt.",
+        )
+
+        form = PartijAdminForm(
+            data={
+                "uuid": uuid4(),
+                "soort_partij": SoortPartij.organisatie,
+                "organisatie-TOTAL_FORMS": "0",
+            },
+        )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["soort_partij"][0],
+            "Zodra de `SoortPartij` is geselecteerd, moet de `PartijIdentificatie` ook worden aangemaakt.",
+        )
+
+        form = PartijAdminForm(
+            data={
+                "uuid": uuid4(),
+                "soort_partij": SoortPartij.organisatie,
+                "persoon-TOTAL_FORMS": "1",
+            },
+        )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["soort_partij"][0],
+            "Zodra de `SoortPartij` is geselecteerd, moet de `PartijIdentificatie` ook worden aangemaakt.",
         )
 
 

@@ -617,6 +617,23 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 code="duplicated",
             )
 
+    def validate(self, attrs):
+        soort_partij = get_field_value(self, attrs, "soort_partij")
+        partij_identificatie = get_field_value(self, attrs, "partij_identificatie")
+        msg = {
+            "partij_identificatie": _(
+                "Als `soort_partij` wordt gewijzigd, moet `partij_identifiatie` ook worden opgegeven."
+            )
+        }
+        if soort_partij and not partij_identificatie:
+            # CREATE
+            if not self.instance:
+                raise serializers.ValidationError(msg, code="required")
+            # UPDATE
+            if self.instance.soort_partij != soort_partij:
+                raise serializers.ValidationError(msg, code="required")
+        return attrs
+
     def validate_partij_identificatoren(self, attrs):
         if attrs:
             self.check_duplicated_uuid(attrs)
