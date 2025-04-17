@@ -104,20 +104,6 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        if soort_partij := self.soort_partij:
-            match (soort_partij):
-                case SoortPartij.persoon:
-                    partij = Persoon.objects.filter(partij=self).first()
-                case SoortPartij.organisatie:
-                    partij = Organisatie.objects.filter(partij=self).first()
-                case SoortPartij.contactpersoon:
-                    partij = Contactpersoon.objects.filter(partij=self).first()
-                case _:
-                    return self.nummer
-
-            if partij:
-                return f"{partij} ({self.nummer})"
-
         return self.nummer
 
 
