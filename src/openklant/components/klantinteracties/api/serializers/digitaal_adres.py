@@ -96,7 +96,8 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                     " e-mailadressen is te lezen via de volgende URL: "
                     "https://github.com/django/django/blob/4.2/django/core/validators.py#L174."
                     "Voor telefoonnummers wordt de volgende regex expressie toegepast ter "
-                    "validatie: `(0[8-9]00[0-9]{4,7})|(0[1-9][0-9]{8})|(\\+[0-9]{9,20}|1400|140[0-9]{2,3})`."
+                    "validatie: `^(0[8-9]00[0-9]{4,8}|0[1-9][0-9]{8}|"  # noqa: W605
+                    "\+31[0-9]{10}|\+[0-9]{9,20}|00[0-9]{11}|1400|140[0-9]{2,3})$`."  # noqa: W605
                 )
             },
             "url": {
