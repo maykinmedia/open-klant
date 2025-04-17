@@ -493,6 +493,30 @@ paths:
           type: string
         description: Zoek betrokkene object op basis van het partij nummer
       - in: query
+        name: wasPartij__partijIdentificator__codeObjecttype
+        schema:
+          type: string
+        description: Zoek betrokkene object op basis van het partij identificator
+          objecttype.
+      - in: query
+        name: wasPartij__partijIdentificator__codeRegister
+        schema:
+          type: string
+        description: Zoek betrokkene object op basis van het partij identificator
+          register.
+      - in: query
+        name: wasPartij__partijIdentificator__codeSoortObjectId
+        schema:
+          type: string
+        description: Zoek betrokkene object op basis van het partij identificator
+          soort object ID.
+      - in: query
+        name: wasPartij__partijIdentificator__objectId
+        schema:
+          type: string
+        description: Zoek betrokkene object op basis van het partij identificator
+          object ID.
+      - in: query
         name: wasPartij__url
         schema:
           type: string
@@ -1252,6 +1276,30 @@ paths:
         description: Zoek digitaal adres(sen) object(en) op basis van de betrokkene
           uuid.
       - in: query
+        name: verstrektDoorPartij__partijIdentificator__codeObjecttype
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van het partij identificator
+          objecttype.
+      - in: query
+        name: verstrektDoorPartij__partijIdentificator__codeRegister
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van het partij identificator
+          register.
+      - in: query
+        name: verstrektDoorPartij__partijIdentificator__codeSoortObjectId
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van het partij identificator
+          soort object ID.
+      - in: query
+        name: verstrektDoorPartij__partijIdentificator__objectId
+        schema:
+          type: string
+        description: Zoek digitaal adres(sen) object(en) op basis van het partij identificator
+          object ID.
+      - in: query
         name: verstrektDoorPartij__soortPartij
         schema:
           type: string
@@ -1670,6 +1718,30 @@ paths:
           type: string
           format: uuid
         description: Zoek klantcontact object op basis van het betrokkene uuid.
+      - in: query
+        name: hadBetrokkene__wasPartij__partijIdentificator__codeObjecttype
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het partij identificator
+          objecttype.
+      - in: query
+        name: hadBetrokkene__wasPartij__partijIdentificator__codeRegister
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het partij identificator
+          register.
+      - in: query
+        name: hadBetrokkene__wasPartij__partijIdentificator__codeSoortObjectId
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het partij identificator
+          soort object ID.
+      - in: query
+        name: hadBetrokkene__wasPartij__partijIdentificator__objectId
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het partij identificator
+          object ID.
       - in: query
         name: hadBetrokkene__wasPartij__url
         schema:
