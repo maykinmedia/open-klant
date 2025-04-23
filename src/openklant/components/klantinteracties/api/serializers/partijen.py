@@ -655,9 +655,9 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         partij_identificatoren = validated_data.pop("partijidentificator_set", None)
         if "digitaaladres_set" in validated_data:
             existing_digitale_adressen = instance.digitaaladres_set.all()
+            digitaaladres_set = validated_data.pop("digitaaladres_set") or []
             digitaal_adres_uuids = [
-                digitaal_adres["uuid"]
-                for digitaal_adres in validated_data.pop("digitaaladres_set")
+                digitaal_adres["uuid"] for digitaal_adres in digitaaladres_set
             ]
 
             # unset relation of digitaal adres that weren't given with the update
@@ -722,9 +722,9 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
         if "rekeningnummer_set" in validated_data:
             existing_rekeningnummers = instance.rekeningnummer_set.all()
+            rekeningnummer_set = validated_data.pop("rekeningnummer_set") or []
             rekeningnummers_uuids = [
-                rekeningnummer["uuid"]
-                for rekeningnummer in validated_data.pop("rekeningnummer_set")
+                rekeningnummer["uuid"] for rekeningnummer in rekeningnummer_set
             ]
 
             # unset relation of rekeningnummer that weren't given with the update

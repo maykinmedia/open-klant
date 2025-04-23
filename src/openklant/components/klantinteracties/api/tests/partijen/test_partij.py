@@ -1030,10 +1030,17 @@ class PartijTests(APITestCase):
                     "land": "NL",
                 },
             }
+            # assert initial state for some fields
+            self.assertEqual(partij.digitaaladres_set.first(), digitaal_adres2)
+            self.assertEqual(partij.rekeningnummer_set.first(), rekeningnummer2)
 
             response = self.client.put(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             data = response.json()
+
+            # the relation should be unlinked from the Partij
+            self.assertFalse(partij.digitaaladres_set.exists())
+            self.assertFalse(partij.rekeningnummer_set.exists())
 
             self.assertEqual(data["nummer"], "6427834668")
             self.assertEqual(data["interneNotitie"], "changed")
@@ -1139,6 +1146,61 @@ class PartijTests(APITestCase):
         )
         self.assertEqual(response_data["rekeningnummers"], [])
         self.assertIsNone(response_data["voorkeursRekeningnummer"])
+
+    def test_update_partij_fk_fields(self):
+        partij = PartijFactory.create()
+        digitaal_adres = DigitaalAdresFactory.create(partij=partij)
+        rekeningnummer = RekeningnummerFactory.create(partij=partij)
+
+        # initial state relation
+        self.assertTrue(partij.digitaaladres_set.exists())
+        self.assertTrue(partij.rekeningnummer_set.exists())
+
+        detail_url = reverse(
+            "klantinteracties:partij-detail",
+            kwargs={"uuid": partij.uuid},
+        )
+
+        with self.subTest("set_fk_none"):
+            data = {
+                "soort_partij": "organisatie",
+                "rekeningnummers": None,
+                "digitaleAdressen": None,
+            }
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response_data = response.json()
+            partij = Partij.objects.get(uuid=partij.uuid)
+            self.assertEqual(response_data["rekeningnummers"], [])
+            self.assertEqual(response_data["digitaleAdressen"], [])
+
+            # the relation should be unlinked from the Partij
+            self.assertFalse(partij.digitaaladres_set.exists())
+            self.assertFalse(partij.rekeningnummer_set.exists())
+
+        digitaal_adres.partij = partij
+        digitaal_adres.save()
+        rekeningnummer.partij = partij
+        rekeningnummer.save()
+        # initial state relation
+        self.assertTrue(partij.digitaaladres_set.exists())
+        self.assertTrue(partij.rekeningnummer_set.exists())
+        with self.subTest("set_fk_empty_list"):
+            data = {
+                "soort_partij": "organisatie",
+                "rekeningnummers": [],
+                "digitaleAdressen": [],
+            }
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            response_data = response.json()
+            partij = Partij.objects.get(uuid=partij.uuid)
+            self.assertEqual(response_data["rekeningnummers"], [])
+            self.assertEqual(response_data["digitaleAdressen"], [])
+
+            # the relation should be unlinked from the Partij
+            self.assertFalse(partij.digitaaladres_set.exists())
+            self.assertFalse(partij.rekeningnummer_set.exists())
 
     def test_update_partially_partij_only_required(self):
         partij = PartijFactory.create(
