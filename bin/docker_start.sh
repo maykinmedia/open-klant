@@ -20,6 +20,10 @@ until pg_isready; do
   sleep 1
 done
 
+# Check current version
+>&2 echo "Check current version"
+python src/manage.py upgrade_check_script
+
 >&2 echo "Database is up."
 
 # Apply database migrations
