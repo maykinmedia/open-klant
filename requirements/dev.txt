@@ -78,8 +78,11 @@ boltons==24.0.0
     #   -r requirements/ci.txt
     #   face
     #   glom
-build==1.2.1
-    # via pip-tools
+build==1.2.2.post1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   pip-tools
 bump2version==1.0.1
     # via -r requirements/dev.in
 cbor2==5.6.4
@@ -620,10 +623,16 @@ phonenumberslite==8.13.42
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-pip==24.3.1
-    # via pip-tools
+pip==25.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   pip-tools
 pip-tools==7.4.1
-    # via -r requirements/dev.in
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   -r requirements/dev.in
 platformdirs==4.2.2
     # via
     #   -c requirements/ci.txt
@@ -709,8 +718,10 @@ pypng==0.20220715.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   qrcode
-pyproject-hooks==1.1.0
+pyproject-hooks==1.2.0
     # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
     #   build
     #   pip-tools
 pyquery==2.0.0
@@ -817,8 +828,11 @@ sentry-sdk==2.12.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-setuptools==75.6.0
-    # via pip-tools
+setuptools==79.0.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   pip-tools
 six==1.16.0
     # via
     #   -c requirements/ci.txt
@@ -991,8 +1005,11 @@ webtest==3.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-webtest
-wheel==0.43.0
-    # via pip-tools
+wheel==0.45.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   pip-tools
 whitenoise==6.9.0
     # via -r requirements/dev.in
 wrapt==1.16.0
