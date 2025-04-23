@@ -16,5 +16,5 @@ jobs:
       schema-path: 'src/openklant/components/${{ matrix.component }}/openapi.yaml'
       schema-command: 'bin/generate_schema_for_component.sh'
       schema-options: "${{ matrix.component }} src/openklant/components/${{ matrix.component }}/openapi.yaml"
-      python-version: '3.11'
+      python-version: '3.12'
       django-settings-module: 'openklant.conf.ci'
