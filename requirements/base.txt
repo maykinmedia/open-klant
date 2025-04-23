@@ -96,6 +96,7 @@ django==4.2.20
     #   django-simple-certmanager
     #   django-solo
     #   django-two-factor-auth
+    #   django-upgrade-check
     #   djangorestframework
     #   djangorestframework-inclusions
     #   drf-nested-routers
@@ -167,6 +168,8 @@ django-solo==2.3.0
     #   zgw-consumers
 django-two-factor-auth==1.16.0
     # via maykin-2fa
+django-upgrade-check==1.0.0
+    # via -r requirements/base.in
 djangorestframework==3.15.2
     # via
     #   commonground-api-common
@@ -319,6 +322,8 @@ ruamel-yaml==0.18.10
     # via django-setup-configuration
 ruamel-yaml-clib==0.2.12
     # via ruamel-yaml
+semantic-version==2.10.0
+    # via django-upgrade-check
 sentry-sdk==2.12.0
     # via open-api-framework
 six==1.16.0
