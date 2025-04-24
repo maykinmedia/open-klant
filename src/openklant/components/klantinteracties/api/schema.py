@@ -165,6 +165,94 @@ it is possible to send a list of `partijIdentificator` objects.
     + notification_documentation(KANAAL_PARTIJ)
 )
 
+PARTIJ_IDENTIFICATOREN_DESCRIPTION = _(
+    """
+### **Uniqueness of Partij and PartijIdentificator**
+
+The following description defines the constraints applied to the `PartijIdentificator`
+model to ensure data integrity, enforce both **global** and **local** uniqueness,
+and support **hierarchical** relationships between identifiers.
+These constraints also cover specific behaviors related to register
+hierarchies and are essential for maintaining consistency within and across `Partij` entities.
+
+
+Each `PartijIdentificator` is validated according to a predefined registry hierarchy.
+The `object_id` is validated in the context of its `code_soort_object_id`,
+and the registry (`code_register`) determines the expected structure.
+
+The registry configuration is as follows:
+
+
+| codeRegister  | codeObjecttype       | codeSoortObjectId                |
+|---------------|--------------------------|------------------------------|
+| brp           | natuurlijk_persoon       | bsn, overig                  |
+| hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer, overig     |
+| hr            | vestiging                | vestigingsnummer, overig     |
+| overig        | –                        | –                            |
+
+
+
+**1. Global Uniqueness**
+
+The `PartijIdentificator` must be globally unique.
+This means that the following combination of fields must appear only once across all records:
+
+- `codeObjecttype`
+- `codeSoortObjectId`
+- `objectId`
+- `codeRegister`
+
+This ensures that each `partijIdentificatoren` is distinct and not duplicated across the system.
+
+**2. Local Uniqueness Within a Partij**
+
+Within a single `Partij`, it is not allowed to have multiple `partijIdentificatoren` entries
+with the same `codeSoortObjectId`.
+
+For example: a single `Partij` cannot have two `partijIdentificatoren` of `bsn`.
+Each `codeSoortObjectId` can only appear once per `Partij`.
+
+
+**3. Introduction of `subIdentificatorVan` field**
+
+To support hierarchical relationships between `partijIdentificatoren` entries such as the relationship between a
+`vestigingsnummer` and its corresponding `kvk_nummer`, a new field called `subIdentificatorVan` has been introduced.
+
+This field is a foreign key referencing another `PartijIdentificator`, establishing a parent-child structure
+between identifiers.
+By default, the `subIdentificatorVan` field is nullable for most of entries, except
+for a `vestigingsnummer`, where it must be set to a valid `kvk_nummer`.
+The referenced `kvk_nummer` can belong to the same `Partij`, to an external one, or it can be
+created independently without being associated with any `Partij`.
+
+In all cases, a `vestigingsnummer` cannot exist without being linked to a valid
+`kvk_nummer` through the `subIdentificatorVan` field.
+
+
+**Warnings:**
+
+
+- The original global uniqueness constraints still applies with this additional field:
+
+  - If `subIdentificatorVan` is `null`, then the combination of `PartijIdentificator` fields must be unique.
+  - If `subIdentificatorVan` is set, then the combination `subIdentificatorVan`
+  and `PartijIdentificator` fields must be unique.
+
+- A `PartijIdentificator` cannot reference itself through the `subIdentificatorVan` field.
+The reference must always point to a different `PartijIdentificator` to avoid self-referencing.
+
+**4. Deletion or Modification Restrictions**
+
+A `PartijIdentificator` that has other `partijIdentificatoren` entries linked to it
+cannot be deleted or modified directly.
+
+For example: If a `kvk_nummer` has one or more `vestigingsnummer` identifiers linked to it,
+those `vestigingsnummer` entries must first be deleted or updated before the `kvk_nummer`
+itself can be modified or removed.
+
+"""
+)
+
 
 custom_settings = {
     "TITLE": "klantinteracties",
@@ -185,8 +273,14 @@ custom_settings = {
         },
         {"name": "klanten contacten"},
         {"name": "onderwerpobjecten"},
-        {"name": "partij-identificatoren"},
-        {"name": "partijen", "description": PARTIJEN_DESCRIPTION},
+        {
+            "name": "partij-identificatoren",
+            "description": PARTIJ_IDENTIFICATOREN_DESCRIPTION,
+        },
+        {
+            "name": "partijen",
+            "description": PARTIJEN_DESCRIPTION,
+        },
         {"name": "rekeningnummers"},
         {"name": "vertegenwoordigingen"},
     ],
