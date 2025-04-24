@@ -169,6 +169,11 @@ class PartijBezoekadresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Partij
         gegevensgroep = "bezoekadres"
+        extra_kwargs = {
+            "huisnummer": {
+                "allow_null": True,
+            }
+        }
 
 
 class CorrespondentieadresSerializer(GegevensGroepSerializer):
@@ -176,6 +181,11 @@ class CorrespondentieadresSerializer(GegevensGroepSerializer):
         model = Partij
         gegevensgroep = "correspondentieadres"
         ref_name = "PartijCorrespondentieadres"
+        extra_kwargs = {
+            "huisnummer": {
+                "allow_null": True,
+            }
+        }
 
 
 class CategorieSerializer(serializers.HyperlinkedModelSerializer):

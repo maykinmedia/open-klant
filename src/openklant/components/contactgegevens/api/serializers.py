@@ -10,6 +10,11 @@ class OrganisatieAdresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Organisatie
         gegevensgroep = "adres"
+        extra_kwargs = {
+            "huisnummer": {
+                "allow_null": True,
+            }
+        }
 
 
 class OrganisatieSerializer(
@@ -46,6 +51,11 @@ class PersoonAdresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Persoon
         gegevensgroep = "adres"
+        extra_kwargs = {
+            "huisnummer": {
+                "allow_null": True,
+            }
+        }
 
 
 class PersoonSerializer(

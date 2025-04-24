@@ -111,6 +111,11 @@ class BezoekadresSerializer(GegevensGroepSerializer):
     class Meta:
         model = Betrokkene
         gegevensgroep = "bezoekadres"
+        extra_kwargs = {
+            "huisnummer": {
+                "allow_null": True,
+            }
+        }
 
 
 class CorrespondentieadresSerializer(GegevensGroepSerializer):
@@ -118,6 +123,11 @@ class CorrespondentieadresSerializer(GegevensGroepSerializer):
         model = Betrokkene
         gegevensgroep = "correspondentieadres"
         ref_name = "BetrokkeneCorrespondentieadres"
+        extra_kwargs = {
+            "huisnummer": {
+                "allow_null": True,
+            }
+        }
 
 
 class ContactnaamSerializer(GegevensGroepSerializer):
