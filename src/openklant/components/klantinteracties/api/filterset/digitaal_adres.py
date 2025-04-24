@@ -47,6 +47,30 @@ class DigitaalAdresFilterSet(FilterSet):
         ),
         field_name="partij__soort_partij",
     )
+    verstrekt_door_partij__partij_identificator__code_objecttype = filters.CharFilter(
+        help_text=_(
+            "Zoek digitaal adres(sen) object(en) op basis van het partij identificator objecttype."
+        ),
+        method="filter_partij_identificator_code_objecttype",
+    )
+    verstrekt_door_partij__partij_identificator__code_soort_object_id = filters.CharFilter(
+        help_text=_(
+            "Zoek digitaal adres(sen) object(en) op basis van het partij identificator soort object ID."
+        ),
+        method="filter_partij_identificator_code_soort_object_id",
+    )
+    verstrekt_door_partij__partij_identificator__object_id = filters.CharFilter(
+        help_text=_(
+            "Zoek digitaal adres(sen) object(en) op basis van het partij identificator object ID."
+        ),
+        method="filter_partij_identificator_object_id",
+    )
+    verstrekt_door_partij__partij_identificator__code_register = filters.CharFilter(
+        help_text=_(
+            "Zoek digitaal adres(sen) object(en) op basis van het partij identificator register."
+        ),
+        method="filter_partij_identificator_code_register",
+    )
     adres = filters.CharFilter(
         lookup_expr="exact",
         help_text=_(
@@ -88,9 +112,45 @@ class DigitaalAdresFilterSet(FilterSet):
             "verstrekt_door_partij__uuid",
             "verstrekt_door_partij__url",
             "verstrekt_door_partij__soort_partij",
+            "verstrekt_door_partij__partij_identificator__code_objecttype",
+            "verstrekt_door_partij__partij_identificator__code_soort_object_id",
+            "verstrekt_door_partij__partij_identificator__object_id",
+            "verstrekt_door_partij__partij_identificator__code_register",
             "adres",
             "adres__icontains",
             "soort_digitaal_adres",
             "omschrijving",
             "referentie",
         )
+
+    def filter_partij_identificator_code_objecttype(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partij__partijidentificator__partij_identificator_code_objecttype=value
+            )
+        except ValueError:
+            return queryset.none()
+
+    def filter_partij_identificator_code_soort_object_id(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partij__partijidentificator__partij_identificator_code_soort_object_id=value
+            )
+        except ValueError:
+            return queryset.none()
+
+    def filter_partij_identificator_object_id(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partij__partijidentificator__partij_identificator_object_id=value
+            )
+        except ValueError:
+            return queryset.none()
+
+    def filter_partij_identificator_code_register(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partij__partijidentificator__partij_identificator_code_register=value
+            )
+        except ValueError:
+            return queryset.none()
