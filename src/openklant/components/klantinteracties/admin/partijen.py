@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib import admin
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
@@ -32,32 +31,51 @@ class PartijAdminForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        voorkeurs_digitaal_adres = cleaned_data.get("voorkeurs_digitaal_adres")
-        voorkeurs_rekeningnummer = cleaned_data.get("voorkeurs_rekeningnummer")
-
-        if voorkeurs_digitaal_adres:
-            if (
-                voorkeurs_digitaal_adres
-                not in DigitaalAdres.objects.filter(partij=self.instance).all()
-            ):
-                raise ValidationError(
+        if voorkeurs_digitaal_adres := cleaned_data.get("voorkeurs_digitaal_adres"):
+            if not self.instance.pk:
+                raise forms.ValidationError(
                     {
-                        "voorkeurs_digitaal_adres": _(
-                            "Het voorkeurs adres moet een gelinkte digitaal adres zijn."
-                        )
+                        "voorkeurs_digitaal_adres": [
+                            _(
+                                "Om de `voorkeurs_digitaal_adres` te selecteren,"
+                                " moet je eerst de Partij aanmaken en opslaan."
+                            )
+                        ]
                     }
                 )
 
-        if voorkeurs_rekeningnummer:
-            if (
-                voorkeurs_rekeningnummer
-                not in Rekeningnummer.objects.filter(partij=self.instance).all()
-            ):
-                raise ValidationError(
+            if voorkeurs_digitaal_adres not in self.instance.digitaaladres_set.all():
+                raise forms.ValidationError(
                     {
-                        "voorkeurs_rekeningnummer": _(
-                            "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
-                        )
+                        "voorkeurs_digitaal_adres": [
+                            _(
+                                "Het voorkeurs adres moet een gelinkte digitaal adres zijn."
+                            )
+                        ]
+                    }
+                )
+
+        if voorkeurs_rekeningnummer := cleaned_data.get("voorkeurs_rekeningnummer"):
+            if not self.instance.pk:
+                raise forms.ValidationError(
+                    {
+                        "voorkeurs_rekeningnummer": [
+                            _(
+                                "Om de `voorkeurs_rekeningnummer` te selecteren,"
+                                " moet je eerst de Partij aanmaken en opslaan."
+                            )
+                        ]
+                    }
+                )
+
+            if voorkeurs_rekeningnummer not in self.instance.rekeningnummer_set.all():
+                raise forms.ValidationError(
+                    {
+                        "voorkeurs_rekeningnummer": [
+                            _(
+                                "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn."
+                            )
+                        ]
                     }
                 )
 
@@ -239,33 +257,38 @@ class PartijAdmin(admin.ModelAdmin):
             super()
             .get_queryset(request)
             .select_related(
+                "voorkeurs_rekeningnummer",
                 "voorkeurs_digitaal_adres",
+                "organisatie",
+                "persoon",
+                "contactpersoon",
             )
         )
 
     @admin.display(empty_value="---")
     def get_name(self, obj):
         match obj.soort_partij:
-            case SoortPartij.persoon:
+            case SoortPartij.persoon.value:
                 return self.get_personen(obj)
-            case SoortPartij.contactpersoon:
+            case SoortPartij.contactpersoon.value:
                 return self.get_contactpersonen(obj)
-            case SoortPartij.organisatie:
+            case SoortPartij.organisatie.value:
                 return self.get_organisaties(obj)
 
     get_name.short_description = _("naam")
 
     def get_personen(self, obj):
-        if persoon := obj.persoon:
-            return persoon.get_full_name()
+        return obj.persoon.get_full_name() if hasattr(obj, "persoon") else "---"
 
     def get_contactpersonen(self, obj):
-        if contactpersoon := obj.contactpersoon:
-            return contactpersoon.get_full_name()
+        return (
+            obj.contactpersoon.get_full_name()
+            if hasattr(obj, "contactpersoon")
+            else "---"
+        )
 
     def get_organisaties(self, obj):
-        if organisatie := obj.organisatie:
-            return organisatie.naam
+        return obj.organisatie.naam if hasattr(obj, "organisatie") else "---"
 
 
 @admin.register(Categorie)

@@ -138,44 +138,75 @@ class PartijAdminTests(WebTest):
         self.assertIsNone(adres.betrokkene)
 
     def test_voorkeurs_digitaal_adres_invalid(self):
-        partij = PartijFactory.create(soort_partij=SoortPartij.persoon)
         invalid_digitaal_adres = DigitaalAdresFactory.create()
 
-        form = PartijAdminForm(
-            data={
-                "uuid": uuid4(),
-                "voorkeurs_digitaal_adres": invalid_digitaal_adres.id,
-                "soort_partij": partij.soort_partij,
-            },
-            instance=partij,
-        )
+        with self.subTest("no_instance"):
+            form = PartijAdminForm(
+                data={
+                    "uuid": uuid4(),
+                    "voorkeurs_digitaal_adres": invalid_digitaal_adres.id,
+                    "soort_partij": SoortPartij.persoon,
+                }
+            )
 
-        self.assertFalse(form.is_valid())
-        self.assertIn("voorkeurs_digitaal_adres", form.errors)
-        self.assertIn(
-            "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
-            form.errors["voorkeurs_digitaal_adres"],
-        )
+            self.assertFalse(form.is_valid())
+            self.assertEqual(
+                form.errors["voorkeurs_digitaal_adres"][0],
+                "Om de `voorkeurs_digitaal_adres` te selecteren, moet je eerst de Partij aanmaken en opslaan.",
+            )
+
+        with self.subTest("with_instance"):
+            partij = PartijFactory.create(soort_partij=SoortPartij.persoon)
+            form = PartijAdminForm(
+                data={
+                    "uuid": uuid4(),
+                    "voorkeurs_digitaal_adres": invalid_digitaal_adres.id,
+                    "soort_partij": SoortPartij.persoon,
+                },
+                instance=partij,
+            )
+
+            self.assertFalse(form.is_valid())
+            self.assertEqual(
+                form.errors["voorkeurs_digitaal_adres"][0],
+                "Het voorkeurs adres moet een gelinkte digitaal adres zijn.",
+            )
 
     def test_voorkeurs_rekeningnummer_invalid(self):
         partij = PartijFactory.create()
         invalid_rekeningnummer = RekeningnummerFactory.create()
 
-        form = PartijAdminForm(
-            data={
-                "uuid": uuid4(),
-                "voorkeurs_rekeningnummer": invalid_rekeningnummer.id,
-                "soort_partij": partij.soort_partij,
-            },
-            instance=partij,
-        )
+        with self.subTest("no_instance"):
+            form = PartijAdminForm(
+                data={
+                    "uuid": uuid4(),
+                    "voorkeurs_rekeningnummer": invalid_rekeningnummer.id,
+                    "soort_partij": SoortPartij.persoon,
+                },
+            )
 
-        self.assertFalse(form.is_valid())
-        self.assertIn("voorkeurs_rekeningnummer", form.errors)
-        self.assertIn(
-            "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn.",
-            form.errors["voorkeurs_rekeningnummer"],
-        )
+            self.assertFalse(form.is_valid())
+            self.assertEqual(
+                form.errors["voorkeurs_rekeningnummer"][0],
+                "Om de `voorkeurs_rekeningnummer` te selecteren, moet je eerst de Partij aanmaken en opslaan.",
+            )
+
+        with self.subTest("with_instance"):
+            partij = PartijFactory.create()
+            form = PartijAdminForm(
+                data={
+                    "uuid": uuid4(),
+                    "voorkeurs_rekeningnummer": invalid_rekeningnummer.id,
+                    "soort_partij": SoortPartij.persoon,
+                },
+                instance=partij,
+            )
+
+            self.assertFalse(form.is_valid())
+            self.assertEqual(
+                form.errors["voorkeurs_rekeningnummer"][0],
+                "Het voorkeurs rekeningnummer moet een gelinkte rekeningnummer zijn.",
+            )
 
 
 @disable_admin_mfa()
