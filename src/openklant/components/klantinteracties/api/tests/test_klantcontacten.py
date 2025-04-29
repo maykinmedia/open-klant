@@ -629,6 +629,54 @@ class BetrokkeneTests(APITestCase):
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_create_betrokkene_with_adressen_huisnummer_set_to_none(self):
+        klantcontact = KlantcontactFactory.create()
+        list_url = reverse("klantinteracties:betrokkene-list")
+        data = {
+            "hadKlantcontact": {"uuid": str(klantcontact.uuid)},
+            "wasPartij": None,
+            "bezoekadres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": None,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
+                "land": "NL",
+            },
+            "correspondentieadres": {
+                "nummeraanduidingId": "1234567890000002",
+                "straatnaam": "straat",
+                "huisnummer": None,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
+                "land": "NL",
+            },
+            "contactnaam": {
+                "voorletters": "P",
+                "voornaam": "Phil",
+                "voorvoegselAchternaam": "",
+                "achternaam": "Bozeman",
+            },
+            "rol": "vertegenwoordiger",
+            "organisatienaam": "Whitechapel",
+            "initiator": True,
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        self.assertIsNone(data["bezoekadres"]["huisnummer"])
+        self.assertIsNone(data["correspondentieadres"]["huisnummer"])
+
     def test_create_betrokkene(self):
         klantcontact = KlantcontactFactory.create()
         list_url = reverse("klantinteracties:betrokkene-list")
