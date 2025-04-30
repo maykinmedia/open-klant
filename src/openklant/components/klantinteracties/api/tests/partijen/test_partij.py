@@ -94,6 +94,60 @@ class PartijTests(APITestCase):
                 data["categorieRelaties"][0]["categorieNaam"], "test-categorie-naam"
             )
 
+    def test_create_partij_with_adressen_huisnummer_set_to_none(self):
+        digitaal_adres, digitaal_adres2 = DigitaalAdresFactory.create_batch(2)
+        rekeningnummer, rekeningnummer2 = RekeningnummerFactory.create_batch(2)
+        list_url = reverse("klantinteracties:partij-list")
+        data = {
+            "nummer": "1298329191",
+            "interneNotitie": "interneNotitie",
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "soortPartij": "persoon",
+            "voorkeurstaal": "ndl",
+            "indicatieActief": True,
+            "bezoekadres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": None,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
+                "land": "NL",
+            },
+            "correspondentieadres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": None,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
+                "land": "NL",
+            },
+            "partijIdentificatie": {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            },
+        }
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        self.assertIsNone(data["bezoekadres"]["huisnummer"])
+        self.assertIsNone(data["correspondentieadres"]["huisnummer"])
+
     def test_create_partij(self):
         digitaal_adres, digitaal_adres2 = DigitaalAdresFactory.create_batch(2)
         rekeningnummer, rekeningnummer2 = RekeningnummerFactory.create_batch(2)

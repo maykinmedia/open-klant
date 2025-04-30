@@ -397,6 +397,7 @@ components:
           type: integer
           maximum: 99999
           minimum: 1
+          nullable: true
           description: Huisnummer van het adres (indien het een Nederlands adres betreft
             zonder BAG-id).
         huisnummertoevoeging:
@@ -667,6 +668,7 @@ components:
           type: integer
           maximum: 99999
           minimum: 1
+          nullable: true
           description: Huisnummer van het adres (indien het een Nederlands adres betreft
             zonder BAG-id).
         huisnummertoevoeging:

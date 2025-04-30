@@ -63,6 +63,34 @@ class PersoonTests(APITestCase):
         data = response.json()
         self.assertEqual(data, expected_data)
 
+    def test_create_persoon_with_adres_huisnummer_set_to_none(self):
+        list_url = reverse("contactgegevens:persoon-list")
+        data = {
+            "geboortedatum": "1972-05-05",
+            "geslachtsnaam": "Townsend",
+            "geslacht": "m",
+            "voornamen": "Devin",
+            "adres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": None,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adresregel1",
+                "adresregel2": "adresregel2",
+                "adresregel3": "adresregel3",
+                "land": "CA",
+            },
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        data = response.json()
+        self.assertIsNone(data["adres"]["huisnummer"])
+
     def test_create_persoon(self):
         list_url = reverse("contactgegevens:persoon-list")
 
@@ -352,6 +380,33 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(data, expected_data)
+
+    def test_create_organisatie_with_adres_huisnummer_set_to_none(self):
+        list_url = reverse("contactgegevens:organisatie-list")
+
+        data = {
+            "handelsnaam": "Devin Townsend",
+            "oprichtingsdatum": "1996-03-12",
+            "adres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": None,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adresregel1",
+                "adresregel2": "adresregel2",
+                "adresregel3": "adresregel3",
+                "land": "CA",
+            },
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        data = response.json()
+        self.assertIsNone(data["adres"]["huisnummer"])
 
     def test_create_organisatie(self):
         list_url = reverse("contactgegevens:organisatie-list")
