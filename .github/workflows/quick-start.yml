@@ -14,3 +14,22 @@ jobs:
     uses: maykinmedia/open-api-workflows/.github/workflows/quick-start.yml@v5
     with:
       fixtures: 'klantinteracties contactgegevens'
+
+  upgrade_simulation:
+    name: Simulate upgrading instances
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_OLD: "2.5.1"
+      RELEASE_NEW: "2.8.0"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and start docker with RELEASE=${{ env.RELEASE_OLD }}
+        run: |
+          docker compose build --build-arg RELEASE=${{ env.RELEASE_OLD }} || ( docker compose logs > $GITHUB_STEP_SUMMARY && exit 1 )
+          docker compose up -d || ( docker compose logs > $GITHUB_STEP_SUMMARY && exit 1 )
+
+      - name: Build and start docker with RELEASE=${{ env.RELEASE_NEW }}
+        run: |
+          docker compose build --build-arg RELEASE=${{ env.RELEASE_NEW }} || ( docker compose logs > $GITHUB_STEP_SUMMARY && exit 1 )
+          docker compose up -d || ( docker compose logs > $GITHUB_STEP_SUMMARY && exit 1 )

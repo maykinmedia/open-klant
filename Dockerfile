@@ -57,6 +57,7 @@ WORKDIR /app
 # COPY ./cache /app/cache
 COPY ./bin/docker_start.sh /start.sh
 COPY ./bin/wait_for_db.sh /wait_for_db.sh
+COPY ./bin/upgrade_check_version.sh /upgrade_check_version.sh
 COPY ./bin/setup_configuration.sh /setup_configuration.sh
 COPY ./bin/celery_worker.sh /celery_worker.sh
 COPY ./bin/celery_flower.sh /celery_flower.sh
