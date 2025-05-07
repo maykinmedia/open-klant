@@ -53,7 +53,9 @@ services:
       #
       # Django-setup-configuration
       RUN_SETUP_CONFIG: ${RUN_SETUP_CONFIG:-true}
-    command: /setup_configuration.sh
+      
+    command: sh -c "/upgrade_check_version.sh &&
+                    /setup_configuration.sh"
     volumes:
       - log:/app/log
       - ./docker/setup_configuration:/app/setup_configuration

@@ -317,7 +317,7 @@ django-two-factor-auth==1.16.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   maykin-2fa
-django-upgrade-check==1.0.0
+django-upgrade-check==1.1.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -539,7 +539,7 @@ phonenumberslite==8.13.42
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
-pip==25.0.1
+pip==25.1.1
     # via pip-tools
 pip-tools==7.4.1
     # via -r requirements/test-tools.in
@@ -720,7 +720,7 @@ sentry-sdk==2.12.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-setuptools==79.0.0
+setuptools==80.3.1
     # via pip-tools
 six==1.16.0
     # via

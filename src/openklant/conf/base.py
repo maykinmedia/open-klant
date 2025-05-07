@@ -98,9 +98,9 @@ NOTIFICATIONS_DISABLED = config(
 #
 # django-upgrade-check
 #
-CRITICAL_VERSION = "2.5.0"
 
 UPGRADE_CHECK_PATHS: UpgradePaths = {
-    CRITICAL_VERSION: UpgradeCheck(VersionRange(minimum="2.4.0")),
+    "2.6.0": UpgradeCheck(VersionRange(minimum="2.5.0")),
 }
-UPGRADE_CHECK_STRICT = True
+
+UPGRADE_CHECK_STRICT = False
