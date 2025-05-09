@@ -176,7 +176,7 @@ Licensed under the EUPL_
     :alt: Docker image
     :target: https://hub.docker.com/r/maykinmedia/open-klant
 
-.. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
+.. |python-versions| image:: https://img.shields.io/badge/python-3.12%2B-blue.svg
     :alt: Supported Python version
 
 .. |lint-oas| image:: https://github.com/maykinmedia/open-klant/workflows/actions/lint-oas/badge.svg

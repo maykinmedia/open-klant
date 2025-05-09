@@ -62,6 +62,8 @@ boltons==24.0.0
     #   -r requirements/base.txt
     #   face
     #   glom
+build==1.2.2.post1
+    # via pip-tools
 cbor2==5.6.4
     # via
     #   -c requirements/base.txt
@@ -100,6 +102,7 @@ click==8.1.7
     #   click-didyoumean
     #   click-plugins
     #   click-repl
+    #   pip-tools
 click-didyoumean==0.3.1
     # via
     #   -c requirements/base.txt
@@ -177,6 +180,7 @@ django==4.2.20
     #   django-simple-certmanager
     #   django-solo
     #   django-two-factor-auth
+    #   django-upgrade-check
     #   djangorestframework
     #   djangorestframework-inclusions
     #   drf-nested-routers
@@ -313,6 +317,10 @@ django-two-factor-auth==1.16.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   maykin-2fa
+django-upgrade-check==1.1.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 django-webtest==1.9.11
     # via -r requirements/test-tools.in
 djangorestframework==3.15.2
@@ -519,6 +527,7 @@ oyaml==1.0
 packaging==24.1
     # via
     #   black
+    #   build
     #   pytest
     #   sphinx
 pathspec==0.12.1
@@ -530,6 +539,10 @@ phonenumberslite==8.13.42
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
+pip==25.1.1
+    # via pip-tools
+pip-tools==7.4.1
+    # via -r requirements/test-tools.in
 platformdirs==4.2.2
     # via
     #   black
@@ -599,6 +612,10 @@ pypng==0.20220715.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   qrcode
+pyproject-hooks==1.2.0
+    # via
+    #   build
+    #   pip-tools
 pyquery==2.0.0
     # via -r requirements/test-tools.in
 pytest==8.3.3
@@ -693,11 +710,18 @@ ruamel-yaml-clib==0.2.12
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   ruamel-yaml
+semantic-version==2.10.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-upgrade-check
 sentry-sdk==2.12.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
+setuptools==80.3.1
+    # via pip-tools
 six==1.16.0
     # via
     #   -c requirements/base.txt
@@ -818,6 +842,8 @@ webob==1.8.8
     # via webtest
 webtest==3.0.0
     # via django-webtest
+wheel==0.45.1
+    # via pip-tools
 wrapt==1.16.0
     # via
     #   -c requirements/base.txt
