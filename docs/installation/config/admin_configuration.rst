@@ -47,8 +47,8 @@ Example of an API call here :ref:`command line <installation_configuration_api_c
 Configure Notificaties API
 ==========================
 
-Next, if notifications are enabled using the ``NOTIFICATIONS_ENABLED`` environment variable
-(see :ref:`installation_env_config` for more information), the notifications for Open Klant must be configured. 
+Next, if notifications are enabled using the ``NOTIFICATIONS_DISABLED`` environment variable set to ``false``
+(see :ref:`installation_env_config` for more information), the notifications for Open Klant must be configured.
 We assume you're also using Open Notificaties to make a complete setup.
 
 Open Klant
