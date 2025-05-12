@@ -14,7 +14,6 @@ vcrpy
 waitress>=2.1.1
 codecov
 pytest
-pip-tools
 
 # Code formatting
 black
