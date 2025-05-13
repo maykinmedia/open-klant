@@ -1616,6 +1616,49 @@ class OnderwerpobjectTests(APITestCase):
             },
         )
 
+    def test_filter_onderwerpobject_by_all_identificator_fields(self):
+        list_url = reverse("klantinteracties:onderwerpobject-list")
+
+        obj = OnderwerpobjectFactory.create(
+            onderwerpobjectidentificator_code_objecttype="typeA",
+            onderwerpobjectidentificator_code_soort_object_id="soortA",
+            onderwerpobjectidentificator_object_id="idA",
+            onderwerpobjectidentificator_code_register="regA",
+        )
+        OnderwerpobjectFactory.create(
+            onderwerpobjectidentificator_code_objecttype="typeB",
+            onderwerpobjectidentificator_code_soort_object_id="soortB",
+            onderwerpobjectidentificator_object_id="idB",
+            onderwerpobjectidentificator_code_register="regB",
+        )
+
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 2)
+
+        filters = {
+            "onderwerpobjectidentificatorCodeObjecttype": "typeA",
+            "onderwerpobjectidentificatorCodeSoortObjectId": "soortA",
+            "onderwerpobjectidentificatorObjectId": "idA",
+            "onderwerpobjectidentificatorCodeRegister": "regA",
+        }
+
+        for key, value in filters.items():
+            with self.subTest(f"Filter by {key}={value}"):
+                response = self.client.get(list_url, {key: value})
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                data = response.json()
+                self.assertEqual(len(data["results"]), 1)
+                self.assertEqual(data["results"][0]["uuid"], str(obj.uuid))
+
+        with self.subTest("Filter with no match"):
+            response = self.client.get(
+                list_url, {"onderwerpobjectidentificatorCodeObjecttype": "typeC"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 0)
+
     def test_destroy_onderwerpobject(self):
         onderwerpobject = OnderwerpobjectFactory.create()
         detail_url = reverse(
