@@ -180,10 +180,10 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     pagination_class = DynamicPageSizePagination
     filterset_fields = [
-        "onderwerpobjectidentificator_object_id",
         "onderwerpobjectidentificator_code_objecttype",
         "onderwerpobjectidentificator_code_register",
         "onderwerpobjectidentificator_code_soort_object_id",
+        "onderwerpobjectidentificator_object_id",
     ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
