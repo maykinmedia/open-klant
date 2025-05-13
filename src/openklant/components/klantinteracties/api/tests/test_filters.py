@@ -2051,6 +2051,15 @@ class DigitaalAdresFilterSetTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(data["count"], 2)
+    def test_filter_is_standaard_adres(self):
+        DigitaalAdresFactory.create(is_standaard_adres=True)
+        DigitaalAdresFactory.create(is_standaard_adres=False)
+
+        response = self.client.get(self.url, {"isStandaardAdres": True})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["isStandaardAdres"], True)
 
     def test_filter_referentie_exact_parameter(self):
         DigitaalAdresFactory.create(referentie="referentie-1234")

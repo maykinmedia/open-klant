@@ -91,6 +91,11 @@ class DigitaalAdresFilterSet(FilterSet):
             "dat exact gelijk moet zijn aan deze waarde."
         ),
     )
+    is_standaard_adres = filters.BooleanFilter(
+        help_text=_(
+            "Zoek digitaal adres(sen) object(en) op basis dat het een standaard adres is of niet."
+        ),
+    )
     omschrijving = filters.CharFilter(
         lookup_expr="icontains",
         help_text=_(
@@ -119,6 +124,7 @@ class DigitaalAdresFilterSet(FilterSet):
             "adres",
             "adres__icontains",
             "soort_digitaal_adres",
+            "is_standaard_adres",
             "omschrijving",
             "referentie",
         )
