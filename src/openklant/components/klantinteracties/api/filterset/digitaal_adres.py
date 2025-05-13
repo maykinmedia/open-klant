@@ -6,6 +6,8 @@ from vng_api_common.filtersets import FilterSet
 from openklant.components.klantinteracties.api.serializers.digitaal_adres import (
     DigitaalAdresSerializer,
 )
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
+from openklant.components.klantinteracties.models import Klantcontrol, SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.utils.filters import ExpandFilter, URLViewFilter
 
@@ -32,6 +34,7 @@ class DigitaalAdresFilterSet(FilterSet):
             "Zoek digitaal adres(sen) object(en) op basis van de betrokkene rol."
         ),
         field_name="betrokkene__rol",
+        choices=Klantcontrol.choices,
     )
     verstrekt_door_partij__uuid = filters.UUIDFilter(
         help_text=_("Zoek digitaal adres(sen) object(en) op basis van de partij uuid."),
@@ -46,6 +49,7 @@ class DigitaalAdresFilterSet(FilterSet):
             "Zoek digitaal adres(sen) object(en) op basis van de partij soort."
         ),
         field_name="partij__soort_partij",
+        choices=SoortPartij.choices,
     )
     verstrekt_door_partij__partij_identificator__code_objecttype = filters.CharFilter(
         help_text=_(
@@ -84,12 +88,12 @@ class DigitaalAdresFilterSet(FilterSet):
             "Zoek digitaal adres(sen) object(en) op basis van adres die de opgegeven waarden bevat."
         ),
     )
-    soort_digitaal_adres = filters.CharFilter(
-        lookup_expr="exact",
+    soort_digitaal_adres = filters.ChoiceFilter(
         help_text=_(
             "Zoek digitaal adres(sen) object(en) op basis van het soort digitaal adres "
             "dat exact gelijk moet zijn aan deze waarde."
         ),
+        choices=SoortDigitaalAdres.choices,
     )
     is_standaard_adres = filters.BooleanFilter(
         help_text=_(

@@ -1224,6 +1224,12 @@ paths:
         explode: false
         style: form
       - in: query
+        name: isStandaardAdres
+        schema:
+          type: boolean
+        description: Zoek digitaal adres(sen) object(en) op basis dat het een standaard
+          adres is of niet.
+      - in: query
         name: omschrijving
         schema:
           type: string
@@ -1250,8 +1256,13 @@ paths:
         name: soortDigitaalAdres
         schema:
           type: string
-        description: Zoek digitaal adres(sen) object(en) op basis van het soort digitaal
-          adres dat exact gelijk moet zijn aan deze waarde.
+          enum:
+          - email
+          - overig
+          - telefoonnummer
+        description: |+
+          Zoek digitaal adres(sen) object(en) op basis van het soort digitaal adres dat exact gelijk moet zijn aan deze waarde.
+
       - in: query
         name: verstrektDoorBetrokkene__rol
         schema:
@@ -1259,8 +1270,9 @@ paths:
           enum:
           - klant
           - vertegenwoordiger
-        description: Zoek digitaal adres(sen) object(en) op basis van de betrokkene
-          rol.
+        description: |+
+          Zoek digitaal adres(sen) object(en) op basis van de betrokkene rol.
+
       - in: query
         name: verstrektDoorBetrokkene__url
         schema:
@@ -1307,7 +1319,9 @@ paths:
           - contactpersoon
           - organisatie
           - persoon
-        description: Zoek digitaal adres(sen) object(en) op basis van de partij soort.
+        description: |+
+          Zoek digitaal adres(sen) object(en) op basis van de partij soort.
+
       - in: query
         name: verstrektDoorPartij__url
         schema:
