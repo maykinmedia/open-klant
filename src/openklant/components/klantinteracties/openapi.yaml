@@ -1785,26 +1785,25 @@ paths:
         name: onderwerpobject__onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
-        description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-          PERSOON''.'
+        description: 'Type van het object, bijvoorbeeld: ''zaak''.'
       - in: query
         name: onderwerpobject__onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
         description: 'Binnen het landschap van registers unieke omschrijving van het
-          register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          register waarin het object is geregistreerd, bijvoorbeeld: ''open-zaak''.'
       - in: query
         name: onderwerpobject__onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
         description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-          ''Burgerservicenummer''.'
+          ''uuid''.'
       - in: query
         name: onderwerpobject__onderwerpobjectidentificatorObjectId
         schema:
           type: string
         description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
-          ''123456788''.'
+          ''095be615-a8ad-4c33-8e9c-c7612fbf6c9f''.'
       - in: query
         name: onderwerpobject__url
         schema:
@@ -1849,26 +1848,25 @@ paths:
         name: wasOnderwerpobject__onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
-        description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-          PERSOON''.'
+        description: 'Type van het object, bijvoorbeeld: ''zaak''.'
       - in: query
         name: wasOnderwerpobject__onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
         description: 'Binnen het landschap van registers unieke omschrijving van het
-          register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          register waarin het object is geregistreerd, bijvoorbeeld: ''open-zaak''.'
       - in: query
         name: wasOnderwerpobject__onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
         description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-          ''Burgerservicenummer''.'
+          ''uuid''.'
       - in: query
         name: wasOnderwerpobject__onderwerpobjectidentificatorObjectId
         schema:
           type: string
         description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
-          ''123456788''.'
+          ''095be615-a8ad-4c33-8e9c-c7612fbf6c9f''.'
       - in: query
         name: wasOnderwerpobject__url
         schema:
@@ -4594,22 +4592,21 @@ components:
         objectId:
           type: string
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''123456788''.'
+            ''095be615-a8ad-4c33-8e9c-c7612fbf6c9f''.'
           maxLength: 200
         codeObjecttype:
           type: string
-          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-            PERSOON''.'
+          description: 'Type van het object, bijvoorbeeld: ''zaak''.'
           maxLength: 200
         codeRegister:
           type: string
           description: 'Binnen het landschap van registers unieke omschrijving van
-            het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+            het register waarin het object is geregistreerd, bijvoorbeeld: ''open-zaak''.'
           maxLength: 200
         codeSoortObjectId:
           type: string
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''Burgerservicenummer''.'
+            ''uuid''.'
           maxLength: 200
     Organisatie:
       type: object
