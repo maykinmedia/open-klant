@@ -2066,26 +2066,18 @@ paths:
         name: onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
-        description: 'Zoek object op basis van het onderwerpobject identificator objecttype,
-          bijvoorbeeld: ''zaak''.'
       - in: query
         name: onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
-        description: 'Zoek object op basis van het onderwerpobject identificator register,
-          bijvoorbeeld: ''open-zaak''.'
       - in: query
         name: onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
-        description: 'Zoek object op basis van het onderwerpobject identificator soort
-          object ID, bijvoorbeeld: ''uuid''.'
       - in: query
         name: onderwerpobjectidentificatorObjectId
         schema:
           type: string
-        description: 'Zoek object op basis van de eigenschap die het object identificeert,
-          bijvoorbeeld: ''095be615-a8ad-4c33-8e9c-c7612fbf6c9f''.'
       - name: page
         required: false
         in: query

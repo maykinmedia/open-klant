@@ -11,7 +11,6 @@ from openklant.components.klantinteracties.models.actoren import ActorKlantconta
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
-    Onderwerpobject,
 )
 from openklant.components.utils.filters import ExpandFilter, URLViewFilter
 
@@ -287,42 +286,6 @@ class BetrokkeneFilterSet(FilterSet):
             )
         except ValueError:
             return queryset.none()
-
-
-class OnderwerpObjectFilterSet(FilterSet):
-    onderwerpobjectidentificator_code_objecttype = filters.CharFilter(
-        help_text=_(
-            "Zoek object op basis van het onderwerpobject identificator objecttype, "
-            "bijvoorbeeld: 'zaak'."
-        )
-    )
-    onderwerpobjectidentificator_code_register = filters.CharFilter(
-        help_text=_(
-            "Zoek object op basis van het onderwerpobject identificator register, "
-            "bijvoorbeeld: 'open-zaak'."
-        )
-    )
-    onderwerpobjectidentificator_code_soort_object_id = filters.CharFilter(
-        help_text=_(
-            "Zoek object op basis van het onderwerpobject identificator soort object ID, "
-            "bijvoorbeeld: 'uuid'."
-        )
-    )
-    onderwerpobjectidentificator_object_id = filters.CharFilter(
-        help_text=_(
-            "Zoek object op basis van de eigenschap die het object identificeert, "
-            "bijvoorbeeld: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f'."
-        )
-    )
-
-    class Meta:
-        model = Onderwerpobject
-        fields = (
-            "onderwerpobjectidentificator_code_objecttype",
-            "onderwerpobjectidentificator_code_register",
-            "onderwerpobjectidentificator_code_soort_object_id",
-            "onderwerpobjectidentificator_object_id",
-        )
 
 
 class ActorKlantcontactFilterSet(FilterSet):

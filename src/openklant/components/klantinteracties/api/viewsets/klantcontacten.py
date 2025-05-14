@@ -8,7 +8,6 @@ from openklant.components.klantinteracties.api.filterset.klantcontacten import (
     BetrokkeneFilterSet,
     KlantcontactDetailFilterSet,
     KlantcontactFilterSet,
-    OnderwerpObjectFilterSet,
 )
 from openklant.components.klantinteracties.api.serializers.klantcontacten import (
     ActorKlantcontactSerializer,
@@ -180,7 +179,12 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
     serializer_class = OnderwerpobjectSerializer
     lookup_field = "uuid"
     pagination_class = DynamicPageSizePagination
-    filterset_class = OnderwerpObjectFilterSet
+    filterset_fields = [
+        "onderwerpobjectidentificator_code_objecttype",
+        "onderwerpobjectidentificator_code_register",
+        "onderwerpobjectidentificator_code_soort_object_id",
+        "onderwerpobjectidentificator_object_id",
+    ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
