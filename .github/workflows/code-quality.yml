@@ -22,7 +22,7 @@ jobs:
   open-api-workflow-code-quality:
     uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@v5
     with:
-      python-version: '3.11'
+      python-version: '3.12'
       node-version: '20'
 
       django-settings-module: 'openklant.conf.ci'

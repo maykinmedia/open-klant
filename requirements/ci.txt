@@ -117,7 +117,7 @@ click-repl==0.3.0
     #   celery
 codecov==2.1.13
     # via -r requirements/test-tools.in
-commonground-api-common==2.6.2
+commonground-api-common==2.6.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -177,6 +177,7 @@ django==4.2.20
     #   django-simple-certmanager
     #   django-solo
     #   django-two-factor-auth
+    #   django-upgrade-check
     #   djangorestframework
     #   djangorestframework-inclusions
     #   drf-nested-routers
@@ -313,6 +314,10 @@ django-two-factor-auth==1.16.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   maykin-2fa
+django-upgrade-check==1.1.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 django-webtest==1.9.11
     # via -r requirements/test-tools.in
 djangorestframework==3.15.2
@@ -425,7 +430,7 @@ inflection==0.5.1
     #   drf-spectacular
 iniconfig==2.0.0
     # via pytest
-iso-639==0.4.5
+iso639-lang==2.6.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -693,6 +698,11 @@ ruamel-yaml-clib==0.2.12
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   ruamel-yaml
+semantic-version==2.10.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-upgrade-check
 sentry-sdk==2.12.0
     # via
     #   -c requirements/base.txt

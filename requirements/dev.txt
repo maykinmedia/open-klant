@@ -78,7 +78,7 @@ boltons==24.0.0
     #   -r requirements/ci.txt
     #   face
     #   glom
-build==1.2.1
+build==1.2.2.post1
     # via pip-tools
 bump2version==1.0.1
     # via -r requirements/dev.in
@@ -140,7 +140,7 @@ codecov==2.1.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-commonground-api-common==2.6.2
+commonground-api-common==2.6.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -215,6 +215,7 @@ django==4.2.20
     #   django-simple-certmanager
     #   django-solo
     #   django-two-factor-auth
+    #   django-upgrade-check
     #   djangorestframework
     #   djangorestframework-inclusions
     #   drf-nested-routers
@@ -357,6 +358,10 @@ django-two-factor-auth==1.16.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   maykin-2fa
+django-upgrade-check==1.1.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 django-webtest==1.9.11
     # via
     #   -c requirements/ci.txt
@@ -492,7 +497,7 @@ iniconfig==2.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pytest
-iso-639==0.4.5
+iso639-lang==2.6.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -620,7 +625,7 @@ phonenumberslite==8.13.42
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-pip==24.3.1
+pip==25.1.1
     # via pip-tools
 pip-tools==7.4.1
     # via -r requirements/dev.in
@@ -709,7 +714,7 @@ pypng==0.20220715.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   qrcode
-pyproject-hooks==1.1.0
+pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
@@ -812,12 +817,17 @@ ruamel-yaml-clib==0.2.12
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   ruamel-yaml
+semantic-version==2.10.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-upgrade-check
 sentry-sdk==2.12.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-setuptools==75.6.0
+setuptools==80.3.1
     # via pip-tools
 six==1.16.0
     # via
@@ -991,7 +1001,7 @@ webtest==3.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-webtest
-wheel==0.43.0
+wheel==0.45.1
     # via pip-tools
 whitenoise==6.9.0
     # via -r requirements/dev.in

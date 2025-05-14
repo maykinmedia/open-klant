@@ -160,13 +160,13 @@ Licensed under the EUPL_
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/open-klant
 
-.. |code-style| image:: https://github.com/maykinmedia/open-klant/actions/workflows/code-style.yml/badge.svg?branch=master
+.. |code-style| image:: https://github.com/maykinmedia/open-klant/actions/workflows/code-quality.yml/badge.svg?branch=master
     :alt: Code style
-    :target: https://github.com/maykinmedia/open-klant/actions/workflows/code-style.yml
+    :target: https://github.com/maykinmedia/open-klant/actions/workflows/code-quality.yml
 
-.. |codeql| image:: https://github.com/maykinmedia/open-klant/actions/workflows/codeql.yml/badge.svg?branch=master
+.. |codeql| image:: https://github.com/maykinmedia/open-klant/actions/workflows/code-analysis.yml/badge.svg?branch=master
     :alt: CodeQL scan
-    :target: https://github.com/maykinmedia/open-klant/actions/workflows/codeql.yml
+    :target: https://github.com/maykinmedia/open-klant/actions/workflows/code-analysis.yml
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :alt: Code style
@@ -176,7 +176,7 @@ Licensed under the EUPL_
     :alt: Docker image
     :target: https://hub.docker.com/r/maykinmedia/open-klant
 
-.. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
+.. |python-versions| image:: https://img.shields.io/badge/python-3.12%2B-blue.svg
     :alt: Supported Python version
 
 .. |lint-oas| image:: https://github.com/maykinmedia/open-klant/workflows/actions/lint-oas/badge.svg

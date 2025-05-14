@@ -1,6 +1,8 @@
 from notifications_api_common.settings import *  # noqa
 from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config  # noqa
+from upgrade_check import UpgradeCheck, VersionRange
+from upgrade_check.constraints import UpgradePaths
 
 from .api import *  # noqa
 
@@ -17,6 +19,7 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "openklant.components.klantinteracties",
     "openklant.components.contactgegevens",
     # Django libraries
+    "upgrade_check",
     "localflavor",
 ]
 
@@ -79,7 +82,9 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
     group="Celery",
 )  # soft
 
+#
 # Notifications
+#
 # Override the default to be `True`, to make notifications opt-in
 NOTIFICATIONS_DISABLED = config(
     "NOTIFICATIONS_DISABLED",
@@ -89,3 +94,13 @@ NOTIFICATIONS_DISABLED = config(
         "for operations on the API endpoints."
     ),
 )
+
+#
+# django-upgrade-check
+#
+
+UPGRADE_CHECK_PATHS: UpgradePaths = {
+    "2.6.0": UpgradeCheck(VersionRange(minimum="2.5.0")),
+}
+
+UPGRADE_CHECK_STRICT = False
