@@ -4,3 +4,5 @@ django-setup-configuration
 mozilla-django-oidc-db[setup-configuration]
 
 django-localflavor
+
+git+https://github.com/maykinmedia/commonground-api-common.git@issue/filterset-help-text

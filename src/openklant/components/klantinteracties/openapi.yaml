@@ -72,7 +72,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -256,7 +256,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       tags:
@@ -467,7 +467,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -687,18 +687,26 @@ paths:
         name: bijlageidentificatorCodeObjecttype
         schema:
           type: string
+        description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
+          PERSOON''.'
       - in: query
         name: bijlageidentificatorCodeRegister
         schema:
           type: string
+        description: 'Binnen het landschap van registers unieke omschrijving van het
+          register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
       - in: query
         name: bijlageidentificatorCodeSoortObjectId
         schema:
           type: string
+        description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''Burgerservicenummer''.'
       - in: query
         name: bijlageidentificatorObjectId
         schema:
           type: string
+        description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''123456788''.'
       - name: page
         required: false
         in: query
@@ -708,7 +716,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       tags:
@@ -889,7 +897,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -1057,7 +1065,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       tags:
@@ -1238,7 +1246,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -1519,7 +1527,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -1825,7 +1833,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -2066,18 +2074,25 @@ paths:
         name: onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string
+        description: 'Type van het object, bijvoorbeeld: ''zaak''.'
       - in: query
         name: onderwerpobjectidentificatorCodeRegister
         schema:
           type: string
+        description: 'Binnen het landschap van registers unieke omschrijving van het
+          register waarin het object is geregistreerd, bijvoorbeeld: ''open-zaak''.'
       - in: query
         name: onderwerpobjectidentificatorCodeSoortObjectId
         schema:
           type: string
+        description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''uuid''.'
       - in: query
         name: onderwerpobjectidentificatorObjectId
         schema:
           type: string
+        description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''095be615-a8ad-4c33-8e9c-c7612fbf6c9f''.'
       - name: page
         required: false
         in: query
@@ -2087,7 +2102,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       tags:
@@ -2230,6 +2245,8 @@ paths:
         name: anderePartijIdentificator
         schema:
           type: string
+        description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
+          objecttype, soort objectID of Register vast te leggen. '
       - name: page
         required: false
         in: query
@@ -2239,7 +2256,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -2285,6 +2302,8 @@ paths:
         name: partijIdentificatorObjectId
         schema:
           type: string
+        description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
+          ''123456788''.'
       tags:
       - partij-identificatoren
       security:
@@ -2531,7 +2550,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -2896,10 +2915,16 @@ paths:
         name: bic
         schema:
           type: string
+        description: De unieke code van de bankinstelling waar het SUBJECT het bankrekeningnummer
+          heeft waarmee het subject in de regel internationaal financieel communiceert.
       - in: query
         name: iban
         schema:
           type: string
+        description: Het internationaal bankrekeningnummer, zoals dat door een bankinstelling
+          als identificator aan een overeenkomst tussen de bank en een of meer subjecten
+          wordt toegekend, op basis waarvan het SUBJECT in de regel internationaal
+          financieel communiceert.
       - name: page
         required: false
         in: query
@@ -2909,7 +2934,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -2917,6 +2942,7 @@ paths:
         schema:
           type: string
           format: uuid
+        description: Unieke (technische) identificatiecode van de interne taak.
       tags:
       - rekeningnummers
       security:
@@ -3064,7 +3090,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Het aantal resultaten terug te geven per pagina.
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
