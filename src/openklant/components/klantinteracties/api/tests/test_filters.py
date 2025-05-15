@@ -3,6 +3,8 @@ from uuid import uuid4
 from rest_framework import status
 from vng_api_common.tests import reverse
 
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
+from openklant.components.klantinteracties.models import Klantcontrol, SoortPartij
 from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
     ActorKlantcontactFactory,
@@ -1867,6 +1869,20 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_verstrekt_door_partij__soort_partij(self):
+        partij = PartijFactory(soort_partij=SoortPartij.persoon)
+        partij2 = PartijFactory(soort_partij=SoortPartij.organisatie)
+        DigitaalAdresFactory.create(partij=partij)
+        DigitaalAdresFactory.create(partij=partij2)
+
+        response = self.client.get(
+            self.url, {"verstrektDoorPartij__soortPartij": "persoon"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["verstrektDoorPartij"]["uuid"], partij.uuid)
+
     def test_filter_verstrekt_door_partij_partij_identificator_code_objecttype(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
@@ -2014,6 +2030,20 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_verstrekt_door_betrokkene__rol(self):
+        betrokkene = BetrokkeneFactory(rol=Klantcontrol.klant)
+        betrokkene2 = BetrokkeneFactory(rol=Klantcontrol.vertegenwoordiger)
+        DigitaalAdresFactory.create(betrokkene=betrokkene)
+        DigitaalAdresFactory.create(betrokkene=betrokkene2)
+
+        response = self.client.get(self.url, {"verstrektDoorBetrokkene__rol": "klant"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(
+            data["results"][0]["verstrektDoorBetrokkene"]["uuid"], betrokkene.uuid
+        )
+
     def test_filter_adres_exact_parameter(self):
         betrokkene, betrokkene2 = BetrokkeneFactory.create_batch(2)
         DigitaalAdresFactory.create(betrokkene=betrokkene, adres="adres_1234")
@@ -2051,6 +2081,28 @@ class DigitaalAdresFilterSetTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(data["count"], 2)
+
+    def test_filter_soort_digitaal_adres(self):
+        DigitaalAdresFactory.create(soort_digitaal_adres=SoortDigitaalAdres.email)
+        DigitaalAdresFactory.create(
+            soort_digitaal_adres=SoortDigitaalAdres.telefoonnummer
+        )
+
+        response = self.client.get(self.url, {"soortDigitaalAdres": "email"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["soortDigitaalAdres"], "email")
+
+    def test_filter_is_standaard_adres(self):
+        DigitaalAdresFactory.create(is_standaard_adres=True)
+        DigitaalAdresFactory.create(is_standaard_adres=False)
+
+        response = self.client.get(self.url, {"isStandaardAdres": True})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["isStandaardAdres"], True)
 
     def test_filter_referentie_exact_parameter(self):
         DigitaalAdresFactory.create(referentie="referentie-1234")

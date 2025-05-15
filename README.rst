@@ -2,7 +2,7 @@
 Open Klant
 ==========
 
-:Version: 2.7.0
+:Version: 2.8.0
 :Source: https://github.com/maykinmedia/open-klant
 :Keywords: klanten, klantinteracties, contactmomenten, api, common ground
 :License: EUPL
@@ -39,8 +39,11 @@ Open Klant versie   API versie      Release datum   API specificatie
 ==================  ==============  =============   ================
 master/latest       n/a             n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.7.0..master>`_)
-2.7.0               0.1.2           2025-03-31      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.7.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.8.0..master>`_)
+2.8.0               0.2.0           2025-05-14      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.8.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.8.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.7.0..2.8.0>`_)
+2.7.0               0.1.2           2025-04-03      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.7.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.7.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     (`diff <https://github.com/maykinmedia/open-klant/compare/2.6.1..2.7.0>`_)
 2.6.1               0.1.1           2025-03-21      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.6.1/src/openklant/components/klantinteracties/openapi.yaml>`_,
@@ -160,13 +163,13 @@ Licensed under the EUPL_
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/open-klant
 
-.. |code-style| image:: https://github.com/maykinmedia/open-klant/actions/workflows/code-style.yml/badge.svg?branch=master
+.. |code-style| image:: https://github.com/maykinmedia/open-klant/actions/workflows/code-quality.yml/badge.svg?branch=master
     :alt: Code style
-    :target: https://github.com/maykinmedia/open-klant/actions/workflows/code-style.yml
+    :target: https://github.com/maykinmedia/open-klant/actions/workflows/code-quality.yml
 
-.. |codeql| image:: https://github.com/maykinmedia/open-klant/actions/workflows/codeql.yml/badge.svg?branch=master
+.. |codeql| image:: https://github.com/maykinmedia/open-klant/actions/workflows/code-analysis.yml/badge.svg?branch=master
     :alt: CodeQL scan
-    :target: https://github.com/maykinmedia/open-klant/actions/workflows/codeql.yml
+    :target: https://github.com/maykinmedia/open-klant/actions/workflows/code-analysis.yml
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :alt: Code style
@@ -176,7 +179,7 @@ Licensed under the EUPL_
     :alt: Docker image
     :target: https://hub.docker.com/r/maykinmedia/open-klant
 
-.. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
+.. |python-versions| image:: https://img.shields.io/badge/python-3.12%2B-blue.svg
     :alt: Supported Python version
 
 .. |lint-oas| image:: https://github.com/maykinmedia/open-klant/workflows/actions/lint-oas/badge.svg

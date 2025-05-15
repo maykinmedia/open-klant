@@ -2,6 +2,46 @@
 Change history
 ==============
 
+2.8.0
+=====
+*May 14, 2025*
+
+
+**New features**
+
+* [:open-klant:`320`] Add ``DigitaalAdres.referentie`` and allow filtering on this attribute with the ``referentie`` query parameter
+* [:open-klant:`368`] Fix validation for phone numbers
+* [:open-klant:`240`] Make nullable fields optional for all endpoints
+* [:open-klant:`342`] Add PartijIdentificator filters to ``/klantcontacten``, ``/betrokkenen`` and ``/digitaleadressen``
+* [:open-klant:`391`] Make ``huisnummer`` nullable via the API
+* [:open-klant:`395`] Integrate ``django-upgrade-check`` to ensure that all required OpenKlant versions are correctly handled during instance upgrades
+
+**Bugfixes**
+
+* [:open-klant:`378`] Fix bug that occurred when trying to create a ``Partij`` via the admin interface and improve admin performance
+* [:open-klant:`341`] Add missing help texts for several query parameters in the API schema
+* [:open-klant:`401`] Fix PATCH requests on ``/partijen/{uuid}`` if ``digitaleAdressen`` and/or ``rekeningnummers`` are set to ``null``
+* [:open-klant:`345`] No longer make ``Partij.soortPartij`` required for PATCH requests
+
+**Project maintenance**
+
+* Upgrade commonground-api-common to 2.6.3
+* Upgrade NPM http-proxy-middleware to 2.0.9
+* [:open-klant:`395`] Upgrade to Python 3.12
+* [:open-klant:`385`] Improve performance of several endpoints
+
+.. note::
+
+  Used ``select_related`` and ``prefetch_related`` to minimize query count and improve efficiency, improving key endpoints such as ``/actoren``, ``/partijen``, ``/partij-identificatoren``, ``/klantcontacten``
+
+**Documentation**
+
+* [:open-klant:`249`] Add default to the help text of the ``pageSize`` attribute
+* [:open-klant:`363`] Update documentation for ``Partij`` and ``PartijIdentificator``
+* [:open-klant:`337`] Change help texts for ``onderwerpobjectidentificator``
+* [:open-klant:`408`] Fix notifications documentation by replacing ``NOTIFICATIONS_ENABLED`` with ``NOTIFICATION_DISABLED``
+
+
 2.7.0
 =====
 *April, 3, 2025*
