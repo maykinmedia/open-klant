@@ -1,0 +1,69 @@
+# Exclude folders
+exclude = [
+    "migrations",
+    "static",
+    "media",
+]
+
+# Same as Black
+line-length = 88
+indent-width = 4
+
+[lint]
+select = [
+    # https://docs.astral.sh/ruff/rules/#error-e
+    "E",
+    # https://docs.astral.sh/ruff/rules/#pyflakes-f
+    "F",
+    # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+    "SIM",
+    # https://docs.astral.sh/ruff/rules/#perflint-perf
+    "PERF",
+    # https://docs.astral.sh/ruff/rules/#refurb-furb
+    "FURB",
+    # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+    "B006",
+    "B010",
+    "B904",
+    # https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "N",
+    # https://docs.astral.sh/ruff/rules/#isort-i
+    "I",
+]
+ignore = [
+    # Whitespace before ':' (conflicts with Black)
+    "E203",
+    # Line too long
+    "E501",
+    # Do not assign a lambda expression
+    "E731",
+    # Name may be undefined from '*' import
+    "F405",
+    # Use a single `with` statement with multiple contexts instead of nested `with` statements
+    "SIM117",
+    # Checks for nested if statements that can be collapsed into a single if statement.
+    "SIM102",
+    # Exception name should be named with Error suffix
+    "N818",
+]
+
+# Import sorting configuration (equivalent to isort)
+[lint.isort]
+combine-as-imports = true
+force-wrap-aliases = false
+known-first-party = ["openklant"]
+lines-after-imports = -1
+relative-imports-order = "furthest-to-closest"
+sections = { django = ["django"] }
+section-order = [
+    "future",
+    "standard-library",
+    "django",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+
+
+[format]
+line-ending = "lf"
