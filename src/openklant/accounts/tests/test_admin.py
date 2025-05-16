@@ -14,7 +14,6 @@ LOGIN_URL = reverse_lazy("admin:login")
     MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS=[],  # enforce MFA
 )
 class RecoveryTokenTests(WebTest):
-
     def test_can_enter_recovery_token(self):
         user = SuperUserFactory.create(
             with_totp_device=True,

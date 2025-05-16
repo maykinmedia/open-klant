@@ -9,7 +9,6 @@ from openklant.components.klantinteracties.models.tests.factories.partijen impor
 
 
 class PartijIdentificatorModelConstraints(TestCase):
-
     def test_valid_globally_unique(self):
         partij_a = PartijFactory.create()
         partij_identificator_a = PartijIdentificator.objects.create(
@@ -198,7 +197,6 @@ class PartijIdentificatorModelConstraints(TestCase):
 
 
 class PartijIdentificatorModelClean(TestCase):
-
     def test_clean_sub_identificator_van_different_self_related(self):
         partij_identificator = PartijIdentificator.objects.create(
             partij=PartijFactory.create(),

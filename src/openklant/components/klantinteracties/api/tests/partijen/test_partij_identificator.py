@@ -13,7 +13,6 @@ from openklant.components.token.tests.api_testcase import APITestCase
 
 
 class PartijIdentificatorTests(APITestCase):
-
     def test_list(self):
         list_url = reverse("klantinteracties:partijidentificator-list")
         partij = PartijFactory.create()
