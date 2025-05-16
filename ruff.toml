@@ -30,6 +30,7 @@ select = [
     # https://docs.astral.sh/ruff/rules/#isort-i
     "I",
 ]
+
 ignore = [
     # Whitespace before ':' (conflicts with Black)
     "E203",
@@ -41,10 +42,20 @@ ignore = [
     "F405",
     # Use a single `with` statement with multiple contexts instead of nested `with` statements
     "SIM117",
-    # Checks for nested if statements that can be collapsed into a single if statement.
+    # Checks for nested if statements that can be collapsed into a single if statement
     "SIM102",
     # Exception name should be named with Error suffix
     "N818",
+    # Checks for CamelCase imports that are aliased to lowercase names
+    "N813",
+    # Checks for the use of non-lowercase variable names in functions
+    "N806",
+    # Checks for raise statements in exception handlers that lack a from clause.
+    "B904",
+    # Checks for `if` statements that can be replaced with bool
+    "SIM103",
+    # Checks for class variable names that follow the mixedCase convention
+    "N815",
 ]
 
 # Import sorting configuration (equivalent to isort)
