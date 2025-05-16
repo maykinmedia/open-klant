@@ -2244,6 +2244,7 @@ paths:
         name: anderePartijIdentificator
         schema:
           type: string
+        deprecated: true
       - name: page
         required: false
         in: query
@@ -5252,6 +5253,7 @@ components:
           description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
             objecttype, soort objectID of Register vast te leggen. '
           maxLength: 200
+          deprecated: true
         partijIdentificator:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorGroepType'
@@ -5809,6 +5811,7 @@ components:
           description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
             objecttype, soort objectID of Register vast te leggen. '
           maxLength: 200
+          deprecated: true
         partijIdentificator:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorGroepType'
@@ -6150,8 +6153,8 @@ tags:
     | codeRegister  | codeObjecttype       | codeSoortObjectId                |
     |---------------|--------------------------|------------------------------|
     | brp           | natuurlijk_persoon       | bsn,                         |
-    | hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer,            |
-    | hr            | vestiging                | vestigingsnummer,            |
+    | hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer             |
+    | hr            | vestiging                | vestigingsnummer             |
 
 
 

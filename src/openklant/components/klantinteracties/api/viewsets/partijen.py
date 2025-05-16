@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
@@ -221,11 +221,13 @@ class CategorieViewSet(viewsets.ModelViewSet):
     permission_classes = (TokenPermissions,)
 
 
-@extend_schema(tags=["partij-identificatoren"])
 @extend_schema_view(
     list=extend_schema(
         summary="Alle partij-identificatoren opvragen.",
         description="Alle partij-identificatoren opvragen.",
+        parameters=[
+            OpenApiParameter(name="anderePartijIdentificator", deprecated=True)
+        ],
     ),
     retrieve=extend_schema(
         summary="Een specifiek partij-identificator opvragen.",

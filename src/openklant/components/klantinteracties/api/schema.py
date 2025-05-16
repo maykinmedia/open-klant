@@ -183,8 +183,8 @@ The registry configuration is as follows:
 | codeRegister  | codeObjecttype       | codeSoortObjectId                |
 |---------------|--------------------------|------------------------------|
 | brp           | natuurlijk_persoon       | bsn,                         |
-| hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer,            |
-| hr            | vestiging                | vestigingsnummer,            |
+| hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer             |
+| hr            | vestiging                | vestigingsnummer             |
 
 
 
