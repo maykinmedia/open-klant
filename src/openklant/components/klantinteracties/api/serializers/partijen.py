@@ -4,7 +4,7 @@ from collections import Counter
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
-from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.utils import extend_schema_field, extend_schema_serializer
 from glom import PathAccessError, glom
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
@@ -387,6 +387,7 @@ class PartijIdentificatorGroepTypeSerializer(GegevensGroepSerializer):
         validators = []
 
 
+@extend_schema_serializer(deprecate_fields=["andere_partij_identificator"])
 class PartijIdentificatorSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):

@@ -2,6 +2,15 @@
 Change history
 ==============
 
+2.x.x
+=====
+
+* [:open-klant:`351`] Remove overig from partijidentificator
+
+.. warning::
+
+    The field ``andere_partij_identificator`` for ``/partijidentificator`` endpoint is now deprecated and will be removed in the next release
+
 2.8.0
 =====
 *May 14, 2025*
