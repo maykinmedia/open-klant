@@ -30,19 +30,12 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
             code_register=PartijIdentificatorCodeRegister.brp.value,
         )
 
-    def test_valid_code_objecttype_top_level_null_or_overig(self):
+    def test_valid_code_objecttype_top_level_null(self):
         PartijIdentificatorTypesValidator()(
             code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
             code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
             object_id="296648875",
             code_register="",
-        )
-
-        PartijIdentificatorTypesValidator()(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-            object_id="296648875",
-            code_register=PartijIdentificatorCodeRegister.overig.value,
         )
 
     def test_invalid_code_objecttype_not_found_in_top_level(self):
@@ -82,7 +75,7 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_code_soort_object_id"][0],
-            "voor `codeObjecttype` natuurlijk_persoon zijn alleen deze waarden toegestaan: ['bsn', 'overig']",
+            "voor `codeObjecttype` natuurlijk_persoon zijn alleen deze waarden toegestaan: ['bsn']",
         )
 
     # Start section validate_object_id
@@ -95,17 +88,10 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
             code_register=PartijIdentificatorCodeRegister.brp.value,
         )
 
-    def test_valid_object_id_top_level_null_or_overig(self):
+    def test_valid_object_id_top_level_null(self):
         PartijIdentificatorTypesValidator()(
             code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
             code_soort_object_id="",
-            object_id="1123",
-            code_register=PartijIdentificatorCodeRegister.brp.value,
-        )
-
-        PartijIdentificatorTypesValidator()(
-            code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-            code_soort_object_id=PartijIdentificatorCodeSoortObjectId.overig.value,
             object_id="1123",
             code_register=PartijIdentificatorCodeRegister.brp.value,
         )
@@ -196,22 +182,10 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
                 "296648875",
             ],
             [
-                PartijIdentificatorCodeRegister.brp.value,
-                PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-                PartijIdentificatorCodeSoortObjectId.overig.value,
-                "123456",
-            ],
-            [
                 PartijIdentificatorCodeRegister.hr.value,
                 PartijIdentificatorCodeObjectType.vestiging.value,
                 PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
                 "123456789878",
-            ],
-            [
-                PartijIdentificatorCodeRegister.hr.value,
-                PartijIdentificatorCodeObjectType.vestiging.value,
-                PartijIdentificatorCodeSoortObjectId.overig.value,
-                "296648875",
             ],
             [
                 PartijIdentificatorCodeRegister.hr.value,
@@ -226,18 +200,6 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
                 "12345678",
             ],
             [
-                PartijIdentificatorCodeRegister.hr.value,
-                PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
-                PartijIdentificatorCodeSoortObjectId.overig.value,
-                "296648875",
-            ],
-            [
-                PartijIdentificatorCodeRegister.overig.value,
-                PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-                PartijIdentificatorCodeSoortObjectId.bsn.value,
-                "296648875",
-            ],
-            [
                 "",
                 "",
                 "",
@@ -254,18 +216,6 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
                 PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
                 "",
                 "",
-            ],
-            [
-                PartijIdentificatorCodeRegister.overig.value,
-                PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
-                "",
-                "",
-            ],
-            [
-                PartijIdentificatorCodeRegister.overig.value,
-                PartijIdentificatorCodeObjectType.overig.value,
-                PartijIdentificatorCodeSoortObjectId.overig.value,
-                "296648875",
             ],
         ]
         for case in valid_cases:
@@ -288,12 +238,6 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
                 PartijIdentificatorCodeRegister.brp.value,
                 PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
                 PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
-                "296648875",
-            ],
-            [
-                PartijIdentificatorCodeRegister.brp.value,
-                PartijIdentificatorCodeObjectType.overig.value,
-                PartijIdentificatorCodeSoortObjectId.bsn.value,
                 "296648875",
             ],
         ]
