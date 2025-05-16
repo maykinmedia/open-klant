@@ -635,7 +635,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(response_data2["adres"], "barfoo@example.com")
         self.assertEqual(response_data2["referentie"], "")
 
-    def test_create_digitaal_adres_verstrektDoorPartij_is_null(self):
+    def test_create_digitaal_adres_verstrekt_door_partij_is_null(self):
         """
         Ensure that UniqueConstraint does not apply when `verstrektDoorPartij` is null.
         """
@@ -677,7 +677,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(response_data2["adres"], "barfoo@example.com")
         self.assertEqual(response_data2["referentie"], "same-ref")
 
-    def test_create_digitaal_adres_validate_uniqueness_if_both_verstrektDoorPartij_and_referentie_are_set(
+    def test_create_digitaal_adres_validate_uniqueness_if_both_verstrekt_door_partij_and_referentie_are_set(
         self,
     ):
         """
@@ -706,7 +706,7 @@ class DigitaalAdresTests(APITestCase):
         # Object should not be created due to failing validation
         self.assertEqual(DigitaalAdres.objects.count(), 1)
 
-    def test_update_digitaal_adres_validate_uniqueness_if_both_verstrektDoorPartij_and_referentie(
+    def test_update_digitaal_adres_validate_uniqueness_if_both_verstrekt_door_partij_and_referentie(
         self,
     ):
         """

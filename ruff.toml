@@ -1,4 +1,4 @@
-# Exclude folders
+# Exclude folders and files
 exclude = [
     "migrations",
     "static",
@@ -8,6 +8,8 @@ exclude = [
 # Same as Black
 line-length = 88
 indent-width = 4
+
+target-version = "py312"
 
 [lint]
 select = [

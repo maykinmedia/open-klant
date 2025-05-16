@@ -3,7 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
 class JSONServer(BaseHTTPRequestHandler):
-    def do_GET(self) -> None:
+    def do_get_method(self) -> None:
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()

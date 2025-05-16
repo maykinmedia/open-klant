@@ -164,7 +164,7 @@ def partij_identificator_exists(value):
         raise serializers.ValidationError(_("PartijIdentificator object bestaat niet."))
 
 
-def Rekeningnummer_exists(value):
+def rekeningnummer_exists(value):
     try:
         Rekeningnummer.objects.get(uuid=str(value))
     except Rekeningnummer.DoesNotExist:

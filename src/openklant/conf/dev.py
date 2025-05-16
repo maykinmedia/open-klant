@@ -1,3 +1,4 @@
+import contextlib
 import os
 import warnings
 
@@ -116,10 +117,8 @@ warnings.filterwarnings(
 )
 
 # Override settings with local settings.
-try:
+with contextlib.suppress(ImportError):
     from .local import *  # noqa
-except ImportError:
-    pass
 
 if "test" in sys.argv:
     NOTIFICATIONS_DISABLED = True

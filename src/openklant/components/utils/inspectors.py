@@ -60,7 +60,7 @@ class ExpandSerializerInspector(ReferencingSerializerInspector):
             # we can't initialize serializer with many=True, because it will trigger infinite loop
             # therefore we create array manually
             inclusion_field = field.fields[name]
-            many = True if hasattr(inclusion_field, "child_relation") else False
+            many = hasattr(inclusion_field, "child_relation")
             inclusion_schema = (
                 openapi.Schema(type=openapi.TYPE_ARRAY, items=inclusion_ref)
                 if many
