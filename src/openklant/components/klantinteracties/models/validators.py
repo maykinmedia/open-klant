@@ -94,28 +94,24 @@ class PartijIdentificatorTypesValidator:
 
     REGISTRIES = {
         "brp": {
-            "natuurlijk_persoon": ["bsn", "overig"],
+            "natuurlijk_persoon": ["bsn"],
         },
         "hr": {
-            "niet_natuurlijk_persoon": ["rsin", "kvk_nummer", "overig"],
-            "vestiging": ["vestigingsnummer", "overig"],
+            "niet_natuurlijk_persoon": ["rsin", "kvk_nummer"],
+            "vestiging": ["vestigingsnummer"],
         },
-        "overig": {},
     }
     """
 
     NATUURLIJK_PERSOON = [
         PartijIdentificatorCodeSoortObjectId.bsn.value,
-        PartijIdentificatorCodeSoortObjectId.overig.value,
     ]
     VESTIGING = [
         PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
-        PartijIdentificatorCodeSoortObjectId.overig.value,
     ]
     NIET_NATUURLIJK_PERSOON = [
         PartijIdentificatorCodeSoortObjectId.rsin.value,
         PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
-        PartijIdentificatorCodeSoortObjectId.overig.value,
     ]
 
     ALLOWED_OBJECT_TYPES_FOR_CODE_OBJECTTYPE = {
@@ -156,12 +152,9 @@ class PartijIdentificatorTypesValidator:
         if not self.code_objecttype:
             return
 
-        # pass if top level is null or 'overig'
-        if (
-            not self.code_register
-            or self.code_register == PartijIdentificatorCodeRegister.overig
-        ):
+        if not self.code_register:
             return
+
         if self.code_objecttype not in (
             choices := self.ALLOWED_OBJECT_TYPES_FOR_REGISTRIES[self.code_register]
         ):
@@ -178,11 +171,7 @@ class PartijIdentificatorTypesValidator:
         if not self.code_soort_object_id:
             return
 
-        # pass if top level is null or 'overig'
-        if (
-            not self.code_objecttype
-            or self.code_objecttype == PartijIdentificatorCodeObjectType.overig
-        ):
+        if not self.code_objecttype:
             return
 
         if self.code_soort_object_id not in (
@@ -221,7 +210,7 @@ class PartijIdentificatorTypesValidator:
                         identifier_length=KVK_NUMMER_LENGTH,
                     )
                     validator.validate()
-                case PartijIdentificatorCodeSoortObjectId.overig:
+                case _:
                     return
         except ValidationError as error:
             raise ValidationError(

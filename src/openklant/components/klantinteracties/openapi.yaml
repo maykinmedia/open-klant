@@ -2264,7 +2264,6 @@ paths:
           enum:
           - natuurlijk_persoon
           - niet_natuurlijk_persoon
-          - overig
           - vestiging
         description: |+
           Type van het object, bijvoorbeeld: 'natuurlijk_persoon'.
@@ -2277,7 +2276,6 @@ paths:
           enum:
           - brp
           - hr
-          - overig
         description: |+
           Binnen het landschap van registers unieke omschrijving van het register waarin het object is geregistreerd, bijvoorbeeld: 'BRP'.
 
@@ -2289,7 +2287,6 @@ paths:
           enum:
           - bsn
           - kvk_nummer
-          - overig
           - rsin
           - vestigingsnummer
         description: |+
@@ -3988,13 +3985,11 @@ components:
       - natuurlijk_persoon
       - niet_natuurlijk_persoon
       - vestiging
-      - overig
       type: string
     CodeRegisterEnum:
       enum:
       - brp
       - hr
-      - overig
       type: string
     CodeSoortObjectIdEnum:
       enum:
@@ -4002,7 +3997,6 @@ components:
       - vestigingsnummer
       - kvk_nummer
       - rsin
-      - overig
       type: string
     Contactnaam:
       type: object
@@ -6155,10 +6149,9 @@ tags:
 
     | codeRegister  | codeObjecttype       | codeSoortObjectId                |
     |---------------|--------------------------|------------------------------|
-    | brp           | natuurlijk_persoon       | bsn, overig                  |
-    | hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer, overig     |
-    | hr            | vestiging                | vestigingsnummer, overig     |
-    | overig        | –                        | –                            |
+    | brp           | natuurlijk_persoon       | bsn,                         |
+    | hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer,            |
+    | hr            | vestiging                | vestigingsnummer,            |
 
 
 
