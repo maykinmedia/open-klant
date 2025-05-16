@@ -1385,7 +1385,6 @@ class CategorieRelatieFiltersetTests(APITestCase):
         categorie_relatie2 = CategorieRelatieFactory.create(categorie=categorie2)
 
         with self.subTest("happy flow"):
-
             response = self.client.get(
                 self.url,
                 {"categorie__naam": "two"},

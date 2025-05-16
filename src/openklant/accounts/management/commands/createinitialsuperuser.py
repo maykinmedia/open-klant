@@ -33,7 +33,7 @@ class Command(BaseCommand):
         User.objects.create_superuser(username=username, email=email, password=password)
 
         try:
-            link = f'{settings.ALLOWED_HOSTS[0]}{reverse("admin:index")}'
+            link = f"{settings.ALLOWED_HOSTS[0]}{reverse('admin:index')}"
         except IndexError:
             link = "unknown url"
         except exceptions.NoReverseMatch:

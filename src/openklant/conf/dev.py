@@ -1,3 +1,4 @@
+import contextlib
 import os
 import warnings
 
@@ -9,9 +10,9 @@ os.environ.setdefault(
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("VERSION_TAG", "dev")
 
-os.environ.setdefault("DB_NAME", "openklant"),
-os.environ.setdefault("DB_USER", "openklant"),
-os.environ.setdefault("DB_PASSWORD", "openklant"),
+os.environ.setdefault("DB_NAME", "openklant")
+os.environ.setdefault("DB_USER", "openklant")
+os.environ.setdefault("DB_PASSWORD", "openklant")
 
 os.environ.setdefault("ENVIRONMENT", "development")
 os.environ.setdefault("DISABLE_2FA", "yes")
@@ -116,10 +117,8 @@ warnings.filterwarnings(
 )
 
 # Override settings with local settings.
-try:
+with contextlib.suppress(ImportError):
     from .local import *  # noqa
-except ImportError:
-    pass
 
 if "test" in sys.argv:
     NOTIFICATIONS_DISABLED = True

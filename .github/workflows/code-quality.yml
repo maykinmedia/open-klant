@@ -9,18 +9,12 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '**.py'
-      - '**.yml'
   pull_request:
-    paths:
-      - '**.py'
-      - '**.yml'
   workflow_dispatch:
 
 jobs:
   open-api-workflow-code-quality:
-    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@v5
+    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@refactor/switch-code-quality-to-ruff
     with:
       python-version: '3.12'
       node-version: '20'

@@ -166,14 +166,14 @@ class Command(BaseCommand):
 
         url_validator = URLValidator(schemes=["http", "https"])
 
-        for url in (v1_url, v2_url):
-            try:
+        try:
+            for url in (v1_url, v2_url):
                 url_validator(url)
-            except ValidationError as e:
-                raise CommandError(
-                    f"Invalid URL(s) detected: {str(e.message)}. See "
-                    "migrate_to_v2 --help for correct usage."
-                )
+        except ValidationError as e:
+            raise CommandError(
+                f"Invalid URL(s) detected: {str(e.message)}. See "
+                "migrate_to_v2 --help for correct usage."
+            )
 
         next_url: str | None = ""
 

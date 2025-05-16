@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 
-from openklant.components.klantinteracties.api.validators import Rekeningnummer_exists
+from openklant.components.klantinteracties.api.validators import rekeningnummer_exists
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 
@@ -16,7 +16,7 @@ class RekeningnummerForeignKeySerializer(serializers.HyperlinkedModelSerializer)
             "url",
         )
         extra_kwargs = {
-            "uuid": {"required": True, "validators": [Rekeningnummer_exists]},
+            "uuid": {"required": True, "validators": [rekeningnummer_exists]},
             "url": {
                 "view_name": "klantinteracties:rekeningnummer-detail",
                 "lookup_field": "uuid",

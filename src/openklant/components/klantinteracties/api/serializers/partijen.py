@@ -690,7 +690,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 "voorkeurs_digitaal_adres", None
             ):
                 voorkeurs_digitaal_adres_uuid = voorkeurs_digitaal_adres.get("uuid")
-                match (method):
+                match method:
                     case "PUT":
                         if len(digitaal_adres_uuids) == 0:
                             raise serializers.ValidationError(
@@ -759,7 +759,7 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 "voorkeurs_rekeningnummer", None
             ):
                 voorkeurs_rekeningnummer_uuid = voorkeurs_rekeningnummer.get("uuid")
-                match (method):
+                match method:
                     case "PUT":
                         if len(rekeningnummers_uuids) == 0:
                             raise serializers.ValidationError(

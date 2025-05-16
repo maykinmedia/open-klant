@@ -63,10 +63,6 @@ billiard==4.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-black==25.1.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 bleach==6.1.0
     # via
     #   -c requirements/ci.txt
@@ -115,7 +111,6 @@ click==8.1.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   celery
     #   click-didyoumean
     #   click-plugins
@@ -442,10 +437,6 @@ faker==37.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-flake8==7.1.2
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 flower==2.0.1
     # via
     #   -c requirements/ci.txt
@@ -562,7 +553,6 @@ mccabe==0.7.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   flake8
     #   pylint
 mozilla-django-oidc==4.0.1
     # via
@@ -579,11 +569,6 @@ multidict==6.0.5
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   yarl
-mypy-extensions==1.0.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   black
 notifications-api-common==0.7.2
     # via
     #   -c requirements/ci.txt
@@ -607,15 +592,9 @@ packaging==24.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   build
     #   pytest
     #   sphinx
-pathspec==0.12.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   black
 pep8==1.7.1
     # via
     #   -c requirements/ci.txt
@@ -633,7 +612,6 @@ platformdirs==4.2.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   pylint
 pluggy==1.5.0
     # via
@@ -656,11 +634,7 @@ psycopg2==2.9.9
     #   -r requirements/ci.txt
     #   open-api-framework
 pycodestyle==2.12.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   autopep8
-    #   flake8
+    # via autopep8
 pycparser==2.22
     # via
     #   -c requirements/ci.txt
@@ -682,11 +656,6 @@ pydantic-settings==2.6.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-setup-configuration
-pyflakes==3.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   flake8
 pygments==2.18.0
     # via
     #   -c requirements/ci.txt
@@ -817,6 +786,10 @@ ruamel-yaml-clib==0.2.12
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   ruamel-yaml
+ruff==0.11.10
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 semantic-version==2.10.0
     # via
     #   -c requirements/ci.txt

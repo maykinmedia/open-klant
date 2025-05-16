@@ -49,8 +49,6 @@ billiard==4.2.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
-black==25.1.0
-    # via -r requirements/test-tools.in
 bleach==6.1.0
     # via
     #   -c requirements/base.txt
@@ -95,7 +93,6 @@ click==8.1.7
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   black
     #   celery
     #   click-didyoumean
     #   click-plugins
@@ -391,8 +388,6 @@ factory-boy==3.3.0
     # via -r requirements/test-tools.in
 faker==37.1.0
     # via factory-boy
-flake8==7.1.2
-    # via -r requirements/test-tools.in
 flower==2.0.1
     # via
     #   -c requirements/base.txt
@@ -436,9 +431,7 @@ iso639-lang==2.6.0
     #   -r requirements/base.txt
     #   commonground-api-common
 isort==5.13.2
-    # via
-    #   -r requirements/test-tools.in
-    #   pylint
+    # via pylint
 itypes==1.2.0
     # via
     #   -c requirements/base.txt
@@ -485,9 +478,7 @@ maykin-2fa==1.0.1
     #   -r requirements/base.txt
     #   open-api-framework
 mccabe==0.7.0
-    # via
-    #   flake8
-    #   pylint
+    # via pylint
 mozilla-django-oidc==4.0.1
     # via
     #   -c requirements/base.txt
@@ -500,8 +491,6 @@ mozilla-django-oidc-db==0.22.0
     #   open-api-framework
 multidict==6.0.5
     # via yarl
-mypy-extensions==1.0.0
-    # via black
 notifications-api-common==0.7.2
     # via
     #   -c requirements/base.txt
@@ -523,11 +512,8 @@ oyaml==1.0
     #   commonground-api-common
 packaging==24.1
     # via
-    #   black
     #   pytest
     #   sphinx
-pathspec==0.12.1
-    # via black
 pep8==1.7.1
     # via -r requirements/test-tools.in
 phonenumberslite==8.13.42
@@ -536,9 +522,7 @@ phonenumberslite==8.13.42
     #   -r requirements/base.txt
     #   django-two-factor-auth
 platformdirs==4.2.2
-    # via
-    #   black
-    #   pylint
+    # via pylint
 pluggy==1.5.0
     # via pytest
 prometheus-client==0.20.0
@@ -556,8 +540,6 @@ psycopg2==2.9.9
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-pycodestyle==2.12.0
-    # via flake8
 pycparser==2.22
     # via
     #   -c requirements/base.txt
@@ -579,8 +561,6 @@ pydantic-settings==2.6.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-setup-configuration
-pyflakes==3.2.0
-    # via flake8
 pygments==2.18.0
     # via
     #   sphinx
@@ -698,6 +678,8 @@ ruamel-yaml-clib==0.2.12
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   ruamel-yaml
+ruff==0.11.10
+    # via -r requirements/test-tools.in
 semantic-version==2.10.0
     # via
     #   -c requirements/base.txt

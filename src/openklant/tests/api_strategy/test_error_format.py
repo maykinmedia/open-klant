@@ -13,7 +13,7 @@ class DSOApi50Tests(APITestCase):
     maxDiff = None
     factory = APIRequestFactory()
 
-    def assertErrorResponse(self, view, expected_data: dict):
+    def assertErrorResponse(self, view, expected_data: dict):  # noqa: N802
         _view = view.as_view()
         # method doesn't matter since we're using `dispatch`
         request = self.factory.get("/some/irrelevant/url")
