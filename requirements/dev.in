@@ -5,6 +5,7 @@
 pip-tools
 gitpython
 bump2version
+pre-commit
 
 # Debug tooling
 django-debug-toolbar
