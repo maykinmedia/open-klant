@@ -101,7 +101,7 @@ Bovenstaand informatiemodel is opgesteld met de volgende opmerkingen:
 Ready-to-go implementatie
 =========================
 
-|build-status| |coverage| |code-style| |codeql| |black| |python-versions|
+|build-status| |coverage| |code-style| |codeql| |ruff| |python-versions|
 
 Deze implementatie is bedoeld als referentie implementatie van de API
 specificaties maar tevens een productiewaardig component dat ingezet kan worden
@@ -171,9 +171,9 @@ Licensed under the EUPL_
     :alt: CodeQL scan
     :target: https://github.com/maykinmedia/open-klant/actions/workflows/code-analysis.yml
 
-.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :alt: Code style
-    :target: https://github.com/psf/black
+.. |ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Ruff
 
 .. |docker| image:: https://img.shields.io/docker/v/maykinmedia/open-klant?sort=semver
     :alt: Docker image
