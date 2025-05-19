@@ -116,7 +116,7 @@ jobs:
         id: image-name
 
   open-api-ci:
-    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v5
+    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@issue/pin-codeql-upload-sarif
     needs:
       - store-reusable-workflow-vars
     with:
