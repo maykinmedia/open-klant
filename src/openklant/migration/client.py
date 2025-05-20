@@ -15,8 +15,11 @@ class Client:
         url: str,
         data: dict | None = None,
         params: dict | None = None,
-        headers: dict = {},
+        headers: dict | None = None,
     ) -> list | dict | None:
+        if headers is None:
+            headers = {}
+
         logger.debug(f"Performing {method} request on {url}")
 
         renderer = CamelCaseJSONRenderer()
@@ -34,13 +37,9 @@ class Client:
             response.raise_for_status()
         except requests.RequestException:
             logger.exception(f"{method} request failed for {url}")
-
-            try:
-                logger.debug(response.json())
-            except (requests.RequestException, UnboundLocalError):
-                pass
-
             return
+        else:
+            logger.debug(response.json())
 
         logger.debug(f"Received response data from {url}: {response.content}")
 

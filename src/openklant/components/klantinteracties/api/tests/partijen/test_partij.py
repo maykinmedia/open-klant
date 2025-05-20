@@ -838,7 +838,6 @@ class PartijTests(APITestCase):
                 "postcode": "1008 DG",
                 "stad": "Amsterdam",
                 "adresregel1": "adres1",
-                "adresregel1": "adres1",
                 "adresregel2": "adres2",
                 "adresregel3": "adres3",
                 "land": "NL",
