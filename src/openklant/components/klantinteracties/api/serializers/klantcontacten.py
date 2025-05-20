@@ -442,8 +442,7 @@ class BijlageSerializer(
         required=False,
         allow_null=True,
         help_text=_(
-            "Gegevens die een inhoudsobject in een extern register "
-            "uniek identificeren."
+            "Gegevens die een inhoudsobject in een extern register uniek identificeren."
         ),
     )
 

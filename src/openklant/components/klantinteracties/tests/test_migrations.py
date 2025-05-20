@@ -11,7 +11,6 @@ class TestCountryConverter(BaseMigrationTest):
     migrate_to = "0026_alter_betrokkene_bezoekadres_land_and_more"
 
     def test_ok_migration_betrokkene_model(self):
-
         Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
         Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
 
@@ -35,7 +34,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(records[0].correspondentieadres_land, "6030")
 
     def test_ok_migration_betrokkene_model_empty_code(self):
-
         Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
         Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
 
@@ -72,7 +70,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(betrokken2.correspondentieadres_land, "6030")
 
     def test_ko_migration_betrokkene_model_wrong_code(self):
-
         Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
         Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
 
@@ -135,7 +132,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertEqual(betrokken2.correspondentieadres_land, "CA")
 
     def test_ok_migration_partij_model(self):
-
         Partij = self.old_app_state.get_model("klantinteracties", "Partij")
 
         Partij.objects.create(
@@ -156,7 +152,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(records[0].correspondentieadres_land, "6030")
 
     def test_ok_migration_partij_model_empty_code(self):
-
         Partij = self.old_app_state.get_model("klantinteracties", "Partij")
 
         partij1 = Partij.objects.create(
@@ -189,7 +184,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(partij2.correspondentieadres_land, "6030")
 
     def test_ko_migration_partij_model_wrong_code(self):
-
         Partij = self.old_app_state.get_model("klantinteracties", "Partij")
 
         partij1 = Partij.objects.create(
@@ -254,7 +248,6 @@ class TestValidateBagId(BaseMigrationTest):
     migrate_to = "0027_alter_betrokkene_bezoekadres_nummeraanduiding_id_and_more"
 
     def test_ok_migration_betrokkene_model(self):
-
         Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
         Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
 
@@ -278,7 +271,6 @@ class TestValidateBagId(BaseMigrationTest):
         )
 
     def test_ok_migration_betrokkene_model_empty_value(self):
-
         Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
         Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
 
@@ -300,7 +292,6 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertEqual(records[0].correspondentieadres_nummeraanduiding_id, "")
 
     def test_ko_migration_betrokkene_model_wrong_code(self):
-
         Betrokkene = self.old_app_state.get_model("klantinteracties", "Betrokkene")
         Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
 
@@ -349,7 +340,6 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertNotEqual(records[0].correspondentieadres_nummeraanduiding_id, "789")
 
     def test_ok_migration_partij_model(self):
-
         Partij = self.old_app_state.get_model("klantinteracties", "Partij")
 
         Partij.objects.create(
@@ -371,7 +361,6 @@ class TestValidateBagId(BaseMigrationTest):
         )
 
     def test_ok_migration_partij_model_empty_value(self):
-
         Partij = self.old_app_state.get_model("klantinteracties", "Partij")
 
         Partij.objects.create(
@@ -391,7 +380,6 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertEqual(records[0].correspondentieadres_nummeraanduiding_id, "")
 
     def test_ko_migration_partij_model_wrong_code(self):
-
         Partij = self.old_app_state.get_model("klantinteracties", "Partij")
 
         Partij.objects.create(

@@ -190,7 +190,6 @@ class PartijIdentificatorTypesValidator:
                 self.code_objecttype, []
             )
         ):
-
             raise ValidationError(
                 {
                     "partij_identificator_code_soort_object_id": _(

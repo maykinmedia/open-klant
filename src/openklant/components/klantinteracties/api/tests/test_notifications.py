@@ -44,7 +44,6 @@ class NotificationsConfigTestCase:
 @patch("notifications_api_common.viewsets.send_notification.delay")
 @override_settings(NOTIFICATIONS_DISABLED=False)
 class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
-
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -169,7 +168,6 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
 @override_settings(NOTIFICATIONS_DISABLED=False)
 @patch("notifications_api_common.viewsets.send_notification.delay")
 class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCase):
-
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()

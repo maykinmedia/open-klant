@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 
 class Discriminator(VngDiscriminator):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.required = kwargs.get("required", False)
@@ -119,9 +118,8 @@ class PolyMorphicSerializerMetaclass(VngPolymorphicSerializerMetaclass):
                 for field_name, field_type in related_fields.items():
                     # CUSTOM CODE: Updated if statement to only use OneToOne fields as the source
                     # TODO: change Discriminator to have mapping to dict with serializer and model field name
-                    if (
-                        field_type.related_model == serializer.Meta.model
-                        and isinstance(field_type, OneToOneRel)
+                    if field_type.related_model == serializer.Meta.model and isinstance(
+                        field_type, OneToOneRel
                     ):
                         source = field_name
 
