@@ -146,9 +146,8 @@ In this case, assuming an initial state with 3 `partijIdentificatoren` for the c
 """
 )
 
-PARTIJEN_DESCRIPTION = (
-    _(
-        """
+PARTIJEN_DESCRIPTION = _(
+    """
 **Atomicity in Partij and PartijIdentificator**
 
 The `Partij` endpoint handles `partijIdentificator` objects more effectively,
@@ -161,9 +160,7 @@ it is possible to send a list of `partijIdentificator` objects.
 
 
 """
-    )
-    + notification_documentation(KANAAL_PARTIJ)
-)
+) + notification_documentation(KANAAL_PARTIJ)
 
 PARTIJ_IDENTIFICATOREN_DESCRIPTION = _(
     """

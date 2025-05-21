@@ -63,10 +63,6 @@ billiard==4.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-black==25.1.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 bleach==6.1.0
     # via
     #   -c requirements/ci.txt
@@ -106,6 +102,8 @@ cffi==1.16.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   cryptography
+cfgv==3.4.0
+    # via pre-commit
 charset-normalizer==3.3.2
     # via
     #   -c requirements/ci.txt
@@ -115,7 +113,6 @@ click==8.1.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   celery
     #   click-didyoumean
     #   click-plugins
@@ -184,6 +181,8 @@ dill==0.3.8
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
+distlib==0.3.9
+    # via virtualenv
 django==4.2.20
     # via
     #   -c requirements/ci.txt
@@ -442,10 +441,8 @@ faker==37.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-flake8==7.1.2
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
+filelock==3.18.0
+    # via virtualenv
 flower==2.0.1
     # via
     #   -c requirements/ci.txt
@@ -476,6 +473,8 @@ humanize==4.10.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   flower
+identify==2.6.10
+    # via pre-commit
 idna==3.7
     # via
     #   -c requirements/ci.txt
@@ -562,7 +561,6 @@ mccabe==0.7.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   flake8
     #   pylint
 mozilla-django-oidc==4.0.1
     # via
@@ -579,17 +577,14 @@ multidict==6.0.5
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   yarl
-mypy-extensions==1.0.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   black
+nodeenv==1.9.1
+    # via pre-commit
 notifications-api-common==0.7.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.9.6
+open-api-framework==0.10.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -607,15 +602,9 @@ packaging==24.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   build
     #   pytest
     #   sphinx
-pathspec==0.12.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   black
 pep8==1.7.1
     # via
     #   -c requirements/ci.txt
@@ -633,13 +622,15 @@ platformdirs==4.2.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   pylint
+    #   virtualenv
 pluggy==1.5.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pytest
+pre-commit==4.2.0
+    # via -r requirements/dev.in
 prometheus-client==0.20.0
     # via
     #   -c requirements/ci.txt
@@ -656,11 +647,7 @@ psycopg2==2.9.9
     #   -r requirements/ci.txt
     #   open-api-framework
 pycodestyle==2.12.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   autopep8
-    #   flake8
+    # via autopep8
 pycparser==2.22
     # via
     #   -c requirements/ci.txt
@@ -682,11 +669,6 @@ pydantic-settings==2.6.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-setup-configuration
-pyflakes==3.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   flake8
 pygments==2.18.0
     # via
     #   -c requirements/ci.txt
@@ -760,6 +742,7 @@ pyyaml==6.0.1
     #   -r requirements/ci.txt
     #   drf-spectacular
     #   oyaml
+    #   pre-commit
     #   pydantic-settings
     #   vcrpy
 qrcode==7.4.2
@@ -817,6 +800,10 @@ ruamel-yaml-clib==0.2.12
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   ruamel-yaml
+ruff==0.11.10
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 semantic-version==2.10.0
     # via
     #   -c requirements/ci.txt
@@ -971,6 +958,8 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
+virtualenv==20.31.2
+    # via pre-commit
 waitress==3.0.1
     # via
     #   -c requirements/ci.txt

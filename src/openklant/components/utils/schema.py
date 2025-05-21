@@ -55,12 +55,10 @@ class AutoSchema(_AutoSchema):
 
             inclusion_ref = self.resolve_serializer(inclusion_serializer, direction).ref
 
-            many = (
-                True
-                if hasattr(inclusion_field, "child_relation")
-                or hasattr(inclusion_field, "many")
-                else False
+            many = hasattr(inclusion_field, "child_relation") or hasattr(
+                inclusion_field, "many"
             )
+
             if many:
                 inclusion_schema = append_meta(build_array_type(inclusion_ref), meta)
             else:

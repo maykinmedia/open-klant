@@ -9,7 +9,6 @@ class TestCountryConverter(BaseMigrationTest):
     migrate_to = "0004_alter_organisatie_adres_land_alter_organisatie_land_and_more"
 
     def test_ok_migration_organisatie_model(self):
-
         Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
 
         Organisatie.objects.create(land="6030", adres_land="6030")
@@ -26,7 +25,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(records[0].adres_land, "6030")
 
     def test_ok_migration_organisatie_model_empty_code(self):
-
         Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
         org1 = Organisatie.objects.create(land="", adres_land="")
         org2 = Organisatie.objects.create(land="6030", adres_land="6030")
@@ -47,7 +45,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(org2.adres_land, "6030")
 
     def test_ko_migration_organisatie_model_wrong_code(self):
-
         Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
         org1 = Organisatie.objects.create(land="9999", adres_land="9999")
         org2 = Organisatie.objects.create(land="5001", adres_land="5001")
@@ -99,7 +96,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(org2.adres_land, "5001")
 
     def test_ok_migrate_persoon_model(self):
-
         Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
 
         Persoon.objects.create(
@@ -117,7 +113,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertNotEqual(records[0].adres_land, "6030")
 
     def test_ok_migration_persoon_model_empty_code(self):
-
         Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
 
         persoon1 = Persoon.objects.create(
@@ -141,7 +136,6 @@ class TestCountryConverter(BaseMigrationTest):
         self.assertEqual(persoon2.adres_land, "NL")
 
     def test_ko_migration_persoon_model_wrong_code(self):
-
         Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
         persoon1 = Persoon.objects.create(
             land="9999", adres_land="9999", geboortedatum="1980-02-23"
@@ -201,7 +195,6 @@ class TestValidateBagId(BaseMigrationTest):
     migrate_to = "0005_alter_organisatie_adres_nummeraanduiding_id_and_more"
 
     def test_ok_migration_organisatie_model(self):
-
         Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
 
         Organisatie.objects.create(adres_nummeraanduiding_id="1234567890000001")
@@ -215,7 +208,6 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertEqual(records[0].adres_nummeraanduiding_id, "1234567890000001")
 
     def test_ok_migration_organisatie_model_empty_value(self):
-
         Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
 
         Organisatie.objects.create(adres_nummeraanduiding_id="")
@@ -230,7 +222,6 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertEqual(records[0].adres_nummeraanduiding_id, "")
 
     def test_ko_migration_organisatie_model_wrong_code(self):
-
         Organisatie = self.old_app_state.get_model("contactgegevens", "Organisatie")
         org1 = Organisatie.objects.create(adres_nummeraanduiding_id="123456")
 
@@ -267,7 +258,6 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertNotEqual(records[0].adres_nummeraanduiding_id, "123456")
 
     def test_ok_migrate_persoon_model(self):
-
         Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
 
         Persoon.objects.create(
@@ -282,7 +272,6 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertEqual(records[0].adres_nummeraanduiding_id, "1234567890000001")
 
     def test_ok_migration_persoon_model_empty_value(self):
-
         Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
 
         Persoon.objects.create(adres_nummeraanduiding_id="", geboortedatum="1980-02-23")
@@ -297,7 +286,6 @@ class TestValidateBagId(BaseMigrationTest):
         self.assertEqual(records[0].adres_nummeraanduiding_id, "")
 
     def test_ko_migration_persoon_model_wrong_code(self):
-
         Persoon = self.old_app_state.get_model("contactgegevens", "Persoon")
         persoon1 = Persoon.objects.create(
             adres_nummeraanduiding_id="123456", geboortedatum="1980-02-23"
