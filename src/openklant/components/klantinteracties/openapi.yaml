@@ -2244,6 +2244,7 @@ paths:
         name: anderePartijIdentificator
         schema:
           type: string
+        deprecated: true
       - name: page
         required: false
         in: query
@@ -2264,7 +2265,6 @@ paths:
           enum:
           - natuurlijk_persoon
           - niet_natuurlijk_persoon
-          - overig
           - vestiging
         description: |+
           Type van het object, bijvoorbeeld: 'natuurlijk_persoon'.
@@ -2277,7 +2277,6 @@ paths:
           enum:
           - brp
           - hr
-          - overig
         description: |+
           Binnen het landschap van registers unieke omschrijving van het register waarin het object is geregistreerd, bijvoorbeeld: 'BRP'.
 
@@ -2289,7 +2288,6 @@ paths:
           enum:
           - bsn
           - kvk_nummer
-          - overig
           - rsin
           - vestigingsnummer
         description: |+
@@ -3988,13 +3986,11 @@ components:
       - natuurlijk_persoon
       - niet_natuurlijk_persoon
       - vestiging
-      - overig
       type: string
     CodeRegisterEnum:
       enum:
       - brp
       - hr
-      - overig
       type: string
     CodeSoortObjectIdEnum:
       enum:
@@ -4002,7 +3998,6 @@ components:
       - vestigingsnummer
       - kvk_nummer
       - rsin
-      - overig
       type: string
     Contactnaam:
       type: object
@@ -5258,6 +5253,7 @@ components:
           description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
             objecttype, soort objectID of Register vast te leggen. '
           maxLength: 200
+          deprecated: true
         partijIdentificator:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorGroepType'
@@ -5815,6 +5811,7 @@ components:
           description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
             objecttype, soort objectID of Register vast te leggen. '
           maxLength: 200
+          deprecated: true
         partijIdentificator:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorGroepType'
@@ -6155,10 +6152,9 @@ tags:
 
     | codeRegister  | codeObjecttype       | codeSoortObjectId                |
     |---------------|--------------------------|------------------------------|
-    | brp           | natuurlijk_persoon       | bsn, overig                  |
-    | hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer, overig     |
-    | hr            | vestiging                | vestigingsnummer, overig     |
-    | overig        | –                        | –                            |
+    | brp           | natuurlijk_persoon       | bsn,                         |
+    | hr            | niet_natuurlijk_persoon  | rsin, kvk_nummer             |
+    | hr            | vestiging                | vestigingsnummer             |
 
 
 
