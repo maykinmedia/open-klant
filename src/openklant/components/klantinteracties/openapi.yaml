@@ -2259,8 +2259,7 @@ paths:
         name: anderePartijIdentificator
         schema:
           type: string
-        description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
-          objecttype, soort objectID of Register vast te leggen. '
+        deprecated: true
       - name: page
         required: false
         in: query
