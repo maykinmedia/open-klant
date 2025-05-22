@@ -491,11 +491,6 @@ inflection==0.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   drf-spectacular
-iniconfig==2.0.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pytest
 iso639-lang==2.6.0
     # via
     #   -c requirements/ci.txt
@@ -603,7 +598,6 @@ packaging==24.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   build
-    #   pytest
     #   sphinx
 pep8==1.7.1
     # via
@@ -624,11 +618,6 @@ platformdirs==4.2.2
     #   -r requirements/ci.txt
     #   pylint
     #   virtualenv
-pluggy==1.5.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pytest
 pre-commit==4.2.0
     # via -r requirements/dev.in
 prometheus-client==0.20.0
@@ -701,10 +690,6 @@ pyproject-hooks==1.2.0
     #   build
     #   pip-tools
 pyquery==2.0.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-pytest==8.3.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

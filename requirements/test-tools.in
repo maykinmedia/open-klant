@@ -13,7 +13,6 @@ tblib
 vcrpy
 waitress>=2.1.1
 codecov
-pytest
 
 # Code formatting
 ruff

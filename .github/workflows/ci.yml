@@ -116,7 +116,7 @@ jobs:
         id: image-name
 
   open-api-ci:
-    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@refactor/replace-check-sphinx
+    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v5
     needs:
       - store-reusable-workflow-vars
     with:

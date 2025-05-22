@@ -423,8 +423,6 @@ inflection==0.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-iniconfig==2.0.0
-    # via pytest
 iso639-lang==2.6.0
     # via
     #   -c requirements/base.txt
@@ -511,9 +509,7 @@ oyaml==1.0
     #   -r requirements/base.txt
     #   commonground-api-common
 packaging==24.1
-    # via
-    #   pytest
-    #   sphinx
+    # via sphinx
 pep8==1.7.1
     # via -r requirements/test-tools.in
 phonenumberslite==8.13.42
@@ -523,8 +519,6 @@ phonenumberslite==8.13.42
     #   django-two-factor-auth
 platformdirs==4.2.2
     # via pylint
-pluggy==1.5.0
-    # via pytest
 prometheus-client==0.20.0
     # via
     #   -c requirements/base.txt
@@ -585,8 +579,6 @@ pypng==0.20220715.0
     #   -r requirements/base.txt
     #   qrcode
 pyquery==2.0.0
-    # via -r requirements/test-tools.in
-pytest==8.3.3
     # via -r requirements/test-tools.in
 python-dateutil==2.9.0.post0
     # via
