@@ -65,7 +65,7 @@ class ValidatorsTestCase(SimpleTestCase):
         for invalid_postal_code in invalid_postal_codes:
             self.assertRaisesMessage(
                 ValidationError,
-                "Ongeldige postcode",
+                "Postcode moet aan het volgende formaat voldoen: `1234 AB` (met spatie)",
                 validate_postal_code,
                 invalid_postal_code,
             )
