@@ -579,7 +579,7 @@ notifications-api-common==0.7.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.10.0
+open-api-framework==0.10.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -892,7 +892,7 @@ tomlkit==0.13.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-tornado==6.4.2
+tornado==6.5.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
