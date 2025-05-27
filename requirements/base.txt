@@ -57,7 +57,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.6.3
+commonground-api-common==2.6.4
     # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
