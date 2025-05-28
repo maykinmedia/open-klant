@@ -50,7 +50,7 @@ jobs:
 
     strategy:
       matrix:
-        postgres: ['13', '14', '15', '16', '17']
+        postgres: ['14', '15', '16', '17']
 
     services:
       postgres:
