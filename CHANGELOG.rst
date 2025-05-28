@@ -2,14 +2,37 @@
 Change history
 ==============
 
-2.x.x
+2.9.0
 =====
+*May 28, 2025*
 
+**New features**
+
+* [:open-klant:`338`] Add ``isStandaardAdres`` to the list endpoint filters for DigitaalAdres
+* [:open-klant:`388`] Explicitly state in OAS that a space is required for postcodes
+* [:open-klant:`417`] Add missing help texts in OAS for query parameters for ``onderwerpobjecten``, ``partij-identificatoren``, ``rekeningnummers`` and ``bijlagen``
+
+**Bugfixes**
+
+* Do not use ``save_outgoing_requests`` log handler if ``LOG_REQUESTS`` is set to false
 * [:open-klant:`351`] Remove overig from partijidentificator and deprecate ``anderePartijIdentificator``
 
 .. warning::
 
     The field ``anderePartijIdentificator`` for ``/partij-identificatoren`` endpoint is now deprecated and will be removed in the next major release
+
+**Project maintenance**
+
+* Upgrade dependencies
+
+  * tornado to 6.5.1
+  * open-api-framework to 0.10.1
+  * commonground-api-common to 2.6.4
+
+* Replace OAS GitHub actions workflows with single workflow
+* [:open-api-framework:`132`] Remove ``pytest`` and ``check_sphinx.py``, replace with simpler commands
+* [:open-api-framework:`133`]  Replace ``black``, ``isort`` and ``flake8`` with ``ruff`` and update code-quality workflow
+
 
 2.8.0
 =====
