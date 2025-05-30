@@ -4,32 +4,37 @@
 {% block title %}{{ title }} | {{ settings.PROJECT_NAME }}{% endblock %}
 
 {% block extrastyle %}
-    {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'bundles/admin_overrides.css' %}">
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'bundles/admin_overrides.css' %}">
 
-    <link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
+<link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
 {% endblock %}
 
 {% block branding %}
-    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ settings.PROJECT_NAME }} {% trans 'Administration' %}</a></h1>
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ settings.PROJECT_NAME }} {% trans 'Administration' %}</a></h1>
+
+{% if user.is_anonymous %}
+{% include "admin/color_theme_toggle.html" %}
+{% endif %}
 {% endblock %}
 
 {% block welcome-msg %}
-    {% trans 'Logged in as' %}
-    <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+{% trans 'Logged in as' %}
+<strong>{% firstof user.get_short_name user.get_username %}</strong>.
 {% endblock %}
 
 {% block userlinks %}
-    {% if site_url %}
-        <a href="{{ site_url }}">{{ settings.SITE_TITLE }}</a> /
-    {% endif %}
-    {% if user.has_usable_password %}
-    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
-    {% endif %}
-    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
-        {% csrf_token %}
-        <button type="submit">{% trans 'Log out' %}</button>        
-    </form>
+{% if site_url %}
+<a href="{{ site_url }}">{{ settings.SITE_TITLE }}</a> /
+{% endif %}
+{% if user.has_usable_password %}
+<a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+{% endif %}
+<form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+    {% csrf_token %}
+    <button type="submit">{% trans 'Log out' %}</button>
+</form>
+{% include "admin/color_theme_toggle.html" %}
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
