@@ -1,3 +1,67 @@
+// sass vars
+/* Colors */
+
+$color_primary: #04a5bb;
+$color_primary_dark: #017092;
+$color_primary_light: #c3eaef;
+
+$color-secondary: #f3f3f3;
+$color-secondary-dark: #ddd;
+$color-secondary-light: #fff;
+$color_secondary: #f3f3f3;
+$color_secondary_dark: #ddd;
+$color_secondary_light: #fff;
+
+$color_link: #005DD0;
+$color_link_hover: #124078;
+$color_link: #017092;
+$color_link_hover: #051f31;
+
+$color-darkest: #000;
+$color-dark: #333;
+$color-lightest: #fff;
+$color_darkest: #000;
+$color_dark: #333;
+$color_dark_light: #888;
+$color_lightest: #fff;
+
+$color-error: #ba2121; // default django admin color
+$input-field-size: 40em; // original: 20em;
+
+$color_alert: #dc3545;
+$color_alert_dark: #bd2130;
+
+$color_dark: #333;
+$color_lightest: #fff;
+$color_muted: #6c757d;
+
+$color-text: $color_dark;
+$color-border: $color_secondary_dark;
+
+// css vars
+:root {
+    --color_primary: #{$color_primary};
+    --color_primary_dark: #{$color_primary_dark};
+
+    --color_secondary: #{$color_secondary};
+    --color_secondary_dark: #{$color_secondary_dark};
+    --color_secondary_light: #{$color_secondary_light};
+
+    --color_alert: #{$color_alert};
+    --color_alert_dark: #{$color_alert_dark};
+
+    --color-darkest: #{$color-darkest};
+    --color_dark: #{$color_dark};
+    --color_lightest: #{$color_lightest};
+    --color_muted: #{$color_muted};
+
+    --color_link: #{$color_link};
+    --color_link_hover: #{$color_link_hover};
+    --color-text: #{$color-text};
+    --color-border: #{$color-border};
+}
+
+
 $breakpoint-mobile-s: 320px !default;
 $breakpoint-mobile-m: 375px !default;
 $breakpoint-mobile-l: 425px !default;
@@ -11,23 +75,6 @@ $animation-default-duration-slow: 5s !default;
 $animation-default-delay: 0s !default;
 $animation-default-function: ease-in-out !default;
 
-$color-black: black !default;
-$color-white: white !default;
-$color-gray: silver !default;
-$color-gray-darker: #47535B !default;
-$color-blue: blue !default;
-$color-green: green !default;
-$color-red: red !default;
-$color-orange: orange !default;
-$color-yellow: yellow !default;
-$color-primary: $color-blue !default;
-$color-secondary: $color-gray !default;
-$color-background: $color-white !default;
-$color-border: $color-gray !default;
-$color-danger: $color-red !default;
-$color-info: $color-blue!default;
-$color-success: $color-green!default;
-$color-warning: $color-orange!default;
 
 $grid-columns-mobile: 4 !default;
 $grid-columns-tablet: 9 !default;
@@ -46,7 +93,7 @@ $grid-container-margin-small: $grid-container-margin-base !default;
 $grid-container-margin-big: $grid-container-margin-base !default;
 $grid-container-padding: $grid-container-padding-base !default;
 $grid-container-padding-small: $grid-container-padding-base !default;
-$grid-container-padding-big: $grid-container-padding-base!default;
+$grid-container-padding-big: $grid-container-padding-base !default;
 $grid-container-size: $breakpoint-desktop - 2 * $grid-container-margin !default;
 $grid-container-size-small: 800px !default;
 $grid-container-size-big: 1400px !default;
@@ -62,11 +109,6 @@ $grid-margin-8: 80px !default;
 $grid-margin-9: 90px !default;
 $grid-margin-10: 100px !default;
 
-$typography-color-base: $color-black !default;
-$typography-color-text: $typography-color-base !default;
-$typography-color-link: $color-blue !default;
-$typography-color-link-hover: $typography-color-link !default;
-$typography-color-h: $typography-color-base !default;
 $typography-default-hover-link: true !default;
 $typography-decoration-link: underline !default;
 $typography-font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
@@ -77,37 +119,44 @@ $typography-font-size-text-mobile: $typography-font-size-text !default;
 $typography-font-size-text-tablet: $typography-font-size-text !default;
 $typography-font-size-text-laptop: $typography-font-size-text !default;
 $typography-font-size-text-desktop: $typography-font-size-text !default;
-$typography-font-size-text-big: ($typography-font-size-text * 1.25) !default;
+$typography-font-size-text-big: (
+    $typography-font-size-text * 1.25) !default;
 $typography-font-size-text-big-mobile: $typography-font-size-text-big !default;
 $typography-font-size-text-big-tablet: $typography-font-size-text-big !default;
 $typography-font-size-text-big-laptop: $typography-font-size-text-big !default;
 $typography-font-size-text-big-desktop: $typography-font-size-text-big !default;
-$typography-font-size-text-small: ($typography-font-size-text * 0.75) !default;
+$typography-font-size-text-small: (
+    $typography-font-size-text * 0.75) !default;
 $typography-font-size-text-small-mobile: $typography-font-size-text-small !default;
 $typography-font-size-text-small-tablet: $typography-font-size-text-small !default;
 $typography-font-size-text-small-laptop: $typography-font-size-text-small !default;
 $typography-font-size-text-small-desktop: $typography-font-size-text-small !default;
-$typography-font-size-h1: ($typography-font-size-text * 2.5) !default;
+$typography-font-size-h1: (
+    $typography-font-size-text * 2.5) !default;
 $typography-font-size-h1-mobile: $typography-font-size-h1 !default;
 $typography-font-size-h1-tablet: $typography-font-size-h1 !default;
 $typography-font-size-h1-laptop: $typography-font-size-h1 !default;
 $typography-font-size-h1-desktop: $typography-font-size-h1 !default;
-$typography-font-size-h2: ($typography-font-size-text * 2) !default;
+$typography-font-size-h2: (
+    $typography-font-size-text * 2) !default;
 $typography-font-size-h2-mobile: $typography-font-size-h2 !default;
 $typography-font-size-h2-tablet: $typography-font-size-h2 !default;
 $typography-font-size-h2-laptop: $typography-font-size-h2 !default;
 $typography-font-size-h2-desktop: $typography-font-size-h2 !default;
-$typography-font-size-h3: ($typography-font-size-text * 1.75) !default;
+$typography-font-size-h3: (
+    $typography-font-size-text * 1.75) !default;
 $typography-font-size-h3-mobile: $typography-font-size-h3 !default;
 $typography-font-size-h3-tablet: $typography-font-size-h3 !default;
 $typography-font-size-h3-laptop: $typography-font-size-h3 !default;
 $typography-font-size-h3-desktop: $typography-font-size-h3 !default;
-$typography-font-size-h4: ($typography-font-size-text * 1.5) !default;
+$typography-font-size-h4: (
+    $typography-font-size-text * 1.5) !default;
 $typography-font-size-h4-mobile: $typography-font-size-h4 !default;
 $typography-font-size-h4-tablet: $typography-font-size-h4 !default;
 $typography-font-size-h4-laptop: $typography-font-size-h4 !default;
 $typography-font-size-h4-desktop: $typography-font-size-h4 !default;
-$typography-font-size-h5: ($typography-font-size-text * 1.25) !default;
+$typography-font-size-h5: (
+    $typography-font-size-text * 1.25) !default;
 $typography-font-size-h5-mobile: $typography-font-size-h5 !default;
 $typography-font-size-h5-tablet: $typography-font-size-h5 !default;
 $typography-font-size-h5-laptop: $typography-font-size-h5 !default;
@@ -240,7 +289,6 @@ $typography-padding-table: $grid-margin-1 0 !default;
 $typography-size-border: 1px !default;
 $typography-style-border: solid !default;
 
-$util-shadow-default-color: rgba($color-black, 0.15) !default;
 $util-shadow-default-offset-x: 0 !default;
 $util-shadow-default-offset-y: 0.5rem !default;
 $util-shadow-default-blur: 1rem !default;

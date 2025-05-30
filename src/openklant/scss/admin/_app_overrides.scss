@@ -6,7 +6,8 @@
 @import '~microscope-sass/lib/responsive';
 @import '~microscope-sass/lib/util';
 
-@import '../vars';
+@import '../settings';
+
 
 /**
  * DJANGO ADMIN INDEX
@@ -20,14 +21,6 @@ body {
   --djai-dropdown-bg--hover: #{$color-primary-dark};
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    --djai-tab-bg--hover: #{$color-primary};
-    --djai-tab-fg--active: #{$color-lightest};
-    --djai-dropdown-bg--hover: #{$color-primary};
-  }
-}
-
 $djai-padding: 40px;
 $djai-padding--mobile: 15px;
 $djai-padding--tablet: 30px;
@@ -37,24 +30,20 @@ $djai-border-width: 8px;
   // by default, the header has 40px padding on both sides. To make the border stretch
   // full width, set negative margins and positive paddings. On mobile and tablet these
   // values are 15px and 30px respectively.
-  @include responsive(
-    (margin-left, margin-right),
+  @include responsive((margin-left, margin-right),
     -$djai-padding--mobile,
     -$djai-padding--tablet,
-    -$djai-padding
-  );
-  @include responsive(
-    (padding-left, padding-right),
+    -$djai-padding );
+  @include responsive((padding-left, padding-right),
     $djai-padding--mobile,
     $djai-padding--tablet,
-    $djai-padding
-  );
+    $djai-padding );
 
   // use full width on mobile & tablet
   width: 100%;
 
   /* Added to attach to body/breadcrumbs */
-  border-bottom: $djai-border-width solid $color_secondary;
+  border-bottom: var(--oz-djai-border-bottom-width) solid var(--oz-djai-border-bottom-color);
 
   & &__drop {
     min-width: 250px !important;
@@ -65,7 +54,7 @@ $djai-border-width: 8px;
     padding-bottom: 0 !important;
 
     // remove the border height from the breadcrumbs padding
-    & + .breadcrumbs {
+    &+.breadcrumbs {
       padding-top: 10px - $djai-border-width; // 10px is original django value
     }
 
@@ -240,9 +229,10 @@ body.app-forms.model-category.change-list {
  * Django-log-outgoing-requests
  */
 body.app-log_outgoing_requests.model-outgoingrequestslog {
+
   .field-request_body,
   .field-response_body {
-    & > div {
+    &>div {
       display: flex;
     }
 
