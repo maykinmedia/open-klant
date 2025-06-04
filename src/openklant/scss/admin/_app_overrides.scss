@@ -54,8 +54,8 @@ $djai-border-width: 8px;
   width: 100%;
 
   /* Added to attach to body/breadcrumbs */
-  border-bottom: $djai-border-width solid $color_secondary;
-
+  border-bottom: var(--oz-djai-border-bottom-width) solid var(--oz-djai-border-bottom-color);
+  
   & &__drop {
     min-width: 250px !important;
   }
