@@ -362,7 +362,7 @@ django-upgrade-check==1.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-django-webtest==1.9.11
+django-webtest==1.9.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
