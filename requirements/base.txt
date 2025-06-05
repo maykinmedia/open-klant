@@ -70,7 +70,7 @@ cryptography==44.0.2
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==4.2.20
+django==5.2.2
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -169,7 +169,9 @@ django-solo==2.3.0
 django-two-factor-auth==1.16.0
     # via maykin-2fa
 django-upgrade-check==1.1.0
-    # via -r requirements/base.in
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
 djangorestframework==3.15.2
     # via
     #   commonground-api-common
