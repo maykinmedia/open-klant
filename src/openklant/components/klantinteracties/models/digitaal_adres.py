@@ -82,8 +82,8 @@ class DigitaalAdres(APIMixin, models.Model):
                 name="unique_default_per_partij_and_soort",
             ),
             models.UniqueConstraint(
-                fields=["partij", "referentie"],
-                name="unique_referentie_per_partij",
+                fields=["partij", "referentie", "soort_digitaal_adres"],
+                name="unique_referentie_per_partij_and_soort",
                 condition=REFERENTIE_UNIQUENESS_CONDITION,
             ),
         ]
