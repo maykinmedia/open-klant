@@ -684,7 +684,11 @@ class DigitaalAdresTests(APITestCase):
         Ensure that UniqueConstraint applies if both verstrektDoorPartij and referentie are set.
         """
         partij = PartijFactory.create(voorkeurs_digitaal_adres=None)
-        DigitaalAdresFactory.create(partij=partij, referentie="unique-ref")
+        DigitaalAdresFactory.create(
+            partij=partij,
+            referentie="unique-ref",
+            soort_digitaal_adres=SoortDigitaalAdres.email,
+        )
 
         list_url = reverse("klantinteracties:digitaaladres-list")
         data = {
@@ -696,15 +700,29 @@ class DigitaalAdresTests(APITestCase):
             "referentie": "unique-ref",
         }
 
-        response = self.client.post(list_url, data)
-        self.assertEqual(
-            response.status_code, status.HTTP_400_BAD_REQUEST, response.data
-        )
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], "unique")
+        with self.subTest("with the same soort digitaal adres"):
+            response = self.client.post(list_url, data)
+            self.assertEqual(
+                response.status_code, status.HTTP_400_BAD_REQUEST, response.data
+            )
+            error = get_validation_errors(response, "nonFieldErrors")
+            self.assertEqual(error["code"], "unique")
 
-        # Object should not be created due to failing validation
-        self.assertEqual(DigitaalAdres.objects.count(), 1)
+            # Object should not be created due to failing validation
+            self.assertEqual(DigitaalAdres.objects.count(), 1)
+
+        with self.subTest("with a different soort digitaal adres"):
+            response = self.client.post(
+                list_url,
+                data
+                | {
+                    "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
+                    "adres": "0721434543",
+                },
+            )
+            self.assertEqual(
+                response.status_code, status.HTTP_201_CREATED, response.data
+            )
 
     def test_update_digitaal_adres_validate_uniqueness_if_both_verstrektDoorPartij_and_referentie(
         self,
@@ -714,10 +732,16 @@ class DigitaalAdresTests(APITestCase):
         when performing a PATCH
         """
         partij = PartijFactory.create(voorkeurs_digitaal_adres=None)
-        DigitaalAdresFactory.create(partij=partij, referentie="unique-ref")
+        DigitaalAdresFactory.create(
+            partij=partij,
+            referentie="unique-ref",
+            soort_digitaal_adres=SoortDigitaalAdres.email,
+        )
 
         digitaal_adres = DigitaalAdresFactory.create(
-            partij=partij, referentie="old-ref"
+            partij=partij,
+            referentie="old-ref",
+            soort_digitaal_adres=SoortDigitaalAdres.email,
         )
 
         detail_url = reverse(
@@ -742,3 +766,14 @@ class DigitaalAdresTests(APITestCase):
             self.assertEqual(response2.status_code, 400)
             error = get_validation_errors(response, "nonFieldErrors")
             self.assertEqual(error["code"], "unique")
+
+        with self.subTest("changing soort digitaal adres"):
+            response = self.client.patch(
+                detail_url,
+                {
+                    "referentie": "unique-ref",
+                    "soortDigitaalAdres": SoortDigitaalAdres.telefoonnummer,
+                    "adres": "0721434543",
+                },
+            )
+            self.assertEqual(response.status_code, 200)
