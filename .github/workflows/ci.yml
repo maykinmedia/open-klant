@@ -50,7 +50,11 @@ jobs:
 
     strategy:
       matrix:
-        postgres: ['14', '15', '16', '17']
+        postgres: ["14", "15", "16", "17"]
+        use_pooling: [false]
+        include:
+          - postgres: "17"
+            use_pooling: true
 
     services:
       postgres:

@@ -529,6 +529,14 @@ prompt-toolkit==3.0.47
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   click-repl
+psycopg==3.2.9
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+psycopg-pool==3.2.6
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 psycopg2==2.9.9
     # via
     #   -c requirements/base.txt
@@ -736,6 +744,8 @@ typing-extensions==4.12.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
+    #   psycopg
+    #   psycopg-pool
     #   pydantic
     #   pydantic-core
     #   pyopenssl

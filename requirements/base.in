@@ -4,4 +4,6 @@ django-upgrade-check
 django-setup-configuration
 mozilla-django-oidc-db[setup-configuration]
 
+psycopg[pool]
+
 django-localflavor
