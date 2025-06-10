@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.urls import exceptions, reverse
+from django.utils.crypto import get_random_string
 
 
 class Command(BaseCommand):
@@ -29,7 +30,7 @@ class Command(BaseCommand):
             )
             return
 
-        password = User.objects.make_random_password(length=20)
+        password = get_random_string(length=20)
         User.objects.create_superuser(username=username, email=email, password=password)
 
         try:

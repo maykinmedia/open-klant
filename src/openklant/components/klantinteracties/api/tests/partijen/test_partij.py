@@ -3319,10 +3319,10 @@ class NestedPartijIdentificatorTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         error = get_validation_errors(response, "__all__")
-        self.assertEqual(error["code"], "unique_together")
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            "Partij identificator met deze Partij en Soort object ID bestaat al.",
+            "`CodeSoortObjectId` moet uniek zijn voor de Partij.",
         )
         # partij has the same data
         self.assertEqual(partij.soort_partij, SoortPartij.persoon.value)

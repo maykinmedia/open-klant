@@ -100,7 +100,7 @@ class PartijIdentificatorModelConstraints(TestCase):
             {
                 "__all__": [
                     "`PartijIdentificator` moet uniek zijn, er bestaat er al een met deze gegevenscombinatie.",
-                    "Partij identificator met deze Partij en Soort object ID bestaat al.",
+                    "`CodeSoortObjectId` moet uniek zijn voor de Partij.",
                 ]
             },
         )
@@ -136,7 +136,7 @@ class PartijIdentificatorModelConstraints(TestCase):
             error.exception.message_dict,
             {
                 "__all__": [
-                    "Partij identificator met deze Partij en Soort object ID bestaat al.",
+                    "`CodeSoortObjectId` moet uniek zijn voor de Partij.",
                     "`PartijIdentificator` moet uniek zijn, er bestaat er al een met deze gegevenscombinatie.",
                 ]
             },
@@ -165,7 +165,7 @@ class PartijIdentificatorModelConstraints(TestCase):
             error.exception.message_dict,
             {
                 "__all__": [
-                    "Partij identificator met deze Partij en Soort object ID bestaat al."
+                    "`CodeSoortObjectId` moet uniek zijn voor de Partij.",
                 ]
             },
         )

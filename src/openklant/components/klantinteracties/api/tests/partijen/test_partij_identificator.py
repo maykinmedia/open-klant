@@ -497,10 +497,10 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         response = self.client.post(self.list_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         error = get_validation_errors(response, "__all__")
-        self.assertEqual(error["code"], "unique_together")
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            "Partij identificator met deze Partij en Soort object ID bestaat al.",
+            "`CodeSoortObjectId` moet uniek zijn voor de Partij.",
         )
 
     def test_valid_update_partij(self):
@@ -550,10 +550,10 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         error = get_validation_errors(response, "__all__")
-        self.assertEqual(error["code"], "unique_together")
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            "Partij identificator met deze Partij en Soort object ID bestaat al.",
+            "`CodeSoortObjectId` moet uniek zijn voor de Partij.",
         )
         self.assertEqual(new_partij.partijidentificator_set.count(), 1)
         self.assertEqual(
@@ -673,10 +673,10 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         response = self.client.post(self.list_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         error = get_validation_errors(response, "__all__")
-        self.assertEqual(error["code"], "unique_together")
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            "Partij identificator met deze Partij en Soort object ID bestaat al.",
+            "`CodeSoortObjectId` moet uniek zijn voor de Partij.",
         )
         self.assertEqual(PartijIdentificator.objects.all().count(), 2)
 
@@ -856,10 +856,10 @@ class PartijIdentificatorUniquenessTests(APITestCase):
         response = self.client.post(self.list_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(len(response.data["invalid_params"]), 2)
-        self.assertEqual(response.data["invalid_params"][0]["code"], "unique_together")
+        self.assertEqual(response.data["invalid_params"][0]["code"], "invalid")
         self.assertEqual(
             response.data["invalid_params"][0]["reason"],
-            "Partij identificator met deze Partij en Soort object ID bestaat al.",
+            "`CodeSoortObjectId` moet uniek zijn voor de Partij.",
         )
         self.assertEqual(response.data["invalid_params"][1]["code"], "invalid")
         self.assertEqual(
