@@ -119,8 +119,7 @@ class PartijAdminTests(WebTest):
         url = reverse("admin:klantinteracties_partij_change", args=[partij.pk])
 
         response = self.app.get(url)
-
-        form = response.form
+        form = response.forms["partij_form"]
 
         form["digitaaladres_set-TOTAL_FORMS"] = 1
         add_dynamic_field(form, "digitaaladres_set-0-omschrijving", "description")
@@ -222,7 +221,7 @@ class DigitaalAdresAdminTests(WebTest):
 
         response: TestResponse = self.app.get(admin_url)
 
-        form = response.form
+        form = response.forms["digitaaladres_form"]
 
         form["betrokkene"] = betrokkene.pk
         form["soort_digitaal_adres"] = SoortDigitaalAdres.email
@@ -249,7 +248,7 @@ class DigitaalAdresAdminTests(WebTest):
 
         response: TestResponse = self.app.get(admin_url)
 
-        form = response.form
+        form = response.forms["digitaaladres_form"]
         form["betrokkene"] = betrokkene.pk
         form["soort_digitaal_adres"] = SoortDigitaalAdres.telefoonnummer
         form["adres"] = "invalid"
@@ -276,7 +275,7 @@ class DigitaalAdresAdminTests(WebTest):
 
         response: TestResponse = self.app.get(admin_url)
 
-        form = response.form
+        form = response.forms["digitaaladres_form"]
         form["betrokkene"] = betrokkene.pk
         form["soort_digitaal_adres"] = SoortDigitaalAdres.overig
         form["adres"] = "whatever"
@@ -530,8 +529,7 @@ class ActorenAdminTests(WebTest):
         response: TestResponse = self.app.get(delete_url)
 
         self.assertEqual(response.status_code, 200)
-
-        form = response.forms[0]
+        form = response.forms[1]
 
         response: TestResponse = form.submit()
 
@@ -589,8 +587,9 @@ class IntereTaakAdminTests(WebTest):
         search_response: TestResponse = response.click(description="Richard")
 
         self.assertEqual(search_response.status_code, 200)
-        self.assertContains(search_response, "field-nummer", 1)
-        self.assertContains(search_response, "0000000001", 1)
+        self.assertContains(search_response, "field-nummer")
+        self.assertContains(search_response, "0000000001")
+        self.assertNotContains(search_response, "0000000002")
 
     def test_internetaak_filter_status(self):
         self.app.set_user(self.user)
@@ -610,8 +609,9 @@ class IntereTaakAdminTests(WebTest):
         )
 
         self.assertEqual(search_response.status_code, 200)
-        self.assertContains(search_response, "field-nummer", 1)
-        self.assertContains(search_response, "0000000002", 1)
+        self.assertContains(search_response, "field-nummer")
+        self.assertContains(search_response, "0000000002")
+        self.assertNotContains(search_response, "0000000001")
 
     def test_interetaak_create(self):
         assert not InterneTaak.objects.exists()
@@ -759,10 +759,8 @@ class IntereTaakAdminTests(WebTest):
         response: TestResponse = self.app.get(delete_url)
 
         self.assertEqual(response.status_code, 200)
-
-        form = response.forms[0]
+        form = response.forms[1]
 
         response: TestResponse = form.submit()
-
         self.assertEqual(response.status_code, 302)
         self.assertFalse(InterneTaak.objects.filter(uuid=internetaak.uuid).exists())

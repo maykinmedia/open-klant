@@ -57,7 +57,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.6.4
+commonground-api-common==2.6.6
     # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
@@ -70,7 +70,7 @@ cryptography==44.0.2
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==4.2.20
+django==5.2.1
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -152,7 +152,7 @@ django-sendfile2==0.7.1
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.7.2
+django-setup-configuration==0.8.2
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
@@ -253,6 +253,10 @@ prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.47
     # via click-repl
+psycopg==3.2.9
+    # via -r requirements/base.in
+psycopg-pool==3.2.6
+    # via psycopg
 psycopg2==2.9.9
     # via open-api-framework
 pycparser==2.22
@@ -310,10 +314,7 @@ requests==2.32.3
     #   django-log-outgoing-requests
     #   mozilla-django-oidc
     #   open-api-framework
-    #   requests-mock
     #   zgw-consumers
-requests-mock==1.12.1
-    # via commonground-api-common
 rpds-py==0.19.1
     # via
     #   jsonschema
@@ -339,6 +340,8 @@ tornado==6.5.1
 typing-extensions==4.12.2
     # via
     #   mozilla-django-oidc-db
+    #   psycopg
+    #   psycopg-pool
     #   pydantic
     #   pydantic-core
     #   pyopenssl
@@ -372,7 +375,7 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.16.0
     # via elastic-apm
-zgw-consumers==0.37.0
+zgw-consumers==0.38.0
     # via
     #   commonground-api-common
     #   notifications-api-common

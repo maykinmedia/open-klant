@@ -114,7 +114,7 @@ click-repl==0.3.0
     #   celery
 codecov==2.1.13
     # via -r requirements/test-tools.in
-commonground-api-common==2.6.4
+commonground-api-common==2.6.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -146,7 +146,7 @@ cssselect==1.2.0
     # via pyquery
 dill==0.3.8
     # via pylint
-django==4.2.20
+django==5.2.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -287,7 +287,7 @@ django-sessionprofile==3.0.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-django-setup-configuration==0.7.2
+django-setup-configuration==0.8.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -315,7 +315,7 @@ django-upgrade-check==1.1.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-django-webtest==1.9.11
+django-webtest==1.9.13
     # via -r requirements/test-tools.in
 djangorestframework==3.15.2
     # via
@@ -529,6 +529,14 @@ prompt-toolkit==3.0.47
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   click-repl
+psycopg==3.2.9
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+psycopg-pool==3.2.6
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 psycopg2==2.9.9
     # via
     #   -c requirements/base.txt
@@ -649,11 +657,7 @@ requests==2.32.3
     #   sphinx
     #   zgw-consumers
 requests-mock==1.12.1
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   -r requirements/test-tools.in
-    #   commonground-api-common
+    # via -r requirements/test-tools.in
 rpds-py==0.19.1
     # via
     #   -c requirements/base.txt
@@ -740,6 +744,8 @@ typing-extensions==4.12.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
+    #   psycopg
+    #   psycopg-pool
     #   pydantic
     #   pydantic-core
     #   pyopenssl
@@ -810,7 +816,7 @@ wrapt==1.16.0
     #   vcrpy
 yarl==1.9.4
     # via vcrpy
-zgw-consumers==0.37.0
+zgw-consumers==0.38.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

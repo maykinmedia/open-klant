@@ -42,7 +42,7 @@ LOGGING["loggers"].update(
 )
 
 # don't spend time on password hashing in tests/user factories
-PASSWORD_HASHERS = ["django.contrib.auth.hashers.UnsaltedMD5PasswordHasher"]
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.PBKDF2PasswordHasher"]
 
 ENVIRONMENT = "CI"
 
