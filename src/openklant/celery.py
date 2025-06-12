@@ -5,7 +5,7 @@ from pathlib import Path
 from django.conf import settings
 
 import structlog
-from celery import Celery
+from celery import Celery, bootsteps
 from celery.signals import worker_ready, worker_shutdown
 from django_structlog.celery.steps import DjangoStructLogInitStep
 from open_api_framework.conf.utils import config
