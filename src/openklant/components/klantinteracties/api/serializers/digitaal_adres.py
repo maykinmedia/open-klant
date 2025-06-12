@@ -126,7 +126,8 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
             for validator in self.validators
             if not (
                 isinstance(validator, UniqueTogetherValidator)
-                and set(validator.fields) == {"verstrekt_door_partij", "referentie"}
+                and set(validator.fields)
+                == {"verstrekt_door_partij", "referentie", "soort_digitaal_adres"}
             )
         ]
 
@@ -157,6 +158,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
     def validate(self, attrs):
         partij = get_field_value(self, attrs, "partij")
         is_standaard_adres = get_field_value(self, attrs, "is_standaard_adres")
+        soort_digitaal_adres = get_field_value(self, attrs, "soort_digitaal_adres")
         if is_standaard_adres and not partij:
             raise serializers.ValidationError(
                 {
@@ -178,10 +180,15 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                 REFERENTIE_UNIQUENESS_CONDITION,
                 partij__uuid=partij_uuid,
                 referentie=referentie,
+                soort_digitaal_adres=soort_digitaal_adres,
             ).exists():
                 raise serializers.ValidationError(
                     UniqueTogetherValidator.message.format(
-                        field_names=["verstrekt_door_partij", "referentie"],
+                        field_names=[
+                            "verstrekt_door_partij",
+                            "referentie",
+                            "soort_digitaal_adres",
+                        ],
                     ),
                     code="unique",
                 )
