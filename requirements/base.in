@@ -6,3 +6,5 @@ mozilla-django-oidc-db[setup-configuration]
 psycopg[pool]
 
 django-localflavor
+
+django-structlog

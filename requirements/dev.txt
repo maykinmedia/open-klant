@@ -29,6 +29,7 @@ asgiref==3.8.1
     #   django
     #   django-axes
     #   django-cors-headers
+    #   django-structlog
 asn1crypto==1.5.1
     # via
     #   -c requirements/ci.txt
@@ -213,6 +214,7 @@ django==5.2.1
     #   django-silk
     #   django-simple-certmanager
     #   django-solo
+    #   django-structlog
     #   django-two-factor-auth
     #   django-upgrade-check
     #   djangorestframework
@@ -266,6 +268,11 @@ django-formtools==2.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
+django-ipware==7.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-structlog
 django-jsonform==2.22.0
     # via
     #   -c requirements/ci.txt
@@ -352,6 +359,10 @@ django-solo==2.3.0
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
+django-structlog==9.1.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 django-two-factor-auth==1.16.0
     # via
     #   -c requirements/ci.txt
@@ -720,6 +731,11 @@ python-dotenv==1.0.1
     #   -r requirements/ci.txt
     #   open-api-framework
     #   pydantic-settings
+python-ipware==3.0.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-ipware
 python-stdnum==1.20
     # via
     #   -c requirements/ci.txt
@@ -891,6 +907,11 @@ sqlparse==0.5.1
     #   django
     #   django-debug-toolbar
     #   django-silk
+structlog==25.4.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-structlog
 tblib==3.0.0
     # via
     #   -c requirements/ci.txt
