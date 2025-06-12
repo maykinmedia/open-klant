@@ -1,15 +1,14 @@
-import logging
-
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
+import structlog
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
 
 from openklant.components.token.models import TokenAuth
 from openklant.setup_configuration.models import TokenAuthGroupConfigurationModel
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class TokenAuthConfigurationStep(
@@ -27,7 +26,7 @@ class TokenAuthConfigurationStep(
 
     def execute(self, model: TokenAuthGroupConfigurationModel) -> None:
         for item in model.items:
-            logger.info(f"Configuring {item.identifier}")
+            logger.info("Configuring", identifier=item.identifier)
 
             model_kwargs = dict(
                 identifier=item.identifier,

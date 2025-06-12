@@ -14,6 +14,7 @@ asgiref==3.8.1
     #   django
     #   django-axes
     #   django-cors-headers
+    #   django-structlog
 asn1crypto==1.5.1
     # via webauthn
 attrs==23.2.0
@@ -33,6 +34,7 @@ cbor2==5.6.4
     # via webauthn
 celery==5.4.0
     # via
+    #   django-structlog
     #   flower
     #   notifications-api-common
     #   open-api-framework
@@ -95,6 +97,7 @@ django==5.2.1
     #   django-setup-configuration
     #   django-simple-certmanager
     #   django-solo
+    #   django-structlog
     #   django-two-factor-auth
     #   django-upgrade-check
     #   djangorestframework
@@ -124,6 +127,8 @@ django-filter==24.2
     #   open-api-framework
 django-formtools==2.5.1
     # via django-two-factor-auth
+django-ipware==7.0.1
+    # via django-structlog
 django-jsonform==2.22.0
     # via
     #   mozilla-django-oidc-db
@@ -166,6 +171,8 @@ django-solo==2.3.0
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
+django-structlog==9.1.1
+    # via -r requirements/base.in
 django-two-factor-auth==1.16.0
     # via maykin-2fa
 django-upgrade-check==1.1.0
@@ -289,6 +296,8 @@ python-dotenv==1.0.1
     # via
     #   open-api-framework
     #   pydantic-settings
+python-ipware==3.0.0
+    # via django-ipware
 python-stdnum==1.20
     # via django-localflavor
 pytz==2024.1
@@ -335,6 +344,8 @@ six==1.16.0
     #   python-dateutil
 sqlparse==0.5.1
     # via django
+structlog==25.4.0
+    # via django-structlog
 tornado==6.5.1
     # via flower
 typing-extensions==4.12.2
