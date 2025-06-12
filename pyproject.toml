@@ -109,6 +109,11 @@ ignore = [
     "SIM117",
 ]
 
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api.logging]
+msg = "Use `structlog.stdlib.get_logger(__name__)` instead."
+
+
 [tool.ruff.lint.isort]
 combine-as-imports = true
 force-wrap-aliases = false
