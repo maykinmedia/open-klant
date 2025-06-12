@@ -13,6 +13,8 @@ services:
     volumes:
       - ./docker-init-db.sql:/docker-entrypoint-initdb.d/init_db.sql
       - db:/var/lib/postgresql/data
+    networks:
+      - open-klant-dev
 
   web:
     image: maykinmedia/open-klant:latest
@@ -31,7 +33,8 @@ services:
       CELERY_BROKER_UR: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       DISABLE_2FA: true
-
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LOG_NOTIFICATIONS_IN_DB: ${LOG_NOTIFICATIONS_IN_DB:-yes}
     volumes:
       - media:/app/media
       - private_media:/app/private_media
@@ -45,6 +48,8 @@ services:
         condition: service_started
       web-init:
         condition: service_completed_successfully
+    networks:
+      - open-klant-dev
 
   web-init:
     build: .
@@ -62,6 +67,8 @@ services:
     depends_on:
       - db
       - redis
+    networks:
+      - open-klant-dev
 
   redis:
     image: redis
@@ -71,3 +78,7 @@ volumes:
   log:
   media:
   private_media:
+
+networks:
+  open-klant-dev:
+    name: open-klant-dev
