@@ -15,6 +15,7 @@ os.environ.setdefault("DB_PASSWORD", "openklant")
 
 os.environ.setdefault("ENVIRONMENT", "development")
 os.environ.setdefault("DISABLE_2FA", "yes")
+os.environ.setdefault("LOG_FORMAT_CONSOLE", "plain_console")
 
 os.environ.setdefault("RELEASE", "dev")
 os.environ.setdefault("LOG_REQUESTS", "no")
@@ -34,32 +35,34 @@ LOGGING["loggers"].update(
         "openklant": {
             "handlers": ["console"],
             "level": "DEBUG",
-            "propagate": True,
+            "propagate": False,
         },
         "django": {
             "handlers": ["console"],
             "level": "DEBUG",
-            "propagate": True,
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["json_file"],
+            "level": "DEBUG",
+            "propagate": False,
         },
         "performance": {
             "handlers": ["console"],
             "level": "INFO",
-            "propagate": True,
+            "propagate": False,
         },
         #
         # See: https://code.djangoproject.com/ticket/30554
         # Autoreload logs excessively, turn it down a bit.
         #
         "django.utils.autoreload": {
-            "handlers": ["django"],
+            "handlers": ["console"],
             "level": "INFO",
             "propagate": False,
         },
     }
 )
-
-if not LOG_QUERIES:
-    LOGGING["loggers"]["django.db.backends"]["handlers"] = ["django"]
 
 # in memory cache and django-axes don't get along.
 # https://django-axes.readthedocs.io/en/latest/configuration.html#known-configuration-problems

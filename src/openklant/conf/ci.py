@@ -9,6 +9,7 @@ import warnings
 # big file. Pre-loading this in the settings file populates the python module cache,
 # preventing flakiness in hypothesis tests that hit this code path.
 import idna  # noqa: F401
+from open_api_framework.conf.utils import mute_logging
 
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("SECRET_KEY", "dummy")
@@ -31,15 +32,7 @@ CACHES.update(
 )
 
 # shut up logging
-LOGGING["loggers"].update(
-    {
-        "openforms.api.exception_handling": {
-            "handlers": ["console"],
-            "level": "CRITICAL",
-            "propagate": False,
-        },
-    }
-)
+mute_logging(LOGGING)
 
 # don't spend time on password hashing in tests/user factories
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.PBKDF2PasswordHasher"]
