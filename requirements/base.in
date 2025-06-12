@@ -8,4 +8,4 @@ psycopg[pool]
 
 django-localflavor
 
-django-structlog
+django-structlog[celery]
