@@ -1,14 +1,15 @@
-import logging
 from dataclasses import dataclass, fields as dataclass_fields
 from typing import Optional
 
 from django.utils.functional import classproperty
 
+import structlog
+
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.migration.v1.enum import KlantType
 from openklant.migration.v2.data import DigitaalAdres, Partij
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class Subject:
@@ -177,13 +178,19 @@ class Klant:
         try:
             subject = self._get_subject()
         except (TypeError, ValueError):
-            logger.exception("Unable to determine subject from subjectIdentificatie")
+            logger.exception(
+                "unable_to_determine_subject",
+                reason="subjectIdentificatie missing or invalid",
+            )
             return
 
         try:
             soort_partij = self._get_soort_partij()
         except KeyError:
-            logger.exception("Unable to determine soortPartij from subjectType")
+            logger.exception(
+                "unable_to_determine_soortpartij",
+                reason="soort partij missing or invalid",
+            )
             return
 
         data = dict(
