@@ -6,6 +6,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         git \
         build-essential \
         libpq-dev \
+        # required for (log) routing support in uwsgi
+        libpcre3 \
+        libpcre3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -48,6 +51,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         # (geo) django dependencies
         postgresql-client \
         gettext \
+        libpcre3 \
         binutils \
     && rm -rf /var/lib/apt/lists/*
 
@@ -59,6 +63,7 @@ COPY ./bin/docker_start.sh /start.sh
 COPY ./bin/wait_for_db.sh /wait_for_db.sh
 COPY ./bin/upgrade_check_version.sh /upgrade_check_version.sh
 COPY ./bin/setup_configuration.sh /setup_configuration.sh
+COPY ./bin/uwsgi.ini /
 COPY ./bin/celery_worker.sh /celery_worker.sh
 COPY ./bin/celery_flower.sh /celery_flower.sh
 
