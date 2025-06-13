@@ -19,7 +19,6 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "openklant.components.klantinteracties",
     "openklant.components.contactgegevens",
     # Django libraries
-    "upgrade_check",
     "localflavor",
 ]
 

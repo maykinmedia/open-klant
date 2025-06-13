@@ -361,6 +361,7 @@ django-upgrade-check==1.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   open-api-framework
 django-webtest==1.9.13
     # via
     #   -c requirements/ci.txt
@@ -579,7 +580,7 @@ notifications-api-common==0.7.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.10.1
+open-api-framework==0.10.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
