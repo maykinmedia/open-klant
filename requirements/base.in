@@ -1,6 +1,5 @@
 open-api-framework
 
-django-upgrade-check
 django-setup-configuration
 mozilla-django-oidc-db[setup-configuration]
 
