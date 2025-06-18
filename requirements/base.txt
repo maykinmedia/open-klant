@@ -169,7 +169,7 @@ django-solo==2.3.0
 django-two-factor-auth==1.16.0
     # via maykin-2fa
 django-upgrade-check==1.1.0
-    # via -r requirements/base.in
+    # via open-api-framework
 djangorestframework==3.15.2
     # via
     #   commonground-api-common
@@ -239,9 +239,9 @@ mozilla-django-oidc-db==0.22.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
-notifications-api-common==0.7.2
+notifications-api-common==0.7.3
     # via commonground-api-common
-open-api-framework==0.10.1
+open-api-framework==0.10.3
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl

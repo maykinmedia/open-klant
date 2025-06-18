@@ -315,6 +315,7 @@ django-upgrade-check==1.1.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   open-api-framework
 django-webtest==1.9.13
     # via -r requirements/test-tools.in
 djangorestframework==3.15.2
@@ -489,12 +490,12 @@ mozilla-django-oidc-db==0.22.0
     #   open-api-framework
 multidict==6.0.5
     # via yarl
-notifications-api-common==0.7.2
+notifications-api-common==0.7.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.10.1
+open-api-framework==0.10.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
