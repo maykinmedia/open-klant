@@ -31,7 +31,6 @@ services:
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       DISABLE_2FA: true
-      LOG_LEVEL: ${LOG_LEVEL:-INFO}
       LOG_NOTIFICATIONS_IN_DB: ${LOG_NOTIFICATIONS_IN_DB:-yes}
     volumes:
       - media:/app/media

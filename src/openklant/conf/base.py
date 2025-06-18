@@ -236,8 +236,8 @@ if DB_POOL_ENABLED:
     }
 
 
-# LOGGING
 #
+# LOGGING
 #
 
 # XXX: this should be renamed to `LOG_REQUESTS` in the next major release
