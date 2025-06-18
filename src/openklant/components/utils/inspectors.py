@@ -1,15 +1,12 @@
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext_lazy as _
 
-import structlog
 from drf_yasg import openapi
 from drf_yasg.inspectors.base import NotHandled
 from drf_yasg.inspectors.field import ReferencingSerializerInspector
 from rest_framework.serializers import Serializer
 
 from .expansion import EXPAND_KEY
-
-logger = structlog.stdlib.get_logger(__name__)
 
 
 def get_component_from_serializer(serializer: Serializer) -> str:

@@ -39,8 +39,7 @@ class Client:
             logger.exception("http_request_failed", method=method, url=url)
             return
         else:
-            logger.debug("response_json", data=response.json())
-        logger.debug("received_response_data", url=url, content=response.content)
+            logger.debug("received_response_json", url=url, data=response.json())
 
         parser = CamelCaseJSONParser()
 

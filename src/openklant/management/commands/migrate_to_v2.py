@@ -138,9 +138,10 @@ def _generate_dummy_token() -> str:
 
         token_auth = dummy_tokens.first()
         deletion_tokens = dummy_tokens.exclude(pk=token_auth.pk)
+        deleted_token_ids = list(deletion_tokens.values_list("id", flat=True))
         deletion_tokens.delete()
 
-        logger.warning("removed_migration_dummy_tokens", tokens=deletion_tokens)
+        logger.warning("removed_migration_dummy_tokens", tokens=deleted_token_ids)
     return token_auth.token
 
 

@@ -26,7 +26,7 @@ class TokenAuthConfigurationStep(
 
     def execute(self, model: TokenAuthGroupConfigurationModel) -> None:
         for item in model.items:
-            logger.info("Configuring", identifier=item.identifier)
+            logger.info("Configuring_token", identifier=item.identifier)
 
             model_kwargs = dict(
                 identifier=item.identifier,

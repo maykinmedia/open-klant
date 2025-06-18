@@ -180,7 +180,7 @@ class Klant:
         except (TypeError, ValueError):
             logger.exception(
                 "unable_to_determine_subject",
-                reason="subjectIdentificatie missing or invalid",
+                reason="subjectIdentificatie_missing_or_invalid",
             )
             return
 
@@ -189,7 +189,7 @@ class Klant:
         except KeyError:
             logger.exception(
                 "unable_to_determine_soortpartij",
-                reason="soort partij missing or invalid",
+                reason="soort_partij_missing_or_invalid",
             )
             return
 
