@@ -6,11 +6,17 @@ DO NOT PUT ANY TARGET APP-SPECIFIC RULES HERE.
 @use 'sass:list' as list;
 @use 'sass:selector' as selector;
 
+@use './themes/dark' as dark-theme;
+@use './themes/light' as light-theme;
+
 @use './tooltip';
 
 @import 'microscope-sass/lib/bem';
 
-@import '../vars';
+@import '../settings';
+
+@include light-theme.styles;
+@include dark-theme.styles;
 
 // override django CSS variables
 // see admin/static/admin/css/base.css for a reference
@@ -24,7 +30,6 @@ DO NOT PUT ANY TARGET APP-SPECIFIC RULES HERE.
 
   --breadcrumbs-fg: #{$color_primary};
   --breadcrumbs-link-fg: var(--body-fg);
-  --breadcrumbs-link-hover: #{$color-darkest}; // not in the core django vars
   --breadcrumbs-bg: #{$color_secondary};
 
   --link-fg: #{$color_link};
@@ -64,60 +69,6 @@ DO NOT PUT ANY TARGET APP-SPECIFIC RULES HERE.
   --env-button-fg: #{$color-secondary};
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --primary: #037383 !important;
-    --secondary: #037383 !important;
-
-    --breadcrumbs-fg: #2fc0ec;
-    --breadcrumbs-link-hover: #{$color-dark-light};
-    --breadcrumbs-bg: #{$color-dark};
-
-    --link-fg: #04a5bb;
-    --link-hover-color: #b2cddf;
-
-    --hairline-color: #686868;
-
-    --button-hover-bg: #{$color-primary};
-    --default-button-bg: #{$color-primary};
-    --default-button-hover-bg: #{$color-dark-light};
-
-    --form-input-bg: #232222;
-    --react-tab-border-color: var(--hairline-color);
-    --list-item-active-bg: #{$color-dark};
-    --list-item-active-fg: #2fc0ec;
-    --edit-panel-title-bg: #{$color-dark};
-    --edit-panel-title-fg: var(--body-fg);
-    --input-group-text-bg: #{$color-dark};
-    --input-group-text-fg: var(--body-fg);
-    --formio-dropdown-highlighted-bg: #{$color-dark};
-  }
-
-  .djai-dropdown-menu {
-    border-bottom-color: $color-dark !important;
-  }
-
-  input[type='text'],
-  input[type='password'],
-  input[type='email'],
-  input[type='url'],
-  input[type='number'],
-  input[type='tel'],
-  textarea,
-  select,
-  .vTextField {
-    background-color: var(--form-input-bg);
-  }
-
-  input[type='checkbox'],
-  input[type='radio'] {
-    color-scheme: dark;
-  }
-
-  body #toolbar {
-    background: var(--body-bg);
-  }
-}
 
 /* Overrides */
 body {
@@ -127,6 +78,7 @@ body {
 }
 
 div#header {
+
   // some admin pages (form definitions, form designer) include bootstrap which is
   // just a massive PITA and we need these overrides because of the CSS reset that's
   // loaded.
@@ -172,6 +124,7 @@ div#header {
 
 div.breadcrumbs {
   a {
+
     &:focus,
     &:hover {
       color: var(--breadcrumbs-link-hover);
@@ -181,6 +134,7 @@ div.breadcrumbs {
 
 /* Important is used because Django templates include their own style, after ours */
 #changelist-filter {
+
   a:focus,
   a:hover {
     color: var(--link-fg) !important;
@@ -211,6 +165,7 @@ div.breadcrumbs {
 .calendar td,
 .timelist {
   a {
+
     &:focus,
     &:hover {
       background: $color_primary_dark !important;
@@ -268,13 +223,16 @@ div.breadcrumbs {
 .inlinechangelink {
   @include icon-override('../img/admin/edit-regular.svg');
 }
+
 .deletelink {
   background: url('../img/admin/trash-alt-regular.svg') 0 0/14px 14px no-repeat;
 }
+
 .datetimeshortcuts .clock-icon {
   @include icon-override('../img/admin/clock-regular.svg');
   background: none !important;
 }
+
 .datetimeshortcuts .date-icon {
   @include icon-override('../img/admin/calendar-alt-regular.svg');
   background: none !important;
@@ -364,6 +322,7 @@ body.popup {
  * this theme.
  */
 .dynamic-array-widget {
+
   /* Substitute with icon */
   .remove {
     background: url('../img/admin/trash-alt-regular.svg') 0 0/14px 14px no-repeat;
@@ -399,18 +358,19 @@ body.popup {
 }
 
 /* Overrides default Django CSS */
-.aligned label + p,
-.aligned label + div.readonly {
+.aligned label+p,
+.aligned label+div.readonly {
   display: inline-block;
   margin-left: inherit !important;
 }
-.aligned label + div.help {
+
+.aligned label+div.help {
   margin-left: 2px !important;
 }
 
 /* Additional components seem to need the same behaviour */
 /* TODO: TinyMCE is different... */
-.aligned label + ul {
+.aligned label+ul {
   display: inline-block;
   margin-left: inherit !important;
 }
