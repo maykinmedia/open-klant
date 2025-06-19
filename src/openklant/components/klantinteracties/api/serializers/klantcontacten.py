@@ -342,34 +342,6 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             if actor_klantcontact
         ]
 
-    @transaction.atomic
-    def create(self, validated_data):
-        klantcontact = super().create(validated_data)
-        logger.info(
-            "klantcontact_created",
-            uuid=str(klantcontact.uuid),
-            nummer=klantcontact.nummer,
-            onderwerp=klantcontact.onderwerp,
-            plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
-            if klantcontact.plaatsgevonden_op
-            else None,
-        )
-        return klantcontact
-
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        klantcontact = super().update(instance, validated_data)
-        logger.info(
-            "klantcontact_updated",
-            uuid=str(klantcontact.uuid),
-            nummer=klantcontact.nummer,
-            onderwerp=klantcontact.onderwerp,
-            plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
-            if klantcontact.plaatsgevonden_op
-            else None,
-        )
-        return klantcontact
-
 
 class OnderwerpobjectidentificatorSerializer(GegevensGroepSerializer):
     class Meta:
