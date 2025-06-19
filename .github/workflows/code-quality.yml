@@ -9,11 +9,7 @@ on:
   push:
     branches:
       - master
-    paths:
-      - "pyproject.toml"
   pull_request:
-    paths:
-      - "pyproject.toml"
   workflow_dispatch:
 
 jobs:
