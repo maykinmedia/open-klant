@@ -1,4 +1,3 @@
-import logging
 from collections import OrderedDict
 from copy import copy
 from typing import Union
@@ -7,6 +6,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db.models.fields.reverse_related import OneToOneRel
 from django.utils.translation import gettext_lazy as _
 
+import structlog
 from rest_framework import serializers
 from rest_framework.fields import empty
 from vng_api_common.polymorphism import (
@@ -15,7 +15,7 @@ from vng_api_common.polymorphism import (
     PolymorphicSerializerMetaclass as VngPolymorphicSerializerMetaclass,
 )
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class Discriminator(VngDiscriminator):
@@ -139,9 +139,9 @@ class PolyMorphicSerializerMetaclass(VngPolymorphicSerializerMetaclass):
             difference = values - values_seen
             if difference:
                 logger.warning(
-                    "'%s': not all possible values map to a serializer. Missing %s",
-                    name,
-                    difference,
+                    "not_all_values_have_serializers",
+                    name=name,
+                    missing_values=difference,
                 )
 
         return discriminator

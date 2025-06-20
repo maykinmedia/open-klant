@@ -1,5 +1,3 @@
-import logging
-
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext_lazy as _
 
@@ -9,8 +7,6 @@ from drf_yasg.inspectors.field import ReferencingSerializerInspector
 from rest_framework.serializers import Serializer
 
 from .expansion import EXPAND_KEY
-
-logger = logging.getLogger(__name__)
 
 
 def get_component_from_serializer(serializer: Serializer) -> str:

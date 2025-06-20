@@ -1,11 +1,11 @@
-import logging
 from io import BytesIO
 
 import requests
+import structlog
 from djangorestframework_camel_case.parser import CamelCaseJSONParser, ParseError
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class Client:
@@ -20,13 +20,13 @@ class Client:
         if headers is None:
             headers = {}
 
-        logger.debug(f"Performing {method} request on {url}")
+        logger.debug("performing_http_request", method=method, url=url)
 
         renderer = CamelCaseJSONRenderer()
         _data = renderer.render(data) if data else None
 
         if method == "POST":
-            logger.debug(f"Posting: {_data}")
+            logger.debug("posting_data", data=_data)
             headers.update({"Content-Type": "application/json"})
 
         try:
@@ -36,12 +36,10 @@ class Client:
 
             response.raise_for_status()
         except requests.RequestException:
-            logger.exception(f"{method} request failed for {url}")
+            logger.exception("http_request_failed", method=method, url=url)
             return
         else:
-            logger.debug(response.json())
-
-        logger.debug(f"Received response data from {url}: {response.content}")
+            logger.debug("received_response_json", url=url, data=response.json())
 
         parser = CamelCaseJSONParser()
 
@@ -51,7 +49,9 @@ class Client:
                 parser_context=dict(encoding=response.encoding),
             )
         except ParseError:
-            logger.exception(f"Unable to parse response content: {response.content}")
+            logger.exception(
+                "unable_to_parse_response_content", content=response.content
+            )
             return
 
         return response_data
