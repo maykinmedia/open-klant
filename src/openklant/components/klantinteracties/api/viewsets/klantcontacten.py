@@ -28,6 +28,7 @@ from openklant.components.klantinteracties.models.klantcontacten import (
     Onderwerpobject,
 )
 from openklant.components.token.authentication import TokenAuthentication
+from openklant.components.token.models import TokenAuth
 from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.mixins import ExpandMixin
 
@@ -92,6 +93,7 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_create(self, serializer):
         klantcontact = serializer.save()
+        token_auth: TokenAuth = self.request.auth
         logger.info(
             "klantcontact_created",
             uuid=str(klantcontact.uuid),
@@ -100,11 +102,14 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
             plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
             if klantcontact.plaatsgevonden_op
             else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
         )
 
     @transaction.atomic
     def perform_update(self, serializer):
         klantcontact = serializer.save()
+        token_auth: TokenAuth = self.request.auth
         logger.info(
             "klantcontact_updated",
             uuid=str(klantcontact.uuid),
@@ -113,10 +118,13 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
             plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
             if klantcontact.plaatsgevonden_op
             else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
         )
 
     @transaction.atomic
     def perform_destroy(self, instance):
+        token_auth: TokenAuth = self.request.auth
         logger.info(
             "klantcontact_deleted",
             uuid=str(instance.uuid),
@@ -125,6 +133,8 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
             plaatsgevonden_op=instance.plaatsgevonden_op.isoformat()
             if instance.plaatsgevonden_op
             else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
         )
         instance.delete()
 

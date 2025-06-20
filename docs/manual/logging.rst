@@ -22,7 +22,7 @@ A log line can be formatted like this:
         "user_id": null,
         "request_id": "2f9e9a5b-d549-4faa-a411-594aa8a52eee",
         "timestamp": "2025-05-19T14:09:20.339166Z",
-        "logger": "openklant.components.klantinteracties.api.serializers.klantcontacten",
+        "logger": "openklant.components.klantinteracties.api.viewsets.klantcontacten",
         "level": "info"
     }
 
@@ -41,6 +41,7 @@ API
 
 * ``klantcontact_created``: created an ``Klantcontact`` via the API. Additional context: ``uuid``, ``nummer``, ``onderwerp``, ``plaatsgevonden_op``, ``token_identifier``, ``token_application``.
 * ``klantcontact_updated``: updated an ``Klantcontact`` via the API. Additional context: ``uuid``, ``nummer``, ``onderwerp``, ``plaatsgevonden_op``, ``token_identifier``, ``token_application``.
+* ``klantcontact_deleted``: deleted an ``Klantcontact`` via the API. Additional context: ``uuid``, ``nummer``, ``onderwerp``, ``plaatsgevonden_op``, ``token_identifier``, ``token_application``.
 
 Setup configuration
 ~~~~~~~~~~~~~~~~~~~
