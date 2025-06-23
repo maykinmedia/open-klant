@@ -1,3 +1,6 @@
+from django.db import transaction
+
+import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
@@ -13,6 +16,8 @@ from openklant.components.klantinteracties.models.digitaal_adres import Digitaal
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.mixins import ExpandMixin
+
+logger = structlog.get_logger(__name__)
 
 
 @extend_schema(tags=["digitale adressen"])
@@ -66,3 +71,47 @@ class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
         if self.detail:
             return DigitaalAdresDetailFilterSet
         return DigitaalAdresFilterSet
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        adres = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "digitaal_adres_created",
+            uuid=str(adres.uuid),
+            partij_uuid=str(adres.partij.uuid) if adres.partij else None,
+            betrokkene_uuid=str(adres.betrokkene.uuid) if adres.betrokkene else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        adres = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "digitaal_adres_updated",
+            uuid=str(adres.uuid),
+            partij_uuid=str(adres.partij.uuid) if adres.partij else None,
+            betrokkene_uuid=str(adres.betrokkene.uuid) if adres.betrokkene else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        partij_uuid = str(instance.partij.uuid) if instance.partij else None
+        betrokkene_uuid = str(instance.betrokkene.uuid) if instance.betrokkene else None
+        super().perform_destroy(instance)
+        logger.info(
+            "digitaal_adres_deleted",
+            uuid=uuid,
+            partij_uuid=partij_uuid,
+            betrokkene_uuid=betrokkene_uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
