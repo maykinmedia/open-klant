@@ -125,6 +125,7 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_destroy(self, instance):
         token_auth: TokenAuth = self.request.auth
+        instance.delete()
         logger.info(
             "klantcontact_deleted",
             uuid=str(instance.uuid),
@@ -136,7 +137,6 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
-        instance.delete()
 
 
 @extend_schema(tags=["betrokkenen"])
