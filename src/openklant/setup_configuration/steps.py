@@ -1,15 +1,14 @@
-import logging
-
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
+import structlog
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
 
 from openklant.components.token.models import TokenAuth
 from openklant.setup_configuration.models import TokenAuthGroupConfigurationModel
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class TokenAuthConfigurationStep(
@@ -26,8 +25,11 @@ class TokenAuthConfigurationStep(
     config_model = TokenAuthGroupConfigurationModel
 
     def execute(self, model: TokenAuthGroupConfigurationModel) -> None:
+        if len(model.items) == 0:
+            logger.warning("no_tokens_defined")
+
         for item in model.items:
-            logger.info(f"Configuring {item.identifier}")
+            logger.info("configuring_token", identifier=item.identifier)
 
             model_kwargs = dict(
                 identifier=item.identifier,
@@ -49,10 +51,10 @@ class TokenAuthConfigurationStep(
                 )
                 raise ConfigurationRunFailed(exception_message) from exception
 
-            logger.debug(f"No validation errors found for {item.identifier}")
+            logger.debug("no_validation_errors_found", identifier=item.identifier)
 
             try:
-                logger.debug(f"Saving {item.identifier}")
+                logger.debug("save_token_to_database", identifier=item.identifier)
 
                 TokenAuth.objects.update_or_create(
                     identifier=item.identifier,
@@ -63,7 +65,12 @@ class TokenAuthConfigurationStep(
                     },
                 )
             except IntegrityError as exception:
+                logger.exception(
+                    "token_configuration_failure",
+                    token_identifier=item.identifier,
+                    exc_info=exception,
+                )
                 exception_message = f"Failed configuring token {item.identifier}."
                 raise ConfigurationRunFailed(exception_message) from exception
 
-            logger.info(f"Configured {item.identifier}")
+            logger.info("token_configuration_success", token_identifier=item.identifier)

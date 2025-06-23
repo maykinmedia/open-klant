@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
+import structlog
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
@@ -33,6 +34,8 @@ from openklant.components.klantinteracties.models.klantcontacten import (
     Onderwerpobject,
 )
 from openklant.components.klantinteracties.models.partijen import Partij
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class BetrokkeneForeignKeySerializer(serializers.HyperlinkedModelSerializer):

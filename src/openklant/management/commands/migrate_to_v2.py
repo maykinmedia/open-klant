@@ -2,7 +2,6 @@
 # Copyright (C) 2024 Dimpact
 
 
-import logging
 import os
 from dataclasses import asdict, fields as dataclass_fields
 from typing import Any, Tuple
@@ -13,6 +12,7 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.management import CommandError
 from django.core.management.base import BaseCommand, CommandParser
 
+import structlog
 from rest_framework.fields import URLValidator
 from rest_framework.reverse import reverse_lazy
 
@@ -22,7 +22,7 @@ from openklant.migration.v1.client import LegacyOpenKlantClient
 from openklant.migration.v1.data import Klant
 from openklant.migration.v2.client import OpenKlantClient
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 KLANT_FIELDS = {field.name: field for field in dataclass_fields(Klant)}
@@ -50,7 +50,7 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
     response_data = client.retrieve(_url.path or klanten_path, params=_params)
 
     if not isinstance(response_data, dict):
-        logger.error(f"Unexpected response data returned: {response_data}")
+        logger.error("unexpected_response_data", response_data=response_data)
         return [], None
 
     items = response_data.get("results", [])
@@ -68,8 +68,9 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
 
             if not isinstance(subject_data, dict):
                 logger.error(
-                    "Unexpected response data returned during retrieval of "
-                    f"subject: {subject_data}"
+                    "unexpected_response_data",
+                    context="subject_retrieval",
+                    subject_data=subject_data,
                 )
 
                 continue
@@ -84,10 +85,10 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
 
 def _save_klanten(url: str, token: TokenAuth, klanten: list[Klant]) -> list[str]:
     if not klanten:
-        logger.info("No klanten to save, moving on...")
+        logger.info("no_klanten_to_save")
         return []
 
-    logger.info(f"Trying to create {len(klanten)} klanten through the V2 API")
+    logger.info("creating_klanten_v2_api", count=len(klanten))
 
     openklant_client = OpenKlantClient(url, token)
     created_klanten = []
@@ -103,8 +104,9 @@ def _save_klanten(url: str, token: TokenAuth, klanten: list[Klant]) -> list[str]
 
             if not isinstance(_data, dict):
                 logger.error(
-                    f"Unknown data received creating a digitaal adres: {_data}. "
-                    "Skipping klant."
+                    "invalid_data_for_digitaal_adres",
+                    data=_data,
+                    action="skipping_klant",
                 )
                 continue
 
@@ -113,7 +115,7 @@ def _save_klanten(url: str, token: TokenAuth, klanten: list[Klant]) -> list[str]
         partij = klant.to_partij(digitaal_adres=digitaal_adres_ref)
 
         if not partij:
-            logger.error(f"Unable to create partij for klant: {asdict(klant)}")
+            logger.error("unable_to_create_partij", klant=asdict(klant))
             continue
 
         response_data = openklant_client.create(PARTIJEN_PATH, partij.dict())
@@ -136,10 +138,10 @@ def _generate_dummy_token() -> str:
 
         token_auth = dummy_tokens.first()
         deletion_tokens = dummy_tokens.exclude(pk=token_auth.pk)
+        deleted_token_ids = list(deletion_tokens.values_list("id", flat=True))
         deletion_tokens.delete()
 
-        logger.warning(f"Removed existing migration dummy tokens: {deletion_tokens}")
-
+        logger.warning("removed_migration_dummy_tokens", tokens=deleted_token_ids)
     return token_auth.token
 
 

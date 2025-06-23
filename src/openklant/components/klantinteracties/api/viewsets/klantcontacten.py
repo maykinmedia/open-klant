@@ -1,3 +1,6 @@
+from django.db import transaction
+
+import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
@@ -25,8 +28,11 @@ from openklant.components.klantinteracties.models.klantcontacten import (
     Onderwerpobject,
 )
 from openklant.components.token.authentication import TokenAuthentication
+from openklant.components.token.models import TokenAuth
 from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.mixins import ExpandMixin
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 @extend_schema(tags=["klanten contacten"])
@@ -83,6 +89,54 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
         if self.detail:
             return KlantcontactDetailFilterSet
         return KlantcontactFilterSet
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        klantcontact = serializer.save()
+        token_auth: TokenAuth = self.request.auth
+        logger.info(
+            "klantcontact_created",
+            uuid=str(klantcontact.uuid),
+            nummer=klantcontact.nummer,
+            onderwerp=klantcontact.onderwerp,
+            plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
+            if klantcontact.plaatsgevonden_op
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        klantcontact = serializer.save()
+        token_auth: TokenAuth = self.request.auth
+        logger.info(
+            "klantcontact_updated",
+            uuid=str(klantcontact.uuid),
+            nummer=klantcontact.nummer,
+            onderwerp=klantcontact.onderwerp,
+            plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
+            if klantcontact.plaatsgevonden_op
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth: TokenAuth = self.request.auth
+        instance.delete()
+        logger.info(
+            "klantcontact_deleted",
+            uuid=str(instance.uuid),
+            nummer=instance.nummer,
+            onderwerp=instance.onderwerp,
+            plaatsgevonden_op=instance.plaatsgevonden_op.isoformat()
+            if instance.plaatsgevonden_op
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
 
 
 @extend_schema(tags=["betrokkenen"])
