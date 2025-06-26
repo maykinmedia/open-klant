@@ -13,10 +13,13 @@ services:
     volumes:
       - ./docker-init-db.sql:/docker-entrypoint-initdb.d/init_db.sql
       - db:/var/lib/postgresql/data
+    networks:
+      - open-klant-dev
 
   web:
     image: maykinmedia/open-klant:latest
-    build: .
+    build: &web_build
+      context: .
     environment: &web_env
       DJANGO_SETTINGS_MODULE: openklant.conf.docker
       IS_HTTPS: no
@@ -32,7 +35,16 @@ services:
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       DISABLE_2FA: true
       LOG_NOTIFICATIONS_IN_DB: ${LOG_NOTIFICATIONS_IN_DB:-yes}
-    volumes:
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      # This should allow for enough time for migrations to run before the max
+      # retries have passed. This healthcheck in turn allows other containers
+      # to wait for the database migrations.
+      start_period: 30s
+    volumes: &web_volumes
       - media:/app/media
       - private_media:/app/private_media
       - log:/app/log
@@ -50,6 +62,8 @@ services:
       target: test
       app: open-klant
       service: web
+    networks:
+      - open-klant-dev
 
   web-init:
     build: .
@@ -58,7 +72,7 @@ services:
       #
       # Django-setup-configuration
       RUN_SETUP_CONFIG: ${RUN_SETUP_CONFIG:-true}
-      
+
     command: sh -c "/upgrade_check_version.sh &&
                     /setup_configuration.sh"
     volumes:
@@ -67,12 +81,51 @@ services:
     depends_on:
       - db
       - redis
+    networks:
+      - open-klant-dev
+
+  celery:
+    image: maykinmedia/open-klant:latest
+    build: *web_build
+    environment: *web_env
+    command: /celery_worker.sh
+    healthcheck:
+      test: ["CMD", "python", "/app/bin/check_celery_worker_liveness.py"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      web:
+        condition: service_healthy
+    volumes: *web_volumes
+    networks:
+      - open-klant-dev
+
+  celery-flower:
+    image: maykinmedia/open-klant:latest
+    build: *web_build
+    environment: *web_env
+    command: /celery_flower.sh
+    ports:
+      - 5555:5555
+    depends_on:
+      - redis
+      - celery
+    networks:
+      - open-klant-dev
 
   redis:
     image: redis
+    networks:
+      - open-klant-dev
 
 volumes:
   db:
   log:
   media:
   private_media:
+
+networks:
+  open-klant-dev:
+    name: open-klant-dev
