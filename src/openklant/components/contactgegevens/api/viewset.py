@@ -1,3 +1,6 @@
+from django.db import transaction
+
+import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
@@ -9,6 +12,8 @@ from openklant.components.contactgegevens.api.serializers import (
 from openklant.components.contactgegevens.models import Organisatie, Persoon
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+
+logger = structlog.get_logger(__name__)
 
 
 @extend_schema(tags=["organisaties"])
@@ -48,6 +53,42 @@ class OrganisatieViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        organisatie = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "organisatie_created",
+            uuid=str(organisatie.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        organisatie = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "organisatie_updated",
+            uuid=str(organisatie.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        super().perform_destroy(instance)
+        logger.info(
+            "organisatie_deleted",
+            uuid=uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
 
 @extend_schema(tags=["personen"])
 @extend_schema_view(
@@ -85,3 +126,39 @@ class PersoonViewSet(viewsets.ModelViewSet):
     pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        persoon = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "persoon_created",
+            uuid=str(persoon.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        persoon = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "persoon_updated",
+            uuid=str(persoon.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        super().perform_destroy(instance)
+        logger.info(
+            "persoon_deleted",
+            uuid=uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
