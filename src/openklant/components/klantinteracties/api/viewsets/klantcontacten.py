@@ -92,7 +92,8 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
 
     @transaction.atomic
     def perform_create(self, serializer):
-        klantcontact = serializer.save()
+        super().perform_create(serializer)
+        klantcontact = serializer.instance
         token_auth: TokenAuth = self.request.auth
         logger.info(
             "klantcontact_created",
@@ -108,7 +109,8 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
 
     @transaction.atomic
     def perform_update(self, serializer):
-        klantcontact = serializer.save()
+        super().perform_update(serializer)
+        klantcontact = serializer.instance
         token_auth: TokenAuth = self.request.auth
         logger.info(
             "klantcontact_updated",
@@ -197,6 +199,58 @@ class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
             return BetrokkeneDetailFilterSet
         return BetrokkeneFilterSet
 
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        betrokkene = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "betrokkene_created",
+            uuid=str(betrokkene.uuid),
+            partij_uuid=str(betrokkene.partij.uuid) if betrokkene.partij else None,
+            klantcontact_uuid=str(betrokkene.klantcontact.uuid)
+            if betrokkene.klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        betrokkene = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "betrokkene_updated",
+            uuid=str(betrokkene.uuid),
+            partij_uuid=str(betrokkene.partij.uuid) if betrokkene.partij else None,
+            klantcontact_uuid=str(betrokkene.klantcontact.uuid)
+            if betrokkene.klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        uuid = str(instance.uuid)
+        partij_uuid = str(instance.partij.uuid) if instance.partij else None
+        klantcontact_uuid = (
+            str(instance.klantcontact.uuid) if instance.klantcontact else None
+        )
+        token_auth = self.request.auth
+
+        super().perform_destroy(instance)
+
+        logger.info(
+            "betrokkene_deleted",
+            uuid=uuid,
+            partij_uuid=partij_uuid,
+            klantcontact_uuid=klantcontact_uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
 
 @extend_schema(tags=["onderwerpobjecten"])
 @extend_schema_view(
@@ -242,6 +296,59 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        instance = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "onderwerpobject_created",
+            uuid=str(instance.uuid),
+            klantcontact_uuid=str(instance.klantcontact.uuid)
+            if instance.klantcontact
+            else None,
+            was_klantcontact_uuid=str(instance.was_klantcontact.uuid)
+            if instance.was_klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        instance = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "onderwerpobject_updated",
+            uuid=str(instance.uuid),
+            klantcontact_uuid=str(instance.klantcontact.uuid)
+            if instance.klantcontact
+            else None,
+            was_klantcontact_uuid=str(instance.was_klantcontact.uuid)
+            if instance.was_klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+        token_auth = self.request.auth
+        logger.info(
+            "onderwerpobject_deleted",
+            uuid=str(instance.uuid),
+            klantcontact_uuid=str(instance.klantcontact.uuid)
+            if instance.klantcontact
+            else None,
+            was_klantcontact_uuid=str(instance.was_klantcontact.uuid)
+            if instance.was_klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
 
 @extend_schema(tags=["bijlagen"])
 @extend_schema_view(
@@ -283,6 +390,52 @@ class BijlageViewSet(viewsets.ModelViewSet):
     ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        bijlage = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "bijlage_created",
+            uuid=str(bijlage.uuid),
+            klantcontact_uuid=str(bijlage.klantcontact.uuid)
+            if bijlage.klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        bijlage = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "bijlage_updated",
+            uuid=str(bijlage.uuid),
+            klantcontact_uuid=str(bijlage.klantcontact.uuid)
+            if bijlage.klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        klantcontact_uuid = (
+            str(instance.klantcontact.uuid) if instance.klantcontact else None
+        )
+        super().perform_destroy(instance)
+        logger.info(
+            "bijlage_deleted",
+            uuid=uuid,
+            klantcontact_uuid=klantcontact_uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
 
 
 @extend_schema(tags=["actor klantcontacten"])
@@ -326,6 +479,56 @@ class ActorKlantcontactViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        relation = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "actor_klantcontact_created",
+            uuid=str(relation.uuid),
+            actor_uuid=str(relation.actor.uuid) if relation.actor else None,
+            klantcontact_uuid=str(relation.klantcontact.uuid)
+            if relation.klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        relation = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "actor_klantcontact_updated",
+            uuid=str(relation.uuid),
+            actor_uuid=str(relation.actor.uuid) if relation.actor else None,
+            klantcontact_uuid=str(relation.klantcontact.uuid)
+            if relation.klantcontact
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        actor_uuid = str(instance.actor.uuid) if instance.actor else None
+        klantcontact_uuid = (
+            str(instance.klantcontact.uuid) if instance.klantcontact else None
+        )
+        super().perform_destroy(instance)
+        logger.info(
+            "actor_klantcontact_deleted",
+            uuid=uuid,
+            actor_uuid=actor_uuid,
+            klantcontact_uuid=klantcontact_uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
 
 @extend_schema(tags=["maak-klantcontact"])
 @extend_schema_view(
@@ -343,3 +546,24 @@ class MaakKlantcontactViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = MaakKlantcontactSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        result = serializer.save()
+        klantcontact = result["klantcontact"]
+        betrokkene = result.get("betrokkene")
+        onderwerpobject = result.get("onderwerpobject")
+
+        token_auth = self.request.auth
+        logger.info(
+            "klantcontact_geregistreerd",
+            uuid=str(klantcontact.uuid),
+            onderwerp=klantcontact.onderwerp,
+            plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
+            if klantcontact.plaatsgevonden_op
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+            betrokkene_uuid=str(betrokkene.uuid) if betrokkene else None,
+            onderwerpobject_uuid=str(onderwerpobject.uuid) if onderwerpobject else None,
+        )

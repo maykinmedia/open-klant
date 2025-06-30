@@ -1,3 +1,6 @@
+from django.db import transaction
+
+import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
@@ -9,6 +12,8 @@ from openklant.components.klantinteracties.api.serializers.actoren import (
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+
+logger = structlog.get_logger(__name__)
 
 
 @extend_schema(tags=["actoren"])
@@ -56,3 +61,39 @@ class ActorViewSet(viewsets.ModelViewSet):
     filterset_class = ActorenFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        actor = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "actor_created",
+            uuid=str(actor.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        actor = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "actor_updated",
+            uuid=str(actor.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        uuid = str(instance.uuid)
+        token_auth = self.request.auth
+        super().perform_destroy(instance)
+        logger.info(
+            "actor_deleted",
+            uuid=uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )

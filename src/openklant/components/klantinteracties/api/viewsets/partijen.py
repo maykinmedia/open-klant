@@ -1,3 +1,6 @@
+from django.db import transaction
+
+import structlog
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
@@ -32,6 +35,8 @@ from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.mixins import ExpandMixin
 from openklant.utils.decorators import handle_db_exceptions
+
+logger = structlog.get_logger(__name__)
 
 
 @extend_schema(tags=["partijen"])
@@ -98,6 +103,54 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
             return PartijDetailFilterSet
         return PartijFilterSet
 
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        organisatie_uuid = getattr(getattr(obj, "organisatie", None), "uuid", None)
+        persoon_uuid = getattr(getattr(obj, "persoon", None), "uuid", None)
+        logger.info(
+            "partij_created",
+            uuid=str(obj.uuid),
+            organisatie_uuid=str(organisatie_uuid) if organisatie_uuid else None,
+            persoon_uuid=str(persoon_uuid) if persoon_uuid else None,
+            token_identifier=getattr(token_auth, "identifier", None),
+            token_application=getattr(token_auth, "application", None),
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        organisatie_uuid = getattr(getattr(obj, "organisatie", None), "uuid", None)
+        persoon_uuid = getattr(getattr(obj, "persoon", None), "uuid", None)
+        logger.info(
+            "partij_updated",
+            uuid=str(obj.uuid),
+            organisatie_uuid=str(organisatie_uuid) if organisatie_uuid else None,
+            persoon_uuid=str(persoon_uuid) if persoon_uuid else None,
+            token_identifier=getattr(token_auth, "identifier", None),
+            token_application=getattr(token_auth, "application", None),
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        organisatie_uuid = getattr(getattr(instance, "organisatie", None), "uuid", None)
+        persoon_uuid = getattr(getattr(instance, "persoon", None), "uuid", None)
+        super().perform_destroy(instance)
+        logger.info(
+            "partij_deleted",
+            uuid=uuid,
+            organisatie_uuid=str(organisatie_uuid) if organisatie_uuid else None,
+            persoon_uuid=str(persoon_uuid) if persoon_uuid else None,
+            token_identifier=getattr(token_auth, "identifier", None),
+            token_application=getattr(token_auth, "application", None),
+        )
+
 
 @extend_schema(tags=["vertegenwoordigingen"])
 @extend_schema_view(
@@ -139,6 +192,66 @@ class VertegenwoordigdenViewSet(viewsets.ModelViewSet):
     filterset_class = VertegenwoordigdenFilterSet
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "vertegenwoordiging_created",
+            uuid=str(obj.uuid),
+            vertegenwoordigde_partij_uuid=str(obj.vertegenwoordigde_partij.uuid)
+            if obj.vertegenwoordigde_partij
+            else None,
+            vertegenwoordigende_partij_uuid=str(obj.vertegenwoordigende_partij.uuid)
+            if obj.vertegenwoordigende_partij
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "vertegenwoordiging_updated",
+            uuid=str(obj.uuid),
+            vertegenwoordigde_partij_uuid=str(obj.vertegenwoordigde_partij.uuid)
+            if obj.vertegenwoordigde_partij
+            else None,
+            vertegenwoordigende_partij_uuid=str(obj.vertegenwoordigende_partij.uuid)
+            if obj.vertegenwoordigende_partij
+            else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        vertegenwoordigde_partij_uuid = (
+            str(instance.vertegenwoordigde_partij.uuid)
+            if instance.vertegenwoordigde_partij
+            else None
+        )
+        vertegenwoordigende_partij_uuid = (
+            str(instance.vertegenwoordigende_partij.uuid)
+            if instance.vertegenwoordigende_partij
+            else None
+        )
+        super().perform_destroy(instance)
+        logger.info(
+            "vertegenwoordiging_deleted",
+            uuid=uuid,
+            vertegenwoordigde_partij_uuid=vertegenwoordigde_partij_uuid,
+            vertegenwoordigende_partij_uuid=vertegenwoordigende_partij_uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
 
 
 @extend_schema(tags=["categorie relaties"])
@@ -182,6 +295,50 @@ class CategorieRelatieViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
 
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "categorie_relatie_created",
+            uuid=str(obj.uuid),
+            partij_uuid=str(obj.partij.uuid) if obj.partij else None,
+            categorie_uuid=str(obj.categorie.uuid) if obj.categorie else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "categorie_relatie_updated",
+            uuid=str(obj.uuid),
+            partij_uuid=str(obj.partij.uuid) if obj.partij else None,
+            categorie_uuid=str(obj.categorie.uuid) if obj.categorie else None,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        partij_uuid = str(instance.partij.uuid) if instance.partij else None
+        categorie_uuid = str(instance.categorie.uuid) if instance.categorie else None
+        super().perform_destroy(instance)
+        logger.info(
+            "categorie_relatie_deleted",
+            uuid=uuid,
+            partij_uuid=partij_uuid,
+            categorie_uuid=categorie_uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
 
 @extend_schema(tags=["categorieën"])
 @extend_schema_view(
@@ -219,6 +376,42 @@ class CategorieViewSet(viewsets.ModelViewSet):
     pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "categorie_created",
+            uuid=str(obj.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "categorie_updated",
+            uuid=str(obj.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        super().perform_destroy(instance)
+        logger.info(
+            "categorie_deleted",
+            uuid=uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
 
 
 @extend_schema_view(
@@ -269,6 +462,42 @@ class PartijIdentificatorViewSet(viewsets.ModelViewSet):
     ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "partijidentificator_created",
+            uuid=str(obj.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "partijidentificator_updated",
+            uuid=str(obj.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        super().perform_destroy(instance)
+        logger.info(
+            "partijidentificator_deleted",
+            uuid=uuid,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
 
     @handle_db_exceptions
     def destroy(self, request, *args, **kwargs):
