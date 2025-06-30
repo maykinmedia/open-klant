@@ -59,7 +59,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.6.6
+commonground-api-common==2.6.7
     # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
@@ -72,7 +72,7 @@ cryptography==44.0.2
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==5.2.1
+django==5.2.3
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -248,7 +248,7 @@ mozilla-django-oidc-db==0.22.0
     #   open-api-framework
 notifications-api-common==0.7.3
     # via commonground-api-common
-open-api-framework==0.10.3
+open-api-framework==0.11.0
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
@@ -261,11 +261,13 @@ prometheus-client==0.20.0
 prompt-toolkit==3.0.47
     # via click-repl
 psycopg==3.2.9
-    # via -r requirements/base.in
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
+psycopg-binary==3.2.9
+    # via psycopg
 psycopg-pool==3.2.6
     # via psycopg
-psycopg2==2.9.9
-    # via open-api-framework
 pycparser==2.22
     # via cffi
 pydantic==2.10.2
@@ -276,7 +278,7 @@ pydantic-core==2.27.1
     # via pydantic
 pydantic-settings==2.6.1
     # via django-setup-configuration
-pyjwt==2.9.0
+pyjwt==2.10.1
     # via
     #   commonground-api-common
     #   zgw-consumers
@@ -315,7 +317,7 @@ referencing==0.35.1
     # via
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.3
+requests==2.32.4
     # via
     #   ape-pie
     #   commonground-api-common
@@ -366,7 +368,7 @@ uritemplate==4.1.1
     # via
     #   coreapi
     #   drf-spectacular
-urllib3==2.2.2
+urllib3==2.5.0
     # via
     #   elastic-apm
     #   requests

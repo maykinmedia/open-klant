@@ -2,7 +2,7 @@
 Open Klant
 ==========
 
-:Version: 2.9.0
+:Version: 2.10.0
 :Source: https://github.com/maykinmedia/open-klant
 :Keywords: klanten, klantinteracties, contactmomenten, api, common ground
 :License: EUPL
@@ -39,7 +39,10 @@ Open Klant versie   API versie      Release datum   API specificatie
 ==================  ==============  =============   ================
 master/latest       n/a             n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.9.0..master>`_)
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.10.0..master>`_)
+2.10.0              0.2.1           2025-07-04      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                    (`diff <https://github.com/maykinmedia/open-klant/compare/2.9.0..2.10.0>`_)
 2.9.0               0.2.1           2025-05-28      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.9.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.9.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                     (`diff <https://github.com/maykinmedia/open-klant/compare/2.8.0..2.9.0>`_)
