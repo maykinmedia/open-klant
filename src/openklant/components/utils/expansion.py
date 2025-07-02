@@ -311,6 +311,8 @@ class ExpandLoader(InclusionLoader):
         instance: models.Model,
     ):
         for obj in field.get_attribute(instance).all():
+            if obj is None:
+                continue
             if self._has_been_seen(obj):
                 continue
             yield obj
@@ -322,6 +324,8 @@ class ExpandLoader(InclusionLoader):
         instance: models.Model,
     ):
         obj = field.get_attribute(instance)
+        if obj is None:
+            return
         if self._has_been_seen(obj):
             return
         yield obj
@@ -373,7 +377,6 @@ class ExpandJSONRenderer(InclusionJSONRenderer, CamelCaseJSONRenderer):
                 return None
 
         request = renderer_context.get("request")
-
         inclusion_loader = self.loader_class(get_allowed_paths(request, view=view))
         inclusions = inclusion_loader.inclusions_dict(serializer)
 
