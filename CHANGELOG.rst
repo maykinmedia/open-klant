@@ -2,6 +2,68 @@
 Change history
 ==============
 
+2.10.0
+======
+*July 4, 2025*
+
+.. warning::
+
+    This release upgrades Django to version 5.2.3, which requires PostgreSQL version 14 or higher.
+    Attempting to deploy with PostgreSQL <14 will cause errors during deployment.
+
+**New features**
+
+.. note::
+
+  The logging format has been changed from unstructured to structured with `structlog <https://www.structlog.org/en/stable/>`_.
+  For more information on the available log events and their context, see :ref:`manual_logging`.
+
+* [:open-klant:`434`] Add structlog for observability
+* [:open-klant:`445`] Add log events for ``create``, ``update``, and ``delete`` operations on all API endpoints
+* [:open-api-framework:`149`] Add dark/light theme toggle to the admin interface
+* [:open-klant:`426`] Add environment variables for database connection pooling (see :ref:`installation_env_config` for more information)
+
+  * DB_POOL_ENABLED
+  * DB_POOL_MIN_SIZE
+  * DB_POOL_MAX_SIZE
+  * DB_POOL_TIMEOUT
+  * DB_POOL_MAX_WAITING
+  * DB_POOL_MAX_LIFETIME
+  * DB_POOL_MAX_IDLE
+  * DB_POOL_RECONNECT_TIMEOUT
+  * DB_POOL_NUM_WORKERS
+  * DB_CONN_MAX_AGE
+
+**Bugfixes**
+
+* [:open-klant:`418`] Fix incorrect URL reverse in ``csrf_failure`` function
+* [:open-klant:`424`] Fix error in ``digitaleadressen`` endpoint when handling different digital address types
+
+**Project maintenance**
+
+* [:open-api-framework:`151`] Move ``ruff`` and ``bump-my-version`` configurations into ``pyproject.toml``
+
+* Upgrade dependencies:
+
+  * django to 5.2.3
+  * notifications-api-common to 0.7.3
+  * open-api-framework to 0.11.0
+  * commonground-api-common to 2.6.7
+  * django-setup-configuration to 0.8.2
+  * django-debug-toolbar to 5.2.0
+  * django-webtest to 1.9.13
+  * zgw-consumers to 0.38.0
+  * pyjwt to 2.10.1
+  * requests to 2.32.4
+  * urllib3 to 2.5.0
+  * vcrpy to 7.0.0
+  * platformdirs to 4.3.8
+  
+**Documentation**
+
+* [:open-klant:`434`] Add documentation for logging
+
+
 2.9.0
 =====
 *May 28, 2025*

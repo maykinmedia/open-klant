@@ -115,7 +115,7 @@ click-repl==0.3.0
     #   celery
 codecov==2.1.13
     # via -r requirements/test-tools.in
-commonground-api-common==2.6.6
+commonground-api-common==2.6.7
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -147,7 +147,7 @@ cssselect==1.2.0
     # via pyquery
 dill==0.3.8
     # via pylint
-django==5.2.1
+django==5.2.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -506,7 +506,7 @@ notifications-api-common==0.7.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.10.3
+open-api-framework==0.11.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -529,7 +529,7 @@ phonenumberslite==8.13.42
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
-platformdirs==4.2.2
+platformdirs==4.3.8
     # via pylint
 prometheus-client==0.20.0
     # via
@@ -545,15 +545,16 @@ psycopg==3.2.9
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   open-api-framework
+psycopg-binary==3.2.9
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   psycopg
 psycopg-pool==3.2.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-psycopg2==2.9.9
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   open-api-framework
 pycparser==2.22
     # via
     #   -c requirements/base.txt
@@ -579,7 +580,7 @@ pygments==2.18.0
     # via
     #   sphinx
     #   sphinx-tabs
-pyjwt==2.9.0
+pyjwt==2.10.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -659,7 +660,7 @@ referencing==0.35.1
     #   -r requirements/base.txt
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.3
+requests==2.32.4
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -786,19 +787,20 @@ uritemplate==4.1.1
     #   -r requirements/base.txt
     #   coreapi
     #   drf-spectacular
-urllib3==2.2.2
+urllib3==2.5.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   elastic-apm
     #   requests
     #   sentry-sdk
+    #   vcrpy
 uwsgi==2.0.26
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-vcrpy==6.0.1
+vcrpy==7.0.0
     # via -r requirements/test-tools.in
 vine==5.1.0
     # via

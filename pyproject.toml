@@ -6,7 +6,7 @@ requires-python = "== 3.12"
 [tool.bumpversion]
 commit = false
 tag = false
-current_version = "2.9.0"
+current_version = "2.10.0"
 pre_commit_hooks = [
     "npm i",  # ensure that package-lock.json is updated
 ]
@@ -22,6 +22,11 @@ serialize = [
 filename = "package.json"
 search = '"version": "{current_version}"'
 replace = '"version": "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "README.rst"
+search = ':Version: {current_version}'
+replace = ':Version: {new_version}'
 
 [[tool.bumpversion.files]]
 filename = "src/openklant/__init__.py"
