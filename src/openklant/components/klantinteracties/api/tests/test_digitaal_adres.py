@@ -52,6 +52,28 @@ class DigitaalAdresTests(APITestCase):
         data = response.json()
         self.assertEqual(data["url"], "http://testserver" + detail_url)
 
+    def test_list_digitaal_adres_expand(self):
+        digitaal_adres = DigitaalAdresFactory.create(betrokkene=None)
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        response = self.client.get(list_url, data={"expand": "verstrektDoorBetrokkene"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        results = data["results"]
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["_expand"], {"verstrektDoorBetrokkene": None})
+
+        digitaal_adres.betrokkene = BetrokkeneFactory()
+        digitaal_adres.save()
+        response = self.client.get(list_url, data={"expand": "verstrektDoorBetrokkene"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        results = data["results"]
+        self.assertEqual(len(results), 1)
+        self.assertEqual(
+            results[0]["_expand"]["verstrektDoorBetrokkene"]["uuid"],
+            str(digitaal_adres.betrokkene.uuid),
+        )
+
     def test_create_only_required(self):
         response = self.client.post(reverse("klantinteracties:digitaaladres-list"), {})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
