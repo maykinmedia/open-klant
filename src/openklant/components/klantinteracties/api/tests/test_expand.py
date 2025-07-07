@@ -205,6 +205,18 @@ class ExpandTests(APITestCase):
             },
         )
 
+    def test_detail_empty_expansion(self):
+        klantcontact = KlantcontactFactory.create()
+        self.assertEqual(klantcontact.betrokkene_set.count(), 0)
+        detail_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(klantcontact.uuid)},
+        )
+        response = self.client.get(detail_url, {"expand": "hadBetrokkenen"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["_expand"], {"hadBetrokkenen": []})
+
     def test_detail_single_expansion(self):
         detail_url = reverse(
             "klantinteracties:klantcontact-detail",
