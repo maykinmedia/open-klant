@@ -6,6 +6,7 @@ os.environ.setdefault("DB_USER", config("DATABASE_USER", "postgres"))
 os.environ.setdefault("DB_NAME", config("DATABASE_NAME", "postgres"))
 os.environ.setdefault("DB_PASSWORD", config("DATABASE_PASSWORD", ""))
 os.environ.setdefault("DB_HOST", config("DATABASE_HOST", "db"))
+os.environ.setdefault("DB_CONN_MAX_AGE", "60")
 
 os.environ.setdefault("ENVIRONMENT", "docker")
 os.environ.setdefault("LOG_STDOUT", "yes")
