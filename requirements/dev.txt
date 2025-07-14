@@ -68,7 +68,6 @@ bleach==6.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 boltons==24.0.0
     # via
     #   -c requirements/ci.txt
@@ -90,7 +89,6 @@ celery==5.4.0
     #   -r requirements/ci.txt
     #   flower
     #   notifications-api-common
-    #   open-api-framework
 certifi==2024.7.4
     # via
     #   -c requirements/ci.txt
@@ -142,7 +140,6 @@ commonground-api-common==2.6.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 commonmark==0.9.1
     # via
     #   -c requirements/ci.txt
@@ -247,12 +244,10 @@ django-cors-headers==4.4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 django-csp==3.8
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 django-debug-toolbar==5.2.0
     # via -r requirements/dev.in
 django-extensions==3.2.3
@@ -292,7 +287,6 @@ django-markup==1.8.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 django-ordered-model==3.7.4
     # via
     #   -c requirements/ci.txt
@@ -317,7 +311,6 @@ django-redis==5.4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 django-relativedelta==2.0.0
     # via
     #   -c requirements/ci.txt
@@ -398,12 +391,10 @@ djangorestframework-gis==1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 djangorestframework-inclusions==1.2.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 docutils==0.21.2
     # via
     #   -c requirements/ci.txt
@@ -459,7 +450,6 @@ flower==2.0.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 freezegun==1.5.1
     # via
     #   -c requirements/ci.txt
@@ -591,7 +581,7 @@ notifications-api-common==0.7.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.11.0
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework.git@283616d1b6e83fa9cd3baa963d3fbf4f23383b7e#egg=open-api-framework
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -964,7 +954,6 @@ uwsgi==2.0.26
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 vcrpy==7.0.0
     # via
     #   -c requirements/ci.txt
