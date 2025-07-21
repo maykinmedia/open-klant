@@ -36,26 +36,26 @@ API specificatie
 Hieronder staat de laatste versie van Open Klant en welke versie van de
 API-specificaties wordt aangeboden.
 
-==================  =======================  =============   ================
-Open Klant versie   API versie               Release datum   API specificatie
-==================  =======================  =============   ================
-master/latest       n/a                      n/a             Klantinteracties:
-                                                             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                             (`diff <https://github.com/maykinmedia/open-klant/compare/2.10.0..master>`_)
-                                                             Contactgegevens:
-                                                             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/contactgegevens/openapi.yaml>`_,
-                                                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/contactgegevens/openapi.yaml>`_,
-                                                             (`diff <https://github.com/maykinmedia/open-klant/compare/2.10.0..master>`_)
-2.10.0              Klantinteracties: 0.2.1  2025-07-04      Klantinteracties:
-                    Contactgegevens: 1.1.1                   `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                             (`diff <https://github.com/maykinmedia/open-klant/compare/2.9.0..2.10.0>`_)
-                                                             Contactgegevens:
-                                                             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/contactgegevens/openapi.yaml>`_,
-                                                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/contactgegevens/openapi.yaml>`_,
-                                                             (`diff <https://github.com/maykinmedia/open-klant/compare/2.9.0..2.10.0>`_)
-==================  =======================  =============   ================
+==================  =========================  =============   ================
+Open Klant versie   API versie                 Release datum   API specificatie
+==================  =========================  =============   ================
+master/latest       n/a                        n/a             | Klantinteracties:
+                                                                 `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.10.0..master>`_)
+                                                               | Contactgegevens:
+                                                                 `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/contactgegevens/openapi.yaml>`_,
+                                                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/contactgegevens/openapi.yaml>`_,
+                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.10.0..master>`_)
+2.10.0              | Klantinteracties: 0.2.1  2025-07-04      | Klantinteracties:
+                    | Contactgegevens: 1.1.1                     `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.9.0..2.10.0>`_)
+                                                               | Contactgegevens:
+                                                                 `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/contactgegevens/openapi.yaml>`_,
+                                                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.10.0/src/openklant/components/contactgegevens/openapi.yaml>`_,
+                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.9.0..2.10.0>`_)
+==================  =========================  =============   ================
 
 Vorige versies worden nog 6 maanden ondersteund nadat de volgende versie is
 uitgebracht. Open Klant versie 1.0.0 bevat nog de Klanten en Contactmomenten
