@@ -20,7 +20,7 @@ Introductie
 ===========
 
 Open Klant implementeert 2 APIs: Klantinteracties API en Contactgegevens API.
-De `Klantinteracties API`_  is gebaseerd op specificatie van
+De `Klantinteracties API`_  is gebaseerd op de specificatie van
 `VNG`_ welke een beperkte set aan gegevens over klanten en hun interactie met
 de gemeente kan opslaan en ontsluiten.
 De Contactgegevens API is een unieke API die niet op een standaard is gebaseerd.
