@@ -5,7 +5,7 @@ from rest_framework import status
 from vng_api_common.tests import get_validation_errors, reverse
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
-from openklant.components.klantinteracties.models import DigitaalAdres
+from openklant.components.klantinteracties.models import DigitaalAdres, Partij
 from openklant.components.klantinteracties.models.tests.factories import (
     BetrokkeneFactory,
     DigitaalAdresFactory,
@@ -605,6 +605,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(data["referentie"], "foo")
 
     def test_destroy_digitaal_adres(self):
+        self.assertEqual(DigitaalAdres.objects.count(), 0)
         digitaal_adres = DigitaalAdresFactory.create()
         detail_url = reverse(
             "klantinteracties:digitaaladres-detail",
@@ -617,6 +618,28 @@ class DigitaalAdresTests(APITestCase):
         response = self.client.get(list_url)
         data = response.json()
         self.assertEqual(data["count"], 0)
+        self.assertEqual(DigitaalAdres.objects.count(), 0)
+
+    def test_destroy_digitaal_adres_check_partij_existence(self):
+        self.assertEqual(DigitaalAdres.objects.count(), 0)
+        self.assertEqual(Partij.objects.count(), 0)
+
+        partij = PartijFactory.create()
+        # digitaal_adres automatically created in PartijFactory
+        digitaal_adres = partij.voorkeurs_digitaal_adres
+
+        self.assertEqual(Partij.objects.count(), 1)
+        self.assertEqual(DigitaalAdres.objects.count(), 1)
+
+        response = self.client.delete(
+            reverse(
+                "klantinteracties:digitaaladres-detail",
+                kwargs={"uuid": str(digitaal_adres.uuid)},
+            )
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(DigitaalAdres.objects.count(), 0)
+        self.assertEqual(Partij.objects.count(), 1)
 
     def test_create_digitaal_adres_referentie_empty_string(self):
         """

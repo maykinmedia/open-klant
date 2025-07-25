@@ -27,7 +27,7 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
     )
     voorkeurs_digitaal_adres = models.ForeignKey(
         "klantinteracties.DigitaalAdres",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="voorkeurs_partij",
         verbose_name=_("voorkeurs digitaal adres"),
         help_text=_("'Partij' gaf voorkeur aan voor contact via 'Digitaal adres'"),
@@ -36,7 +36,7 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
     )
     voorkeurs_rekeningnummer = models.ForeignKey(
         "klantinteracties.Rekeningnummer",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="voorkeurs_rekeningnummer",
         verbose_name=_("voorkeurs rekeningnummer"),
         help_text=_("'Partij' gaf voorkeur voor 'rekeningnummer'"),
