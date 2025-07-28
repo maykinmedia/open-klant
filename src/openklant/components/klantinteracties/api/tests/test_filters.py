@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from uuid import uuid4
 
 from rest_framework import status
@@ -2127,3 +2128,21 @@ class DigitaalAdresFilterSetTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(data["count"], 2)
+
+    def test_filter_verificatie_datum(self):
+        today = date.today()
+        yesterday = today - timedelta(days=1)
+
+        digitaal_adres_yesterday = DigitaalAdresFactory.create(
+            verificatie_datum=yesterday
+        )
+        DigitaalAdresFactory.create(verificatie_datum=today)
+        DigitaalAdresFactory.create(verificatie_datum=None)
+
+        response = self.client.get(
+            self.url, {"verificatieDatum": yesterday.isoformat()}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["uuid"], str(digitaal_adres_yesterday.uuid))

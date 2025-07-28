@@ -131,6 +131,7 @@ class DigitaalAdresFilterSet(FilterSet):
             "is_standaard_adres",
             "omschrijving",
             "referentie",
+            "verificatie_datum",
         )
 
     def filter_partij_identificator_code_objecttype(self, queryset, name, value):
