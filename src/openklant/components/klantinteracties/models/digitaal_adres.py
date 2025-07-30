@@ -72,6 +72,13 @@ class DigitaalAdres(APIMixin, models.Model):
         blank=True,
         null=False,
     )
+    verificatie_datum = models.DateField(
+        _("verificatiedatum"),
+        help_text=_("Datum waarop het digitaal adres is geverifieerd."),
+        null=True,
+        blank=True,
+        default=None,
+    )
 
     class Meta:
         verbose_name = _("digitaal adres")
