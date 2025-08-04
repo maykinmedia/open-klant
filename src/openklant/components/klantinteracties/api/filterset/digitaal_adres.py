@@ -114,25 +114,14 @@ class DigitaalAdresFilterSet(FilterSet):
 
     class Meta:
         model = DigitaalAdres
-        fields = (
-            "verstrekt_door_betrokkene__uuid",
-            "verstrekt_door_betrokkene__url",
-            "verstrekt_door_betrokkene__rol",
-            "verstrekt_door_partij__uuid",
-            "verstrekt_door_partij__url",
-            "verstrekt_door_partij__soort_partij",
-            "verstrekt_door_partij__partij_identificator__code_objecttype",
-            "verstrekt_door_partij__partij_identificator__code_soort_object_id",
-            "verstrekt_door_partij__partij_identificator__object_id",
-            "verstrekt_door_partij__partij_identificator__code_register",
-            "adres",
-            "adres__icontains",
-            "soort_digitaal_adres",
-            "is_standaard_adres",
-            "omschrijving",
-            "referentie",
-            "verificatie_datum",
-        )
+        fields = {
+            "adres": ["exact", "icontains"],
+            "soort_digitaal_adres": ["exact"],
+            "is_standaard_adres": ["exact"],
+            "omschrijving": ["exact"],
+            "referentie": ["exact"],
+            "verificatie_datum": ["exact", "gt", "gte", "lt", "lte"],
+        }
 
     def filter_partij_identificator_code_objecttype(self, queryset, name, value):
         try:

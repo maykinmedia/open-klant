@@ -2132,17 +2132,68 @@ class DigitaalAdresFilterSetTests(APITestCase):
     def test_filter_verificatie_datum(self):
         today = date.today()
         yesterday = today - timedelta(days=1)
+        tomorrow = today + timedelta(days=1)
 
         digitaal_adres_yesterday = DigitaalAdresFactory.create(
             verificatie_datum=yesterday
         )
-        DigitaalAdresFactory.create(verificatie_datum=today)
+        digitaal_adres_today = DigitaalAdresFactory.create(verificatie_datum=today)
+        digitaal_adres_tomorrow = DigitaalAdresFactory.create(
+            verificatie_datum=tomorrow
+        )
         DigitaalAdresFactory.create(verificatie_datum=None)
 
-        response = self.client.get(
-            self.url, {"verificatieDatum": yesterday.isoformat()}
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.json()
-        self.assertEqual(data["count"], 1)
-        self.assertEqual(data["results"][0]["uuid"], str(digitaal_adres_yesterday.uuid))
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.url, {"verificatieDatum": today.isoformat()}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(data["count"], 1)
+            self.assertEqual(data["results"][0]["uuid"], str(digitaal_adres_today.uuid))
+
+        with self.subTest("gt"):
+            response = self.client.get(
+                self.url, {"verificatieDatum__gt": today.isoformat()}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(data["count"], 1)
+            self.assertEqual(
+                data["results"][0]["uuid"], str(digitaal_adres_tomorrow.uuid)
+            )
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.url, {"verificatieDatum__gte": today.isoformat()}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(data["count"], 2)
+            self.assertEqual(
+                data["results"][0]["uuid"], str(digitaal_adres_tomorrow.uuid)
+            )
+            self.assertEqual(data["results"][1]["uuid"], str(digitaal_adres_today.uuid))
+
+        with self.subTest("lt"):
+            response = self.client.get(
+                self.url, {"verificatieDatum__lt": today.isoformat()}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(data["count"], 1)
+            self.assertEqual(
+                data["results"][0]["uuid"], str(digitaal_adres_yesterday.uuid)
+            )
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.url, {"verificatieDatum__lte": today.isoformat()}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(data["count"], 2)
+            self.assertEqual(data["results"][0]["uuid"], str(digitaal_adres_today.uuid))
+            self.assertEqual(
+                data["results"][1]["uuid"], str(digitaal_adres_yesterday.uuid)
+            )

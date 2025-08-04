@@ -1278,6 +1278,30 @@ paths:
           format: date
         description: Datum waarop het digitaal adres is geverifieerd.
       - in: query
+        name: verificatieDatum__gt
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
+      - in: query
+        name: verificatieDatum__gte
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
+      - in: query
+        name: verificatieDatum__lt
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
+      - in: query
+        name: verificatieDatum__lte
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
+      - in: query
         name: verstrektDoorBetrokkene__rol
         schema:
           type: string
