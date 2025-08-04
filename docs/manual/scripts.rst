@@ -16,7 +16,9 @@ waardoor een bestand wordt gegenereerd. De data dump bevat standaard alle klanti
 Om alleen specifieke data te exporteren kunnen de gewenste component namen worden meegegeven:
 
 .. code-block:: shell
+
     ./dump_data.sh klantinteracties
+
 .. note::
 
     om een postgres 17 db te exporteren is de package postgres-client-17 vereist.
@@ -32,4 +34,5 @@ Environment variabelen
 * DUMP_FILE ("dump_$(date +'%Y-%m-%d_%H-%M-%S').sql")
 
 .. code-block:: shell
+
     DB_HOST=localhost DB_NAME=openklant ./bin/dump_data.sh
