@@ -109,6 +109,12 @@ class DigitaalAdresFilterSet(FilterSet):
     referentie = filters.CharFilter(
         lookup_expr="exact", help_text="Filter op exacte referentiewaarde."
     )
+    is_geverifieerd = filters.BooleanFilter(
+        help_text=_(
+            "Zoek digitaal adres(sen) object(en) op basis dat het een geverifieerd adres is of niet."
+        ),
+        method="filter_is_geverifieerd",
+    )
 
     expand = ExpandFilter(serializer_class=DigitaalAdresSerializer)
 
@@ -154,3 +160,9 @@ class DigitaalAdresFilterSet(FilterSet):
             )
         except ValueError:
             return queryset.none()
+
+    def filter_is_geverifieerd(self, queryset, name, value):
+        if value:
+            return queryset.filter(verificatie_datum__isnull=False)
+        else:
+            return queryset.filter(verificatie_datum__isnull=True)

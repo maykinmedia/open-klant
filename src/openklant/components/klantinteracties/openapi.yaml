@@ -1232,6 +1232,12 @@ paths:
         explode: false
         style: form
       - in: query
+        name: isGeverifieerd
+        schema:
+          type: boolean
+        description: Zoek digitaal adres(sen) object(en) op basis dat het een geverifieerd
+          adres is of niet.
+      - in: query
         name: isStandaardAdres
         schema:
           type: boolean

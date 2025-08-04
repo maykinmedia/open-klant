@@ -2197,3 +2197,34 @@ class DigitaalAdresFilterSetTests(APITestCase):
             self.assertEqual(
                 data["results"][1]["uuid"], str(digitaal_adres_yesterday.uuid)
             )
+
+    def test_filter_is_geverifieerd(self):
+        today = date.today()
+        yesterday = today - timedelta(days=1)
+
+        digitaal_adres_yesterday = DigitaalAdresFactory.create(
+            verificatie_datum=yesterday
+        )
+        digitaal_adres_today = DigitaalAdresFactory.create(verificatie_datum=today)
+        digitaal_adres_not_verified = DigitaalAdresFactory.create(
+            verificatie_datum=None
+        )
+
+        with self.subTest("isGeverifieerd=true"):
+            response = self.client.get(self.url, {"isGeverifieerd": True})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(data["count"], 2)
+            self.assertEqual(data["results"][0]["uuid"], str(digitaal_adres_today.uuid))
+            self.assertEqual(
+                data["results"][1]["uuid"], str(digitaal_adres_yesterday.uuid)
+            )
+
+        with self.subTest("isGeverifieerd=false"):
+            response = self.client.get(self.url, {"isGeverifieerd": False})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.json()
+            self.assertEqual(data["count"], 1)
+            self.assertEqual(
+                data["results"][0]["uuid"], str(digitaal_adres_not_verified.uuid)
+            )
