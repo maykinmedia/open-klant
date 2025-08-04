@@ -2,6 +2,48 @@
 Change history
 ==============
 
+2.11.0
+======
+*August 5, 2025*
+
+**New features**
+
+* [:open-klant:`437`] Add ``verificatieDatum`` attribute to ``DigitaalAdres``, as well as new query parameters
+
+  * ``verificatieDatum``: match objects that have a ``verificatieDatum`` that is exactly this value
+  * ``verificatieDatum__gt``: match objects that have a ``verificatieDatum`` greater than this value
+  * ``verificatieDatum__gte``: match objects that have a ``verificatieDatum`` greater than or equal to this value
+  * ``verificatieDatum__lt``: match objects that have a ``verificatieDatum`` less than this value
+  * ``verificatieDatum__lte``: match objects that have a ``verificatieDatum`` less than or equal to this value
+  * ``isGeverifieerd``: match objects that have a ``verificatieDatum``
+
+**Bugfixes**
+
+* [:open-klant:`457`] Fix bug that caused deletes on ``DigitaalAdres`` to cascade to ``Partij`` (via ``voorkeurs_digitaal_adres``)
+* [:open-klant:`400`] Fix error when using ``expand`` due to the value of the attribute being ``None`` for some of the results
+* [:open-klant:`454`] Ensure ``DB_CONN_MAX_AGE`` can be set via envvar
+* Fix issue that caused Elastic APM to not show time spent on queries when connection pooling is enabled
+
+**Maintenance**
+
+* Upgrade python dependencies
+
+  * ``celery`` to 5.5.3 (to fix Redis reconnection issues)
+  * ``billiard`` to 4.2.1
+  * ``django-privates`` to 3.1.1
+  * ``open-api-framework`` to 0.12.0
+  * ``commonground-api-common`` to 2.7.0
+
+* Remove unused ``coreapi`` dependency
+* [:open-klant:`465`] Upgrade NPM packages to fix security issues
+* Move database connection pooling envvars to ``open-api-framework``
+* Add missing ``bump-my-version`` dependency to dev deps
+
+**Documentation**
+
+* [:open-klant:`191`] Add Contactgegevens API links to README
+* [:open-api-framework:`148`] Add prerequisites docs page (including PostgreSQL compatibility)
+
 2.10.0
 ======
 *July 4, 2025*
@@ -58,7 +100,7 @@ Change history
   * urllib3 to 2.5.0
   * vcrpy to 7.0.0
   * platformdirs to 4.3.8
-  
+
 **Documentation**
 
 * [:open-klant:`434`] Add documentation for logging
@@ -173,7 +215,7 @@ Change history
   * Upgrade nodejs to 20
 
 * Remove ``changed-files`` actions from CI and moved in a separate script
-* Remove duplicate CodeQL workflow 
+* Remove duplicate CodeQL workflow
 * Fix ``bump-my-version`` for package/package-lock.json
 * Upgrade dependencies
 
