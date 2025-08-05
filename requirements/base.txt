@@ -22,7 +22,7 @@ attrs==23.2.0
     #   glom
     #   jsonschema
     #   referencing
-billiard==4.2.0
+billiard==4.2.1
     # via celery
 bleach==6.1.0
     # via open-api-framework
@@ -32,7 +32,7 @@ boltons==24.0.0
     #   glom
 cbor2==5.6.4
     # via webauthn
-celery==5.4.0
+celery==5.5.3
     # via
     #   django-structlog
     #   flower
@@ -350,9 +350,7 @@ typing-extensions==4.12.2
     #   qrcode
     #   zgw-consumers
 tzdata==2025.2
-    # via
-    #   celery
-    #   kombu
+    # via kombu
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==2.5.0
