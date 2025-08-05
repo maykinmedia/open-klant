@@ -45,7 +45,7 @@ babel==2.15.0
     # via sphinx
 beautifulsoup4==4.12.3
     # via webtest
-billiard==4.2.0
+billiard==4.2.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -65,7 +65,7 @@ cbor2==5.6.4
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   webauthn
-celery==5.4.0
+celery==5.5.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -745,7 +745,6 @@ tzdata==2025.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   celery
     #   faker
     #   kombu
 uritemplate==4.1.1

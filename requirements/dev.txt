@@ -61,7 +61,7 @@ beautifulsoup4==4.12.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   webtest
-billiard==4.2.0
+billiard==4.2.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -89,7 +89,7 @@ cbor2==5.6.4
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   webauthn
-celery==5.4.0
+celery==5.5.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -955,7 +955,6 @@ tzdata==2025.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   celery
     #   faker
     #   kombu
 uritemplate==4.1.1
