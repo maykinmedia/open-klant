@@ -154,6 +154,7 @@ class DigitaalAdresTests(APITestCase):
         self.assertEqual(data["omschrijving"], "omschrijving")
         self.assertEqual(data["referentie"], "my-referentie")
         self.assertEqual(data["isStandaardAdres"], False)
+        self.assertEqual(data["verificatieDatum"], None)
 
         with self.subTest("with_betrokkene_and_partij"):
             partij = PartijFactory.create()

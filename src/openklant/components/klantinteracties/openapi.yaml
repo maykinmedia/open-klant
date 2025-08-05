@@ -1232,6 +1232,12 @@ paths:
         explode: false
         style: form
       - in: query
+        name: isGeverifieerd
+        schema:
+          type: boolean
+        description: Zoek digitaal adres(sen) object(en) op basis dat het een geverifieerd
+          adres is of niet.
+      - in: query
         name: isStandaardAdres
         schema:
           type: boolean
@@ -1271,6 +1277,36 @@ paths:
         description: |+
           Zoek digitaal adres(sen) object(en) op basis van het soort digitaal adres dat exact gelijk moet zijn aan deze waarde.
 
+      - in: query
+        name: verificatieDatum
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
+      - in: query
+        name: verificatieDatum__gt
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
+      - in: query
+        name: verificatieDatum__gte
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
+      - in: query
+        name: verificatieDatum__lt
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
+      - in: query
+        name: verificatieDatum__lte
+        schema:
+          type: string
+          format: date
+        description: Datum waarop het digitaal adres is geverifieerd.
       - in: query
         name: verstrektDoorBetrokkene__rol
         schema:
@@ -4154,6 +4190,12 @@ components:
             adres.
           maxLength: 50
           pattern: ^[-a-zA-Z0-9_]+$
+        verificatieDatum:
+          type: string
+          format: date
+          nullable: true
+          title: Verificatiedatum
+          description: Datum waarop het digitaal adres is geverifieerd.
       required:
       - adres
       - soortDigitaalAdres
@@ -5613,6 +5655,12 @@ components:
             adres.
           maxLength: 50
           pattern: ^[-a-zA-Z0-9_]+$
+        verificatieDatum:
+          type: string
+          format: date
+          nullable: true
+          title: Verificatiedatum
+          description: Datum waarop het digitaal adres is geverifieerd.
     PatchedInterneTaak:
       type: object
       properties:

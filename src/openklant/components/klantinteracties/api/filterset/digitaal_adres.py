@@ -109,29 +109,25 @@ class DigitaalAdresFilterSet(FilterSet):
     referentie = filters.CharFilter(
         lookup_expr="exact", help_text="Filter op exacte referentiewaarde."
     )
+    is_geverifieerd = filters.BooleanFilter(
+        help_text=_(
+            "Zoek digitaal adres(sen) object(en) op basis dat het een geverifieerd adres is of niet."
+        ),
+        method="filter_is_geverifieerd",
+    )
 
     expand = ExpandFilter(serializer_class=DigitaalAdresSerializer)
 
     class Meta:
         model = DigitaalAdres
-        fields = (
-            "verstrekt_door_betrokkene__uuid",
-            "verstrekt_door_betrokkene__url",
-            "verstrekt_door_betrokkene__rol",
-            "verstrekt_door_partij__uuid",
-            "verstrekt_door_partij__url",
-            "verstrekt_door_partij__soort_partij",
-            "verstrekt_door_partij__partij_identificator__code_objecttype",
-            "verstrekt_door_partij__partij_identificator__code_soort_object_id",
-            "verstrekt_door_partij__partij_identificator__object_id",
-            "verstrekt_door_partij__partij_identificator__code_register",
-            "adres",
-            "adres__icontains",
-            "soort_digitaal_adres",
-            "is_standaard_adres",
-            "omschrijving",
-            "referentie",
-        )
+        fields = {
+            "adres": ["exact", "icontains"],
+            "soort_digitaal_adres": ["exact"],
+            "is_standaard_adres": ["exact"],
+            "omschrijving": ["exact"],
+            "referentie": ["exact"],
+            "verificatie_datum": ["exact", "gt", "gte", "lt", "lte"],
+        }
 
     def filter_partij_identificator_code_objecttype(self, queryset, name, value):
         try:
@@ -164,3 +160,9 @@ class DigitaalAdresFilterSet(FilterSet):
             )
         except ValueError:
             return queryset.none()
+
+    def filter_is_geverifieerd(self, queryset, name, value):
+        if value:
+            return queryset.filter(verificatie_datum__isnull=False)
+        else:
+            return queryset.filter(verificatie_datum__isnull=True)
