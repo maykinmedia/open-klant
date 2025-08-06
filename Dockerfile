@@ -63,6 +63,7 @@ COPY ./bin/docker_start.sh /start.sh
 COPY ./bin/wait_for_db.sh /wait_for_db.sh
 COPY ./bin/upgrade_check_version.sh /upgrade_check_version.sh
 COPY ./bin/setup_configuration.sh /setup_configuration.sh
+COPY ./bin/dump_data.sh /dump_data.sh
 COPY ./bin/uwsgi.ini /
 COPY ./bin/celery_worker.sh /celery_worker.sh
 COPY ./bin/celery_flower.sh /celery_flower.sh
