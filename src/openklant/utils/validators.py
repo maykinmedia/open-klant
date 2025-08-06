@@ -13,9 +13,17 @@ def validate_country(value: str) -> None:
     :param value:
     :return: None if validation passed. Otherwise, raises a ``ValidationError`` exception.
     """
-    if value not in ISO_3166_1_ALPHA2_COUNTRY_CODES:
+    upper_value = value.upper()
+    if upper_value not in ISO_3166_1_ALPHA2_COUNTRY_CODES:
         raise ValidationError(
             _("Ongeldige landcode, de code moet behoren tot de ISO 3166-standaard")
+        )
+    elif value != upper_value:
+        raise ValidationError(
+            _(
+                "Ongeldige landcode, de code moet behoren tot de ISO 3166-standaard."
+                " Bedoelde u {country_upper}?"
+            ).format(country_upper=upper_value)
         )
 
 
