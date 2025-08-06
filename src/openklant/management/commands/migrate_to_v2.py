@@ -98,8 +98,10 @@ def _save_klanten(url: str, token: TokenAuth, klanten: list[Klant]) -> list[str]
         digitaal_adres_ref = None
 
         if digitaal_adres:
+            digitaal_adres_data = digitaal_adres.dict()
+            digitaal_adres_data["referentie"] = "portaalvoorkeur"
             _data = openklant_client.create(
-                DIGITALE_ADDRESSEN_PATH, digitaal_adres.dict()
+                DIGITALE_ADDRESSEN_PATH, digitaal_adres_data
             )
 
             if not isinstance(_data, dict):
