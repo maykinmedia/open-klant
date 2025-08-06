@@ -5315,7 +5315,6 @@ components:
           description: Partij-identificator die hoorde bij een partij.
         anderePartijIdentificator:
           type: string
-          title: Andere partij indetificator
           description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
             objecttype, soort objectID of Register vast te leggen. '
           maxLength: 200
@@ -5879,7 +5878,6 @@ components:
           description: Partij-identificator die hoorde bij een partij.
         anderePartijIdentificator:
           type: string
-          title: Andere partij indetificator
           description: 'Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd
             objecttype, soort objectID of Register vast te leggen. '
           maxLength: 200

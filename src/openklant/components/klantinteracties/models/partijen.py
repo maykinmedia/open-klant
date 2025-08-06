@@ -328,7 +328,7 @@ class PartijIdentificator(models.Model):
         blank=True,
     )
     andere_partij_identificator = models.CharField(
-        _("andere partij indetificator"),
+        _("andere partij identificator"),
         help_text=_(
             "Vrij tekstveld om de verwijzing naar een niet-voorgedefinieerd objecttype, "
             "soort objectID of Register vast te leggen. "
