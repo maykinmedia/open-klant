@@ -39,6 +39,7 @@ class Partij(APIClass):
     voorkeurs_rekeningnummer: Optional[dict] = None
     digitale_adressen: Optional[list] = None
     voorkeurs_digitaal_adres: Optional[dict] = None
+    partij_identificatoren: Optional[list[dict]] = None
 
     @property
     def required_fields(self):
