@@ -18,6 +18,7 @@ from rest_framework.reverse import reverse_lazy
 
 from openklant.components.token.models import TokenAuth
 from openklant.migration.client import Client
+from openklant.migration.utils import generate_jwt_token
 from openklant.migration.v1.client import LegacyOpenKlantClient
 from openklant.migration.v1.data import Klant
 from openklant.migration.v2.client import OpenKlantClient
@@ -164,7 +165,9 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args: Any, **options: Any) -> str | None:
-        access_token = os.getenv("ACCESS_TOKEN")
+        client_id = os.getenv("CLIENT_ID")
+        secret = os.getenv("SECRET")
+
         v1_url = options["v1_url"]
         v2_url = options["v2_url"]
 
@@ -178,6 +181,11 @@ class Command(BaseCommand):
                     f"Invalid URL(s) detected: {str(e.message)}. See "
                     "migrate_to_v2 --help for correct usage."
                 )
+
+        if client_id and secret:
+            access_token = generate_jwt_token(client_id, secret)
+        else:
+            access_token = os.getenv("ACCESS_TOKEN")
 
         next_url: str | None = ""
 
