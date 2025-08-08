@@ -80,9 +80,7 @@ bracex==2.6
     # via wcmatch
 build==1.2.2.post1
     # via pip-tools
-bump-my-version==1.2.1
-    # via -r requirements/dev.in
-bump2version==1.0.1
+bump-my-version==1.1.2
     # via -r requirements/dev.in
 cbor2==5.6.4
     # via

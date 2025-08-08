@@ -1,6 +1,7 @@
 import os
 from io import StringIO
 from pathlib import Path
+from unittest.mock import patch
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -15,7 +16,12 @@ from vcr.config import RecordMode
 from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
-from openklant.components.klantinteracties.models.constants import SoortPartij
+from openklant.components.klantinteracties.models.constants import (
+    PartijIdentificatorCodeObjectType,
+    PartijIdentificatorCodeRegister,
+    PartijIdentificatorCodeSoortObjectId,
+    SoortPartij,
+)
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.partijen import (
     Organisatie,
@@ -135,14 +141,80 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         partij = Partij.objects.get()
 
-        output = stdout.getvalue().splitlines()
+        self.assertEqual(partij.nummer, "024325818")
+
+        partij_identificator = partij.partijidentificator_set.get()
+
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_objecttype,
+            PartijIdentificatorCodeObjectType.natuurlijk_persoon,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_register,
+            PartijIdentificatorCodeRegister.brp,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_soort_object_id,
+            PartijIdentificatorCodeSoortObjectId.bsn,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_object_id, "024325818"
+        )
 
         partij_url = reverse(
             "klantinteracties:partij-detail",
             kwargs={"uuid": str(partij.uuid)},
         )
+        expected_output = f"{self.live_server_url}{partij_url}"
+        output = stdout.getvalue().splitlines()
+        self.assertEqual(output, [expected_output])
 
-        self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
+    @patch.dict(os.environ, {"CLIENT_ID": "migration", "SECRET": "foobar"}, clear=True)
+    def test_single_run_with_client_id_and_secret(self):
+        stdout = StringIO()
+
+        with patch(
+            "openklant.management.commands.migrate_to_v2.generate_jwt_token",
+            wraps=generate_jwt_token,
+        ) as mock_generate:
+            call_command(
+                "migrate_to_v2",
+                "http://localhost:8000",
+                self.live_server_url,
+                stdout=stdout,
+            )
+
+            mock_generate.assert_called_once_with("migration", "foobar")
+
+        partij = Partij.objects.get()
+
+        self.assertEqual(partij.nummer, "111222333")
+
+        partij_identificator = partij.partijidentificator_set.get()
+
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_objecttype,
+            PartijIdentificatorCodeObjectType.natuurlijk_persoon,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_register,
+            PartijIdentificatorCodeRegister.brp,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_soort_object_id,
+            PartijIdentificatorCodeSoortObjectId.bsn,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_object_id, "111222333"
+        )
+
+        partij_url = reverse(
+            "klantinteracties:partij-detail",
+            kwargs={"uuid": str(partij.uuid)},
+        )
+        expected_output = f"{self.live_server_url}{partij_url}"
+        output = stdout.getvalue().splitlines()
+        self.assertEqual(output, [expected_output])
 
     def test_pagination(self):
         stdout = StringIO()
@@ -221,7 +293,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij, organisatie.partij)
 
         self.assertEqual(partij.soort_partij, SoortPartij.organisatie)
-        self.assertEqual(partij.nummer, "807371440")
+        self.assertEqual(partij.nummer, "80737144")
         self.assertIsNone(partij.voorkeurs_digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
@@ -230,6 +302,24 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertTrue(partij.indicatie_actief)
 
         self.assertEqual(organisatie.naam, "Foobar Inc.")
+
+        partij_identificator = partij.partijidentificator_set.get()
+
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_objecttype,
+            PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_register,
+            PartijIdentificatorCodeRegister.hr,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_soort_object_id,
+            PartijIdentificatorCodeSoortObjectId.kvk_nummer,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_object_id, "80737144"
+        )
 
         output = stdout.getvalue().splitlines()
 
@@ -429,6 +519,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(digitaal_adres.soort_digitaal_adres, SoortDigitaalAdres.email)
         self.assertEqual(digitaal_adres.adres, "example@maykinmedia.nl")
         self.assertEqual(digitaal_adres.omschrijving, "Emailadres")
+        self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")
 
         output = stdout.getvalue().splitlines()
 
@@ -497,3 +588,53 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         migration_tokens = TokenAuth.objects.filter(application=token_application)
 
         self.assertEqual(migration_tokens.count(), 0)
+
+    def test_rsin(self):
+        stdout = StringIO()
+
+        call_command(
+            "migrate_to_v2",
+            "http://localhost:8000",
+            self.live_server_url,
+            stdout=stdout,
+        )
+
+        partij = Partij.objects.get()
+        organisatie = Organisatie.objects.get()
+
+        self.assertEqual(partij, organisatie.partij)
+        self.assertEqual(partij.soort_partij, SoortPartij.organisatie)
+        self.assertEqual(partij.nummer, "296648875")
+        self.assertIsNone(partij.voorkeurs_digitaal_adres)
+        self.assertIsNone(partij.voorkeurs_rekeningnummer)
+        self.assertEqual(partij.interne_notitie, "")
+        self.assertFalse(partij.indicatie_geheimhouding)
+        self.assertEqual(partij.voorkeurstaal, "")
+        self.assertTrue(partij.indicatie_actief)
+        self.assertEqual(organisatie.naam, "Foobar Inc.")
+
+        partij_identificator = partij.partijidentificator_set.get()
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_objecttype,
+            PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_register,
+            PartijIdentificatorCodeRegister.hr,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_soort_object_id,
+            PartijIdentificatorCodeSoortObjectId.rsin,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_object_id, "296648875"
+        )
+
+        output = stdout.getvalue().splitlines()
+
+        partij_url = reverse(
+            "klantinteracties:partij-detail",
+            kwargs={"uuid": str(partij.uuid)},
+        )
+
+        self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
