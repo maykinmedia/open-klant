@@ -14,17 +14,6 @@ from openklant.migration.v1.enum import KlantType
 from openklant.migration.v2.data import DigitaalAdres, Partij
 
 logger = structlog.stdlib.get_logger(__name__)
-#
-# PARTIJ_IDENTIFICATOR_MAPPING = {
-#     KlantType.natuurlijk_persoon: (
-#         PartijIdentificatorCodeSoortObjectId.bsn.value,
-#         PartijIdentificatorCodeRegister.brp.value,
-#     ),
-#     KlantType.niet_natuurlijk_persoon: (
-#         PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
-#         PartijIdentificatorCodeRegister.hr.value,
-#     ),
-# }
 
 
 class Subject:
