@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://localhost:8000/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{
+        "count":1,
+        "next":null,
+        "previous":null,
+        "results":[
+          {
+            "url":"http://localhost:8000/klanten/api/v1/klanten/abd7a618-1177-4d17-a9d9-a3b6f9ee8606",
+            "bronorganisatie":"613907826",
+            "klantnummer":"0",
+            "bedrijfsnaam":"",
+            "functie":"",
+            "websiteUrl":"",
+            "voornaam":"",
+            "voorvoegselAchternaam":"",
+            "achternaam":"",
+            "telefoonnummer":"",
+            "emailadres":"",
+            "adres":null,
+            "subject":"",
+            "subjectType":"niet_natuurlijk_persoon",
+            "aanmaakkanaal":"",
+            "geverifieerd":false,
+            "subjectIdentificatie":{
+              "innNnpId":"296648875",
+              "annIdentificatie":"",
+              "statutaireNaam":"Foobar Inc.",
+              "innRechtsvorm":"vereniging_van_eigenaars",
+              "bezoekadres":"Masonhof 351\n6335 OX\nMetslawier",
+              "subVerblijfBuitenland":null
+            }
+          }
+        ]
+      }'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '660'
+      Content-Type:
+      - application/json
+      Referrer-Policy:
+      - same-origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

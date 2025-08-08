@@ -14,7 +14,7 @@ interactions:
     uri: http://localhost:8000/klanten/api/v1/klanten
   response:
     body:
-      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://localhost:8000/klanten/api/v1/klanten/abd7a618-1177-4d17-a9d9-a3b6f9ee8606","bronorganisatie":"613907826","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"","emailadres":"","adres":null,"subject":"","subjectType":"niet_natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"innNnpId":"807371440","annIdentificatie":"","statutaireNaam":"Foobar
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://localhost:8000/klanten/api/v1/klanten/abd7a618-1177-4d17-a9d9-a3b6f9ee8606","bronorganisatie":"613907826","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"","emailadres":"","adres":null,"subject":"","subjectType":"niet_natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"innNnpId":"80737144","annIdentificatie":"","statutaireNaam":"Foobar
         Inc.","innRechtsvorm":"vereniging_van_eigenaars","bezoekadres":"Masonhof 351\n6335
         OX\nMetslawier","subVerblijfBuitenland":null}}]}'
     headers:

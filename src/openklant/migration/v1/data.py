@@ -5,7 +5,11 @@ from django.utils.functional import classproperty
 
 import structlog
 
-from openklant.components.klantinteracties.models.constants import SoortPartij
+from openklant.components.klantinteracties.models.constants import (
+    PartijIdentificatorCodeRegister,
+    PartijIdentificatorCodeSoortObjectId,
+    SoortPartij,
+)
 from openklant.migration.v1.enum import KlantType
 from openklant.migration.v2.data import DigitaalAdres, Partij
 
@@ -193,6 +197,52 @@ class Klant:
             )
             return
 
+        partij_identificatoren = []
+
+        if (
+            subject
+            and subject.nummer
+            and self.subject_type
+            in {
+                KlantType.natuurlijk_persoon,
+                KlantType.niet_natuurlijk_persoon,
+            }
+        ):
+            nummer = subject.nummer
+            codeSoortObjectId = None
+            register = None
+
+            if self.subject_type == KlantType.niet_natuurlijk_persoon:
+                if len(nummer) == 8:
+                    codeSoortObjectId = PartijIdentificatorCodeSoortObjectId.kvk_nummer
+                    register = PartijIdentificatorCodeRegister.hr
+                elif len(nummer) == 9:
+                    codeSoortObjectId = PartijIdentificatorCodeSoortObjectId.rsin
+                    register = PartijIdentificatorCodeRegister.hr
+                else:
+                    logger.warning(
+                        "invalid_nnp_identifier_length",
+                        nummer=nummer,
+                        reason="Expected 8 or 9 digits",
+                    )
+            else:
+                codeSoortObjectId, register = (
+                    PartijIdentificatorCodeSoortObjectId.bsn,
+                    PartijIdentificatorCodeRegister.brp,
+                )
+
+            if codeSoortObjectId and register:
+                partij_identificatoren.append(
+                    {
+                        "partijIdentificator": {
+                            "codeObjecttype": self.subject_type,
+                            "codeSoortObjectId": codeSoortObjectId,
+                            "objectId": nummer,
+                            "codeRegister": register,
+                        },
+                    }
+                )
+
         data = dict(
             indicatie_actief=True,
             indicatie_geheimhouding=False,
@@ -203,6 +253,7 @@ class Klant:
             soort_partij=soort_partij,
             nummer=subject.nummer if subject else "",
             partij_identificatie=subject.migrate() if subject else None,
+            partij_identificatoren=partij_identificatoren,
         )
 
         if digitaal_adres:
