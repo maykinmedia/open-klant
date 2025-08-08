@@ -185,7 +185,6 @@ class ValidatorsTestCase(SimpleTestCase):
             "10",
             "ZZ",
             "1Z",
-            "nl",
         ]
         for code in invalid_codes:
             self.assertRaisesMessage(
@@ -196,3 +195,17 @@ class ValidatorsTestCase(SimpleTestCase):
             )
 
         validate_country("NL")
+
+    def test_validate_country_casing_suggestion(self):
+        invalid_codes = [
+            "gb",
+            "nl",
+        ]
+        for code in invalid_codes:
+            self.assertRaisesMessage(
+                ValidationError,
+                "Ongeldige landcode, de code moet behoren tot de ISO 3166-standaard."
+                f" Bedoelde u {code.upper()}",
+                validate_country,
+                code,
+            )
