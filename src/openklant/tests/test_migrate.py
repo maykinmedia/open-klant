@@ -1,6 +1,7 @@
 import os
 from io import StringIO
 from pathlib import Path
+from unittest.mock import patch
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -158,6 +159,53 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         )
         self.assertEqual(
             partij_identificator.partij_identificator_object_id, "024325818"
+        )
+
+        partij_url = reverse(
+            "klantinteracties:partij-detail",
+            kwargs={"uuid": str(partij.uuid)},
+        )
+        expected_output = f"{self.live_server_url}{partij_url}"
+        output = stdout.getvalue().splitlines()
+        self.assertEqual(output, [expected_output])
+
+    @patch.dict(os.environ, {"CLIENT_ID": "migration", "SECRET": "foobar"}, clear=True)
+    def test_single_run_with_client_id_and_secret(self):
+        stdout = StringIO()
+
+        with patch(
+            "openklant.management.commands.migrate_to_v2.generate_jwt_token",
+            wraps=generate_jwt_token,
+        ) as mock_generate:
+            call_command(
+                "migrate_to_v2",
+                "http://localhost:8000",
+                self.live_server_url,
+                stdout=stdout,
+            )
+
+            mock_generate.assert_called_once_with("migration", "foobar")
+
+        partij = Partij.objects.get()
+
+        self.assertEqual(partij.nummer, "111222333")
+
+        partij_identificator = partij.partijidentificator_set.get()
+
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_objecttype,
+            PartijIdentificatorCodeObjectType.natuurlijk_persoon,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_register,
+            PartijIdentificatorCodeRegister.brp,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_code_soort_object_id,
+            PartijIdentificatorCodeSoortObjectId.bsn,
+        )
+        self.assertEqual(
+            partij_identificator.partij_identificator_object_id, "111222333"
         )
 
         partij_url = reverse(
