@@ -2,6 +2,18 @@
 Change history
 ==============
 
+2.11.1
+======
+*August 8, 2025*
+
+**Bugfixes/QOL**
+
+Fixes for ``migrate_to_v2`` command:
+
+* [:open-klant:`459`] Ensure created Partijen with BSN/KVK have related partij-identificatoren
+* [:open-klant:`459`] Allow passing of ``CLIENT_ID`` and ``SECRET`` envvars to generate access token (see :ref:`migration_user_docs`)
+* [:open-klant:`459`] Set ``referentie`` to ``"portaalvoorkeur"`` for all DigitaalAdressen
+
 2.11.0
 ======
 *August 5, 2025*
