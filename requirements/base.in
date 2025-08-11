@@ -8,3 +8,5 @@ psycopg[pool]
 django-localflavor
 
 django-structlog[celery]
+
+maykin-common[axes,mfa]
