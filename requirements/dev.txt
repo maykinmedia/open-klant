@@ -220,6 +220,7 @@ django==5.2.3
     #   drf-spectacular
     #   drf-spectacular-sidecar
     #   maykin-2fa
+    #   maykin-common
     #   mozilla-django-oidc
     #   mozilla-django-oidc-db
     #   notifications-api-common
@@ -560,6 +561,10 @@ maykin-2fa==1.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
+maykin-common==0.7.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 mccabe==0.7.0
     # via
     #   -c requirements/ci.txt
