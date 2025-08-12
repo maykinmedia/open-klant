@@ -13,6 +13,7 @@ from .api import *  # noqa
 # APPLICATIONS enabled for this project
 #
 INSTALLED_APPS = INSTALLED_APPS + [
+    "capture_tag",
     "maykin_common",
     # External applications.
     "vng_api_common.notifications",
