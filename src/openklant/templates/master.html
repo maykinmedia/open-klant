@@ -1,34 +1,33 @@
-{% load static vng_api_common %}<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% load static %}<!DOCTYPE html>
+<html lang="en" class="view {% block view_class %}view--{% if request.resolver_match.namespaces %}{{ request.resolver_match.namespaces|join:'-' }}-{% endif %}{{ request.resolver_match.url_name }}{% endblock %}">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% if title %}{{ title }}{% else %}{{ settings.SITE_TITLE }}{% endif %} | {{ settings.PROJECT_NAME }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'ico/favicon.svg' %}" sizes="any" rel="icon" type="image/svg+xml" />
+        <link href="{% static 'ico/favicon-96x96.png' %}" sizes="96x96" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon-32x32.png' %}" sizes="32x32" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon.png' %}" sizes="16x16" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon.png' %}" rel="shortcut icon">
+        <link href="{% static 'bundles/openklant-css.css' %}" media="all" rel="stylesheet" />
+        {% block extra_css %}{% endblock %}
+    </head>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'vng_api_common/css/screen.css' %}">
-    <link rel="stylesheet" href="{% static 'vng_api_common/libs/fontawesome/css/all.min.css' %}">
+    <body class="view__body">
+        {% include "includes/header.html" %}
 
-    <link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
+        <main class="view__main">
+            {% block content %}
+                Override <code>{% verbatim %}{% block content %}{% endverbatim %}</code>
+                to get some actual content.
+            {% endblock %}
+        </main>
 
-    {% block extra_style %}{% endblock %}
+        {% include "includes/footer.html" %}
 
-    <title>{% block title %}{% if title %}{{ title }}{% else %}{{ settings.SITE_TITLE }}{% endif %} | {{ settings.PROJECT_NAME }}{% endblock %}</title>
-  </head>
-  <body>
+        {% block scripts %}
+            <script src="{% static 'bundles/openklant-js.js' %}"></script>
+        {% endblock scripts %}
 
-    {% if not settings.SITE_TITLE or not settings.PROJECT_NAME %}
-      <div class="container">
-        Please add the variables <em>SITE_TITLE</em> and <em>PROJECT_NAME</em> to your <em>settings.py</em> and make
-        sure they are available via <em>context processors</em>.
-      </div>
-    {% endif %}
-
-    {% block content %}
-      Override <code>{% verbatim %}{% block content %}{% endverbatim %}</code>
-      to get some actual content.
-    {% endblock %}
-  
-    {% include "includes/footer.html" %} 
-
-    {% block extra_scripts %}{% endblock %}
-  </body>
+    </body>
 </html>

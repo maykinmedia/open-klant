@@ -1,47 +1,41 @@
-{% extends "master.html" %}
+{% extends "maykin_common/api/index_base.html" %}
+{% load i18n %}
 
-{% block content %}
+{% block page_title %}{{ settings.PROJECT_NAME }}{% endblock %}
+{% block page_subtitle %}{% trans "Startpunt" %} {{ settings.SITE_TITLE }}{% endblock page_subtitle %}
 
-  <div class="header">
-    <h1 class="header__title">{{ settings.PROJECT_NAME }} startpunt</h1>
-    <p class="header__description">{{ settings.SITE_TITLE }}</p>
-  </div>
+{% block content_nl %}
+<p>
+    Registratiecomponent voor de opslag en ontsluiting van klantgegevens volgens de Klantinteracties en Contactgegevens API-specificaties.
+</p>
+<p>
+    Open Klant implementeert 2 APIs: <b>Klantinteracties API</b> en <b>Contactgegevens API</b>. <br>
+    De Klantinteracties API is gebaseerd op de specificatie van VNG welke een beperkte set aan gegevens over
+    klanten en hun interactie met de gemeente kan opslaan en ontsluiten.
+    De Contactgegevens API is een unieke API die niet op een standaard is gebaseerd.
+</p>
+{% endblock content_nl %}
 
-  <div class="container container--center">
+{% block content_en %}
+<p>
+    Registration component for the storage and disclosure of customer data according to the Customer Interactions and Contact Data API specifications.
+</p>
+<p>
+    Open Klant implements two APIs: the <b>Klantinteracties API</b> and the <b>Contactgegevens API</b>. <br>
+    The Klantinteracties API is based on the VNG specification, which stores and accesses a limited set of data about
+    customers and their interactions with the municipality.
+    The Contactgegevens API is a unique API that is not based on a standard.
+</p>
+{% endblock content_en %}
 
-    {% block components %}
+{% block license_link %}https://github.com/maykinmedia/open-klant/blob/master/LICENSE.md{% endblock %}
 
-      <h2>Components</h2>
-
-      <div class="cardlist">
-
-        <div class="cardlist__item">
-          <div class="card">
-            <h5 class="card__title"><i class="fas fa-pencil-ruler"></i> Klantinteracties</h5>
-            <p>Klantinteracties API</p>
-            <a href="{% url 'main' component='klantinteracties'%}" class="button button--primary">Klantinteracties</a>
-          </div>
-        </div>
-
-        <div class="cardlist__item">
-          <div class="card">
-            <h5 class="card__title"><i class="fas fa-pencil-ruler"></i> Contactgegevens</h5>
-            <p>Contactgegevens API</p>
-            <a href="{% url 'main' component='contactgegevens'%}" class="button button--primary">Contactgegevens</a>
-          </div>
-        </div>
-
-      </div>
-
-    {% endblock %}
-
-    {% block admin_link %}
-      <p></p>
-      <p>
-        <a href="{% url 'admin:index' %}" class="button button--alert"><i class="fas fa-lock"></i> Beheer</a>
-      </p>
-    {% endblock %}
-
-  </div>
-
+{% block api_links %}
+    
+    {% url 'main' component='klantinteracties' as klantinteracties_link %} 
+    {% url 'main' component='contactgegevens' as contactgegevens_link %} 
+   
+    <a href="{{ klantinteracties_link }}" class="button">Klantinteracties</a>
+    <a href="{{ contactgegevens_link }}" class="button">Contactgegevens</a>
+    
 {% endblock %}
