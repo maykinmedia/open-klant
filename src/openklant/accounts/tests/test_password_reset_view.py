@@ -10,4 +10,5 @@ class PasswordResetViewTests(TestCase):
             response = self.client.get(url)
             self.assertEqual(response.status_code, 200)
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403)
+        # 429 Too Many Requests
+        self.assertEqual(response.status_code, 429)
