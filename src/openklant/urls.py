@@ -16,7 +16,7 @@ from openklant.components.views import ComponentIndexView
 
 monkeypatch_admin()
 
-handler500 = "openklant.utils.views.server_error"
+handler500 = "maykin_common.views.server_error"
 admin.site.site_header = "openklant admin"
 admin.site.site_title = "openklant admin"
 admin.site.index_title = "Welcome to the openklant admin"
