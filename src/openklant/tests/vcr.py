@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from vcr.unittest import VCRMixin as _VCRMixin
+from maykin_common.vcr import VCRMixin as _VCRMixin
 
 RECORD_MODE = os.environ.get("VCR_RECORD_MODE", "none")
 
