@@ -9,3 +9,4 @@ Manual
 
    logging
    scripts
+   uml-diagram

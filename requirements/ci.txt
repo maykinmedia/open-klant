@@ -144,6 +144,7 @@ django==5.2.3
     #   django-axes
     #   django-cors-headers
     #   django-csp
+    #   django-extensions
     #   django-filter
     #   django-formtools
     #   django-jsonform
@@ -198,6 +199,8 @@ django-csp==3.8
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+django-extensions==4.1
+    # via -r requirements/test-tools.in
 django-filter==24.2
     # via
     #   -c requirements/base.txt
@@ -694,7 +697,7 @@ sphinx-markdown-tables==0.0.17
     # via -r requirements/docs.in
 sphinx-rtd-theme==3.0.2
     # via -r requirements/docs.in
-sphinx-tabs==3.4.5
+sphinx-tabs==3.4.7
     # via -r requirements/docs.in
 sphinxcontrib-applehelp==2.0.0
     # via sphinx

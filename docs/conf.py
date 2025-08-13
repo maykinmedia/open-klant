@@ -11,13 +11,16 @@ import sys
 import django
 from django.utils.translation import activate
 
-sys.path.insert(0, os.path.abspath("../src"))
+sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(1, os.path.abspath("../src"))
 os.environ["LOG_REQUESTS"] = "false"
 
 import openklant  # noqa isort:skip
 
 # Import as private variable to avoid errors on build
 from importlib.metadata import version as _version
+
+from model_graph import generate_model_graphs
 
 from openklant.setup import setup_env  # noqa isort:skip
 
@@ -45,10 +48,12 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
+    "sphinx.ext.graphviz",
     "django_setup_configuration.documentation.setup_config_example",
     "django_setup_configuration.documentation.setup_config_usage",
-    # "sphinx_tabs.tabs",
-    # "recommonmark",
+    "uml_directive.uml",
+    "sphinx_tabs.tabs",
+    "recommonmark",
     # "sphinx_markdown_tables",
 ]
 
@@ -134,3 +139,13 @@ intersphinx_mapping = {
         None,
     ),
 }
+
+
+#
+#   Datamodel image creation
+#
+graphviz_output_format = "png"
+
+
+def setup(app):
+    app.connect("builder-inited", generate_model_graphs)

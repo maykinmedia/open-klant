@@ -250,8 +250,11 @@ django-csp==3.8
     #   -r requirements/ci.txt
 django-debug-toolbar==5.2.0
     # via -r requirements/dev.in
-django-extensions==3.2.3
-    # via -r requirements/dev.in
+django-extensions==4.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   -r requirements/dev.in
 django-filter==24.2
     # via
     #   -c requirements/ci.txt
@@ -685,6 +688,8 @@ pygments==2.18.0
     #   rich
     #   sphinx
     #   sphinx-tabs
+pygraphviz==1.14
+    # via -r requirements/dev.in
 pyjwt==2.10.1
     # via
     #   -c requirements/ci.txt
@@ -871,7 +876,7 @@ sphinx-rtd-theme==3.0.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-sphinx-tabs==3.4.5
+sphinx-tabs==3.4.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

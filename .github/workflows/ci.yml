@@ -124,6 +124,7 @@ jobs:
     needs:
       - store-reusable-workflow-vars
     with:
+      apt-packages: 'graphviz graphviz-dev'
       main-branch: 'master'
       run-docs: true
       python-version: '3.12'
