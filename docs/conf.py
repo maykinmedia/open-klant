@@ -11,8 +11,7 @@ import sys
 import django
 from django.utils.translation import activate
 
-sys.path.insert(0, os.path.abspath("."))
-sys.path.insert(1, os.path.abspath("../src"))
+sys.path.insert(0, os.path.abspath("../src"))
 os.environ["LOG_REQUESTS"] = "false"
 
 import openklant  # noqa isort:skip

@@ -27,6 +27,7 @@ Open Klant `is`_ and only uses open source.
    :maxdepth: 3
    :hidden:
 
+   introduction/index
    installation/index
    development/index
    manual/index

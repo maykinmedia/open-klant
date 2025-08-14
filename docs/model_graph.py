@@ -10,7 +10,7 @@ def generate_model_graphs(app):
     project_root = os.path.abspath(os.path.join(app.srcdir, ".."))
     components_dir = os.path.join(project_root, "src", "openklant", "components")
 
-    excluded_components = ["token", "utils"]
+    excluded_components = ["token", "utils", "AdresMixin"]
 
     apps_in_components = [
         d
@@ -30,6 +30,7 @@ def generate_model_graphs(app):
                 output=png_path,
                 rankdir="LR",
                 hide_edge_labels=True,
+                exclude_models=excluded_components,
             )
         except Exception as exc:
             print(f"Failed to generate PNG for {comp}: {exc}")
