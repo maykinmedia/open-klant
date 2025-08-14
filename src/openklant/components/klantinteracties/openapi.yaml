@@ -227,7 +227,7 @@ paths:
         schema:
           type: string
           format: uri
-        description: Zoek actor klantcontract object op basis van het actor url
+        description: Zoek actor klantcontact object op basis van het actor url
       - in: query
         name: actor__uuid
         schema:
@@ -239,7 +239,7 @@ paths:
         schema:
           type: string
           format: uri
-        description: Zoek actor klantcontract object op basis van het klantcontact
+        description: Zoek actor klantcontact object op basis van het klantcontact
           url
       - in: query
         name: klantcontact__uuid
@@ -2155,6 +2155,18 @@ paths:
         description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
+      - in: query
+        name: wasKlantcontact__url
+        schema:
+          type: string
+          format: uri
+        description: Zoek klantcontact object op basis van het klantcontact url
+      - in: query
+        name: wasKlantcontact__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unieke (technische) identificatiecode van de betrokkene bij klantcontact.
       tags:
       - onderwerpobjecten
       security:

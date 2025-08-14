@@ -1,3 +1,5 @@
+import uuid
+
 from django.utils.translation import gettext as _
 
 from rest_framework import status
@@ -1563,17 +1565,22 @@ class OnderwerpobjectTests(APITestCase):
     def test_filter_onderwerpobject_by_all_identificator_fields(self):
         list_url = reverse("klantinteracties:onderwerpobject-list")
 
+        klantcontact_uuid_a = uuid.uuid4()
+        klantcontact_uuid_b = uuid.uuid4()
+
         obj = OnderwerpobjectFactory.create(
             onderwerpobjectidentificator_code_objecttype="typeA",
             onderwerpobjectidentificator_code_soort_object_id="soortA",
             onderwerpobjectidentificator_object_id="idA",
             onderwerpobjectidentificator_code_register="regA",
+            was_klantcontact__uuid=klantcontact_uuid_a,
         )
         OnderwerpobjectFactory.create(
             onderwerpobjectidentificator_code_objecttype="typeB",
             onderwerpobjectidentificator_code_soort_object_id="soortB",
             onderwerpobjectidentificator_object_id="idB",
             onderwerpobjectidentificator_code_register="regB",
+            was_klantcontact__uuid=klantcontact_uuid_b,
         )
 
         response = self.client.get(list_url)
@@ -1581,11 +1588,17 @@ class OnderwerpobjectTests(APITestCase):
         data = response.json()
         self.assertEqual(len(data["results"]), 2)
 
+        klantcontact_url_a = reverse(
+            "klantinteracties:klantcontact-detail", kwargs={"uuid": klantcontact_uuid_a}
+        )
+
         filters = {
             "onderwerpobjectidentificatorCodeObjecttype": "typeA",
             "onderwerpobjectidentificatorCodeSoortObjectId": "soortA",
             "onderwerpobjectidentificatorObjectId": "idA",
             "onderwerpobjectidentificatorCodeRegister": "regA",
+            "wasKlantcontact__uuid": klantcontact_uuid_a,
+            "wasKlantcontact__url": "https://testserver.com" + klantcontact_url_a,
         }
 
         for key, value in filters.items():
