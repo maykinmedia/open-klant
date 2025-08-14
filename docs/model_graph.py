@@ -10,7 +10,14 @@ def generate_model_graphs(app):
     project_root = os.path.abspath(os.path.join(app.srcdir, ".."))
     components_dir = os.path.join(project_root, "src", "openklant", "components")
 
-    excluded_components = ["token", "utils", "AdresMixin"]
+    excluded_components = [
+        "token",
+        "utils",
+        "AdresMixin",
+        "ContactnaamMixin",
+        "CorrespondentieadresMixin",
+        "BezoekadresMixin",
+    ]
 
     apps_in_components = [
         d
