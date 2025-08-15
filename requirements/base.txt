@@ -59,8 +59,10 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.7.0
-    # via open-api-framework
+commonground-api-common @ git+https://github.com/maykinmedia/commonground-api-common.git@0c16bcc5832ae45edd72cbfad59470d18fe0c508
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
 cryptography==44.0.2
     # via
     #   django-simple-certmanager
@@ -373,7 +375,7 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.16.0
     # via elastic-apm
-zgw-consumers==0.38.0
+zgw-consumers==1.0.0
     # via
     #   commonground-api-common
     #   notifications-api-common

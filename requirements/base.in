@@ -1,5 +1,5 @@
 open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis]
-
+git+https://github.com/maykinmedia/commonground-api-common.git@feature/uml-directive
 django-setup-configuration
 mozilla-django-oidc-db[setup-configuration]
 

@@ -50,7 +50,7 @@ extensions = [
     "sphinx.ext.graphviz",
     "django_setup_configuration.documentation.setup_config_example",
     "django_setup_configuration.documentation.setup_config_usage",
-    "uml_directive.uml",
+    "vng_api_common.uml_images",
     "sphinx_tabs.tabs",
     "recommonmark",
     # "sphinx_markdown_tables",
