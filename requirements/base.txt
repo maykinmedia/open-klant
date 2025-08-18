@@ -59,7 +59,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common @ git+https://github.com/maykinmedia/commonground-api-common.git@0c16bcc5832ae45edd72cbfad59470d18fe0c508
+commonground-api-common @ git+https://github.com/maykinmedia/commonground-api-common.git@41a021040dd33278dc7f6e3d29376a39c66fa2cf
     # via
     #   -r requirements/base.in
     #   open-api-framework

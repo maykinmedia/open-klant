@@ -19,8 +19,6 @@ import openklant  # noqa isort:skip
 # Import as private variable to avoid errors on build
 from importlib.metadata import version as _version
 
-from model_graph import generate_model_graphs
-
 from openklant.setup import setup_env  # noqa isort:skip
 
 setup_env()
@@ -50,7 +48,8 @@ extensions = [
     "sphinx.ext.graphviz",
     "django_setup_configuration.documentation.setup_config_example",
     "django_setup_configuration.documentation.setup_config_usage",
-    "vng_api_common.uml_images",
+    "vng_api_common.diagrams.uml_images",
+    "model_graph",
     "sphinx_tabs.tabs",
     "recommonmark",
     # "sphinx_markdown_tables",
@@ -87,6 +86,9 @@ intersphinx_mapping = {
         "http://docs.djangoproject.com/en/4.2/_objects/",
     ),
 }
+
+# Datamodel image settings
+graphviz_output_format = "png"
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -138,13 +140,3 @@ intersphinx_mapping = {
         None,
     ),
 }
-
-
-#
-#   Datamodel image creation
-#
-graphviz_output_format = "png"
-
-
-def setup(app):
-    app.connect("builder-inited", generate_model_graphs)
