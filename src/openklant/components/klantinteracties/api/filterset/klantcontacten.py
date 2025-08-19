@@ -310,6 +310,11 @@ class ActorKlantcontactFilterSet(FilterSet):
 
 
 class OnderwerpObjectFilterSet(FilterSet):
+    klantcontact__url = URLViewFilter(
+        help_text=_("Zoek klantcontact object op basis van het klantcontact url"),
+        field_name="klantcontact__uuid",
+    )
+
     was_klantcontact__url = URLViewFilter(
         help_text=_("Zoek klantcontact object op basis van het klantcontact url"),
         field_name="was_klantcontact__uuid",
@@ -322,6 +327,8 @@ class OnderwerpObjectFilterSet(FilterSet):
             "onderwerpobjectidentificator_code_register",
             "onderwerpobjectidentificator_code_soort_object_id",
             "onderwerpobjectidentificator_object_id",
+            "klantcontact__uuid",
+            "klantcontact__url",
             "was_klantcontact__uuid",
             "was_klantcontact__url",
         )

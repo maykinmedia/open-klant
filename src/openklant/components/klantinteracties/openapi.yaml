@@ -2121,6 +2121,18 @@ paths:
       summary: Alle onderwerpobject opvragen.
       parameters:
       - in: query
+        name: klantcontact__url
+        schema:
+          type: string
+          format: uri
+        description: Zoek klantcontact object op basis van het klantcontact url
+      - in: query
+        name: klantcontact__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unieke (technische) identificatiecode van de betrokkene bij klantcontact.
+      - in: query
         name: onderwerpobjectidentificatorCodeObjecttype
         schema:
           type: string

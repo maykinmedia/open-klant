@@ -1568,25 +1568,35 @@ class OnderwerpobjectTests(APITestCase):
         klantcontact_uuid_a = uuid.uuid4()
         klantcontact_uuid_b = uuid.uuid4()
 
+        was_klantcontact_uuid_a = uuid.uuid4()
+        was_klantcontact_uuid_b = uuid.uuid4()
+
         obj = OnderwerpobjectFactory.create(
             onderwerpobjectidentificator_code_objecttype="typeA",
             onderwerpobjectidentificator_code_soort_object_id="soortA",
             onderwerpobjectidentificator_object_id="idA",
             onderwerpobjectidentificator_code_register="regA",
-            was_klantcontact__uuid=klantcontact_uuid_a,
+            klantcontact__uuid=klantcontact_uuid_a,
+            was_klantcontact__uuid=was_klantcontact_uuid_a,
         )
         OnderwerpobjectFactory.create(
             onderwerpobjectidentificator_code_objecttype="typeB",
             onderwerpobjectidentificator_code_soort_object_id="soortB",
             onderwerpobjectidentificator_object_id="idB",
             onderwerpobjectidentificator_code_register="regB",
-            was_klantcontact__uuid=klantcontact_uuid_b,
+            klantcontact__uuid=klantcontact_uuid_b,
+            was_klantcontact__uuid=was_klantcontact_uuid_b,
         )
 
         response = self.client.get(list_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(len(data["results"]), 2)
+
+        was_klantcontact_url_a = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": was_klantcontact_uuid_a},
+        )
 
         klantcontact_url_a = reverse(
             "klantinteracties:klantcontact-detail", kwargs={"uuid": klantcontact_uuid_a}
@@ -1597,8 +1607,10 @@ class OnderwerpobjectTests(APITestCase):
             "onderwerpobjectidentificatorCodeSoortObjectId": "soortA",
             "onderwerpobjectidentificatorObjectId": "idA",
             "onderwerpobjectidentificatorCodeRegister": "regA",
-            "wasKlantcontact__uuid": klantcontact_uuid_a,
-            "wasKlantcontact__url": "https://testserver.com" + klantcontact_url_a,
+            "wasKlantcontact__uuid": was_klantcontact_uuid_a,
+            "wasKlantcontact__url": "https://testserver.com" + was_klantcontact_url_a,
+            "klantcontact__uuid": klantcontact_uuid_a,
+            "klantcontact__url": "https://testserver.com" + klantcontact_url_a,
         }
 
         for key, value in filters.items():
