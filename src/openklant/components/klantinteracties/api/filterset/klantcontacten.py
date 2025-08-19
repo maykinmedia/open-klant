@@ -11,6 +11,7 @@ from openklant.components.klantinteracties.models.actoren import ActorKlantconta
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
+    Onderwerpobject,
 )
 from openklant.components.utils.filters import ExpandFilter, URLViewFilter
 
@@ -290,13 +291,11 @@ class BetrokkeneFilterSet(FilterSet):
 
 class ActorKlantcontactFilterSet(FilterSet):
     actor__url = URLViewFilter(
-        help_text=_("Zoek actor klantcontract object op basis van het actor url"),
+        help_text=_("Zoek actor klantcontact object op basis van het actor url"),
         field_name="actor__uuid",
     )
     klantcontact__url = URLViewFilter(
-        help_text=_(
-            "Zoek actor klantcontract object op basis van het klantcontact url"
-        ),
+        help_text=_("Zoek actor klantcontact object op basis van het klantcontact url"),
         field_name="klantcontact__uuid",
     )
 
@@ -307,4 +306,37 @@ class ActorKlantcontactFilterSet(FilterSet):
             "actor__url",
             "klantcontact__uuid",
             "klantcontact__url",
+        )
+
+
+class OnderwerpObjectFilterSet(FilterSet):
+    klantcontact__uuid = filters.UUIDFilter(
+        help_text=_("Zoek onderwerpobject object op basis van het klantcontact uuid"),
+        field_name="klantcontact__uuid",
+    )
+
+    klantcontact__url = URLViewFilter(
+        help_text=_("Zoek onderwerpobject op basis van het klantcontact url"),
+        field_name="klantcontact__uuid",
+    )
+
+    was_klantcontact__uuid = filters.UUIDFilter(
+        help_text=_(
+            "Zoek onderwerpobject object op basis van het was_klantcontact uuid"
+        ),
+        field_name="was_klantcontact__uuid",
+    )
+
+    was_klantcontact__url = URLViewFilter(
+        help_text=_("Zoek onderwerpobject op basis van het was_klantcontact url"),
+        field_name="was_klantcontact__uuid",
+    )
+
+    class Meta:
+        model = Onderwerpobject
+        fields = (
+            "onderwerpobjectidentificator_code_objecttype",
+            "onderwerpobjectidentificator_code_register",
+            "onderwerpobjectidentificator_code_soort_object_id",
+            "onderwerpobjectidentificator_object_id",
         )

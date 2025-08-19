@@ -1,3 +1,5 @@
+import uuid
+
 from django.utils.translation import gettext as _
 
 from rest_framework import status
@@ -1602,6 +1604,53 @@ class OnderwerpobjectTests(APITestCase):
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.json()["results"]), 0)
+
+    def test_filter_onderwerpobject_by_klantcontact_filters(self):
+        list_url = reverse("klantinteracties:onderwerpobject-list")
+
+        klantcontact_uuid_a = uuid.uuid4()
+        klantcontact_uuid_b = uuid.uuid4()
+
+        was_klantcontact_uuid_a = uuid.uuid4()
+        was_klantcontact_uuid_b = uuid.uuid4()
+
+        obj = OnderwerpobjectFactory.create(
+            klantcontact__uuid=klantcontact_uuid_a,
+            was_klantcontact__uuid=was_klantcontact_uuid_a,
+        )
+        OnderwerpobjectFactory.create(
+            klantcontact__uuid=klantcontact_uuid_b,
+            was_klantcontact__uuid=was_klantcontact_uuid_b,
+        )
+
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 2)
+
+        was_klantcontact_url_a = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": was_klantcontact_uuid_a},
+        )
+
+        klantcontact_url_a = reverse(
+            "klantinteracties:klantcontact-detail", kwargs={"uuid": klantcontact_uuid_a}
+        )
+
+        filters = {
+            "wasKlantcontact__uuid": was_klantcontact_uuid_a,
+            "wasKlantcontact__url": "https://testserver.com" + was_klantcontact_url_a,
+            "klantcontact__uuid": klantcontact_uuid_a,
+            "klantcontact__url": "https://testserver.com" + klantcontact_url_a,
+        }
+
+        for key, value in filters.items():
+            with self.subTest(f"Filter by {key}={value}"):
+                response = self.client.get(list_url, {key: value})
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                data = response.json()
+                self.assertEqual(len(data["results"]), 1)
+                self.assertEqual(data["results"][0]["uuid"], str(obj.uuid))
 
     def test_destroy_onderwerpobject(self):
         onderwerpobject = OnderwerpobjectFactory.create()
