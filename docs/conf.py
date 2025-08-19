@@ -49,7 +49,6 @@ extensions = [
     "django_setup_configuration.documentation.setup_config_example",
     "django_setup_configuration.documentation.setup_config_usage",
     "vng_api_common.diagrams.uml_images",
-    "model_graph",
     "sphinx_tabs.tabs",
     "recommonmark",
     # "sphinx_markdown_tables",
