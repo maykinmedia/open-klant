@@ -1,46 +1,8 @@
-{% extends "maykin_common/api/index_base.html" %}
+{% extends "maykin_common/api/index_component.html" %}
 {% load i18n %}
 
-{% block content %}
-    <header class="page-title">
-        <h1 class="page-title__title">
-            {{ settings.PROJECT_NAME }}
-        </h1>
-        <p class="page-title__description">
-            <h2>{{ component|capfirst }}</h2>
-            {% trans "Technische API documentatie in de vorm van een Open API Specificatie (OAS)." %}
-        </p>
-    </header>
+{% block page_title %}{{ settings.PROJECT_NAME }}{% endblock %}
+{% block page_subtitle %}{{ settings.SITE_TITLE }}{% endblock page_subtitle %}
 
-    <article class="page-content page-content--centered">
-        <div class="landing-page__nav-buttons">
-          <div class="button-group">
-              {% url component|add:":schema-redoc-"|add:component version=1 as api_docs_link %}
-              {% url component|add:":schema-json-"|add:component version=1 as api_schema_link %}
-
-              <a href="{{ api_docs_link }}" class="button">
-                  <i class="fas fa-wifi" aria-hidden="true"></i>
-                  {% trans "API docs (ReDoc)" %}
-              </a>
-              <a href="{{ api_schema_link }}" class="button">
-                  <i class="fas fa-file-alt" aria-hidden="true"></i>
-                  {% trans "Open API specification" %}
-              </a>
-          </div>
-          {% if component in active_notification_components %}
-            <div class="button-group">
-              <a href="{% if repository %}{{ repository }}{% else %}{{ organization }}/{{ component }}-api{% endif %}/blob/{{ github_ref }}/src/notificaties.md#{{ component }}" class="button">
-                  <i class="fas fa-bullhorn" aria-hidden="true"></i>
-                  {% trans "Notificaties" %}
-              </a>  
-            </div>  
-          {% endif %}
-          <div class="button-group">
-              <a href="{% url 'admin:index' %}" class="button button--alert">
-                  <i class="fas fa-lock" aria-hidden="true"></i>
-                  {% trans "Administration" %}
-              </a>
-          </div>
-        </div>
-    </article>
-{% endblock %}
+{% block title_component %}{{ component|capfirst }}{% endblock title_component %}
+{% block subtitle_component %}{% trans "Technische API documentatie in de vorm van een Open API Specificatie (OAS)." %}{% endblock subtitle_component %}

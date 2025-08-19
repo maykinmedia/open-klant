@@ -1,19 +1,7 @@
-from django.views.generic import TemplateView
+from maykin_common.api_reference.views import (
+    ComponentIndexView as BaseComponentIndexView,
+)
 
-from openklant import __homepage__, __version__
 
-
-class ComponentIndexView(TemplateView):
+class ComponentIndexView(BaseComponentIndexView):
     template_name = "index.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(
-            {
-                "active_notification_components": ["klantinteracties"],
-                "component": self.kwargs.get("component"),
-                "repository": __homepage__,
-                "github_ref": __version__,
-            }
-        )
-        return context

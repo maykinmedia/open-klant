@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import include, path, re_path
+from django.urls import include, path
 from django.views.generic.base import TemplateView
 
 from maykin_2fa import monkeypatch_admin
@@ -64,10 +64,18 @@ urlpatterns = [
     # Simply show the master template.
     path("", TemplateView.as_view(template_name="main.html")),
     # separate apps
-    re_path(
-        r"^(?P<component>klantinteracties|contactgegevens)/$",
-        ComponentIndexView.as_view(),
-        name="main",
+    path(
+        r"klantinteracties/",
+        ComponentIndexView.as_view(
+            component="klantinteracties",
+            notification_url="https://github.com/maykinmedia/open-klant/blob/master/src/notificaties.md",
+        ),
+        name="index-klantinteracties",
+    ),
+    path(
+        r"contactgegevens/",
+        ComponentIndexView.as_view(component="contactgegevens"),
+        name="index-contactgegevens",
     ),
     path("ref/", include("vng_api_common.urls")),
     path("ref/", include("notifications_api_common.urls")),

@@ -32,10 +32,7 @@
 
 {% block api_links %}
     
-    {% url 'main' component='klantinteracties' as klantinteracties_link %} 
-    {% url 'main' component='contactgegevens' as contactgegevens_link %} 
-   
-    <a href="{{ klantinteracties_link }}" class="button">Klantinteracties</a>
-    <a href="{{ contactgegevens_link }}" class="button">Contactgegevens</a>
+    <a href="{% url 'index-klantinteracties' %} " class="button">Klantinteracties</a>
+    <a href="{% url 'index-contactgegevens' %}" class="button">Contactgegevens</a>
     
 {% endblock %}

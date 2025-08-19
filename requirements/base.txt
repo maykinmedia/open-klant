@@ -239,7 +239,7 @@ maykin-2fa==1.0.1
     # via
     #   maykin-common
     #   open-api-framework
-maykin-common==0.7.0
+maykin-common @ git+https://github.com/maykinmedia/django-common.git@b12fa21785bb9c0f89ae9384d9350ecfbd5ce95b
     # via -r requirements/base.in
 mozilla-django-oidc==4.0.1
     # via mozilla-django-oidc-db
