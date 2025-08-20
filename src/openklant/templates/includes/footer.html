@@ -1,0 +1,29 @@
+{% extends "maykin_common/api/includes/footer.html" %}
+{% load static i18n capture_tags %}
+
+{% block footer %}
+    {% capture as issues_link silent %}<a class="link link--muted" href="https://github.com/maykinmedia/open-klant/issues">issues</a>{% endcapture %}
+
+    {% with issues_link=issues_link %}
+        {{ block.super }}
+    {% endwith %}
+
+{% endblock %}
+
+{% block links %}
+    <li>
+        <a class="link link--muted" href="https://open-klant.readthedocs.io/en/latest/">
+            {% trans "Documentation" %}
+        </a>
+    </li>
+    <li>
+        <a class="link link--muted" href="https://hub.docker.com/r/maykinmedia/open-klant/">
+            {% trans "Docker image" %}
+        </a>
+    </li>
+    <li>
+        <a class="link link--muted" href="https://github.com/maykinmedia/open-klant">
+            {% trans "Code on Github" %}
+        </a>
+    </li>
+{% endblock %}
