@@ -13,6 +13,8 @@ tblib
 vcrpy
 waitress>=2.1.1
 codecov
-
 # Code formatting
 ruff
+
+# Documentations
+django-extensions

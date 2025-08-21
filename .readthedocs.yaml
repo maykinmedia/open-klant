@@ -13,6 +13,8 @@ build:
     - libxml2-dev
     - libxmlsec1-dev
     - libxmlsec1-openssl
+    - graphviz
+    - graphviz-dev
     - wget
   tools:
     python: '3.12'

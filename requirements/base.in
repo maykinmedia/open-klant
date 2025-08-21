@@ -1,5 +1,4 @@
 open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis]
-
 django-setup-configuration
 mozilla-django-oidc-db[setup-configuration]
 

@@ -13,3 +13,6 @@ django-debug-toolbar
 django-extensions
 django-silk
 whitenoise
+
+# docs
+pygraphviz

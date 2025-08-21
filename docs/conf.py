@@ -45,10 +45,12 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
+    "sphinx.ext.graphviz",
     "django_setup_configuration.documentation.setup_config_example",
     "django_setup_configuration.documentation.setup_config_usage",
-    # "sphinx_tabs.tabs",
-    # "recommonmark",
+    "vng_api_common.diagrams.uml_images",
+    "sphinx_tabs.tabs",
+    "recommonmark",
     # "sphinx_markdown_tables",
 ]
 
@@ -83,6 +85,9 @@ intersphinx_mapping = {
         "http://docs.djangoproject.com/en/4.2/_objects/",
     ),
 }
+
+# Datamodel image settings
+graphviz_output_format = "png"
 
 # -- Options for HTML output -------------------------------------------------
 

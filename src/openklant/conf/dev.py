@@ -76,6 +76,9 @@ CACHES = {
 # Library settings
 #
 
+# Django extensions
+INSTALLED_APPS += ["django_extensions"]
+
 ELASTIC_APM["DEBUG"] = True
 
 # Django debug toolbar
