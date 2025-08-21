@@ -23,14 +23,14 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
     volumes:
-      - ./data:/opt/keycloak/data/import
+      - ./keycloak/data:/opt/keycloak/data/import
     ports:
       - 8080:8080
     networks:
-      openklant-dev:
+      open-klant-dev:
         aliases:
           - keycloak.openklant.local
 
 networks:
-  openklant-dev:
-    name: openklant-dev
+  open-klant-dev:
+    name: open-klant-dev
