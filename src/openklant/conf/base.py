@@ -39,6 +39,9 @@ CSRF_FAILURE_VIEW = "openklant.accounts.views.csrf_failure"
 PROJECT_NAME = "Open Klant"
 SITE_TITLE = "API dashboard"
 
+# Default (connection timeout, read timeout) for the requests library (in seconds)
+REQUESTS_DEFAULT_TIMEOUT = (10, 30)
+
 ##############################
 #                            #
 # 3RD PARTY LIBRARY SETTINGS #
