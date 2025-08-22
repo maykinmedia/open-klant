@@ -1,7 +1,7 @@
 """
 Test authentication to the admin with OpenID Connect.
 
-Some of hese tests use VCR. When re-recording, making sure to:
+Some of these tests use VCR. When re-recording, making sure to:
 
 .. code-block:: bash
 
@@ -18,11 +18,11 @@ from django.utils.translation import gettext as _
 
 from django_webtest import WebTest
 from mozilla_django_oidc_db.models import OIDCClient
+from mozilla_django_oidc_db.tests.mixins import OIDCMixin
 
-from openklant.accounts.tests.factories import OFOIDCClientFactory
+from openklant.accounts.tests.factories import OIDCClientFactory
 from openklant.tests.vcr import VCRMixin
 from openklant.utils.tests.keycloak import keycloak_login
-from openklant.utils.tests.oidc import OIDCMixin
 
 from ..models import User
 from .factories import StaffUserFactory
@@ -32,8 +32,11 @@ TEST_FILES = (Path(__file__).parent).resolve()
 
 class OIDCLoginButtonTestCase(OIDCMixin, WebTest):
     def test_oidc_button_disabled(self):
-        OFOIDCClientFactory.create(
-            with_keycloak_provider=True, with_admin=True, enabled=False
+        OIDCClientFactory.create(
+            with_keycloak_provider=True,
+            with_admin=True,
+            with_admin_options=True,
+            enabled=False,
         )
 
         response = self.app.get(reverse("admin:login"))
@@ -46,8 +49,10 @@ class OIDCLoginButtonTestCase(OIDCMixin, WebTest):
         self.assertIsNone(oidc_login_link)
 
     def test_oidc_button_enabled(self):
-        OFOIDCClientFactory.create(
-            with_keycloak_provider=True, with_admin=True, enabled=True
+        OIDCClientFactory.create(
+            with_keycloak_provider=True,
+            with_admin=True,
+            with_admin_options=True,
         )
 
         response = self.app.get(reverse("admin:login"))
@@ -80,17 +85,12 @@ class OIDCFlowTests(OIDCMixin, VCRMixin, WebTest):
     VCR_TEST_FILES = TEST_FILES
 
     def test_duplicate_email_unique_constraint_violated(self):
-        """
-        Assert that duplicate email addresses result in usable user feedback.
-
-        Regression test for #1199
-        """
-        OFOIDCClientFactory.create(
+        OIDCClientFactory.create(
             with_keycloak_provider=True,
             with_admin=True,
-            enabled=True,
-            options__user_settings__claim_mappings__email=["email"],
+            with_admin_options=True,
         )
+
         # this user collides on the email address
         staff_user = StaffUserFactory.create(
             username="no-match", email="admin@example.com"
@@ -126,13 +126,16 @@ class OIDCFlowTests(OIDCMixin, VCRMixin, WebTest):
             self.assertTrue(staff_user.is_staff)
 
     def test_happy_flow(self):
-        OFOIDCClientFactory.create(
+        oidc_client = OIDCClientFactory.create(
             with_keycloak_provider=True,
             with_admin=True,
-            enabled=True,
-            options__user_settings__claim_mappings__username=["preferred_username"],
-            options__groups_settings__make_users_staff=True,
+            with_admin_options=True,
         )
+        oidc_client.options["user_settings"]["claim_mappings"]["username"] = [
+            "preferred_username"
+        ]
+        oidc_client.save()
+
         login_page = self.app.get(reverse("admin:login"))
         start_response = login_page.click(
             description=_("Login with organization account")
@@ -153,14 +156,15 @@ class OIDCFlowTests(OIDCMixin, VCRMixin, WebTest):
         self.assertEqual(user.username, "admin")
 
     def test_happy_flow_existing_user(self):
-        OFOIDCClientFactory.create(
+        oidc_client = OIDCClientFactory.create(
             with_keycloak_provider=True,
             with_admin=True,
-            enabled=True,
-            options__user_settings__claim_mappings__username=["preferred_username"],
-            options__user_settings__claim_mappings__email=["email"],
-            options__groups_settings__make_users_staff=False,
+            with_admin_options=True,
         )
+        oidc_client.options["user_settings"]["claim_mappings"]["username"] = [
+            "preferred_username"
+        ]
+        oidc_client.save()
 
         staff_user = StaffUserFactory.create(username="admin", email="update-me")
         login_page = self.app.get(reverse("admin:login"))

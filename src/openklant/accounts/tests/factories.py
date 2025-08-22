@@ -3,7 +3,7 @@ from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from django_otp.util import random_hex
 from mozilla_django_oidc_db.constants import OIDC_ADMIN_CONFIG_IDENTIFIER
 from mozilla_django_oidc_db.tests.factories import (
-    OIDCClientFactory,
+    OIDCClientFactory as BaseOIDCClientFactory,
     OIDCProviderFactory,
 )
 
@@ -60,7 +60,7 @@ class RecoveryTokenFactory(factory.django.DjangoModelFactory):
         model = StaticToken
 
 
-class OFOIDCClientFactory(OIDCClientFactory):
+class OIDCClientFactory(BaseOIDCClientFactory):
     enabled = True
 
     class Params:  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -81,32 +81,4 @@ class OFOIDCClientFactory(OIDCClientFactory):
         with_admin = factory.Trait(
             identifier=OIDC_ADMIN_CONFIG_IDENTIFIER,
             oidc_rp_scopes_list=["email", "profile", "openid"],
-            options=factory.Dict(
-                {
-                    "user_settings": factory.Dict(
-                        {
-                            "claim_mappings": factory.Dict(
-                                {
-                                    "username": ["sub"],
-                                    "first_name": [],
-                                    "last_name": [],
-                                    "email": [],
-                                }
-                            ),
-                            "username_case_sensitive": True,
-                            "sensitive_claims": [],
-                        }
-                    ),
-                    "groups_settings": factory.Dict(
-                        {
-                            "claim_mapping": ["groups"],
-                            "sync": True,
-                            "sync_pattern": "*",
-                            "make_users_staff": False,
-                            "superuser_group_names": [],
-                            "default_groups": [],
-                        }
-                    ),
-                }
-            ),
         )
