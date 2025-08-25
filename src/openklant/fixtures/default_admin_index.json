@@ -102,7 +102,11 @@
             ],
             [
                 "mozilla_django_oidc_db",
-                "openidconnectconfig"
+                "oidcprovider"
+            ],
+            [
+                "mozilla_django_oidc_db",
+                "oidcclient"
             ],
             [
                 "otp_totp",
