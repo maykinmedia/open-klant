@@ -460,7 +460,7 @@ maykin-2fa==1.0.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-maykin-common @ git+https://github.com/maykinmedia/django-common.git@b12fa21785bb9c0f89ae9384d9350ecfbd5ce95b
+maykin-common @ git+https://github.com/maykinmedia/django-common.git@28b11c505b385a255b2517a7aaaf2b4235940c4e
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
