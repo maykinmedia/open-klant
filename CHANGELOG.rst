@@ -2,6 +2,37 @@
 Change history
 ==============
 
+2.12.0
+======
+*August 28, 2025*
+
+**New features**
+
+* [:open-klant:`419`] Added query parameters on `onderwerpobjecten` for searching klantcontacten by referred klantcontact:
+
+    * ``klantcontact__uuid``
+    * ``klantcontact__url``
+    * ``was_klantcontact__uuid``
+    * ``was_klantcontact__url``
+
+**Bugfixes/QOL**
+
+* [:open-klant:`470`] Change ``countrycode`` validation message to warn when the value has incorrect casing.
+
+**Documentation**
+
+* [:open-api-framework:`159`] Add functionality to create model image (see :ref:`uml_diagrams`)
+
+**Maintenance**
+
+* Upgrade python dependencies
+
+  * ``zgw-consumers`` to 1.0.0
+  * ``commonground-api-common`` to 2.9.0
+  * ``mozilla-django-oidc-db`` to 0.25.1
+
+* [:open-api-framework:`179`] Add monkeypatch to requests applying a default timeout to all requests calls
+
 2.11.1
 ======
 *August 8, 2025*
