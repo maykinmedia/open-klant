@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import include, path, re_path
+from django.urls import include, path
 from django.views.generic.base import TemplateView
 
 from maykin_2fa import monkeypatch_admin
@@ -16,7 +16,7 @@ from openklant.components.views import ComponentIndexView
 
 monkeypatch_admin()
 
-handler500 = "openklant.utils.views.server_error"
+handler500 = "maykin_common.views.server_error"
 admin.site.site_header = "openklant admin"
 admin.site.site_title = "openklant admin"
 admin.site.index_title = "Welcome to the openklant admin"
@@ -64,10 +64,22 @@ urlpatterns = [
     # Simply show the master template.
     path("", TemplateView.as_view(template_name="main.html")),
     # separate apps
-    re_path(
-        r"^(?P<component>klantinteracties|contactgegevens)/$",
-        ComponentIndexView.as_view(),
-        name="main",
+    path(
+        "klantinteracties/",
+        ComponentIndexView.as_view(
+            component="klantinteracties",
+            api_version="1",
+            notification_url="https://github.com/maykinmedia/open-klant/blob/master/src/notificaties.md",
+        ),
+        name="index-klantinteracties",
+    ),
+    path(
+        "contactgegevens/",
+        ComponentIndexView.as_view(
+            component="contactgegevens",
+            api_version="1",
+        ),
+        name="index-contactgegevens",
     ),
     path("ref/", include("vng_api_common.urls")),
     path("ref/", include("notifications_api_common.urls")),

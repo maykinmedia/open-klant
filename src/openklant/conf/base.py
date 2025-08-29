@@ -13,6 +13,8 @@ from .api import *  # noqa
 # APPLICATIONS enabled for this project
 #
 INSTALLED_APPS = INSTALLED_APPS + [
+    "capture_tag",
+    "maykin_common",
     # External applications.
     "vng_api_common.notifications",
     # Project applications.
@@ -52,7 +54,9 @@ REQUESTS_DEFAULT_TIMEOUT = (10, 30)
 # Django-Admin-Index
 #
 ADMIN_INDEX_SHOW_REMAINING_APPS_TO_SUPERUSERS = True
-
+ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
+    "maykin_common.django_two_factor_auth.should_display_dropdown_menu"
+)
 #
 # Django setup configuration
 #

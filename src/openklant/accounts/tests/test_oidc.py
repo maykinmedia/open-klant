@@ -11,23 +11,19 @@ Some of these tests use VCR. When re-recording, making sure to:
 to bring up a Keycloak instance.
 """
 
-from pathlib import Path
-
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from django_webtest import WebTest
+from maykin_common.vcr import VCRMixin
 from mozilla_django_oidc_db.models import OIDCClient
 from mozilla_django_oidc_db.tests.mixins import OIDCMixin
 
 from openklant.accounts.tests.factories import OIDCClientFactory
-from openklant.tests.vcr import VCRMixin
 from openklant.utils.tests.keycloak import keycloak_login
 
 from ..models import User
 from .factories import StaffUserFactory
-
-TEST_FILES = (Path(__file__).parent).resolve()
 
 
 class OIDCLoginButtonTestCase(OIDCMixin, WebTest):
@@ -82,8 +78,6 @@ class OIDCLoginButtonTestCase(OIDCMixin, WebTest):
 
 
 class OIDCFlowTests(OIDCMixin, VCRMixin, WebTest):
-    VCR_TEST_FILES = TEST_FILES
-
     def test_duplicate_email_unique_constraint_violated(self):
         OIDCClientFactory.create(
             with_keycloak_provider=True,
