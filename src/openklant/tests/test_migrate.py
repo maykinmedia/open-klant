@@ -11,6 +11,7 @@ from django.db.migrations.executor import MigrationExecutor
 from django.db.migrations.state import StateApps
 from django.test import LiveServerTestCase, TransactionTestCase
 
+from maykin_common.vcr import VCRMixin
 from requests import Request
 from vcr.config import RecordMode
 from vng_api_common.tests import reverse
@@ -30,7 +31,6 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 from openklant.components.token.models import TokenAuth
 from openklant.migration.utils import generate_jwt_token
-from openklant.tests.vcr import VCRMixin
 
 LIVE_SERVER_HOST = "localhost"
 LIVE_SERVER_PORT = 8005

@@ -5,4 +5,4 @@ class UtilsConfig(AppConfig):
     name = "openklant.utils"
 
     def ready(self):
-        from . import checks, query  # noqa
+        from . import query  # noqa
