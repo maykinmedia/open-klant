@@ -65,16 +65,20 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="main.html")),
     # separate apps
     path(
-        r"klantinteracties/",
+        "klantinteracties/",
         ComponentIndexView.as_view(
             component="klantinteracties",
+            api_version="1",
             notification_url="https://github.com/maykinmedia/open-klant/blob/master/src/notificaties.md",
         ),
         name="index-klantinteracties",
     ),
     path(
-        r"contactgegevens/",
-        ComponentIndexView.as_view(component="contactgegevens"),
+        "contactgegevens/",
+        ComponentIndexView.as_view(
+            component="contactgegevens",
+            api_version="1",
+        ),
         name="index-contactgegevens",
     ),
     path("ref/", include("vng_api_common.urls")),
