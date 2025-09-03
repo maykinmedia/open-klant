@@ -9,4 +9,4 @@ django-localflavor
 django-setup-configuration
 django-structlog[celery]
 
-maykin-common[axes,mfa]
+maykin-common[axes,mfa,otel]
