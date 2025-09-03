@@ -32,6 +32,7 @@ python src/manage.py migrate
 # Start server
 >&2 echo "Starting server"
 uwsgi \
+    --strict \
     --ini "${SCRIPTPATH}/uwsgi.ini" \
     --http :$uwsgi_port \
     --http-keepalive \
@@ -41,6 +42,9 @@ uwsgi \
     --static-map /media=/app/media  \
     --chdir src \
     --enable-threads \
+    --single-interpreter \
+    --die-on-term \
+    --need-app \
     --processes $uwsgi_processes \
     --threads $uwsgi_threads \
     --post-buffering=8192 \
