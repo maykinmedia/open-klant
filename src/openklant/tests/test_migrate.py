@@ -277,6 +277,57 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
 
+    def test_natuurlijk_persoon_bsn_with_leading_zeroes(self):
+        stdout = StringIO()
+
+        call_command(
+            "migrate_to_v2",
+            "http://localhost:8000",
+            self.live_server_url,
+            stdout=stdout,
+        )
+
+        partij = Partij.objects.get()
+        persoon = Persoon.objects.get()
+
+        self.assertEqual(partij, persoon.partij)
+
+        self.assertEqual(partij.soort_partij, SoortPartij.persoon)
+        self.assertEqual(partij.nummer, "012345672")
+        self.assertIsNone(partij.voorkeurs_digitaal_adres)
+        self.assertIsNone(partij.voorkeurs_rekeningnummer)
+        self.assertEqual(partij.interne_notitie, "")
+        self.assertFalse(partij.indicatie_geheimhouding)
+        self.assertEqual(partij.voorkeurstaal, "")
+        self.assertTrue(partij.indicatie_actief)
+
+        self.assertEqual(persoon.contactnaam_voorletters, "H")
+        self.assertEqual(persoon.contactnaam_voornaam, "Harry")
+        self.assertEqual(persoon.contactnaam_voorvoegsel_achternaam, "")
+        self.assertEqual(persoon.contactnaam_achternaam, "Potter")
+
+        output = stdout.getvalue().splitlines()
+
+        partij_url = reverse(
+            "klantinteracties:partij-detail",
+            kwargs={"uuid": str(partij.uuid)},
+        )
+
+        self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
+
+    def test_natuurlijk_persoon_invalid_bsn(self):
+        stdout = StringIO()
+
+        call_command(
+            "migrate_to_v2",
+            "http://localhost:8000",
+            self.live_server_url,
+            stdout=stdout,
+        )
+
+        self.assertFalse(Partij.objects.exists())
+        self.assertFalse(Persoon.objects.exists())
+
     def test_niet_natuurlijk_persoon(self):
         stdout = StringIO()
 

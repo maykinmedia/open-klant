@@ -40,7 +40,12 @@ class NatuurlijkPersoon(Subject):  # SoortPartij.persoon
 
     @property
     def nummer(self) -> str:
-        return self.inp_bsn or ""
+        if self.inp_bsn:
+            # Avoid padding incorrect BSNs
+            if len(self.inp_bsn) < 8:
+                return self.inp_bsn
+            return self.inp_bsn.zfill(9)
+        return ""
 
     @classproperty
     def klant_type(self) -> KlantType:
