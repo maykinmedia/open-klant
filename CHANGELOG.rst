@@ -2,6 +2,14 @@
 Change history
 ==============
 
+2.12.1
+======
+*September 4, 2025*
+
+**Bugfixes**
+
+* [:open-klant:`492`] Ensure 8 digit BSNs get a leading 0 in ``migrate_to_v2`` script
+
 2.12.0
 ======
 *August 28, 2025*
