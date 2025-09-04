@@ -51,6 +51,7 @@ extensions = [
     "vng_api_common.diagrams.uml_images",
     "sphinx_tabs.tabs",
     "recommonmark",
+    "maykin_common.documentation.config_directives",
     # "sphinx_markdown_tables",
 ]
 
