@@ -7,6 +7,11 @@ amqp==5.2.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   kombu
+annotated-doc==0.0.4
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   typer
 annotated-types==0.7.0
     # via
     #   -c requirements/base.txt
@@ -88,7 +93,7 @@ charset-normalizer==3.3.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   requests
-click==8.1.7
+click==8.3.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -219,7 +224,7 @@ django-formtools==2.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
-django-health-check==4.0.0
+django-health-check==4.1.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -309,7 +314,7 @@ django-solo==2.3.0
     #   django-log-outgoing-requests
     #   notifications-api-common
     #   zgw-consumers
-django-structlog==9.1.1
+django-structlog==10.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -494,10 +499,11 @@ maykin-2fa==1.0.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-maykin-common==0.18.0
+maykin-common @ git+https://github.com/maykinmedia/django-common.git@666086e05123d06a3c4bc9479840e013bfb101cd
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   open-api-framework
 mccabe==0.7.0
     # via pylint
 mdurl==0.1.2
@@ -522,7 +528,7 @@ notifications-api-common==0.10.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.13.4
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework.git@987bdbabfcc2d172634144934f27eb5e405cc26e
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -757,7 +763,6 @@ python-decouple==3.8
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   maykin-common
-    #   open-api-framework
 python-dotenv==1.0.1
     # via
     #   -c requirements/base.txt
@@ -821,7 +826,7 @@ requests==2.32.4
     #   zgw-consumers
 requests-mock==1.12.1
     # via -r requirements/test-tools.in
-rich==14.2.0
+rich==14.3.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -904,7 +909,7 @@ sqlparse==0.5.5
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django
-structlog==25.4.0
+structlog==25.5.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -918,7 +923,7 @@ tornado==6.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   flower
-typer==0.21.1
+typer==0.24.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -938,7 +943,6 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   pyopenssl
     #   qrcode
-    #   typer
     #   zgw-consumers
 tzdata==2025.2
     # via

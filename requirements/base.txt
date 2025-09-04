@@ -2,6 +2,8 @@
 #    ./bin/compile_dependencies.sh
 amqp==5.2.0
     # via kombu
+annotated-doc==0.0.4
+    # via typer
 annotated-types==0.7.0
     # via pydantic
 ape-pie==0.2.0
@@ -47,7 +49,7 @@ cffi==2.0.0
     # via cryptography
 charset-normalizer==3.3.2
     # via requests
-click==8.1.7
+click==8.3.1
     # via
     #   celery
     #   click-didyoumean
@@ -132,7 +134,7 @@ django-filter==24.2
     #   open-api-framework
 django-formtools==2.5.1
     # via django-two-factor-auth
-django-health-check==4.0.0
+django-health-check==4.1.2
     # via maykin-common
 django-ipware==7.0.1
     # via django-structlog
@@ -177,7 +179,7 @@ django-solo==2.3.0
     #   django-log-outgoing-requests
     #   notifications-api-common
     #   zgw-consumers
-django-structlog==9.1.1
+django-structlog==10.0.0
     # via open-api-framework
 django-two-factor-auth==1.16.0
     # via maykin-2fa
@@ -254,8 +256,10 @@ maykin-2fa==1.0.1
     # via
     #   maykin-common
     #   open-api-framework
-maykin-common==0.18.0
-    # via -r requirements/base.in
+maykin-common @ git+https://github.com/maykinmedia/django-common.git@666086e05123d06a3c4bc9479840e013bfb101cd
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
 mdurl==0.1.2
     # via markdown-it-py
 mozilla-django-oidc==4.0.1
@@ -266,7 +270,7 @@ mozilla-django-oidc-db==1.1.1
     #   open-api-framework
 notifications-api-common==0.10.1
     # via commonground-api-common
-open-api-framework==0.13.4
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework.git@987bdbabfcc2d172634144934f27eb5e405cc26e
     # via -r requirements/base.in
 opentelemetry-api==1.36.0
     # via
@@ -397,9 +401,7 @@ python-dateutil==2.9.0.post0
     #   celery
     #   django-relativedelta
 python-decouple==3.8
-    # via
-    #   maykin-common
-    #   open-api-framework
+    # via maykin-common
 python-dotenv==1.0.1
     # via
     #   open-api-framework
@@ -433,7 +435,7 @@ requests==2.32.4
     #   open-api-framework
     #   opentelemetry-exporter-otlp-proto-http
     #   zgw-consumers
-rich==14.2.0
+rich==14.3.3
     # via typer
 rpds-py==0.19.1
     # via
@@ -459,13 +461,13 @@ six==1.16.0
     #   python-dateutil
 sqlparse==0.5.5
     # via django
-structlog==25.4.0
+structlog==25.5.0
     # via
     #   django-structlog
     #   open-api-framework
 tornado==6.5.1
     # via flower
-typer==0.21.1
+typer==0.24.1
     # via maykin-common
 typing-extensions==4.12.2
     # via
@@ -481,7 +483,6 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   pyopenssl
     #   qrcode
-    #   typer
     #   zgw-consumers
 tzdata==2025.2
     # via kombu
