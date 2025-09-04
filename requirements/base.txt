@@ -2,6 +2,8 @@
 #    ./bin/compile_dependencies.sh
 amqp==5.2.0
     # via kombu
+annotated-doc==0.0.4
+    # via typer
 annotated-types==0.7.0
     # via pydantic
 ape-pie==0.2.0
@@ -47,7 +49,7 @@ cffi==2.0.0
     # via cryptography
 charset-normalizer==3.3.2
     # via requests
-click==8.1.7
+click==8.3.1
     # via
     #   celery
     #   click-didyoumean
@@ -131,7 +133,7 @@ django-filter==24.2
     #   open-api-framework
 django-formtools==2.5.1
     # via django-two-factor-auth
-django-health-check==4.0.0
+django-health-check==4.4.1
     # via maykin-common
 django-ipware==7.0.1
     # via django-structlog
@@ -152,7 +154,9 @@ django-otp==1.5.1
 django-phonenumber-field==7.3.0
     # via django-two-factor-auth
 django-privates==3.1.1
-    # via django-simple-certmanager
+    # via
+    #   django-simple-certmanager
+    #   open-api-framework
 django-redis==5.4.0
     # via open-api-framework
 django-relativedelta==2.0.0
@@ -169,14 +173,16 @@ django-setup-configuration==0.11.0
     #   mozilla-django-oidc-db
     #   open-api-framework
 django-simple-certmanager==2.3.0
-    # via zgw-consumers
+    # via
+    #   open-api-framework
+    #   zgw-consumers
 django-solo==2.3.0
     # via
     #   commonground-api-common
     #   django-log-outgoing-requests
     #   notifications-api-common
     #   zgw-consumers
-django-structlog==9.1.1
+django-structlog==10.0.0
     # via open-api-framework
 django-two-factor-auth==1.16.0
     # via maykin-2fa
@@ -223,18 +229,16 @@ furl==2.1.3
     # via ape-pie
 glom==23.5.0
     # via mozilla-django-oidc-db
-googleapis-common-protos==1.70.0
+googleapis-common-protos==1.75.0
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-grpcio==1.74.0
+grpcio==1.80.0
     # via opentelemetry-exporter-otlp-proto-grpc
 humanize==4.10.0
     # via flower
 idna==3.7
     # via requests
-importlib-metadata==8.7.0
-    # via opentelemetry-api
 inflection==0.5.1
     # via drf-spectacular
 iso639-lang==2.6.0
@@ -245,14 +249,16 @@ jsonschema-specifications==2023.12.1
     # via jsonschema
 kombu==5.5.2
     # via celery
-markdown-it-py==4.0.0
+markdown-it-py==4.2.0
     # via rich
 maykin-2fa==1.0.1
     # via
     #   maykin-common
     #   open-api-framework
-maykin-common==0.18.0
-    # via -r requirements/base.in
+maykin-common==0.19.0
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
 mdurl==0.1.2
     # via markdown-it-py
 mozilla-django-oidc==5.0.2
@@ -263,9 +269,9 @@ mozilla-django-oidc-db==2.0.1
     #   open-api-framework
 notifications-api-common==0.10.1
     # via commonground-api-common
-open-api-framework==0.13.4
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework.git@78893ce8f4956362f0d2e750241c7a7d5a5bb4f6
     # via -r requirements/base.in
-opentelemetry-api==1.36.0
+opentelemetry-api==1.42.0
     # via
     #   maykin-common
     #   opentelemetry-exporter-otlp-proto-grpc
@@ -280,17 +286,17 @@ opentelemetry-api==1.36.0
     #   opentelemetry-instrumentation-wsgi
     #   opentelemetry-sdk
     #   opentelemetry-semantic-conventions
-opentelemetry-exporter-otlp==1.36.0
+opentelemetry-exporter-otlp==1.42.0
     # via maykin-common
-opentelemetry-exporter-otlp-proto-common==1.36.0
+opentelemetry-exporter-otlp-proto-common==1.42.0
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-opentelemetry-exporter-otlp-proto-grpc==1.36.0
+opentelemetry-exporter-otlp-proto-grpc==1.42.0
     # via opentelemetry-exporter-otlp
-opentelemetry-exporter-otlp-proto-http==1.36.0
+opentelemetry-exporter-otlp-proto-http==1.42.0
     # via opentelemetry-exporter-otlp
-opentelemetry-instrumentation==0.57b0
+opentelemetry-instrumentation==0.63b0
     # via
     #   opentelemetry-instrumentation-celery
     #   opentelemetry-instrumentation-dbapi
@@ -299,34 +305,34 @@ opentelemetry-instrumentation==0.57b0
     #   opentelemetry-instrumentation-redis
     #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
-opentelemetry-instrumentation-celery==0.57b0
+opentelemetry-instrumentation-celery==0.63b0
     # via maykin-common
-opentelemetry-instrumentation-dbapi==0.57b0
+opentelemetry-instrumentation-dbapi==0.63b0
     # via opentelemetry-instrumentation-psycopg
-opentelemetry-instrumentation-django==0.57b0
+opentelemetry-instrumentation-django==0.63b0
     # via maykin-common
-opentelemetry-instrumentation-psycopg==0.57b0
+opentelemetry-instrumentation-psycopg==0.63b0
     # via maykin-common
-opentelemetry-instrumentation-redis==0.57b0
+opentelemetry-instrumentation-redis==0.63b0
     # via maykin-common
-opentelemetry-instrumentation-requests==0.57b0
+opentelemetry-instrumentation-requests==0.63b0
     # via maykin-common
-opentelemetry-instrumentation-wsgi==0.57b0
+opentelemetry-instrumentation-wsgi==0.63b0
     # via opentelemetry-instrumentation-django
-opentelemetry-proto==1.36.0
+opentelemetry-proto==1.42.0
     # via
     #   opentelemetry-exporter-otlp-proto-common
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-opentelemetry-resource-detector-containerid==0.57b0
+opentelemetry-resource-detector-containerid==0.63b0
     # via maykin-common
-opentelemetry-sdk==1.36.0
+opentelemetry-sdk==1.42.0
     # via
     #   maykin-common
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
     #   opentelemetry-resource-detector-containerid
-opentelemetry-semantic-conventions==0.57b0
+opentelemetry-semantic-conventions==0.63b0
     # via
     #   opentelemetry-instrumentation
     #   opentelemetry-instrumentation-celery
@@ -336,7 +342,7 @@ opentelemetry-semantic-conventions==0.57b0
     #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
     #   opentelemetry-sdk
-opentelemetry-util-http==0.57b0
+opentelemetry-util-http==0.63b0
     # via
     #   opentelemetry-instrumentation-django
     #   opentelemetry-instrumentation-requests
@@ -355,7 +361,7 @@ prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.47
     # via click-repl
-protobuf==6.33.5
+protobuf==6.33.6
     # via
     #   googleapis-common-protos
     #   opentelemetry-proto
@@ -393,9 +399,7 @@ python-dateutil==2.9.0.post0
     #   celery
     #   django-relativedelta
 python-decouple==3.8
-    # via
-    #   maykin-common
-    #   open-api-framework
+    # via maykin-common
 python-dotenv==1.0.1
     # via
     #   open-api-framework
@@ -429,7 +433,7 @@ requests==2.33.1
     #   open-api-framework
     #   opentelemetry-exporter-otlp-proto-http
     #   zgw-consumers
-rich==14.2.0
+rich==15.0.0
     # via typer
 rpds-py==0.19.1
     # via
@@ -455,16 +459,17 @@ six==1.16.0
     #   python-dateutil
 sqlparse==0.5.5
     # via django
-structlog==25.4.0
+structlog==25.5.0
     # via
     #   django-structlog
     #   open-api-framework
 tornado==6.5.5
     # via flower
-typer==0.21.1
+typer==0.25.1
     # via maykin-common
 typing-extensions==4.12.2
     # via
+    #   grpcio
     #   mozilla-django-oidc-db
     #   opentelemetry-api
     #   opentelemetry-exporter-otlp-proto-grpc
@@ -477,7 +482,6 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   pyopenssl
     #   qrcode
-    #   typer
     #   zgw-consumers
 tzdata==2025.2
     # via kombu
@@ -511,5 +515,3 @@ zgw-consumers==1.0.0
     # via
     #   commonground-api-common
     #   notifications-api-common
-zipp==3.23.0
-    # via importlib-metadata
