@@ -1,7 +1,5 @@
 import os
 
-from open_api_framework.conf.utils import config
-
 os.environ.setdefault("DB_USER", config("DATABASE_USER", "openklant"))
 os.environ.setdefault("DB_NAME", config("DATABASE_NAME", "openklant"))
 os.environ.setdefault("DB_PASSWORD", config("DATABASE_PASSWORD", ""))

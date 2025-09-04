@@ -1,11 +1,11 @@
 import os
 
+from maykin_common.config import config  # noqa
 from notifications_api_common.settings import *  # noqa
 
 os.environ["_USE_STRUCTLOG"] = "True"
 
 from open_api_framework.conf.base import *  # noqa
-from open_api_framework.conf.utils import config  # noqa
 from upgrade_check import UpgradeCheck, VersionRange
 from upgrade_check.constraints import UpgradePaths
 from maykin_common.health_checks import default_health_check_apps
@@ -37,7 +37,7 @@ MIDDLEWARE += ["openklant.utils.middleware.APIVersionHeaderMiddleware"]
 
 ENABLE_CLOUD_EVENTS = config(
     "ENABLE_CLOUD_EVENTS",
-    default=False,
+    default="False",
     cast=bool,
     help_text="**EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations via the API (not ready for use in production)",
 )
