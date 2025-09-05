@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const argv = require('yargs').argv;
 const paths = require('./build/paths');
 
@@ -18,34 +19,26 @@ module.exports = {
     // Entry points locations.
     entry: {
         [`${paths.package.name}-css`]: `${__dirname}/${paths.scssEntry}`,
-        [`${paths.package.name}-js`]: `${__dirname}/${paths.jsEntry}`,
-
         'admin_overrides': `${__dirname}/${paths.scssSrcDir}/admin/admin_overrides.scss`,
     },
 
     // (Output) bundle locations.
     output: {
         path: __dirname + '/' + paths.jsDir,
-        filename: '[name].js', // file
-        chunkFilename: '[name].bundle.js',
-        publicPath: '/static/bundles/',
+        filename: '[name].js',   // file
     },
 
     // Plugins
     plugins: [
-        new MiniCssExtractPlugin(),
+        new RemoveEmptyScriptsPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+        }),
     ],
 
     // Modules
     module: {
         rules: [
-            // .js
-            {
-                test: /.js?$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-            },
-
             // .scss
             {
                 test: /\.(sa|sc|c)ss$/,
