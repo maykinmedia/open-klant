@@ -1,6 +1,6 @@
 import os
 
-from open_api_framework.conf.utils import config
+from maykin_common.config_helpers import config
 
 os.environ.setdefault("DB_USER", config("DATABASE_USER", "postgres"))
 os.environ.setdefault("DB_NAME", config("DATABASE_NAME", "postgres"))

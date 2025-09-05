@@ -1,4 +1,5 @@
-open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis]
+# open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis]
+git+https://github.com/maykinmedia/open-api-framework.git@feature/83-migrate-envvar-docs-to-django-common[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis]
 
 mozilla-django-oidc-db[setup-configuration]
 psycopg[pool]
@@ -9,4 +10,5 @@ django-localflavor
 django-setup-configuration
 django-structlog[celery]
 
-maykin-common[axes,mfa]
+# maykin-common[axes,mfa]
+git+https://github.com/maykinmedia/django-common.git@feature/add-envvar-documentation[axes,mfa,docs-helpers,config-helpers]
