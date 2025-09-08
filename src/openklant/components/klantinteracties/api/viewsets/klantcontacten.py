@@ -21,6 +21,14 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     MaakKlantcontactSerializer,
     OnderwerpobjectSerializer,
 )
+from openklant.components.klantinteracties.metrics import (
+    betrokkene_create_counter,
+    betrokkene_delete_counter,
+    betrokkene_update_counter,
+    klantcontacten_create_counter,
+    klantcontacten_delete_counter,
+    klantcontacten_update_counter,
+)
 from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
@@ -31,6 +39,7 @@ from openklant.components.klantinteracties.models.klantcontacten import (
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.models import TokenAuth
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.api import get_related_object_uuid
 from openklant.components.utils.mixins import ExpandMixin
 
 logger = structlog.stdlib.get_logger(__name__)
@@ -94,15 +103,23 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        klantcontact = serializer.instance
+        instance = serializer.instance
+        uuid = str(instance.uuid)
         token_auth: TokenAuth = self.request.auth
+        klantcontacten_create_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "nummer": instance.nummer,
+            },
+        )
         logger.info(
             "klantcontact_created",
-            uuid=str(klantcontact.uuid),
-            nummer=klantcontact.nummer,
-            onderwerp=klantcontact.onderwerp,
-            plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
-            if klantcontact.plaatsgevonden_op
+            uuid=uuid,
+            nummer=instance.nummer,
+            onderwerp=instance.onderwerp,
+            plaatsgevonden_op=instance.plaatsgevonden_op.isoformat()
+            if instance.plaatsgevonden_op
             else None,
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
@@ -111,15 +128,23 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_update(self, serializer):
         super().perform_update(serializer)
-        klantcontact = serializer.instance
+        instance = serializer.instance
+        uuid = str(instance.uuid)
         token_auth: TokenAuth = self.request.auth
+        klantcontacten_update_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "nummer": instance.nummer,
+            },
+        )
         logger.info(
             "klantcontact_updated",
-            uuid=str(klantcontact.uuid),
-            nummer=klantcontact.nummer,
-            onderwerp=klantcontact.onderwerp,
-            plaatsgevonden_op=klantcontact.plaatsgevonden_op.isoformat()
-            if klantcontact.plaatsgevonden_op
+            uuid=uuid,
+            nummer=instance.nummer,
+            onderwerp=instance.onderwerp,
+            plaatsgevonden_op=instance.plaatsgevonden_op.isoformat()
+            if instance.plaatsgevonden_op
             else None,
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
@@ -128,10 +153,19 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_destroy(self, instance):
         token_auth: TokenAuth = self.request.auth
-        instance.delete()
+        uuid = str(instance.uuid)
+        super().perform_destroy(instance)
+
+        klantcontacten_delete_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "nummer": instance.nummer,
+            },
+        )
         logger.info(
             "klantcontact_deleted",
-            uuid=str(instance.uuid),
+            uuid=uuid,
             nummer=instance.nummer,
             onderwerp=instance.onderwerp,
             plaatsgevonden_op=instance.plaatsgevonden_op.isoformat()
@@ -203,15 +237,25 @@ class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        betrokkene = serializer.instance
+        instance = serializer.instance
         token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        partij_uuid = get_related_object_uuid(instance, "partij")
+        klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
+
+        betrokkene_create_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "partij_uuid": partij_uuid,
+                "klantcontact_uuid": klantcontact_uuid,
+            },
+        )
         logger.info(
             "betrokkene_created",
-            uuid=str(betrokkene.uuid),
-            partij_uuid=str(betrokkene.partij.uuid) if betrokkene.partij else None,
-            klantcontact_uuid=str(betrokkene.klantcontact.uuid)
-            if betrokkene.klantcontact
-            else None,
+            uuid=uuid,
+            partij_uuid=partij_uuid,
+            klantcontact_uuid=klantcontact_uuid,
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
@@ -219,15 +263,26 @@ class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_update(self, serializer):
         super().perform_update(serializer)
-        betrokkene = serializer.instance
+        instance = serializer.instance
+
+        uuid = str(instance.uuid)
+        partij_uuid = get_related_object_uuid(instance, "partij")
+        klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
         token_auth = self.request.auth
+
+        betrokkene_update_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "partij_uuid": partij_uuid,
+                "klantcontact_uuid": klantcontact_uuid,
+            },
+        )
         logger.info(
             "betrokkene_updated",
-            uuid=str(betrokkene.uuid),
-            partij_uuid=str(betrokkene.partij.uuid) if betrokkene.partij else None,
-            klantcontact_uuid=str(betrokkene.klantcontact.uuid)
-            if betrokkene.klantcontact
-            else None,
+            uuid=uuid,
+            partij_uuid=partij_uuid,
+            klantcontact_uuid=klantcontact_uuid,
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
@@ -235,14 +290,19 @@ class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_destroy(self, instance):
         uuid = str(instance.uuid)
-        partij_uuid = str(instance.partij.uuid) if instance.partij else None
-        klantcontact_uuid = (
-            str(instance.klantcontact.uuid) if instance.klantcontact else None
-        )
+        partij_uuid = get_related_object_uuid(instance, "partij")
+        klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
         token_auth = self.request.auth
-
         super().perform_destroy(instance)
 
+        betrokkene_delete_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "partij_uuid": partij_uuid,
+                "klantcontact_uuid": klantcontact_uuid,
+            },
+        )
         logger.info(
             "betrokkene_deleted",
             uuid=uuid,
