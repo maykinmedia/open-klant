@@ -22,6 +22,9 @@ done
 
 >&2 echo "Database is up."
 
+# Set defaults for OTEL
+export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-openklant}"
+
 # Apply database migrations
 >&2 echo "Apply database migrations"
 python src/manage.py migrate
