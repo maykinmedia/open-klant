@@ -6,6 +6,7 @@ class AccountsConfig(AppConfig):
     name = "openklant.accounts"
 
     def ready(self):
-        from .signals import update_admin_index
+        from . import metrics  # noqa
+        from . import signals  # noqa
 
-        post_migrate.connect(update_admin_index, sender=self)
+        post_migrate.connect(signals.update_admin_index, sender=self)
