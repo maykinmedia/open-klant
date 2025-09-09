@@ -118,14 +118,7 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
         organisatie_uuid = get_related_object_uuid(instance, "organisatie")
         persoon_uuid = get_related_object_uuid(instance, "persoon")
 
-        partijen_create_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "organisatie_uuid": organisatie_uuid,
-                "persoon_uuid": persoon_uuid,
-            },
-        )
+        partijen_create_counter.add(1)
         logger.info(
             "partij_created",
             uuid=uuid,
@@ -144,14 +137,7 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
         organisatie_uuid = get_related_object_uuid(instance, "organisatie")
         persoon_uuid = get_related_object_uuid(instance, "persoon")
 
-        partijen_update_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "organisatie_uuid": organisatie_uuid,
-                "persoon_uuid": persoon_uuid,
-            },
-        )
+        partijen_update_counter.add(1)
         logger.info(
             "partij_updated",
             uuid=uuid,
@@ -169,14 +155,7 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
         persoon_uuid = get_related_object_uuid(instance, "persoon")
         super().perform_destroy(instance)
 
-        partijen_delete_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "organisatie_uuid": organisatie_uuid,
-                "persoon_uuid": persoon_uuid,
-            },
-        )
+        partijen_delete_counter.add(1)
         logger.info(
             "partij_deleted",
             uuid=uuid,

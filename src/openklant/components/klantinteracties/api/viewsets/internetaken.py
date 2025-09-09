@@ -77,13 +77,7 @@ class InterneTaakViewSet(NotificationViewSetMixin, viewsets.ModelViewSet):
         uuid = str(instance.uuid)
         klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
 
-        interne_taken_create_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "klantcontact_uuid": klantcontact_uuid,
-            },
-        )
+        interne_taken_create_counter.add(1)
         logger.info(
             "interne_taak_created",
             uuid=uuid,
@@ -100,13 +94,7 @@ class InterneTaakViewSet(NotificationViewSetMixin, viewsets.ModelViewSet):
         uuid = str(instance.uuid)
         klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
 
-        interne_taken_update_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "klantcontact_uuid": klantcontact_uuid,
-            },
-        )
+        interne_taken_update_counter.add(1)
         logger.info(
             "interne_taak_updated",
             uuid=uuid,
@@ -122,13 +110,7 @@ class InterneTaakViewSet(NotificationViewSetMixin, viewsets.ModelViewSet):
         klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
         super().perform_destroy(instance)
 
-        interne_taken_delete_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "klantcontact_uuid": klantcontact_uuid,
-            },
-        )
+        interne_taken_delete_counter.add(1)
         logger.info(
             "interne_taak_deleted",
             uuid=uuid,
