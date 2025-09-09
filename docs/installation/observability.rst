@@ -88,13 +88,6 @@ Open Klant produces application metrics (using Open Telemetry).
    of the metrics. You need to apply some kind of aggregation to de-duplicate these
    values. The attribute ``scope="global"``  acts as a marker for these type of metrics.
 
-   With PromQL for example, you can use ``avg`` on the assumption that all values will
-   be equal, so the average will also be identical:
-
-   .. code-block:: promql
-
-       avg by (form_name, type) (otel_submissions_count{scope="global"})
-
 Generic
 -------
 
@@ -106,6 +99,42 @@ Generic
     enabled, but the code is in the Open Telemetry SDK instrumentation already and could
     possibly be opted-in to.
 
+Application specific
+--------------------
+
+Accounts
+^^^^^^^^
+
+``user_count``
+    Reports the number of users in the database. This is a global metric, you must take
+    care in de-duplicating results. Additional attributes are:
+
+    - ``scope`` - fixed, set to ``global`` to enable de-duplication.
+    - ``type`` - the user type. ``all``, ``staff`` or ``superuser``.
+
+    Sample PromQL query:
+
+    .. code-block:: promql
+
+        max by (type) (last_over_time(
+          otel_user_count{scope="global"}
+          [1m]
+        ))
+
+``auth.login_failures``
+    A counter incremented every time a user login fails (typically because of invalid
+    credentials). Does not include the second factor, if enabled. Additional attributes:
+
+    - ``http_target`` - the request path where the login failure occurred, if this
+      happened in a request context.
+
+``auth.user_lockouts``
+    A counter incremented every time a user is locked out because they reached the
+    maximum number of failed attempts. Additional attributes:
+
+    - ``http_target`` - the request path where the login failure occurred, if this
+      happened in a request context.
+    - ``username`` - username of the user trying to log in.
 
 Tracing
 =======
