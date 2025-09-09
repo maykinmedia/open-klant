@@ -13,9 +13,15 @@ from openklant.components.klantinteracties.api.serializers.internetaken import (
     InterneTaakSerializer,
 )
 from openklant.components.klantinteracties.kanalen import KANAAL_INTERNETAAK
+from openklant.components.klantinteracties.metrics import (
+    interne_taken_create_counter,
+    interne_taken_delete_counter,
+    interne_taken_update_counter,
+)
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.api import get_related_object_uuid
 
 logger = structlog.get_logger(__name__)
 
@@ -66,14 +72,16 @@ class InterneTaakViewSet(NotificationViewSetMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        interne_taak = serializer.instance
+        instance = serializer.instance
         token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
+
+        interne_taken_create_counter.add(1)
         logger.info(
             "interne_taak_created",
-            uuid=str(interne_taak.uuid),
-            klantcontact_uuid=str(interne_taak.klantcontact.uuid)
-            if interne_taak.klantcontact
-            else None,
+            uuid=uuid,
+            klantcontact_uuid=klantcontact_uuid,
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
@@ -81,14 +89,16 @@ class InterneTaakViewSet(NotificationViewSetMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_update(self, serializer):
         super().perform_update(serializer)
-        interne_taak = serializer.instance
+        instance = serializer.instance
         token_auth = self.request.auth
+        uuid = str(instance.uuid)
+        klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
+
+        interne_taken_update_counter.add(1)
         logger.info(
             "interne_taak_updated",
-            uuid=str(interne_taak.uuid),
-            klantcontact_uuid=str(interne_taak.klantcontact.uuid)
-            if interne_taak.klantcontact
-            else None,
+            uuid=uuid,
+            klantcontact_uuid=klantcontact_uuid,
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
@@ -96,11 +106,11 @@ class InterneTaakViewSet(NotificationViewSetMixin, viewsets.ModelViewSet):
     @transaction.atomic
     def perform_destroy(self, instance):
         uuid = str(instance.uuid)
-        klantcontact_uuid = (
-            str(instance.klantcontact.uuid) if instance.klantcontact else None
-        )
         token_auth = self.request.auth
+        klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
         super().perform_destroy(instance)
+
+        interne_taken_delete_counter.add(1)
         logger.info(
             "interne_taak_deleted",
             uuid=uuid,
