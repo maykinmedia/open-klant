@@ -1,0 +1,88 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://localhost:8000/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://localhost:8000/klanten/api/v1/klanten/dbfdb3f2-e153-49ea-9e26-e55220605c14","bronorganisatie":"215906846","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"0612345678","emailadres":"example@maykinmedia.nl","adres":null,"subject":"","subjectType":"natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"inpBsn":"024325818","anpIdentificatie":"0","inpANummer":"","geslachtsnaam":"Greene","voorvoegselGeslachtsnaam":"","voorletters":"","voornamen":"Lori","geslachtsaanduiding":"","geboortedatum":"1981-04-15","verblijfsadres":null,"subVerblijfBuitenland":null}}]}'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '726'
+      Content-Type:
+      - application/json
+      Referrer-Policy:
+      - same-origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Token e2a63da7e0f37f5463ba0493744a937fc1adac02
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.4
+    method: GET
+    uri: http://localhost:8005/klantinteracties/api/v1/partijen?nummer=&expand=digitaleAdressen
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"uuid":"44a7b364-e464-449a-a106-ffddcef06f67","url":"http://localhost:8005/klantinteracties/api/v1/partijen/44a7b364-e464-449a-a106-ffddcef06f67","nummer":"12345","interneNotitie":"","betrokkenen":[],"categorieRelaties":[],"digitaleAdressen":[],"voorkeursDigitaalAdres":{"uuid":"631fcdaf-702a-46d3-8639-f1b458fac49c","url":"http://localhost:8005/klantinteracties/api/v1/digitaleadressen/631fcdaf-702a-46d3-8639-f1b458fac49c"},"vertegenwoordigden":[],"rekeningnummers":[],"voorkeursRekeningnummer":null,"partijIdentificatoren":[],"soortPartij":"persoon","indicatieGeheimhouding":true,"voorkeurstaal":"","indicatieActief":false,"bezoekadres":{"nummeraanduidingId":"","straatnaam":"","huisnummer":null,"huisnummertoevoeging":"","postcode":"","stad":"","adresregel1":"","adresregel2":"","adresregel3":"","land":""},"correspondentieadres":{"nummeraanduidingId":"","straatnaam":"","huisnummer":null,"huisnummertoevoeging":"","postcode":"","stad":"","adresregel1":"","adresregel2":"","adresregel3":"","land":""},"partijIdentificatie":null,"_expand":{"digitaleAdressen":[]}}]}'
+    headers:
+      API-version:
+      - 0.4.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '1119'
+      Content-Security-Policy:
+      - 'worker-src ''self'' blob:; style-src ''self'' ''unsafe-inline'' fonts.googleapis.com;
+        default-src ''self''; script-src ''self'' ''unsafe-inline''; img-src ''self''
+        data: cdn.redoc.ly; frame-ancestors ''none''; object-src ''none''; frame-src
+        ''self''; form-action ''self''; font-src ''self'' fonts.gstatic.com; base-uri
+        ''self'''
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Wed, 17 Sep 2025 08:19:32 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - WSGIServer/0.2 CPython/3.12.3
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
