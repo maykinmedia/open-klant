@@ -249,7 +249,7 @@ django-cors-headers==4.4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-django-csp==3.8
+django-csp==4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -598,7 +598,7 @@ notifications-api-common==0.7.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.12.0
+open-api-framework==0.13.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -612,11 +612,12 @@ oyaml==1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-packaging==24.1
+packaging==25.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   build
+    #   django-csp
     #   sphinx
 pep8==1.7.1
     # via
