@@ -154,7 +154,7 @@ class BetrokkeneAdmin(admin.ModelAdmin):
 class OnderwerpobjectInlineAdmin(admin.StackedInline):
     model = Onderwerpobject
     fk_name = "klantcontact"
-    raw_id_field = ["klantcontact"]
+    raw_id_fields = ("was_klantcontact",)
     readonly_fields = ("uuid",)
     extra = 0
 
@@ -169,6 +169,7 @@ class ActorKlantcontactInlineAdmin(admin.StackedInline):
     model = ActorKlantcontact
     extra = 0
     readonly_fields = ("uuid",)
+    raw_id_fields = ("actor",)
 
 
 @admin.register(Klantcontact)

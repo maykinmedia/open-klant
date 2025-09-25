@@ -25,6 +25,10 @@
             [
                 "klantinteracties",
                 "partij"
+            ],
+            [
+                "klantinteracties",
+                "partijidentificator"
             ]
         ]
     }

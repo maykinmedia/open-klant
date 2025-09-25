@@ -40,4 +40,5 @@ class InterneTaakAdmin(admin.ModelAdmin):
         "uuid",
         "toegewezen_op",
     )
+    raw_id_fields = ("klantcontact",)
     inlines = (ActorInlineAdmin,)

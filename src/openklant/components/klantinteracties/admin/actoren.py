@@ -31,6 +31,7 @@ class OrganisatorischeEenheidInlineAdmin(admin.StackedInline):
 class ActorKlantcontactInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
     model = ActorKlantcontact
+    raw_id_fields = ("klantcontact",)
     extra = 0
 
 
