@@ -16,8 +16,8 @@ class APIClass:
 @dataclass
 class DigitaalAdres(APIClass):
     adres: str
+    omschrijving: str = ""
     soort_digitaal_adres: SoortDigitaalAdres = "email"
-    omschrijving: str = "Emailadres"
     verstrekt_door_betrokkene: Optional[dict] = None
     verstrekt_door_partij: Optional[dict] = None
 

@@ -3,7 +3,7 @@
 
 
 import os
-from dataclasses import asdict, fields as dataclass_fields
+from dataclasses import fields as dataclass_fields
 from typing import Any, Tuple
 from urllib.parse import parse_qs, urlparse
 
@@ -15,6 +15,11 @@ from django.core.management.base import BaseCommand, CommandParser
 from rest_framework.fields import URLValidator
 from rest_framework.reverse import reverse_lazy
 
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
+from openklant.components.klantinteracties.models import (
+    DigitaalAdres,
+    Partij,
+)
 from openklant.components.token.models import TokenAuth
 from openklant.migration.client import Client
 from openklant.migration.utils import (
@@ -83,49 +88,70 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
     return klanten, next_url
 
 
-def _save_klanten(url: str, token: TokenAuth, klanten: list[Klant]) -> list[str]:
+NUMMER_FIELD_MAPPING = {
+    "natuurlijk_persoon": "inp_bsn",
+    "niet_natuurlijk_persoon": "inn_nnp_id",
+    "vestiging": "vestigings_nummer",
+}
+
+
+def _save_klanten_phonenumbers(
+    url: str, token: TokenAuth, klanten: list[Klant]
+) -> list[str]:
     if not klanten:
         logger.info("no_klanten_to_save")
         return []
 
-    logger.info("creating_klanten_v2_api", count=len(klanten))
+    logger.info("updating_klanten_v2_api", count=len(klanten))
 
     openklant_client = OpenKlantClient(url, token)
-    created_klanten = []
+    updated_klanten = []
+
+    partijen_to_use = Partij.objects.exclude(
+        digitaaladres__referentie="portaalvoorkeur",
+        digitaaladres__soort_digitaal_adres=SoortDigitaalAdres.telefoonnummer,
+    )
 
     for klant in klanten:
-        digitaal_adres = klant.to_digitaal_adres_email()
-        digitaal_adres_ref = None
+        subject_type = getattr(klant, "subject_type", None)
+        nummer_field = NUMMER_FIELD_MAPPING.get(subject_type)
+        nummer = getattr(klant.subject_identificatie, "get", lambda x: None)(
+            nummer_field
+        )
+        try:
+            soort_partij = klant._get_soort_partij()
+            partij = partijen_to_use.get(soort_partij=soort_partij, nummer=nummer)
+        except Partij.DoesNotExist:
+            logger.warning(
+                "partij_not_found",
+                klant=klant,
+                subject_type=subject_type,
+                nummer=nummer,
+            )
+            continue
 
+        digitaal_adres = klant.to_digitaal_adres_phonenumber()
         if digitaal_adres:
             digitaal_adres_data = digitaal_adres.dict()
             digitaal_adres_data["referentie"] = "portaalvoorkeur"
+
             _data = openklant_client.create(
-                DIGITALE_ADDRESSEN_PATH, digitaal_adres_data
+                DIGITALE_ADDRESSEN_PATH,
+                digitaal_adres_data,
             )
 
-            if not isinstance(_data, dict):
-                logger.error(
-                    "invalid_data_for_digitaal_adres",
-                    data=_data,
-                    action="skipping_klant",
-                )
-                continue
+            if _data and "url" in _data:
+                try:
+                    da = DigitaalAdres.objects.get(uuid=_data["uuid"])
+                    da.partij = partij
+                    da.save(update_fields=["partij"])
+                    updated_klanten.append(_data["url"])
+                except DigitaalAdres.DoesNotExist:
+                    logger.error(
+                        "digitaaladres_not_found_after_create", uuid=_data["uuid"]
+                    )
 
-            digitaal_adres_ref = _data.get("uuid")
-
-        partij = klant.to_partij(digitaal_adres=digitaal_adres_ref)
-
-        if not partij:
-            logger.error("unable_to_create_partij", klant=asdict(klant))
-            continue
-
-        response_data = openklant_client.create(PARTIJEN_PATH, partij.dict())
-
-        if response_data and "url" in response_data:
-            created_klanten.append(response_data["url"])
-
-    return created_klanten
+    return updated_klanten
 
 
 class Command(BaseCommand):
@@ -180,7 +206,7 @@ class Command(BaseCommand):
                 klanten, next_url = _retrieve_klanten(
                     v1_url if next_url == "" else next_url, access_token
                 )
-                results.extend(_save_klanten(v2_url, dummy_token, klanten))
+                results.extend(_save_klanten_phonenumbers(v2_url, dummy_token, klanten))
         finally:
             dummy_tokens = TokenAuth.objects.filter(
                 application=MIGRATION_TOKEN_IDENTIFIER

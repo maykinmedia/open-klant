@@ -5,6 +5,7 @@ from django.utils.functional import classproperty
 
 import structlog
 
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.constants import (
     PartijIdentificatorCodeRegister,
     PartijIdentificatorCodeSoortObjectId,
@@ -102,6 +103,7 @@ class Klant:
     subject_identificatie: Optional[dict] = None
     subject_type: Optional[str] = None
     emailadres: Optional[str] = None
+    telefoonnummer: Optional[str] = None
 
     voornaam: Optional[str] = None
     achternaam: Optional[str] = None
@@ -177,11 +179,22 @@ class Klant:
                 self.subject_type = subject_class.klant_type
                 return
 
-    def to_digitaal_adres(self) -> DigitaalAdres | None:
+    def to_digitaal_adres_email(self) -> DigitaalAdres | None:
         if not self.emailadres:
             return
 
-        return DigitaalAdres(adres=self.emailadres)
+        return DigitaalAdres(
+            adres=self.emailadres,
+            soort_digitaal_adres=SoortDigitaalAdres.email,
+        )
+
+    def to_digitaal_adres_phonenumber(self) -> DigitaalAdres | None:
+        if not self.telefoonnummer:
+            return
+        return DigitaalAdres(
+            adres=self.telefoonnummer,
+            soort_digitaal_adres=SoortDigitaalAdres.telefoonnummer,
+        )
 
     def to_partij(self, digitaal_adres: str | None = None) -> Partij | None:
         try:

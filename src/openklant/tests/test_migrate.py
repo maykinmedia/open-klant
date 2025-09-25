@@ -29,6 +29,10 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     Persoon,
 )
+from openklant.components.klantinteracties.models.tests.factories import (
+    DigitaalAdresFactory,
+    PartijFactory,
+)
 from openklant.components.token.models import TokenAuth
 from openklant.migration.utils import generate_jwt_token
 
@@ -569,7 +573,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertIsNone(digitaal_adres.betrokkene)
         self.assertEqual(digitaal_adres.soort_digitaal_adres, SoortDigitaalAdres.email)
         self.assertEqual(digitaal_adres.adres, "example@maykinmedia.nl")
-        self.assertEqual(digitaal_adres.omschrijving, "Emailadres")
+        self.assertEqual(digitaal_adres.omschrijving, "")
         self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")
 
         output = stdout.getvalue().splitlines()
@@ -689,3 +693,102 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         )
 
         self.assertEqual(output, [f"{self.live_server_url}{partij_url}"])
+
+    def test_telefoonnummer(self):
+        partij = PartijFactory.create(
+            soort_partij=SoortPartij.persoon, nummer="024325818"
+        )
+
+        stdout = StringIO()
+
+        call_command(
+            "migrate_to_v2_phonenumbers",
+            "http://localhost:8000",
+            self.live_server_url,
+            stdout=stdout,
+        )
+
+        digitaal_adressen = DigitaalAdres.objects.filter(partij=partij)
+
+        self.assertEqual(digitaal_adressen.count(), 1)
+
+        digitaal_adres = digitaal_adressen.first()
+        self.assertEqual(digitaal_adres.adres, "0612345678")
+        self.assertEqual(digitaal_adres.soort_digitaal_adres, "telefoonnummer")
+        self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")
+        self.assertEqual(digitaal_adres.partij, partij)
+
+    def test_telefoonnummer_niet_natuurlijk_persoon(self):
+        partij = PartijFactory.create(
+            soort_partij=SoortPartij.organisatie, nummer="024325818"
+        )
+
+        stdout = StringIO()
+
+        call_command(
+            "migrate_to_v2_phonenumbers",
+            "http://localhost:8000",
+            self.live_server_url,
+            stdout=stdout,
+        )
+
+        digitaal_adressen = DigitaalAdres.objects.filter(partij=partij)
+
+        self.assertEqual(digitaal_adressen.count(), 1)
+
+        digitaal_adres = digitaal_adressen.first()
+        self.assertEqual(digitaal_adres.adres, "0612345678")
+        self.assertEqual(digitaal_adres.soort_digitaal_adres, "telefoonnummer")
+        self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")
+        self.assertEqual(digitaal_adres.partij, partij)
+
+    def test_skip_telefoonnummer(self):
+        partij = PartijFactory.create(
+            soort_partij=SoortPartij.persoon, nummer="024325818"
+        )
+        DigitaalAdresFactory.create(
+            partij=partij,
+            adres="0123456789",
+            soort_digitaal_adres="telefoonnummer",
+            referentie="portaalvoorkeur",
+        )
+        digitaal_adressen = DigitaalAdres.objects.filter(partij=partij)
+
+        self.assertEqual(digitaal_adressen.count(), 1)
+
+        stdout = StringIO()
+
+        call_command(
+            "migrate_to_v2_phonenumbers",
+            "http://localhost:8000",
+            self.live_server_url,
+            stdout=stdout,
+        )
+
+        digitaal_adressen = DigitaalAdres.objects.filter(partij=partij)
+
+        self.assertEqual(digitaal_adressen.count(), 1)
+
+        digitaal_adres = digitaal_adressen.first()
+        self.assertEqual(digitaal_adres.adres, "0123456789")
+        self.assertEqual(digitaal_adres.soort_digitaal_adres, "telefoonnummer")
+        self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")
+        self.assertEqual(digitaal_adres.partij, partij)
+
+    def test_no_telefoonnummer(self):
+        partij = PartijFactory.create(
+            soort_partij=SoortPartij.persoon, nummer="024325818"
+        )
+
+        stdout = StringIO()
+
+        call_command(
+            "migrate_to_v2_phonenumbers",
+            "http://localhost:8000",
+            self.live_server_url,
+            stdout=stdout,
+        )
+
+        digitaal_adressen = DigitaalAdres.objects.filter(partij=partij)
+
+        self.assertEqual(digitaal_adressen.count(), 0)
