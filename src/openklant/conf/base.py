@@ -1,9 +1,9 @@
 from pathlib import Path
 
 import structlog
+from maykin_common.config_helpers import config  # noqa
 from notifications_api_common.settings import *  # noqa
 from open_api_framework.conf.base import *  # noqa
-from open_api_framework.conf.utils import config  # noqa
 from upgrade_check import UpgradeCheck, VersionRange
 from upgrade_check.constraints import UpgradePaths
 
