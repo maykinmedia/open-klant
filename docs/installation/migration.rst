@@ -39,3 +39,10 @@ When running the application in a Docker container:
             <container_name> src/manage.py migrate_to_v2 \
             https://example.openklant.nl \
             https://example.klantinteracties.nl
+
+.. note::
+
+    The original ``migrate_to_v2`` command only migrated email addresses, to migrate phonenumbers as
+    well, a separate command ``migrate_to_v2_phonenumbers`` was added. This command takes
+    the same arguments as ``migrate_to_v2`` and assumes the ``migrate_to_v2`` command was run already
+    in the past (to make sure the ``Partijen`` are present in v2 already).
