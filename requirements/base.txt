@@ -122,7 +122,7 @@ django-capture-tag==1.0
     # via -r requirements/base.in
 django-cors-headers==4.4.0
     # via open-api-framework
-django-csp==3.8
+django-csp==4.0
     # via open-api-framework
 django-filter==24.2
     # via
@@ -248,12 +248,14 @@ mozilla-django-oidc-db==0.25.1
     #   open-api-framework
 notifications-api-common==0.7.3
     # via commonground-api-common
-open-api-framework==0.12.0
+open-api-framework==0.13.0
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
 oyaml==1.0
     # via commonground-api-common
+packaging==25.0
+    # via django-csp
 phonenumberslite==8.13.42
     # via django-two-factor-auth
 prometheus-client==0.20.0
