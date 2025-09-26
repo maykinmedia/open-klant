@@ -2324,8 +2324,8 @@ class PartijTests(APITestCase):
         )
 
     def test_patch_requires_partij_identificatie_when_soortPartij_changes(self):
-        digitaal_adres, digitaal_adres2 = DigitaalAdresFactory.create_batch(2)
-        rekeningnummer, rekeningnummer2 = RekeningnummerFactory.create_batch(2)
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
 
         list_url = reverse("klantinteracties:partij-list")
         create_data = {
