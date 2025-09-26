@@ -6887,17 +6887,26 @@ components:
       type: object
       properties:
         partijIdentificatie:
-          $ref: '#/components/schemas/Contactpersoon'
+          allOf:
+          - $ref: '#/components/schemas/Contactpersoon'
+          description: De toegestane eigenschappen zijn afhankelijk van `soortPartij`.
+            Onbekende eigenschappen zijn niet toegestaan.
     partij_identificatie_Organisatie:
       type: object
       properties:
         partijIdentificatie:
-          $ref: '#/components/schemas/Organisatie'
+          allOf:
+          - $ref: '#/components/schemas/Organisatie'
+          description: De toegestane eigenschappen zijn afhankelijk van `soortPartij`.
+            Onbekende eigenschappen zijn niet toegestaan.
     partij_identificatie_Persoon:
       type: object
       properties:
         partijIdentificatie:
-          $ref: '#/components/schemas/Persoon'
+          allOf:
+          - $ref: '#/components/schemas/Persoon'
+          description: De toegestane eigenschappen zijn afhankelijk van `soortPartij`.
+            Onbekende eigenschappen zijn niet toegestaan.
     persoon_PartijSerializer:
       allOf:
       - $ref: '#/components/schemas/Base_PartijSerializer'
