@@ -7,5 +7,5 @@
 #
 # Run this script from the root of the repository
 
-src/manage.py dumpdata --indent=4 --natural-foreign --natural-primary klantinteracties > src/openklant/fixtures/klantinteracties.json
-src/manage.py dumpdata --indent=4 --natural-foreign --natural-primary contactgegevens > src/openklant/fixtures/contactgegevens.json
+OTEL_SDK_DISABLED=True src/manage.py dumpdata --indent=4 --natural-foreign --natural-primary klantinteracties > src/openklant/fixtures/klantinteracties.json
+OTEL_SDK_DISABLED=True src/manage.py dumpdata --indent=4 --natural-foreign --natural-primary contactgegevens > src/openklant/fixtures/contactgegevens.json
