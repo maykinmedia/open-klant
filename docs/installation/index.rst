@@ -18,4 +18,4 @@ this.
    prerequisites
    config/index
    migration
-   observability
+   observability/index

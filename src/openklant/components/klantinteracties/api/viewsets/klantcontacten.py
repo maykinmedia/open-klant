@@ -22,9 +22,9 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     OnderwerpobjectSerializer,
 )
 from openklant.components.klantinteracties.metrics import (
-    betrokkene_create_counter,
-    betrokkene_delete_counter,
-    betrokkene_update_counter,
+    betrokkenen_create_counter,
+    betrokkenen_delete_counter,
+    betrokkenen_update_counter,
     klantcontacten_create_counter,
     klantcontacten_delete_counter,
     klantcontacten_update_counter,
@@ -106,13 +106,7 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
         instance = serializer.instance
         uuid = str(instance.uuid)
         token_auth: TokenAuth = self.request.auth
-        klantcontacten_create_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "nummer": instance.nummer,
-            },
-        )
+        klantcontacten_create_counter.add(1)
         logger.info(
             "klantcontact_created",
             uuid=uuid,
@@ -131,13 +125,7 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
         instance = serializer.instance
         uuid = str(instance.uuid)
         token_auth: TokenAuth = self.request.auth
-        klantcontacten_update_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "nummer": instance.nummer,
-            },
-        )
+        klantcontacten_update_counter.add(1)
         logger.info(
             "klantcontact_updated",
             uuid=uuid,
@@ -156,13 +144,7 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
         uuid = str(instance.uuid)
         super().perform_destroy(instance)
 
-        klantcontacten_delete_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "nummer": instance.nummer,
-            },
-        )
+        klantcontacten_delete_counter.add(1)
         logger.info(
             "klantcontact_deleted",
             uuid=uuid,
@@ -243,14 +225,7 @@ class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
         partij_uuid = get_related_object_uuid(instance, "partij")
         klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
 
-        betrokkene_create_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "partij_uuid": partij_uuid,
-                "klantcontact_uuid": klantcontact_uuid,
-            },
-        )
+        betrokkenen_create_counter.add(1)
         logger.info(
             "betrokkene_created",
             uuid=uuid,
@@ -270,14 +245,7 @@ class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
         klantcontact_uuid = get_related_object_uuid(instance, "klantcontact")
         token_auth = self.request.auth
 
-        betrokkene_update_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "partij_uuid": partij_uuid,
-                "klantcontact_uuid": klantcontact_uuid,
-            },
-        )
+        betrokkenen_update_counter.add(1)
         logger.info(
             "betrokkene_updated",
             uuid=uuid,
@@ -295,14 +263,7 @@ class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
         token_auth = self.request.auth
         super().perform_destroy(instance)
 
-        betrokkene_delete_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "partij_uuid": partij_uuid,
-                "klantcontact_uuid": klantcontact_uuid,
-            },
-        )
+        betrokkenen_delete_counter.add(1)
         logger.info(
             "betrokkene_deleted",
             uuid=uuid,

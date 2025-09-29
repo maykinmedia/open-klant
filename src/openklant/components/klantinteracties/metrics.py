@@ -19,20 +19,20 @@ klantcontacten_delete_counter = meter.create_counter(
     unit="1",
 )
 
-# betrokkene
-betrokkene_create_counter = meter.create_counter(
-    "betrokkene.create",
-    description="Amount of betrokkene created (via the API).",
+# betrokkenen
+betrokkenen_create_counter = meter.create_counter(
+    "betrokkenen.create",
+    description="Amount of betrokkenen created (via the API).",
     unit="1",
 )
-betrokkene_update_counter = meter.create_counter(
-    "betrokkene.update",
-    description="Amount of betrokkene updated (via the API).",
+betrokkenen_update_counter = meter.create_counter(
+    "betrokkenen.update",
+    description="Amount of betrokkenen updated (via the API).",
     unit="1",
 )
-betrokkene_delete_counter = meter.create_counter(
-    "betrokkene.delete",
-    description="Amount of betrokkene deleted (via the API).",
+betrokkenen_delete_counter = meter.create_counter(
+    "betrokkenen.delete",
+    description="Amount of betrokkenen deleted (via the API).",
     unit="1",
 )
 

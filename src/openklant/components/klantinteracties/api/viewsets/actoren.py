@@ -73,10 +73,7 @@ class ActorViewSet(viewsets.ModelViewSet):
         instance = serializer.instance
         uuid = str(instance.uuid)
         token_auth = self.request.auth
-        actoren_create_counter.add(
-            1,
-            attributes={"uuid": uuid},
-        )
+        actoren_create_counter.add(1)
         logger.info(
             "actor_created",
             uuid=uuid,
@@ -90,10 +87,7 @@ class ActorViewSet(viewsets.ModelViewSet):
         instance = serializer.instance
         uuid = str(instance.uuid)
         token_auth = self.request.auth
-        actoren_update_counter.add(
-            1,
-            attributes={"uuid": uuid},
-        )
+        actoren_update_counter.add(1)
         logger.info(
             "actor_updated",
             uuid=uuid,
@@ -106,10 +100,7 @@ class ActorViewSet(viewsets.ModelViewSet):
         uuid = str(instance.uuid)
         token_auth = self.request.auth
         super().perform_destroy(instance)
-        actoren_delete_counter.add(
-            1,
-            attributes={"uuid": uuid},
-        )
+        actoren_delete_counter.add(1)
         logger.info(
             "actor_deleted",
             uuid=uuid,
