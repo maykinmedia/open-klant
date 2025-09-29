@@ -1,9 +1,7 @@
 from django.urls import include, path, re_path
 
 from drf_spectacular.views import (
-    SpectacularJSONAPIView,
     SpectacularRedocView,
-    SpectacularYAMLAPIView,
 )
 from vng_api_common import routers
 
@@ -12,6 +10,7 @@ from openklant.components.contactgegevens.api.viewset import (
     PersoonViewSet,
 )
 
+from ...utils.views import SpectacularJSONAPIView, SpectacularYAMLAPIView
 from .schema import custom_settings
 
 app_name = "contactgegevens"
@@ -28,7 +27,7 @@ urlpatterns = [
                 re_path(r"^", include(router.urls)),
                 path("", router.APIRootView.as_view(), name="api-root-contactgegevens"),
                 path(
-                    "schema/openapi.json",
+                    "openapi.json",
                     SpectacularJSONAPIView.as_view(
                         urlconf="openklant.components.contactgegevens.api.urls",
                         custom_settings=custom_settings,
@@ -36,7 +35,7 @@ urlpatterns = [
                     name="schema-json-contactgegevens",
                 ),
                 path(
-                    "schema/openapi.yaml",
+                    "openapi.yaml",
                     SpectacularYAMLAPIView.as_view(
                         urlconf="openklant.components.contactgegevens.api.urls",
                         custom_settings=custom_settings,
