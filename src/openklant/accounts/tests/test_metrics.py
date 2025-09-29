@@ -42,7 +42,7 @@ class LoginFailuresMetricTests(TestCase):
         # invalid credentials, no such user exists
         authenticate(request=request, username="foo", password="bar")
 
-        mock_add.assert_called()
+        mock_add.assert_called_once_with(1, attributes={"http_target": "/admin/login/"})
 
 
 @override_settings(AXES_FAILURE_LIMIT=2)
