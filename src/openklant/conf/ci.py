@@ -20,6 +20,7 @@ os.environ.setdefault("SECRET_KEY", "dummy")
 #   looked up from the django-solo model
 os.environ.setdefault("LOG_REQUESTS", "no")
 os.environ.setdefault("OTEL_SDK_DISABLED", "true")
+os.environ.setdefault("OTEL_SERVICE_NAME", "openklant-ci")
 
 from .base import *  # noqa isort:skip
 
