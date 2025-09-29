@@ -86,14 +86,7 @@ class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
         uuid = str(instance.uuid)
         partij_uuid = get_related_object_uuid(instance, "partij")
         betrokkene_uuid = get_related_object_uuid(instance, "betrokkene")
-        digitale_adressen_create_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "partij_uuid": partij_uuid,
-                "betrokkene_uuid": betrokkene_uuid,
-            },
-        )
+        digitale_adressen_create_counter.add(1)
         logger.info(
             "digitaal_adres_created",
             uuid=uuid,
@@ -112,14 +105,7 @@ class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
         partij_uuid = get_related_object_uuid(instance, "partij")
         betrokkene_uuid = get_related_object_uuid(instance, "betrokkene")
 
-        digitale_adressen_update_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "partij_uuid": partij_uuid,
-                "betrokkene_uuid": betrokkene_uuid,
-            },
-        )
+        digitale_adressen_update_counter.add(1)
         logger.info(
             "digitaal_adres_updated",
             uuid=uuid,
@@ -137,14 +123,7 @@ class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
         betrokkene_uuid = get_related_object_uuid(instance, "betrokkene")
         super().perform_destroy(instance)
 
-        digitale_adressen_delete_counter.add(
-            1,
-            attributes={
-                "uuid": uuid,
-                "partij_uuid": partij_uuid,
-                "betrokkene_uuid": betrokkene_uuid,
-            },
-        )
+        digitale_adressen_delete_counter.add(1)
         logger.info(
             "digitaal_adres_deleted",
             uuid=uuid,

@@ -16,9 +16,9 @@ from ..metrics import (
     actoren_create_counter,
     actoren_delete_counter,
     actoren_update_counter,
-    betrokkene_create_counter,
-    betrokkene_delete_counter,
-    betrokkene_update_counter,
+    betrokkenen_create_counter,
+    betrokkenen_delete_counter,
+    betrokkenen_update_counter,
     digitale_adressen_create_counter,
     digitale_adressen_delete_counter,
     digitale_adressen_update_counter,
@@ -81,8 +81,10 @@ class KlantcontactTests(APITestCase):
 
 
 class BetrokkeneTests(APITestCase):
-    @patch.object(betrokkene_create_counter, "add", wraps=betrokkene_create_counter.add)
-    def test_betrokkene_create_counter(self, mock_add: MagicMock):
+    @patch.object(
+        betrokkenen_create_counter, "add", wraps=betrokkenen_create_counter.add
+    )
+    def test_betrokkenen_create_counter(self, mock_add: MagicMock):
         klantcontact = KlantcontactFactory.create()
         self.client.post(
             reverse("klantinteracties:betrokkene-list"),
@@ -94,8 +96,10 @@ class BetrokkeneTests(APITestCase):
         )
         mock_add.assert_called_once_with(1)
 
-    @patch.object(betrokkene_update_counter, "add", wraps=betrokkene_update_counter.add)
-    def test_betrokkene_update_counter(self, mock_add: MagicMock):
+    @patch.object(
+        betrokkenen_update_counter, "add", wraps=betrokkenen_update_counter.add
+    )
+    def test_betrokkenen_update_counter(self, mock_add: MagicMock):
         betrokkene = BetrokkeneFactory.create()
         self.client.patch(
             reverse(
@@ -106,8 +110,10 @@ class BetrokkeneTests(APITestCase):
         )
         mock_add.assert_called_once_with(1)
 
-    @patch.object(betrokkene_delete_counter, "add", wraps=betrokkene_delete_counter.add)
-    def test_betrokkene_delete_counter(self, mock_add: MagicMock):
+    @patch.object(
+        betrokkenen_delete_counter, "add", wraps=betrokkenen_delete_counter.add
+    )
+    def test_betrokkenen_delete_counter(self, mock_add: MagicMock):
         betrokkene = BetrokkeneFactory.create()
         self.client.delete(
             reverse(
