@@ -24,6 +24,11 @@ from openklant.components.klantinteracties.api.serializers.partijen import (
     VertegenwoordigdenSerializer,
 )
 from openklant.components.klantinteracties.kanalen import KANAAL_PARTIJ
+from openklant.components.klantinteracties.metrics import (
+    partijen_create_counter,
+    partijen_delete_counter,
+    partijen_update_counter,
+)
 from openklant.components.klantinteracties.models.partijen import (
     Categorie,
     CategorieRelatie,
@@ -33,6 +38,7 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
+from openklant.components.utils.api import get_related_object_uuid
 from openklant.components.utils.mixins import ExpandMixin
 from openklant.utils.decorators import handle_db_exceptions
 
@@ -106,15 +112,25 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
     @transaction.atomic
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        obj = serializer.instance
+        instance = serializer.instance
         token_auth = self.request.auth
-        organisatie_uuid = getattr(getattr(obj, "organisatie", None), "uuid", None)
-        persoon_uuid = getattr(getattr(obj, "persoon", None), "uuid", None)
+        uuid = str(instance.uuid)
+        organisatie_uuid = get_related_object_uuid(instance, "organisatie")
+        persoon_uuid = get_related_object_uuid(instance, "persoon")
+
+        partijen_create_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "organisatie_uuid": organisatie_uuid,
+                "persoon_uuid": persoon_uuid,
+            },
+        )
         logger.info(
             "partij_created",
-            uuid=str(obj.uuid),
-            organisatie_uuid=str(organisatie_uuid) if organisatie_uuid else None,
-            persoon_uuid=str(persoon_uuid) if persoon_uuid else None,
+            uuid=uuid,
+            organisatie_uuid=organisatie_uuid,
+            persoon_uuid=persoon_uuid,
             token_identifier=getattr(token_auth, "identifier", None),
             token_application=getattr(token_auth, "application", None),
         )
@@ -122,15 +138,25 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
     @transaction.atomic
     def perform_update(self, serializer):
         super().perform_update(serializer)
-        obj = serializer.instance
+        instance = serializer.instance
         token_auth = self.request.auth
-        organisatie_uuid = getattr(getattr(obj, "organisatie", None), "uuid", None)
-        persoon_uuid = getattr(getattr(obj, "persoon", None), "uuid", None)
+        uuid = str(instance.uuid)
+        organisatie_uuid = get_related_object_uuid(instance, "organisatie")
+        persoon_uuid = get_related_object_uuid(instance, "persoon")
+
+        partijen_update_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "organisatie_uuid": organisatie_uuid,
+                "persoon_uuid": persoon_uuid,
+            },
+        )
         logger.info(
             "partij_updated",
-            uuid=str(obj.uuid),
-            organisatie_uuid=str(organisatie_uuid) if organisatie_uuid else None,
-            persoon_uuid=str(persoon_uuid) if persoon_uuid else None,
+            uuid=uuid,
+            organisatie_uuid=organisatie_uuid,
+            persoon_uuid=persoon_uuid,
             token_identifier=getattr(token_auth, "identifier", None),
             token_application=getattr(token_auth, "application", None),
         )
@@ -139,14 +165,23 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
     def perform_destroy(self, instance):
         token_auth = self.request.auth
         uuid = str(instance.uuid)
-        organisatie_uuid = getattr(getattr(instance, "organisatie", None), "uuid", None)
-        persoon_uuid = getattr(getattr(instance, "persoon", None), "uuid", None)
+        organisatie_uuid = get_related_object_uuid(instance, "organisatie")
+        persoon_uuid = get_related_object_uuid(instance, "persoon")
         super().perform_destroy(instance)
+
+        partijen_delete_counter.add(
+            1,
+            attributes={
+                "uuid": uuid,
+                "organisatie_uuid": organisatie_uuid,
+                "persoon_uuid": persoon_uuid,
+            },
+        )
         logger.info(
             "partij_deleted",
             uuid=uuid,
-            organisatie_uuid=str(organisatie_uuid) if organisatie_uuid else None,
-            persoon_uuid=str(persoon_uuid) if persoon_uuid else None,
+            organisatie_uuid=organisatie_uuid,
+            persoon_uuid=persoon_uuid,
             token_identifier=getattr(token_auth, "identifier", None),
             token_application=getattr(token_auth, "application", None),
         )
