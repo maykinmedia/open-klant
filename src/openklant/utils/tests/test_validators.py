@@ -73,37 +73,34 @@ class ValidatorsTestCase(SimpleTestCase):
 
     def test_validate_phone_number(self):
         valid_phone_numbers = [
-            "+31612345678",
-            "+441134960000",  # US test number
-            "+12065550100",  # US test number
             "0612345678",
+            "0201234567",
+            "+31612345678",
+            "+441134960000",
+            "+12065550100",
             "0031612345678",
-            "09001234567",
-            "080085285212",
+            "00311234567",
+        ]
+        invalid_phone_numbers = [
+            "0800123456",
+            "0900123456",
+            "0881234567",
             "1400",
             "14012",
             "14079",
-            "0313028612",
-            "0313028600",
-        ]
-        invalid_phone_numbers = [
             "0695azerty",
             "azerty0545",
             "@4566544++8",
             "onetwothreefour",
             "020 753 0523",
             "+311234",
-            "031302860000",
-            "03130286000",
-            "00311234567",
-            "00313223344555",
             "316123456789",
         ]
         for invalid_phone_number in invalid_phone_numbers:
             with self.subTest(invalid_phone_number):
                 self.assertRaisesMessage(
                     ValidationError,
-                    "Het opgegeven telefoonnummer is ongeldig.",
+                    "Het opgegeven telefoonnummer is ongeldig",
                     validate_phone_number,
                     invalid_phone_number,
                 )
