@@ -929,38 +929,19 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         return partij
 
     def validate(self, attrs):
-        validated_attrs = super().validate(attrs)
-
-        soort = validated_attrs.get("soort_partij") or getattr(
+        soort = attrs.get("soort_partij") or getattr(
             self.instance, "soort_partij", None
         )
-        partij_identificatie = validated_attrs.get("partij_identificatie")
+        partij_identificatie = attrs.get("partij_identificatie")
 
-        if soort == SoortPartij.persoon:
-            if not partij_identificatie or not partij_identificatie.get("contactnaam"):
-                raise serializers.ValidationError(
-                    {
-                        "partijIdentificatie": "Voor een persoon is `contactnaam` verplicht."
-                    }
-                )
-        elif soort == SoortPartij.organisatie:
-            if not partij_identificatie or not partij_identificatie.get("naam"):
-                raise serializers.ValidationError(
-                    {"partijIdentificatie": "Voor een organisatie is `naam` verplicht."}
-                )
-        elif soort == SoortPartij.contactpersoon:
-            if (
-                not partij_identificatie
-                or not partij_identificatie.get("contactnaam")
-                or not partij_identificatie.get("werkte_voor_partij")
-            ):
-                raise serializers.ValidationError(
-                    {
-                        "partijIdentificatie": "Voor een contactpersoon zijn `contactnaam` en `werkteVoorPartij` verplicht."
-                    }
-                )
+        if soort and not partij_identificatie:
+            raise serializers.ValidationError(
+                {
+                    "partijIdentificatie": "`partijIdentificatie` is required when `soortPartij` is set."
+                }
+            )
 
-        return validated_attrs
+        return super().validate(attrs)
 
 
 class VertegenwoordigdenSerializer(serializers.HyperlinkedModelSerializer):

@@ -2398,7 +2398,7 @@ class PartijTests(APITestCase):
         assert response.data["invalid_params"][0]["name"] == "partijIdentificatie"
         self.assertEqual(
             response.data["invalid_params"][0]["reason"],
-            "Voor een organisatie is `naam` verplicht.",
+            "`partijIdentificatie` is required when `soortPartij` is set.",
         )
 
         patch_data["partijIdentificatie"] = {
@@ -2427,7 +2427,6 @@ class PartijTests(APITestCase):
         }
 
         response = self.client.post(list_url, post_data, format="json")
-
         assert response.status_code == 400
         assert (
             response.data["invalid_params"][0]["reason"]
