@@ -8,7 +8,6 @@ import structlog
 from celery import Celery, bootsteps
 from celery.signals import setup_logging, worker_ready, worker_shutdown
 from django_structlog.celery.steps import DjangoStructLogInitStep
-from open_api_framework.conf.utils import config
 
 from openklant.setup import setup_env
 
@@ -34,7 +33,6 @@ app.autodiscover_tasks()
 def receiver_setup_logging(
     loglevel, logfile, format, colorize, **kwargs
 ):  # pragma: no cover
-    formatter = config("LOG_FORMAT_CONSOLE", default="json")
     logging.config.dictConfig(
         {
             "version": 1,
@@ -66,7 +64,7 @@ def receiver_setup_logging(
             "handlers": {
                 "console": {
                     "class": "logging.StreamHandler",
-                    "formatter": formatter,
+                    "formatter": settings.LOG_FORMAT_CONSOLE,
                 },
             },
             "loggers": {
@@ -87,7 +85,9 @@ def receiver_setup_logging(
     )
 
     exception_processors = (
-        [structlog.processors.format_exc_info] if formatter == "json" else []
+        [structlog.processors.format_exc_info]
+        if settings.LOG_FORMAT_CONSOLE == "json"
+        else []
     )
     structlog.configure(
         processors=[

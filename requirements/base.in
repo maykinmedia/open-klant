@@ -1,4 +1,4 @@
-open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis]
+open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis, structlog-celery]
 
 mozilla-django-oidc-db[setup-configuration]
 psycopg[pool]
@@ -7,6 +7,5 @@ psycopg[pool]
 django-capture-tag
 django-localflavor
 django-setup-configuration
-django-structlog[celery]
 
 maykin-common[axes,mfa]
