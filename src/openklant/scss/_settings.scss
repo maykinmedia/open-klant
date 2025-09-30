@@ -40,8 +40,6 @@ $color-border: $color_secondary_dark;
 
 // css vars
 :root {
-    --body-color: #212529;
-
     // Link component
     --link-color: #017092;
     --link-color-hover: var(--link-color);
@@ -60,30 +58,9 @@ $color-border: $color_secondary_dark;
     --button-hover-background-color: #017092;
     --button-alert-background-color: #dc3545;
     --button-alert-hover-background-color: #bd2130;
-
-    --color_primary: #{$color_primary};
-    --color_primary_dark: #{$color_primary_dark};
-
-    --color_secondary: #{$color_secondary};
-    --color_secondary_dark: #{$color_secondary_dark};
-    --color_secondary_light: #{$color_secondary_light};
-
-    --color_alert: #{$color_alert};
-    --color_alert_dark: #{$color_alert_dark};
-
-    --color-darkest: #{$color-darkest};
-    --color_dark: #{$color_dark};
-    --color_lightest: #{$color_lightest};
-    --color_muted: #{$color_muted};
-
-    --color_link: #{$color_link};
-    --color_link_hover: #{$color_link_hover};
-    --color-text: #{$color-text};
-    --color-border: #{$color-border};
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
     color: var(--body-color);
