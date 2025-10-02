@@ -629,7 +629,7 @@ class IntereTaakAdminTests(WebTest):
         form = response.forms["internetaak_form"]
         form["internetakenactorenthoughmodel_set-TOTAL_FORMS"] = 1
 
-        form["klantcontact"].select(text=str(klantcontact))
+        form["klantcontact"] = str(klantcontact.pk)
         form["nummer"] = "0000000001"
         form["gevraagde_handeling"] = "Terugbellen"
         form["toelichting"] = "bla bla bla"
@@ -675,7 +675,7 @@ class IntereTaakAdminTests(WebTest):
         response: TestResponse = self.app.get(admin_url)
 
         form = response.forms["internetaak_form"]
-        form["klantcontact"].select(text=str(klantcontact))
+        form["klantcontact"] = str(klantcontact.pk)
         form["gevraagde_handeling"] = "Terugbellen"
         form["status"].select(text=_(Taakstatus.verwerkt.label))
 
@@ -714,7 +714,7 @@ class IntereTaakAdminTests(WebTest):
         response: TestResponse = self.app.get(admin_url)
 
         form = response.forms["internetaak_form"]
-        form["klantcontact"].select(text=str(klantcontact2))
+        form["klantcontact"] = str(klantcontact2.pk)
         form["nummer"] = "0000000009"
         form["gevraagde_handeling"] = "Terugbellen"
         form["toelichting"] = "bla bla bla"

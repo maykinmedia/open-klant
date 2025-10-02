@@ -25,6 +25,18 @@
             [
                 "klantinteracties",
                 "partij"
+            ],
+            [
+                "klantinteracties",
+                "partijidentificator"
+            ],
+            [
+                "klantinteracties",
+                "digitaaladres"
+            ],
+            [
+                "klantinteracties",
+                "betrokkene"
             ]
         ]
     }

@@ -126,18 +126,21 @@ class PartijIdentificatorInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
     model = PartijIdentificator
     form = PartijIdentificatorAdminForm
+    raw_id_fields = ("sub_identificator_van",)
     extra = 0
 
 
 class BetrokkeneInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
     model = Betrokkene
+    raw_id_fields = ("klantcontact",)
     extra = 0
 
 
 class DigitaalAdresInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
     model = DigitaalAdres
+    raw_id_fields = ("betrokkene",)
     extra = 0
 
 
@@ -157,13 +160,14 @@ class VertegenwoordigdenInlineAdmin(admin.StackedInline):
     model = Vertegenwoordigden
     fk_name = "vertegenwoordigende_partij"
     extra = 0
+    raw_id_fields = ("vertegenwoordigde_partij",)
 
 
 class ContactpersoonInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
     model = Contactpersoon
     fk_name = "partij"
-    raw_id_field = ["partij"]
+    raw_id_fields = ("werkte_voor_partij",)
     extra = 0
 
 
@@ -299,3 +303,31 @@ class CategorieAdmin(admin.ModelAdmin):
         "uuid",
         "naam",
     )
+
+
+@admin.register(PartijIdentificator)
+class PartijIdentificatorAdmin(admin.ModelAdmin):
+    readonly_fields = ("uuid",)
+    search_fields = (
+        "uuid",
+        "partij__uuid",
+        "partij_identificator_object_id",
+        "sub_identificator_van__uuid",
+        "sub_identificator_van__partij_identificator_object_id",
+    )
+    list_filter = (
+        "partij_identificator_code_objecttype",
+        "partij_identificator_code_soort_object_id",
+        "partij_identificator_code_register",
+    )
+    fields = (
+        "uuid",
+        "partij",
+        "sub_identificator_van",
+        "andere_partij_identificator",
+        "partij_identificator_code_objecttype",
+        "partij_identificator_code_soort_object_id",
+        "partij_identificator_object_id",
+        "partij_identificator_code_register",
+    )
+    raw_id_fields = ("partij",)
