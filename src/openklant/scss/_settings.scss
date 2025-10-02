@@ -60,12 +60,6 @@ $color-border: $color_secondary_dark;
     --button-alert-hover-background-color: #bd2130;
 }
 
-body {
-    line-height: 1.5;
-    font-weight: 400;
-    color: var(--body-color);
-}
-
 .content {
     &#{&}--align-right {
         text-align: right;
