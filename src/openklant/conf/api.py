@@ -28,6 +28,7 @@ SPECTACULAR_SETTINGS = {
     ],
     "CONTACT": {
         "email": "standaarden.ondersteuning@vng.nl",
+        "name": "VNG",
         "url": "https://zaakgerichtwerken.vng.cloud",
     },
     "LICENSE": {
