@@ -19,6 +19,8 @@ os.environ.setdefault("SECRET_KEY", "dummy")
 # * it conflicts with SimpleTestCase in some cases when the run-time configuration is
 #   looked up from the django-solo model
 os.environ.setdefault("LOG_REQUESTS", "no")
+os.environ.setdefault("OTEL_SDK_DISABLED", "true")
+os.environ.setdefault("OTEL_SERVICE_NAME", "openklant-ci")
 
 from .base import *  # noqa isort:skip
 
