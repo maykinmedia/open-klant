@@ -1,7 +1,56 @@
 .. _manual_logging:
 
+=======
 Logging
 =======
+
+Logging is the practice of emitting log messages that describe what is happening in the
+system, or "events" in short. Log events can have varying degrees of severity, such as
+``debug``, ``info``, ``warning``, ``error`` or even ``critical``. By default, Open Klant
+emits logs with level ``info`` and higher.
+
+A collection of log events with a correlation ID (like a request or trace ID) allow one
+to reconstruct the chain of events that took place which lead to a particular outcome.
+
+Open Klant emits structured logs in JSON format (unless explicitly configured otherwise),
+which should make log aggregation and analysis easier.
+
+We try to keep a consistent log message structure, where the following keys
+are (usually) present:
+
+``source``
+    The component in the application stack that produced the log entry. Typical
+    values are ``uwsgi`` and ``app``.
+
+``level``
+    The severity level of the log message. One of ``debug``, ``info``, ``warning``,
+    ``error`` or ``critical``.
+
+``timestamp``
+    The moment when the log entry was produced, a string in ISO-8601 format. Most of
+    the logs have microsecond precision, but some of them are limited to second
+    precision.
+
+``event``
+    The event that occurred, e.g. ``request_started`` or ``spawned worker (PID 123)``.
+    This gives the semantic meaning to the log entry.
+
+Other keys that frequently occur are:
+
+``request_id``
+    Present for application logs emitted during an HTTP request, makes it possible to
+    correlate multiple log entries for a single request. Not available in logs emitted
+    by background tasks or logs emitted before/after the Open Klant app.
+
+.. tip:: Certain log aggregation solutions require you to configure "labels" to extract
+   for efficient querying. You can use the above summary of log context keys to configure
+   this according to your needs.
+
+.. note:: We can not 100% guarantee that every log message will always be JSON due to
+   limitations in third party software/packages that we use. Most (if not all) log
+   aggregation technologies support handling both structured and unstructured logs.
+
+
 
 Format
 ------
@@ -30,8 +79,63 @@ Each log line will contain an ``event`` type, a ``timestamp`` and a ``level``.
 Dependent on your configured ``LOG_LEVEL`` (see :ref:`installation_env_config` for more information),
 only log lines with of that level or higher will be emitted.
 
+.. _manual_logging_exceptions:
+
+Exceptions
+~~~~~~~~~~
+
+Handled exceptions follow a standardized JSON format to ensure consistency and improve error tracking.
+Most fields are standard and include: ``title``, ``code``, ``status``, ``event``, ``source``, ``user_id``, ``request_id``, ``exception_id``, ``timestamp``, ``logger`` and ``level``.
+
+A new field ``invalid_params`` has been added to provide detailed information about which input parameters caused the error in API calls:
+
+    - ``name``: name of the invalid parameter
+    - ``code``: specific error code
+    - ``reason``: explanation/message of the error
+
+.. code-block:: json
+
+    {
+        "title": "'Invalid input.'",
+        "code": "invalid",
+        "status": 400,
+        "invalid_params": [
+            {
+                "name": "",
+                "code": "",
+                "reason": ""
+            },
+        ],
+        "event": "api.handled_exception",
+        "source": "app",
+        "user_id": null,
+        "request_id": "2f9e9a5b-d549-4faa-a411-594aa8a52eee",
+        "exception_id": "55257460-13cc-40ca-890b-69c568dc1c5a",
+        "timestamp": "2025-09-08T12:13:47.198478Z",
+        "logger": "vng_api_common.exception_handling",
+        "level": "error",
+    }
+
+
+Uncaught exceptions that occur via the API are logged as ``api.uncaught_exception`` events
+and contain the traceback of the exception.
+
+.. code-block:: json
+
+    {
+        "message": "division by zero",
+        "event": "api.uncaught_exception",
+        "request_id": "ad370b33-e200-42ca-ad3d-4911327b1255",
+        "user_id": null,
+        "timestamp": "2025-10-03T10:01:52.752639Z",
+        "logger": "vng_api_common.views",
+        "level": "error",
+        "exception": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.12/site-packages/rest_framework/views.py\", line 506, in dispatch\n    response = handler(request, *args, **kwargs)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/drf_spectacular/drainage.py\", line 207, in wrapped_method\n    return method(self, request, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/rest_framework/mixins.py\", line 19, in create\n    self.perform_create(serializer)\n  File \"/usr/local/lib/python3.12/contextlib.py\", line 81, in inner\n    return func(*args, **kwds)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/app/src/openklant/components/klantinteracties/api/viewsets/digitaal_adres.py\", line 77, in perform_create\n    1 / 0\n    ~~^~~\nZeroDivisionError: division by zero"
+    }
+
+
 Open Klant log events
-----------------------
+---------------------
 
 Below is the list of logging ``event`` types that Open Klant can emit. In addition to the mentioned
 context variables, these events will also have the **request bound metadata** described in the :ref:`django-structlog documentation <request_events>`.

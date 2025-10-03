@@ -118,6 +118,7 @@ linkcheck_ignore = [
     r"https://portal.azure.com*",
     r"https://.*kvk\.nl*",
     r"https://gdpr.eu*",
+    "https://github.com/maykinmedia/django-setup-configuration/blob/main/README.rst#environment-variable-substitution",
 ]
 
 extlinks = {
