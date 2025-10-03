@@ -65,11 +65,11 @@ class RegexWithDisallowedPrefixesValidator(RegexValidator):
         super().__init__(*args, **kwargs)
 
     def __call__(self, value):
-        super().__call__(value)
-
         for prefix in self.disallowed_prefixes:
             if value.startswith(prefix):
                 raise ValidationError(self.message_disallowed_prefix)
+
+        super().__call__(value)
 
     def __eq__(self, other):
         return (
@@ -86,7 +86,7 @@ validate_phone_number = RegexWithDisallowedPrefixesValidator(
     disallowed_prefixes=FORBIDDEN_PREFIXES,
     message=_("Het opgegeven telefoonnummer is ongeldig."),
     message_disallowed_prefix=_(
-        "Het opgegeven telefoonnummer is ongeldig, telefoonnummers beginnend met 0800, 0900, 088 en 1400 of 140xx zijn niet toegestaan."
+        "Het opgegeven telefoonnummer is ongeldig, telefoonnummers beginnend met 0800, 0900, 088, 1400 of 140xx zijn niet toegestaan."
     ),
 )
 
