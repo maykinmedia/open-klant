@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
+from django.utils.deconstruct import deconstructible
 from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
 
@@ -46,17 +47,47 @@ def validate_charfield_entry(value, allow_apostrophe=False):
     return value
 
 
-validate_phone_number = RegexValidator(
-    regex=r"^("
-    r"0[8-9]00[0-9]{4,8}"  # starting with 08 or 09, followed by 00 and then 4 to 8 digits
-    r"|0[1-9][0-9]{8}"  # starting with 0, followed by a digit from 1-9 and then exactly 8 digits
-    r"|\+31[0-9]{10}"  # starting with +31 followed by 10 digits (Dutch format)
-    r"|\+[0-9]{9,20}"  # starting with + followed by 9 to 20 digits (international numbers)
-    r"|00[0-9]{11}"  # starting with 00, followed by 11 digits
-    r"|1400"  # specific short number for services
-    r"|140[0-9]{2,3}"  # starting with 140 and followed by 2 or 3 digits
-    r")$",
+FORBIDDEN_PREFIXES = (
+    "0800",
+    "0900",
+    "088",
+    "1400",
+    "140",
+)
+
+
+@deconstructible
+class RegexWithDisallowedPrefixesValidator(RegexValidator):
+    def __init__(self, *args, **kwargs):
+        self.disallowed_prefixes = kwargs.pop("disallowed_prefixes")
+        self.message_disallowed_prefix = kwargs.pop("message_disallowed_prefix")
+
+        super().__init__(*args, **kwargs)
+
+    def __call__(self, value):
+        super().__call__(value)
+
+        for prefix in self.disallowed_prefixes:
+            if value.startswith(prefix):
+                raise ValidationError(self.message_disallowed_prefix)
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, self.__class__)
+            and self.regex.pattern == other.regex.pattern
+            and self.disallowed_prefixes == other.disallowed_prefixes
+        )
+
+
+phonenumber_regex = r"^(0[1-9][0-9]{8}|\+[0-9]{9,15}|00[0-9]{7,13})$"
+
+validate_phone_number = RegexWithDisallowedPrefixesValidator(
+    regex=phonenumber_regex,
+    disallowed_prefixes=FORBIDDEN_PREFIXES,
     message=_("Het opgegeven telefoonnummer is ongeldig."),
+    message_disallowed_prefix=_(
+        "Het opgegeven telefoonnummer is ongeldig, telefoonnummers beginnend met 0800, 0900, 088 en 1400 of 140xx zijn niet toegestaan."
+    ),
 )
 
 

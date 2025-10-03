@@ -18,6 +18,7 @@ from openklant.components.klantinteracties.models.digitaal_adres import (
 from openklant.components.klantinteracties.models.klantcontacten import Betrokkene
 from openklant.components.klantinteracties.models.partijen import Partij
 from openklant.utils.serializers import get_field_value
+from openklant.utils.validators import phonenumber_regex
 
 
 class DigitaalAdresForeignKeySerializer(serializers.HyperlinkedModelSerializer):
@@ -93,12 +94,17 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
             "adres": {
                 "help_text": _(
                     "Validatie van dit veld is afhankelijk van het opgegeven "
-                    "`soortDigitaalAdres`. De validatie die toegepast wordt voor "
+                    "`soortDigitaalAdres`. \n\nDe validatie die toegepast wordt voor "
                     " e-mailadressen is te lezen via de volgende URL: "
-                    "https://github.com/django/django/blob/4.2/django/core/validators.py#L174."
-                    "Voor telefoonnummers wordt de volgende regex expressie toegepast ter "
-                    "validatie: `^(0[8-9]00[0-9]{4,8}|0[1-9][0-9]{8}|"  # noqa: W605
-                    "\+31[0-9]{10}|\+[0-9]{9,20}|00[0-9]{11}|1400|140[0-9]{2,3})$`."  # noqa: W605
+                    "https://github.com/django/django/blob/4.2/django/core/validators.py#L174. "
+                    "\n\nVoor telefoonnummers wordt de volgende regex expressie toegepast ter "
+                    f"validatie: `{phonenumber_regex}`. \n"
+                    " * Toegestaan:\n"
+                    "   * Lokaal: 0612345678 of 0201234567\n"
+                    "   * Internationaal met '+': +31612345678\n"
+                    "   * Internationaal met '00': 0031612345678\n"
+                    " * Niet toegestaan:\n"
+                    "   * 0800, 0900, 088, 1400, 140xx."
                 )
             },
             "url": {
