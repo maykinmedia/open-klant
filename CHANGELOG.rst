@@ -2,6 +2,67 @@
 Change history
 ==============
 
+2.13.0
+======
+*October 3, 2025*
+
+.. warning::
+
+     The default number of ``UWSGI_THREADS`` has been changed to 4.
+
+**New features**
+
+* [:open-klant:`484`] Update phone number validation rules
+
+    .. code-block::
+
+        ^(0[1-9][0-9]{8}|\+[0-9]{9,15}|00[0-9]{7,13})$
+
+    * Allowed numbers:
+
+        * Local: 0612345678, 0201234567
+        * International with '+': +31612345678
+        * International with '00': 0031612345678
+
+    * Not Allowed numbers:
+
+        * 0800, 0900, 088, 1400, 140xx
+
+* [:open-klant:`501`] Add new migration script ``migrate_to_v2_phonenumbers`` to also migrate phone numbers (see :ref:`migration_user_docs`)
+* [:open-api-framework:`175`] Changes to logging of handled and unhandled exceptions
+  (see :ref:`manual_logging_exceptions` for more information)
+
+  * Log events for handled API exceptions (e.g. HTTP 400) now include ``invalid_params``
+  * Log events for unhandled API exceptions (e.g. HTTP 500) now include the traceback via ``exception``
+
+* [:open-api-framework:`184`] ``setup_configuration`` now supports pulling values from
+  environment variables in YAML configuration by using ``value_from`` (see `documentation_setup_configuration`_ for more information)
+
+.. TODO should be reference to readthedocs
+.. _documentation_setup_configuration: https://github.com/maykinmedia/django-setup-configuration/blob/main/README.rst#environment-variable-substitution
+
+**Bugfixes**
+
+* [:open-klant:`486`] Fix ``default_admin_index.json`` via signal during migration execution
+* [:open-klant:`508`] Fix CSS issues on the landing page
+* [:open-klant:`510`] Add missing ``raw_id_fields`` for PartijAdmin, improving performance on the admin detail page
+
+**Maintenance**
+
+* [:open-api-framework:`85`] Increase ``UWSGI_THREADS`` to 4 to improve concurrency.
+* [:open-api-framework:`181`] Fix CSP error on redoc page in development environment
+* [:open-api-framework:`163`] Integrate ``maykin-common``
+
+  * New template for the landing page
+  * Remove duplicate classes and functions that are already exists in the library
+
+* Upgrade python dependencies
+
+  * ``open-api-framework`` to 0.13.1
+  * [:open-api-framework:`175`] ``commonground-api-common`` to 2.10.1
+  * [:open-api-framework:`184`] ``django-setup-configuration`` to 0.9.0
+  * ``django-csp`` to 4.0
+
 2.12.1
 ======
 *September 4, 2025*
