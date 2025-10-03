@@ -58,6 +58,7 @@
     "webpack": "latest",
     "webpack-cli": "latest",
     "webpack-dev-server": "^5.2.2",
+    "webpack-remove-empty-scripts": "^1.1.1",
     "webpack-stream": "latest",
     "yargs": "latest"
   }
