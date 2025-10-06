@@ -2434,6 +2434,23 @@ class PartijTests(APITestCase):
         )
         assert response.data["invalid_params"][0]["name"] == "partijIdentificatie"
 
+    def test_create_requires_partij_identificatie_when_soort_partij_is_set(self):
+        list_url = reverse("klantinteracties:partij-list")
+        data = {
+            "nummer": "123",
+            "soortPartij": SoortPartij.persoon.value,
+            "voorkeurstaal": "ndl",
+            "indicatieActief": True,
+        }
+
+        response = self.client.post(list_url, data, format="json")
+        assert response.status_code == 400
+        assert response.data["invalid_params"][0]["name"] == "partijIdentificatie"
+        assert (
+            response.data["invalid_params"][0]["reason"]
+            == "`partijIdentificatie` is required when `soortPartij` is set."
+        )
+
 
 class NestedPartijIdentificatorTests(APITestCase):
     list_url = reverse_lazy("klantinteracties:partij-list")
