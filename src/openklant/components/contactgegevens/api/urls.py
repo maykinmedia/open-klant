@@ -10,7 +10,11 @@ from openklant.components.contactgegevens.api.viewset import (
     PersoonViewSet,
 )
 
-from ...utils.views import SpectacularJSONAPIView, SpectacularYAMLAPIView
+from ...utils.views import (
+    DeprecationRedirectView,
+    SpectacularJSONAPIView,
+    SpectacularYAMLAPIView,
+)
 from .schema import custom_settings
 
 app_name = "contactgegevens"
@@ -26,6 +30,18 @@ urlpatterns = [
             [
                 re_path(r"^", include(router.urls)),
                 path("", router.APIRootView.as_view(), name="api-root-contactgegevens"),
+                path(
+                    "schema/openapi.json",
+                    DeprecationRedirectView.as_view(
+                        pattern_name="contactgegevens:schema-json-contactgegevens"
+                    ),
+                ),
+                path(
+                    "schema/openapi.yaml",
+                    DeprecationRedirectView.as_view(
+                        pattern_name="contactgegevens:schema-yaml-contactgegevens"
+                    ),
+                ),
                 path(
                     "openapi.json",
                     SpectacularJSONAPIView.as_view(

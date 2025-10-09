@@ -31,7 +31,11 @@ from openklant.components.klantinteracties.api.viewsets.rekeningnummers import (
     RekeningnummerViewSet,
 )
 
-from ...utils.views import SpectacularJSONAPIView, SpectacularYAMLAPIView
+from ...utils.views import (
+    DeprecationRedirectView,
+    SpectacularJSONAPIView,
+    SpectacularYAMLAPIView,
+)
 from .schema import custom_settings
 
 app_name = "klantinteracties"
@@ -70,6 +74,18 @@ urlpatterns = [
                 re_path(r"^", include(router.urls)),
                 path(
                     "", router.APIRootView.as_view(), name="api-root-klantinteracties"
+                ),
+                path(
+                    "schema/openapi.json",
+                    DeprecationRedirectView.as_view(
+                        pattern_name="klantinteracties:schema-json-klantinteracties"
+                    ),
+                ),
+                path(
+                    "schema/openapi.yaml",
+                    DeprecationRedirectView.as_view(
+                        pattern_name="klantinteracties:schema-yaml-klantinteracties"
+                    ),
                 ),
                 path(
                     "openapi.json",
