@@ -200,7 +200,7 @@ django-cors-headers==4.4.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-django-csp==3.8
+django-csp==4.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -597,6 +597,7 @@ packaging==25.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   django-csp
     #   opentelemetry-instrumentation
     #   sphinx
 pep8==1.7.1

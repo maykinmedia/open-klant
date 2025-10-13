@@ -122,7 +122,7 @@ django-capture-tag==1.0
     # via -r requirements/base.in
 django-cors-headers==4.4.0
     # via open-api-framework
-django-csp==3.8
+django-csp==4.0
     # via open-api-framework
 django-filter==24.2
     # via
@@ -174,7 +174,7 @@ django-solo==2.3.0
     #   notifications-api-common
     #   zgw-consumers
 django-structlog==9.1.1
-    # via -r requirements/base.in
+    # via open-api-framework
 django-two-factor-auth==1.16.0
     # via maykin-2fa
 django-upgrade-check==1.1.0
@@ -314,7 +314,9 @@ orderedmultidict==1.0.1
 oyaml==1.0
     # via commonground-api-common
 packaging==25.0
-    # via opentelemetry-instrumentation
+    # via
+    #   django-csp
+    #   opentelemetry-instrumentation
 phonenumberslite==8.13.42
     # via django-two-factor-auth
 prometheus-client==0.20.0
@@ -412,7 +414,9 @@ six==1.16.0
 sqlparse==0.5.1
     # via django
 structlog==25.4.0
-    # via django-structlog
+    # via
+    #   django-structlog
+    #   open-api-framework
 tornado==6.5.1
     # via flower
 typing-extensions==4.12.2
