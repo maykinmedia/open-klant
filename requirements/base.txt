@@ -122,7 +122,7 @@ django-capture-tag==1.0
     # via -r requirements/base.in
 django-cors-headers==4.4.0
     # via open-api-framework
-django-csp==4.0
+django-csp==3.8
     # via open-api-framework
 django-filter==24.2
     # via
@@ -174,7 +174,7 @@ django-solo==2.3.0
     #   notifications-api-common
     #   zgw-consumers
 django-structlog==9.1.1
-    # via open-api-framework
+    # via -r requirements/base.in
 django-two-factor-auth==1.16.0
     # via maykin-2fa
 django-upgrade-check==1.1.0
@@ -218,10 +218,18 @@ furl==2.1.3
     # via ape-pie
 glom==23.5.0
     # via mozilla-django-oidc-db
+googleapis-common-protos==1.70.0
+    # via
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+grpcio==1.74.0
+    # via opentelemetry-exporter-otlp-proto-grpc
 humanize==4.10.0
     # via flower
 idna==3.7
     # via requests
+importlib-metadata==8.7.0
+    # via opentelemetry-api
 inflection==0.5.1
     # via drf-spectacular
 iso639-lang==2.6.0
@@ -250,18 +258,73 @@ notifications-api-common==0.9.0
     # via commonground-api-common
 open-api-framework==0.13.1
     # via -r requirements/base.in
+opentelemetry-api==1.36.0
+    # via
+    #   maykin-common
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+    #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-wsgi
+    #   opentelemetry-sdk
+    #   opentelemetry-semantic-conventions
+opentelemetry-exporter-otlp==1.36.0
+    # via maykin-common
+opentelemetry-exporter-otlp-proto-common==1.36.0
+    # via
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+opentelemetry-exporter-otlp-proto-grpc==1.36.0
+    # via opentelemetry-exporter-otlp
+opentelemetry-exporter-otlp-proto-http==1.36.0
+    # via opentelemetry-exporter-otlp
+opentelemetry-instrumentation==0.57b0
+    # via
+    #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-wsgi
+opentelemetry-instrumentation-django==0.57b0
+    # via maykin-common
+opentelemetry-instrumentation-wsgi==0.57b0
+    # via opentelemetry-instrumentation-django
+opentelemetry-proto==1.36.0
+    # via
+    #   opentelemetry-exporter-otlp-proto-common
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+opentelemetry-resource-detector-containerid==0.57b0
+    # via maykin-common
+opentelemetry-sdk==1.36.0
+    # via
+    #   maykin-common
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+    #   opentelemetry-resource-detector-containerid
+opentelemetry-semantic-conventions==0.57b0
+    # via
+    #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-wsgi
+    #   opentelemetry-sdk
+opentelemetry-util-http==0.57b0
+    # via
+    #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-wsgi
 orderedmultidict==1.0.1
     # via furl
 oyaml==1.0
     # via commonground-api-common
 packaging==25.0
-    # via django-csp
+    # via opentelemetry-instrumentation
 phonenumberslite==8.13.42
     # via django-two-factor-auth
 prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.47
     # via click-repl
+protobuf==6.32.0
+    # via
+    #   googleapis-common-protos
+    #   opentelemetry-proto
 psycopg==3.2.9
     # via
     #   -r requirements/base.in
@@ -326,6 +389,7 @@ requests==2.32.4
     #   django-log-outgoing-requests
     #   mozilla-django-oidc
     #   open-api-framework
+    #   opentelemetry-exporter-otlp-proto-http
     #   zgw-consumers
 rpds-py==0.19.1
     # via
@@ -348,14 +412,17 @@ six==1.16.0
 sqlparse==0.5.1
     # via django
 structlog==25.4.0
-    # via
-    #   django-structlog
-    #   open-api-framework
+    # via django-structlog
 tornado==6.5.1
     # via flower
 typing-extensions==4.12.2
     # via
     #   mozilla-django-oidc-db
+    #   opentelemetry-api
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+    #   opentelemetry-sdk
+    #   opentelemetry-semantic-conventions
     #   psycopg
     #   psycopg-pool
     #   pydantic
@@ -386,8 +453,12 @@ webauthn==2.2.0
 webencodings==0.5.1
     # via bleach
 wrapt==1.16.0
-    # via elastic-apm
+    # via
+    #   elastic-apm
+    #   opentelemetry-instrumentation
 zgw-consumers==1.0.0
     # via
     #   commonground-api-common
     #   notifications-api-common
+zipp==3.23.0
+    # via importlib-metadata

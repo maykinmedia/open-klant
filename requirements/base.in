@@ -8,4 +8,4 @@ django-capture-tag
 django-localflavor
 django-setup-configuration
 
-maykin-common[axes,mfa]
+maykin-common[axes,mfa,otel]
