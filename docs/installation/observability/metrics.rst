@@ -24,7 +24,7 @@ Open Klant produces application metrics (using Open Telemetry).
 
    .. code-block:: promql
 
-       avg by (type) (otel_user_count{scope="global"})
+       avg by (type) (otel_openklant_auth_user_count{scope="global"})
 
 Generic
 =======
@@ -43,7 +43,7 @@ Application specific
 Accounts
 --------
 
-``user_count``
+``openklant.auth.user_count``
     Reports the number of users in the database. This is a global metric, you must take
     care in de-duplicating results. Additional attributes are:
 
@@ -55,18 +55,18 @@ Accounts
     .. code-block:: promql
 
         max by (type) (last_over_time(
-          otel_user_count{scope="global"}
+          otel_openklant_auth_user_count{scope="global"}
           [1m]
         ))
 
-``auth.login_failures``
+``openklant.auth.login_failures``
     A counter incremented every time a user login fails (typically because of invalid
     credentials). Does not include the second factor, if enabled. Additional attributes:
 
     - ``http_target`` - the request path where the login failure occurred, if this
       happened in a request context.
 
-``auth.user_lockouts``
+``openklant.auth.user_lockouts``
     A counter incremented every time a user is locked out because they reached the
     maximum number of failed attempts. Additional attributes:
 
@@ -74,14 +74,14 @@ Accounts
       happened in a request context.
     - ``username`` - username of the user trying to log in.
 
-``auth.logins``
+``openklant.auth.logins``
     Counter incrementing on every successful login by a user. Additional attributes:
 
     - ``http_target`` - the request path where the login failure occurred, if this
       happened in a request context.
     - ``username`` - username of the user trying to log in.
 
-``auth.logouts``
+``openklant.auth.logouts``
     Counter incrementing every time a user logs out. Additional attributes:
 
     - ``username`` - username of the user who logged out.
@@ -90,13 +90,13 @@ Klantcontacten
 --------------
 
 
-``klantcontacten.create``
+``openklant.klantcontact.creates``
     Reports the number of klantcontacten created via the API.
 
-``klantcontacten.update``
+``openklant.klantcontact.updates``
     Reports the number of klantcontacten updated via the API.
 
-``klantcontacten.delete``
+``openklant.klantcontact.deletes``
     Reports the number of klantcontacten deleted via the API.
 
 The klantcontacten metrics show how many entities are created, updated, or deleted via the API,
@@ -106,18 +106,18 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_klantcontacten_update_total)
+        sum by (otel_scope_name) (otel_openklant_klantcontact_updates_total)
 
 Betrokkenen
 -----------
 
-``betrokkenen.create``
+``openklant.betrokkene.creates``
     Reports the number of betrokkenen created via the API.
 
-``betrokkenen.update``
+``openklant.betrokkene.updates``
     Reports the number of betrokkenen updated via the API.
 
-``betrokkenen.delete``
+``openklant.betrokkene.deletes``
     Reports the number of betrokkenen deleted via the API.
 
 The betrokkenen metrics show how many entities are created, updated, or deleted via the API,
@@ -127,18 +127,18 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_betrokkenen_update_total)
+        sum by (otel_scope_name) (otel_openklant_betrokkene_updates_total)
 
 Partijen
 --------
 
-``partijen.create``
+``openklant.partij.creates``
     Reports the number of partijen created via the API.
 
-``partijen.update``
+``openklant.partij.updates``
     Reports the number of partijen updated via the API.
 
-``partijen.delete``
+``openklant.partij.deletes``
     Reports the number of partijen deleted via the API.
 
 The partijen metrics show how many entities are created, updated, or deleted via the API,
@@ -148,18 +148,18 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_partijen_update_total)
+        sum by (otel_scope_name) (otel_openklant_partij_updates_total)
 
 Actoren
 -------
 
-``actoren.create``
+``openklant.actor.creates``
     Reports the number of actoren created via the API.
 
-``actoren.update``
+``openklant.actor.updates``
     Reports the number of actoren updated via the API.
 
-``actoren.delete``
+``openklant.actor.deletes``
     Reports the number of actoren deleted via the API.
 
 The actoren metrics show how many entities are created, updated, or deleted via the API,
@@ -169,18 +169,18 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_actoren_update_total)
+        sum by (otel_scope_name) (otel_openklant_actor_updates_total)
 
 Digitale Adressen
 -----------------
 
-``digitale_adressen.create``
+``openklant.digitaal_adres.creates``
     Reports the number of digitale adressen created via the API.
 
-``digitale_adressen.update``
+``openklant.digitaal_adres.updates``
     Reports the number of digitale adressen updated via the API.
 
-``digitale_adressen.delete``
+``openklant.digitaal_adres.deletes``
     Reports the number of digitale adressen deleted via the API.
 
 The digitale adressen metrics show how many entities are created, updated, or deleted via the API,
@@ -190,18 +190,18 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_digitale_adressen_update_total)
+        sum by (otel_scope_name) (otel_openklant_digitaal_adres_updates_total)
 
 Interne Taken
 -------------
 
-``interne_taken.create``
+``openklant.interne_taak.creates``
     Reports the number of interne taken created via the API.
 
-``interne_taken.update``
+``openklant.interne_taak.updates``
     Reports the number of interne taken updated via the API.
 
-``interne_taken.delete``
+``openklant.interne_taak.deletes``
     Reports the number of interne taken deleted via the API.
 
 The interne taken metrics show how many entities are created, updated, or deleted via the API,
@@ -211,4 +211,4 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_interne_taken_update_total)
+        sum by (otel_scope_name) (otel_openklant_interne_taak_updates_total)

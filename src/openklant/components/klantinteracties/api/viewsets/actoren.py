@@ -71,12 +71,11 @@ class ActorViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         super().perform_create(serializer)
         instance = serializer.instance
-        uuid = str(instance.uuid)
         token_auth = self.request.auth
         actoren_create_counter.add(1)
         logger.info(
             "actor_created",
-            uuid=uuid,
+            uuid=str(instance.uuid),
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
@@ -85,25 +84,23 @@ class ActorViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         super().perform_update(serializer)
         instance = serializer.instance
-        uuid = str(instance.uuid)
         token_auth = self.request.auth
         actoren_update_counter.add(1)
         logger.info(
             "actor_updated",
-            uuid=uuid,
+            uuid=str(instance.uuid),
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
 
     @transaction.atomic
     def perform_destroy(self, instance):
-        uuid = str(instance.uuid)
         token_auth = self.request.auth
         super().perform_destroy(instance)
         actoren_delete_counter.add(1)
         logger.info(
             "actor_deleted",
-            uuid=uuid,
+            uuid=str(instance.uuid),
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
