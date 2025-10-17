@@ -9,3 +9,5 @@ django-localflavor
 django-setup-configuration
 
 maykin-common[axes,mfa,otel]
+
+git+https://github.com/maykinmedia/commonground-api-common.git@feature/fix-check-query-params
