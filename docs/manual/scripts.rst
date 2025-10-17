@@ -7,13 +7,14 @@ Scripts
 Dump data
 ---------
 
-Met het script ``dump_data.sh`` kan de data van alle componenten (klantinteracties, contactgegevens) worden geëxporteerd naar een sql bestand.
+The ``dump_data.sh`` script can be used to export data from all components (**klantinteracties**, **contactgegevens**) to an SQL file.
 
-Dit script is niet bedoeld voor een data migratie naar een andere Open Klant instantie.
+This script is not intended for data migration to another Open Klant instance.
 
-Standaard wordt het volledige schema en data in twee sql bestanden gegenereerd. dit kan worden aangepast via de flags ``--data-only``, ``--schema-only`` & ``--combined``
-waardoor een bestand wordt gegenereerd. De data dump bevat standaard alle klantinteractie & contactgegevens data.
-Om alleen specifieke data te exporteren kunnen de gewenste component namen worden meegegeven:
+By default, the complete schema and data are generated in two SQL files. This can be adjusted using the flags ``--data-only``, ``--schema-only`` & ``--combined``,
+which generate a single file. By default, the data dump contains all **klantinteractie** & **contactgegevens** data.
+
+To export only specific data, the desired component names can be specified:
 
 .. code-block:: shell
 
@@ -21,17 +22,17 @@ Om alleen specifieke data te exporteren kunnen de gewenste component namen worde
 
 .. note::
 
-    om een postgres 17 db te exporteren is de package postgres-client-17 vereist.
+    To export a Postgres 17 database, the postgres-client-17 package is required.
 
 Environment variabelen
 ----------------------
 
-* DB_HOST (db)
-* DB_PORT (5432)
-* DB_USER (openklant)
-* DB_NAME (openklant)
-* DB_PASSWORD ("")
-* DUMP_FILE ("dump_$(date +'%Y-%m-%d_%H-%M-%S').sql")
+- **DB_HOST** = db
+- **DB_PORT** = 5432
+- **DB_USER** = openklant
+- **DB_NAME** = openklant
+- **DB_PASSWORD** = ''
+- **DUMP_FILE** = dump_$(date +'%Y-%m-%d_%H-%M-%S').sql
 
 .. code-block:: shell
 

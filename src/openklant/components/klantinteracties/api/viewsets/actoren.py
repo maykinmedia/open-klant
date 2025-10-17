@@ -9,6 +9,11 @@ from openklant.components.klantinteracties.api.filterset.actoren import ActorenF
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorSerializer,
 )
+from openklant.components.klantinteracties.metrics import (
+    actoren_create_counter,
+    actoren_delete_counter,
+    actoren_update_counter,
+)
 from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.token.authentication import TokenAuthentication
 from openklant.components.token.permission import TokenPermissions
@@ -65,11 +70,12 @@ class ActorViewSet(viewsets.ModelViewSet):
     @transaction.atomic
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        actor = serializer.instance
+        instance = serializer.instance
         token_auth = self.request.auth
+        actoren_create_counter.add(1)
         logger.info(
             "actor_created",
-            uuid=str(actor.uuid),
+            uuid=str(instance.uuid),
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
@@ -77,23 +83,24 @@ class ActorViewSet(viewsets.ModelViewSet):
     @transaction.atomic
     def perform_update(self, serializer):
         super().perform_update(serializer)
-        actor = serializer.instance
+        instance = serializer.instance
         token_auth = self.request.auth
+        actoren_update_counter.add(1)
         logger.info(
             "actor_updated",
-            uuid=str(actor.uuid),
+            uuid=str(instance.uuid),
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
 
     @transaction.atomic
     def perform_destroy(self, instance):
-        uuid = str(instance.uuid)
         token_auth = self.request.auth
         super().perform_destroy(instance)
+        actoren_delete_counter.add(1)
         logger.info(
             "actor_deleted",
-            uuid=uuid,
+            uuid=str(instance.uuid),
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )

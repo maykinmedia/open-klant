@@ -1,4 +1,4 @@
-.. _manual_logging:
+.. _installation_observability_logging:
 
 =======
 Logging
@@ -51,6 +51,7 @@ Other keys that frequently occur are:
    aggregation technologies support handling both structured and unstructured logs.
 
 
+.. _manual_logging:
 
 Format
 ------
