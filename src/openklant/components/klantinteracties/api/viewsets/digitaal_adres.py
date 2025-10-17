@@ -4,6 +4,7 @@ import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from openklant.components.klantinteracties.api.filterset.digitaal_adres import (
     DigitaalAdresDetailFilterSet,
@@ -53,7 +54,7 @@ logger = structlog.get_logger(__name__)
         description="Verwijder een digitaal adres.",
     ),
 )
-class DigitaalAdresViewSet(ExpandMixin, viewsets.ModelViewSet):
+class DigitaalAdresViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelViewSet):
     """
     Digitaal adres dat een betrokkene bij klantcontact verstrekte
     voor gebruik bij opvolging van een klantcontact.

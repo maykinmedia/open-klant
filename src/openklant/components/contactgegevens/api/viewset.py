@@ -4,6 +4,7 @@ import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from openklant.components.contactgegevens.api.serializers import (
     OrganisatieSerializer,
@@ -43,7 +44,7 @@ logger = structlog.get_logger(__name__)
         description="Verwijder een organisatie.",
     ),
 )
-class OrganisatieViewSet(viewsets.ModelViewSet):
+class OrganisatieViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """De contact gegevens van een specifieke organisatie"""
 
     queryset = Organisatie.objects.order_by("-pk")
@@ -117,7 +118,7 @@ class OrganisatieViewSet(viewsets.ModelViewSet):
         description="Verwijder een persoon.",
     ),
 )
-class PersoonViewSet(viewsets.ModelViewSet):
+class PersoonViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """De contact gegevens van een specifieke persoon"""
 
     queryset = Persoon.objects.order_by("-pk")

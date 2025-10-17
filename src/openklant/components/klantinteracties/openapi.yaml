@@ -2093,6 +2093,35 @@ paths:
         '204':
           description: No response body
   /maak-klantcontact:
+    get:
+      operationId: maakKlantcontactList
+      description: |-
+        Endpoint om in één request een Klantcontact met een Betrokkene en een OnderwerpObject
+        aan te maken. De aangemaakte objecten worden automatisch aan elkaar gekoppeld.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      - name: pageSize
+        required: false
+        in: query
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
+        schema:
+          type: integer
+      tags:
+      - maak-klantcontact
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMaakKlantcontactList'
+          description: ''
     post:
       operationId: maakKlantcontactCreate
       description: Maak een KlantContact, Betrokkene en een OnderwerpObject aan.
@@ -5042,6 +5071,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Klantcontact'
+    PaginatedMaakKlantcontactList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaakKlantcontact'
     PaginatedOnderwerpobjectList:
       type: object
       required:
