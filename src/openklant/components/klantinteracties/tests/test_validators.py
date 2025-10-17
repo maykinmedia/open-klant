@@ -140,7 +140,7 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
         details = error.exception.message_dict
         self.assertEqual(
             details["partij_identificator_object_id"][0],
-            "Deze waarde is ongeldig, reden: Waarde moet 9 tekens lang zijn",
+            "Deze waarde is ongeldig, reden: Onjuist BSN nummer",
         )
 
     def test_invalid_object_id_digit_bsn(self):

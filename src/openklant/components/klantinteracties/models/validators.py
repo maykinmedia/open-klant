@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from vng_api_common.constants import BSN_LENGTH, RSIN_LENGTH
 from vng_api_common.validators import (
     BaseIdentifierValidator,
     validate_bsn,
@@ -17,6 +18,15 @@ from .constants import (
 
 VESTIGINGSNUMMER_LENGTH = 12
 KVK_NUMMER_LENGTH = 8
+
+
+def validate_length(value, length) -> None:
+    if len(value) != length:
+        raise ValidationError(
+            _("Waarde moet %(identifier_length)s tekens lang zijn")
+            % {"identifier_length": length},
+            code="invalid-length",
+        )
 
 
 class PartijIdentificatorUniquenessValidator:
@@ -196,20 +206,18 @@ class PartijIdentificatorTypesValidator:
             match self.code_soort_object_id:
                 case PartijIdentificatorCodeSoortObjectId.bsn:
                     validate_bsn(self.object_id)
+                    validate_length(self.object_id, BSN_LENGTH)
                 case PartijIdentificatorCodeSoortObjectId.vestigingsnummer:
-                    validator = BaseIdentifierValidator(
-                        self.object_id,
-                        identifier_length=VESTIGINGSNUMMER_LENGTH,
-                    )
+                    validator = BaseIdentifierValidator(self.object_id)
                     validator.validate()
+                    validate_length(self.object_id, VESTIGINGSNUMMER_LENGTH)
                 case PartijIdentificatorCodeSoortObjectId.rsin:
                     validate_rsin(self.object_id)
+                    validate_length(self.object_id, RSIN_LENGTH)
                 case PartijIdentificatorCodeSoortObjectId.kvk_nummer:
-                    validator = BaseIdentifierValidator(
-                        self.object_id,
-                        identifier_length=KVK_NUMMER_LENGTH,
-                    )
+                    validator = BaseIdentifierValidator(self.object_id)
                     validator.validate()
+                    validate_length(self.object_id, KVK_NUMMER_LENGTH)
                 case _:
                     return
         except ValidationError as error:

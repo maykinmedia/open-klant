@@ -5,6 +5,7 @@ from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from openklant.components.klantinteracties.api.filterset.partijen import (
     CategorieRelatieFilterSet,
@@ -72,7 +73,9 @@ logger = structlog.get_logger(__name__)
         description="Verwijder een partij.",
     ),
 )
-class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet):
+class PartijViewSet(
+    CheckQueryParamsMixin, NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
+):
     """Persoon of organisatie waarmee de gemeente een relatie heeft."""
 
     queryset = (
@@ -193,7 +196,7 @@ class PartijViewSet(NotificationViewSetMixin, ExpandMixin, viewsets.ModelViewSet
         description="Verwijder een vertegenwoordiging.",
     ),
 )
-class VertegenwoordigdenViewSet(viewsets.ModelViewSet):
+class VertegenwoordigdenViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """Persoon of organisatie waarmee de gemeente een relatie heeft."""
 
     queryset = Vertegenwoordigden.objects.order_by("-pk").select_related(
@@ -295,7 +298,7 @@ class VertegenwoordigdenViewSet(viewsets.ModelViewSet):
         description="Verwijder een categorie relatie, Let op: Dit endpoint is EXPERIMENTEEL.",
     ),
 )
-class CategorieRelatieViewSet(viewsets.ModelViewSet):
+class CategorieRelatieViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """De categorie relatie van een partij, Let op: Dit endpoint is EXPERIMENTEEL."""
 
     queryset = CategorieRelatie.objects.order_by("-pk").select_related(
@@ -381,7 +384,7 @@ class CategorieRelatieViewSet(viewsets.ModelViewSet):
         description="Verwijder een categorie, Let op: Dit endpoint is EXPERIMENTEEL.",
     ),
 )
-class CategorieViewSet(viewsets.ModelViewSet):
+class CategorieViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """De categorie van een partij, Let op: Dit endpoint is EXPERIMENTEEL."""
 
     queryset = Categorie.objects.order_by("-pk")
@@ -457,7 +460,7 @@ class CategorieViewSet(viewsets.ModelViewSet):
         description="Verwijder een partij-identificator.",
     ),
 )
-class PartijIdentificatorViewSet(viewsets.ModelViewSet):
+class PartijIdentificatorViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """Gegevens die een partij in een basisregistratie of ander extern register uniek identificeren."""
 
     queryset = PartijIdentificator.objects.order_by("-pk").select_related(

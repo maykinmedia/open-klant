@@ -1,5 +1,6 @@
 from rest_framework import status
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_validation_errors, reverse
+from vng_api_common.viewsets import UNKNOWN_PARAMETERS_CODE
 
 from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
@@ -382,3 +383,77 @@ class ExpandTests(APITestCase):
                 "land": self.partij.correspondentieadres_land,
             },
         )
+
+    def test_invalid_multiple_params_expansion(self):
+        detail_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(self.klantcontact.uuid)},
+        )
+
+        explicit_url = detail_url + "?wrong_expand="
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("_expand" not in response.json())
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
+        self.assertEqual(error["reason"], ("Onbekende query parameters: wrong_expand"))
+
+        explicit_url = detail_url + "?expand[]="
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("_expand" not in response.json())
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
+        self.assertEqual(error["reason"], ("Onbekende query parameters: expand[]"))
+
+        explicit_url = (
+            detail_url + "?expand[]=leiddeTotInterneTaken&expand[]=hadBetrokkenen"
+        )
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("_expand" not in response.json())
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
+        self.assertEqual(error["reason"], ("Onbekende query parameters: expand[]"))
+
+        explicit_url = detail_url + "?expand=invalid_choice"
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("_expand" not in response.json())
+
+        explicit_url = detail_url + "?expand=hadBetrokkenen,invalid_choice"
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("_expand" not in response.json())
+
+        explicit_url = detail_url + "?expand=invalid_choice1&expand=invalid_choice2"
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("_expand" not in response.json())
+
+    def test_valid_multiple_params_expansion(self):
+        detail_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(self.klantcontact.uuid)},
+        )
+        explicit_url = detail_url + "?expand=hadBetrokkenen"
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.json()["_expand"])
+        self.assertTrue(response.json()["_expand"]["hadBetrokkenen"])
+
+        explicit_url = detail_url + "?expand=hadBetrokkenen,leiddeTotInterneTaken"
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.json()["_expand"])
+        self.assertTrue(response.json()["_expand"]["hadBetrokkenen"])
+        self.assertTrue(response.json()["_expand"]["leiddeTotInterneTaken"])
+
+        explicit_url = (
+            detail_url + "?expand=hadBetrokkenen&expand=leiddeTotInterneTaken"
+        )
+        response = self.client.get(explicit_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.json()["_expand"])
+        self.assertTrue(response.json()["_expand"]["hadBetrokkenen"])
+        self.assertTrue(response.json()["_expand"]["leiddeTotInterneTaken"])
