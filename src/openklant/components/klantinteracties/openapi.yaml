@@ -2143,6 +2143,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/MaakKlantcontact'
           description: ''
+  /maak-klantcontact/{id}:
+    get:
+      operationId: maakKlantcontactRetrieve
+      description: |-
+        Endpoint om in één request een Klantcontact met een Betrokkene en een OnderwerpObject
+        aan te maken. De aangemaakte objecten worden automatisch aan elkaar gekoppeld.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - maak-klantcontact
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaakKlantcontact'
+          description: ''
   /onderwerpobjecten:
     get:
       operationId: onderwerpobjectenList
