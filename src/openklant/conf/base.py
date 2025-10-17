@@ -34,7 +34,13 @@ MIDDLEWARE += ["openklant.utils.middleware.APIVersionHeaderMiddleware"]
 #
 # SECURITY settings
 #
-CSRF_FAILURE_VIEW = "openklant.accounts.views.csrf_failure"
+CSRF_FAILURE_VIEW = "maykin_common.views.csrf_failure"
+
+# This setting is used by the csrf_failure view (accounts app).
+# You can specify any path that should match the request.path
+# Note: the LOGIN_URL Django setting is not used because you could have
+# multiple login urls defined.
+LOGIN_URLS = [reverse_lazy("admin:login")]
 
 #
 # Custom settings
