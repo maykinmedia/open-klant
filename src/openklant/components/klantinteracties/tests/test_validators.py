@@ -148,7 +148,7 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
             PartijIdentificatorTypesValidator()(
                 code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
                 code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
-                object_id="123TEST123",
+                object_id="123TEST12",
                 code_register=PartijIdentificatorCodeRegister.brp.value,
             )
 

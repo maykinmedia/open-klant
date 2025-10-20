@@ -1,5 +1,6 @@
 from rest_framework import status
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_validation_errors, reverse
+from vng_api_common.viewsets import UNKNOWN_PARAMETERS_CODE
 
 from openklant.components.contactgegevens.api.tests.factories import (
     OrganisatieFactory,
@@ -331,6 +332,33 @@ class PersoonTests(APITestCase):
         self.assertEqual(len(data["results"]), 5)
         self.assertEqual(data["next"], f"http://testserver{list_url}?page=2&pageSize=5")
 
+    def test_invalid_filters(self):
+        # detail
+        persoon = PersoonFactory.create()
+        response = self.client.get(
+            reverse(
+                "contactgegevens:persoon-detail",
+                kwargs={"uuid": str(persoon.uuid)},
+            ),
+            {"invalid": "1"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
+        self.assertEqual(error["reason"], ("Onbekende query parameters: invalid"))
+
+        # list
+        response = self.client.get(
+            reverse(
+                "contactgegevens:persoon-list",
+            ),
+            {"invalid": "1"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
+        self.assertEqual(error["reason"], ("Onbekende query parameters: invalid"))
+
 
 class OrganisatiesTests(APITestCase):
     def test_organisatie_detail(self):
@@ -621,3 +649,30 @@ class OrganisatiesTests(APITestCase):
         self.assertEqual(data["count"], 10)
         self.assertEqual(len(data["results"]), 5)
         self.assertEqual(data["next"], f"http://testserver{list_url}?page=2&pageSize=5")
+
+    def test_invalid_filters(self):
+        # detail
+        organisatie = OrganisatieFactory.create()
+        response = self.client.get(
+            reverse(
+                "contactgegevens:organisatie-detail",
+                kwargs={"uuid": str(organisatie.uuid)},
+            ),
+            {"invalid": "1"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
+        self.assertEqual(error["reason"], ("Onbekende query parameters: invalid"))
+
+        # list
+        response = self.client.get(
+            reverse(
+                "contactgegevens:organisatie-list",
+            ),
+            {"invalid": "1"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
+        self.assertEqual(error["reason"], ("Onbekende query parameters: invalid"))
