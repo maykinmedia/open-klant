@@ -1,0 +1,4 @@
+referentielijsten_config:
+       enabled: true
+       referentielijsten_api_service_identifier: referentielijsten-api-test
+       kanalen_tabel_code: KANAAL

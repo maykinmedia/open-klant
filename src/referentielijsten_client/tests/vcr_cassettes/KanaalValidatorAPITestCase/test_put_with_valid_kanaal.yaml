@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJpYXQiOjE3NjI0NDYwMDgsImV4cCI6MTc2MjQ4OTIwOCwiY2xpZW50X2lkIjoiIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.BYeQDL7Z5tgG2NM9ZkiC4-z2Dd977PMYiB1yVy3hHYw
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.4
+    method: GET
+    uri: http://localhost:8004/api/v1/items?tabel__code=KANAAL
+  response:
+    body:
+      string: '{"count":2,"next":null,"previous":null,"results":[{"code":"phone","naam":"Telephone","begindatumGeldigheid":"2025-10-25T15:09:07Z","einddatumGeldigheid":"2029-10-25T15:09:08Z","aanvullendeGegevens":null},{"code":"email","naam":"E-mail
+        Communication","begindatumGeldigheid":"2025-10-25T15:09:23Z","einddatumGeldigheid":null,"aanvullendeGegevens":null}]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      Content-Length:
+      - '352'
+      Content-Security-Policy:
+      - 'style-src ''self'' ''unsafe-inline'' fonts.googleapis.com; form-action ''self'';
+        script-src ''self'' ''unsafe-inline''; default-src ''self''; base-uri ''self'';
+        frame-ancestors ''none''; frame-src ''self''; worker-src ''self'' blob:; img-src
+        ''self'' data: cdn.redoc.ly; font-src ''self'' fonts.gstatic.com; object-src
+        ''none'''
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Referrer-Policy:
+      - same-origin
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
