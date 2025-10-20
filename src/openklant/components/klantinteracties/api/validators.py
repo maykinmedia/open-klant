@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -25,7 +26,9 @@ from openklant.components.klantinteracties.models.partijen import (
     PartijIdentificator,
 )
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
+from openklant.config.models import ReferentielijstenConfig
 from openklant.utils.validators import validate_phone_number
+from referentielijsten_client.client import ReferentielijstenClient
 
 
 class FKUniqueTogetherValidator(UniqueTogetherValidator):
@@ -180,3 +183,24 @@ class SoortDigitaalAdresValidator:
                 validate_phone_number(value)
             case _:
                 return
+
+
+class KanaalValidator:
+    def __call__(self, value: str):
+        config = ReferentielijstenConfig.get_solo()
+        if not config.enabled:
+            return value
+
+        if not config.service:
+            return value
+
+        client = ReferentielijstenClient(service=config.service)
+        kanalen_data = client.get_cached_items_by_tabel_code(config.tabel_code)
+        kanalen = [item["code"] for item in kanalen_data if "code" in item]
+
+        if value not in kanalen:
+            raise ValidationError(
+                f"'{value}' is not a valid kanaal. Allowed values: {', '.join(kanalen)}"
+            )
+
+        return value
