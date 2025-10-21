@@ -5,6 +5,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from openklant.components.klantinteracties.api.filterset.internetaken import (
     InternetaakFilterSet,
@@ -53,7 +54,9 @@ logger = structlog.get_logger(__name__)
         description="Verwijder een interne taak.",
     ),
 )
-class InterneTaakViewSet(NotificationViewSetMixin, viewsets.ModelViewSet):
+class InterneTaakViewSet(
+    CheckQueryParamsMixin, NotificationViewSetMixin, viewsets.ModelViewSet
+):
     """Iets dat door een actor moet worden gedaan om opvolging te geven aan een klantcontact."""
 
     queryset = (

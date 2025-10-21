@@ -4,6 +4,7 @@ import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
     ActorKlantcontactFilterSet,
@@ -72,7 +73,7 @@ logger = structlog.stdlib.get_logger(__name__)
         description="Verwijder een klant contact.",
     ),
 )
-class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
+class KlantcontactViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelViewSet):
     """
     Contact tussen een klant of een vertegenwoordiger van een
     klant en de gemeente over een onderwerp.
@@ -185,7 +186,7 @@ class KlantcontactViewSet(ExpandMixin, viewsets.ModelViewSet):
         description="Verwijder een betrokkene.",
     ),
 )
-class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
+class BetrokkeneViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelViewSet):
     """
     Ofwel betrokkenheid van een partij bij een klantcontact, eventueel aangevuld met
     specifiek voor opvolging van dat klantcontact te gebruiken contactgegevens, ofwel
@@ -301,7 +302,7 @@ class BetrokkeneViewSet(ExpandMixin, viewsets.ModelViewSet):
         description="Verwijder een onderwerpobject.",
     ),
 )
-class OnderwerpobjectViewSet(viewsets.ModelViewSet):
+class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     queryset = Onderwerpobject.objects.order_by("-pk").select_related(
         "klantcontact",
         "was_klantcontact",
@@ -394,7 +395,7 @@ class OnderwerpobjectViewSet(viewsets.ModelViewSet):
         description="Verwijder een bijlage.",
     ),
 )
-class BijlageViewSet(viewsets.ModelViewSet):
+class BijlageViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     queryset = Bijlage.objects.order_by("-pk").select_related("klantcontact")
     serializer_class = BijlageSerializer
     lookup_field = "uuid"
@@ -482,7 +483,7 @@ class BijlageViewSet(viewsets.ModelViewSet):
         description="Verwijder een actor klantcontact.",
     ),
 )
-class ActorKlantcontactViewSet(viewsets.ModelViewSet):
+class ActorKlantcontactViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """Iets dat of iemand die voor de gemeente werkzaamheden uitvoert."""
 
     queryset = ActorKlantcontact.objects.order_by("-pk").select_related(

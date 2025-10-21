@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from vng_api_common.constants import BSN_LENGTH, RSIN_LENGTH
 from vng_api_common.validators import (
     BaseIdentifierValidator,
     validate_bsn,
@@ -17,6 +18,15 @@ from .constants import (
 
 VESTIGINGSNUMMER_LENGTH = 12
 KVK_NUMMER_LENGTH = 8
+
+
+def validate_length(value, length) -> None:
+    if len(value) != length:
+        raise ValidationError(
+            _("Waarde moet %(identifier_length)s tekens lang zijn")
+            % {"identifier_length": length},
+            code="invalid-length",
+        )
 
 
 class PartijIdentificatorUniquenessValidator:
@@ -195,20 +205,18 @@ class PartijIdentificatorTypesValidator:
         try:
             match self.code_soort_object_id:
                 case PartijIdentificatorCodeSoortObjectId.bsn:
+                    validate_length(self.object_id, BSN_LENGTH)
                     validate_bsn(self.object_id)
                 case PartijIdentificatorCodeSoortObjectId.vestigingsnummer:
-                    validator = BaseIdentifierValidator(
-                        self.object_id,
-                        identifier_length=VESTIGINGSNUMMER_LENGTH,
-                    )
+                    validate_length(self.object_id, VESTIGINGSNUMMER_LENGTH)
+                    validator = BaseIdentifierValidator(self.object_id)
                     validator.validate()
                 case PartijIdentificatorCodeSoortObjectId.rsin:
+                    validate_length(self.object_id, RSIN_LENGTH)
                     validate_rsin(self.object_id)
                 case PartijIdentificatorCodeSoortObjectId.kvk_nummer:
-                    validator = BaseIdentifierValidator(
-                        self.object_id,
-                        identifier_length=KVK_NUMMER_LENGTH,
-                    )
+                    validate_length(self.object_id, KVK_NUMMER_LENGTH)
+                    validator = BaseIdentifierValidator(self.object_id)
                     validator.validate()
                 case _:
                     return

@@ -55,10 +55,7 @@ class ExpandMixin:
         return self.action in ["list", "retrieve"]
 
     def get_requested_inclusions(self, request):
-        # Pull expand parameter from request body in case of _zoek operation
-        if request.method == "POST":
-            return ",".join(request.data.get(self.expand_param, []))
-        return request.GET.get(self.expand_param)
+        return ",".join(request.GET.getlist(self.expand_param))
 
 
 def create_prefixed_adresmixin(prefix: str):

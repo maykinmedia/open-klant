@@ -4,6 +4,7 @@ import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from openklant.components.klantinteracties.api.serializers.rekeningnummers import (
     RekeningnummerSerializer,
@@ -42,7 +43,7 @@ logger = structlog.get_logger(__name__)
         description="Verwijder een rekeningnummer.",
     ),
 )
-class RekeningnummerViewSet(viewsets.ModelViewSet):
+class RekeningnummerViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     queryset = Rekeningnummer.objects.order_by("-pk").select_related(
         "partij",
     )
