@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator, qs_filter
+from zgw_consumers.client import build_client
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.actoren import Actor
@@ -194,7 +195,10 @@ class KanaalValidator:
         if not config.service:
             return value
 
-        client = ReferentielijstenClient(service=config.service)
+        client = build_client(
+            service=config.service,
+            client_factory=ReferentielijstenClient,
+        )
         kanalen_data = client.get_cached_items_by_tabel_code(config.tabel_code)
         kanalen = [item["code"] for item in kanalen_data if "code" in item]
 
