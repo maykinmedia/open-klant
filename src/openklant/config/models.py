@@ -3,10 +3,10 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from solo.models import SingletonModel
+from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
 
 from openklant.components.klantinteracties.models import Klantcontact
-from referentielijsten_client.client import ReferentielijstenClient
 
 
 class ReferentielijstenConfig(SingletonModel):
@@ -36,7 +36,7 @@ class ReferentielijstenConfig(SingletonModel):
                 )
             )
 
-        client = ReferentielijstenClient(service=self.service)
+        client = build_client(self.service)
         items = client.get_items_by_tabel_code(self.tabel_code)
         valid_kanalen = {item.get("code") for item in items if item.get("code")}
 
