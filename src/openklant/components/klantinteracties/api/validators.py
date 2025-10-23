@@ -3,6 +3,7 @@ from django.core.validators import EmailValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import structlog
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator, qs_filter
 from zgw_consumers.client import build_client
@@ -30,6 +31,8 @@ from openklant.components.klantinteracties.models.rekeningnummers import Rekenin
 from openklant.config.models import ReferentielijstenConfig
 from openklant.utils.validators import validate_phone_number
 from referentielijsten_client.client import ReferentielijstenClient
+
+logger = structlog.get_logger(__name__)
 
 
 class FKUniqueTogetherValidator(UniqueTogetherValidator):
@@ -193,6 +196,7 @@ class KanaalValidator:
             return value
 
         if not config.service:
+            logger.warning("missing_referentielijsten_service")
             return value
 
         client = build_client(
