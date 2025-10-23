@@ -1,0 +1,26 @@
+[
+  {
+    "model": "referentielijsten.kanalen",
+    "pk": 1,
+    "fields": {
+      "naam": "E-mail",
+      "code": "EMAIL"
+    }
+  },
+  {
+    "model": "referentielijsten.kanalen",
+    "pk": 2,
+    "fields": {
+      "naam": "Post",
+      "code": "POST"
+    }
+  },
+  {
+    "model": "referentielijsten.kanalen",
+    "pk": 3,
+    "fields": {
+      "naam": "Telefoon",
+      "code": "TEL"
+    }
+  }
+]
