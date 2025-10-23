@@ -3,6 +3,7 @@ from typing import Any
 from django.core.cache import cache
 
 from zgw_consumers.nlx import NLXClient
+from zgw_consumers.service import pagination_helper
 
 
 class ReferentielijstenClient(NLXClient):
@@ -15,7 +16,9 @@ class ReferentielijstenClient(NLXClient):
         response = self.get(endpoint, params=query_params)
         response.raise_for_status()
         data = response.json()
-        return data.get("results", [])
+
+        all_results = list(pagination_helper(self, data))
+        return all_results
 
     def get_items_by_tabel_code(
         self,
