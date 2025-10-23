@@ -31,7 +31,9 @@ class ReferentielijstenConfig(SingletonModel):
 
         if not self.service or not self.tabel_code:
             raise ValidationError(
-                "Service en tabel_code moeten zijn ingesteld wanneer validatie is ingeschakeld"
+                _(
+                    "Service en tabel_code moeten zijn ingesteld wanneer validatie is ingeschakeld"
+                )
             )
 
         client = ReferentielijstenClient(service=self.service)
