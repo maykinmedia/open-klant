@@ -1,57 +1,38 @@
-version: '3.8'
-
-name: referentielijsten
-
-services:
-  referentielijsten-redis:
-    image: redis:7
-    command: ["redis-server", "--appendonly", "yes"]
-    networks:
-      - referentielijsten-dev
-
-  referentielijsten-db:
-    image: postgres:${PG_VERSION:-14}
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
-    volumes:
-      - ./referentielijsten/docker-init-referentielijsten-db/:/docker-entrypoint-initdb.d
-      - referentielijsten-db:/var/lib/postgresql/data
-    networks:
-      - referentielijsten-dev
-      -
-  referentielijsten-web.local:
-    image: maykinmedia/referentielijsten-api:${REFERENTIELIJSTEN_VERSION:-latest}
-    environment: &referentielijsten_web_env
-      - DJANGO_SETTINGS_MODULE=referentielijsten.conf.docker
-      - SECRET_KEY=${SECRET_KEY:-7&3f^bo1(-5($bre4iv-!nt%1xr!b54b&y7+97j5f&ndm_e=lz}
-      - ALLOWED_HOSTS=referentielijsten-web.local,localhost
-      - DB_NAME=referentielijsten
-      - DB_USER=referentielijsten
-      - DB_HOST=referentielijsten-db
-      - DISABLE_2FA=true
-      - IS_HTTPS=no
-      - CACHE_DEFAULT=referentielijsten-redis:6379/0
-      - CACHE_AXES=referentielijsten-redis:6379/0
-      - SUBPATH=${SUBPATH:-/}
-      - DJANGO_SUPERUSER_PASSWORD=admin
-    ports:
-      - 8004:8000
-    volumes: &referentielijsten_web_volumes
-      # mount fixtures dir to automatically populate the DB
-      - ./referentielijsten/fixtures/:/app/fixtures
-      - media:/app/media  # Shared media volume to get access to saved OAS files
-      - private-media:/app/private-media
-    depends_on:
-      - referentielijsten-db
-      - referentielijsten-redis
-    networks:
-      - open-forms-dev
-
-volumes:
-  referentielijsten-db:
-  media:
-  private-media:
-
-networks:
-  referentielijsten-dev:
-    name: referentielijsten-dev
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://localhost:8000/klanten/api/v1/klanten
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://localhost:8000/klanten/api/v1/klanten/dbfdb3f2-e153-49ea-9e26-e55220605c14","bronorganisatie":"215906846","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"","emailadres":"example@maykinmedia.nl","adres":null,"subject":"","subjectType":"natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"inpBsn":"","anpIdentificatie":"0","inpANummer":"","geslachtsnaam":"Greene","voorvoegselGeslachtsnaam":"","voorletters":"","voornamen":"Lori","geslachtsaanduiding":"","geboortedatum":"1981-04-15","verblijfsadres":null,"subVerblijfBuitenland":null}}]}'
+    headers:
+      API-version:
+      - 1.0.0
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '726'
+      Content-Type:
+      - application/json
+      Referrer-Policy:
+      - same-origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
