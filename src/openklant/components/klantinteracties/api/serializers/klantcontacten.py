@@ -18,6 +18,7 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
 )
 from openklant.components.klantinteracties.api.validators import (
     FKUniqueTogetherValidator,
+    KanaalValidator,
     betrokkene_exists,
     bijlage_exists,
     klantcontact_exists,
@@ -305,6 +306,12 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         "had_betrokkenen.was_partij": f"{SERIALIZER_PATH}.partijen.PartijSerializer",
         "had_betrokkenen.digitale_adressen": f"{SERIALIZER_PATH}.digitaal_adres.DigitaalAdresSerializer",
     }
+
+    kanaal = serializers.CharField(
+        max_length=50,
+        help_text=_("Communicatiekanaal dat bij het klantcontact werd gebruikt."),
+        validators=[KanaalValidator()],
+    )
 
     class Meta:
         model = Klantcontact

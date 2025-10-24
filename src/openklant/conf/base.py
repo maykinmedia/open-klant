@@ -25,6 +25,7 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "openklant.components.token",
     "openklant.components.klantinteracties",
     "openklant.components.contactgegevens",
+    "openklant.config",
     # Django libraries
     "localflavor",
 ]
