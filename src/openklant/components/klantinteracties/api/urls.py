@@ -1,9 +1,7 @@
 from django.urls import include, path, re_path
 
 from drf_spectacular.views import (
-    SpectacularJSONAPIView,
     SpectacularRedocView,
-    SpectacularYAMLAPIView,
 )
 from vng_api_common import routers
 
@@ -33,6 +31,11 @@ from openklant.components.klantinteracties.api.viewsets.rekeningnummers import (
     RekeningnummerViewSet,
 )
 
+from ...utils.views import (
+    DeprecationRedirectView,
+    SpectacularJSONAPIView,
+    SpectacularYAMLAPIView,
+)
 from .schema import custom_settings
 
 app_name = "klantinteracties"
@@ -74,6 +77,18 @@ urlpatterns = [
                 ),
                 path(
                     "schema/openapi.json",
+                    DeprecationRedirectView.as_view(
+                        pattern_name="klantinteracties:schema-json-klantinteracties"
+                    ),
+                ),
+                path(
+                    "schema/openapi.yaml",
+                    DeprecationRedirectView.as_view(
+                        pattern_name="klantinteracties:schema-yaml-klantinteracties"
+                    ),
+                ),
+                path(
+                    "openapi.json",
                     SpectacularJSONAPIView.as_view(
                         urlconf="openklant.components.klantinteracties.api.urls",
                         custom_settings=custom_settings,
@@ -81,7 +96,7 @@ urlpatterns = [
                     name="schema-json-klantinteracties",
                 ),
                 path(
-                    "schema/openapi.yaml",
+                    "openapi.yaml",
                     SpectacularYAMLAPIView.as_view(
                         urlconf="openklant.components.klantinteracties.api.urls",
                         custom_settings=custom_settings,

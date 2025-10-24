@@ -144,6 +144,8 @@ context variables, these events will also have the **request bound metadata** de
 API
 ~~~
 
+* ``deprecated_endpoint_called``: a deprecated endpoint was called. Additional context: ``endpoint``.
+
 * ``klantcontact_created``: created an ``Klantcontact`` via the API. Additional context: ``uuid``, ``nummer``, ``onderwerp``, ``plaatsgevonden_op``, ``token_identifier``, ``token_application``.
 * ``klantcontact_updated``: updated an ``Klantcontact`` via the API. Additional context: ``uuid``, ``nummer``, ``onderwerp``, ``plaatsgevonden_op``, ``token_identifier``, ``token_application``.
 * ``klantcontact_deleted``: deleted an ``Klantcontact`` via the API. Additional context: ``uuid``, ``nummer``, ``onderwerp``, ``plaatsgevonden_op``, ``token_identifier``, ``token_application``.
