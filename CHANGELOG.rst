@@ -75,6 +75,33 @@ Change history
 ======
 *August 28, 2025*
 
+.. warning::
+
+    In this release, ``mozilla-django-oidc-db`` has been updated to version 0.25.1, which requires the new data format.
+    The old format is deprecated and may be removed in future releases.
+
+    The new configuration must be used, as it splits the previous solo model configuration into ``OIDCProvider`` and ``OIDCClient``
+    configurations, making it easier to re-use identity provider settings across multiple client IDs.
+
+    Additionally, any configuration using ``django-setup-configuration`` must be updated to reflect these changes,
+    as it is now split into two distinct sections: one for ``providers`` and one for ``clients``.
+    For example:
+
+    .. code-block:: yaml
+
+        providers:
+          - identifier: example-provider
+            # other provider settings
+
+        clients:
+          - identifier: admin-oidc
+            oidc_provider_identifier: example-provider
+            # other client settings
+
+    For detailed configuration, see :ref:`installation_configuration_cli`.
+
+
+
 **New features**
 
 * [:open-klant:`419`] Added query parameters on `onderwerpobjecten` for searching klantcontacten by referred klantcontact:
