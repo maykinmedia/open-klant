@@ -39,6 +39,7 @@ jobs:
           python src/manage.py migrate
           src/manage.py loaddata klantinteracties contactgegevens
           SCRIPTPATH=bin DUMP_FILE=dump.sql bin/dump_data.sh --combined
+          SCRIPTPATH=bin TAR_FILE=dump.tar bin/dump_data.sh --csv
         env:
           DB_PASSWORD: ""
           DB_USER: postgres
@@ -57,3 +58,10 @@ jobs:
         run: |
           createdb -h localhost -U postgres test
           psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d test -f dump.sql
+
+      - name: validate csv dump
+        run: |
+          tar -xf dump.tar
+          test -f klantinteracties_digitaaladres.csv || exit 1
+          ! test -f auth_group.csv || exit 1
+          grep "id,uuid,soort_digitaal_adres,adres,omschrijving,betrokkene_id,partij_id,is_standaard_adres,referentie,verificatie_datum" klantinteracties_digitaaladres.csv

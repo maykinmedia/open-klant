@@ -7,7 +7,7 @@ Scripts
 Dump data
 ---------
 
-The ``dump_data.sh`` script can be used to export data from all components (**klantinteracties**, **contactgegevens**) to an SQL file.
+The ``dump_data.sh`` script can be used to export data from all components (**klantinteracties**, **contactgegevens**) to an SQL file or multiple CSV files.
 
 This script is not intended for data migration to another Open Klant instance.
 
@@ -18,11 +18,13 @@ To export only specific data, the desired component names can be specified:
 
 .. code-block:: shell
 
-    ./dump_data.sh klantinteracties
+    /dump_data.sh klantinteracties
 
 .. note::
 
     To export a Postgres 17 database, the postgres-client-17 package is required.
+
+Adding the "--csv" flag exports all tables in the supplied components to CSV files. These files are temporarily placed in "csv_dumps" and combined into a TAR file.
 
 Environment variabelen
 ----------------------
@@ -33,6 +35,7 @@ Environment variabelen
 - **DB_NAME** = openklant
 - **DB_PASSWORD** = ''
 - **DUMP_FILE** = dump_$(date +'%Y-%m-%d_%H-%M-%S').sql
+- **TAR_FILE** ("dump_$(date +'%Y-%m-%d_%H-%M-%S').tar")
 
 .. code-block:: shell
 
