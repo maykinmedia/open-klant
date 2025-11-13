@@ -219,6 +219,13 @@ Fixes for ``migrate_to_v2`` command:
   * DB_POOL_NUM_WORKERS
   * DB_CONN_MAX_AGE
 
+.. warning::
+
+    **Experimental:** — connection pooling is *not yet recommended for production use*.
+    It may not behave as expected when running uWSGI with multiple processes or threads.
+    Use this feature cautiously and test thoroughly before deployment.
+    See the :ref:`documentation <database_connections>` for details.
+
 **Bugfixes**
 
 * [:open-klant:`418`] Fix incorrect URL reverse in ``csrf_failure`` function
