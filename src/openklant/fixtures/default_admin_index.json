@@ -85,6 +85,10 @@
             [
                 "notifications_api_common",
                 "notificationsconfig"
+            ],
+            [
+                "config",
+                "referentielijstenconfig"
             ]
         ]
     }

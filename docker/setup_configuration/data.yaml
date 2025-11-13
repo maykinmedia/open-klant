@@ -64,9 +64,21 @@ zgw_consumers:
       user_id: open-klant
       secret: open-klant-secret
 
+    - identifier: referentielijsten-api
+      label: Referentielijsten API
+      api_root: http://referentielijsten-web.local:8000/api/v1/
+      api_type: orc
+      auth_type: no_auth
+
 notifications_config_enable: true
 notifications_config:
   notifications_api_service_identifier: open-notificaties
   notification_delivery_max_retries: 2
   notification_delivery_retry_backoff: 2
   notification_delivery_retry_backoff_max: 3
+
+referentielijsten_config_enable: true
+referentielijsten_config:
+  enabled: true
+  referentielijsten_api_service_identifier: referentielijsten-api
+  kanalen_tabel_code: KANAAL

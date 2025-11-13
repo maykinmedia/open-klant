@@ -1,0 +1,4 @@
+referentielijsten_config:
+       enabled: true
+       referentielijsten_api_service_identifier: idempotent-service
+       kanalen_tabel_code: TABEL_IDEMPOTENT

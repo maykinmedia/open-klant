@@ -21,7 +21,6 @@ until pg_isready; do
 done
 
 >&2 echo "Database is up."
-
 # Set defaults for OTEL
 export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-openklant}"
 

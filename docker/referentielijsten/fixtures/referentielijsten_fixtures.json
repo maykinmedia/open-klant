@@ -1,0 +1,57 @@
+[
+{
+    "model": "api.tabel",
+    "pk": 1,
+    "fields": {
+        "code": "KANAAL",
+        "naam": "Communication Channels",
+        "einddatum_geldigheid": null,
+        "beheerder_naam": "Mary",
+        "beheerder_email": "mary@example.com",
+        "beheerder_afdeling": "",
+        "beheerder_organisatie": ""
+    }
+},
+{
+    "model": "api.item",
+    "pk": 1,
+    "fields": {
+        "tabel": 1,
+        "code": "email",
+        "naam": "E-mail Communication",
+        "begindatum_geldigheid": "2025-10-25T15:09:23Z",
+        "einddatum_geldigheid": null,
+        "aanvullende_gegevens": null
+    }
+},
+{
+    "model": "api.item",
+    "pk": 2,
+    "fields": {
+        "tabel": 1,
+        "code": "phone",
+        "naam": "Telephone",
+        "begindatum_geldigheid": "2025-10-25T15:09:07Z",
+        "einddatum_geldigheid": "2029-10-25T15:09:08Z",
+        "aanvullende_gegevens": null
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1000000$Kq3GN6W9xasS9fEsGvGtr9$RADFuuEv46hrLHnbc3YHH7TVnRqSe3esatMntnz5SMk=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@example.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-11-04T16:38:29.504Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

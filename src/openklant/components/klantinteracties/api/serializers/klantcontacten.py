@@ -18,6 +18,7 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
 )
 from openklant.components.klantinteracties.api.validators import (
     FKUniqueTogetherValidator,
+    KanaalValidator,
     betrokkene_exists,
     bijlage_exists,
     klantcontact_exists,
@@ -331,6 +332,9 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
                 "view_name": "klantinteracties:klantcontact-detail",
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van dit klantcontact binnen deze API."),
+            },
+            "kanaal": {
+                "validators": [KanaalValidator()],
             },
         }
 
