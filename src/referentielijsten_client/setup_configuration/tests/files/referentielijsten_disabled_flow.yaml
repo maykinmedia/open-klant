@@ -1,5 +1,5 @@
 referentielijsten_config:
   enabled: false
   # Required by Pydantic, even when disabled
-  referentielijsten_api_service_identifier: fake-disabled-api
+  referentielijsten_api_service_identifier: referentielijsten-api-disabled
   kanalen_tabel_code: KANAAL_DISABLED

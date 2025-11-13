@@ -1,17 +1,13 @@
-from pathlib import Path
-
-from django.core.cache import cache
-
 from maykin_common.vcr import VCRTestCase
 from zgw_consumers.models import Service
 from zgw_consumers.test.factories import ServiceFactory
 
+from openklant.tests.utils.cache import ClearCachesMixin
 from referentielijsten_client.client import ReferentielijstenClient
 
 
-class ReferentielijstenClientTestCase(VCRTestCase):
+class ReferentielijstenClientTestCase(ClearCachesMixin, VCRTestCase):
     service_slug = "referentielijsten-api"
-    VCR_TEST_FILES = Path("src/referentielijsten_client/tests")
 
     def setUp(self):
         super().setUp()
@@ -20,7 +16,6 @@ class ReferentielijstenClientTestCase(VCRTestCase):
         self.client = ReferentielijstenClient(
             service=self.service, base_url=self.service.api_root
         )
-        cache.clear()
 
     def test_get_items_by_tabel_code(self):
         items = self.client.get_items_by_tabel_code("KANAAL")

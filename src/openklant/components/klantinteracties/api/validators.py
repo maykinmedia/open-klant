@@ -190,6 +190,10 @@ class SoortDigitaalAdresValidator:
                 return
 
 
+class InvalidReferentielijstenConfiguration(Exception):
+    pass
+
+
 class KanaalValidator:
     def __call__(self, value: str):
         config = ReferentielijstenConfig.get_solo()
@@ -198,7 +202,9 @@ class KanaalValidator:
 
         if not config.service:
             logger.warning("missing_referentielijsten_service")
-            return value
+            raise InvalidReferentielijstenConfiguration(
+                "`kanaal` validation using Referentielijsten API is enabled, but no service is configured."
+            )
 
         try:
             client = build_client(
@@ -209,10 +215,9 @@ class KanaalValidator:
                 config.kanalen_tabel_code
             )
 
-        except (RequestException, Exception) as exc:
+        except (RequestException, Exception):
             logger.error(
                 "failed_to_fetch_kanalen_from_referentielijsten",
-                exc,
                 exc_info=True,
             )
             raise ValidationError(
@@ -220,6 +225,15 @@ class KanaalValidator:
             )
 
         kanalen = [item["code"] for item in kanalen_data if "code" in item]
+
+        if not kanalen:
+            logger.warning(
+                "no_kanalen_found_in_referentielijsten",
+                tabel_code=config.kanalen_tabel_code,
+            )
+            raise ValidationError(
+                "No channels to validate `kanaal` were found for the configured tabel_code in the Referentielijsten API."
+            )
 
         if value not in kanalen:
             raise ValidationError(

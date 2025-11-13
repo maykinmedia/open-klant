@@ -33,20 +33,13 @@ class ReferentielijstenConfigurationStep(
             enabled=model.enabled,
             service_identifier=model.referentielijsten_api_service_identifier,
         )
-        if not model.enabled:
-            config_instance = ReferentielijstenConfig.get_solo()
-            config_instance.enabled = False
-            config_instance.service = None
-            config_instance.kanalen_tabel_code = None
-            config_instance.save()
-            logger.info("referentielijsten_config_disabled", success=True)
-            return
 
         service = None
         if identifier := model.referentielijsten_api_service_identifier:
             try:
                 service = get_service(identifier)
             except Service.DoesNotExist as exc:
+                logger.warning("referentielijsten_configuration_failure")
                 raise ConfigurationRunFailed(
                     f"Could not find Service with identifier '{identifier}'. "
                     "Ensure the ServiceConfigurationStep has been run successfully."
@@ -60,4 +53,4 @@ class ReferentielijstenConfigurationStep(
 
         config_instance.save()
 
-        logger.info("referentielijsten_config_updated", success=True)
+        logger.info("referentielijsten_configuration_success")

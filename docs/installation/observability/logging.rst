@@ -197,6 +197,16 @@ API
   CRUD events for ``Rekeningnummer``.
   Additional context: ``uuid``, ``partij_uuid``, ``token_identifier``, ``token_application``.
 
+Kanaal validation based on Referentielijsten integration
+========================================================
+
+There is an optional integration to validate ``Klantcontact.kanaal`` based on data in
+the Referentielijsten API. The following log events can occur if this integration is enabled.
+
+* ``missing_referentielijsten_service``: cannot perform ``kanaal`` validation to due missing service in configuration.
+* ``failed_to_fetch_kanalen_from_referentielijsten``: something went wrong while trying to fetch the kanalen from
+  Referentielijsten. Additional context: ``exc_info``.
+
 Setup configuration
 ~~~~~~~~~~~~~~~~~~~
 
@@ -206,7 +216,9 @@ Setup configuration
 * ``save_token_to_database``: attempting to save a token to the database. Additional context: ``token_identifier``.
 * ``token_configuration_failure``: configuring a token failed. Additional context: ``token_identifier``, ``exc_info``.
 * ``token_configuration_success``: configuring a token succeeded. Additional context: ``token_identifier``.
-
+* ``configuring_referentielijsten``: attempting to configure Referentielijsten integration. Additional context: ``enabled``, ``service_identifier``.
+* ``referentielijsten_configuration_failure``: configuration Referentielijsten integration failed.
+* ``referentielijsten_configuration_success``: configuration Referentielijsten integration succeeded.
 
 Third party library events
 --------------------------

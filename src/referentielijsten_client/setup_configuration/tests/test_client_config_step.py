@@ -36,6 +36,10 @@ class ReferentielijstenConfigurationStepTests(TestCase):
         self.assertEqual(config.kanalen_tabel_code, "KANAAL")
 
     def test_error_flow_missing_service(self):
+        config = ReferentielijstenConfig.get_solo()
+        config.service = None
+        config.save()
+
         test_file_path = str(TEST_FILES / "referentielijsten_missing_service.yaml")
 
         with self.assertRaises(ConfigurationRunFailed) as cm:
@@ -76,7 +80,7 @@ class ReferentielijstenConfigurationStepTests(TestCase):
         self.assertEqual(config.kanalen_tabel_code, "TABEL_IDEMPOTENT")
 
     def test_disabled_flow(self):
-        ServiceFactory(
+        service = ServiceFactory(
             slug="referentielijsten-api-disabled", api_root="http://disabled.nl/api/v1"
         )
 
@@ -89,5 +93,5 @@ class ReferentielijstenConfigurationStepTests(TestCase):
         config = ReferentielijstenConfig.get_solo()
 
         self.assertFalse(config.enabled)
-        self.assertIsNone(config.service)
-        self.assertIsNone(config.kanalen_tabel_code)
+        self.assertEqual(config.service, service)
+        self.assertEqual(config.kanalen_tabel_code, "KANAAL_DISABLED")

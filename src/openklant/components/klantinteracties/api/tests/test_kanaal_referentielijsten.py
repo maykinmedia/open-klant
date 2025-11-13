@@ -1,22 +1,19 @@
-from pathlib import Path
+import os
 from unittest.mock import patch
 
-from django.contrib.auth import get_user_model
-
 from maykin_common.vcr import VCRTestCase
+from requests.exceptions import Timeout
 from rest_framework import status
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_validation_errors, reverse
 from zgw_consumers.test.factories import ServiceFactory
 
 from openklant.components.token.tests.api_testcase import APITestCase
 from openklant.config.models import ReferentielijstenConfig
+from openklant.tests.utils.cache import ClearCachesMixin
 
-User = get_user_model()
 
-
-class KanaalValidatorAPITestCase(APITestCase, VCRTestCase):
+class KanaalValidatorAPITestCase(ClearCachesMixin, APITestCase, VCRTestCase):
     service_slug = "referentielijsten-api"
-    VCR_TEST_FILES = Path("src/referentielijsten_client/tests")
 
     @classmethod
     def setUpTestData(cls):
@@ -65,14 +62,11 @@ class KanaalValidatorAPITestCase(APITestCase, VCRTestCase):
             kwargs={"version": "1", "uuid": uuid},
         )
 
-    def _mock_config(self):
-        return self.config
-
     @patch(
         "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
     )
     def test_valid_kanaal(self, mock_get_solo):
-        mock_get_solo.return_value = self._mock_config()
+        mock_get_solo.return_value = self.config
         url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
         data = self.initial_data.copy()
         data["nummer"] = "0000000001"
@@ -85,7 +79,7 @@ class KanaalValidatorAPITestCase(APITestCase, VCRTestCase):
         "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
     )
     def test_invalid_kanaal(self, mock_get_solo):
-        mock_get_solo.return_value = self._mock_config()
+        mock_get_solo.return_value = self.config
         url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
         data = self.initial_data.copy()
         data["nummer"] = "0000000002"
@@ -94,13 +88,92 @@ class KanaalValidatorAPITestCase(APITestCase, VCRTestCase):
         response = self.client.post(url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("not a valid kanaal", str(response.data))
+
+        error = get_validation_errors(response, "kanaal")
+
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"], "'fax' is not a valid kanaal. Allowed values: phone, email"
+        )
+
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_referentielijsten_returns_empty_list(self, mock_get_solo):
+        mock_get_solo.return_value = self.config
+        # Tabel does not exist in Referentielijsten API, so the list of returned
+        # items will be empty
+        mock_get_solo.return_value.kanalen_tabel_code = "non-existent"
+        url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
+        data = self.initial_data.copy()
+        data["nummer"] = "0000000002"
+        data["kanaal"] = "fax"
+
+        response = self.client.post(url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "kanaal")
+
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            (
+                "No channels to validate `kanaal` were found for the "
+                "configured tabel_code in the Referentielijsten API."
+            ),
+        )
+
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_referentielijsten_timeout(self, mock_get_solo):
+        mock_get_solo.return_value = self.config
+        url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
+        data = self.initial_data.copy()
+        data["nummer"] = "0000000002"
+        data["kanaal"] = "fax"
+
+        with self.vcr_raises(Timeout):
+            response = self.client.post(url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "kanaal")
+
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            (
+                "Failed to retrieve valid channels from the "
+                "Referentielijsten API to validate `kanaal`."
+            ),
+        )
+
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_no_referentielijsten_service_configured(self, mock_get_solo):
+        mock_get_solo.return_value = ReferentielijstenConfig(
+            enabled=True, service=None, kanalen_tabel_code="KANAAL"
+        )
+
+        url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
+        data = self.initial_data.copy()
+        data["nummer"] = "0000000002"
+        data["kanaal"] = "fax"
+
+        # Should raise a 500 error
+        with patch.dict(os.environ, {"DEBUG": "false"}, clear=False):
+            response = self.client.post(url, data, format="json")
+
+        self.assertEqual(response.status_code, 500)
 
     @patch(
         "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
     )
     def test_patch_with_valid_kanaal(self, mock_get_solo):
-        mock_get_solo.return_value = self._mock_config()
+        mock_get_solo.return_value = self.config
         self._create_initial_contact(mock_get_solo)
         data = {"kanaal": "phone"}
 
@@ -113,7 +186,7 @@ class KanaalValidatorAPITestCase(APITestCase, VCRTestCase):
         "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
     )
     def test_patch_with_invalid_kanaal(self, mock_get_solo):
-        mock_get_solo.return_value = self._mock_config()
+        mock_get_solo.return_value = self.config
         self._create_initial_contact(mock_get_solo)
         data = {"kanaal": "telepathy"}
 
@@ -121,16 +194,19 @@ class KanaalValidatorAPITestCase(APITestCase, VCRTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        self.assertIn("is not a valid kanaal", str(response.data))
+        error = get_validation_errors(response, "kanaal")
 
-        error_fields = [param["name"] for param in response.data["invalid_params"]]
-        self.assertIn("kanaal", error_fields)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            "'telepathy' is not a valid kanaal. Allowed values: phone, email",
+        )
 
     @patch(
         "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
     )
     def test_put_with_valid_kanaal(self, mock_get_solo):
-        mock_get_solo.return_value = self._mock_config()
+        mock_get_solo.return_value = self.config
         self._create_initial_contact(mock_get_solo)
         data = self.initial_data.copy()
         data["kanaal"] = "phone"
@@ -145,7 +221,7 @@ class KanaalValidatorAPITestCase(APITestCase, VCRTestCase):
         "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
     )
     def test_put_with_invalid_kanaal(self, mock_get_solo):
-        mock_get_solo.return_value = self._mock_config()
+        mock_get_solo.return_value = self.config
         self._create_initial_contact(mock_get_solo)
         data = self.initial_data.copy()
         data["kanaal"] = "carrier-pigeon"
@@ -155,9 +231,10 @@ class KanaalValidatorAPITestCase(APITestCase, VCRTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        self.assertIn("is not a valid kanaal", str(response.data))
+        error = get_validation_errors(response, "kanaal")
 
-        error_fields = [
-            param["name"] for param in response.data.get("invalid_params", [])
-        ]
-        self.assertIn("kanaal", error_fields)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            "'carrier-pigeon' is not a valid kanaal. Allowed values: phone, email",
+        )

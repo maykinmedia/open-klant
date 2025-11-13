@@ -6,6 +6,8 @@ interactions:
       - '*/*'
       Accept-Encoding:
       - gzip, deflate
+      Authorization:
+      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJpYXQiOjE3NjMwNDEzNzEsImV4cCI6MTc2MzA4NDU3MSwiY2xpZW50X2lkIjoiIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.UcwNtp4b9GXHfBoJcpDsd4vSdXy8i7qqT3SRFYNlBLc
       Connection:
       - keep-alive
       User-Agent:
@@ -17,16 +19,18 @@ interactions:
       string: '{"count":2,"next":null,"previous":null,"results":[{"code":"phone","naam":"Telephone","begindatumGeldigheid":"2025-10-25T15:09:07Z","einddatumGeldigheid":"2029-10-25T15:09:08Z","aanvullendeGegevens":null},{"code":"email","naam":"E-mail
         Communication","begindatumGeldigheid":"2025-10-25T15:09:23Z","einddatumGeldigheid":null,"aanvullendeGegevens":null}]}'
     headers:
+      API-version:
+      - 1.0.0-rc1
       Allow:
       - GET, HEAD, OPTIONS
       Content-Length:
       - '352'
       Content-Security-Policy:
-      - 'font-src ''self'' fonts.gstatic.com; frame-ancestors ''none''; style-src
-        ''self'' ''unsafe-inline'' fonts.googleapis.com; default-src ''self''; frame-src
-        ''self''; script-src ''self'' ''unsafe-inline''; worker-src ''self'' blob:;
-        img-src ''self'' data: cdn.redoc.ly; base-uri ''self''; object-src ''none'';
-        form-action ''self'''
+      - 'font-src ''self'' fonts.gstatic.com; form-action ''self''; frame-src ''self'';
+        base-uri ''self''; default-src ''self''; frame-ancestors ''none''; style-src
+        ''self'' ''unsafe-inline'' fonts.googleapis.com; object-src ''none''; script-src
+        ''self'' ''unsafe-inline''; worker-src ''self'' blob:; img-src ''self'' data:
+        cdn.redoc.ly'
       Content-Type:
       - application/json
       Cross-Origin-Opener-Policy:
