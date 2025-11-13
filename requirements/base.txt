@@ -256,7 +256,7 @@ mozilla-django-oidc-db==1.0.2
     #   open-api-framework
 notifications-api-common==0.9.0
     # via commonground-api-common
-open-api-framework==0.13.1
+open-api-framework==0.13.2
     # via -r requirements/base.in
 opentelemetry-api==1.36.0
     # via

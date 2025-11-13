@@ -84,6 +84,10 @@ intersphinx_mapping = {
         "http://docs.djangoproject.com/en/4.2/",
         "http://docs.djangoproject.com/en/4.2/_objects/",
     ),
+    "oaf": (
+        "https://open-api-framework.readthedocs.io/en/latest/",
+        None,
+    ),
 }
 
 # Datamodel image settings

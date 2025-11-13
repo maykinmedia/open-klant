@@ -2,6 +2,15 @@
 Change history
 ==============
 
+.. warning::
+
+    The documentation for database connection pooling has been moved to:
+    https://open-api-framework.readthedocs.io/en/latest/connection_pooling.html
+
+    Please make sure to review the latest guidance there, especially if running uWSGI
+    with multiple processes, as connection pooling behavior may differ from previous
+    versions.
+
 2.13.0
 ======
 *October 3, 2025*
