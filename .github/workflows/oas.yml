@@ -20,7 +20,7 @@ jobs:
           - contactgegevens
           - klantinteracties
 
-    uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@v5
+    uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@v6
     with:
       python-version: '3.12'
       django-settings-module: openklant.conf.ci
