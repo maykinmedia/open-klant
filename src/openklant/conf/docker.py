@@ -2,8 +2,8 @@ import os
 
 from open_api_framework.conf.utils import config
 
-os.environ.setdefault("DB_USER", config("DATABASE_USER", "postgres"))
-os.environ.setdefault("DB_NAME", config("DATABASE_NAME", "postgres"))
+os.environ.setdefault("DB_USER", config("DATABASE_USER", "openklant"))
+os.environ.setdefault("DB_NAME", config("DATABASE_NAME", "openklant"))
 os.environ.setdefault("DB_PASSWORD", config("DATABASE_PASSWORD", ""))
 os.environ.setdefault("DB_HOST", config("DATABASE_HOST", "db"))
 os.environ.setdefault("DB_CONN_MAX_AGE", "60")
