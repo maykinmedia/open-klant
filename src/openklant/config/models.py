@@ -76,6 +76,29 @@ class ReferentielijstenConfig(SingletonModel):
                 ).format(invalid_kanalen=invalid_kanalen)
             )
 
+    def status_check(self) -> dict:
+        if not self.service or not self.kanalen_tabel_code:
+            return {
+                "status_code": None,
+                "items": None,
+                "error": "Service or tabel code not configured",
+            }
+
+        client = build_client(self.service, client_factory=ReferentielijstenClient)
+        try:
+            items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
+            return {"status_code": 200, "items": items}
+        except RequestException as e:
+            logger.error(
+                "failed_to_fetch_kanalen_from_referentielijsten",
+                exc_info=e,
+            )
+            return {
+                "status_code": getattr(e.response, "status_code", None),
+                "items": None,
+                "error": str(e),
+            }
+
     def __str__(self):
         return "Referentielijsten configuration"
 
