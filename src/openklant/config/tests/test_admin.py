@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 from django_webtest import WebTest
 from maykin_2fa.test import disable_admin_mfa
 from maykin_common.vcr import VCRMixin
-from requests.exceptions import Timeout
+from requests.exceptions import RequestException, Timeout
 from zgw_consumers.test.factories import ServiceFactory
 
 from openklant.accounts.tests.factories import SuperUserFactory
@@ -182,3 +182,25 @@ class ReferentielijstenConfigAdminTests(VCRMixin, WebTest):
         self.assertFalse(config.enabled)
         self.assertIsNone(config.service)
         self.assertEqual(config.kanalen_tabel_code, "")
+
+    def test_status_check_returns_http_status_and_items(self):
+        response = self.app.get(self.url)
+        form = response.forms["referentielijstenconfig_form"]
+
+        form["enabled"] = True
+        form["service"] = self.service.pk
+        form["kanalen_tabel_code"] = "KANAAL"
+
+        form.submit()
+
+        config = ReferentielijstenConfig.get_solo()
+
+        try:
+            result = config.status_check()
+        except RequestException:
+            self.fail("Connection to Referentielijsten service failed")
+
+        self.assertIn("status_code", result)
+        self.assertIn("items", result)
+        self.assertEqual(result["status_code"], 200)
+        self.assertIsInstance(result["items"], list)
