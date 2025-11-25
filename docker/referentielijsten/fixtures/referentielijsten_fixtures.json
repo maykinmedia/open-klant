@@ -37,6 +37,30 @@
     }
 },
 {
+    "model": "api.item",
+    "pk": 3,
+    "fields": {
+        "tabel": 1,
+        "code": "future_email",
+        "naam": "Future Email",
+        "begindatum_geldigheid": "2050-01-01T16:05:29Z",
+        "einddatum_geldigheid": null,
+        "aanvullende_gegevens": null
+    }
+},
+{
+    "model": "api.item",
+    "pk": 4,
+    "fields": {
+        "tabel": 1,
+        "code": "expired_phone",
+        "naam": "Expired Phone",
+        "begindatum_geldigheid": "2020-01-01T16:06:12Z",
+        "einddatum_geldigheid": "2023-01-01T16:06:32Z",
+        "aanvullende_gegevens": null
+    }
+},
+{
     "model": "accounts.user",
     "pk": 1,
     "fields": {
