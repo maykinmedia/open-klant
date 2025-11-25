@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 from django.db import models
@@ -211,9 +213,7 @@ class KanaalValidator:
                 service=config.service,
                 client_factory=ReferentielijstenClient,
             )
-            kanalen_data = client.get_cached_items_by_tabel_code(
-                config.kanalen_tabel_code
-            )
+            raw_items = client.get_cached_items_by_tabel_code(config.kanalen_tabel_code)
 
         except (RequestException, Exception):
             logger.error(
@@ -224,15 +224,40 @@ class KanaalValidator:
                 "Failed to retrieve valid channels from the Referentielijsten API to validate `kanaal`."
             )
 
-        kanalen = [item["code"] for item in kanalen_data if "code" in item]
-
-        if not kanalen:
+        if not raw_items:
             logger.warning(
                 "no_kanalen_found_in_referentielijsten",
                 tabel_code=config.kanalen_tabel_code,
             )
             raise ValidationError(
                 "No channels to validate `kanaal` were found for the configured tabel_code in the Referentielijsten API."
+            )
+
+        now = datetime.now(timezone.utc)
+
+        def is_valid_by_geldigheid(item):
+            begin = item.get("beginGeldigheid")
+            eind = item.get("eindGeldigheid")
+
+            begin_dt = (
+                datetime.fromisoformat(begin.replace("Z", "+00:00")) if begin else None
+            )
+            eind_dt = (
+                datetime.fromisoformat(eind.replace("Z", "+00:00")) if eind else None
+            )
+
+            if begin_dt and now < begin_dt:
+                return False
+            if eind_dt and now >= eind_dt:
+                return False
+            return True
+
+        valid_items = [item for item in raw_items if is_valid_by_geldigheid(item)]
+        kanalen = [item["code"] for item in valid_items if "code" in item]
+
+        if not kanalen:
+            raise ValidationError(
+                f"'{value}' is not a valid kanaal. Allowed values: {', '.join(kanalen)}"
             )
 
         if value not in kanalen:
