@@ -61,6 +61,30 @@
     }
 },
 {
+    "model": "api.item",
+    "pk": 5,
+    "fields": {
+        "tabel": 1,
+        "code": "no_begin_future_eind",
+        "naam": "No begin, future end",
+        "begindatum_geldigheid": null,
+        "einddatum_geldigheid": "2050-01-01T14:27:10Z",
+        "aanvullende_gegevens": null
+    }
+},
+{
+    "model": "api.item",
+    "pk": 6,
+    "fields": {
+        "tabel": 1,
+        "code": "no_dates",
+        "naam": "No dates",
+        "begindatum_geldigheid": null,
+        "einddatum_geldigheid": null,
+        "aanvullende_gegevens": null
+    }
+},
+{
     "model": "accounts.user",
     "pk": 1,
     "fields": {

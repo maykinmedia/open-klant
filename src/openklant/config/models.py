@@ -87,7 +87,7 @@ class ReferentielijstenConfig(SingletonModel):
         client = build_client(self.service, client_factory=ReferentielijstenClient)
         try:
             items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
-            return {"status_code": 200, "items": items}
+            return {"status_code": 200, "items": items, "error": None}
         except RequestException as e:
             logger.error(
                 "failed_to_fetch_kanalen_from_referentielijsten",
