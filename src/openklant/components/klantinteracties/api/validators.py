@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 import structlog
+from dateutil import parser
 from requests import RequestException
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator, qs_filter
@@ -197,6 +198,9 @@ class InvalidReferentielijstenConfiguration(Exception):
 
 
 class KanaalValidator:
+    def is_valid_datetime(self, value):
+        return parser.isoparse(value) if value else None
+
     def __call__(self, value: str):
         config = ReferentielijstenConfig.get_solo()
         if not config.enabled:
@@ -235,25 +239,25 @@ class KanaalValidator:
 
         now = datetime.now(timezone.utc)
 
-        def is_valid_by_geldigheid(item):
-            begin = item.get("beginGeldigheid")
-            eind = item.get("eindGeldigheid")
+        kanalen = []
 
-            begin_dt = (
-                datetime.fromisoformat(begin.replace("Z", "+00:00")) if begin else None
-            )
-            eind_dt = (
-                datetime.fromisoformat(eind.replace("Z", "+00:00")) if eind else None
-            )
+        for item in raw_items:
+            begin = item.get("begindatumGeldigheid")
+            eind = item.get("einddatumGeldigheid")
+
+            begin_dt = self.is_valid_datetime(begin)
+            eind_dt = self.is_valid_datetime(eind)
 
             if begin_dt and now < begin_dt:
-                return False
+                continue
             if eind_dt and now >= eind_dt:
-                return False
-            return True
+                continue
+            if begin_dt and eind_dt and not (begin_dt <= now < eind_dt):
+                continue
 
-        valid_items = [item for item in raw_items if is_valid_by_geldigheid(item)]
-        kanalen = [item["code"] for item in valid_items if "code" in item]
+            code = item.get("code")
+            if code:
+                kanalen.append(code)
 
         if not kanalen:
             raise ValidationError(
