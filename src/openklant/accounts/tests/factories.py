@@ -7,7 +7,7 @@ from mozilla_django_oidc_db.tests.factories import (
     OIDCProviderFactory,
 )
 
-from openklant.utils.tests.keycloak import KEYCLOAK_BASE_URL
+KEYCLOAK_BASE_URL = "http://localhost:8080/realms/test/protocol/openid-connect"
 
 
 class TOTPDeviceFactory(factory.django.DjangoModelFactory):
