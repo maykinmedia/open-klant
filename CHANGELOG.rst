@@ -2,6 +2,77 @@
 Change history
 ==============
 
+2.14.0
+======
+*December 1, 2025*
+
+**New features**
+
+* [:open-api-framework:`152`] Add OpenTelemetry (``OTel``) for collecting and exporting application metrics.
+
+.. note::
+
+    - Metrics now exposed include:
+
+        - HTTP request durations.
+        - Number of active requests.
+        - Number of users, logins, logouts, failed logins, and account lockouts.
+        - **CRUD** operations for the following endpoints:
+
+            - ``/klantcontacten``
+            - ``/betrokkenen``
+            - ``/partijen``
+            - ``/actoren``
+            - ``/digitaleadressen``
+            - ``/internetaken``
+        - All metrics are exported using the **OpenTelemetry standard**, enabling seamless integration with existing monitoring and visualization platforms.
+
+.. warning::
+
+    The OpenTelemetry SDK is **enabled by default**.
+
+    If you do not have an endpoint to send system telemetry to, update your deployment to **disable it** by setting the environment variable:
+
+    .. code-block:: bash
+
+        OTEL_SDK_DISABLED=true
+
+    If this is not done, warnings will be emitted to the container logs. The application will continue to function normally.
+
+    All available metrics and details can be found in the **“Observability” documentation** see :ref:`installation_observability_index`
+
+* [:open-klant:`500`] Implement ``Referentielijsten integration`` for Klantcontact. See the documentation for more details () # TODO
+
+    - Create **ReferentielijstenConfig** solo model to manage the connection.
+    - Add a configuration step to load this config via ``setup_configuration``.
+    - Add new validators for the configuration.
+
+* [:open-api-workflows:`30`] Add API design rules linter to CI.
+* [:open-api-framework:`188`] Support ``CSV`` in the data dump script.
+
+**Bugfixes**
+
+* [:open-klant:`250`] Support multiple ways of serializating lists in query params for ``expand`` filter.
+* [:open-klant:`489`] Fix validation to ensure ``SITE_DOMAIN`` is set during notifications configuration.
+* [:commonground-api-common:`134`] Fix exceptions in API endpoints not forwarded to Sentry when ``DEBUG=False``.
+
+**Maintenance**
+
+* Fix 503, 404, 403 and account_blocked html templates
+* [:open-api-framework:`191`] ``nodejs`` to v24
+* [:open-api-workflows:`31`] ``codeql`` to v4
+* Upgrade python dependencies
+
+    * [:open-api-framework:`171`] ``open-api-framework`` to 0.13.2
+    * ``commonground-api-common`` to 2.10.5
+    * ``notifications-api-common`` to 0.9.0
+    * ``django-setup-configuration`` to 0.11.0
+    * ``mozilla-django-oidc-db`` to 1.1.1
+    * ``maykin-common`` to 0.11.0
+    * ``django`` to 5.2.8
+    * ``uwsgi`` to 2.0.31
+    * ``pip`` to 25.3
+
 2.13.0
 ======
 *October 3, 2025*
