@@ -75,17 +75,6 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".pytest_cache", "_archi
 
 source_suffix = [".rst", ".md"]
 
-intersphinx_mapping = {
-    "requests": (
-        "https://docs.python-requests.org/en/latest/",
-        None,
-    ),
-    "django": (
-        "http://docs.djangoproject.com/en/4.2/",
-        "http://docs.djangoproject.com/en/4.2/_objects/",
-    ),
-}
-
 # Datamodel image settings
 graphviz_output_format = "png"
 
@@ -134,9 +123,14 @@ extlinks = {
 }
 
 django_structlog_version = _version("django-structlog")
+oaf_version = _version("open-api-framework")
 intersphinx_mapping = {
     "django-structlog": (
         f"https://django-structlog.readthedocs.io/en/{django_structlog_version}",
+        None,
+    ),
+    "oaf": (
+        f"https://open-api-framework.readthedocs.io/en/{oaf_version}/",
         None,
     ),
 }
