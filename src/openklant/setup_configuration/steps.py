@@ -4,11 +4,24 @@ from django.db import IntegrityError
 import structlog
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
+from zgw_consumers.models import Service
 
 from openklant.components.token.models import TokenAuth
+from openklant.config.models import ReferentielijstenConfig
 from openklant.setup_configuration.models import TokenAuthGroupConfigurationModel
 
+from .models import (
+    ReferentielijstenConfigurationModel,
+)
+
 logger = structlog.stdlib.get_logger(__name__)
+
+
+def get_service(slug: str) -> Service:
+    try:
+        return Service.objects.get(slug=slug)
+    except Service.DoesNotExist as e:
+        raise Service.DoesNotExist(f"{str(e)} (identifier = {slug})")
 
 
 class TokenAuthConfigurationStep(
@@ -74,3 +87,41 @@ class TokenAuthConfigurationStep(
                 raise ConfigurationRunFailed(exception_message) from exception
 
             logger.info("token_configuration_success", token_identifier=item.identifier)
+
+
+class ReferentielijstenConfigurationStep(
+    BaseConfigurationStep[ReferentielijstenConfigurationModel]
+):
+    namespace = "referentielijsten_config"
+    enable_setting = "referentielijsten_config_enable"
+
+    verbose_name = "Configuration for Referentielijsten service"
+    config_model = ReferentielijstenConfigurationModel
+
+    def execute(self, model: ReferentielijstenConfigurationModel) -> None:
+        logger.info(
+            "configuring_referentielijsten",
+            enabled=model.enabled,
+            service_identifier=model.referentielijsten_api_service_identifier,
+        )
+
+        service = None
+        if identifier := model.referentielijsten_api_service_identifier:
+            try:
+                service = get_service(identifier)
+            except Service.DoesNotExist as exc:
+                logger.warning("referentielijsten_configuration_failure")
+                raise ConfigurationRunFailed(
+                    f"Could not find Service with identifier '{identifier}'. "
+                    "Ensure the ServiceConfigurationStep has been run successfully."
+                ) from exc
+
+        config_instance = ReferentielijstenConfig.get_solo()
+        config_instance.enabled = model.enabled
+        config_instance.service = service
+
+        config_instance.kanalen_tabel_code = model.kanalen_tabel_code
+
+        config_instance.save()
+
+        logger.info("referentielijsten_configuration_success")
