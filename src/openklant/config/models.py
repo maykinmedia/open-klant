@@ -18,18 +18,22 @@ class ReferentielijstenConfig(SingletonModel):
     enabled = models.BooleanField(
         default=False,
         help_text=_(
-            "Geef aan of de optionele integratie met Referentielijsten API is ingeschakeld"
+            "Indicates whether or not the optional Referentielijsten API integration is enabled"
         ),
     )
     service = models.ForeignKey(
         Service,
         on_delete=models.SET_NULL,
         null=True,
-        help_text=_("De service waarmee referentielijstgegevens worden opgehaald"),
+        help_text=_(
+            "The service used to retrieve information from the Referentielijsten API"
+        ),
     )
     kanalen_tabel_code = models.CharField(
         max_length=100,
-        help_text=_("Code van de tabel die de kanaalopties bevat"),
+        help_text=_(
+            "Code of the `tabel` that contains the possible `kanalen` (channels)"
+        ),
         blank=True,
     )
 
