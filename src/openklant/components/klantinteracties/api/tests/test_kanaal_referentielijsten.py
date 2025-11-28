@@ -1,6 +1,7 @@
 import os
 from unittest.mock import patch
 
+from freezegun.api import freeze_time
 from maykin_common.vcr import VCRTestCase
 from requests.exceptions import Timeout
 from rest_framework import status
@@ -238,3 +239,90 @@ class KanaalValidatorAPITestCase(ClearCachesMixin, APITestCase, VCRTestCase):
             error["reason"],
             "'carrier-pigeon' is not a valid kanaal. Allowed values: phone, email",
         )
+
+    @freeze_time("2025-11-24T12:00:00Z")
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_kanaal_not_yet_valid_due_to_future_begin(self, mock_get_solo):
+        mock_get_solo.return_value = self.config
+        self._create_initial_contact(mock_get_solo)
+        url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
+        data = self.initial_data.copy()
+        data["kanaal"] = "future_email"
+        response = self.client.post(url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "kanaal")
+        self.assertEqual(error["code"], "invalid")
+        self.assertIn("Allowed values:", error["reason"])
+
+    @freeze_time("2025-11-24T12:00:00Z")
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_kanaal_expired_due_to_past_eind(self, mock_get_solo):
+        mock_get_solo.return_value = self.config
+        self._create_initial_contact(mock_get_solo)
+        url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
+        data = self.initial_data.copy()
+        data["kanaal"] = "expired_phone"
+        response = self.client.post(url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "kanaal")
+        self.assertEqual(error["code"], "invalid")
+        self.assertIn("Allowed values:", error["reason"])
+
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_kanaal_valid_open_ended_eind(self, mock_get_solo):
+        mock_get_solo.return_value = self.config
+        url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
+        data = self.initial_data.copy()
+        response = self.client.post(url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_kanaal_valid_within_geldigheid_window(self, mock_get_solo):
+        mock_get_solo.return_value = self.config
+        url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
+        data = self.initial_data.copy()
+        data["kanaal"] = "phone"
+        response = self.client.post(url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    @freeze_time("2025-11-24T12:00:00Z")
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_kanaal_valid_no_begin_with_future_end(self, mock_get_solo):
+        mock_get_solo.return_value = self.config
+        data = self.initial_data.copy()
+        data["kanaal"] = "no_begin_future_eind"
+        response = self.client.post(
+            reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"}),
+            data,
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    @freeze_time("2025-11-24T12:00:00Z")
+    @patch(
+        "openklant.components.klantinteracties.api.validators.ReferentielijstenConfig.get_solo"
+    )
+    def test_kanaal_valid_begin_in_past_no_end(self, mock_get_solo):
+        mock_get_solo.return_value = self.config
+        data = self.initial_data.copy()
+        data["kanaal"] = "no_dates"
+        response = self.client.post(
+            reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"}),
+            data,
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

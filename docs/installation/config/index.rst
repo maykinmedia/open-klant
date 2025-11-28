@@ -12,3 +12,4 @@ Configuration
    env_configuration
    admin_configuration
    setup_configuration
+   referentielijsten_configuration
