@@ -7,7 +7,7 @@ from django_setup_configuration.test_utils import execute_single_step
 from zgw_consumers.test.factories import ServiceFactory
 
 from openklant.config.models import ReferentielijstenConfig
-from referentielijsten_client.setup_configuration.steps import (
+from openklant.setup_configuration.steps import (
     ReferentielijstenConfigurationStep,
 )
 
