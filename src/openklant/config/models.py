@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 import structlog
 from requests.exceptions import RequestException
+from rest_framework import status
 from solo.models import SingletonModel
 from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
@@ -72,28 +73,20 @@ class ReferentielijstenConfig(SingletonModel):
                 ).format(invalid_kanalen=invalid_kanalen)
             )
 
-    def status_check(self) -> dict:
+    @property
+    def connection_check(self):
         if not self.service or not self.kanalen_tabel_code:
-            return {
-                "status_code": None,
-                "items": None,
-                "error": "Service or tabel code not configured",
-            }
+            status_code = status.HTTP_501_NOT_IMPLEMENTED
+            return _("Referentielijsten Configuration not implemented"), status_code
 
-        client = build_client(self.service, client_factory=ReferentielijstenClient)
         try:
+            client = build_client(self.service, client_factory=ReferentielijstenClient)
             items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
-            return {"status_code": 200, "items": items, "error": None}
-        except RequestException as e:
-            logger.error(
-                "failed_to_fetch_kanalen_from_referentielijsten",
-                exc_info=e,
-            )
-            return {
-                "status_code": getattr(e.response, "status_code", None),
-                "items": None,
-                "error": str(e),
-            }
+            return items, status.HTTP_200_OK
+        except RequestException:
+            status_code = status.HTTP_400_BAD_REQUEST
+
+        return _("Unable to retrieve items from Referentielijsten API"), status_code
 
     def __str__(self):
         return "Referentielijsten configuration"
