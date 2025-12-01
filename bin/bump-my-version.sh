@@ -4,7 +4,7 @@
 #
 # Usage:
 #
-#   ./bin/bumpversion.sh bump minor|patch|pre|build
+#   ./bin/bump-my-version.sh bump minor|patch|pre|build
 #
 
 set -eu -o pipefail
