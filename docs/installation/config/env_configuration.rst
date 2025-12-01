@@ -113,6 +113,8 @@ Optional
 * ``SITE_DOMAIN``: Defines the primary domain where the application is hosted. Defaults to: ``(empty string)``.
 * ``SENTRY_DSN``: URL of the sentry project to send error reports to. Default empty, i.e. -> no monitoring set up. Highly recommended to configure this.
 * ``DISABLE_2FA``: Whether or not two factor authentication should be disabled. Defaults to: ``False``.
+* ``ENABLE_CLOUD_EVENTS``: **EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations via the API (not ready for use in production). Defaults to: ``False``.
+* ``NOTIFICATIONS_SOURCE``: **EXPERIMENTAL**: the identifier of this application to use as the source in notifications and cloudevents. Defaults to: ``(empty string)``.
 
 
 
