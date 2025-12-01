@@ -2,6 +2,7 @@ from django.db import transaction
 
 import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from notifications_api_common.cloudevents import process_cloudevent
 from rest_framework import mixins, viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
 from vng_api_common.viewsets import CheckQueryParamsMixin
@@ -331,6 +332,20 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
+        object_type = instance.onderwerpobjectidentificator.get("code_objecttype")
+        if object_type == "zaak":
+            process_cloudevent(
+                type="nl.overheid.zaken.zaak-gelinkt",
+                subject=instance.onderwerpobjectidentificator.get("object_id"),
+                data={
+                    "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",
+                    "linkTo": f"urn:uuid:{instance.uuid}",
+                    "label": str(instance.klantcontact)
+                    if instance.klantcontact
+                    else "Onderwerpobject",
+                    "linkObjectType": "Onderwerpobject",
+                },
+            )
 
     @transaction.atomic
     def perform_update(self, serializer):
