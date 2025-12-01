@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 from django.db import models
@@ -30,6 +32,7 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 from openklant.config.models import ReferentielijstenConfig
+from openklant.utils.converters import parse_datetime
 from openklant.utils.validators import validate_phone_number
 from referentielijsten_client.client import ReferentielijstenClient
 
@@ -211,9 +214,7 @@ class KanaalValidator:
                 service=config.service,
                 client_factory=ReferentielijstenClient,
             )
-            kanalen_data = client.get_cached_items_by_tabel_code(
-                config.kanalen_tabel_code
-            )
+            raw_items = client.get_cached_items_by_tabel_code(config.kanalen_tabel_code)
 
         except (RequestException, Exception):
             logger.error(
@@ -224,15 +225,39 @@ class KanaalValidator:
                 "Failed to retrieve valid channels from the Referentielijsten API to validate `kanaal`."
             )
 
-        kanalen = [item["code"] for item in kanalen_data if "code" in item]
-
-        if not kanalen:
+        if not raw_items:
             logger.warning(
                 "no_kanalen_found_in_referentielijsten",
                 tabel_code=config.kanalen_tabel_code,
             )
             raise ValidationError(
                 "No channels to validate `kanaal` were found for the configured tabel_code in the Referentielijsten API."
+            )
+
+        now = datetime.now(timezone.utc)
+
+        kanalen = []
+
+        for item in raw_items:
+            begin = item.get("begindatumGeldigheid")
+            eind = item.get("einddatumGeldigheid")
+
+            begin_dt = parse_datetime(begin)
+            eind_dt = parse_datetime(eind)
+
+            if begin_dt and now < begin_dt:
+                continue
+            if eind_dt and now >= eind_dt:
+                continue
+            if begin_dt and eind_dt and not (begin_dt <= now < eind_dt):
+                continue
+
+            code = item.get("code")
+            if code:
+                kanalen.append(code)
+        if not kanalen:
+            raise ValidationError(
+                f"'{value}' is not a valid kanaal. Allowed values: {', '.join(kanalen)}"
             )
 
         if value not in kanalen:

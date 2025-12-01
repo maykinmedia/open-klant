@@ -7,7 +7,7 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJpYXQiOjE3NjQ1Nzk3ODgsImV4cCI6MTc2NDYyMjk4OCwiY2xpZW50X2lkIjoiIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.GKfIjs4QWgLlhUZzLyBhoa_3lm4BC-GBqx6FGdSZVlo
+      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJpYXQiOjE3NjQ1ODE2MzAsImV4cCI6MTc2NDYyNDgzMCwiY2xpZW50X2lkIjoiIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.jsx687NycLpwBaKdZ561f6g0VuYpQVRQdTHDodc1NYI
       Connection:
       - keep-alive
       User-Agent:
@@ -54,7 +54,7 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJpYXQiOjE3NjQ1Nzk3ODgsImV4cCI6MTc2NDYyMjk4OCwiY2xpZW50X2lkIjoiIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.GKfIjs4QWgLlhUZzLyBhoa_3lm4BC-GBqx6FGdSZVlo
+      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJpYXQiOjE3NjQ1ODE2MzAsImV4cCI6MTc2NDYyNDgzMCwiY2xpZW50X2lkIjoiIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.jsx687NycLpwBaKdZ561f6g0VuYpQVRQdTHDodc1NYI
       Connection:
       - keep-alive
       User-Agent:
@@ -63,7 +63,11 @@ interactions:
     uri: http://localhost:8004/api/v1/items?tabel__code=KANAAL
   response:
     body:
-      string: '{"count":2,"next":null,"previous":null,"results":[{"code":"phone","naam":"Telephone","begindatumGeldigheid":"2025-10-25T15:09:07Z","einddatumGeldigheid":"2029-10-25T15:09:08Z","aanvullendeGegevens":null},{"code":"email","naam":"E-mail
+      string: '{"count":6,"next":null,"previous":null,"results":[{"code":"no_dates","naam":"No
+        dates","begindatumGeldigheid":null,"einddatumGeldigheid":null,"aanvullendeGegevens":null},{"code":"no_begin_future_eind","naam":"No
+        begin, future end","begindatumGeldigheid":null,"einddatumGeldigheid":"2050-01-01T14:27:10Z","aanvullendeGegevens":null},{"code":"expired_phone","naam":"Expired
+        Phone","begindatumGeldigheid":"2020-01-01T16:06:12Z","einddatumGeldigheid":"2023-01-01T16:06:32Z","aanvullendeGegevens":null},{"code":"future_email","naam":"Future
+        Email","begindatumGeldigheid":"2050-01-01T16:05:29Z","einddatumGeldigheid":null,"aanvullendeGegevens":null},{"code":"phone","naam":"Telephone","begindatumGeldigheid":"2025-10-25T15:09:07Z","einddatumGeldigheid":"2029-10-25T15:09:08Z","aanvullendeGegevens":null},{"code":"email","naam":"E-mail
         Communication","begindatumGeldigheid":"2025-10-25T15:09:23Z","einddatumGeldigheid":null,"aanvullendeGegevens":null}]}'
     headers:
       API-version:

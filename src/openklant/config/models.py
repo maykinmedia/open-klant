@@ -3,7 +3,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 import structlog
-from requests.exceptions import RequestException
+from requests.exceptions import RequestException, Timeout
+from rest_framework import status
 from solo.models import SingletonModel
 from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
@@ -75,6 +76,24 @@ class ReferentielijstenConfig(SingletonModel):
                     "in Referentielijsten: {invalid_kanalen}"
                 ).format(invalid_kanalen=invalid_kanalen)
             )
+
+    @property
+    def connection_check(self):
+        if not self.service or not self.kanalen_tabel_code:
+            return _(
+                "Not performing connection check, service and/or kanalen tabel code are not configured"
+            ), None
+
+        try:
+            client = build_client(self.service, client_factory=ReferentielijstenClient)
+            items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
+            return items, status.HTTP_200_OK
+        except Timeout:
+            return _(
+                "Request to Referentielijsten API timed out"
+            ), status.HTTP_504_GATEWAY_TIMEOUT
+        except RequestException:
+            return _("Unable to retrieve items from Referentielijsten API"), None
 
     def __str__(self):
         return "Referentielijsten configuration"

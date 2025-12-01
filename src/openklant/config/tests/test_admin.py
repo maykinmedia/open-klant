@@ -182,3 +182,52 @@ class ReferentielijstenConfigAdminTests(VCRMixin, WebTest):
         self.assertFalse(config.enabled)
         self.assertIsNone(config.service)
         self.assertEqual(config.kanalen_tabel_code, "")
+
+    def test_status_check_ok_returns_http_status_and_items(self):
+        response = self.app.get(self.url)
+        form = response.forms["referentielijstenconfig_form"]
+
+        form["enabled"] = True
+        form["service"] = self.service.pk
+        form["kanalen_tabel_code"] = "KANAAL"
+        form.submit()
+
+        response = self.app.get(self.url)
+        self.assertIn("<label>Kanalen found for tabel code:</label>", response.text)
+        self.assertIn("200", response.text)
+        self.assertIn("""naam": "E-mail Communication""", response.text)
+        self.assertIn("""naam": "Telephone""", response.text)
+
+    def test_status_check_service_no_configured(self):
+        response = self.app.get(self.url)
+        form = response.forms["referentielijstenconfig_form"]
+
+        form["enabled"] = True
+        form["service"] = ""
+        form["kanalen_tabel_code"] = "KANAAL"
+        form.submit()
+
+        response = self.app.get(self.url)
+        self.assertIn("<label>Kanalen found for tabel code:</label>", response.text)
+        self.assertIn(
+            """Not performing connection check, service and/or kanalen tabel code are not configured""",
+            response.text,
+        )
+
+    def test_status_check_generic_error(self):
+        response = self.app.get(self.url)
+        form = response.forms["referentielijstenconfig_form"]
+
+        form["enabled"] = True
+        form["service"] = self.service.pk
+        form["kanalen_tabel_code"] = "KANAAL"
+        form.submit()
+
+        self.service.api_root = "test"
+        self.service.save()
+
+        response = self.app.get(self.url)
+        self.assertIn("<label>Kanalen found for tabel code:</label>", response.text)
+        self.assertIn(
+            """Unable to retrieve items from Referentielijsten API""", response.text
+        )
