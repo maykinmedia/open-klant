@@ -2,7 +2,7 @@
 Open Klant
 ==========
 
-:Version: 2.13.0
+:Version: 2.14.0
 :Source: https://github.com/maykinmedia/open-klant
 :Keywords: klanten, klantinteracties, contactgegevens, api, common ground
 :License: EUPL
@@ -42,19 +42,19 @@ Open Klant versie   API versie                 Release datum   API specificatie
 master/latest       n/a                        n/a             | Klantinteracties:
                                                                  `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
                                                                  `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.13.0..master>`_)
+                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.14.0..master>`_)
                                                                | Contactgegevens:
                                                                  `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/contactgegevens/openapi.yaml>`_,
                                                                  `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/master/src/openklant/components/contactgegevens/openapi.yaml>`_,
-                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.13.0..master>`_)
-2.13.0              | Klantinteracties: 0.4.1  2025-10-03      | Klantinteracties:
-                    | Contactgegevens: 1.1.1                     `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.13.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.13.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
-                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.12.1..2.13.0>`_)
+                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.14.0..master>`_)
+2.14.0              | Klantinteracties: 0.5.0  2025-12-01      | Klantinteracties:
+                    | Contactgegevens: 1.1.1                     `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.14.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.14.0/src/openklant/components/klantinteracties/openapi.yaml>`_,
+                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.13.0..2.14.0>`_)
                                                                | Contactgegevens:
-                                                                 `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.13.0/src/openklant/components/contactgegevens/openapi.yaml>`_,
-                                                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.13.0/src/openklant/components/contactgegevens/openapi.yaml>`_,
-                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.12.1..2.13.0>`_)
+                                                                 `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.14.0/src/openklant/components/contactgegevens/openapi.yaml>`_,
+                                                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-klant/2.14.0/src/openklant/components/contactgegevens/openapi.yaml>`_,
+                                                                 (`diff <https://github.com/maykinmedia/open-klant/compare/2.13.0..2.14.0>`_)
 ==================  =========================  =============   ================
 
 Vorige versies worden nog 6 maanden ondersteund nadat de volgende versie is
