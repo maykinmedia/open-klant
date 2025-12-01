@@ -73,7 +73,7 @@ SETUP_CONFIGURATION_STEPS = (
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "openklant.setup_configuration.steps.TokenAuthConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
-    "referentielijsten_client.setup_configuration.steps.ReferentielijstenConfigurationStep",
+    "openklant.setup_configuration.steps.ReferentielijstenConfigurationStep",
 )
 
 #
