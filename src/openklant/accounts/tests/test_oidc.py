@@ -18,9 +18,9 @@ from django_webtest import WebTest
 from maykin_common.vcr import VCRMixin
 from mozilla_django_oidc_db.models import OIDCClient
 from mozilla_django_oidc_db.tests.mixins import OIDCMixin
+from mozilla_django_oidc_db.tests.utils import keycloak_login
 
 from openklant.accounts.tests.factories import OIDCClientFactory
-from openklant.utils.tests.keycloak import keycloak_login
 
 from ..models import User
 from .factories import StaffUserFactory
