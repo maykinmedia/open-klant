@@ -6,7 +6,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 import structlog
-from dateutil import parser
 from requests import RequestException
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator, qs_filter
@@ -33,6 +32,7 @@ from openklant.components.klantinteracties.models.partijen import (
 )
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
 from openklant.config.models import ReferentielijstenConfig
+from openklant.utils.converters import parse_datetime
 from openklant.utils.validators import validate_phone_number
 from referentielijsten_client.client import ReferentielijstenClient
 
@@ -198,9 +198,6 @@ class InvalidReferentielijstenConfiguration(Exception):
 
 
 class KanaalValidator:
-    def is_valid_datetime(self, value):
-        return parser.isoparse(value) if value else None
-
     def __call__(self, value: str):
         config = ReferentielijstenConfig.get_solo()
         if not config.enabled:
@@ -245,8 +242,8 @@ class KanaalValidator:
             begin = item.get("begindatumGeldigheid")
             eind = item.get("einddatumGeldigheid")
 
-            begin_dt = self.is_valid_datetime(begin)
-            eind_dt = self.is_valid_datetime(eind)
+            begin_dt = parse_datetime(begin)
+            eind_dt = parse_datetime(eind)
 
             if begin_dt and now < begin_dt:
                 continue
@@ -258,7 +255,6 @@ class KanaalValidator:
             code = item.get("code")
             if code:
                 kanalen.append(code)
-
         if not kanalen:
             raise ValidationError(
                 f"'{value}' is not a valid kanaal. Allowed values: {', '.join(kanalen)}"

@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 from django_webtest import WebTest
 from maykin_2fa.test import disable_admin_mfa
 from maykin_common.vcr import VCRMixin
-from requests.exceptions import RequestException, Timeout
+from requests.exceptions import Timeout
 from zgw_consumers.test.factories import ServiceFactory
 
 from openklant.accounts.tests.factories import SuperUserFactory
@@ -183,24 +183,51 @@ class ReferentielijstenConfigAdminTests(VCRMixin, WebTest):
         self.assertIsNone(config.service)
         self.assertEqual(config.kanalen_tabel_code, "")
 
-    def test_status_check_returns_http_status_and_items(self):
+    def test_status_check_ok_returns_http_status_and_items(self):
         response = self.app.get(self.url)
         form = response.forms["referentielijstenconfig_form"]
 
         form["enabled"] = True
         form["service"] = self.service.pk
         form["kanalen_tabel_code"] = "KANAAL"
-
         form.submit()
 
-        config = ReferentielijstenConfig.get_solo()
+        response = self.app.get(self.url)
+        self.assertIn("<label>Kanalen found for tabel code:</label>", response.text)
+        self.assertIn("200", response.text)
+        self.assertIn("""naam": "E-mail Communication""", response.text)
+        self.assertIn("""naam": "Telephone""", response.text)
 
-        try:
-            result = config.status_check()
-        except RequestException:
-            self.fail("Connection to Referentielijsten service failed")
+    def test_status_check_service_no_configured(self):
+        response = self.app.get(self.url)
+        form = response.forms["referentielijstenconfig_form"]
 
-        self.assertIn("status_code", result)
-        self.assertIn("items", result)
-        self.assertEqual(result["status_code"], 200)
-        self.assertIsInstance(result["items"], list)
+        form["enabled"] = True
+        form["service"] = ""
+        form["kanalen_tabel_code"] = "KANAAL"
+        form.submit()
+
+        response = self.app.get(self.url)
+        self.assertIn("<label>Kanalen found for tabel code:</label>", response.text)
+        self.assertIn(
+            """Not performing connection check, service and/or kanalen tabel code are not configured""",
+            response.text,
+        )
+
+    def test_status_check_generic_error(self):
+        response = self.app.get(self.url)
+        form = response.forms["referentielijstenconfig_form"]
+
+        form["enabled"] = True
+        form["service"] = self.service.pk
+        form["kanalen_tabel_code"] = "KANAAL"
+        form.submit()
+
+        self.service.api_root = "test"
+        self.service.save()
+
+        response = self.app.get(self.url)
+        self.assertIn("<label>Kanalen found for tabel code:</label>", response.text)
+        self.assertIn(
+            """Unable to retrieve items from Referentielijsten API""", response.text
+        )
