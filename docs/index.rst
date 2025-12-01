@@ -30,5 +30,6 @@ Open Klant `is`_ and only uses open source.
    introduction/index
    installation/index
    development/index
+   functionality/index
    manual/index
    changelog
