@@ -6,6 +6,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.cloudevents import process_cloudevent
 from rest_framework import mixins, viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
+from vng_api_common.tests import reverse
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
@@ -335,12 +336,17 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
         )
         object_type = instance.onderwerpobjectidentificator.get("code_objecttype")
         if object_type == "zaak" and getattr(settings, "ENABLE_CLOUD_EVENTS", False):
+            link_to_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={"uuid": str(instance.uuid)},
+            )
+
             process_cloudevent(
                 type="nl.overheid.zaken.zaak-gelinkt",
                 subject=instance.onderwerpobjectidentificator.get("object_id"),
                 data={
                     "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",
-                    "linkTo": f"urn:uuid:{instance.uuid}",
+                    "linkTo": link_to_url,
                     "label": str(instance.klantcontact)
                     if instance.klantcontact
                     else "Onderwerpobject",
