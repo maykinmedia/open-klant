@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import transaction
 
 import structlog
@@ -333,7 +334,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             token_application=token_auth.application,
         )
         object_type = instance.onderwerpobjectidentificator.get("code_objecttype")
-        if object_type == "zaak":
+        if object_type == "zaak" and getattr(settings, "ENABLE_CLOUD_EVENTS", False):
             process_cloudevent(
                 type="nl.overheid.zaken.zaak-gelinkt",
                 subject=instance.onderwerpobjectidentificator.get("object_id"),

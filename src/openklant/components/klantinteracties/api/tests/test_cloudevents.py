@@ -42,6 +42,47 @@ class OnderwerpobjectCloudEventTest(APITestCase):
 
         self.zaak_uuid = uuid.UUID("a7b3c8d9-e4f5-6a7b-8c9d-e0f1a2b3c4d5")
 
+    @override_settings(ENABLE_CLOUD_EVENTS=False)
+    def test_no_cloudevent_when_disabled(self, mock_process_cloudevent):
+        url = reverse("klantinteracties:onderwerpobject-list")
+
+        data = {
+            "klantcontact": {"uuid": str(self.klantcontact.uuid)},
+            "onderwerpobjectidentificator": {
+                "codeObjecttype": "zaak",
+                "object_id": str(self.zaak_uuid),
+                "codeRegister": "open-zaak",
+                "codeSoortObjectId": "uuid",
+            },
+        }
+
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(url, data, format="json")
+
+        assert response.status_code == status.HTTP_201_CREATED
+        mock_process_cloudevent.assert_not_called()
+
+    @override_settings(ENABLE_CLOUD_EVENTS=True)
+    def test_cloudevent_sent_when_enabled(self, mock_process_cloudevent):
+        url = reverse("klantinteracties:onderwerpobject-list")
+
+        data = {
+            "klantcontact": {"uuid": str(self.klantcontact.uuid)},
+            "onderwerpobjectidentificator": {
+                "codeObjecttype": "zaak",
+                "object_id": str(self.zaak_uuid),
+                "codeRegister": "open-zaak",
+                "codeSoortObjectId": "uuid",
+            },
+        }
+
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(url, data, format="json")
+
+        assert response.status_code == status.HTTP_201_CREATED
+        assert mock_process_cloudevent.call_count == 1
+
+    @override_settings(ENABLE_CLOUD_EVENTS=True)
     def test_onderwerpobject_zaak_gelinkt_cloudevent(self, mock_process_cloudevent):
         url = reverse("klantinteracties:onderwerpobject-list")
 
@@ -61,6 +102,7 @@ class OnderwerpobjectCloudEventTest(APITestCase):
         assert response.status_code == status.HTTP_201_CREATED, response.data
         assert mock_process_cloudevent.call_count == 1
 
+    @override_settings(ENABLE_CLOUD_EVENTS=True)
     def test_onderwerpobject_non_zaak_no_cloudevent(self, mock_process_cloudevent):
         url = reverse("klantinteracties:onderwerpobject-list")
         data = {
@@ -76,9 +118,10 @@ class OnderwerpobjectCloudEventTest(APITestCase):
         with self.captureOnCommitCallbacks(execute=True):
             response = self.client.post(url, data, format="json")
 
-        assert response.status_code == status.HTTP_201_CREATED, response.data
+        assert response.status_code == status.HTTP_201_CREATED
         mock_process_cloudevent.assert_not_called()
 
+    @override_settings(ENABLE_CLOUD_EVENTS=True)
     def test_onderwerpobject_without_klantcontact_sends_cloudevent(
         self, mock_process_cloudevent
     ):
@@ -98,6 +141,7 @@ class OnderwerpobjectCloudEventTest(APITestCase):
         assert response.status_code == status.HTTP_201_CREATED, response.data
         assert mock_process_cloudevent.call_count == 1
 
+    @override_settings(ENABLE_CLOUD_EVENTS=True)
     def test_multiple_onderwerpobjects_trigger_cloudevents(
         self, mock_process_cloudevent
     ):
