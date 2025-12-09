@@ -9,7 +9,6 @@ import structlog
 from requests import RequestException
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator, qs_filter
-from zgw_consumers.client import build_client
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.actoren import Actor
@@ -34,7 +33,7 @@ from openklant.components.klantinteracties.models.rekeningnummers import Rekenin
 from openklant.config.models import ReferentielijstenConfig
 from openklant.utils.converters import parse_datetime
 from openklant.utils.validators import validate_phone_number
-from referentielijsten_client.client import ReferentielijstenClient
+from referentielijsten_client.client import get_referentielijsten_client
 
 logger = structlog.get_logger(__name__)
 
@@ -210,17 +209,12 @@ class KanaalValidator:
             )
 
         try:
-            client = build_client(
-                service=config.service,
-                client_factory=ReferentielijstenClient,
-            )
-            raw_items = client.get_cached_items_by_tabel_code(config.kanalen_tabel_code)
-
+            with get_referentielijsten_client(config.service) as client:
+                raw_items = client.get_cached_items_by_tabel_code(
+                    config.kanalen_tabel_code
+                )
         except (RequestException, Exception):
-            logger.error(
-                "failed_to_fetch_kanalen_from_referentielijsten",
-                exc_info=True,
-            )
+            logger.exception("failed_to_fetch_kanalen_from_referentielijsten")
             raise ValidationError(
                 "Failed to retrieve valid channels from the Referentielijsten API to validate `kanaal`."
             )

@@ -6,11 +6,10 @@ import structlog
 from requests.exceptions import RequestException, Timeout
 from rest_framework import status
 from solo.models import SingletonModel
-from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
 
 from openklant.components.klantinteracties.models import Klantcontact
-from referentielijsten_client.client import ReferentielijstenClient
+from referentielijsten_client.client import get_referentielijsten_client
 
 logger = structlog.get_logger(__name__)
 
@@ -49,14 +48,11 @@ class ReferentielijstenConfig(SingletonModel):
                 )
             )
 
-        client = build_client(self.service, client_factory=ReferentielijstenClient)
         try:
-            items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
-        except RequestException:
-            logger.error(
-                "failed_to_fetch_kanalen_from_referentielijsten",
-                exc_info=True,
-            )
+            with get_referentielijsten_client(self.service) as client:
+                items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
+        except (RequestException, Exception):
+            logger.exception("failed_to_fetch_kanalen_from_referentielijsten")
             raise ValidationError(
                 _(
                     "Er is een fout opgetreden bij het ophalen van de kanalen uit de Referentielijsten API."
@@ -85,9 +81,9 @@ class ReferentielijstenConfig(SingletonModel):
             ), None
 
         try:
-            client = build_client(self.service, client_factory=ReferentielijstenClient)
-            items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
-            return items, status.HTTP_200_OK
+            with get_referentielijsten_client(self.service) as client:
+                items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
+                return items, status.HTTP_200_OK
         except Timeout:
             return _(
                 "Request to Referentielijsten API timed out"

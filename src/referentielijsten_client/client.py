@@ -2,8 +2,14 @@ from typing import Any
 
 from django.core.cache import cache
 
+from zgw_consumers.client import build_client
+from zgw_consumers.models import Service
 from zgw_consumers.nlx import NLXClient
 from zgw_consumers.service import pagination_helper
+
+
+class NoServiceConfigured(RuntimeError):
+    pass
 
 
 class ReferentielijstenClient(NLXClient):
@@ -31,3 +37,10 @@ class ReferentielijstenClient(NLXClient):
             items = self.get_items_by_tabel_code(tabel_code)
             cache.set(cache_key, items, cache_timeout)
         return items
+
+
+def get_referentielijsten_client(service: Service) -> ReferentielijstenClient:
+    if not service:
+        raise NoServiceConfigured("No Referentielijsten API service configured!")
+
+    return build_client(service, client_factory=ReferentielijstenClient)
