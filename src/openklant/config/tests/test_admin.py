@@ -120,6 +120,17 @@ class ReferentielijstenConfigAdminTests(VCRMixin, WebTest):
         self.assertIsNone(config.service)
         self.assertEqual(config.kanalen_tabel_code, "")
 
+        # validation message
+        self.assertIn(
+            "Service en tabel_code moeten zijn ingesteld wanneer validatie is ingeschakeld",
+            response.text,
+        )
+        # connection_check field
+        self.assertIn(
+            """Not performing connection check, service and/or kanalen tabel code are not configured""",
+            response.text,
+        )
+
     def test_request_error_from_referentielijsten_raises_error(self):
         response = self.app.get(self.url)
 
@@ -214,7 +225,7 @@ class ReferentielijstenConfigAdminTests(VCRMixin, WebTest):
             response.text,
         )
 
-    def test_status_check_generic_error(self):
+    def test_status_check_connection_failed(self):
         response = self.app.get(self.url)
         form = response.forms["referentielijstenconfig_form"]
 
@@ -228,6 +239,4 @@ class ReferentielijstenConfigAdminTests(VCRMixin, WebTest):
 
         response = self.app.get(self.url)
         self.assertIn("<label>Kanalen found for tabel code:</label>", response.text)
-        self.assertIn(
-            """Unable to retrieve items from Referentielijsten API""", response.text
-        )
+        self.assertIn("""Unable to connect to Referentielijsten API""", response.text)

@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -9,7 +10,10 @@ from solo.models import SingletonModel
 from zgw_consumers.models import Service
 
 from openklant.components.klantinteracties.models import Klantcontact
-from referentielijsten_client.client import get_referentielijsten_client
+from referentielijsten_client.client import (
+    REFERENTIELIJST_CLIENT_CACHE_PREFIX,
+    get_referentielijsten_client,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -73,6 +77,13 @@ class ReferentielijstenConfig(SingletonModel):
                 ).format(invalid_kanalen=invalid_kanalen)
             )
 
+    def save(self, *args, **kwargs):
+        if self.kanalen_tabel_code:
+            cache.delete(
+                f"{REFERENTIELIJST_CLIENT_CACHE_PREFIX}{self.kanalen_tabel_code}"
+            )
+        return super().save(*args, **kwargs)
+
     @property
     def connection_check(self):
         if not self.service or not self.kanalen_tabel_code:
@@ -82,8 +93,12 @@ class ReferentielijstenConfig(SingletonModel):
 
         try:
             with get_referentielijsten_client(self.service) as client:
-                items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
-                return items, status.HTTP_200_OK
+                if client.can_connect:
+                    items = client.get_cached_items_by_tabel_code(
+                        self.kanalen_tabel_code
+                    )
+                    return items, status.HTTP_200_OK
+                return _("Unable to connect to Referentielijsten API"), None
         except Timeout:
             return _(
                 "Request to Referentielijsten API timed out"
