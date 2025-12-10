@@ -23,7 +23,17 @@ class ReferentielijstenClientTestCase(ClearCachesMixin, VCRTestCase):
         self.assertIsInstance(items, list)
         self.assertTrue(all("code" in item for item in items))
         codes = [item["code"] for item in items]
-        self.assertEqual(codes, ["phone", "email"])
+        self.assertEqual(
+            codes,
+            [
+                "no_dates",
+                "no_begin_future_eind",
+                "expired_phone",
+                "future_email",
+                "phone",
+                "email",
+            ],
+        )
 
     def test_get_cached_items_by_tabel_code(self):
         first = self.client.get_cached_items_by_tabel_code("KANAAL")

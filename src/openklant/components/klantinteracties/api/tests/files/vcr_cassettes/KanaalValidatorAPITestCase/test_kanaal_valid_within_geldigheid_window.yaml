@@ -7,7 +7,7 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJpYXQiOjE3NjM2NTUzNjAsImV4cCI6MTc2MzY5ODU2MCwiY2xpZW50X2lkIjoiIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.H3ceD4inp9fkeambmBU3QXJ2m8KUDx01UkgOKwrlYv8
+      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJpYXQiOjE3NjUzNjAyNzYsImV4cCI6MTc2NTQwMzQ3NiwiY2xpZW50X2lkIjoiIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.5W-WWBoz5vv_2C2baeTYDi3PDNqB0Po19TlbEJKrT8M
       Connection:
       - keep-alive
       User-Agent:
@@ -16,7 +16,11 @@ interactions:
     uri: http://localhost:8004/api/v1/items?tabel__code=KANAAL
   response:
     body:
-      string: '{"count":2,"next":null,"previous":null,"results":[{"code":"phone","naam":"Telephone","begindatumGeldigheid":"2025-10-25T15:09:07Z","einddatumGeldigheid":"2029-10-25T15:09:08Z","aanvullendeGegevens":null},{"code":"email","naam":"E-mail
+      string: '{"count":6,"next":null,"previous":null,"results":[{"code":"no_dates","naam":"No
+        dates","begindatumGeldigheid":null,"einddatumGeldigheid":null,"aanvullendeGegevens":null},{"code":"no_begin_future_eind","naam":"No
+        begin, future end","begindatumGeldigheid":null,"einddatumGeldigheid":"2050-01-01T14:27:10Z","aanvullendeGegevens":null},{"code":"expired_phone","naam":"Expired
+        Phone","begindatumGeldigheid":"2020-01-01T16:06:12Z","einddatumGeldigheid":"2023-01-01T16:06:32Z","aanvullendeGegevens":null},{"code":"future_email","naam":"Future
+        Email","begindatumGeldigheid":"2050-01-01T16:05:29Z","einddatumGeldigheid":null,"aanvullendeGegevens":null},{"code":"phone","naam":"Telephone","begindatumGeldigheid":"2025-10-25T15:09:07Z","einddatumGeldigheid":"2029-10-25T15:09:08Z","aanvullendeGegevens":null},{"code":"email","naam":"E-mail
         Communication","begindatumGeldigheid":"2025-10-25T15:09:23Z","einddatumGeldigheid":null,"aanvullendeGegevens":null}]}'
     headers:
       API-version:
@@ -24,13 +28,12 @@ interactions:
       Allow:
       - GET, HEAD, OPTIONS
       Content-Length:
-      - '352'
+      - '946'
       Content-Security-Policy:
-      - 'default-src ''self''; frame-src ''self''; style-src ''self'' ''unsafe-inline''
-        fonts.googleapis.com; font-src ''self'' fonts.gstatic.com; img-src ''self''
-        data: cdn.redoc.ly; script-src ''self'' ''unsafe-inline''; frame-ancestors
-        ''none''; base-uri ''self''; worker-src ''self'' blob:; object-src ''none'';
-        form-action ''self'''
+      - 'font-src ''self'' fonts.gstatic.com; frame-src ''self''; script-src ''self''
+        ''unsafe-inline''; worker-src ''self'' blob:; object-src ''none''; frame-ancestors
+        ''none''; default-src ''self''; style-src ''self'' ''unsafe-inline'' fonts.googleapis.com;
+        form-action ''self''; base-uri ''self''; img-src ''self'' data: cdn.redoc.ly'
       Content-Type:
       - application/json
       Cross-Origin-Opener-Policy:
