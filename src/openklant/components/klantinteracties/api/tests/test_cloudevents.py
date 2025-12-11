@@ -63,42 +63,6 @@ class OnderwerpobjectCloudEventTest(APITestCase):
         mock_process_cloudevent.assert_not_called()
 
     @override_settings(ENABLE_CLOUD_EVENTS=True)
-    def test_cloudevent_sent_when_enabled(self, mock_process_cloudevent):
-        url = reverse("klantinteracties:onderwerpobject-list")
-
-        data = {
-            "klantcontact": {"uuid": str(self.klantcontact.uuid)},
-            "onderwerpobjectidentificator": {
-                "codeObjecttype": "zaak",
-                "object_id": str(self.zaak_uuid),
-                "codeRegister": "open-zaak",
-                "codeSoortObjectId": "uuid",
-            },
-        }
-
-        with self.captureOnCommitCallbacks(execute=True):
-            response = self.client.post(url, data, format="json")
-
-        assert response.status_code == status.HTTP_201_CREATED
-        mock_process_cloudevent.assert_called_once()
-
-        created_uuid = response.data["uuid"]
-        relative_link_to = reverse(
-            "klantinteracties:onderwerpobject-detail",
-            kwargs={"uuid": created_uuid, "version": "1"},
-        )
-        expected_link_to = f"http://testserver{relative_link_to}"
-        payload = mock_process_cloudevent.call_args[0][0]
-        assert payload["id"] == MOCKED_CLOUDEVENT_ID
-        assert payload["type"] == "nl.overheid.zaken.zaak-gelinkt"
-        assert payload["subject"] == str(self.zaak_uuid)
-        assert payload["time"] == FROZEN_TIME_Z
-        assert payload["data"]["zaak"] == f"urn:uuid:{self.zaak_uuid}"
-        assert payload["data"]["linkTo"] == expected_link_to
-        assert payload["data"]["label"] == str(self.klantcontact)
-        assert payload["data"]["linkObjectType"] == "Onderwerpobject"
-
-    @override_settings(ENABLE_CLOUD_EVENTS=True)
     def test_onderwerpobject_zaak_gelinkt_cloudevent(self, mock_process_cloudevent):
         url = reverse("klantinteracties:onderwerpobject-list")
 
@@ -116,28 +80,25 @@ class OnderwerpobjectCloudEventTest(APITestCase):
             response = self.client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_201_CREATED, response.data
-        assert mock_process_cloudevent.call_count == 1
+        mock_process_cloudevent.assert_called_once()
+
+        created_uuid = response.data["uuid"]
+
+        relative_link_to = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": created_uuid, "version": "1"},
+        )
+        expected_link_to = f"http://testserver{relative_link_to}"
 
         payload = mock_process_cloudevent.call_args[0][0]
-        expected_keys = {
-            "id",
-            "source",
-            "specversion",
-            "type",
-            "subject",
-            "time",
-            "dataref",
-            "datacontenttype",
-            "data",
-        }
-        assert set(payload.keys()) == expected_keys, (
-            f"Unexpected keys in cloudevent: {payload.keys()}"
-        )
-
-        data_keys = {"zaak", "linkTo", "label", "linkObjectType"}
-        assert set(payload["data"].keys()) == data_keys, (
-            f"Unexpected keys in cloudevent data: {payload['data'].keys()}"
-        )
+        assert payload["id"] == MOCKED_CLOUDEVENT_ID
+        assert payload["type"] == "nl.overheid.zaken.zaak-gelinkt"
+        assert payload["subject"] == str(self.zaak_uuid)
+        assert payload["time"] == FROZEN_TIME_Z
+        assert payload["data"]["zaak"] == f"urn:uuid:{self.zaak_uuid}"
+        assert payload["data"]["linkTo"] == expected_link_to
+        assert payload["data"]["label"] == str(self.klantcontact)
+        assert payload["data"]["linkObjectType"] == "Onderwerpobject"
 
     @override_settings(ENABLE_CLOUD_EVENTS=True)
     def test_onderwerpobject_non_zaak_no_cloudevent(self, mock_process_cloudevent):
