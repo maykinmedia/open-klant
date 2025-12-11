@@ -94,7 +94,8 @@ class KanaalValidatorAPITestCase(ClearCachesMixin, APITestCase, VCRTestCase):
 
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            error["reason"], "'fax' is not a valid kanaal. Allowed values: phone, email"
+            error["reason"],
+            "'fax' is not a valid kanaal. Allowed values: no_dates, no_begin_future_eind, phone, email",
         )
 
     @patch(
@@ -200,7 +201,7 @@ class KanaalValidatorAPITestCase(ClearCachesMixin, APITestCase, VCRTestCase):
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            "'telepathy' is not a valid kanaal. Allowed values: phone, email",
+            "'telepathy' is not a valid kanaal. Allowed values: no_dates, no_begin_future_eind, phone, email",
         )
 
     @patch(
@@ -237,7 +238,7 @@ class KanaalValidatorAPITestCase(ClearCachesMixin, APITestCase, VCRTestCase):
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            "'carrier-pigeon' is not a valid kanaal. Allowed values: phone, email",
+            "'carrier-pigeon' is not a valid kanaal. Allowed values: no_dates, no_begin_future_eind, phone, email",
         )
 
     @freeze_time("2025-11-24T12:00:00Z")

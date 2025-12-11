@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -6,11 +7,13 @@ import structlog
 from requests.exceptions import RequestException, Timeout
 from rest_framework import status
 from solo.models import SingletonModel
-from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
 
 from openklant.components.klantinteracties.models import Klantcontact
-from referentielijsten_client.client import ReferentielijstenClient
+from referentielijsten_client.client import (
+    REFERENTIELIJST_CLIENT_CACHE_PREFIX,
+    get_referentielijsten_client,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -49,14 +52,11 @@ class ReferentielijstenConfig(SingletonModel):
                 )
             )
 
-        client = build_client(self.service, client_factory=ReferentielijstenClient)
         try:
-            items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
-        except RequestException:
-            logger.error(
-                "failed_to_fetch_kanalen_from_referentielijsten",
-                exc_info=True,
-            )
+            with get_referentielijsten_client(self.service) as client:
+                items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
+        except (RequestException, Exception):
+            logger.exception("failed_to_fetch_kanalen_from_referentielijsten")
             raise ValidationError(
                 _(
                     "Er is een fout opgetreden bij het ophalen van de kanalen uit de Referentielijsten API."
@@ -77,6 +77,13 @@ class ReferentielijstenConfig(SingletonModel):
                 ).format(invalid_kanalen=invalid_kanalen)
             )
 
+    def save(self, *args, **kwargs):
+        if self.kanalen_tabel_code:
+            cache.delete(
+                f"{REFERENTIELIJST_CLIENT_CACHE_PREFIX}{self.kanalen_tabel_code}"
+            )
+        return super().save(*args, **kwargs)
+
     @property
     def connection_check(self):
         if not self.service or not self.kanalen_tabel_code:
@@ -85,9 +92,13 @@ class ReferentielijstenConfig(SingletonModel):
             ), None
 
         try:
-            client = build_client(self.service, client_factory=ReferentielijstenClient)
-            items = client.get_items_by_tabel_code(self.kanalen_tabel_code)
-            return items, status.HTTP_200_OK
+            with get_referentielijsten_client(self.service) as client:
+                if client.can_connect:
+                    items = client.get_cached_items_by_tabel_code(
+                        self.kanalen_tabel_code
+                    )
+                    return items, status.HTTP_200_OK
+                return _("Unable to connect to Referentielijsten API"), None
         except Timeout:
             return _(
                 "Request to Referentielijsten API timed out"
