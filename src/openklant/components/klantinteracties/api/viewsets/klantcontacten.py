@@ -338,7 +338,10 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
         if object_type == "zaak" and settings.ENABLE_CLOUD_EVENTS:
             link_to_url = reverse(
                 "klantinteracties:onderwerpobject-detail",
-                kwargs={"uuid": str(instance.uuid)},
+                kwargs={
+                    "uuid": str(instance.uuid),
+                    "version": self.request.version or "1",
+                },
             )
 
             process_cloudevent(

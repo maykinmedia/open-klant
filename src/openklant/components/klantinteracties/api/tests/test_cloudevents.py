@@ -83,11 +83,11 @@ class OnderwerpobjectCloudEventTest(APITestCase):
         mock_process_cloudevent.assert_called_once()
 
         created_uuid = response.data["uuid"]
-        expected_link_to = reverse(
+        relative_link_to = reverse(
             "klantinteracties:onderwerpobject-detail",
-            kwargs={"uuid": created_uuid},
+            kwargs={"uuid": created_uuid, "version": "1"},
         )
-
+        expected_link_to = f"http://testserver{relative_link_to}"
         payload = mock_process_cloudevent.call_args[0][0]
         assert payload["id"] == MOCKED_CLOUDEVENT_ID
         assert payload["type"] == "nl.overheid.zaken.zaak-gelinkt"
