@@ -32,6 +32,19 @@ INSTALLED_APPS = INSTALLED_APPS + [
 
 MIDDLEWARE += ["openklant.utils.middleware.APIVersionHeaderMiddleware"]
 
+ENABLE_CLOUD_EVENTS = config(
+    "ENABLE_CLOUD_EVENTS",
+    default=False,
+    cast=bool,
+    help_text="**EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations via the API (not ready for use in production)",
+)
+
+NOTIFICATIONS_SOURCE = config(
+    "NOTIFICATIONS_SOURCE",
+    default="",
+    help_text="**EXPERIMENTAL**: the identifier of this application to use as the source in notifications and cloudevents",
+)
+
 #
 # SECURITY settings
 #
