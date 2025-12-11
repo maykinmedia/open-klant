@@ -25,22 +25,18 @@ Example of a ``zaak-gelinkt`` cloud event in its current shape:
     {
         "specversion": "1.0",
         "type": "nl.overheid.zaken.zaak-gelinkt",
-        "source": "ok-test",
-        "subject": "a7b3c8d9-e4f5-6a7b-8c9d-e0f1a2b3c4d5",
+        "source": "urn:nld:oin:01823288444:openzaak",
+        "subject": "a7b3c8d9-e4f5-6a7b-8c9d-e0f1a2b3c4d5",   # the UUID of the Zaak
         "id": "f347fd1f-dac1-4870-9dd0-f6c00edf4bf7",
         "time": "2025-10-10T00:00:00Z",
-        "dataref": "/klantinteracties/api/v1/onderwerpobjecten/12345678-aaaa-bbbb-cccc-999999999999",
         "datacontenttype": "application/json",
         "data": {
             "zaak": "urn:uuid:a7b3c8d9-e4f5-6a7b-8c9d-e0f1a2b3c4d5",
-            "linkTo": "/klantinteracties/api/v1/onderwerpobjecten/12345678-aaaa-bbbb-cccc-999999999999",
+            "linkTo": "http://open-klant.local:8000/klantinteracties/api/v1/onderwerpobjecten/5fee9673-216c-41e7-91d2-69a8d1526b9f",
             "label": "Mijn Klantcontact Onderwerp",
             "linkObjectType": "Onderwerpobject"
         }
     }
 
 The shape of these cloud events and the actions that trigger them are still subject to
-change. Currently, cloud events are delivered directly to the configured endpoint of
-Open Notificaties, but in the future it will be possible to route these cloud events
-using Open Notificaties message routing as well.
-
+change.

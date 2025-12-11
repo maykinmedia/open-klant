@@ -36,7 +36,7 @@ ENABLE_CLOUD_EVENTS = config(
     "ENABLE_CLOUD_EVENTS",
     default=False,
     cast=bool,
-    help_text="**EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations on Klant (not ready for use in production)",
+    help_text="**EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations via the API (not ready for use in production)",
 )
 
 NOTIFICATIONS_SOURCE = config(
