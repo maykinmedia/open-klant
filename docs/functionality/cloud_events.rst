@@ -26,7 +26,7 @@ Example of a ``zaak-gelinkt`` cloud event in its current shape:
         "specversion": "1.0",
         "type": "nl.overheid.zaken.zaak-gelinkt",
         "source": "urn:nld:oin:01823288444:openzaak",
-        "subject": "a7b3c8d9-e4f5-6a7b-8c9d-e0f1a2b3c4d5",   # the UUID of the Zaak
+        "subject": "a7b3c8d9-e4f5-6a7b-8c9d-e0f1a2b3c4d5",
         "id": "f347fd1f-dac1-4870-9dd0-f6c00edf4bf7",
         "time": "2025-10-10T00:00:00Z",
         "datacontenttype": "application/json",
@@ -37,6 +37,8 @@ Example of a ``zaak-gelinkt`` cloud event in its current shape:
             "linkObjectType": "Onderwerpobject"
         }
     }
+
+*Note:* The ``subject`` field contains the UUID of the Zaak.
 
 The shape of these cloud events and the actions that trigger them are still subject to
 change.
