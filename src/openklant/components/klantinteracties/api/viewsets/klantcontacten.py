@@ -1,7 +1,10 @@
+from django.conf import settings
 from django.db import transaction
+from django.urls import reverse
 
 import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from notifications_api_common.cloudevents import process_cloudevent
 from rest_framework import mixins, viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
 from vng_api_common.viewsets import CheckQueryParamsMixin
@@ -331,6 +334,30 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
+        object_type = instance.onderwerpobjectidentificator.get("code_objecttype")
+        if (
+            object_type == "zaak"
+            and settings.ENABLE_CLOUD_EVENTS
+            and instance.klantcontact is not None
+        ):
+            link_to_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={
+                    "uuid": str(instance.uuid),
+                    "version": self.request.version or "1",
+                },
+            )
+
+            process_cloudevent(
+                type="nl.overheid.zaken.zaak-gelinkt",
+                subject=instance.onderwerpobjectidentificator.get("object_id"),
+                data={
+                    "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",
+                    "linkTo": self.request.build_absolute_uri(link_to_url),
+                    "label": str(instance.klantcontact),
+                    "linkObjectType": "Onderwerpobject",
+                },
+            )
 
     @transaction.atomic
     def perform_update(self, serializer):
