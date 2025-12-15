@@ -3,12 +3,19 @@ import uuid
 from django.utils.translation import gettext as _
 
 from rest_framework import status
+from structlog.testing import capture_logs
 from vng_api_common.tests import reverse
 
 from openklant.components.klantinteracties.models import (
+    Actor,
+    ActorKlantcontact,
     Betrokkene,
+    Bijlage,
+    DigitaalAdres,
+    InterneTaak,
     Klantcontact,
     Onderwerpobject,
+    Taakstatus,
 )
 from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
@@ -16,6 +23,7 @@ from openklant.components.klantinteracties.models.tests.factories import (
     BetrokkeneFactory,
     BijlageFactory,
     DigitaalAdresFactory,
+    InterneTaakFactory,
     KlantcontactFactory,
     MedewerkerFactory,
     OnderwerpobjectFactory,
@@ -1652,19 +1660,303 @@ class OnderwerpobjectTests(APITestCase):
                 self.assertEqual(len(data["results"]), 1)
                 self.assertEqual(data["results"][0]["uuid"], str(obj.uuid))
 
-    def test_destroy_onderwerpobject(self):
-        onderwerpobject = OnderwerpobjectFactory.create()
-        detail_url = reverse(
-            "klantinteracties:onderwerpobject-detail",
-            kwargs={"uuid": str(onderwerpobject.uuid)},
+    def test_destroy_with_cascade_true(self):
+        klantcontact = KlantcontactFactory.create()
+        was_klantcontact = KlantcontactFactory.create()
+
+        onderwerpobject = OnderwerpobjectFactory.create(
+            klantcontact=klantcontact,
+            was_klantcontact=was_klantcontact,
         )
-        response = self.client.delete(detail_url)
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+
+        response = self.client.delete(f"{url}?cascade=true")
+
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        list_url = reverse("klantinteracties:onderwerpobject-list")
-        response = self.client.get(list_url)
-        data = response.json()
-        self.assertEqual(data["count"], 0)
+        self.assertFalse(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
+        )
+
+        self.assertFalse(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
+        self.assertFalse(
+            Klantcontact.objects.filter(uuid=was_klantcontact.uuid).exists()
+        )
+
+    def test_destroy_with_cascade_false(self):
+        klantcontact = KlantcontactFactory.create()
+        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+
+        response = self.client.delete(f"{url}?cascade=false")
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        self.assertFalse(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
+        )
+
+        self.assertTrue(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
+
+    def test_destroy_with_cascade_shared_klantcontact(self):
+        shared_klantcontact = KlantcontactFactory.create()
+        shared_was_klantcontact = KlantcontactFactory.create()
+
+        onderwerpobject1 = OnderwerpobjectFactory.create(
+            klantcontact=shared_klantcontact,
+            was_klantcontact=shared_was_klantcontact,
+        )
+        onderwerpobject2 = OnderwerpobjectFactory.create(
+            klantcontact=shared_klantcontact,
+            was_klantcontact=shared_was_klantcontact,
+        )
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject1.uuid},
+        )
+
+        response = self.client.delete(f"{url}?cascade=true")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertFalse(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject1.uuid).exists()
+        )
+        self.assertTrue(
+            Klantcontact.objects.filter(uuid=shared_klantcontact.uuid).exists()
+        )
+        self.assertTrue(
+            Klantcontact.objects.filter(uuid=shared_was_klantcontact.uuid).exists()
+        )
+
+        self.assertTrue(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject2.uuid).exists()
+        )
+
+        remaining_urls = response.json()
+        expected_urls = [
+            f"http://testserver{reverse('klantinteracties:klantcontact-detail', kwargs={'uuid': shared_klantcontact.uuid, 'version': '1'})}",
+            f"http://testserver{reverse('klantinteracties:klantcontact-detail', kwargs={'uuid': shared_was_klantcontact.uuid, 'version': '1'})}",
+        ]
+
+        for url in expected_urls:
+            self.assertIn(url, remaining_urls)
+
+    def test_destroy_with_cascade_removes_betrokkene(self):
+        klantcontact = KlantcontactFactory.create()
+        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
+        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+        response = self.client.delete(f"{url}?cascade=true")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        self.assertFalse(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
+        )
+        self.assertFalse(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
+
+        self.assertFalse(Betrokkene.objects.filter(uuid=betrokkene.uuid).exists())
+
+    def test_digitaaladres_deleted_when_betrokkene_removed(self):
+        klantcontact = KlantcontactFactory.create()
+        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
+
+        digitaaladres = DigitaalAdresFactory.create(betrokkene=betrokkene, partij=None)
+
+        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+        response = self.client.delete(f"{url}?cascade=true")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        self.assertFalse(Betrokkene.objects.filter(uuid=betrokkene.uuid).exists())
+
+        self.assertFalse(DigitaalAdres.objects.filter(uuid=digitaaladres.uuid).exists())
+
+    def test_digitaaladres_not_deleted_if_linked_to_partij(self):
+        klantcontact = KlantcontactFactory.create()
+        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
+
+        partij = PartijFactory.create()
+        digitaaladres = DigitaalAdresFactory.create(
+            betrokkene=betrokkene, partij=partij
+        )
+
+        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+
+        response = self.client.delete(f"{url}?cascade=true")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        self.assertFalse(Betrokkene.objects.filter(uuid=betrokkene.uuid).exists())
+        self.assertTrue(DigitaalAdres.objects.filter(uuid=digitaaladres.uuid).exists())
+
+    def test_destroy_cascade_deletes_bijlage(self):
+        klantcontact = KlantcontactFactory.create()
+        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
+        bijlage = BijlageFactory.create(klantcontact=klantcontact)
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+        response = self.client.delete(f"{url}?cascade=true")
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        self.assertFalse(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
+        )
+        self.assertFalse(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
+        self.assertFalse(Bijlage.objects.filter(uuid=bijlage.uuid).exists())
+
+    def test_destroy_cascade_deletes_internetaak(self):
+        klantcontact = KlantcontactFactory.create()
+        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
+        interne_taak = InterneTaakFactory.create(
+            klantcontact=klantcontact, status=Taakstatus.te_verwerken
+        )
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+        response = self.client.delete(f"{url}?cascade=true")
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        self.assertFalse(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
+        )
+        self.assertFalse(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
+        self.assertFalse(InterneTaak.objects.filter(uuid=interne_taak.uuid).exists())
+
+    def test_destroy_cascade_deletes_actorklantcontact(self):
+        klantcontact = KlantcontactFactory.create()
+        onderwerpobject = OnderwerpobjectFactory.create(klantcontact=klantcontact)
+        actor = ActorFactory.create()
+        actor_kc = ActorKlantcontact.objects.create(
+            actor=actor, klantcontact=klantcontact
+        )
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+        response = self.client.delete(f"{url}?cascade=true")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
+        )
+        self.assertFalse(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
+        self.assertFalse(ActorKlantcontact.objects.filter(uuid=actor_kc.uuid).exists())
+        self.assertTrue(Actor.objects.filter(uuid=actor.uuid).exists())
+
+    def test_destroy_with_cascade_true_remaining_klantcontacten(self):
+        shared_klantcontact = KlantcontactFactory.create()
+        shared_was_klantcontact = KlantcontactFactory.create()
+
+        onderwerpobject1 = OnderwerpobjectFactory.create(
+            klantcontact=shared_klantcontact,
+            was_klantcontact=shared_was_klantcontact,
+        )
+        onderwerpobject2 = OnderwerpobjectFactory.create(
+            klantcontact=shared_klantcontact,
+            was_klantcontact=shared_was_klantcontact,
+        )
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject1.uuid},
+        )
+
+        response = self.client.delete(f"{url}?cascade=true")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertFalse(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject1.uuid).exists()
+        )
+
+        self.assertTrue(
+            Onderwerpobject.objects.filter(uuid=onderwerpobject2.uuid).exists()
+        )
+
+        self.assertTrue(
+            Klantcontact.objects.filter(uuid=shared_klantcontact.uuid).exists()
+        )
+        self.assertTrue(
+            Klantcontact.objects.filter(uuid=shared_was_klantcontact.uuid).exists()
+        )
+
+        remaining_urls = response.json()
+        expected_urls = [
+            self.client.get(
+                reverse(
+                    "klantinteracties:klantcontact-detail",
+                    kwargs={"uuid": shared_klantcontact.uuid, "version": "1"},
+                )
+            ).request["PATH_INFO"],
+            self.client.get(
+                reverse(
+                    "klantinteracties:klantcontact-detail",
+                    kwargs={"uuid": shared_was_klantcontact.uuid, "version": "1"},
+                )
+            ).request["PATH_INFO"],
+        ]
+
+        expected_urls = [f"http://testserver{url}" for url in expected_urls]
+
+        for url in expected_urls:
+            self.assertIn(url, remaining_urls)
+
+    def test_destroy_with_cascade_true_logs_klantcontact_uuids(self):
+        klantcontact = KlantcontactFactory.create()
+        was_klantcontact = KlantcontactFactory.create()
+
+        onderwerpobject = OnderwerpobjectFactory.create(
+            klantcontact=klantcontact,
+            was_klantcontact=was_klantcontact,
+        )
+
+        url = reverse(
+            "klantinteracties:onderwerpobject-detail",
+            kwargs={"uuid": onderwerpobject.uuid},
+        )
+
+        with capture_logs() as cap_logs:
+            response = self.client.delete(f"{url}?cascade=true")
+            self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        deleted_logs = [
+            log for log in cap_logs if log.get("event") == "onderwerpobject_deleted"
+        ]
+        self.assertEqual(len(deleted_logs), 1)
+
+        log = deleted_logs[0]
+        self.assertEqual(log["uuid"], str(onderwerpobject.uuid))
+        self.assertTrue(log["cascade"])
+        self.assertEqual(log["klantcontact_uuid"], str(klantcontact.uuid))
+        self.assertEqual(log["was_klantcontact_uuid"], str(was_klantcontact.uuid))
+        self.assertEqual(log["remaining_klantcontacten"], [])
 
 
 class ActorKlantcontactTests(APITestCase):

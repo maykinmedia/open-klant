@@ -29,7 +29,7 @@ class DigitaalAdres(APIMixin, models.Model):
     )
     betrokkene = models.ForeignKey(
         Betrokkene,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         verbose_name=_("betrokkene"),
         help_text=_("'Digitaal Adres' had 'Betrokkene bij klantcontact'"),
         blank=True,
