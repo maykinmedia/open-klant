@@ -2657,6 +2657,13 @@ paths:
       description: Verwijder een onderwerpobject.
       summary: Verwijder een onderwerpobject.
       parameters:
+      - in: query
+        name: cascade
+        schema:
+          type: boolean
+          default: false
+        description: Als `true`, worden gerelateerde Klantcontacten en DigitaalAdressen
+          verwijderd indien ze niet door andere Onderwerpobjecten worden gebruikt.
       - in: path
         name: uuid
         schema:
@@ -2676,7 +2683,22 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          description: No response body
+          description: Onderwerpobject succesvol verwijderd.
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: Onderwerpobject verwijderd met cascade=true, maar één of meer
+            Klantcontacten worden nog door andere Onderwerpobjecten gebruikt.
   /partij-identificatoren:
     get:
       operationId: partijIdentificatorenList

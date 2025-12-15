@@ -171,7 +171,7 @@ API
   Additional context: ``uuid``, ``partij_uuid``, ``klantcontact_uuid``, ``token_identifier``, ``token_application``.
 * ``onderwerpobject_created`` / ``onderwerpobject_updated`` / ``onderwerpobject_deleted``:
   CRUD events for ``Onderwerpobject``.
-  Additional context: ``uuid``, ``klantcontact_uuid``, ``was_klantcontact_uuid``, ``token_identifier``, ``token_application``.
+  Additional context: ``uuid``, ``klantcontact_uuid``, ``was_klantcontact_uuid``, ``token_identifier``, ``token_application``. Specific context for ``onderwerpobject_deleted``: ``cascade`` and ``remaining_klantcontacten``.
 * ``bijlage_created`` / ``bijlage_updated`` / ``bijlage_deleted``:
   CRUD events for ``Bijlage``.
   Additional context: ``uuid``, ``klantcontact_uuid``, ``token_identifier``, ``token_application``.
