@@ -335,8 +335,12 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             token_application=token_auth.application,
         )
         object_type = instance.onderwerpobjectidentificator.get("code_objecttype")
+        soort_object_id = instance.onderwerpobjectidentificator.get(
+            "code_soort_object_id"
+        )
         if (
             object_type == "zaak"
+            and soort_object_id == "uuid"
             and settings.ENABLE_CLOUD_EVENTS
             and instance.klantcontact is not None
         ):
