@@ -8,7 +8,7 @@ Open Klant can emit cloud events when configured to do so via the
 
 Currently, Open Klant emits the following cloud event:
 
-* ``nl.overheid.zaken.zaak-gelinkt``: emitted when an ``Onderwerpobject`` is created that links to a
+* ``nl.overheid.zaken.zaak-gekoppeld``: emitted when an ``Onderwerpobject`` is created that links to a
   Zaak (i.e. when ``codeObjecttype="zaak"`` in the ``onderwerpobjectidentificator`` field).
 
 Cloud events are only sent when both of the following are true:
@@ -18,13 +18,13 @@ Cloud events are only sent when both of the following are true:
 
 If either of these settings is missing, cloud events will **not** be emitted.
 
-Example of a ``nl.overheid.zaken.zaak-gelinkt`` cloud event in its current shape:
+Example of a ``nl.overheid.zaken.zaak-gekoppeld`` cloud event in its current shape:
 
 .. code-block:: json
 
     {
         "specversion": "1.0",
-        "type": "nl.overheid.zaken.zaak-gelinkt",
+        "type": "nl.overheid.zaken.zaak-gekoppeld",
         "source": "urn:nld:oin:01823288444:openzaak",
         "subject": "a7b3c8d9-e4f5-6a7b-8c9d-e0f1a2b3c4d5",
         "id": "f347fd1f-dac1-4870-9dd0-f6c00edf4bf7",

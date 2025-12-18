@@ -394,7 +394,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             )
 
             process_cloudevent(
-                type="nl.overheid.zaken.zaak-gelinkt",
+                type="nl.overheid.zaken.zaak-gekoppeld",
                 subject=instance.onderwerpobjectidentificator.get("object_id"),
                 data={
                     "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",

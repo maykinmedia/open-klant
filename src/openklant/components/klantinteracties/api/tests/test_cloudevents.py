@@ -63,7 +63,7 @@ class OnderwerpobjectCloudEventTest(APITestCase):
         mock_process_cloudevent.assert_not_called()
 
     @override_settings(ENABLE_CLOUD_EVENTS=True)
-    def test_onderwerpobject_zaak_gelinkt_cloudevent(self, mock_process_cloudevent):
+    def test_onderwerpobject_zaak_gekoppeld_cloudevent(self, mock_process_cloudevent):
         url = reverse("klantinteracties:onderwerpobject-list")
 
         data = {
@@ -92,7 +92,7 @@ class OnderwerpobjectCloudEventTest(APITestCase):
 
         payload = mock_process_cloudevent.call_args[0][0]
         assert payload["id"] == MOCKED_CLOUDEVENT_ID
-        assert payload["type"] == "nl.overheid.zaken.zaak-gelinkt"
+        assert payload["type"] == "nl.overheid.zaken.zaak-gekoppeld"
         assert payload["subject"] == str(self.zaak_uuid)
         assert payload["time"] == FROZEN_TIME_Z
         assert payload["data"]["zaak"] == f"urn:uuid:{self.zaak_uuid}"
