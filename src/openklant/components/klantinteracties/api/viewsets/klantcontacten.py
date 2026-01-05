@@ -285,9 +285,12 @@ class BetrokkeneViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelViewSe
         )
 
 
-class RemainingKlantcontactSerializer(serializers.Serializer):
-    url = serializers.URLField(
-        help_text="URL van een overgebleven Klantcontact resource"
+class OnderwerpobjectDeleteResponseSerializer(serializers.Serializer):
+    behouden = serializers.ListField(
+        child=serializers.URLField(
+            help_text="URL van een overgebleven Klantcontact resource"
+        ),
+        help_text="Lijst van Klantcontact URLs die behouden blijven",
     )
 
 
@@ -331,14 +334,14 @@ class RemainingKlantcontactSerializer(serializers.Serializer):
         ],
         responses={
             status.HTTP_204_NO_CONTENT: OpenApiResponse(
-                description="Onderwerpobject succesvol verwijderd."
+                description="Onderwerpobject succesvol verwijderd (zonder cascade)."
             ),
             status.HTTP_200_OK: OpenApiResponse(
                 description=(
-                    "Onderwerpobject verwijderd met cascade=true, maar één of meer "
-                    "Klantcontacten worden nog door andere Onderwerpobjecten gebruikt."
+                    "Onderwerpobject verwijderd met cascade=true. "
+                    "`behouden` bevat resterende Klantcontact URLs."
                 ),
-                response=RemainingKlantcontactSerializer(many=True),
+                response=OnderwerpobjectDeleteResponseSerializer,
             ),
         },
     ),
@@ -482,8 +485,13 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             token_application=token_auth.application,
         )
 
-        if cascade and remaining_klantcontacts:
-            return Response(remaining_klantcontacts, status=status.HTTP_200_OK)
+        if cascade:
+            return Response(
+                {
+                    "behouden": remaining_klantcontacts,
+                },
+                status=status.HTTP_200_OK,
+            )
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -1676,7 +1676,7 @@ class OnderwerpobjectTests(APITestCase):
 
         response = self.client.delete(f"{url}?cascade=true")
 
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertFalse(
             Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
@@ -1686,6 +1686,8 @@ class OnderwerpobjectTests(APITestCase):
         self.assertFalse(
             Klantcontact.objects.filter(uuid=was_klantcontact.uuid).exists()
         )
+
+        self.assertEqual(response.json(), {"behouden": []})
 
     def test_destroy_with_cascade_false(self):
         klantcontact = KlantcontactFactory.create()
@@ -1741,7 +1743,8 @@ class OnderwerpobjectTests(APITestCase):
             Onderwerpobject.objects.filter(uuid=onderwerpobject2.uuid).exists()
         )
 
-        remaining_urls = response.json()
+        remaining_urls = response.json()["behouden"]
+
         expected_urls = [
             f"http://testserver{reverse('klantinteracties:klantcontact-detail', kwargs={'uuid': shared_klantcontact.uuid, 'version': '1'})}",
             f"http://testserver{reverse('klantinteracties:klantcontact-detail', kwargs={'uuid': shared_was_klantcontact.uuid, 'version': '1'})}",
@@ -1760,7 +1763,7 @@ class OnderwerpobjectTests(APITestCase):
             kwargs={"uuid": onderwerpobject.uuid},
         )
         response = self.client.delete(f"{url}?cascade=true")
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertFalse(
             Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
@@ -1768,6 +1771,7 @@ class OnderwerpobjectTests(APITestCase):
         self.assertFalse(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
 
         self.assertFalse(Betrokkene.objects.filter(uuid=betrokkene.uuid).exists())
+        self.assertEqual(response.json(), {"behouden": []})
 
     def test_digitaaladres_deleted_when_betrokkene_removed(self):
         klantcontact = KlantcontactFactory.create()
@@ -1782,7 +1786,7 @@ class OnderwerpobjectTests(APITestCase):
             kwargs={"uuid": onderwerpobject.uuid},
         )
         response = self.client.delete(f"{url}?cascade=true")
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertFalse(Betrokkene.objects.filter(uuid=betrokkene.uuid).exists())
 
@@ -1805,7 +1809,7 @@ class OnderwerpobjectTests(APITestCase):
         )
 
         response = self.client.delete(f"{url}?cascade=true")
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertFalse(Betrokkene.objects.filter(uuid=betrokkene.uuid).exists())
         self.assertTrue(DigitaalAdres.objects.filter(uuid=digitaaladres.uuid).exists())
@@ -1821,13 +1825,15 @@ class OnderwerpobjectTests(APITestCase):
         )
         response = self.client.delete(f"{url}?cascade=true")
 
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertFalse(
             Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
         )
         self.assertFalse(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
         self.assertFalse(Bijlage.objects.filter(uuid=bijlage.uuid).exists())
+
+        self.assertEqual(response.json(), {"behouden": []})
 
     def test_destroy_cascade_deletes_internetaak(self):
         klantcontact = KlantcontactFactory.create()
@@ -1842,7 +1848,7 @@ class OnderwerpobjectTests(APITestCase):
         )
         response = self.client.delete(f"{url}?cascade=true")
 
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertFalse(
             Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
@@ -1863,13 +1869,15 @@ class OnderwerpobjectTests(APITestCase):
             kwargs={"uuid": onderwerpobject.uuid},
         )
         response = self.client.delete(f"{url}?cascade=true")
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertFalse(
             Onderwerpobject.objects.filter(uuid=onderwerpobject.uuid).exists()
         )
         self.assertFalse(Klantcontact.objects.filter(uuid=klantcontact.uuid).exists())
         self.assertFalse(ActorKlantcontact.objects.filter(uuid=actor_kc.uuid).exists())
         self.assertTrue(Actor.objects.filter(uuid=actor.uuid).exists())
+
+        self.assertEqual(response.json(), {"behouden": []})
 
     def test_destroy_with_cascade_true_remaining_klantcontacten(self):
         shared_klantcontact = KlantcontactFactory.create()
@@ -1907,7 +1915,8 @@ class OnderwerpobjectTests(APITestCase):
             Klantcontact.objects.filter(uuid=shared_was_klantcontact.uuid).exists()
         )
 
-        remaining_urls = response.json()
+        remaining_urls = response.json()["behouden"]
+
         expected_urls = [
             self.client.get(
                 reverse(
@@ -1944,7 +1953,7 @@ class OnderwerpobjectTests(APITestCase):
 
         with capture_logs() as cap_logs:
             response = self.client.delete(f"{url}?cascade=true")
-            self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         deleted_logs = [
             log for log in cap_logs if log.get("event") == "onderwerpobject_deleted"

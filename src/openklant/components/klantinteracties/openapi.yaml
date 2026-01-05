@@ -2683,7 +2683,7 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          description: Onderwerpobject succesvol verwijderd.
+          description: Onderwerpobject succesvol verwijderd (zonder cascade).
         '200':
           headers:
             API-version:
@@ -2694,9 +2694,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedRemainingKlantcontactList'
-          description: Onderwerpobject verwijderd met cascade=true, maar één of meer
-            Klantcontacten worden nog door andere Onderwerpobjecten gebruikt.
+                $ref: '#/components/schemas/OnderwerpobjectDeleteResponse'
+          description: Onderwerpobject verwijderd met cascade=true. `behouden` bevat
+            resterende Klantcontact URLs.
   /partij-identificatoren:
     get:
       operationId: partijIdentificatorenList
@@ -5163,6 +5163,18 @@ components:
       required:
       - url
       - uuid
+    OnderwerpobjectDeleteResponse:
+      type: object
+      properties:
+        behouden:
+          type: array
+          items:
+            type: string
+            format: uri
+            description: URL van een overgebleven Klantcontact resource
+          description: Lijst van Klantcontact URLs die behouden blijven
+      required:
+      - behouden
     OnderwerpobjectForeignKey:
       type: object
       properties:
@@ -5665,29 +5677,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Rekeningnummer'
-    PaginatedRemainingKlantcontactList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemainingKlantcontact'
     PaginatedVertegenwoordigdenList:
       type: object
       required:
@@ -6639,15 +6628,6 @@ components:
       required:
       - url
       - uuid
-    RemainingKlantcontact:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-          description: URL van een overgebleven Klantcontact resource
-      required:
-      - url
     RolEnum:
       enum:
       - vertegenwoordiger
