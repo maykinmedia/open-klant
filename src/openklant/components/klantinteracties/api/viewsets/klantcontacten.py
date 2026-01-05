@@ -1,11 +1,17 @@
 from django.conf import settings
-from django.db import transaction
+from django.db import models, transaction
 from django.urls import reverse
 
 import structlog
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiResponse,
+    extend_schema,
+    extend_schema_view,
+)
 from notifications_api_common.cloudevents import process_cloudevent
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, serializers, status, viewsets
+from rest_framework.response import Response
 from vng_api_common.pagination import DynamicPageSizePagination
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -33,6 +39,7 @@ from openklant.components.klantinteracties.metrics import (
     klantcontacten_delete_counter,
     klantcontacten_update_counter,
 )
+from openklant.components.klantinteracties.models import DigitaalAdres
 from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
@@ -278,6 +285,15 @@ class BetrokkeneViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelViewSe
         )
 
 
+class OnderwerpobjectDeleteResponseSerializer(serializers.Serializer):
+    behouden = serializers.ListField(
+        child=serializers.URLField(
+            help_text="URL van een overgebleven Klantcontact resource"
+        ),
+        help_text="Lijst van Klantcontact URLs die behouden blijven",
+    )
+
+
 @extend_schema(tags=["onderwerpobjecten"])
 @extend_schema_view(
     list=extend_schema(
@@ -303,6 +319,31 @@ class BetrokkeneViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelViewSe
     destroy=extend_schema(
         summary="Verwijder een onderwerpobject.",
         description="Verwijder een onderwerpobject.",
+        parameters=[
+            OpenApiParameter(
+                name="cascade",
+                description=(
+                    "Als `true`, worden gerelateerde Klantcontacten en DigitaalAdressen verwijderd "
+                    "indien ze niet door andere Onderwerpobjecten worden gebruikt."
+                ),
+                required=False,
+                default=False,
+                type=bool,
+                location=OpenApiParameter.QUERY,
+            ),
+        ],
+        responses={
+            status.HTTP_204_NO_CONTENT: OpenApiResponse(
+                description="Onderwerpobject succesvol verwijderd (zonder cascade)."
+            ),
+            status.HTTP_200_OK: OpenApiResponse(
+                description=(
+                    "Onderwerpobject verwijderd met cascade=true. "
+                    "`behouden` bevat resterende Klantcontact URLs."
+                ),
+                response=OnderwerpobjectDeleteResponseSerializer,
+            ),
+        },
     ),
 )
 class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
@@ -382,21 +423,77 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
         )
 
     @transaction.atomic
-    def perform_destroy(self, instance):
-        super().perform_destroy(instance)
-        token_auth = self.request.auth
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        cascade = request.query_params.get("cascade", "false").lower() == "true"
+
+        token_auth = request.auth
+        remaining_klantcontacts = []
+
+        klantcontact_uuid = (
+            str(instance.klantcontact.uuid) if instance.klantcontact else None
+        )
+        was_klantcontact_uuid = (
+            str(instance.was_klantcontact.uuid) if instance.was_klantcontact else None
+        )
+
+        if cascade:
+            for kc in (instance.klantcontact, instance.was_klantcontact):
+                if not kc:
+                    continue
+
+                has_other_connection = (
+                    Onderwerpobject.objects.filter(
+                        models.Q(klantcontact=kc) | models.Q(was_klantcontact=kc)
+                    )
+                    .exclude(pk=instance.pk)
+                    .exists()
+                )
+
+                if has_other_connection:
+                    remaining_klantcontacts.append(
+                        request.build_absolute_uri(
+                            reverse(
+                                "klantinteracties:klantcontact-detail",
+                                kwargs={
+                                    "uuid": kc.uuid,
+                                    "version": self.request.version or "1",
+                                },
+                            )
+                        )
+                    )
+                    continue
+
+                betrokkenen = Betrokkene.objects.filter(klantcontact=kc)
+                DigitaalAdres.objects.filter(
+                    betrokkene__in=betrokkenen,
+                    partij__isnull=True,
+                ).delete()
+
+                kc.delete()
+
+        instance.delete()
+
         logger.info(
             "onderwerpobject_deleted",
             uuid=str(instance.uuid),
-            klantcontact_uuid=str(instance.klantcontact.uuid)
-            if instance.klantcontact
-            else None,
-            was_klantcontact_uuid=str(instance.was_klantcontact.uuid)
-            if instance.was_klantcontact
-            else None,
+            cascade=cascade,
+            klantcontact_uuid=klantcontact_uuid,
+            was_klantcontact_uuid=was_klantcontact_uuid,
+            remaining_klantcontacten=remaining_klantcontacts if cascade else None,
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
         )
+
+        if cascade:
+            return Response(
+                {
+                    "behouden": remaining_klantcontacts,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @extend_schema(tags=["bijlagen"])

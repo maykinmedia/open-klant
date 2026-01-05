@@ -2657,6 +2657,13 @@ paths:
       description: Verwijder een onderwerpobject.
       summary: Verwijder een onderwerpobject.
       parameters:
+      - in: query
+        name: cascade
+        schema:
+          type: boolean
+          default: false
+        description: Als `true`, worden gerelateerde Klantcontacten en DigitaalAdressen
+          verwijderd indien ze niet door andere Onderwerpobjecten worden gebruikt.
       - in: path
         name: uuid
         schema:
@@ -2676,7 +2683,20 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          description: No response body
+          description: Onderwerpobject succesvol verwijderd (zonder cascade).
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnderwerpobjectDeleteResponse'
+          description: Onderwerpobject verwijderd met cascade=true. `behouden` bevat
+            resterende Klantcontact URLs.
   /partij-identificatoren:
     get:
       operationId: partijIdentificatorenList
@@ -5143,6 +5163,18 @@ components:
       required:
       - url
       - uuid
+    OnderwerpobjectDeleteResponse:
+      type: object
+      properties:
+        behouden:
+          type: array
+          items:
+            type: string
+            format: uri
+            description: URL van een overgebleven Klantcontact resource
+          description: Lijst van Klantcontact URLs die behouden blijven
+      required:
+      - behouden
     OnderwerpobjectForeignKey:
       type: object
       properties:
