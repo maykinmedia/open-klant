@@ -1,4 +1,4 @@
-23.. _cloud_events_developer_docs:
+.. _cloud_events_developer_docs:
 
 Cloud events
 ------------
