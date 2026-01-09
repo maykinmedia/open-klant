@@ -15,6 +15,10 @@ from rest_framework.response import Response
 from vng_api_common.pagination import DynamicPageSizePagination
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
+from openklant.cloud_events.constants import (
+    ZAAK_GEKOPPELD,
+    ZAAK_ONTKOPPELD,
+)
 from openklant.components.klantinteracties.api.filterset.klantcontacten import (
     ActorKlantcontactFilterSet,
     BetrokkeneDetailFilterSet,
@@ -394,7 +398,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             )
 
             process_cloudevent(
-                type="nl.overheid.zaken.zaak-gelinkt",
+                type=ZAAK_GEKOPPELD,
                 subject=instance.onderwerpobjectidentificator.get("object_id"),
                 data={
                     "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",
@@ -406,6 +410,8 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
 
     @transaction.atomic
     def perform_update(self, serializer):
+        old_instance = Onderwerpobject.objects.get(pk=serializer.instance.pk)
+
         super().perform_update(serializer)
         instance = serializer.instance
         token_auth = self.request.auth
@@ -422,6 +428,66 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             token_application=token_auth.application,
         )
 
+        old_ident = old_instance.onderwerpobjectidentificator or {}
+        new_ident = instance.onderwerpobjectidentificator or {}
+
+        was_zaak = (
+            old_ident.get("code_objecttype") == "zaak"
+            and old_ident.get("code_soort_object_id") == "uuid"
+            and old_instance.klantcontact is not None
+        )
+
+        is_zaak_now = (
+            new_ident.get("code_objecttype") == "zaak"
+            and new_ident.get("code_soort_object_id") == "uuid"
+            and instance.klantcontact is not None
+        )
+
+        identificator_changed = old_ident != new_ident
+
+        if settings.ENABLE_CLOUD_EVENTS and was_zaak and identificator_changed:
+            link_to_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={
+                    "uuid": str(old_instance.uuid),
+                    "version": self.request.version or "1",
+                },
+            )
+
+            transaction.on_commit(
+                lambda: process_cloudevent(
+                    type=ZAAK_ONTKOPPELD,
+                    subject=old_ident.get("object_id"),
+                    data={
+                        "zaak": f"urn:uuid:{old_ident.get('object_id')}",
+                        "linkTo": self.request.build_absolute_uri(link_to_url),
+                        "label": str(old_instance.klantcontact),
+                        "linkObjectType": "Onderwerpobject",
+                    },
+                )
+            )
+        if settings.ENABLE_CLOUD_EVENTS and is_zaak_now and identificator_changed:
+            link_to_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={
+                    "uuid": str(instance.uuid),
+                    "version": self.request.version or "1",
+                },
+            )
+
+            transaction.on_commit(
+                lambda: process_cloudevent(
+                    type=ZAAK_GEKOPPELD,
+                    subject=new_ident.get("object_id"),
+                    data={
+                        "zaak": f"urn:uuid:{new_ident.get('object_id')}",
+                        "linkTo": self.request.build_absolute_uri(link_to_url),
+                        "label": str(instance.klantcontact),
+                        "linkObjectType": "Onderwerpobject",
+                    },
+                )
+            )
+
     @transaction.atomic
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -436,6 +502,38 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
         was_klantcontact_uuid = (
             str(instance.was_klantcontact.uuid) if instance.was_klantcontact else None
         )
+
+        object_type = instance.onderwerpobjectidentificator.get("code_objecttype")
+        soort_object_id = instance.onderwerpobjectidentificator.get(
+            "code_soort_object_id"
+        )
+
+        if (
+            settings.ENABLE_CLOUD_EVENTS
+            and object_type == "zaak"
+            and soort_object_id == "uuid"
+            and instance.klantcontact is not None
+        ):
+            link_to_url = reverse(
+                "klantinteracties:onderwerpobject-detail",
+                kwargs={
+                    "uuid": str(instance.uuid),
+                    "version": request.version or "1",
+                },
+            )
+
+            transaction.on_commit(
+                lambda: process_cloudevent(
+                    type=ZAAK_ONTKOPPELD,
+                    subject=instance.onderwerpobjectidentificator.get("object_id"),
+                    data={
+                        "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",
+                        "linkTo": request.build_absolute_uri(link_to_url),
+                        "label": str(instance.klantcontact),
+                        "linkObjectType": "Onderwerpobject",
+                    },
+                )
+            )
 
         if cascade:
             for kc in (instance.klantcontact, instance.was_klantcontact):
@@ -457,7 +555,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
                                 "klantinteracties:klantcontact-detail",
                                 kwargs={
                                     "uuid": kc.uuid,
-                                    "version": self.request.version or "1",
+                                    "version": request.version or "1",
                                 },
                             )
                         )
