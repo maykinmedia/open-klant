@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from rest_framework import status
 from vng_api_common.tests import get_validation_errors, reverse, reverse_lazy
 
@@ -280,7 +282,7 @@ class PartijIdentificatorTests(APITestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data["code"], "invalid")
-        self.assertEqual(response.data["title"], "Invalid input.")
+        self.assertEqual(response.data["title"], _("Invalid input."))
         self.assertEqual(len(response.data["invalid_params"]), 3)
         self.assertEqual(
             {item["name"] for item in response.data["invalid_params"]},
