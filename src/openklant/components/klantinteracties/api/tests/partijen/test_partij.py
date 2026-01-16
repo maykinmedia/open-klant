@@ -398,7 +398,7 @@ class PartijTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         response_data = response.json()
-        self.assertEqual(response_data["title"], "Invalid input.")
+        self.assertEqual(response_data["title"], _("Invalid input."))
         self.assertEqual(response_data["code"], "invalid")
         self.assertEqual(response_data["status"], 400)
         self.assertEqual(
@@ -1156,7 +1156,7 @@ class PartijTests(APITestCase):
         response = self.client.put(detail_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         response_data = response.json()
-        self.assertEqual(response_data["title"], "Invalid input.")
+        self.assertEqual(response_data["title"], _("Invalid input."))
         self.assertEqual(response_data["code"], "invalid")
         self.assertEqual(response_data["status"], 400)
         self.assertEqual(
