@@ -125,6 +125,13 @@ services:
     depends_on:
       - redis
       - celery
+    healthcheck:
+      test: [
+        "CMD",
+        "maykin-common",
+        "health-check",
+        "--endpoint=http://localhost:5555/"
+      ]
     networks:
       - open-klant-dev
 
