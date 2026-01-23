@@ -150,7 +150,12 @@ services:
       - open-klant-dev
 
   redis:
-    image: redis
+    image: redis:8
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 1s
+      retries: 3
     networks:
       - open-klant-dev
 
