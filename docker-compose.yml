@@ -13,6 +13,11 @@ services:
     volumes:
       - ./docker-init-db.sql:/docker-entrypoint-initdb.d/init_db.sql
       - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - open-klant-dev
 
@@ -66,7 +71,7 @@ services:
       - 8000:8000
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_started
       web-init:
