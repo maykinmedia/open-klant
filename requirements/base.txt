@@ -9,7 +9,7 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
-asgiref==3.8.1
+asgiref==3.11.0
     # via
     #   django
     #   django-axes
@@ -30,7 +30,7 @@ boltons==24.0.0
     # via
     #   face
     #   glom
-cbor2==5.6.4
+cbor2==5.8.0
     # via webauthn
 celery==5.5.3
     # via
@@ -68,7 +68,7 @@ cryptography==44.0.2
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==5.2.8
+django==5.2.9
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -440,7 +440,7 @@ tzdata==2025.2
     # via kombu
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==2.5.0
+urllib3==2.6.3
     # via
     #   elastic-apm
     #   requests
