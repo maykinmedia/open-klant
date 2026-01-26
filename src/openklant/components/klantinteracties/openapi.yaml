@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: klantinteracties
-  version: 0.5.0
+  version: 0.6.0
   description: |2
 
     **Warning: Difference between `PUT` and `PATCH`**
