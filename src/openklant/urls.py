@@ -61,6 +61,8 @@ urlpatterns = [
         "contactgegevens/api/",
         include("openklant.components.contactgegevens.api.urls"),
     ),
+    # health_checks urls
+    path("", include("maykin_common.health_checks.urls")),
     # Simply show the master template.
     path("", TemplateView.as_view(template_name="main.html")),
     # separate apps

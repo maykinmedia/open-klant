@@ -96,6 +96,7 @@ click==8.1.7
     #   click-didyoumean
     #   click-plugins
     #   click-repl
+    #   typer
 click-didyoumean==0.3.1
     # via
     #   -c requirements/base.txt
@@ -147,6 +148,7 @@ django==5.2.11
     #   django-extensions
     #   django-filter
     #   django-formtools
+    #   django-health-check
     #   django-jsonform
     #   django-localflavor
     #   django-log-outgoing-requests
@@ -217,6 +219,10 @@ django-formtools==2.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
+django-health-check==3.20.8
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 django-ipware==7.0.1
     # via
     #   -c requirements/base.txt
@@ -471,6 +477,11 @@ lxml==5.2.2
     # via pyquery
 markdown==3.6
     # via sphinx-markdown-tables
+markdown-it-py==4.0.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   rich
 markupsafe==2.1.5
     # via jinja2
 maykin-2fa==1.0.1
@@ -478,12 +489,17 @@ maykin-2fa==1.0.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-maykin-common==0.11.0
+maykin-common==0.16.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
 mccabe==0.7.0
     # via pylint
+mdurl==0.1.2
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   markdown-it-py
 mozilla-django-oidc==4.0.1
     # via
     #   -c requirements/base.txt
@@ -512,7 +528,12 @@ opentelemetry-api==1.36.0
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
     #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-celery
+    #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-psycopg
+    #   opentelemetry-instrumentation-redis
+    #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
     #   opentelemetry-sdk
     #   opentelemetry-semantic-conventions
@@ -540,9 +561,35 @@ opentelemetry-instrumentation==0.57b0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   opentelemetry-instrumentation-celery
+    #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-psycopg
+    #   opentelemetry-instrumentation-redis
+    #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
+opentelemetry-instrumentation-celery==0.57b0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+opentelemetry-instrumentation-dbapi==0.57b0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   opentelemetry-instrumentation-psycopg
 opentelemetry-instrumentation-django==0.57b0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+opentelemetry-instrumentation-psycopg==0.57b0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+opentelemetry-instrumentation-redis==0.57b0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+opentelemetry-instrumentation-requests==0.57b0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -574,7 +621,11 @@ opentelemetry-semantic-conventions==0.57b0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-celery
+    #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-redis
+    #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
     #   opentelemetry-sdk
 opentelemetry-util-http==0.57b0
@@ -582,6 +633,7 @@ opentelemetry-util-http==0.57b0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
 orderedmultidict==1.0.1
     # via
@@ -660,8 +712,11 @@ pydantic-settings==2.6.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-setup-configuration
-pygments==2.18.0
+pygments==2.19.2
     # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   rich
     #   sphinx
     #   sphinx-tabs
 pyjwt==2.10.1
@@ -696,6 +751,7 @@ python-decouple==3.8
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   maykin-common
     #   open-api-framework
 python-dotenv==1.0.1
     # via
@@ -760,6 +816,11 @@ requests==2.32.4
     #   zgw-consumers
 requests-mock==1.12.1
     # via -r requirements/test-tools.in
+rich==14.2.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   typer
 rpds-py==0.19.1
     # via
     #   -c requirements/base.txt
@@ -789,6 +850,11 @@ sentry-sdk==2.12.0
     #   -r requirements/base.txt
     #   commonground-api-common
     #   open-api-framework
+shellingham==1.5.4
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   typer
 six==1.16.0
     # via
     #   -c requirements/base.txt
@@ -847,6 +913,10 @@ tornado==6.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   flower
+typer==0.21.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 typing-extensions==4.12.2
     # via
     #   -c requirements/base.txt
@@ -863,6 +933,7 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   pyopenssl
     #   qrcode
+    #   typer
     #   zgw-consumers
 tzdata==2025.2
     # via
@@ -925,6 +996,8 @@ wrapt==1.16.0
     #   -r requirements/base.txt
     #   elastic-apm
     #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-dbapi
+    #   opentelemetry-instrumentation-redis
     #   vcrpy
 yarl==1.9.4
     # via vcrpy

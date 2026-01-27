@@ -8,7 +8,10 @@ from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config  # noqa
 from upgrade_check import UpgradeCheck, VersionRange
 from upgrade_check.constraints import UpgradePaths
-
+from maykin_common.health_checks import (
+    default_health_check_apps,
+    default_health_check_subsets,
+)
 from .api import *  # noqa
 
 #
@@ -19,6 +22,8 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "maykin_common",
     # External applications.
     "vng_api_common.notifications",
+    # health check + plugins
+    *default_health_check_apps,
     # Project applications.
     "openklant.accounts",
     "openklant.utils",
@@ -136,3 +141,10 @@ UPGRADE_CHECK_PATHS: UpgradePaths = {
 }
 
 UPGRADE_CHECK_STRICT = False
+
+#
+# DJANGO-HEALTH-CHECK
+#
+HEALTH_CHECK = {
+    "SUBSETS": default_health_check_subsets,
+}
