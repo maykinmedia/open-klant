@@ -120,6 +120,22 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
 )  # soft
 
 #
+# CELERY-ONCE
+#
+CELERY_ONCE_REDIS_URL = config(
+    "CELERY_ONCE_REDIS_URL",
+    default=CELERY_BROKER_URL,
+    group="Celery",
+)
+CELERY_ONCE = {
+    "backend": "celery_once.backends.Redis",
+    "settings": {
+        "url": CELERY_ONCE_REDIS_URL,
+        "default_timeout": 60 * 60,  # one hour
+    },
+}
+
+#
 # Notifications
 #
 # Override the default to be `True`, to make notifications opt-in
@@ -148,3 +164,11 @@ UPGRADE_CHECK_STRICT = False
 HEALTH_CHECK = {
     "SUBSETS": default_health_check_subsets,
 }
+
+#
+# MAYKIN-COMMON health checks
+#
+MKN_HEALTH_CHECKS_WORKER_EVENT_LOOP_LIVENESS_FILE = (
+    BASE_DIR / "tmp" / "celery_worker_event_loop.live"
+)
+MKN_HEALTH_CHECKS_WORKER_READINESS_FILE = BASE_DIR / "tmp" / "celery_worker.ready"
