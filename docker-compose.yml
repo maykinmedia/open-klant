@@ -37,7 +37,8 @@ services:
       LOG_NOTIFICATIONS_IN_DB: ${LOG_NOTIFICATIONS_IN_DB:-yes}
       DB_CONN_MAX_AGE: "0"
       DB_POOL_ENABLED: True
-
+      # Celery
+      CELERY_WORKER_NAME: celery@docker
       # Enabling Open Telemetry requires the services in docker/docker-compose.observability.yml
       # to be up and running.
       OTEL_SDK_DISABLED: ${OTEL_SDK_DISABLED:-true}
@@ -103,8 +104,16 @@ services:
     environment: *web_env
     command: /celery_worker.sh
     healthcheck:
-      test: ["CMD", "python", "/app/bin/check_celery_worker_liveness.py"]
-      interval: 30s
+      test: [
+        "CMD",
+        "maykin-common",
+        "worker-health-check",
+        "--liveness-file=/app/tmp/celery_worker_event_loop.live",
+        "--max-age=70",
+        "--broker=redis://redis:6379/0",
+        "--worker-name=celery@docker",
+      ]
+      interval: 60s
       timeout: 5s
       retries: 3
       start_period: 10s
