@@ -134,7 +134,7 @@ cssselect==1.2.0
     # via pyquery
 dill==0.3.8
     # via pylint
-django==5.2.8
+django==5.2.11
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
