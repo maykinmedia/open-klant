@@ -19,7 +19,7 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
-asgiref==3.8.1
+asgiref==3.11.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -60,7 +60,7 @@ boltons==24.0.0
     #   -r requirements/base.txt
     #   face
     #   glom
-cbor2==5.6.4
+cbor2==5.8.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -501,7 +501,7 @@ notifications-api-common==0.10.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.13.2
+open-api-framework==0.13.4
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -619,7 +619,7 @@ prompt-toolkit==3.0.47
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   click-repl
-protobuf==6.32.0
+protobuf==6.33.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -875,7 +875,7 @@ uritemplate==4.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-urllib3==2.5.0
+urllib3==2.6.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
