@@ -2,6 +2,44 @@
 Change history
 ==============
 
+2.15.0
+======
+*February 6, 2026*
+
+**New features**
+
+* Implement Cloud Events, (see :ref:`cloud_events_developer_docs` for more information).
+
+    * [:open-klant:`544`] Emit `zaak-gekoppeld` cloud event when an ``Onderwerpobject`` is created that links a Klantcontact to a Zaak.
+    * [:open-klant:`555`] Emit `zaak-ontkoppeld` cloud event when a Zaak that was previously linked to a Klantcontact becomes unlinked.
+
+.. warning::
+
+    The ``zaak-gekoppeld`` and ``zaak-ontkoppeld`` pattern is still under active development
+    and could be subject to change in future releases. It is not recommended to rely on this pattern
+    in production yet.
+
+
+* [:open-klant:`549`] Add query parameter ``cascade`` to ``DELETE`` method for OnderwerpObject. If set to ``true``,
+  associated Klantcontact and Betrokkene entries are also deleted.
+
+
+**Maintenance**
+
+* [:open-klant:`547`] Minor code improvements for Referentielijsten API integration.
+* [:open-api-framework:`197`] Include the maximum ``pageSize`` for pagination in the OAS documentation.
+* Avoid using ``event`` key in uwsgi logs.
+
+* Upgrade python dependencies
+
+    * ``commonground-api-common`` to 2.10.7
+    * ``notifications-api-common`` to 0.10.1
+    * ``open-api-framework`` to 0.13.4
+    * ``asgiref`` to 3.11.0
+    * ``cbor2`` to 5.8.0
+    * ``django`` to 5.2.11
+    * ``urllib3`` to 2.6.3
+
 2.14.0
 ======
 *December 1, 2025*

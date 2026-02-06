@@ -3,6 +3,12 @@
 Cloud events
 ------------
 
+.. warning::
+
+    The ``zaak-gekoppeld`` and ``zaak-ontkoppeld`` pattern is still under active development
+    and could be subject to change in future releases. It is not recommended to rely on this pattern
+    in production yet.
+
 Open Klant can emit cloud events when configured to do so via the
 ``ENABLE_CLOUD_EVENTS`` setting.
 
