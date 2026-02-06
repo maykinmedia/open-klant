@@ -127,6 +127,7 @@ click==8.1.7
     #   click-repl
     #   pip-tools
     #   rich-click
+    #   typer
 click-didyoumean==0.3.1
     # via
     #   -c requirements/ci.txt
@@ -195,6 +196,7 @@ django==5.2.11
     #   django-extensions
     #   django-filter
     #   django-formtools
+    #   django-health-check
     #   django-jsonform
     #   django-localflavor
     #   django-log-outgoing-requests
@@ -271,6 +273,10 @@ django-formtools==2.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
+django-health-check==3.20.8
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 django-ipware==7.0.1
     # via
     #   -c requirements/ci.txt
@@ -569,8 +575,11 @@ markdown==3.6
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   sphinx-markdown-tables
-markdown-it-py==3.0.0
-    # via rich
+markdown-it-py==4.0.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   rich
 markupsafe==2.1.5
     # via
     #   -c requirements/ci.txt
@@ -581,7 +590,7 @@ maykin-2fa==1.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-maykin-common==0.11.0
+maykin-common==0.16.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -591,7 +600,10 @@ mccabe==0.7.0
     #   -r requirements/ci.txt
     #   pylint
 mdurl==0.1.2
-    # via markdown-it-py
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   markdown-it-py
 mozilla-django-oidc==4.0.1
     # via
     #   -c requirements/ci.txt
@@ -625,7 +637,12 @@ opentelemetry-api==1.36.0
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
     #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-celery
+    #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-psycopg
+    #   opentelemetry-instrumentation-redis
+    #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
     #   opentelemetry-sdk
     #   opentelemetry-semantic-conventions
@@ -653,9 +670,35 @@ opentelemetry-instrumentation==0.57b0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   opentelemetry-instrumentation-celery
+    #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-psycopg
+    #   opentelemetry-instrumentation-redis
+    #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
+opentelemetry-instrumentation-celery==0.57b0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+opentelemetry-instrumentation-dbapi==0.57b0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   opentelemetry-instrumentation-psycopg
 opentelemetry-instrumentation-django==0.57b0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+opentelemetry-instrumentation-psycopg==0.57b0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+opentelemetry-instrumentation-redis==0.57b0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+opentelemetry-instrumentation-requests==0.57b0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -687,7 +730,11 @@ opentelemetry-semantic-conventions==0.57b0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-celery
+    #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-redis
+    #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
     #   opentelemetry-sdk
 opentelemetry-util-http==0.57b0
@@ -695,6 +742,7 @@ opentelemetry-util-http==0.57b0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   opentelemetry-instrumentation-django
+    #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
 orderedmultidict==1.0.1
     # via
@@ -792,7 +840,7 @@ pydantic-settings==2.6.1
     #   -r requirements/ci.txt
     #   bump-my-version
     #   django-setup-configuration
-pygments==2.18.0
+pygments==2.19.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -841,6 +889,7 @@ python-decouple==3.8
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   maykin-common
     #   open-api-framework
 python-dotenv==1.0.1
     # via
@@ -912,10 +961,13 @@ requests-mock==1.12.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-rich==14.1.0
+rich==14.2.0
     # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
     #   bump-my-version
     #   rich-click
+    #   typer
 rich-click==1.8.9
     # via bump-my-version
 rpds-py==0.19.1
@@ -951,6 +1003,11 @@ sentry-sdk==2.12.0
     #   open-api-framework
 setuptools==80.3.1
     # via pip-tools
+shellingham==1.5.4
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   typer
 six==1.16.0
     # via
     #   -c requirements/ci.txt
@@ -1055,6 +1112,10 @@ tornado==6.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   flower
+typer==0.21.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 typing-extensions==4.12.2
     # via
     #   -c requirements/ci.txt
@@ -1073,6 +1134,7 @@ typing-extensions==4.12.2
     #   pyopenssl
     #   qrcode
     #   rich-click
+    #   typer
     #   zgw-consumers
 tzdata==2025.2
     # via
@@ -1152,6 +1214,8 @@ wrapt==1.16.0
     #   -r requirements/ci.txt
     #   elastic-apm
     #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-dbapi
+    #   opentelemetry-instrumentation-redis
     #   vcrpy
 yarl==1.9.4
     # via

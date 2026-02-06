@@ -77,6 +77,7 @@ VOLUME ["/app/log", "/app/media", "/app/private-media"]
 COPY --from=build /usr/local/lib/python3.12 /usr/local/lib/python3.12
 COPY --from=build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 COPY --from=build /usr/local/bin/celery /usr/local/bin/celery
+COPY --from=build /usr/local/bin/maykin-common /usr/local/bin/maykin-common
 
 # copy frontend build statics
 COPY --from=frontend-build /app/src/openklant/static /app/src/openklant/static
