@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.descriptors import GegevensGroepType
 
 from openklant.components.utils.mixins import APIMixin
-from openklant.components.utils.number_generator import number_generator
+from openklant.utils.help_text import mark_deprecated
 
 from .constants import (
     PartijIdentificatorCodeObjectType,
@@ -45,14 +45,17 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
     )
     nummer = models.CharField(
         _("nummer"),
-        help_text=_(
-            "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
-            "worden gebruikt om de specifieke partij aan te duiden."
+        help_text=mark_deprecated(
+            _(
+                "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
+                "worden gebruikt om de specifieke partij aan te duiden."
+            )
         ),
         validators=[validate_integer],
         max_length=10,
         unique=True,
         blank=True,
+        null=True,
     )
     interne_notitie = models.TextField(
         _("interne notitie"),
@@ -100,7 +103,6 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         verbose_name_plural = _("partijen")
 
     def save(self, *args, **kwargs):
-        number_generator(self, Partij)
         return super().save(*args, **kwargs)
 
     def __str__(self):

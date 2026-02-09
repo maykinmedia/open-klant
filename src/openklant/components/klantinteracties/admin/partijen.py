@@ -212,6 +212,7 @@ class PartijAdmin(admin.ModelAdmin):
                     "voorkeurs_digitaal_adres",
                     "voorkeurs_rekeningnummer",
                     "nummer",
+                    "referentienummer",
                     "interne_notitie",
                     "soort_partij",
                     "indicatie_geheimhouding",

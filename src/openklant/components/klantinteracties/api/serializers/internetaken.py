@@ -64,6 +64,7 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
             "uuid",
             "url",
             "nummer",
+            "referentienummer",
             "gevraagde_handeling",
             "aanleidinggevend_klantcontact",
             "toegewezen_aan_actor",

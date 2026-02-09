@@ -88,16 +88,8 @@ class InterneTaakTests(APITestCase):
             InterneTaak.objects.filter(afgehandeld_op="2024-01-01T12:00:00Z").exists()
         )
 
-        with self.subTest("auto_generate_max_nummer_plus_one"):
-            data["nummer"] = ""
-            response = self.client.post(list_url, data)
-
-            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-            response_data = response.json()
-            self.assertEqual(response_data["nummer"], "1312312313")
-
-        with self.subTest("auto_generate_nummer_unique_validation"):
-            data["nummer"] = "1312312313"
+        with self.subTest("nummer_unique_validation"):
+            data["nummer"] = "1312312312"
             response = self.client.post(list_url, data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -105,19 +97,6 @@ class InterneTaakTests(APITestCase):
             self.assertEqual(
                 response_data["invalidParams"][0]["reason"],
                 "Er bestaat al een interne taak met eenzelfde nummer.",
-            )
-
-        with self.subTest("auto_generate_nummer_over_10_characters_error_message"):
-            InterneTaakFactory.create(nummer="9999999999")
-            data["nummer"] = ""
-            response = self.client.post(list_url, data)
-
-            self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-            response_data = response.json()
-            self.assertEqual(
-                response_data["detail"],
-                "Er kon niet automatisch een opvolgend nummer worden gegenereerd. "
-                "Het maximaal aantal tekens is bereikt.",
             )
 
     @freeze_time("2024-01-01T12:00:00Z")

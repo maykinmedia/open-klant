@@ -325,6 +325,7 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             "had_betrokkenen",
             "leidde_tot_interne_taken",
             "nummer",
+            "referentienummer",
             "kanaal",
             "onderwerp",
             "inhoud",

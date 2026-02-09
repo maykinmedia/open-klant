@@ -662,34 +662,6 @@ class IntereTaakAdminTests(WebTest):
 
         self.assertEqual(created_internetaak.actoren.get(), actor)
 
-    def test_interetaak_create_number_automatically_sets_itself(self):
-        assert not InterneTaak.objects.exists()
-        assert not InterneTakenActorenThoughModel.objects.exists()
-
-        self.app.set_user(self.user)
-
-        klantcontact: Klantcontact = KlantcontactFactory.create()
-
-        admin_url = reverse("admin:klantinteracties_internetaak_add")
-
-        response: TestResponse = self.app.get(admin_url)
-
-        form = response.forms["internetaak_form"]
-        form["klantcontact"] = str(klantcontact.pk)
-        form["gevraagde_handeling"] = "Terugbellen"
-        form["status"].select(text=_(Taakstatus.verwerkt.label))
-
-        add_response: TestResponse = form.submit(name="_save")
-
-        self.assertRedirects(
-            add_response, reverse("admin:klantinteracties_internetaak_changelist")
-        )
-
-        created_internetaak: InterneTaak = InterneTaak.objects.get()
-
-        # set number at first possible index
-        self.assertEqual(created_internetaak.nummer, "0000000001")
-
     def test_internetaak_update(self):
         self.app.set_user(self.user)
 
