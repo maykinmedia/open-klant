@@ -5074,6 +5074,13 @@ components:
             begon. Als het klantcontact verzending of ontvangst van informatie betrof,
             is dit bij benadering het moment waarop informatie door gemeente verzonden
             of ontvangen werd.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            maxLength: 100
+          description: Generieke key/value metadata. Key = string, value = string
+            (max 100 tekens).
       required:
       - gingOverOnderwerpobjecten
       - hadBetrokkenActoren
@@ -6395,6 +6402,13 @@ components:
             begon. Als het klantcontact verzending of ontvangst van informatie betrof,
             is dit bij benadering het moment waarop informatie door gemeente verzonden
             of ontvangen werd.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            maxLength: 100
+          description: Generieke key/value metadata. Key = string, value = string
+            (max 100 tekens).
     PatchedOnderwerpobject:
       type: object
       description: |-

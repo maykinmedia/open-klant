@@ -295,6 +295,11 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
         help_text=_("Klantcontact dat leidde tot een interne taak."),
         many=True,
     )
+    metadata = serializers.DictField(
+        child=serializers.CharField(max_length=100),
+        required=False,
+        help_text="Generieke key/value metadata. Key = string, value = string (max 100 tekens).",
+    )
 
     inclusion_serializers = {
         # 1 level
@@ -325,6 +330,7 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             "taal",
             "vertrouwelijk",
             "plaatsgevonden_op",
+            "metadata",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},

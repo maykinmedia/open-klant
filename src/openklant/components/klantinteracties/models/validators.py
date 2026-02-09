@@ -29,6 +29,25 @@ def validate_length(value, length) -> None:
         )
 
 
+def validate_metadata(value):
+    """
+    Validator voor metadata JSONField.
+    Controleert dat alle values strings zijn van max 100 tekens.
+    """
+    if not isinstance(value, dict):
+        raise ValidationError("Metadata moet een JSON-object / dict zijn.")
+
+    for key, val in value.items():
+        if not isinstance(val, str):
+            raise ValidationError(
+                f"Alle values moeten strings zijn. Key '{key}' heeft type {type(val).__name__}."
+            )
+        if len(val) > 100:
+            raise ValidationError(
+                f"Value van key '{key}' mag maximaal 100 tekens bevatten."
+            )
+
+
 class PartijIdentificatorUniquenessValidator:
     def __init__(
         self,
