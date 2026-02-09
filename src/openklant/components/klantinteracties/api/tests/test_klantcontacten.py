@@ -2187,6 +2187,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "inhoud": "changed",
                 "kanaal": "changed",
                 "leiddeTotInterneTaken": [],
+                "metadata": {},
                 "nummer": "7948723947",
                 "omvatteBijlagen": [],
                 "onderwerp": "changed",
@@ -2656,6 +2657,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "inhoud": "changed",
                 "kanaal": "changed",
                 "leiddeTotInterneTaken": [],
+                "metadata": {},
                 "nummer": "7948723947",
                 "omvatteBijlagen": [],
                 "onderwerp": "changed",
@@ -2670,3 +2672,55 @@ class MaakKlantcontactEndpointTests(APITestCase):
 
         with self.subTest("Onderwerpobject is None in response"):
             self.assertEqual(data["onderwerpobject"], None)
+
+    def test_create_klantcontact_with_metadata(self):
+        post_data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
+
+        with self.subTest("create_with_metadata"):
+            post_data["klantcontact"]["metadata"] = {
+                "Betreft": "Paspoortaanvraag",
+                "Type": "Vraag",
+            }
+
+            response = self.client.post(self.url, post_data)
+
+            self.assertEqual(
+                response.status_code, status.HTTP_201_CREATED, response.data
+            )
+            self.assertEqual(
+                response.json()["klantcontact"]["metadata"]["Betreft"],
+                "Paspoortaanvraag",
+            )
+
+        with self.subTest("create_with_empty_metadata"):
+            post_data["klantcontact"]["nummer"] = "794872312"
+            post_data["klantcontact"]["metadata"] = {}
+
+            response = self.client.post(self.url, post_data)
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.json()["klantcontact"]["metadata"], {})
+
+        with self.subTest("create_with_too_long_metadata_value"):
+            post_data["klantcontact"]["nummer"] = "7948723946"
+            post_data["klantcontact"]["metadata"] = {"Betreft": "x" * 101}
+
+            response = self.client.post(self.url, post_data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertIn("metadata", response.json()["invalidParams"][0]["name"])
+
+        with self.subTest("create_with_non_string_metadata_value_converts_to_string"):
+            post_data["klantcontact"]["nummer"] = "7948723927"
+            post_data["klantcontact"]["metadata"] = {"Betreft": 123}
+
+            response = self.client.post(self.url, post_data)
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(
+                response.json()["klantcontact"]["metadata"]["Betreft"], "123"
+            )
