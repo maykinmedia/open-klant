@@ -51,6 +51,7 @@ logger = structlog.get_logger(__name__)
     list=extend_schema(
         summary="Alle partijen opvragen.",
         description="Alle partijen opvragen.",
+        parameters=[OpenApiParameter(name="nummer", deprecated=True)],
     ),
     retrieve=extend_schema(
         summary="Een specifiek partij opvragen.",
@@ -276,6 +277,7 @@ class VertegenwoordigdenViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     list=extend_schema(
         summary="Alle categorie relaties opvragen.",
         description="Alle categorie relaties opvragen, Let op: Dit endpoint is EXPERIMENTEEL.",
+        parameters=[OpenApiParameter(name="partij__nummer", deprecated=True)],
     ),
     retrieve=extend_schema(
         summary="Een specifiek categorie relatie opvragen..",

@@ -1,7 +1,7 @@
 from django.db import transaction
 
 import structlog
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from vng_api_common.pagination import DynamicPageSizePagination
@@ -32,6 +32,10 @@ logger = structlog.get_logger(__name__)
     list=extend_schema(
         summary="Alle interne taken opvragen.",
         description="Alle interne taken opvragen.",
+        parameters=[
+            OpenApiParameter(name="nummer", deprecated=True),
+            OpenApiParameter(name="klantcontact__nummer", deprecated=True),
+        ],
     ),
     retrieve=extend_schema(
         summary="Een specifiek interne taak opvragen.",

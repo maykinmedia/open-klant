@@ -514,7 +514,7 @@ paths:
         name: hadKlantcontact__nummer
         schema:
           type: string
-        description: Zoek betrokkene object op basis van het klantcontact nummer
+        deprecated: true
       - in: query
         name: hadKlantcontact__referentienummer
         schema:
@@ -572,7 +572,7 @@ paths:
         name: wasPartij__nummer
         schema:
           type: string
-        description: Zoek betrokkene object op basis van het partij nummer
+        deprecated: true
       - in: query
         name: wasPartij__partijIdentificator__codeObjecttype
         schema:
@@ -1059,7 +1059,7 @@ paths:
         name: partij__nummer
         schema:
           type: string
-        description: Zoek categorie relatie object op basis van het partij nummer.
+        deprecated: true
       - in: query
         name: partij__url
         schema:
@@ -1819,9 +1819,7 @@ paths:
         name: klantcontact__nummer
         schema:
           type: string
-        description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-          tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
-          duiden.'
+        deprecated: true
       - in: query
         name: klantcontact__referentienummer
         schema:
@@ -1839,8 +1837,7 @@ paths:
         name: nummer
         schema:
           type: string
-        description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-          tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.'
+        deprecated: true
       - name: page
         required: false
         in: query
@@ -2148,9 +2145,7 @@ paths:
         name: nummer
         schema:
           type: string
-        description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-          tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
-          duiden.'
+        deprecated: true
       - in: query
         name: onderwerp
         schema:
@@ -3071,8 +3066,7 @@ paths:
         name: nummer
         schema:
           type: string
-        description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-          tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.'
+        deprecated: true
       - name: page
         required: false
         in: query
@@ -4042,6 +4036,7 @@ components:
           description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
             tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.'
           maxLength: 10
+          deprecated: true
         interneNotitie:
           type: string
           description: Mededelingen, aantekeningen of bijzonderheden over de partij,
@@ -4953,6 +4948,7 @@ components:
             tussen mensen kan worden gebruikt om de specifieke interne taak aan te
             duiden.'
           maxLength: 10
+          deprecated: true
         referentienummer:
           type: string
           nullable: true
@@ -5078,6 +5074,7 @@ components:
             tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
             duiden.'
           maxLength: 10
+          deprecated: true
         referentienummer:
           type: string
           nullable: true
@@ -6323,6 +6320,7 @@ components:
             tussen mensen kan worden gebruikt om de specifieke interne taak aan te
             duiden.'
           maxLength: 10
+          deprecated: true
         referentienummer:
           type: string
           nullable: true
@@ -6424,6 +6422,7 @@ components:
             tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
             duiden.'
           maxLength: 10
+          deprecated: true
         referentienummer:
           type: string
           nullable: true

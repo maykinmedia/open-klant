@@ -467,6 +467,7 @@ class PartijIdentificatorSerializer(
         return super().create(validated_data)
 
 
+@extend_schema_serializer(deprecate_fields=["nummer"])
 class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     from openklant.components.klantinteracties.api.serializers.rekeningnummers import (
         RekeningnummerForeignKeySerializer,
