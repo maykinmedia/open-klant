@@ -12,6 +12,7 @@ from openklant.components.utils.number_generator import number_generator
 
 from .constants import Klantcontrol
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
+from .validators import validate_metadata
 
 
 class Klantcontact(APIMixin, models.Model):
@@ -85,6 +86,13 @@ class Klantcontact(APIMixin, models.Model):
         default=timezone.now,
         blank=False,
     )
+    metadata = models.JSONField(
+        _("metadata"),
+        default=dict,
+        blank=True,
+        help_text=_("Generieke key/value metadata voor het klantcontact."),
+        validators=[validate_metadata],
+    )
 
     class Meta:
         verbose_name = _("klantcontact")
@@ -96,6 +104,12 @@ class Klantcontact(APIMixin, models.Model):
 
     def __str__(self):
         return f"{self.onderwerp} ({self.nummer})"
+
+    def clean(self):
+        super().clean()
+
+        if self.metadata is None:
+            self.metadata = {}
 
 
 class Betrokkene(

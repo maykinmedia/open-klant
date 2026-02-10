@@ -8,6 +8,7 @@ from openklant.components.klantinteracties.models.constants import (
 )
 from openklant.components.klantinteracties.models.validators import (
     PartijIdentificatorTypesValidator,
+    validate_metadata,
 )
 
 
@@ -249,3 +250,50 @@ class PartijIdentificatorTypesValidatorTests(TestCase):
                     code_soort_object_id=case[2],
                     object_id=case[3],
                 )
+
+
+class ValidateMetadataTests(TestCase):
+    def test_valid_metadata(self):
+        metadata = {
+            "Betreft": "Paspoortaanvraag",
+            "Type": "Vraag",
+            "Opmerking": "Dit is een geldige korte string",
+        }
+        validate_metadata(metadata)
+
+    def test_empty_metadata(self):
+        validate_metadata({})
+
+    def test_invalid_type_list(self):
+        with self.assertRaisesMessage(
+            ValidationError, "Metadata moet een JSON-object / dict zijn."
+        ):
+            validate_metadata([])
+
+    def test_invalid_type_string(self):
+        with self.assertRaisesMessage(
+            ValidationError, "Metadata moet een JSON-object / dict zijn."
+        ):
+            validate_metadata("string")
+
+    def test_invalid_value_not_string(self):
+        metadata = {"Betreft": 123, "Type": "Vraag"}
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Alle values moeten strings zijn. Key 'Betreft' heeft type int.",
+        ):
+            validate_metadata(metadata)
+
+    def test_value_too_long(self):
+        metadata = {"Betreft": "x" * 101, "Type": "Vraag"}
+        with self.assertRaisesMessage(
+            ValidationError, "Value van key 'Betreft' mag maximaal 100 tekens bevatten."
+        ):
+            validate_metadata(metadata)
+
+    def test_multiple_invalid_keys(self):
+        metadata = {"Betreft": "x" * 101, "Type": 123}
+        with self.assertRaises(ValidationError) as cm:
+            validate_metadata(metadata)
+        error_msg = str(cm.exception)
+        self.assertTrue("Betreft" in error_msg or "Type" in error_msg)
