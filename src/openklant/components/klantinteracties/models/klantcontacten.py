@@ -105,6 +105,12 @@ class Klantcontact(APIMixin, models.Model):
     def __str__(self):
         return f"{self.onderwerp} ({self.nummer})"
 
+    def clean(self):
+        super().clean()
+
+        if self.metadata is None:
+            self.metadata = {}
+
 
 class Betrokkene(
     APIMixin, BezoekadresMixin, CorrespondentieadresMixin, ContactnaamMixin

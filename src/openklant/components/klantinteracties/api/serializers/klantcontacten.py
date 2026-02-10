@@ -298,7 +298,9 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
     metadata = serializers.DictField(
         child=serializers.CharField(max_length=100),
         required=False,
-        help_text="Generieke key/value metadata. Key = string, value = string (max 100 tekens).",
+        help_text=_(
+            "Generieke key/value metadata. Key = string, value = string (max 100 tekens)."
+        ),
     )
 
     inclusion_serializers = {
