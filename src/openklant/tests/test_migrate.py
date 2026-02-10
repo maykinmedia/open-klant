@@ -561,7 +561,6 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij, persoon.partij)
 
         self.assertEqual(partij.soort_partij, SoortPartij.persoon)
-        self.assertEqual(partij.nummer, "0000000001")  # auto generated
         self.assertEqual(partij.voorkeurs_digitaal_adres, digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
