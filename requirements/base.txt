@@ -132,7 +132,7 @@ django-filter==24.2
     #   open-api-framework
 django-formtools==2.5.1
     # via django-two-factor-auth
-django-health-check==3.20.8
+django-health-check==4.0.0
     # via maykin-common
 django-ipware==7.0.1
     # via django-structlog
@@ -200,6 +200,8 @@ djangorestframework-gis==1.0
     # via open-api-framework
 djangorestframework-inclusions==1.2.0
     # via open-api-framework
+dnspython==2.8.0
+    # via django-health-check
 docutils==0.21.2
     # via django-setup-configuration
 drf-nested-routers==0.94.1
@@ -252,7 +254,7 @@ maykin-2fa==1.0.1
     # via
     #   maykin-common
     #   open-api-framework
-maykin-common==0.16.0
+maykin-common==0.18.0
     # via -r requirements/base.in
 mdurl==0.1.2
     # via markdown-it-py

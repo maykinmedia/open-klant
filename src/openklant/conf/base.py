@@ -8,10 +8,7 @@ from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config  # noqa
 from upgrade_check import UpgradeCheck, VersionRange
 from upgrade_check.constraints import UpgradePaths
-from maykin_common.health_checks import (
-    default_health_check_apps,
-    default_health_check_subsets,
-)
+from maykin_common.health_checks import default_health_check_apps
 from .api import *  # noqa
 
 #
@@ -157,13 +154,6 @@ UPGRADE_CHECK_PATHS: UpgradePaths = {
 }
 
 UPGRADE_CHECK_STRICT = False
-
-#
-# DJANGO-HEALTH-CHECK
-#
-HEALTH_CHECK = {
-    "SUBSETS": default_health_check_subsets,
-}
 
 #
 # MAYKIN-COMMON health checks
