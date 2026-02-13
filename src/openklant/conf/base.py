@@ -21,6 +21,7 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "vng_api_common.notifications",
     # health check + plugins
     *default_health_check_apps,
+    "maykin_common.health_checks.celery",
     # Project applications.
     "openklant.accounts",
     "openklant.utils",
