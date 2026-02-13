@@ -147,3 +147,61 @@ PostgreSQL
 PostgreSQL container images typically include the ``pg_isready`` binary, which tests
 the database connection (accepting traffic on the specified host and port). It has a
 non-zero exit code when the database is not ready.
+
+nginx
+-----
+
+nginx proxies HTTP traffic from the browser/client to the backend service. It also
+serves static assets directly. The nginx config needs to be extended with a location
+handler for the health checks. You should take care to namespace this so that you don't
+get collissions with identifiers of forms that would be masked by this path.
+
+Example nginx configuration snippet:
+
+.. code-block:: nginx
+
+    location = /_healthz/livez/ {
+        access_log off;
+        add_header Content-Type text/plain;
+        # block outside traffic
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+        return 200 "ok\n";
+    }
+
+We recommend this cheap check for both the liveness and readiness checks.
+
+You can then wire up an HTTP probe or ``curl`` script to make a ``GET`` call to
+``http://localhost:8080/_healthz/livez/``. Note the port number - often the nginx
+unprivileged image will be used, which binds to 8080 by default, but check your
+specific environment to confirm.
+
+**Smart readiness probe**
+
+You *may* want to consider proxying to the backend-service for the readiness check.
+
+.. warning:: This can lead to cascading failures where first your backend-service
+   becomes unavailable, which leads to nginx becoming unavailable and possible other
+   dependent services.
+
+.. tip:: Even if the backend is not available, nginx may still be performing useful work
+   by serving static files.
+
+Example nginx configuration snippet:
+
+.. code-block:: nginx
+
+    location = /_healthz/readyz/ {
+        access_log off;
+        # block outside traffic
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass   http://web:8000/_health/readyz/;
+    }
