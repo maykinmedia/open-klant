@@ -15,6 +15,8 @@ env:
   DJANGO_SETTINGS_MODULE: openklant.conf.ci
   DB_PASSWORD: ''
   DB_USER: postgres
+  COMPOSE_DOCKER_CLI_BUILD: "1"
+  DOCKER_BUILDKIT: "1"
 
 jobs:
   # determine changed files to decide if certain jobs can be skipped or not

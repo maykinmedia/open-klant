@@ -78,7 +78,7 @@ certifi==2024.7.4
     #   elastic-apm
     #   requests
     #   sentry-sdk
-cffi==1.16.0
+cffi==2.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -121,7 +121,7 @@ commonmark==0.9.1
     # via recommonmark
 coverage==7.7.0
     # via codecov
-cryptography==44.0.2
+cryptography==46.0.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -672,7 +672,7 @@ pyjwt==2.10.1
     #   zgw-consumers
 pylint==3.2.6
     # via -r requirements/test-tools.in
-pyopenssl==25.0.0
+pyopenssl==25.3.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

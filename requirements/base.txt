@@ -43,7 +43,7 @@ certifi==2024.7.4
     #   elastic-apm
     #   requests
     #   sentry-sdk
-cffi==1.16.0
+cffi==2.0.0
     # via cryptography
 charset-normalizer==3.3.2
     # via requests
@@ -61,7 +61,7 @@ click-repl==0.3.0
     # via celery
 commonground-api-common==2.10.7
     # via open-api-framework
-cryptography==44.0.2
+cryptography==46.0.5
     # via
     #   django-simple-certmanager
     #   josepy
@@ -349,7 +349,7 @@ pyjwt==2.10.1
     # via
     #   commonground-api-common
     #   zgw-consumers
-pyopenssl==25.0.0
+pyopenssl==25.3.0
     # via
     #   josepy
     #   webauthn

@@ -104,7 +104,7 @@ certifi==2024.7.4
     #   httpx
     #   requests
     #   sentry-sdk
-cffi==1.16.0
+cffi==2.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -160,7 +160,7 @@ coverage==7.7.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   codecov
-cryptography==44.0.2
+cryptography==46.0.5
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -811,7 +811,7 @@ pylint==3.2.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-pyopenssl==25.0.0
+pyopenssl==25.3.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
