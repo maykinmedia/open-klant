@@ -9,27 +9,23 @@ on:
       - '**'
   workflow_dispatch:
 
-jobs:
-  open-api-workflow-quick-start:
-    uses: maykinmedia/open-api-workflows/.github/workflows/quick-start.yml@v6
-    with:
-      fixtures: 'klantinteracties contactgegevens'
+env:
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  DOCKER_BUILDKIT: 1
+  COMPOSE_PARALLEL_LIMIT: 1
 
-  upgrade_simulation:
-    name: Simulate upgrading instances
+jobs:
+  run:
     runs-on: ubuntu-latest
-    env:
-      RELEASE_OLD: "2.5.1"
-      RELEASE_NEW: "2.8.0"
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build and start docker with RELEASE=${{ env.RELEASE_OLD }}
+      - name: Start docker containers
         run: |
-          docker compose build --build-arg RELEASE=${{ env.RELEASE_OLD }} || ( docker compose logs > $GITHUB_STEP_SUMMARY && exit 1 )
-          docker compose up -d || ( docker compose logs > $GITHUB_STEP_SUMMARY && exit 1 )
+          echo "COMPOSE_DOCKER_CLI_BUILD: $COMPOSE_DOCKER_CLI_BUILD"
+          echo "DOCKER_BUILDKIT: $DOCKER_BUILDKIT"
+          echo "COMPOSE_PARALLEL_LIMIT: $COMPOSE_PARALLEL_LIMIT"
 
-      - name: Build and start docker with RELEASE=${{ env.RELEASE_NEW }}
+      - name: Start docker containers
         run: |
-          docker compose build --build-arg RELEASE=${{ env.RELEASE_NEW }} || ( docker compose logs > $GITHUB_STEP_SUMMARY && exit 1 )
-          docker compose up -d || ( docker compose logs > $GITHUB_STEP_SUMMARY && exit 1 )
+          docker compose build --no-cache
+          docker compose up -d

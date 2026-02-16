@@ -31,13 +31,6 @@ def count_users(options: metrics.CallbackOptions) -> Collection[metrics.Observat
     )
 
 
-meter.create_observable_gauge(
-    name="openklant.auth.user_count",
-    description="The number of application users in the database.",
-    unit=r"{user}",  # no unit so that the _ratio suffix is not added
-    callbacks=[count_users],
-)
-
 logins = meter.create_counter(
     "openklant.auth.logins",
     unit="1",  # unitless count
