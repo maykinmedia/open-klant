@@ -152,13 +152,23 @@ nginx
 -----
 
 nginx proxies HTTP traffic from the browser/client to the backend service. It also
-serves static assets directly. The nginx config needs to be extended with a location
-handler for the health checks. You should take care to namespace this so that you don't
-get collissions with identifiers of forms that would be masked by this path.
+serves static assets directly. The nginx config needs to be extended with location
+handlers for the health checks. This ensures that the health endpoints are not accessible
+from outside.
 
 Example nginx configuration snippet:
 
 .. code-block:: nginx
+
+    location = /_healthz/ {
+        access_log off;
+        add_header Content-Type text/plain;
+        # block outside traffic
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+        return 200 "ok\n";
+    }
 
     location = /_healthz/livez/ {
         access_log off;
@@ -169,6 +179,17 @@ Example nginx configuration snippet:
         deny all;
         return 200 "ok\n";
     }
+
+    location = /_healthz/readyz/ {
+        access_log off;
+        add_header Content-Type text/plain;
+        # block outside traffic
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+        return 200 "ok\n";
+    }
+
 
 We recommend this cheap check for both the liveness and readiness checks.
 
