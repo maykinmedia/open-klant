@@ -19,3 +19,4 @@ this.
    config/index
    migration
    observability/index
+   health_checks

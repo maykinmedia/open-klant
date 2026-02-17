@@ -8,7 +8,7 @@ from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config  # noqa
 from upgrade_check import UpgradeCheck, VersionRange
 from upgrade_check.constraints import UpgradePaths
-
+from maykin_common.health_checks import default_health_check_apps
 from .api import *  # noqa
 
 #
@@ -19,6 +19,9 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "maykin_common",
     # External applications.
     "vng_api_common.notifications",
+    # health check + plugins
+    *default_health_check_apps,
+    "maykin_common.health_checks.celery",
     # Project applications.
     "openklant.accounts",
     "openklant.utils",
@@ -115,6 +118,22 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
 )  # soft
 
 #
+# CELERY-ONCE
+#
+CELERY_ONCE_REDIS_URL = config(
+    "CELERY_ONCE_REDIS_URL",
+    default=CELERY_BROKER_URL,
+    group="Celery",
+)
+CELERY_ONCE = {
+    "backend": "celery_once.backends.Redis",
+    "settings": {
+        "url": CELERY_ONCE_REDIS_URL,
+        "default_timeout": 60 * 60,  # one hour
+    },
+}
+
+#
 # Notifications
 #
 # Override the default to be `True`, to make notifications opt-in
@@ -136,3 +155,11 @@ UPGRADE_CHECK_PATHS: UpgradePaths = {
 }
 
 UPGRADE_CHECK_STRICT = False
+
+#
+# MAYKIN-COMMON health checks
+#
+MKN_HEALTH_CHECKS_WORKER_EVENT_LOOP_LIVENESS_FILE = (
+    BASE_DIR / "tmp" / "celery_worker_event_loop.live"
+)
+MKN_HEALTH_CHECKS_WORKER_READINESS_FILE = BASE_DIR / "tmp" / "celery_worker.ready"
