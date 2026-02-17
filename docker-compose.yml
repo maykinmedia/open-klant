@@ -17,8 +17,8 @@ services:
       - open-klant-dev
 
   web:
-    image: maykinmedia/open-klant:latest
-    build: &web_build
+    image: maykinmedia/open-klant:${TAG:-latest}
+    build:
       context: .
     environment: &web_env
       DJANGO_SETTINGS_MODULE: openklant.conf.docker
@@ -79,7 +79,7 @@ services:
       - open-klant-dev
 
   web-init:
-    build: .
+    image: maykinmedia/open-klant:${TAG:-latest}
     environment:
       <<: *web_env
       #
@@ -98,8 +98,7 @@ services:
       - open-klant-dev
 
   celery:
-    image: maykinmedia/open-klant:latest
-    build: *web_build
+    image: maykinmedia/open-klant:${TAG:-latest}
     environment: *web_env
     command: /celery_worker.sh
     healthcheck:
@@ -116,8 +115,7 @@ services:
       - open-klant-dev
 
   celery-flower:
-    image: maykinmedia/open-klant:latest
-    build: *web_build
+    image: maykinmedia/open-klant:${TAG:-latest}
     environment: *web_env
     command: /celery_flower.sh
     ports:
