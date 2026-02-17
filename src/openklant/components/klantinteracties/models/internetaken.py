@@ -5,7 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from openklant.components.utils.number_generator import number_generator
+from openklant.utils.help_text import mark_deprecated
 
 from .constants import Taakstatus
 from .klantcontacten import Klantcontact
@@ -33,15 +33,32 @@ class InterneTaak(models.Model):
     )
     nummer = models.CharField(
         _("nummer"),
+        help_text=mark_deprecated(
+            _(
+                "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
+                "worden gebruikt om de specifieke interne taak aan te duiden."
+            )
+        ),
+        validators=[validate_integer],
+        max_length=10,
+        unique=True,
+        blank=True,
+        null=True,
+    )
+
+    referentienummer = models.CharField(
+        _("referentienummer"),
         help_text=_(
-            "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
+            "Uniek identificerend referentienummer dat tijdens communicatie tussen mensen kan "
             "worden gebruikt om de specifieke interne taak aan te duiden."
         ),
         validators=[validate_integer],
         max_length=10,
         unique=True,
         blank=True,
+        null=True,
     )
+
     gevraagde_handeling = models.CharField(
         _("gevraagde handeling"),
         help_text=_("Handeling die moet worden uitgevoerd om de taak af te ronden."),
@@ -86,7 +103,6 @@ class InterneTaak(models.Model):
         verbose_name_plural = _("interne taken")
 
     def save(self, *args, **kwargs):
-        number_generator(self, InterneTaak)
         if self.afgehandeld_op is None:
             if self.status == Taakstatus.verwerkt:
                 self.afgehandeld_op = timezone.now()

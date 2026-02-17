@@ -514,7 +514,12 @@ paths:
         name: hadKlantcontact__nummer
         schema:
           type: string
-        description: Zoek betrokkene object op basis van het klantcontact nummer
+        deprecated: true
+      - in: query
+        name: hadKlantcontact__referentienummer
+        schema:
+          type: string
+        description: Zoek betrokkene object op basis van het klantcontact referentienummer
       - in: query
         name: hadKlantcontact__url
         schema:
@@ -567,7 +572,7 @@ paths:
         name: wasPartij__nummer
         schema:
           type: string
-        description: Zoek betrokkene object op basis van het partij nummer
+        deprecated: true
       - in: query
         name: wasPartij__partijIdentificator__codeObjecttype
         schema:
@@ -1054,7 +1059,7 @@ paths:
         name: partij__nummer
         schema:
           type: string
-        description: Zoek categorie relatie object op basis van het partij nummer.
+        deprecated: true
       - in: query
         name: partij__url
         schema:
@@ -1814,8 +1819,14 @@ paths:
         name: klantcontact__nummer
         schema:
           type: string
-        description: Uniek identificerend nummer dat tijdens communicatie tussen mensen
-          kan worden gebruikt om het specifieke klantcontact aan te duiden.
+        deprecated: true
+      - in: query
+        name: klantcontact__referentienummer
+        schema:
+          type: string
+        description: Uniek identificerend referentienummer dat tijdens communicatie
+          tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
+          duiden.
       - in: query
         name: klantcontact__uuid
         schema:
@@ -1826,8 +1837,7 @@ paths:
         name: nummer
         schema:
           type: string
-        description: Uniek identificerend nummer dat tijdens communicatie tussen mensen
-          kan worden gebruikt om de specifieke interne taak aan te duiden.
+        deprecated: true
       - name: page
         required: false
         in: query
@@ -1841,6 +1851,12 @@ paths:
           maximum: 500).'
         schema:
           type: integer
+      - in: query
+        name: referentienummer
+        schema:
+          type: string
+        description: Uniek identificerend referentienummer dat tijdens communicatie
+          tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
       - in: query
         name: status
         schema:
@@ -2129,8 +2145,7 @@ paths:
         name: nummer
         schema:
           type: string
-        description: Uniek identificerend nummer dat tijdens communicatie tussen mensen
-          kan worden gebruikt om het specifieke klantcontact aan te duiden.
+        deprecated: true
       - in: query
         name: onderwerp
         schema:
@@ -2194,6 +2209,13 @@ paths:
           Als het klantcontact verzending of ontvangst van informatie betrof, is dit
           bij benadering het moment waarop informatie door gemeente verzonden of ontvangen
           werd.
+      - in: query
+        name: referentienummer
+        schema:
+          type: string
+        description: Uniek identificerend referentienummer dat tijdens communicatie
+          tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
+          duiden.
       - in: query
         name: vertrouwelijk
         schema:
@@ -3044,8 +3066,7 @@ paths:
         name: nummer
         schema:
           type: string
-        description: Uniek identificerend nummer dat tijdens communicatie tussen mensen
-          kan worden gebruikt om de specifieke partij aan te duiden.
+        deprecated: true
       - name: page
         required: false
         in: query
@@ -4011,9 +4032,11 @@ components:
           maxLength: 1000
         nummer:
           type: string
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om de specifieke partij aan te duiden.
+          nullable: true
+          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.'
           maxLength: 10
+          deprecated: true
         interneNotitie:
           type: string
           description: Mededelingen, aantekeningen of bijzonderheden over de partij,
@@ -4920,8 +4943,18 @@ components:
           maxLength: 1000
         nummer:
           type: string
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+          nullable: true
+          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om de specifieke interne taak aan te
+            duiden.'
+          maxLength: 10
+          deprecated: true
+        referentienummer:
+          type: string
+          nullable: true
+          description: Uniek identificerend referentienummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om de specifieke interne taak aan te
+            duiden.
           maxLength: 10
         gevraagdeHandeling:
           type: string
@@ -5036,8 +5069,18 @@ components:
           description: Klantcontact dat leidde tot een interne taak.
         nummer:
           type: string
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+          nullable: true
+          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
+            duiden.'
+          maxLength: 10
+          deprecated: true
+        referentienummer:
+          type: string
+          nullable: true
+          description: Uniek identificerend referentienummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
+            duiden.
           maxLength: 10
         kanaal:
           type: string
@@ -6272,8 +6315,18 @@ components:
           maxLength: 1000
         nummer:
           type: string
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+          nullable: true
+          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om de specifieke interne taak aan te
+            duiden.'
+          maxLength: 10
+          deprecated: true
+        referentienummer:
+          type: string
+          nullable: true
+          description: Uniek identificerend referentienummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om de specifieke interne taak aan te
+            duiden.
           maxLength: 10
         gevraagdeHandeling:
           type: string
@@ -6364,8 +6417,18 @@ components:
           description: Klantcontact dat leidde tot een interne taak.
         nummer:
           type: string
-          description: Uniek identificerend nummer dat tijdens communicatie tussen
-            mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+          nullable: true
+          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
+            duiden.'
+          maxLength: 10
+          deprecated: true
+        referentienummer:
+          type: string
+          nullable: true
+          description: Uniek identificerend referentienummer dat tijdens communicatie
+            tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
+            duiden.
           maxLength: 10
         kanaal:
           type: string
@@ -6794,7 +6857,7 @@ tags:
 
     **Kenmerken**
 
-    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+    * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
     * `gevraagde_handeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
     * `toelichting`: Toelichting die, aanvullend bij de inhoud van het klantcontact dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan het kunnen afhandelen van de taak.
     * `status`: Aanduiding van de vordering bij afhandeling van de interne taak.
@@ -6912,7 +6975,7 @@ tags:
 
     **Kenmerken**
 
-    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
+    * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
     * `interne_notitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
     * `soort_partij`: Geeft aan van welke specifieke soort partij sprake is.
 

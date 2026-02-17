@@ -33,11 +33,13 @@ class InternetaakFilterSet(FilterSet):
         model = InterneTaak
         fields = (
             "nummer",
+            "referentienummer",
             "status",
             "toegewezen_op",
             "actoren__naam",
             "klantcontact__uuid",
             "klantcontact__nummer",
+            "klantcontact__referentienummer",
             "toegewezen_aan_actor__uuid",
             "toegewezen_aan_actor__url",
             "aanleidinggevend_klantcontact__uuid",

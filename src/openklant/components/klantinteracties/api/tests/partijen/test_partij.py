@@ -325,16 +325,8 @@ class PartijTests(APITestCase):
                 },
             )
 
-        with self.subTest("auto_generate_max_nummer_plus_one"):
-            data["nummer"] = ""
-            response = self.client.post(list_url, data)
-
-            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-            response_data = response.json()
-            self.assertEqual(response_data["nummer"], "1298329193")
-
-        with self.subTest("auto_generate_nummer_unique_validation"):
-            data["nummer"] = "1298329193"
+        with self.subTest("nummer_unique_validation"):
+            data["nummer"] = "1298329192"
             response = self.client.post(list_url, data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -342,19 +334,6 @@ class PartijTests(APITestCase):
             self.assertEqual(error["code"], "unique")
             self.assertEqual(
                 error["reason"], "Er bestaat al een partij met eenzelfde nummer."
-            )
-
-        with self.subTest("auto_generate_nummer_over_10_characters_error_message"):
-            PartijFactory.create(nummer="9999999999")
-            data["nummer"] = ""
-            response = self.client.post(list_url, data)
-
-            self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-            response_data = response.json()
-            self.assertEqual(
-                response_data["detail"],
-                "Er kon niet automatisch een opvolgend nummer worden gegenereerd. "
-                "Het maximaal aantal tekens is bereikt.",
             )
 
         with self.subTest("voorkeurs_adres_must_be_given_digitaal_adres_validation"):

@@ -106,6 +106,7 @@ class KlantcontactFilterSet(FilterSet):
             "was_onderwerpobject__onderwerpobjectidentificator_object_id",
             "was_onderwerpobject__onderwerpobjectidentificator_code_register",
             "nummer",
+            "referentienummer",
             "kanaal",
             "onderwerp",
             "inhoud",
@@ -161,6 +162,12 @@ class BetrokkeneFilterSet(FilterSet):
     had_klantcontact__nummer = filters.CharFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact nummer"),
         method="filter_had_klantcontact_nummer",
+    )
+    had_klantcontact__referentienummer = filters.CharFilter(
+        help_text=_(
+            "Zoek betrokkene object op basis van het klantcontact referentienummer"
+        ),
+        method="filter_had_klantcontact_referentienummer",
     )
     had_klantcontact__url = URLViewFilter(
         help_text=_("Zoek betrokkene object op basis van het klantcontact url"),
@@ -229,6 +236,7 @@ class BetrokkeneFilterSet(FilterSet):
             "contactnaam_voorvoegsel_achternaam",
             "contactnaam_achternaam",
             "had_klantcontact__nummer",
+            "had_klantcontact__referentienummer",
             "had_klantcontact__uuid",
             "had_klantcontact__url",
             "verstrektedigitaal_adres__adres",
@@ -247,6 +255,12 @@ class BetrokkeneFilterSet(FilterSet):
     def filter_had_klantcontact_nummer(self, queryset, name, value):
         try:
             return queryset.filter(klantcontact__nummer=value)
+        except ValueError:
+            return queryset.none()
+
+    def filter_had_klantcontact_referentienummer(self, queryset, name, value):
+        try:
+            return queryset.filter(klantcontact__referentienummer=value)
         except ValueError:
             return queryset.none()
 

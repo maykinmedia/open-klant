@@ -581,6 +581,33 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_had_klantcontact_referentienummer(self):
+        klantcontact = KlantcontactFactory.create(referentienummer="6237172371")
+        klantcontact2 = KlantcontactFactory.create(referentienummer="9999999999")
+        betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
+        BetrokkeneFactory.create(klantcontact=klantcontact2)
+
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"hadKlantcontact__referentienummer": str(6237172371)},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"hadKlantcontact__referentienummer": "8584395394"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            self.assertEqual(response.json()["count"], 0)
+
     def test_filter_verstrektedigitaal_adres_url(self):
         betrokkene = BetrokkeneFactory.create()
         betrokkene2 = BetrokkeneFactory.create()

@@ -150,16 +150,8 @@ class KlantContactTests(APITestCase):
         self.assertTrue(data["indicatieContactGelukt"])
         self.assertTrue(data["vertrouwelijk"])
 
-        with self.subTest("auto_generate_max_nummer_plus_one"):
-            data["nummer"] = ""
-            response = self.client.post(list_url, data)
-
-            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-            response_data = response.json()
-            self.assertEqual(response_data["nummer"], "1234567891")
-
-        with self.subTest("auto_generate_nummer_unique_validation"):
-            data["nummer"] = "1234567891"
+        with self.subTest("nummer_unique_validation"):
+            data["nummer"] = "1234567890"
             response = self.client.post(list_url, data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -167,19 +159,6 @@ class KlantContactTests(APITestCase):
             self.assertEqual(
                 response_data["invalidParams"][0]["reason"],
                 "Er bestaat al een klantcontact met eenzelfde nummer.",
-            )
-
-        with self.subTest("auto_generate_nummer_over_10_characters_error_message"):
-            KlantcontactFactory.create(nummer="9999999999")
-            data["nummer"] = ""
-            response = self.client.post(list_url, data)
-
-            self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-            response_data = response.json()
-            self.assertEqual(
-                response_data["detail"],
-                "Er kon niet automatisch een opvolgend nummer worden gegenereerd. "
-                "Het maximaal aantal tekens is bereikt.",
             )
 
     def test_create_klantcontact_with_reverse_lookup_fields(self):
@@ -2189,6 +2168,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "leiddeTotInterneTaken": [],
                 "metadata": {},
                 "nummer": "7948723947",
+                "referentienummer": None,
                 "omvatteBijlagen": [],
                 "onderwerp": "changed",
                 "plaatsgevondenOp": "2020-08-24T14:15:22Z",
@@ -2659,6 +2639,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "leiddeTotInterneTaken": [],
                 "metadata": {},
                 "nummer": "7948723947",
+                "referentienummer": None,
                 "omvatteBijlagen": [],
                 "onderwerp": "changed",
                 "plaatsgevondenOp": "2020-08-24T14:15:22Z",

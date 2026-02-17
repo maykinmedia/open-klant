@@ -11,6 +11,7 @@ class InterneTaakFactory(factory.django.DjangoModelFactory):
     uuid = factory.Faker("uuid4")
     klantcontact = factory.SubFactory(KlantcontactFactory)
     nummer = factory.Sequence(lambda n: str(n))
+    referentienummer = factory.Sequence(lambda n: str(n))
     gevraagde_handeling = factory.Faker("word")
     toelichting = factory.Faker("word")
     status = factory.fuzzy.FuzzyChoice(Taakstatus.values)
