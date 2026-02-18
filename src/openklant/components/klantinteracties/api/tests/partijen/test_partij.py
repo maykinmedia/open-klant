@@ -2302,6 +2302,134 @@ class PartijTests(APITestCase):
             received_adressen[0]["url"], f"http://testserver{expected_url}"
         )
 
+    def test_patch_requires_partij_identificatie_when_soortPartij_changes(self):
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
+
+        list_url = reverse("klantinteracties:partij-list")
+        create_data = {
+            "nummer": "1298329191",
+            "interneNotitie": "interneNotitie",
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "soortPartij": SoortPartij.persoon.value,
+            "voorkeurstaal": "ndl",
+            "indicatieActief": True,
+            "bezoekadres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
+                "land": "NL",
+            },
+            "correspondentieadres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
+                "land": "NL",
+            },
+            "partijIdentificatie": {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            },
+        }
+        response = self.client.post(list_url, create_data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.json()["soortPartij"], "persoon")
+        self.assertEqual(
+            response.json()["partijIdentificatie"],
+            {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                },
+                "volledigeNaam": "Phil Bozeman",
+            },
+        )
+
+        partij_uuid = response.json()["uuid"]
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": partij_uuid}
+        )
+
+        patch_data = {"soortPartij": SoortPartij.organisatie.value}
+        response = self.client.patch(detail_url, patch_data, format="json")
+        self.assertEqual(response.status_code, 400)
+        assert response.data["invalid_params"][0]["name"] == "partijIdentificatie"
+        self.assertEqual(
+            response.data["invalid_params"][0]["reason"],
+            "`partijIdentificatie` is required when `soortPartij` is set.",
+        )
+
+        patch_data["partijIdentificatie"] = {
+            "uuid": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+            "werkteVoorPartij": {"uuid": "095be615-a8ad-4c33-8e9c-c7612fbf6c9f"},
+            "contactnaam": {
+                "voorletters": "string",
+                "voornaam": "string",
+                "voorvoegselAchternaam": "string",
+                "achternaam": "string",
+            },
+        }
+        response = self.client.patch(detail_url, patch_data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_post_and_patch_with_wrong_partij_identificatie(self):
+        list_url = reverse("klantinteracties:partij-list")
+
+        post_data = {
+            "nummer": "12345",
+            "interneNotitie": "note",
+            "soortPartij": SoortPartij.persoon.value,
+            "voorkeurstaal": "ndl",
+            "indicatieActief": True,
+            "partijIdentificatie": {"contactnaam": {"wrong_field": "value"}},  # invalid
+        }
+
+        response = self.client.post(list_url, post_data, format="json")
+        assert response.status_code == 400
+        assert (
+            response.data["invalid_params"][0]["reason"]
+            == "Voor een persoon is `contactnaam` verplicht."
+        )
+        assert response.data["invalid_params"][0]["name"] == "partijIdentificatie"
+
+    def test_create_requires_partij_identificatie_when_soort_partij_is_set(self):
+        list_url = reverse("klantinteracties:partij-list")
+        data = {
+            "nummer": "123",
+            "soortPartij": SoortPartij.persoon.value,
+            "voorkeurstaal": "ndl",
+            "indicatieActief": True,
+        }
+
+        response = self.client.post(list_url, data, format="json")
+        assert response.status_code == 400
+        assert response.data["invalid_params"][0]["name"] == "partijIdentificatie"
+        assert (
+            response.data["invalid_params"][0]["reason"]
+            == "`partijIdentificatie` is required when `soortPartij` is set."
+        )
+
 
 class NestedPartijIdentificatorTests(APITestCase):
     list_url = reverse_lazy("klantinteracties:partij-list")
