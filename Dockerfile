@@ -52,7 +52,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         postgresql-client \
         gettext \
         libpcre2-8-0 \
-        binutils \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install pip "setuptools>=70.0.0"
