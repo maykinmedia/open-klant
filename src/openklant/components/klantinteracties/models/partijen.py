@@ -102,11 +102,8 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         verbose_name = _("partij")
         verbose_name_plural = _("partijen")
 
-    def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
-
     def __str__(self):
-        return self.nummer
+        return self.nummer if self.nummer else str(self.uuid)
 
 
 class Vertegenwoordigden(models.Model):

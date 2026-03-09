@@ -112,7 +112,11 @@ class InterneTaak(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.klantcontact} - ({self.nummer})"
+        return (
+            f"{self.klantcontact} - ({self.nummer})"
+            if self.nummer
+            else str(self.klantcontact)
+        )
 
 
 class InterneTakenActorenThoughModel(models.Model):
