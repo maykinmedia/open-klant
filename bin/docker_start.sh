@@ -28,6 +28,9 @@ export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-openklant}"
 >&2 echo "Apply database migrations"
 OTEL_SDK_DISABLED=True python src/manage.py migrate
 
+# Periodically recycle workers - recover memory in the event of memory leaks
+export UWSGI_MAX_REQUESTS=${UWSGI_MAX_REQUESTS:-1000}
+
 # Start server
 >&2 echo "Starting server"
 uwsgi \
