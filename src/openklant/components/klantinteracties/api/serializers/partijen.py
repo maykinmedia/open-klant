@@ -929,6 +929,21 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
 
         return partij
 
+    def validate(self, attrs):
+        soort = attrs.get("soort_partij") or getattr(
+            self.instance, "soort_partij", None
+        )
+        partij_identificatie = attrs.get("partij_identificatie")
+
+        if soort and not partij_identificatie:
+            raise serializers.ValidationError(
+                {
+                    "partijIdentificatie": "`partijIdentificatie` is required when `soortPartij` is set."
+                }
+            )
+
+        return super().validate(attrs)
+
 
 class VertegenwoordigdenSerializer(serializers.HyperlinkedModelSerializer):
     vertegenwoordigende_partij = PartijForeignKeySerializer(
