@@ -65,7 +65,6 @@ commonground-api-common==2.10.7
 cryptography==46.0.5
     # via
     #   django-simple-certmanager
-    #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
@@ -240,8 +239,6 @@ inflection==0.5.1
     # via drf-spectacular
 iso639-lang==2.6.0
     # via commonground-api-common
-josepy==1.14.0
-    # via mozilla-django-oidc
 jsonschema==4.23.0
     # via drf-spectacular
 jsonschema-specifications==2023.12.1
@@ -258,9 +255,9 @@ maykin-common==0.18.0
     # via -r requirements/base.in
 mdurl==0.1.2
     # via markdown-it-py
-mozilla-django-oidc==4.0.1
+mozilla-django-oidc==5.0.2
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==1.1.1
+mozilla-django-oidc-db==2.0.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
@@ -385,11 +382,10 @@ pygments==2.19.2
 pyjwt==2.10.1
     # via
     #   commonground-api-common
+    #   mozilla-django-oidc
     #   zgw-consumers
 pyopenssl==25.3.0
-    # via
-    #   josepy
-    #   webauthn
+    # via webauthn
 pypng==0.20220715.0
     # via qrcode
 python-dateutil==2.9.0.post0
