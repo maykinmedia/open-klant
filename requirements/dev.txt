@@ -182,7 +182,7 @@ dill==0.3.8
     #   pylint
 distlib==0.3.9
     # via virtualenv
-django==5.2.11
+django==5.2.12
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -575,7 +575,7 @@ lxml==5.2.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
-markdown==3.6
+markdown==3.10.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -854,7 +854,7 @@ pygments==2.19.2
     #   sphinx-tabs
 pygraphviz==1.14
     # via -r requirements/dev.in
-pyjwt==2.10.1
+pyjwt==2.12.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1112,7 +1112,7 @@ tomlkit==0.13.0
     #   -r requirements/ci.txt
     #   bump-my-version
     #   pylint
-tornado==6.5.1
+tornado==6.5.5
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
