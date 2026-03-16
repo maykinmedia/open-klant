@@ -480,8 +480,6 @@ kombu==5.5.2
     #   celery
 lxml==5.2.2
     # via pyquery
-markdown==3.10.2
-    # via sphinx-markdown-tables
 markdown-it-py==4.0.0
     # via
     #   -c requirements/base.txt
@@ -826,6 +824,8 @@ rich==14.2.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   typer
+roman-numerals==4.1.0
+    # via sphinx
 rpds-py==0.19.1
     # via
     #   -c requirements/base.txt
@@ -872,16 +872,14 @@ snowballstemmer==2.2.0
     # via sphinx
 soupsieve==2.5
     # via beautifulsoup4
-sphinx==7.4.7
+sphinx==9.1.0
     # via
     #   -r requirements/docs.in
     #   recommonmark
     #   sphinx-rtd-theme
     #   sphinx-tabs
     #   sphinxcontrib-jquery
-sphinx-markdown-tables==0.0.17
-    # via -r requirements/docs.in
-sphinx-rtd-theme==3.0.2
+sphinx-rtd-theme==3.1.0
     # via -r requirements/docs.in
 sphinx-tabs==3.4.7
     # via -r requirements/docs.in

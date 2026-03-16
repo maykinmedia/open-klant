@@ -51,7 +51,6 @@ extensions = [
     "vng_api_common.diagrams.uml_images",
     "sphinx_tabs.tabs",
     "recommonmark",
-    # "sphinx_markdown_tables",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
