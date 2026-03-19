@@ -2210,6 +2210,11 @@ paths:
           bij benadering het moment waarop informatie door gemeente verzonden of ontvangen
           werd.
       - in: query
+        name: reactie
+        schema:
+          type: string
+        description: Zoek klantcontacten met specifieke tekst in reactie.
+      - in: query
         name: referentienummer
         schema:
           type: string
@@ -5094,6 +5099,11 @@ components:
           type: string
           description: Informatie die tijdens het klantcontact werd overgebracht of
             uitgewisseld, voor zover die voor betrokkenen of actoren relevant is.
+            Via reactie kan optioneel het antwoord op de vraag worden opgeslagen.
+          maxLength: 1000
+        reactie:
+          type: string
+          description: De reactie die die tijdens het contact werdt gegeven
           maxLength: 1000
         indicatieContactGelukt:
           type: boolean
@@ -6442,6 +6452,11 @@ components:
           type: string
           description: Informatie die tijdens het klantcontact werd overgebracht of
             uitgewisseld, voor zover die voor betrokkenen of actoren relevant is.
+            Via reactie kan optioneel het antwoord op de vraag worden opgeslagen.
+          maxLength: 1000
+        reactie:
+          type: string
+          description: De reactie die die tijdens het contact werdt gegeven
           maxLength: 1000
         indicatieContactGelukt:
           type: boolean

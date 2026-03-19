@@ -63,8 +63,14 @@ class Klantcontact(APIMixin, models.Model):
         _("inhoud"),
         help_text=_(
             "Informatie die tijdens het klantcontact werd overgebracht of uitgewisseld, "
-            "voor zover die voor betrokkenen of actoren relevant is."
+            "voor zover die voor betrokkenen of actoren relevant is. Via reactie kan optioneel het antwoord op de vraag worden opgeslagen."
         ),
+        max_length=1000,
+        blank=True,
+    )
+    reactie = models.TextField(
+        _("Reactie"),
+        help_text=_("De reactie die die tijdens het contact werdt gegeven"),
         max_length=1000,
         blank=True,
     )

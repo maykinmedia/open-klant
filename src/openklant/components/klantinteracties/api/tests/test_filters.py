@@ -460,6 +460,36 @@ class KlantcontactFilterSetTests(APITestCase):
         self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
         self.assertEqual(error["reason"], ("Onbekende query parameters: invalid"))
 
+    def test_inhoud_filter(self):
+        KlantcontactFactory.create(inhoud="test")
+        klantcontact = KlantcontactFactory.create(inhoud="blabla")
+
+        response = self.client.get(
+            reverse(
+                "klantinteracties:klantcontact-list",
+            ),
+            {"inhoud": "bla"},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()["count"], 1)
+        self.assertEqual(response.json()["results"][0]["uuid"], str(klantcontact.uuid))
+
+    def test_reactie_filter(self):
+        KlantcontactFactory.create(reactie="test")
+        klantcontact = KlantcontactFactory.create(reactie="blabla")
+
+        response = self.client.get(
+            reverse(
+                "klantinteracties:klantcontact-list",
+            ),
+            {"reactie": "bla"},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()["count"], 1)
+        self.assertEqual(response.json()["results"][0]["uuid"], str(klantcontact.uuid))
+
 
 class BetrokkeneFilterSetTests(APITestCase):
     url = reverse("klantinteracties:betrokkene-list")
