@@ -725,7 +725,7 @@ pyjwt==2.12.1
     #   zgw-consumers
 pylint==3.2.6
     # via -r requirements/test-tools.in
-pyopenssl==25.3.0
+pyopenssl==26.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

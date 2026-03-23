@@ -854,7 +854,7 @@ pylint==3.2.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-pyopenssl==25.3.0
+pyopenssl==26.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

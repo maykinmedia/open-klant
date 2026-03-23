@@ -384,7 +384,7 @@ pyjwt==2.12.1
     #   commonground-api-common
     #   mozilla-django-oidc
     #   zgw-consumers
-pyopenssl==25.3.0
+pyopenssl==26.0.0
     # via webauthn
 pypng==0.20220715.0
     # via qrcode
