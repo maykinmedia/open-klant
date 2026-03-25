@@ -10,6 +10,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+# least privilege as default, should be overridden per job if necessary
+permissions:
+  contents: read
+
 env:
   IMAGE_NAME: maykinmedia/open-klant
   DJANGO_SETTINGS_MODULE: openklant.conf.ci
