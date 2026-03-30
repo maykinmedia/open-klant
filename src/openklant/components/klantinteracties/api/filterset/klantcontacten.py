@@ -75,6 +75,10 @@ class KlantcontactFilterSet(FilterSet):
         lookup_expr="icontains",
         help_text=_("Zoek klantcontacten met specifieke tekst in inhoud."),
     )
+    reactie = filters.CharFilter(
+        lookup_expr="icontains",
+        help_text=_("Zoek klantcontacten met specifieke tekst in reactie."),
+    )
     onderwerp = filters.CharFilter(
         lookup_expr="icontains",
         help_text=_("Zoek klantcontacten met specifieke tekst in onderwerp."),
@@ -110,6 +114,7 @@ class KlantcontactFilterSet(FilterSet):
             "kanaal",
             "onderwerp",
             "inhoud",
+            "reactie",
             "indicatie_contact_gelukt",
             "vertrouwelijk",
             "plaatsgevonden_op",

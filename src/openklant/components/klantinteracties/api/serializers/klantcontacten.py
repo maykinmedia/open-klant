@@ -330,6 +330,7 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             "kanaal",
             "onderwerp",
             "inhoud",
+            "reactie",
             "indicatie_contact_gelukt",
             "taal",
             "vertrouwelijk",
