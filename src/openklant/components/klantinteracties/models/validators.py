@@ -77,7 +77,7 @@ class PartijIdentificatorUniquenessValidator:
         Checking the case where the `partij_identificator` with a specific codeSoortObjectId
         doesn't have any other `partij_identificatoren` attached to it
         """
-        if self.instance.parent_partij_identificator.exists():
+        if self.instance.sub_partij_identificatoren.exists():
             raise ValidationError(
                 {
                     "partij_identificator_code_soort_object_id": _(
