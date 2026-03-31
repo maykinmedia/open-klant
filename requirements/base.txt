@@ -30,7 +30,7 @@ boltons==24.0.0
     # via
     #   face
     #   glom
-cbor2==5.8.0
+cbor2==5.9.0
     # via webauthn
 celery==5.5.3
     # via
@@ -60,9 +60,9 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.10.7
+commonground-api-common==2.12.0
     # via open-api-framework
-cryptography==46.0.5
+cryptography==46.0.6
     # via
     #   django-simple-certmanager
     #   mozilla-django-oidc
@@ -377,7 +377,7 @@ pydantic-core==2.27.1
     # via pydantic
 pydantic-settings==2.6.1
     # via django-setup-configuration
-pygments==2.19.2
+pygments==2.20.0
     # via rich
 pyjwt==2.12.1
     # via
@@ -419,7 +419,7 @@ referencing==0.35.1
     # via
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.4
+requests==2.33.1
     # via
     #   ape-pie
     #   commonground-api-common
