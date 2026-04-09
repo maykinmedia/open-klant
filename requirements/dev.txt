@@ -161,7 +161,7 @@ coverage==7.7.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   codecov
-cryptography==46.0.6
+cryptography==46.0.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -181,7 +181,7 @@ dill==0.3.8
     #   pylint
 distlib==0.3.9
     # via virtualenv
-django==5.2.12
+django==5.2.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
