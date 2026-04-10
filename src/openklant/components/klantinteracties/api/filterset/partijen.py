@@ -60,6 +60,46 @@ class PartijFilterSet(FilterSet):
         help_text=_("Zoek partij object op basis van categorie namen."),
         method="filter_categorierelatie_categorie_naam",
     )
+    sub_identificator_van__object_id = filters.CharFilter(
+        help_text=_(
+            "Zoek partij object op basis van het ``subIdentificatorVan`` object ID. "
+            "Deze parameter kan gecombineerd worden met de ``partijIdentificator__`` "
+            "parameters om een specifieke vestiging te vinden, door bij ``partijIdentificator__`` "
+            "de vestigingspecifieke informatie mee te geven en bij ``subIdentificatorVan__`` "
+            "de informatie van de rechtspersoon waaraan deze vestiging gekoppeld is."
+        ),
+        method="filter_sub_identificator_object_id",
+    )
+    sub_identificator_van__code_objecttype = filters.CharFilter(
+        help_text=_(
+            "Zoek partij object op basis van het ``subIdentificatorVan`` objecttype. "
+            "Deze parameter kan gecombineerd worden met de ``partijIdentificator__`` "
+            "parameters om een specifieke vestiging te vinden, door bij ``partijIdentificator__`` "
+            "de vestigingspecifieke informatie mee te geven en bij ``subIdentificatorVan__`` "
+            "de informatie van de rechtspersoon waaraan deze vestiging gekoppeld is."
+        ),
+        method="filter_sub_identificator_code_objecttype",
+    )
+    sub_identificator_van__code_soort_object_id = filters.CharFilter(
+        help_text=_(
+            "Zoek partij object op basis van het ``subIdentificatorVan`` soort object ID. "
+            "Deze parameter kan gecombineerd worden met de ``partijIdentificator__`` "
+            "parameters om een specifieke vestiging te vinden, door bij ``partijIdentificator__`` "
+            "de vestigingspecifieke informatie mee te geven en bij ``subIdentificatorVan__`` "
+            "de informatie van de rechtspersoon waaraan deze vestiging gekoppeld is."
+        ),
+        method="filter_sub_identificator_code_soort_object_id",
+    )
+    sub_identificator_van__code_register = filters.CharFilter(
+        help_text=_(
+            "Zoek partij object op basis van het ``subIdentificatorVan`` register. "
+            "Deze parameter kan gecombineerd worden met de ``partijIdentificator__`` "
+            "parameters om een specifieke vestiging te vinden, door bij ``partijIdentificator__`` "
+            "de vestigingspecifieke informatie mee te geven en bij ``subIdentificatorVan__`` "
+            "de informatie van de rechtspersoon waaraan deze vestiging gekoppeld is."
+        ),
+        method="filter_sub_identificator_code_register",
+    )
 
     expand = ExpandFilter(serializer_class=PartijSerializer)
 
@@ -72,6 +112,10 @@ class PartijFilterSet(FilterSet):
             "partij_identificator__code_soort_object_id",
             "partij_identificator__object_id",
             "partij_identificator__code_register",
+            "sub_identificator_van__code_objecttype",
+            "sub_identificator_van__code_soort_object_id",
+            "sub_identificator_van__object_id",
+            "sub_identificator_van__code_register",
             "categorierelatie__categorie__naam",
             "nummer",
             "indicatie_geheimhouding",
@@ -127,6 +171,38 @@ class PartijFilterSet(FilterSet):
             return queryset.filter(
                 categorierelatie__categorie__naam__in=categorie_namen
             )
+        except ValueError:
+            return queryset.none()
+
+    def filter_sub_identificator_object_id(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partijidentificator__sub_identificator_van__partij_identificator_object_id=value
+            ).distinct()
+        except ValueError:
+            return queryset.none()
+
+    def filter_sub_identificator_code_objecttype(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partijidentificator__sub_identificator_van__partij_identificator_code_objecttype=value
+            ).distinct()
+        except ValueError:
+            return queryset.none()
+
+    def filter_sub_identificator_code_soort_object_id(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partijidentificator__sub_identificator_van__partij_identificator_code_soort_object_id=value
+            ).distinct()
+        except ValueError:
+            return queryset.none()
+
+    def filter_sub_identificator_code_register(self, queryset, name, value):
+        try:
+            return queryset.filter(
+                partijidentificator__sub_identificator_van__partij_identificator_code_register=value
+            ).distinct()
         except ValueError:
             return queryset.none()
 

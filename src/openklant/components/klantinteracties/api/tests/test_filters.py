@@ -1321,6 +1321,202 @@ class PartijFilterSetTests(APITestCase):
         self.assertEqual(error["code"], UNKNOWN_PARAMETERS_CODE)
         self.assertEqual(error["reason"], ("Onbekende query parameters: invalid"))
 
+    def test_filter_by_vestigingsnummer_and_kvk_returns_correct_partij(self):
+        company_a, company_b = PartijFactory.create_batch(2)
+
+        kvk_a = PartijIdentificatorFactory.create(
+            partij=company_a,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="kvk_nummer",
+            partij_identificator_object_id="12345678",
+        )
+
+        kvk_b = PartijIdentificatorFactory.create(
+            partij=company_b,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="kvk_nummer",
+            partij_identificator_object_id="87654321",
+        )
+
+        vestiging_a = PartijFactory.create()
+        vestiging_b = PartijFactory.create()
+
+        PartijIdentificatorFactory.create(
+            partij=vestiging_a,
+            sub_identificator_van=kvk_a,
+            partij_identificator_code_objecttype="vestiging",
+            partij_identificator_code_soort_object_id="vestigingsnummer",
+            partij_identificator_object_id="000012345678",
+        )
+
+        PartijIdentificatorFactory.create(
+            partij=vestiging_b,
+            sub_identificator_van=kvk_b,
+            partij_identificator_code_objecttype="vestiging",
+            partij_identificator_code_soort_object_id="vestigingsnummer",
+            partij_identificator_object_id="000012345678",
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "subIdentificatorVan__objectId": "12345678",
+                "partijIdentificator__objectId": "000012345678",
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(vestiging_a.uuid), data[0]["uuid"])
+
+    def test_filter_only_by_vestigingsnummer_returns_multiple(self):
+        company_a, company_b = PartijFactory.create_batch(2)
+
+        kvk_a = PartijIdentificatorFactory.create(
+            partij=company_a,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="kvk_nummer",
+            partij_identificator_object_id="12345678",
+        )
+
+        kvk_b = PartijIdentificatorFactory.create(
+            partij=company_b,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="kvk_nummer",
+            partij_identificator_object_id="87654321",
+        )
+
+        vestiging_a = PartijFactory.create()
+        vestiging_b = PartijFactory.create()
+
+        PartijIdentificatorFactory.create(
+            partij=vestiging_a,
+            sub_identificator_van=kvk_a,
+            partij_identificator_code_objecttype="vestiging",
+            partij_identificator_code_soort_object_id="vestigingsnummer",
+            partij_identificator_object_id="000012345678",
+        )
+
+        PartijIdentificatorFactory.create(
+            partij=vestiging_b,
+            sub_identificator_van=kvk_b,
+            partij_identificator_code_objecttype="vestiging",
+            partij_identificator_code_soort_object_id="vestigingsnummer",
+            partij_identificator_object_id="000012345678",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"partijIdentificator__objectId": "000012345678"},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(2, len(data))
+        self.assertEqual(data[0]["uuid"], str(vestiging_b.uuid))
+        self.assertEqual(data[1]["uuid"], str(vestiging_a.uuid))
+
+    def test_filter_by_sub_identificator_code_objecttype(self):
+        company = PartijFactory.create()
+
+        kvk = PartijIdentificatorFactory.create(
+            partij=company,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="kvk_nummer",
+            partij_identificator_object_id="12345678",
+        )
+
+        vestiging = PartijFactory.create()
+
+        PartijIdentificatorFactory.create(
+            partij=vestiging,
+            sub_identificator_van=kvk,
+            partij_identificator_code_objecttype="vestiging",
+            partij_identificator_code_soort_object_id="vestigingsnummer",
+            partij_identificator_object_id="000012345678",
+        )
+
+        response = self.client.get(
+            self.url, {"subIdentificatorVan__codeObjecttype": "niet_natuurlijk_persoon"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(vestiging.uuid), data[0]["uuid"])
+
+    def test_filter_by_sub_identificator_code_soort_object_id(self):
+        company = PartijFactory.create()
+
+        kvk = PartijIdentificatorFactory.create(
+            partij=company,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="kvk_nummer",
+            partij_identificator_object_id="12345678",
+        )
+
+        vestiging = PartijFactory.create()
+
+        PartijIdentificatorFactory.create(
+            partij=vestiging,
+            sub_identificator_van=kvk,
+            partij_identificator_code_objecttype="vestiging",
+            partij_identificator_code_soort_object_id="vestigingsnummer",
+            partij_identificator_object_id="000012345678",
+        )
+
+        response = self.client.get(
+            self.url, {"subIdentificatorVan__codeSoortObjectId": "kvk_nummer"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(vestiging.uuid), data[0]["uuid"])
+
+    def test_filter_by_sub_identificator_code_register(self):
+        company = PartijFactory.create()
+
+        kvk = PartijIdentificatorFactory.create(
+            partij=company,
+            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_soort_object_id="kvk_nummer",
+            partij_identificator_object_id="12345678",
+            partij_identificator_code_register="hr",
+        )
+
+        vestiging = PartijFactory.create()
+
+        PartijIdentificatorFactory.create(
+            partij=vestiging,
+            sub_identificator_van=kvk,
+            partij_identificator_code_objecttype="vestiging",
+            partij_identificator_code_soort_object_id="vestigingsnummer",
+            partij_identificator_object_id="000012345678",
+            partij_identificator_code_register="hr",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"subIdentificatorVan__codeRegister": "hr"},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(vestiging.uuid), data[0]["uuid"])
+
 
 class CategorieRelatieFiltersetTests(APITestCase):
     url = reverse("klantinteracties:categorierelatie-list")

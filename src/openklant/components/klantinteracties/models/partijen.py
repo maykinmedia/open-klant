@@ -316,7 +316,7 @@ class PartijIdentificator(models.Model):
         ),
         blank=True,
         null=True,
-        related_name="parent_partij_identificator",
+        related_name="sub_partij_identificatoren",
     )
     partij = models.ForeignKey(
         Partij,

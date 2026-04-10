@@ -3119,6 +3119,42 @@ paths:
           Geeft aan van welke specifieke soort partij sprake is.
 
       - in: query
+        name: subIdentificatorVan__codeObjecttype
+        schema:
+          type: string
+        description: Zoek partij object op basis van het ``subIdentificatorVan`` objecttype.
+          Deze parameter kan gecombineerd worden met de ``partijIdentificator__``
+          parameters om een specifieke vestiging te vinden, door bij ``partijIdentificator__``
+          de vestigingspecifieke informatie mee te geven en bij ``subIdentificatorVan__``
+          de informatie van de rechtspersoon waaraan deze vestiging gekoppeld is.
+      - in: query
+        name: subIdentificatorVan__codeRegister
+        schema:
+          type: string
+        description: Zoek partij object op basis van het ``subIdentificatorVan`` register.
+          Deze parameter kan gecombineerd worden met de ``partijIdentificator__``
+          parameters om een specifieke vestiging te vinden, door bij ``partijIdentificator__``
+          de vestigingspecifieke informatie mee te geven en bij ``subIdentificatorVan__``
+          de informatie van de rechtspersoon waaraan deze vestiging gekoppeld is.
+      - in: query
+        name: subIdentificatorVan__codeSoortObjectId
+        schema:
+          type: string
+        description: Zoek partij object op basis van het ``subIdentificatorVan`` soort
+          object ID. Deze parameter kan gecombineerd worden met de ``partijIdentificator__``
+          parameters om een specifieke vestiging te vinden, door bij ``partijIdentificator__``
+          de vestigingspecifieke informatie mee te geven en bij ``subIdentificatorVan__``
+          de informatie van de rechtspersoon waaraan deze vestiging gekoppeld is.
+      - in: query
+        name: subIdentificatorVan__objectId
+        schema:
+          type: string
+        description: Zoek partij object op basis van het ``subIdentificatorVan`` object
+          ID. Deze parameter kan gecombineerd worden met de ``partijIdentificator__``
+          parameters om een specifieke vestiging te vinden, door bij ``partijIdentificator__``
+          de vestigingspecifieke informatie mee te geven en bij ``subIdentificatorVan__``
+          de informatie van de rechtspersoon waaraan deze vestiging gekoppeld is.
+      - in: query
         name: vertegenwoordigdePartij__url
         schema:
           type: string
