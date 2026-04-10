@@ -2,6 +2,56 @@
 Change history
 ==============
 
+2.16.0
+======
+*April 10, 2026*
+
+**New features**
+
+* [:open-klant:`422`] Implement **health checks** to monitor the status of each Docker container: ``web``, ``Celery worker``, ``Celery Flower``, ``postgres``
+  and ``redis``. See :ref:`installation_health_checks` for more information.
+
+* [:open-klant:`525`] The fields ``InterneTaak.nummer``, ``Klantcontact.nummer``, and ``Partij.nummer`` have been deprecated,
+  and the autogeneration of ``nummer`` has been removed. New fields ``InterneTaak.referentienummer`` and ``Klantcontact.referentienummer``
+  have been introduced and can be used to store references if needed.
+
+* [:open-klant:`529`] Add additional filtering parameters for the ``subIdentificatorVan`` relationship field on the ``/partijen`` endpoint:
+
+    * ``subIdentificatorVan__objectId``
+    * ``subIdentificatorVan__codeObjecttype``
+    * ``subIdentificatorVan__codeSoortObjectId``
+    * ``subIdentificatorVan__codeRegister``
+
+* [:open-klant:`554`] Add new JSONField ``metadata`` for management information in Klantcontact
+
+* [:open-klant:`575`] Add new TextField ``reactie`` for additional details in Klantcontact
+
+
+**Maintenance**
+
+* [:open-api-framework:`211`] Optimize memory usage for uWSGI and celery-flower
+
+  * Make sure uWSGI workers restart after 1000 requests
+  * Set ``FLOWER_MAX_TASKS=1000`` and ``FLOWER_MAX_WORKERS=50``
+
+* Remove unnecessary dev packages from docker build
+
+* Upgrade python dependencies
+
+    * ``django`` to 5.2.13
+    * ``maykin-common`` to 0.18.0
+    * ``commonground-api-common`` to 2.12.0
+    * ``mozilla-django-oidc-db`` to 2.0.1
+    * ``cbor2`` to 5.9.0
+    * ``cryptography`` to 46.0.7
+    * ``requests`` to 2.33.1
+    * ``sphinx`` to 9.1.0
+
+**Documentation**
+
+* [:open-api-framework:`197`] Document versioning policy and supported versions. See :ref:`versioning_policy` for more details.
+* [:open-api-framework:`213`] Apply consistent styling across documentation
+
 2.15.0
 ======
 *February 6, 2026*
