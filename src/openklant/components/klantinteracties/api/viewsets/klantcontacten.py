@@ -636,6 +636,7 @@ class BijlageViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
         "bijlageidentificator_code_objecttype",
         "bijlageidentificator_code_register",
         "bijlageidentificator_code_soort_object_id",
+        "klantcontact__uuid",
     ]
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
