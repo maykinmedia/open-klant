@@ -379,12 +379,6 @@ class PartijIdentificator(models.Model):
             "object_id": partij_identificator_object_id,
             "code_register": partij_identificator_code_register,
         },
-        optional=(
-            "code_objecttype",
-            "code_soort_object_id",
-            "object_id",
-            "code_register",
-        ),
     )
 
     class Meta:

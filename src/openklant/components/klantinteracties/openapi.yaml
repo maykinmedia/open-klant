@@ -4546,9 +4546,6 @@ components:
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''Burgerservicenummer''.'
           maxLength: 200
-    BlankEnum:
-      enum:
-      - ''
     Categorie:
       type: object
       description: 'Let op: Dit endpoint is EXPERIMENTEEL.'
@@ -6039,30 +6036,27 @@ components:
       type: object
       properties:
         codeObjecttype:
+          allOf:
+          - $ref: '#/components/schemas/CodeObjecttypeEnum'
           title: Objecttype
           description: 'Type van het object, bijvoorbeeld: ''natuurlijk_persoon''.'
-          oneOf:
-          - $ref: '#/components/schemas/CodeObjecttypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
         codeSoortObjectId:
+          allOf:
+          - $ref: '#/components/schemas/CodeSoortObjectIdEnum'
           title: Soort object ID
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''bsn''.'
-          oneOf:
-          - $ref: '#/components/schemas/CodeSoortObjectIdEnum'
-          - $ref: '#/components/schemas/BlankEnum'
         objectId:
           type: string
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
             ''123456788''.'
           maxLength: 200
         codeRegister:
+          allOf:
+          - $ref: '#/components/schemas/CodeRegisterEnum'
           title: Register
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
-          oneOf:
-          - $ref: '#/components/schemas/CodeRegisterEnum'
-          - $ref: '#/components/schemas/BlankEnum'
       required:
       - codeObjecttype
       - codeRegister

@@ -3334,7 +3334,7 @@ class NestedPartijIdentificatorTests(APITestCase):
             )
         with self.subTest("invalid_patch_empty_dict"):
             response = self.client.patch(detail_url, data)
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         data = {
             "partijIdentificatoren": [
