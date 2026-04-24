@@ -2828,6 +2828,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PartijIdentificator'
+        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2892,6 +2893,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PartijIdentificator'
+        required: true
       security:
       - tokenAuth: []
       responses:
@@ -6003,7 +6005,6 @@ components:
         partijIdentificator:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorGroepType'
-          nullable: true
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
         subIdentificatorVan:
@@ -6015,6 +6016,7 @@ components:
             the child identificator could specify a vestigingsnummer that is unique
             for the KVK number).
       required:
+      - partijIdentificator
       - url
     PartijIdentificatorForeignkey:
       type: object
@@ -6601,7 +6603,6 @@ components:
         partijIdentificator:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorGroepType'
-          nullable: true
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
         subIdentificatorVan:

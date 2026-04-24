@@ -386,6 +386,21 @@ class PartijIdentificatorGroepTypeSerializer(GegevensGroepSerializer):
         }
         validators = []
 
+    def validate(self, attrs):
+        values = [
+            attrs.get("code_objecttype"),
+            attrs.get("code_soort_object_id"),
+            attrs.get("object_id"),
+            attrs.get("code_register"),
+        ]
+
+        if not all(values):
+            raise serializers.ValidationError(
+                "PartijIdentificator mag geen lege waarden bevatten."
+            )
+
+        return attrs
+
 
 @extend_schema_serializer(deprecate_fields=["andere_partij_identificator"])
 class PartijIdentificatorSerializer(
@@ -398,8 +413,6 @@ class PartijIdentificatorSerializer(
         source="partij",
     )
     partij_identificator = PartijIdentificatorGroepTypeSerializer(
-        required=False,
-        allow_null=True,
         help_text=_(
             "Gegevens die een partij in een basisregistratie "
             "of ander extern register uniek identificeren."
