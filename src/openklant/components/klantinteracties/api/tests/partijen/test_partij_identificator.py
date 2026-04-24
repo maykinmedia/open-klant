@@ -237,7 +237,20 @@ class PartijIdentificatorTests(APITestCase):
             "klantinteracties:partijidentificator-detail",
             kwargs={"uuid": str(partij_identificator.uuid)},
         )
-        response = self.client.put(detail_url, {})
+
+        data = {
+            "identificeerdePartij": {"uuid": str(partij.uuid)},
+            "anderePartijIdentificator": "anderePartijIdentificator",
+            "partijIdentificator": {
+                "codeObjecttype": "natuurlijk_persoon",
+                "codeSoortObjectId": "bsn",
+                "objectId": "296648875",
+                "codeRegister": "brp",
+            },
+            "subIdentificatorVan": None,
+        }
+
+        response = self.client.put(detail_url, data)
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data["identificeerdePartij"]["uuid"], str(partij.uuid))
@@ -380,6 +393,32 @@ class PartijIdentificatorTests(APITestCase):
         get_validation_errors(response, "partijIdentificator.codeSoortObjectId")
         get_validation_errors(response, "partijIdentificator.codeObjecttype")
         get_validation_errors(response, "partijIdentificator.codeRegister")
+
+    def test_create_empty_partij_identificator_is_rejected(self):
+        list_url = reverse("klantinteracties:partijidentificator-list")
+
+        response = self.client.post(list_url, {})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.assertEqual(PartijIdentificator.objects.count(), 0)
+
+    def test_create_partial_partij_identificator_is_rejected(self):
+        list_url = reverse("klantinteracties:partijidentificator-list")
+
+        data = {
+            "partij_identificator": {
+                "code_objecttype": "",
+                "code_soort_object_id": "",
+                "object_id": "",
+                "code_register": "",
+            }
+        }
+
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(PartijIdentificator.objects.count(), 0)
 
     def test_invalid_create_partial_partij_identificator(self):
         # all partij_identificator fields required
