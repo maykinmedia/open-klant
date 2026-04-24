@@ -286,16 +286,14 @@ class Bijlage(APIMixin, models.Model):
     bijlageidentificator_object_id = models.CharField(
         _("object ID"),
         help_text=_(
-            "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '123456788'."
+            "Waarde van de eigenschap die het object identificeert, bijvoorbeeld: '9193b03f-93c2-4bfc-badf-b61494bd31d6'."
         ),
         max_length=200,
         blank=True,
     )
     bijlageidentificator_code_objecttype = models.CharField(
         _("code objecttype"),
-        help_text=_(
-            "Type van het object, bijvoorbeeld: 'INGESCHREVEN NATUURLIJK PERSOON'."
-        ),
+        help_text=_("Type van het object, bijvoorbeeld: 'DOCUMENT'."),
         max_length=200,
         blank=True,
     )
@@ -303,7 +301,7 @@ class Bijlage(APIMixin, models.Model):
         _("code register"),
         help_text=_(
             "Binnen het landschap van registers unieke omschrijving van het register waarin "
-            "het object is geregistreerd, bijvoorbeeld: 'BRP'."
+            "het object is geregistreerd, bijvoorbeeld: 'open-zaak'."
         ),
         max_length=200,
         blank=True,
@@ -311,7 +309,7 @@ class Bijlage(APIMixin, models.Model):
     bijlageidentificator_code_soort_object_id = models.CharField(
         _("code soort object ID"),
         help_text=_(
-            "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'Burgerservicenummer'."
+            "Naam van de eigenschap die het object identificeert, bijvoorbeeld: 'uuid'."
         ),
         max_length=200,
         blank=True,

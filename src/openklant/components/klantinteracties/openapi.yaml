@@ -804,26 +804,31 @@ paths:
         name: bijlageidentificatorCodeObjecttype
         schema:
           type: string
-        description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-          PERSOON''.'
+        description: 'Type van het object, bijvoorbeeld: ''DOCUMENT''.'
       - in: query
         name: bijlageidentificatorCodeRegister
         schema:
           type: string
         description: 'Binnen het landschap van registers unieke omschrijving van het
-          register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+          register waarin het object is geregistreerd, bijvoorbeeld: ''open-zaak''.'
       - in: query
         name: bijlageidentificatorCodeSoortObjectId
         schema:
           type: string
         description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-          ''Burgerservicenummer''.'
+          ''uuid''.'
       - in: query
         name: bijlageidentificatorObjectId
         schema:
           type: string
         description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
-          ''123456788''.'
+          ''9193b03f-93c2-4bfc-badf-b61494bd31d6''.'
+      - in: query
+        name: klantcontact__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unieke (technische) identificatiecode van de betrokkene bij klantcontact.
       - name: page
         required: false
         in: query
@@ -4527,22 +4532,21 @@ components:
         objectId:
           type: string
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''123456788''.'
+            ''9193b03f-93c2-4bfc-badf-b61494bd31d6''.'
           maxLength: 200
         codeObjecttype:
           type: string
-          description: 'Type van het object, bijvoorbeeld: ''INGESCHREVEN NATUURLIJK
-            PERSOON''.'
+          description: 'Type van het object, bijvoorbeeld: ''DOCUMENT''.'
           maxLength: 200
         codeRegister:
           type: string
           description: 'Binnen het landschap van registers unieke omschrijving van
-            het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
+            het register waarin het object is geregistreerd, bijvoorbeeld: ''open-zaak''.'
           maxLength: 200
         codeSoortObjectId:
           type: string
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
-            ''Burgerservicenummer''.'
+            ''uuid''.'
           maxLength: 200
     BlankEnum:
       enum:

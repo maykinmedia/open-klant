@@ -1283,6 +1283,65 @@ class BijlageTests(APITestCase):
         data = response.json()
         self.assertEqual(data["count"], 0)
 
+    def test_filter_bijlage_by_all_identificator_fields(self):
+        list_url = reverse("klantinteracties:bijlage-list")
+
+        obj = BijlageFactory.create(
+            bijlageidentificator_code_objecttype="typeA",
+            bijlageidentificator_code_soort_object_id="soortA",
+            bijlageidentificator_object_id="idA",
+            bijlageidentificator_code_register="regA",
+        )
+        BijlageFactory.create(
+            bijlageidentificator_code_objecttype="typeB",
+            bijlageidentificator_code_soort_object_id="soortB",
+            bijlageidentificator_object_id="idB",
+            bijlageidentificator_code_register="regB",
+        )
+
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 2)
+
+        filters = {
+            "bijlageidentificatorCodeObjecttype": "typeA",
+            "bijlageidentificatorCodeSoortObjectId": "soortA",
+            "bijlageidentificatorObjectId": "idA",
+            "bijlageidentificatorCodeRegister": "regA",
+        }
+
+        for key, value in filters.items():
+            with self.subTest(f"Filter by {key}={value}"):
+                response = self.client.get(list_url, {key: value})
+                self.assertEqual(
+                    response.status_code, status.HTTP_200_OK, response.data
+                )
+                data = response.json()
+                self.assertEqual(len(data["results"]), 1)
+                self.assertEqual(data["results"][0]["uuid"], str(obj.uuid))
+
+        with self.subTest("Filter with no match"):
+            response = self.client.get(
+                list_url, {"bijlageidentificatorCodeObjecttype": "typeC"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 0)
+
+    def test_filter_bijlage_by_klantcontact_uuid(self):
+        list_url = reverse("klantinteracties:bijlage-list")
+
+        obj = BijlageFactory.create()
+        BijlageFactory.create()
+
+        response = self.client.get(
+            list_url, {"klantcontact__uuid": str(obj.klantcontact.uuid)}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(len(data["results"]), 1)
+        self.assertEqual(data["results"][0]["uuid"], str(obj.uuid))
+
 
 class OnderwerpobjectTests(APITestCase):
     def test_list_onderwerpobject(self):
