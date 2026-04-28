@@ -398,6 +398,8 @@ class PartijIdentificatorSerializer(
         source="partij",
     )
     partij_identificator = PartijIdentificatorGroepTypeSerializer(
+        required=True,
+        allow_null=False,
         help_text=_(
             "Gegevens die een partij in een basisregistratie "
             "of ander extern register uniek identificeren."
