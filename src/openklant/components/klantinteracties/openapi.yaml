@@ -2833,6 +2833,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PartijIdentificator'
+        required: true
       security:
       - tokenAuth: []
       responses:
@@ -2897,6 +2898,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PartijIdentificator'
+        required: true
       security:
       - tokenAuth: []
       responses:
@@ -4548,9 +4550,6 @@ components:
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''uuid''.'
           maxLength: 200
-    BlankEnum:
-      enum:
-      - ''
     Categorie:
       type: object
       description: 'Let op: Dit endpoint is EXPERIMENTEEL.'
@@ -6007,7 +6006,6 @@ components:
         partijIdentificator:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorGroepType'
-          nullable: true
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
         subIdentificatorVan:
@@ -6019,6 +6017,7 @@ components:
             the child identificator could specify a vestigingsnummer that is unique
             for the KVK number).
       required:
+      - partijIdentificator
       - url
     PartijIdentificatorForeignkey:
       type: object
@@ -6041,30 +6040,27 @@ components:
       type: object
       properties:
         codeObjecttype:
+          allOf:
+          - $ref: '#/components/schemas/CodeObjecttypeEnum'
           title: Objecttype
           description: 'Type van het object, bijvoorbeeld: ''natuurlijk_persoon''.'
-          oneOf:
-          - $ref: '#/components/schemas/CodeObjecttypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
         codeSoortObjectId:
+          allOf:
+          - $ref: '#/components/schemas/CodeSoortObjectIdEnum'
           title: Soort object ID
           description: 'Naam van de eigenschap die het object identificeert, bijvoorbeeld:
             ''bsn''.'
-          oneOf:
-          - $ref: '#/components/schemas/CodeSoortObjectIdEnum'
-          - $ref: '#/components/schemas/BlankEnum'
         objectId:
           type: string
           description: 'Waarde van de eigenschap die het object identificeert, bijvoorbeeld:
             ''123456788''.'
           maxLength: 200
         codeRegister:
+          allOf:
+          - $ref: '#/components/schemas/CodeRegisterEnum'
           title: Register
           description: 'Binnen het landschap van registers unieke omschrijving van
             het register waarin het object is geregistreerd, bijvoorbeeld: ''BRP''.'
-          oneOf:
-          - $ref: '#/components/schemas/CodeRegisterEnum'
-          - $ref: '#/components/schemas/BlankEnum'
       required:
       - codeObjecttype
       - codeRegister
@@ -6605,7 +6601,6 @@ components:
         partijIdentificator:
           allOf:
           - $ref: '#/components/schemas/PartijIdentificatorGroepType'
-          nullable: true
           description: Gegevens die een partij in een basisregistratie of ander extern
             register uniek identificeren.
         subIdentificatorVan:

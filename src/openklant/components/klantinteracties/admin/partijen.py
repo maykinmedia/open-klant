@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
@@ -83,12 +84,30 @@ class PartijAdminForm(forms.ModelForm):
 
 
 class PartijIdentificatorAdminForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["partij_identificator_code_objecttype"].required = True
+        self.fields["partij_identificator_code_soort_object_id"].required = True
+        self.fields["partij_identificator_object_id"].required = True
+        self.fields["partij_identificator_code_register"].required = True
+
     class Meta:
         model = PartijIdentificator
         fields = "__all__"
 
     def clean(self):
         cleaned_data = super().clean()
+
+        values = [
+            cleaned_data.get("partij_identificator_code_objecttype"),
+            cleaned_data.get("partij_identificator_code_soort_object_id"),
+            cleaned_data.get("partij_identificator_object_id"),
+            cleaned_data.get("partij_identificator_code_register"),
+        ]
+
+        if not all(values):
+            raise ValidationError("PartijIdentificator moet volledig gevuld zijn.")
+
         PartijIdentificatorTypesValidator()(
             code_register=cleaned_data["partij_identificator_code_register"],
             code_objecttype=cleaned_data["partij_identificator_code_objecttype"],
@@ -307,6 +326,8 @@ class CategorieAdmin(admin.ModelAdmin):
 
 @admin.register(PartijIdentificator)
 class PartijIdentificatorAdmin(admin.ModelAdmin):
+    form = PartijIdentificatorAdminForm
+
     readonly_fields = ("uuid",)
     search_fields = (
         "uuid",
