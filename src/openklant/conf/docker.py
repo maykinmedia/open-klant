@@ -1,11 +1,11 @@
 import os
 
-from open_api_framework.conf.utils import config
+from maykin_common.config import config
 
-os.environ.setdefault("DB_USER", config("DATABASE_USER", "openklant"))
-os.environ.setdefault("DB_NAME", config("DATABASE_NAME", "openklant"))
-os.environ.setdefault("DB_PASSWORD", config("DATABASE_PASSWORD", ""))
-os.environ.setdefault("DB_HOST", config("DATABASE_HOST", "db"))
+os.environ.setdefault("DB_USER", config("DATABASE_USER", default="openklant"))
+os.environ.setdefault("DB_NAME", config("DATABASE_NAME", default="openklant"))
+os.environ.setdefault("DB_PASSWORD", config("DATABASE_PASSWORD", default=""))
+os.environ.setdefault("DB_HOST", config("DATABASE_HOST", default="db"))
 os.environ.setdefault("DB_CONN_MAX_AGE", "60")
 
 os.environ.setdefault("ENVIRONMENT", "docker")
