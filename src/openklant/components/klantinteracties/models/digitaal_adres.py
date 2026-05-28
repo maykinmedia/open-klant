@@ -47,7 +47,11 @@ class DigitaalAdres(APIMixin, models.Model):
     is_standaard_adres = models.BooleanField(
         _("Is standaard adres"),
         help_text=_(
-            "Geeft aan of dit digitaal adres het standaard adres is voor het `soortDigitaalAdres`"
+            "Geeft aan of dit digitaal adres het standaard adres is voor het `soortDigitaalAdres` "
+            "voor de deze `partij`. Per `partij` en `soortDigitaalAdres` kan er maar één "
+            "standaard adres zijn, zodra een ander adres gemarkeerd wordt met `isStandaardAdres=true` "
+            "wordt `isStandaardAdres=false` gezet voor alle andere adressen met dezelfde `partij` "
+            "en `soortDigitaalAdres`."
         ),
         default=False,
     )
