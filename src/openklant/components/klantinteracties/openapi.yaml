@@ -4809,7 +4809,7 @@ components:
             \ ter validatie: `^(0[1-9][0-9]{8}|\\+[0-9]{9,15}|00[0-9]{7,13})$`. \n\
             \ * Toegestaan:\n   * Lokaal: 0612345678 of 0201234567\n   * Internationaal\
             \ met '+': +31612345678\n   * Internationaal met '00': 0031612345678\n\
-            \ * Niet toegestaan:\n   * 0800, 0900, 088, 1400, 140xx."
+            \ * Niet toegestaan:\n   * 0800, 0900, 1400, 140xx."
           maxLength: 80
         soortDigitaalAdres:
           allOf:
@@ -6320,7 +6320,7 @@ components:
             \ ter validatie: `^(0[1-9][0-9]{8}|\\+[0-9]{9,15}|00[0-9]{7,13})$`. \n\
             \ * Toegestaan:\n   * Lokaal: 0612345678 of 0201234567\n   * Internationaal\
             \ met '+': +31612345678\n   * Internationaal met '00': 0031612345678\n\
-            \ * Niet toegestaan:\n   * 0800, 0900, 088, 1400, 140xx."
+            \ * Niet toegestaan:\n   * 0800, 0900, 1400, 140xx."
           maxLength: 80
         soortDigitaalAdres:
           allOf:
