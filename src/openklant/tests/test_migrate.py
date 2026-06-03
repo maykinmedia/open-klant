@@ -571,7 +571,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(digitaal_adres.partij, partij)
         self.assertIsNone(digitaal_adres.betrokkene)
         self.assertEqual(digitaal_adres.soort_digitaal_adres, SoortDigitaalAdres.email)
-        self.assertEqual(digitaal_adres.adres, "example@maykinmedia.nl")
+        self.assertEqual(digitaal_adres.adres, "example@maykin.nl")
         self.assertEqual(digitaal_adres.omschrijving, "")
         self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")
 

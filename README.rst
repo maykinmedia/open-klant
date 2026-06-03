@@ -128,7 +128,7 @@ Copyright © Maykin B.V., 2023 - 2024
 
 Licensed under the EUPL_
 
-.. _`Maykin B.V.`: https://www.maykinmedia.nl
+.. _`Maykin B.V.`: https://www.maykin.nl
 
 .. _`Klantinteracties API`: https://vng-realisatie.github.io/klantinteracties/
 

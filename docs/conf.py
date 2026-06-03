@@ -27,7 +27,7 @@ django.setup()
 # -- Project information -----------------------------------------------------
 
 project = "Open Klant"
-copyright = "2023, Maykin Media"
+copyright = "2023, Maykin"
 author = openklant.__author__
 
 # The full version, including alpha/beta/rc tags

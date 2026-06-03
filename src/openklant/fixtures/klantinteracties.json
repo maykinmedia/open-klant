@@ -163,7 +163,7 @@
         "partij": 3,
         "klantcontact": 2,
         "rol": "vertegenwoordiger",
-        "organisatienaam": "Maykin Media",
+        "organisatienaam": "Maykin",
         "initiator": true
     }
 },
@@ -199,7 +199,7 @@
         "partij": 2,
         "klantcontact": 2,
         "rol": "klant",
-        "organisatienaam": "Maykin Media",
+        "organisatienaam": "Maykin",
         "initiator": false
     }
 },
@@ -366,7 +366,7 @@
     "pk": 1,
     "fields": {
         "partij": 2,
-        "naam": "Maykin Media"
+        "naam": "Maykin"
     }
 },
 {

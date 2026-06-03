@@ -14,7 +14,7 @@ interactions:
     uri: http://localhost:8000/klanten/api/v1/klanten
   response:
     body:
-      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://localhost:8000/klanten/api/v1/klanten/dbfdb3f2-e153-49ea-9e26-e55220605c14","bronorganisatie":"215906846","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"0612345678","emailadres":"example@maykinmedia.nl","adres":null,"subject":"","subjectType":"natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"inpBsn":"024325818","anpIdentificatie":"0","inpANummer":"","geslachtsnaam":"Greene","voorvoegselGeslachtsnaam":"","voorletters":"","voornamen":"Lori","geslachtsaanduiding":"","geboortedatum":"1981-04-15","verblijfsadres":null,"subVerblijfBuitenland":null}}]}'
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://localhost:8000/klanten/api/v1/klanten/dbfdb3f2-e153-49ea-9e26-e55220605c14","bronorganisatie":"215906846","klantnummer":"0","bedrijfsnaam":"","functie":"","websiteUrl":"","voornaam":"","voorvoegselAchternaam":"","achternaam":"","telefoonnummer":"0612345678","emailadres":"example@maykin.nl","adres":null,"subject":"","subjectType":"natuurlijk_persoon","aanmaakkanaal":"","geverifieerd":false,"subjectIdentificatie":{"inpBsn":"024325818","anpIdentificatie":"0","inpANummer":"","geslachtsnaam":"Greene","voorvoegselGeslachtsnaam":"","voorletters":"","voornamen":"Lori","geslachtsaanduiding":"","geboortedatum":"1981-04-15","verblijfsadres":null,"subVerblijfBuitenland":null}}]}'
     headers:
       API-version:
       - 1.0.0
