@@ -5169,6 +5169,17 @@ components:
           nullable: true
           description: Geeft, indien bekend, aan of de poging contact tussen de gemeente
             en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
+        hoofdOnderwerpType:
+          type: string
+          format: uri
+          nullable: true
+          description: Het type van het onderwerp van het contact
+          maxLength: 200
+        verdereActieOndernomen:
+          type: boolean
+          nullable: true
+          description: Geeft aan of het systeem waar het contact heeft plaats gevonden
+            zelf actie onderneemt.
         taal:
           type: string
           description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
@@ -6522,6 +6533,17 @@ components:
           nullable: true
           description: Geeft, indien bekend, aan of de poging contact tussen de gemeente
             en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
+        hoofdOnderwerpType:
+          type: string
+          format: uri
+          nullable: true
+          description: Het type van het onderwerp van het contact
+          maxLength: 200
+        verdereActieOndernomen:
+          type: boolean
+          nullable: true
+          description: Geeft aan of het systeem waar het contact heeft plaats gevonden
+            zelf actie onderneemt.
         taal:
           type: string
           description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
@@ -6938,6 +6960,24 @@ tags:
     **Resources en acties**
     - `internetaak`: create, update, destroy
 - name: klanten contacten
+  description: |
+    Deze API publiceert notificaties op het kanaal `klantcontacten`.
+
+    **Main resource**
+
+    `klantcontact`
+
+
+
+    **Kenmerken**
+
+    * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+    * `hoofd_onderwerp_type`: Het type van het onderwerp van het contact
+    * `indicatie_contact_gelukt`: Geeft, indien bekend, aan of de poging contact tussen de gemeente en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
+    * `verdere_actie_ondernomen`: Geeft aan of het systeem waar het contact heeft plaats gevonden zelf actie onderneemt.
+
+    **Resources en acties**
+    - `klantcontact`: create, update, destroy
 - name: onderwerpobjecten
 - name: partij-identificatoren
   description: |2+
