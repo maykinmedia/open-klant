@@ -332,6 +332,8 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             "inhoud",
             "reactie",
             "indicatie_contact_gelukt",
+            "hoofd_onderwerp_type",
+            "verdere_actie_ondernomen",
             "taal",
             "vertrouwelijk",
             "plaatsgevonden_op",
