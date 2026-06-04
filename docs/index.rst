@@ -1,5 +1,10 @@
 .. _index:
 
+.. image:: https://raw.githubusercontent.com/maykinmedia/open-klant/refs/heads/master/.github/assets/open-klant-logo.svg
+    :height: 100px
+    :alt: Open Klant
+    :class: no-scaled-link product-logo
+
 ========================
 Open Klant Documentation
 ========================
