@@ -334,10 +334,9 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "actie": "create",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "987654321",
                     "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
-                    "indicatieContactGelukt": "False",
-                    "verdereActieOndernomen": "False",
+                    "indicatieContactGelukt": False,
+                    "verdereActieOndernomen": False,
                 },
             }
         )
@@ -357,10 +356,9 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "actie": "update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "987654321",
                     "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
-                    "indicatieContactGelukt": "False",
-                    "verdereActieOndernomen": "False",
+                    "indicatieContactGelukt": False,
+                    "verdereActieOndernomen": False,
                 },
             }
         )
@@ -382,10 +380,9 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "actie": "partial_update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "123456789",
-                    "hoofdOnderwerpType": None,
-                    "indicatieContactGelukt": "False",
-                    "verdereActieOndernomen": None,
+                    "hoofdOnderwerpType": "",
+                    "indicatieContactGelukt": False,
+                    "verdereActieOndernomen": False,
                 },
             }
         )
@@ -404,10 +401,9 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "actie": "destroy",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "123456789",
-                    "hoofdOnderwerpType": None,
-                    "indicatieContactGelukt": "True",
-                    "verdereActieOndernomen": None,
+                    "hoofdOnderwerpType": "",
+                    "indicatieContactGelukt": True,
+                    "verdereActieOndernomen": False,
                 },
             }
         )
