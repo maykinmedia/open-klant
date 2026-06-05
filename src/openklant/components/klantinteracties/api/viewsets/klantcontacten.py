@@ -410,7 +410,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             )
 
             process_cloudevent(
-                type=ZAAK_GEKOPPELD,
+                event_type=ZAAK_GEKOPPELD,
                 subject=instance.onderwerpobjectidentificator.get("object_id"),
                 data={
                     "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",
@@ -468,7 +468,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
 
             transaction.on_commit(
                 lambda: process_cloudevent(
-                    type=ZAAK_ONTKOPPELD,
+                    event_type=ZAAK_ONTKOPPELD,
                     subject=old_ident.get("object_id"),
                     data={
                         "zaak": f"urn:uuid:{old_ident.get('object_id')}",
@@ -489,7 +489,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
 
             transaction.on_commit(
                 lambda: process_cloudevent(
-                    type=ZAAK_GEKOPPELD,
+                    event_type=ZAAK_GEKOPPELD,
                     subject=new_ident.get("object_id"),
                     data={
                         "zaak": f"urn:uuid:{new_ident.get('object_id')}",
@@ -536,7 +536,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
 
             transaction.on_commit(
                 lambda: process_cloudevent(
-                    type=ZAAK_ONTKOPPELD,
+                    event_type=ZAAK_ONTKOPPELD,
                     subject=instance.onderwerpobjectidentificator.get("object_id"),
                     data={
                         "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",

@@ -267,7 +267,7 @@ mozilla-django-oidc-db==2.0.1
     # via
     #   -r requirements/base.in
     #   open-api-framework
-notifications-api-common==0.10.1
+notifications-api-common==0.12.0
     # via commonground-api-common
 open-api-framework==0.14.0
     # via -r requirements/base.in
@@ -464,6 +464,7 @@ sqlparse==0.5.5
 structlog==25.4.0
     # via
     #   django-structlog
+    #   notifications-api-common
     #   open-api-framework
 tornado==6.5.5
     # via flower
