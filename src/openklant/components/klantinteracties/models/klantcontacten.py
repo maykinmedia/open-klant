@@ -85,16 +85,15 @@ class Klantcontact(APIMixin, models.Model):
     hoofd_onderwerp_type = models.URLField(
         _("hoofd onderwerp type"),
         help_text=_("Het type van het onderwerp van het contact"),
-        null=True,
         blank=True,
     )
 
     verdere_actie_ondernomen = models.BooleanField(
         _("verdere actie ondernomen"),
         help_text=_(
-            "Geeft aan of het systeem waar het contact heeft plaats gevonden zelf actie onderneemt."
+            "Geeft aan of het systeem waar het contact heeft plaats gevonden zelf actie onderneemt als het niet lukt om de klant te bereiken."
         ),
-        null=True,
+        default=False,
         blank=True,
     )
     taal = models.CharField(

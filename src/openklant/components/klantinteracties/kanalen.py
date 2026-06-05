@@ -29,7 +29,6 @@ KANAAL_KLANTCONTACT = Kanaal(
     "klantcontacten",
     main_resource=Klantcontact,
     kenmerken=(
-        "nummer",
         "hoofd_onderwerp_type",
         "indicatie_contact_gelukt",
         "verdere_actie_ondernomen",
