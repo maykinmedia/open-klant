@@ -9,7 +9,7 @@ from ..models import User
 
 class CreateInitialSuperuserTests(TestCase):
     def test_create_initial_superuser_command(self):
-        call_command("createinitialsuperuser", "maykin", "support@maykinmedia.nl")
+        call_command("createinitialsuperuser", "maykin", "support@maykin.nl")
         user = User.objects.get()
 
         self.assertTrue(user.has_usable_password())
@@ -27,11 +27,11 @@ class CreateInitialSuperuserTests(TestCase):
         self.assertEqual(
             sent_mail.subject, f"Credentials for {settings.PROJECT_NAME} ({link})"
         )
-        self.assertListEqual(sent_mail.recipients(), ["support@maykinmedia.nl"])
+        self.assertListEqual(sent_mail.recipients(), ["support@maykin.nl"])
 
     @override_settings(ALLOWED_HOSTS=[])
     def test_create_initial_superuser_command_allowed_hosts_empty(self):
-        call_command("createinitialsuperuser", "maykin", "support@maykinmedia.nl")
+        call_command("createinitialsuperuser", "maykin", "support@maykin.nl")
         user = User.objects.get()
 
         self.assertTrue(user.has_usable_password())
@@ -46,4 +46,4 @@ class CreateInitialSuperuserTests(TestCase):
         self.assertEqual(
             sent_mail.subject, f"Credentials for {settings.PROJECT_NAME} ({link})"
         )
-        self.assertListEqual(sent_mail.recipients(), ["support@maykinmedia.nl"])
+        self.assertListEqual(sent_mail.recipients(), ["support@maykin.nl"])

@@ -7,11 +7,11 @@ deliver timely security updates to the official distribution of Open Klant.
 
 ## Reporting security issues
 
-**Short version: Please report security issues by emailing security@maykinmedia.nl.**
+**Short version: Please report security issues by emailing security@maykin.nl.**
 
 If you discover security issues in Open Klant or related projects under the 
 same organization, we request you to disclose these in a *responsible* way by 
-mailing to security@maykinmedia.nl.
+mailing to security@maykin.nl.
 
 It is extremely useful if you have a reproducible test case and/or clear steps 
 on how to reproduce the vulnerability.
@@ -27,7 +27,7 @@ action to be taken, you may receive further followup emails.
 ## Timeline of the process
 
 Open Klant community support is provided by 
-[Maykin](https://www.maykinmedia.nl). The community support team is responsible 
+[Maykin](https://www.maykin.nl). The community support team is responsible 
 for the handling of security issues.
 
 1. The recipients of the report first validate if there is indeed a (possible) 

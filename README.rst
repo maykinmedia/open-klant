@@ -2,6 +2,10 @@
 Open Klant
 ==========
 
+.. image:: https://raw.githubusercontent.com/maykinmedia/open-klant/refs/heads/master/.github/assets/open-klant-logo.svg
+    :height: 100px
+    :alt: Open Klant
+
 :Version: 2.16.0
 :Source: https://github.com/maykinmedia/open-klant
 :Keywords: klanten, klantinteracties, contactgegevens, api, common ground
@@ -124,7 +128,7 @@ Copyright © Maykin B.V., 2023 - 2024
 
 Licensed under the EUPL_
 
-.. _`Maykin B.V.`: https://www.maykinmedia.nl
+.. _`Maykin B.V.`: https://www.maykin.nl
 
 .. _`Klantinteracties API`: https://vng-realisatie.github.io/klantinteracties/
 
