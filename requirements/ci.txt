@@ -509,7 +509,7 @@ mozilla-django-oidc-db==2.0.1
     #   open-api-framework
 multidict==6.0.5
     # via yarl
-notifications-api-common==0.10.1
+notifications-api-common @ git+https://github.com/maykinmedia/notifications-api-common.git@e7329ed86d8f8fa36559aa5035bc905d0e55d478
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -901,6 +901,7 @@ structlog==25.4.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-structlog
+    #   notifications-api-common
 tblib==3.0.0
     # via -r requirements/test-tools.in
 tomlkit==0.13.0

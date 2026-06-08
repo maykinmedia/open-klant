@@ -2222,6 +2222,8 @@ class MaakKlantcontactEndpointTests(APITestCase):
                     }
                 ],
                 "indicatieContactGelukt": False,
+                "hoofdOnderwerpType": "",
+                "verdereActieOndernomen": False,
                 "inhoud": "changed",
                 "reactie": "",
                 "kanaal": "changed",
@@ -2694,6 +2696,8 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "hadBetrokkenActoren": [],
                 "hadBetrokkenen": [],
                 "indicatieContactGelukt": False,
+                "hoofdOnderwerpType": "",
+                "verdereActieOndernomen": False,
                 "inhoud": "changed",
                 "reactie": "",
                 "kanaal": "changed",

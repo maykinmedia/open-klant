@@ -5,6 +5,7 @@ from notifications_api_common.utils import notification_documentation
 
 from openklant.components.klantinteracties.kanalen import (
     KANAAL_INTERNETAAK,
+    KANAAL_KLANTCONTACT,
     KANAAL_PARTIJ,
 )
 
@@ -267,7 +268,10 @@ custom_settings = {
             "name": "interne taken",
             "description": f"{notification_documentation(KANAAL_INTERNETAAK)}",
         },
-        {"name": "klanten contacten"},
+        {
+            "name": "klanten contacten",
+            "description": f"{notification_documentation(KANAAL_KLANTCONTACT)}",
+        },
         {"name": "onderwerpobjecten"},
         {
             "name": "partij-identificatoren",

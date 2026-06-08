@@ -261,8 +261,10 @@ mozilla-django-oidc-db==2.0.1
     # via
     #   -r requirements/base.in
     #   open-api-framework
-notifications-api-common==0.10.1
-    # via commonground-api-common
+notifications-api-common @ git+https://github.com/maykinmedia/notifications-api-common.git@e7329ed86d8f8fa36559aa5035bc905d0e55d478
+    # via
+    #   -r requirements/base.in
+    #   commonground-api-common
 open-api-framework==0.13.4
     # via -r requirements/base.in
 opentelemetry-api==1.36.0
@@ -458,6 +460,7 @@ sqlparse==0.5.5
 structlog==25.4.0
     # via
     #   django-structlog
+    #   notifications-api-common
     #   open-api-framework
 tornado==6.5.5
     # via flower

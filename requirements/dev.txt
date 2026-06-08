@@ -615,7 +615,7 @@ multidict==6.0.5
     #   yarl
 nodeenv==1.9.1
     # via pre-commit
-notifications-api-common==0.10.1
+notifications-api-common @ git+https://github.com/maykinmedia/notifications-api-common.git@e7329ed86d8f8fa36559aa5035bc905d0e55d478
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1092,6 +1092,7 @@ structlog==25.4.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-structlog
+    #   notifications-api-common
 tblib==3.0.0
     # via
     #   -c requirements/ci.txt
