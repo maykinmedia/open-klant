@@ -104,7 +104,7 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                     "   * Internationaal met '+': +31612345678\n"
                     "   * Internationaal met '00': 0031612345678\n"
                     " * Niet toegestaan:\n"
-                    "   * 0800, 0900, 088, 1400, 140xx."
+                    "   * 0800, 0900, 1400, 140xx."
                 )
             },
             "url": {

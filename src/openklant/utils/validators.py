@@ -50,7 +50,6 @@ def validate_charfield_entry(value, allow_apostrophe=False):
 FORBIDDEN_PREFIXES = (
     "0800",
     "0900",
-    "088",
     "1400",
     "140",
 )
@@ -86,7 +85,7 @@ validate_phone_number = RegexWithDisallowedPrefixesValidator(
     disallowed_prefixes=FORBIDDEN_PREFIXES,
     message=_("Het opgegeven telefoonnummer is ongeldig."),
     message_disallowed_prefix=_(
-        "Het opgegeven telefoonnummer is ongeldig, telefoonnummers beginnend met 0800, 0900, 088, 1400 of 140xx zijn niet toegestaan."
+        "Het opgegeven telefoonnummer is ongeldig, telefoonnummers beginnend met 0800, 0900, 1400 of 140xx zijn niet toegestaan."
     ),
 )
 
