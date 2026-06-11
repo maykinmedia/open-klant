@@ -237,7 +237,7 @@ django-localflavor==4.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-django-log-outgoing-requests==0.6.1
+django-log-outgoing-requests==0.9.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -266,6 +266,7 @@ django-privates==3.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-simple-certmanager
+    #   open-api-framework
 django-redis==5.4.0
     # via
     #   -c requirements/base.txt
@@ -299,6 +300,7 @@ django-simple-certmanager==2.3.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   open-api-framework
     #   zgw-consumers
 django-solo==2.3.0
     # via
@@ -486,10 +488,11 @@ maykin-2fa==1.0.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-maykin-common==0.18.0
+maykin-common==0.19.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   open-api-framework
 mccabe==0.7.0
     # via pylint
 mdurl==0.1.2
@@ -514,7 +517,7 @@ notifications-api-common==0.10.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.13.4
+open-api-framework==0.14.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -713,6 +716,7 @@ pygments==2.20.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   django-log-outgoing-requests
     #   rich
     #   sphinx
     #   sphinx-tabs
@@ -749,7 +753,6 @@ python-decouple==3.8
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   maykin-common
-    #   open-api-framework
 python-dotenv==1.0.1
     # via
     #   -c requirements/base.txt
@@ -918,6 +921,7 @@ typing-extensions==4.12.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   django-log-outgoing-requests
     #   mozilla-django-oidc-db
     #   opentelemetry-api
     #   opentelemetry-exporter-otlp-proto-grpc

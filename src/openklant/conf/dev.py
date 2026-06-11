@@ -24,6 +24,7 @@ os.environ.setdefault("OTEL_SDK_DISABLED", "true")
 os.environ.setdefault("OTEL_EXPORTER_OTLP_METRICS_INSECURE", "true")
 
 from .base import *  # noqa isort:skip
+from maykin_common.config import no_doc
 
 # Feel free to switch dev to sqlite3 for simple projects,
 # os.environ.setdefault("DB_ENGINE", "django.db.backends.sqlite3")
@@ -110,7 +111,7 @@ DEBUG_TOOLBAR_PANELS = [
 #
 # DJANGO-SILK
 #
-if config("PROFILE", default=False, add_to_docs=False):
+if config("PROFILE", default=False, documentation=no_doc):
     INSTALLED_APPS += ["silk"]
     MIDDLEWARE = ["silk.middleware.SilkyMiddleware"] + MIDDLEWARE
     security_index = MIDDLEWARE.index("django.middleware.security.SecurityMiddleware")

@@ -1,14 +1,15 @@
 import os
 
+from maykin_common.config import config  # noqa
 from notifications_api_common.settings import *  # noqa
 
 os.environ["_USE_STRUCTLOG"] = "True"
 
 from open_api_framework.conf.base import *  # noqa
-from open_api_framework.conf.utils import config  # noqa
 from upgrade_check import UpgradeCheck, VersionRange
 from upgrade_check.constraints import UpgradePaths
 from maykin_common.health_checks import default_health_check_apps
+from maykin_common.config import DocumentationParams
 from .api import *  # noqa
 
 #
@@ -37,15 +38,19 @@ MIDDLEWARE += ["openklant.utils.middleware.APIVersionHeaderMiddleware"]
 
 ENABLE_CLOUD_EVENTS = config(
     "ENABLE_CLOUD_EVENTS",
-    default=False,
+    default="False",
     cast=bool,
-    help_text="**EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations via the API (not ready for use in production)",
+    documentation=DocumentationParams(
+        help_text="**EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations via the API (not ready for use in production)",
+    ),
 )
 
 NOTIFICATIONS_SOURCE = config(
     "NOTIFICATIONS_SOURCE",
     default="",
-    help_text="**EXPERIMENTAL**: the identifier of this application to use as the source in notifications and cloudevents",
+    documentation=DocumentationParams(
+        help_text="**EXPERIMENTAL**: the identifier of this application to use as the source in notifications and cloudevents",
+    ),
 )
 
 #
@@ -100,21 +105,23 @@ SETUP_CONFIGURATION_STEPS = (
 CELERY_TASK_TIME_LIMIT = config(
     "CELERY_TASK_HARD_TIME_LIMIT",
     default=15 * 60,
-    help_text=(
-        "Defaults to: ``900`` seconds. "
-        "If a celery task exceeds this time limit, the worker processing the task will "
-        "be killed and replaced with a new one."
+    documentation=DocumentationParams(
+        help_text=(
+            "If a celery task exceeds this time limit (in seconds), the worker "
+            "processing the task will be killed and replaced with a new one."
+        ),
+        group="Celery",
     ),
-    group="Celery",
 )  # hard
 CELERY_TASK_SOFT_TIME_LIMIT = config(
     "CELERY_TASK_SOFT_TIME_LIMIT",
     default=5 * 60,
-    help_text=(
-        "Defaults to: ``300`` seconds. "
-        "If a celery task exceeds this time limit, the ``SoftTimeLimitExceeded`` exception will be raised."
+    documentation=DocumentationParams(
+        help_text=(
+            "If a celery task exceeds this time limit (in seconds), the ``SoftTimeLimitExceeded`` exception will be raised."
+        ),
+        group="Celery",
     ),
-    group="Celery",
 )  # soft
 
 #
@@ -123,7 +130,7 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
 CELERY_ONCE_REDIS_URL = config(
     "CELERY_ONCE_REDIS_URL",
     default=CELERY_BROKER_URL,
-    group="Celery",
+    documentation=no_doc,
 )
 CELERY_ONCE = {
     "backend": "celery_once.backends.Redis",
@@ -140,9 +147,11 @@ CELERY_ONCE = {
 NOTIFICATIONS_DISABLED = config(
     "NOTIFICATIONS_DISABLED",
     default=True,
-    help_text=(
-        "Indicates whether or not notifications should be sent to the Notificaties API "
-        "for operations on the API endpoints."
+    documentation=DocumentationParams(
+        help_text=(
+            "Indicates whether or not notifications should be sent to the Notificaties API "
+            "for operations on the API endpoints."
+        ),
     ),
 )
 
