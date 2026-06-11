@@ -68,7 +68,7 @@ cryptography==46.0.7
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==5.2.13
+django==5.2.15
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -235,7 +235,7 @@ grpcio==1.74.0
     # via opentelemetry-exporter-otlp-proto-grpc
 humanize==4.10.0
     # via flower
-idna==3.7
+idna==3.18
     # via requests
 importlib-metadata==8.7.0
     # via opentelemetry-api
@@ -402,7 +402,7 @@ python-dateutil==2.9.0.post0
     #   django-relativedelta
 python-decouple==3.8
     # via maykin-common
-python-dotenv==1.0.1
+python-dotenv==1.2.2
     # via
     #   open-api-framework
     #   pydantic-settings
@@ -490,7 +490,7 @@ tzdata==2025.2
     # via kombu
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   elastic-apm
     #   requests
