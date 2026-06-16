@@ -2,6 +2,48 @@
 Change history
 ==============
 
+2.17.0
+======
+*June 16, 2026*
+
+.. note::
+
+  The defaults for several environment variables for the ``django-log-outgoing-requests``
+  configuration have changed (see :ref:`installation_env_config` > Logging)
+
+  * ``LOG_REQUESTS`` is now ``True`` by default, instead of ``False``
+  * ``LOG_OUTGOING_REQUESTS_DB_SAVE_BODY`` is now ``False`` by default, instead of ``True``
+  * ``LOG_OUTGOING_REQUESTS_RESET_DB_SAVE_AFTER`` (previously not configurable) has a default of ``60`` minutes
+
+**New features**
+
+* [:open-klant:`475`] Add support for filtering Bijlagen by ``klantcontact__uuid``
+* [:open-klant:`601`] Allow phonenumbers starting with **088** in ``DigitaalAdres.adres`` validation
+
+**Bugfixes**
+
+* [:open-klant:`593`] Fix validation to prevent creating empty ``PartijIdentificator`` records (the ``partijidentificator`` field is now required)
+
+**Maintenance**
+
+* Ignore newly added ADR rules that need breaking changes
+* [:open-api-framework:`218`] Add Zizmor GitHub Actions security scanning and updated workflows
+* [:open-api-framework:`83`] Replace OAF config helper with config helper from maykin-common
+
+* Upgrade python dependencies
+
+    * ``django`` to 5.2.15
+    * ``maykin-common`` to 0.19.0
+    * ``open-api-framework`` to 0.14.0
+    * ``django-log-outgoing-requests`` to 0.9.1
+
+
+**Documentation**
+
+* [:open-api-framework:`217`] Update application and repository branding by applying the new icons and logos.
+* [:open-klant:`475`] Improved API specification descriptions by adding more representative example values for ``bijlageidentificator`` attributes.
+* Describe in ``DigitaalAdres.isStandaardAdres`` helptext what happens if ``isStandaardAdres`` is set for multiple addresses
+
 2.16.0
 ======
 *April 10, 2026*
