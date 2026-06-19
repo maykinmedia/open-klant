@@ -351,4 +351,4 @@ class PartijIdentificatorAdmin(admin.ModelAdmin):
         "partij_identificator_object_id",
         "partij_identificator_code_register",
     )
-    raw_id_fields = ("partij",)
+    raw_id_fields = ("partij", "sub_identificator_van")
