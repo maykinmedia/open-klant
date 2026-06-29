@@ -4871,7 +4871,7 @@ components:
             description: Display details of the linked resources requested in the
               `expand` parameter
             properties:
-              digitale_adressen:
+              digitaleAdressen:
                 type: array
                 items:
                   $ref: '#/components/schemas/DigitaalAdres'
@@ -4887,7 +4887,7 @@ components:
             description: Display details of the linked resources requested in the
               `expand` parameter
             properties:
-              verstrekt_door_betrokkene:
+              verstrektDoorBetrokkene:
                 allOf:
                 - $ref: '#/components/schemas/Betrokkene'
                 nullable: true
@@ -4903,26 +4903,26 @@ components:
             description: Display details of the linked resources requested in the
               `expand` parameter
             properties:
-              had_betrokkenen:
+              hadBetrokkenen:
                 type: array
                 items:
                   $ref: '#/components/schemas/Betrokkene'
                 readOnly: true
                 description: Persoon of organisatie die betrokken was bij een klantcontact.
-              leidde_tot_interne_taken:
+              leiddeTotInterneTaken:
                 type: array
                 items:
                   $ref: '#/components/schemas/InterneTaak'
                 readOnly: true
                 description: Klantcontact dat leidde tot een interne taak.
-              ging_over_onderwerpobjecten:
+              gingOverOnderwerpobjecten:
                 type: array
                 items:
                   $ref: '#/components/schemas/Onderwerpobject'
                 readOnly: true
                 description: Onderwerpobject dat tijdens een klantcontact aan de orde
                   was.
-              omvatte_bijlagen:
+              omvatteBijlagen:
                 type: array
                 items:
                   $ref: '#/components/schemas/Bijlage'
@@ -4939,7 +4939,7 @@ components:
             description: Display details of the linked resources requested in the
               `expand` parameter
             properties:
-              digitale_adressen:
+              digitaleAdressen:
                 type: array
                 items:
                   $ref: '#/components/schemas/DigitaalAdres'
@@ -4952,7 +4952,7 @@ components:
                   $ref: '#/components/schemas/Betrokkene'
                 readOnly: true
                 description: Betrokkene bij klantcontact die een partij was.
-              categorie_relaties:
+              categorieRelaties:
                 type: array
                 items:
                   $ref: '#/components/schemas/CategorieRelatie'

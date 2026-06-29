@@ -12,6 +12,8 @@ from drf_spectacular.openapi import (
 from drf_spectacular.utils import OpenApiParameter
 from vng_api_common.constants import VERSION_HEADER
 
+from openklant.utils.converters import snake_to_camel_converter
+
 from .expansion import EXPAND_KEY
 from .mixins import ExpandMixin
 
@@ -66,7 +68,7 @@ class AutoSchema(_AutoSchema):
             else:
                 inclusion_schema = append_meta(inclusion_ref, meta)
 
-            expand_properties[name] = inclusion_schema
+            expand_properties[snake_to_camel_converter(name)] = inclusion_schema
 
         inclusions_schema = build_object_type(
             properties=expand_properties,
