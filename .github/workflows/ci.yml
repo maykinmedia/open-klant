@@ -80,7 +80,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up backend environment
-        uses: maykinmedia/setup-django-backend@a9abe0987130ed667fa09ce177a5ae0bd153aed1 # v1.3
+        uses: maykinmedia/setup-django-backend@4a6c5facc65bb1dd510cf06be20871db11a156b3 # v1.4.2
         with:
           python-version: '3.12'
           setup-node: true
@@ -113,7 +113,7 @@ jobs:
         id: image-name
 
   open-api-ci:
-    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@79102b911003d75203ca2fed7df01ad79d9b6bba  # v6.4.0
+    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@0a5525c13f8eea10be40c8eaee5e535ea3a10721 # v6.4.1
     needs:
       - store-reusable-workflow-vars
     permissions:
@@ -128,7 +128,7 @@ jobs:
       django-settings-module: openklant.conf.ci
 
   open-api-publish:
-    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@79102b911003d75203ca2fed7df01ad79d9b6bba  # v6.4.0
+    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@0a5525c13f8eea10be40c8eaee5e535ea3a10721 # v6.4.1
     needs:
       - store-reusable-workflow-vars
       - open-api-ci
