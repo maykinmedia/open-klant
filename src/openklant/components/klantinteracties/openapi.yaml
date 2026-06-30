@@ -2083,6 +2083,12 @@ paths:
         explode: false
         style: form
       - in: query
+        name: hadBetrokkene__digitaaladres__adres__icontains
+        schema:
+          type: string
+        description: Zoek klantcontact object op basis van het digitale adres van
+          de betrokkene.
+      - in: query
         name: hadBetrokkene__url
         schema:
           type: string
@@ -2094,6 +2100,11 @@ paths:
           type: string
           format: uuid
         description: Zoek klantcontact object op basis van het betrokkene uuid.
+      - in: query
+        name: hadBetrokkene__wasPartij
+        schema:
+          type: boolean
+        description: Filter op betrokkenen die wel/niet een partij zijn.
       - in: query
         name: hadBetrokkene__wasPartij__partijIdentificator__codeObjecttype
         schema:
@@ -2146,6 +2157,12 @@ paths:
         schema:
           type: string
         description: Communicatiekanaal dat bij het klantcontact werd gebruikt.
+      - in: query
+        name: leiddeTotInterneTaken
+        schema:
+          type: boolean
+        description: Filter op klantcontacten die wel/niet hebben geleid tot interne
+          taken.
       - in: query
         name: nummer
         schema:
