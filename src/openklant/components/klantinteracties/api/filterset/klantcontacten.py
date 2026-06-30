@@ -1,3 +1,4 @@
+from django.db.models import Exists, OuterRef
 from django.utils.translation import gettext_lazy as _
 
 from django_filters.rest_framework import filters
@@ -8,6 +9,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     KlantcontactSerializer,
 )
 from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
+from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
@@ -140,10 +142,14 @@ class KlantcontactFilterSet(FilterSet):
         )
 
     def filter_had_betrokkene_was_partij(self, queryset, name, value):
+        subquery = Betrokkene.objects.filter(
+            klantcontact_id=OuterRef("pk"),
+            partij__isnull=False,
+        )
         if value is True:
-            return queryset.filter(betrokkene__partij__isnull=False).distinct()
+            return queryset.filter(Exists(subquery))
         if value is False:
-            return queryset.exclude(betrokkene__partij__isnull=False).distinct()
+            return queryset.exclude(Exists(subquery))
         return queryset
 
     def filter_betrokkene_partij_identificator_code_objecttype(
@@ -191,10 +197,12 @@ class KlantcontactFilterSet(FilterSet):
             return queryset.none()
 
     def filter_leidde_tot_interne_taken(self, queryset, name, value):
+        subquery = InterneTaak.objects.filter(klantcontact_id=OuterRef("pk"))
+
         if value is True:
-            return queryset.filter(internetaak__isnull=False).distinct()
+            return queryset.filter(Exists(subquery))
         if value is False:
-            return queryset.exclude(internetaak__isnull=False).distinct()
+            return queryset.exclude(Exists(subquery))
         return queryset
 
 
