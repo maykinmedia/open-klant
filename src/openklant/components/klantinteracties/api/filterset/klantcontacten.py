@@ -150,7 +150,6 @@ class KlantcontactFilterSet(FilterSet):
             return queryset.filter(Exists(subquery))
         if value is False:
             return queryset.exclude(Exists(subquery))
-        return queryset
 
     def filter_betrokkene_partij_identificator_code_objecttype(
         self, queryset, name, value
@@ -191,10 +190,11 @@ class KlantcontactFilterSet(FilterSet):
             return queryset.none()
 
     def filter_betrokkene_digitaal_adres(self, queryset, name, value):
-        try:
-            return queryset.filter(betrokkene__digitaaladres__adres__icontains=value)
-        except ValueError:
-            return queryset.none()
+        subquery = Betrokkene.objects.filter(
+            klantcontact_id=OuterRef("pk"),
+            digitaaladres__adres__icontains=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_leidde_tot_interne_taken(self, queryset, name, value):
         subquery = InterneTaak.objects.filter(klantcontact_id=OuterRef("pk"))
@@ -203,7 +203,6 @@ class KlantcontactFilterSet(FilterSet):
             return queryset.filter(Exists(subquery))
         if value is False:
             return queryset.exclude(Exists(subquery))
-        return queryset
 
 
 class BetrokkeneDetailFilterSet(FilterSet):
