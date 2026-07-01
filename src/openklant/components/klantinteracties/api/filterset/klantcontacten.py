@@ -1,3 +1,4 @@
+from django.db.models import Exists, OuterRef
 from django.utils.translation import gettext_lazy as _
 
 from django_filters.rest_framework import filters
@@ -8,6 +9,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     KlantcontactSerializer,
 )
 from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
+from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
@@ -28,6 +30,10 @@ class KlantcontactFilterSet(FilterSet):
     had_betrokkene__uuid = filters.UUIDFilter(
         help_text=_("Zoek klantcontact object op basis van het betrokkene uuid."),
         field_name="betrokkene__uuid",
+    )
+    had_betrokkene__was_partij = filters.BooleanFilter(
+        method="filter_had_betrokkene_was_partij",
+        help_text=_("Filter op betrokkenen die wel/niet een partij zijn."),
     )
     had_betrokkene__was_partij__url = URLViewFilter(
         help_text=_("Zoek klantcontact object op basis van de partij url."),
@@ -61,6 +67,18 @@ class KlantcontactFilterSet(FilterSet):
         ),
         method="filter_betrokkene_partij_identificator_code_register",
     )
+    had_betrokkene__digitaaladres__adres__icontains = filters.CharFilter(
+        help_text=_(
+            "Zoek klantcontact object op basis van het digitale adres van de betrokkene."
+        ),
+        method="filter_betrokkene_digitaal_adres",
+    )
+    leidde_tot_interne_taken = filters.BooleanFilter(
+        method="filter_leidde_tot_interne_taken",
+        help_text=_(
+            "Filter op klantcontacten die wel/niet hebben geleid tot interne taken."
+        ),
+    )
     onderwerpobject__url = URLViewFilter(
         help_text=_("Zoek klantcontact object op basis van het onderwerpobject url."),
         field_name="onderwerpobject__uuid",
@@ -91,12 +109,15 @@ class KlantcontactFilterSet(FilterSet):
         fields = (
             "had_betrokkene__url",
             "had_betrokkene__uuid",
+            "had_betrokkene__was_partij",
             "had_betrokkene__was_partij__url",
             "had_betrokkene__was_partij__uuid",
             "had_betrokkene__was_partij__partij_identificator__code_objecttype",
             "had_betrokkene__was_partij__partij_identificator__code_soort_object_id",
             "had_betrokkene__was_partij__partij_identificator__object_id",
             "had_betrokkene__was_partij__partij_identificator__code_register",
+            "had_betrokkene__digitaaladres__adres__icontains",
+            "leidde_tot_interne_taken",
             "onderwerpobject__uuid",
             "onderwerpobject__url",
             "onderwerpobject__onderwerpobjectidentificator_code_objecttype",
@@ -119,6 +140,16 @@ class KlantcontactFilterSet(FilterSet):
             "vertrouwelijk",
             "plaatsgevonden_op",
         )
+
+    def filter_had_betrokkene_was_partij(self, queryset, name, value):
+        subquery = Betrokkene.objects.filter(
+            klantcontact_id=OuterRef("pk"),
+            partij__isnull=False,
+        )
+        if value is True:
+            return queryset.filter(Exists(subquery))
+        if value is False:
+            return queryset.exclude(Exists(subquery))
 
     def filter_betrokkene_partij_identificator_code_objecttype(
         self, queryset, name, value
@@ -157,6 +188,21 @@ class KlantcontactFilterSet(FilterSet):
             )
         except ValueError:
             return queryset.none()
+
+    def filter_betrokkene_digitaal_adres(self, queryset, name, value):
+        subquery = Betrokkene.objects.filter(
+            klantcontact_id=OuterRef("pk"),
+            digitaaladres__adres__icontains=value,
+        )
+        return queryset.filter(Exists(subquery))
+
+    def filter_leidde_tot_interne_taken(self, queryset, name, value):
+        subquery = InterneTaak.objects.filter(klantcontact_id=OuterRef("pk"))
+
+        if value is True:
+            return queryset.filter(Exists(subquery))
+        if value is False:
+            return queryset.exclude(Exists(subquery))
 
 
 class BetrokkeneDetailFilterSet(FilterSet):

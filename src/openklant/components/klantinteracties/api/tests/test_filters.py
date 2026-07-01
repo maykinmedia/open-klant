@@ -256,6 +256,195 @@ class KlantcontactFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_had_betrokkene_was_partij(self):
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+        partij = PartijFactory.create()
+
+        BetrokkeneFactory.create(
+            klantcontact=klantcontact,
+            partij=partij,
+        )
+        BetrokkeneFactory.create(
+            klantcontact=klantcontact2,
+            partij=None,
+        )
+
+        with self.subTest("filter_was_partij_true"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij": True,
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
+
+        with self.subTest("filter_was_partij_false"):
+            response = self.client.get(
+                self.url,
+                {
+                    "hadBetrokkene__wasPartij": False,
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            uuids = [item["uuid"] for item in data]
+            self.assertIn(str(klantcontact2.uuid), uuids)
+            self.assertNotIn(str(klantcontact.uuid), uuids)
+
+    def test_filter_had_betrokkene_was_partij_no_duplicates(self):
+        klantcontact = KlantcontactFactory.create()
+
+        BetrokkeneFactory.create(
+            klantcontact=klantcontact,
+            partij=None,
+        )
+        BetrokkeneFactory.create(
+            klantcontact=klantcontact,
+            partij=None,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "hadBetrokkene__wasPartij": False,
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
+
+    def test_filter_verstrektedigitaal_adres(self):
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+
+        betrokkene1 = BetrokkeneFactory.create(
+            klantcontact=klantcontact,
+        )
+
+        betrokkene2 = BetrokkeneFactory.create(
+            klantcontact=klantcontact2,
+        )
+
+        DigitaalAdresFactory.create(
+            betrokkene=betrokkene1,
+            adres="https://testserver.com",
+        )
+
+        DigitaalAdresFactory.create(
+            betrokkene=betrokkene2,
+            adres="https://demoserver.com",
+        )
+
+        with self.subTest("happy flow"):
+            response = self.client.get(
+                self.url,
+                {"hadBetrokkene__digitaaladres__adres__icontains": "demo"},
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact2.uuid), data[0]["uuid"])
+
+        with self.subTest("no_matches_found_return_nothing"):
+            response = self.client.get(
+                self.url,
+                {"hadBetrokkene__digitaaladres__adres__icontains": "does-not-exist"},
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_verstrektedigitaal_adres_no_duplicates(self):
+        klantcontact = KlantcontactFactory.create()
+
+        betrokkene = BetrokkeneFactory.create(
+            klantcontact=klantcontact,
+        )
+
+        DigitaalAdresFactory.create(
+            betrokkene=betrokkene,
+            adres="https://demoserver1.com",
+        )
+        DigitaalAdresFactory.create(
+            betrokkene=betrokkene,
+            adres="https://demoserver2.com",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"hadBetrokkene__digitaaladres__adres__icontains": "demo"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
+
+    def test_filter_leidde_tot_interne_taken(self):
+        klantcontact = KlantcontactFactory.create()
+        klantcontact2 = KlantcontactFactory.create()
+
+        InterneTaakFactory.create(klantcontact=klantcontact)
+
+        with self.subTest("filter_true"):
+            response = self.client.get(
+                self.url,
+                {"leiddeTotInterneTaken": True},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
+
+        with self.subTest("filter_false"):
+            response = self.client.get(
+                self.url,
+                {"leiddeTotInterneTaken": False},
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()["results"]
+
+            self.assertEqual(1, len(data))
+            self.assertEqual(str(klantcontact2.uuid), data[0]["uuid"])
+
+    def test_filter_leidde_tot_interne_taken_no_duplicates(self):
+        klantcontact = KlantcontactFactory.create()
+
+        InterneTaakFactory.create(klantcontact=klantcontact)
+        InterneTaakFactory.create(klantcontact=klantcontact)
+
+        response = self.client.get(
+            self.url,
+            {"leiddeTotInterneTaken": True},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
+
     def test_filter_betrokkene_url(self):
         klantcontact = KlantcontactFactory.create()
         klantcontact2 = KlantcontactFactory.create()
