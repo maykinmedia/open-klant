@@ -5,6 +5,7 @@ import structlog
 from drf_spectacular.utils import extend_schema_field, extend_schema_serializer
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
+from vng_api_common.utils import get_help_text
 
 from openklant.components.klantinteracties.api.serializers.actoren import (
     ActorForeignKeySerializer,
@@ -151,14 +152,12 @@ class BetrokkeneSerializer(
         required=False,
         allow_null=True,
         source="partij",
-        help_text=_("Betrokkene bij klantcontact die een partij was."),
+        help_text=get_help_text("klantinteracties.Betrokkene", "partij"),
     )
     had_klantcontact = KlantcontactForeignKeySerializer(
         required=True,
         allow_null=False,
-        help_text=_(
-            "Het klantcontact waar deze persoon of organisatie bij betrokken was."
-        ),
+        help_text=get_help_text("klantinteracties.Betrokkene", "klantcontact"),
         source="klantcontact",
     )
     digitale_adressen = DigitaalAdresForeignKeySerializer(
@@ -370,12 +369,12 @@ class OnderwerpobjectSerializer(
     klantcontact = KlantcontactForeignKeySerializer(
         required=False,
         allow_null=True,
-        help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
+        help_text=get_help_text("klantinteracties.Onderwerpobject", "klantcontact"),
     )
     was_klantcontact = KlantcontactForeignKeySerializer(
         required=False,
         allow_null=True,
-        help_text=_("'Onderwerpobject' was 'Klantcontact'"),
+        help_text=get_help_text("klantinteracties.Onderwerpobject", "was_klantcontact"),
     )
     onderwerpobjectidentificator = OnderwerpobjectidentificatorSerializer(
         required=False,
@@ -453,7 +452,7 @@ class BijlageSerializer(
     was_bijlage_van_klantcontact = KlantcontactForeignKeySerializer(
         required=False,
         allow_null=True,
-        help_text=_("'Klantcontact' ging over 'Onderwerpobject'"),
+        help_text=get_help_text("klantinteracties.Bijlage", "klantcontact"),
         source="klantcontact",
     )
     bijlageidentificator = BijlageIdentificatorSerializer(
@@ -506,11 +505,11 @@ class BijlageSerializer(
 class ActorKlantcontactSerializer(serializers.HyperlinkedModelSerializer):
     actor = ActorForeignKeySerializer(
         required=True,
-        help_text=_("De gekoppelde 'Actor'."),
+        help_text=get_help_text("klantinteracties.ActorKlantcontact", "actor"),
     )
     klantcontact = KlantcontactForeignKeySerializer(
         required=True,
-        help_text=_("De gekoppelde 'Klantcontact'."),
+        help_text=get_help_text("klantinteracties.ActorKlantcontact", "klantcontact"),
     )
 
     class Meta:

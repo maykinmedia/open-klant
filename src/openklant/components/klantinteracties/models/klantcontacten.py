@@ -143,7 +143,7 @@ class Betrokkene(
         "klantinteracties.Partij",
         on_delete=models.CASCADE,
         verbose_name=_("partij"),
-        help_text=_("'Betrokkene bij klantcontact' was 'Partij'"),
+        help_text=_("Betrokkene bij klantcontact die een partij was."),
         null=True,
         blank=True,
     )
@@ -151,7 +151,9 @@ class Betrokkene(
         Klantcontact,
         on_delete=models.CASCADE,
         verbose_name=_("klantcontact"),
-        help_text=_("'Klantcontact' had 'Betrokkene bij klantcontact'"),
+        help_text=_(
+            "Het klantcontact waar deze persoon of organisatie bij betrokken was."
+        ),
     )
     rol = models.CharField(
         _("rol"),
