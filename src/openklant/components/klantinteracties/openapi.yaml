@@ -4501,7 +4501,7 @@ components:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
           nullable: true
-          description: '''Klantcontact'' ging over ''Onderwerpobject'''
+          description: '''Klantcontact'' omvatte ''Bijlage'''
         bijlageidentificator:
           allOf:
           - $ref: '#/components/schemas/BijlageIdentificator'
@@ -6216,7 +6216,7 @@ components:
           allOf:
           - $ref: '#/components/schemas/KlantcontactForeignKey'
           nullable: true
-          description: '''Klantcontact'' ging over ''Onderwerpobject'''
+          description: '''Klantcontact'' omvatte ''Bijlage'''
         bijlageidentificator:
           allOf:
           - $ref: '#/components/schemas/BijlageIdentificator'
