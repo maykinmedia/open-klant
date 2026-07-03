@@ -154,40 +154,36 @@ class KlantcontactFilterSet(FilterSet):
     def filter_betrokkene_partij_identificator_code_objecttype(
         self, queryset, name, value
     ):
-        try:
-            return queryset.filter(
-                betrokkene__partij__partijidentificator__partij_identificator_code_objecttype=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = Betrokkene.objects.filter(
+            klantcontact_id=OuterRef("pk"),
+            partij__partijidentificator__partij_identificator_code_objecttype=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_betrokkene_partij_identificator_code_soort_object_id(
         self, queryset, name, value
     ):
-        try:
-            return queryset.filter(
-                betrokkene__partij__partijidentificator__partij_identificator_code_soort_object_id=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = Betrokkene.objects.filter(
+            klantcontact_id=OuterRef("pk"),
+            partij__partijidentificator__partij_identificator_code_soort_object_id=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_betrokkene_partij_identificator_object_id(self, queryset, name, value):
-        try:
-            return queryset.filter(
-                betrokkene__partij__partijidentificator__partij_identificator_object_id=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = Betrokkene.objects.filter(
+            klantcontact_id=OuterRef("pk"),
+            partij__partijidentificator__partij_identificator_object_id=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_betrokkene_partij_identificator_code_register(
         self, queryset, name, value
     ):
-        try:
-            return queryset.filter(
-                betrokkene__partij__partijidentificator__partij_identificator_code_register=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = Betrokkene.objects.filter(
+            klantcontact_id=OuterRef("pk"),
+            partij__partijidentificator__partij_identificator_code_register=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_betrokkene_digitaal_adres(self, queryset, name, value):
         subquery = Betrokkene.objects.filter(
