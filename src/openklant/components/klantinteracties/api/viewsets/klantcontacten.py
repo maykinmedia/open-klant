@@ -94,7 +94,9 @@ class KlantcontactViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelView
     klant en de gemeente over een onderwerp.
     """
 
-    queryset = Klantcontact.objects.order_by("-pk").prefetch_related(
+    queryset = Klantcontact.objects.order_by(
+        "-plaatsgevonden_op", "-pk"
+    ).prefetch_related(
         "bijlage_set",
         "betrokkene_set",
         "internetaak_set",
