@@ -2086,8 +2086,8 @@ paths:
         name: hadBetrokkene__digitaaladres__adres__icontains
         schema:
           type: string
-        description: Zoek klantcontact object op basis van het digitale adres van
-          de betrokkene.
+        description: Zoek klantcontact object op basis van (een deel van) het digitale
+          adres van de betrokkene (niet hoofdlettergevoelig).
       - in: query
         name: hadBetrokkene__url
         schema:

@@ -7,6 +7,11 @@ from vng_api_common.viewsets import UNKNOWN_PARAMETERS_CODE
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models import Klantcontrol, SoortPartij
+from openklant.components.klantinteracties.models.constants import (
+    PartijIdentificatorCodeObjectType,
+    PartijIdentificatorCodeRegister,
+    PartijIdentificatorCodeSoortObjectId,
+)
 from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
     ActorKlantcontactFactory,
@@ -103,11 +108,12 @@ class KlantcontactFilterSetTests(APITestCase):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
         PartijIdentificatorFactory.create(
-            partij=partij, partij_identificator_code_objecttype="natuurlijk_persoon"
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
         )
         PartijIdentificatorFactory.create(
             partij=partij2,
-            partij_identificator_code_objecttype="niet_natuurlijk_persoon",
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value,
         )
         BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
         BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
@@ -116,7 +122,7 @@ class KlantcontactFilterSetTests(APITestCase):
             response = self.client.get(
                 self.url,
                 {
-                    "hadBetrokkene__wasPartij__partijIdentificator__codeObjecttype": "niet_natuurlijk_persoon"
+                    "hadBetrokkene__wasPartij__partijIdentificator__codeObjecttype": PartijIdentificatorCodeObjectType.niet_natuurlijk_persoon.value
                 },
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -146,7 +152,7 @@ class KlantcontactFilterSetTests(APITestCase):
 
         PartijIdentificatorFactory.create(
             partij=partij,
-            partij_identificator_code_objecttype="natuurlijk_persoon",
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
         )
 
         BetrokkeneFactory.create(
@@ -161,7 +167,7 @@ class KlantcontactFilterSetTests(APITestCase):
         response = self.client.get(
             self.url,
             {
-                "hadBetrokkene__wasPartij__partijIdentificator__codeObjecttype": "natuurlijk_persoon",
+                "hadBetrokkene__wasPartij__partijIdentificator__codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
             },
         )
 
@@ -178,10 +184,12 @@ class KlantcontactFilterSetTests(APITestCase):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
         PartijIdentificatorFactory.create(
-            partij=partij, partij_identificator_code_soort_object_id="bsn"
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
         )
         PartijIdentificatorFactory.create(
-            partij=partij2, partij_identificator_code_soort_object_id="kvk_nummer"
+            partij=partij2,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
         )
         BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
         BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
@@ -190,7 +198,7 @@ class KlantcontactFilterSetTests(APITestCase):
             response = self.client.get(
                 self.url,
                 {
-                    "hadBetrokkene__wasPartij__partijIdentificator__codeSoortObjectId": "bsn"
+                    "hadBetrokkene__wasPartij__partijIdentificator__codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn.value
                 },
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -220,7 +228,7 @@ class KlantcontactFilterSetTests(APITestCase):
 
         PartijIdentificatorFactory.create(
             partij=partij,
-            partij_identificator_code_soort_object_id="bsn",
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
         )
 
         BetrokkeneFactory.create(
@@ -235,7 +243,7 @@ class KlantcontactFilterSetTests(APITestCase):
         response = self.client.get(
             self.url,
             {
-                "hadBetrokkene__wasPartij__partijIdentificator__codeSoortObjectId": "bsn",
+                "hadBetrokkene__wasPartij__partijIdentificator__codeSoortObjectId": PartijIdentificatorCodeSoortObjectId.bsn.value,
             },
         )
 
@@ -253,12 +261,10 @@ class KlantcontactFilterSetTests(APITestCase):
         partij2 = PartijFactory.create()
         PartijIdentificatorFactory.create(
             partij=partij,
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="296648875",
         )
         PartijIdentificatorFactory.create(
             partij=partij2,
-            partij_identificator_code_soort_object_id="bsn",
             partij_identificator_object_id="111222333",
         )
         BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
@@ -328,10 +334,12 @@ class KlantcontactFilterSetTests(APITestCase):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
         PartijIdentificatorFactory.create(
-            partij=partij, partij_identificator_code_register="brp"
+            partij=partij,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
         )
         PartijIdentificatorFactory.create(
-            partij=partij2, partij_identificator_code_register="hr"
+            partij=partij2,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
         )
         BetrokkeneFactory.create(klantcontact=klantcontact, partij=partij)
         BetrokkeneFactory.create(klantcontact=klantcontact2, partij=partij2)
@@ -339,7 +347,9 @@ class KlantcontactFilterSetTests(APITestCase):
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"hadBetrokkene__wasPartij__partijIdentificator__codeRegister": "hr"},
+                {
+                    "hadBetrokkene__wasPartij__partijIdentificator__codeRegister": PartijIdentificatorCodeRegister.hr.value
+                },
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -366,7 +376,7 @@ class KlantcontactFilterSetTests(APITestCase):
 
         PartijIdentificatorFactory.create(
             partij=partij,
-            partij_identificator_code_register="hr",
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
         )
 
         BetrokkeneFactory.create(
@@ -381,7 +391,7 @@ class KlantcontactFilterSetTests(APITestCase):
         response = self.client.get(
             self.url,
             {
-                "hadBetrokkene__wasPartij__partijIdentificator__codeRegister": "hr",
+                "hadBetrokkene__wasPartij__partijIdentificator__codeRegister": PartijIdentificatorCodeRegister.hr.value,
             },
         )
 
@@ -462,7 +472,7 @@ class KlantcontactFilterSetTests(APITestCase):
         self.assertEqual(1, len(data))
         self.assertEqual(str(klantcontact.uuid), data[0]["uuid"])
 
-    def test_filter_verstrektedigitaal_adres(self):
+    def test_filter_hadBetrokkene__digitaaladres__adres__icontains(self):
         klantcontact = KlantcontactFactory.create()
         klantcontact2 = KlantcontactFactory.create()
 
@@ -506,7 +516,7 @@ class KlantcontactFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.json()["count"], 0)
 
-    def test_filter_verstrektedigitaal_adres_no_duplicates(self):
+    def test_filter_hadBetrokkene__digitaaladres__adres__icontains_no_duplicates(self):
         klantcontact = KlantcontactFactory.create()
 
         betrokkene = BetrokkeneFactory.create(

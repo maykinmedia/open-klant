@@ -69,7 +69,7 @@ class KlantcontactFilterSet(FilterSet):
     )
     had_betrokkene__digitaaladres__adres__icontains = filters.CharFilter(
         help_text=_(
-            "Zoek klantcontact object op basis van het digitale adres van de betrokkene."
+            "Zoek klantcontact object op basis van (een deel van) het digitale adres van de betrokkene (niet hoofdlettergevoelig)."
         ),
         method="filter_betrokkene_digitaal_adres",
     )
