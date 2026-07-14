@@ -24,7 +24,7 @@ jobs:
           - contactgegevens
           - klantinteracties
 
-    uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@0a5525c13f8eea10be40c8eaee5e535ea3a10721 # v6.4.1
+    uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@c12a346186cff8e542e1cbe3dbc19c186a2ab29c # v6.4.1
     with:
       python-version: '3.12'
       django-settings-module: openklant.conf.ci
@@ -34,7 +34,8 @@ jobs:
       schema-path: src/openklant/components/${{ matrix.component }}/openapi.yaml
       oas-artifact-name: ${{ matrix.component }}-api-oas
       node-version-file: '.nvmrc'
-      spectral-version: '^6.15.0'
+      # node-version: '24.17.0'
+      spectral-version: '^6.16.1'
       openapi-to-postman-version: '^5.0.0'
       postman-artifact-name: ${{ matrix.component }}-api-postman-collection
       openapi-generator-version: '^2.20.0'

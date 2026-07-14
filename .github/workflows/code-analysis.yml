@@ -1,26 +1,26 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.
-#
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
-name: "CodeQL"
+# # For most projects, this workflow file will not need changing; you simply need
+# # to commit it to your repository.
+# #
+# # You may wish to alter this file to override the set of languages analyzed,
+# # or to provide custom queries or build logic.
+# name: "CodeQL"
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches:
-      - master
-  schedule:
-    - cron: '0 23 * * 6'
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     # The branches below must be a subset of the branches above
+#     branches:
+#       - master
+#   schedule:
+#     - cron: '0 23 * * 6'
 
-permissions:
-  contents: read
-  security-events: write
-  actions: read
+# permissions:
+#   contents: read
+#   security-events: write
+#   actions: read
 
-jobs:
-  open-api-workflow-code-analysis:
-    uses: maykinmedia/open-api-workflows/.github/workflows/code-analysis.yml@0a5525c13f8eea10be40c8eaee5e535ea3a10721 # v6.4.1
+# jobs:
+#   open-api-workflow-code-analysis:
+#     uses: maykinmedia/open-api-workflows/.github/workflows/code-analysis.yml@0a5525c13f8eea10be40c8eaee5e535ea3a10721 # v6.4.1

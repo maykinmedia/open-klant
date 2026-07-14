@@ -1,27 +1,27 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.
-#
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
-name: Code quality checks
+# # For most projects, this workflow file will not need changing; you simply need
+# # to commit it to your repository.
+# #
+# # You may wish to alter this file to override the set of languages analyzed,
+# # or to provide custom queries or build logic.
+# name: Code quality checks
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#   workflow_dispatch:
 
-# least privilege as default, should be overridden per job if necessary
-permissions:
-  contents: read
+# # least privilege as default, should be overridden per job if necessary
+# permissions:
+#   contents: read
 
-jobs:
-  open-api-workflow-code-quality:
-    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@0a5525c13f8eea10be40c8eaee5e535ea3a10721 # v6.4.1
-    with:
-      python-version: "3.12"
-      node-version: "24"
+# jobs:
+#   open-api-workflow-code-quality:
+#     uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@0a5525c13f8eea10be40c8eaee5e535ea3a10721 # v6.4.1
+#     with:
+#       python-version: "3.12"
+#       node-version: "24"
 
-      django-settings-module: "openklant.conf.ci"
-      django-secret-key: dummy
+#       django-settings-module: "openklant.conf.ci"
+#       django-secret-key: dummy
