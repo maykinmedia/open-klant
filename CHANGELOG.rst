@@ -2,6 +2,20 @@
 Change history
 ==============
 
+2.17.1
+======
+*July 14, 2026*
+
+**Bugfixes**
+
+* Upgrade ``maykin-common`` to 0.20.1
+
+    * Limited the ``/_healthz/`` endpoint to the Cache, Database, and Storage checks,
+      this should solve the 500 errors for healthchecks when running on kubernetes
+    * Add branding information to admin footer
+
+* Fix github actions security
+
 2.17.0
 ======
 *June 16, 2026*
