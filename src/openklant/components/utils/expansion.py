@@ -98,7 +98,8 @@ class InclusionTree:
     It's a little helper class to display nested inclusions
     """
 
-    _nodes = []
+    def __init__(self):
+        self._nodes = []
 
     def add_node(
         self, id: str, value: dict, label: str, many: bool, parent_id: str = None
