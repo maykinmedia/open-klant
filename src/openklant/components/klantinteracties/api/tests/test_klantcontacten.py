@@ -161,7 +161,7 @@ class KlantContactTests(APITestCase):
                 "Er bestaat al een klantcontact met eenzelfde nummer.",
             )
 
-    def test_create_klantcontact_constraint(self):
+    def test_create_klantcontact_verdere_actie_ondernomen_constraint(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
             "nummer": "1234567890",
@@ -176,7 +176,7 @@ class KlantContactTests(APITestCase):
         }
         response = self.client.post(list_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_klantcontact_with_reverse_lookup_fields(self):
         list_url = reverse("klantinteracties:klantcontact-list")

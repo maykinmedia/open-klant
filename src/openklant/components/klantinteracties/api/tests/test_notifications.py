@@ -93,7 +93,8 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_update_object(self, m):
@@ -115,7 +116,8 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_partial_update_object(self, m):
@@ -139,7 +141,8 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_delete_object(self, m):
@@ -160,7 +163,8 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                     "interneNotitie": "interneNotitie",
                     "soortPartij": "organisatie",
                 },
-            }
+            },
+            None,
         )
 
 
@@ -215,7 +219,8 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "toelichting": "toelichting",
                     "status": "verwerkt",
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_update_object(self, m):
@@ -238,7 +243,8 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "toelichting": "toelichting",
                     "status": "verwerkt",
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_partial_update_object(self, m):
@@ -261,7 +267,8 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "toelichting": "test",
                     "status": "te_verwerken",
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_delete_object(self, m):
@@ -283,7 +290,8 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "toelichting": "test",
                     "status": "te_verwerken",
                 },
-            }
+            },
+            None,
         )
 
 
@@ -338,7 +346,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                     "indicatieContactGelukt": False,
                     "verdereActieOndernomen": False,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_update_object(self, m):
@@ -360,7 +369,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                     "indicatieContactGelukt": False,
                     "verdereActieOndernomen": False,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_partial_update_object(self, m):
@@ -384,7 +394,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                     "indicatieContactGelukt": False,
                     "verdereActieOndernomen": False,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_delete_object(self, m):
@@ -405,5 +416,6 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                     "indicatieContactGelukt": True,
                     "verdereActieOndernomen": False,
                 },
-            }
+            },
+            None,
         )
