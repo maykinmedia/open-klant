@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from typing import Any
 
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
@@ -7,7 +8,8 @@ from django.utils.translation import gettext_lazy as _
 
 import structlog
 from requests import RequestException
-from rest_framework import serializers
+from rest_framework import fields, serializers
+from rest_framework.serializers import Serializer
 from rest_framework.validators import UniqueTogetherValidator, qs_filter
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
@@ -260,3 +262,41 @@ class KanaalValidator:
             )
 
         return value
+
+
+def get_from_serializer_data_or_instance(
+    field: str, data: dict, serializer: Serializer
+) -> Any:
+    serializer_field = serializer.fields[field]
+    data_value = data.get(serializer_field.source, fields.empty)
+    if data_value is not fields.empty:
+        return data_value
+
+    instance = serializer.instance
+    if not instance:
+        return None
+
+    return serializer_field.get_attribute(instance)
+
+
+class VerdereActieOndernomenValidator:
+    """
+    Makes sure that verdere_actie_ondernomen cannot be True if indicatie_contact_gelukt is True
+    """
+
+    message = _(
+        "VerdereActieOndernomen cannot be True if indicatieContactGelukt is True"
+    )
+    code = "no_further_action_when_contact_succesful"
+    requires_context = True
+
+    def __call__(self, attrs, serializer):
+        verdere_actie_ondernomen = get_from_serializer_data_or_instance(
+            "verdere_actie_ondernomen", attrs, serializer
+        )
+        indicatie_contact_gelukt = get_from_serializer_data_or_instance(
+            "indicatie_contact_gelukt", attrs, serializer
+        )
+
+        if verdere_actie_ondernomen and indicatie_contact_gelukt:
+            raise ValidationError(self.message, code=self.code)

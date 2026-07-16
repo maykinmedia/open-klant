@@ -2,6 +2,7 @@ import uuid
 
 from django.core.validators import validate_integer
 from django.db import models
+from django.db.models import CheckConstraint, Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -132,6 +133,17 @@ class Klantcontact(APIMixin, models.Model):
     class Meta:
         verbose_name = _("klantcontact")
         verbose_name_plural = _("klantcontacten")
+        constraints = [
+            CheckConstraint(
+                condition=~(
+                    Q(indicatie_contact_gelukt=True) & Q(verdere_actie_ondernomen=True)
+                ),
+                name="no_further_action_when_contact_succesful",
+                violation_error_message=_(
+                    "Als het contact gelukt is kan er geen verdere actie zijn ondernomen"
+                ),
+            )
+        ]
 
     def __str__(self):
         return f"{self.onderwerp} - ({self.nummer})" if self.nummer else self.onderwerp

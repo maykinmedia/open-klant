@@ -161,6 +161,23 @@ class KlantContactTests(APITestCase):
                 "Er bestaat al een klantcontact met eenzelfde nummer.",
             )
 
+    def test_create_klantcontact_constraint(self):
+        list_url = reverse("klantinteracties:klantcontact-list")
+        data = {
+            "nummer": "1234567890",
+            "kanaal": "kanaal",
+            "onderwerp": "onderwerp",
+            "inhoud": "inhoud",
+            "indicatieContactGelukt": True,
+            "verdereActieOndernomen": True,
+            "taal": "ndl",
+            "vertrouwelijk": True,
+            "plaatsgevondenOp": "2019-08-24T14:15:22Z",
+        }
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
     def test_create_klantcontact_with_reverse_lookup_fields(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
