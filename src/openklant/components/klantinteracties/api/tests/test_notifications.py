@@ -9,6 +9,11 @@ from vng_api_common.tests import reverse
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
+from openklant.components.klantinteracties.api.tests.factories import (
+    BetrokkeneDataFactory,
+    KlantContactDataFactory,
+    OnderwerpObjectDataFactory,
+)
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
@@ -414,6 +419,36 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "kenmerken": {
                     "hoofdOnderwerpType": "",
                     "indicatieContactGelukt": True,
+                    "verdereActieOndernomen": False,
+                },
+            },
+            None,
+        )
+
+    def test_send_notification_maak_klantcontact(self, m):
+        url = reverse("klantinteracties:maak-klantcontact-list")
+        data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
+
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        m.assert_called_with(
+            {
+                "kanaal": "klantcontacten",
+                "hoofdObject": data["klantcontact"]["url"],
+                "resource": "klantcontact",
+                "resourceUrl": data["klantcontact"]["url"],
+                "actie": "create",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "hoofdOnderwerpType": "",
+                    "indicatieContactGelukt": False,
                     "verdereActieOndernomen": False,
                 },
             },

@@ -85,7 +85,9 @@ class Klantcontact(APIMixin, models.Model):
     )
     hoofd_onderwerp_type = models.URLField(
         _("hoofd onderwerp type"),
-        help_text=_("Het type van het onderwerp van het contact"),
+        help_text=_(
+            "Het type van het onderwerp van het contact (bijvoorbeeld een zaaktype)"
+        ),
         blank=True,
     )
 

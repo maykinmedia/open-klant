@@ -5172,7 +5172,8 @@ components:
         hoofdOnderwerpType:
           type: string
           format: uri
-          description: Het type van het onderwerp van het contact
+          description: Het type van het onderwerp van het contact (bijvoorbeeld een
+            zaaktype)
           maxLength: 200
         verdereActieOndernomen:
           type: boolean
@@ -6534,7 +6535,8 @@ components:
         hoofdOnderwerpType:
           type: string
           format: uri
-          description: Het type van het onderwerp van het contact
+          description: Het type van het onderwerp van het contact (bijvoorbeeld een
+            zaaktype)
           maxLength: 200
         verdereActieOndernomen:
           type: boolean
@@ -6967,7 +6969,7 @@ tags:
 
     **Kenmerken**
 
-    * `hoofd_onderwerp_type`: Het type van het onderwerp van het contact
+    * `hoofd_onderwerp_type`: Het type van het onderwerp van het contact (bijvoorbeeld een zaaktype)
     * `indicatie_contact_gelukt`: Geeft, indien bekend, aan of de poging contact tussen de gemeente en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
     * `verdere_actie_ondernomen`: Geeft aan of het systeem waar het contact heeft plaats gevonden zelf actie onderneemt als het niet lukt om de klant te bereiken.
 

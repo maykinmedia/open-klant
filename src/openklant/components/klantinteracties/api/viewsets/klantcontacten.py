@@ -58,6 +58,7 @@ from openklant.components.token.models import TokenAuth
 from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.api import get_related_object_uuid
 from openklant.components.utils.mixins import ExpandMixin
+from openklant.utils.notifications import MultipleNotificationCreateMixin
 
 logger = structlog.stdlib.get_logger(__name__)
 
@@ -794,7 +795,9 @@ class ActorKlantcontactViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
         description="Maak een KlantContact, Betrokkene en een OnderwerpObject aan.",
     ),
 )
-class MaakKlantcontactViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class MaakKlantcontactViewSet(
+    MultipleNotificationCreateMixin, mixins.CreateModelMixin, viewsets.GenericViewSet
+):
     """
     Endpoint om in één request een Klantcontact met een Betrokkene en een OnderwerpObject
     aan te maken. De aangemaakte objecten worden automatisch aan elkaar gekoppeld.
@@ -803,6 +806,13 @@ class MaakKlantcontactViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = MaakKlantcontactSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    notification_fields = {
+        "klantcontact": {
+            "notifications_kanaal": KANAAL_KLANTCONTACT,
+            "model": Klantcontact,
+        },
+    }
 
     @transaction.atomic
     def perform_create(self, serializer):
