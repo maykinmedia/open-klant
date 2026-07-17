@@ -71,7 +71,7 @@ class Klantcontact(APIMixin, models.Model):
     reactie = models.TextField(
         _("Reactie"),
         help_text=_("De reactie die die tijdens het contact werdt gegeven"),
-        max_length=1000,
+        max_length=4000,
         blank=True,
     )
     indicatie_contact_gelukt = models.BooleanField(

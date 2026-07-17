@@ -285,9 +285,9 @@ class ValidateMetadataTests(TestCase):
             validate_metadata(metadata)
 
     def test_value_too_long(self):
-        metadata = {"Betreft": "x" * 101, "Type": "Vraag"}
+        metadata = {"Betreft": "x" * 256, "Type": "Vraag"}
         with self.assertRaisesMessage(
-            ValidationError, "Value van key 'Betreft' mag maximaal 100 tekens bevatten."
+            ValidationError, "Value van key 'Betreft' mag maximaal 255 tekens bevatten."
         ):
             validate_metadata(metadata)
 
