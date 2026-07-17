@@ -2704,6 +2704,33 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_partij_identificator_code_objecttype_no_duplicates(self):
+        partij = PartijFactory.create()
+        obj = DigitaalAdresFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+        )
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "verstrektDoorPartij__partijIdentificator__codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            },
+        )
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(obj.uuid), data[0]["uuid"])
+
     def test_filter_verstrekt_door_partij_partij_identificator_soort_object_id(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
@@ -2778,6 +2805,31 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_partij_identificator_object_id_no_duplicates(self):
+        partij = PartijFactory.create()
+        obj = DigitaalAdresFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_object_id="123456789",
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_object_id="123456789",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"verstrektDoorPartij__partijIdentificator__objectId": "123456789"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(obj.uuid), data[0]["uuid"])
+
     def test_filter_verstrekt_door_partij_partij_identificator_code_register(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
@@ -2812,6 +2864,33 @@ class DigitaalAdresFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_partij_identificator_code_register_no_duplicates(self):
+        partij = PartijFactory.create()
+        obj = DigitaalAdresFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "verstrektDoorPartij__partijIdentificator__codeRegister": PartijIdentificatorCodeRegister.brp.value
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(obj.uuid), data[0]["uuid"])
 
     def test_verstrekt_door_betrokkene__rol(self):
         betrokkene = BetrokkeneFactory(rol=Klantcontrol.klant)

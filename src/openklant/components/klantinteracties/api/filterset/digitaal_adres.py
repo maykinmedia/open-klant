@@ -1,3 +1,4 @@
+from django.db.models import Exists, OuterRef
 from django.utils.translation import gettext_lazy as _
 
 from django_filters.rest_framework import filters
@@ -9,6 +10,7 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models import Klantcontrol, SoortPartij
 from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
+from openklant.components.klantinteracties.models.partijen import PartijIdentificator
 from openklant.components.utils.filters import ExpandFilter, URLViewFilter
 
 
@@ -130,14 +132,14 @@ class DigitaalAdresFilterSet(FilterSet):
         }
 
     def filter_partij_identificator_code_objecttype(self, queryset, name, value):
-        try:
-            return queryset.filter(
-                partij__partijidentificator__partij_identificator_code_objecttype=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = PartijIdentificator.objects.filter(
+            partij_id=OuterRef("partij_id"),
+            partij_identificator_code_objecttype=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_partij_identificator_code_soort_object_id(self, queryset, name, value):
+        # No Exists() needed: (partij, code_soort_object_id) is unique per partij
         try:
             return queryset.filter(
                 partij__partijidentificator__partij_identificator_code_soort_object_id=value
@@ -146,20 +148,18 @@ class DigitaalAdresFilterSet(FilterSet):
             return queryset.none()
 
     def filter_partij_identificator_object_id(self, queryset, name, value):
-        try:
-            return queryset.filter(
-                partij__partijidentificator__partij_identificator_object_id=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = PartijIdentificator.objects.filter(
+            partij_id=OuterRef("partij_id"),
+            partij_identificator_object_id=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_partij_identificator_code_register(self, queryset, name, value):
-        try:
-            return queryset.filter(
-                partij__partijidentificator__partij_identificator_code_register=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = PartijIdentificator.objects.filter(
+            partij_id=OuterRef("partij_id"),
+            partij_identificator_code_register=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_is_geverifieerd(self, queryset, name, value):
         if value:
