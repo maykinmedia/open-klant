@@ -9,12 +9,14 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     KlantcontactSerializer,
 )
 from openklant.components.klantinteracties.models.actoren import ActorKlantcontact
+from openklant.components.klantinteracties.models.digitaal_adres import DigitaalAdres
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import (
     Betrokkene,
     Klantcontact,
     Onderwerpobject,
 )
+from openklant.components.klantinteracties.models.partijen import PartijIdentificator
 from openklant.components.utils.filters import ExpandFilter, URLViewFilter
 
 
@@ -312,20 +314,24 @@ class BetrokkeneFilterSet(FilterSet):
             return queryset.none()
 
     def filter_digitaaladres_adres(self, queryset, name, value):
-        return queryset.filter(digitaaladres__adres=value)
+        subquery = DigitaalAdres.objects.filter(
+            betrokkene_id=OuterRef("pk"),
+            adres=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_partij_nummer(self, queryset, name, value):
         return queryset.filter(partij__nummer=value)
 
     def filter_partij_identificator_code_objecttype(self, queryset, name, value):
-        try:
-            return queryset.filter(
-                partij__partijidentificator__partij_identificator_code_objecttype=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = PartijIdentificator.objects.filter(
+            partij_id=OuterRef("partij_id"),
+            partij_identificator_code_objecttype=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_partij_identificator_code_soort_object_id(self, queryset, name, value):
+        # No Exists() needed: (partij, code_soort_object_id) is unique per partij
         try:
             return queryset.filter(
                 partij__partijidentificator__partij_identificator_code_soort_object_id=value
@@ -334,20 +340,18 @@ class BetrokkeneFilterSet(FilterSet):
             return queryset.none()
 
     def filter_partij_identificator_object_id(self, queryset, name, value):
-        try:
-            return queryset.filter(
-                partij__partijidentificator__partij_identificator_object_id=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = PartijIdentificator.objects.filter(
+            partij_id=OuterRef("partij_id"),
+            partij_identificator_object_id=value,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_partij_identificator_code_register(self, queryset, name, value):
-        try:
-            return queryset.filter(
-                partij__partijidentificator__partij_identificator_code_register=value
-            )
-        except ValueError:
-            return queryset.none()
+        subquery = PartijIdentificator.objects.filter(
+            partij_id=OuterRef("partij_id"),
+            partij_identificator_code_register=value,
+        )
+        return queryset.filter(Exists(subquery))
 
 
 class ActorKlantcontactFilterSet(FilterSet):

@@ -1096,6 +1096,29 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_digitaaladres_adres_no_duplicates(self):
+        betrokkene = BetrokkeneFactory.create()
+
+        DigitaalAdresFactory.create(
+            betrokkene=betrokkene,
+            adres="test@example.com",
+        )
+        DigitaalAdresFactory.create(
+            betrokkene=betrokkene,
+            adres="test@example.com",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"verstrektedigitaalAdres__adres": "test@example.com"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        print(data)
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
+
     def test_filter_was_partij_url(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
