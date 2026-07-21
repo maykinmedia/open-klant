@@ -23,7 +23,7 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 **Kenmerken**
 
 * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
-* `gevraagde_handeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
+* `gevraagdeHandeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
 * `toelichting`: Toelichting die, aanvullend bij de inhoud van het klantcontact dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan het kunnen afhandelen van de taak.
 * `status`: Aanduiding van de vordering bij afhandeling van de interne taak.
 
@@ -46,9 +46,9 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 
 **Kenmerken**
 
-* `hoofd_onderwerp_type`: Het type van het onderwerp van het contact (bijvoorbeeld een zaaktype)
-* `indicatie_contact_gelukt`: Geeft, indien bekend, aan of de poging contact tussen de gemeente en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
-* `verdere_actie_ondernomen`: Geeft aan of het systeem waar het contact heeft plaats gevonden zelf actie onderneemt als het niet lukt om de klant te bereiken.
+* `hoofdOnderwerpType`: Het type van het onderwerp van het contact (bijvoorbeeld een zaaktype)
+* `indicatieContactGelukt`: Geeft, indien bekend, aan of de poging contact tussen de gemeente en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
+* `verdereActieOndernomen`: Geeft aan of het systeem waar het contact heeft plaats gevonden zelf actie onderneemt als het niet lukt om de klant te bereiken.
 
 **Resources en acties**
 
@@ -70,8 +70,8 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 **Kenmerken**
 
 * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
-* `interne_notitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
-* `soort_partij`: Geeft aan van welke specifieke soort partij sprake is.
+* `interneNotitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
+* `soortPartij`: Geeft aan van welke specifieke soort partij sprake is.
 
 **Resources en acties**
 

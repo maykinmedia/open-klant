@@ -284,9 +284,7 @@ class VerdereActieOndernomenValidator:
     Makes sure that verdere_actie_ondernomen cannot be True if indicatie_contact_gelukt is True
     """
 
-    message = _(
-        "VerdereActieOndernomen cannot be True if indicatieContactGelukt is True"
-    )
+    message = _("Als het contact gelukt is kan er geen verdere actie zijn ondernomen")
     code = "no_further_action_when_contact_succesful"
     requires_context = True
 

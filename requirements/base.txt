@@ -267,8 +267,10 @@ mozilla-django-oidc-db==2.0.1
     # via
     #   -r requirements/base.in
     #   open-api-framework
-notifications-api-common==0.12.0
-    # via commonground-api-common
+notifications-api-common @ git+https://github.com/maykinmedia/notifications-api-common.git@ddf949f57843cbbbe83cf46ee3ad67bb94ca5438
+    # via
+    #   -r requirements/base.in
+    #   commonground-api-common
 open-api-framework==0.14.0
     # via -r requirements/base.in
 opentelemetry-api==1.36.0

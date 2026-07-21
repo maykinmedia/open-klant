@@ -177,6 +177,10 @@ class KlantContactTests(APITestCase):
         response = self.client.post(list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json()["invalidParams"][0]["reason"],
+            _("Als het contact gelukt is kan er geen verdere actie zijn ondernomen"),
+        )
 
     def test_create_klantcontact_with_reverse_lookup_fields(self):
         list_url = reverse("klantinteracties:klantcontact-list")
