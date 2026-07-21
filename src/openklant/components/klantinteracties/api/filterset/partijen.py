@@ -167,10 +167,11 @@ class PartijFilterSet(FilterSet):
 
     def filter_categorierelatie_categorie_naam(self, queryset, name, value):
         categorie_namen = value.split(",")
-
-        return queryset.filter(
-            categorierelatie__categorie__naam__in=categorie_namen
-        ).distinct()
+        subquery = CategorieRelatie.objects.filter(
+            partij_id=OuterRef("pk"),
+            categorie__naam__in=categorie_namen,
+        )
+        return queryset.filter(Exists(subquery))
 
     def filter_sub_identificator_object_id(self, queryset, name, value):
         try:
