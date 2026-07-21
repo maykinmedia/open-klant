@@ -2749,7 +2749,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
 
         with self.subTest("create_with_too_long_metadata_value"):
             post_data["klantcontact"]["nummer"] = "7948723946"
-            post_data["klantcontact"]["metadata"] = {"Betreft": "x" * 101}
+            post_data["klantcontact"]["metadata"] = {"Betreft": "x" * 256}
 
             response = self.client.post(self.url, post_data)
 

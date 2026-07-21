@@ -5163,7 +5163,7 @@ components:
         reactie:
           type: string
           description: De reactie die die tijdens het contact werdt gegeven
-          maxLength: 1000
+          maxLength: 4000
         indicatieContactGelukt:
           type: boolean
           nullable: true
@@ -5190,9 +5190,9 @@ components:
           type: object
           additionalProperties:
             type: string
-            maxLength: 100
+            maxLength: 255
           description: Generieke key/value metadata. Key = string, value = string
-            (max 100 tekens).
+            (max 255 tekens).
       required:
       - gingOverOnderwerpobjecten
       - hadBetrokkenActoren
@@ -6516,7 +6516,7 @@ components:
         reactie:
           type: string
           description: De reactie die die tijdens het contact werdt gegeven
-          maxLength: 1000
+          maxLength: 4000
         indicatieContactGelukt:
           type: boolean
           nullable: true
@@ -6543,9 +6543,9 @@ components:
           type: object
           additionalProperties:
             type: string
-            maxLength: 100
+            maxLength: 255
           description: Generieke key/value metadata. Key = string, value = string
-            (max 100 tekens).
+            (max 255 tekens).
     PatchedOnderwerpobject:
       type: object
       description: |-
