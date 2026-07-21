@@ -24,6 +24,7 @@ from openklant.components.klantinteracties.models.tests.factories import (
     RekeningnummerFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase
+from openklant.conf.base import LOG_NOTIFICATIONS_IN_DB
 
 
 class NotificationsConfigTestCase:
@@ -47,7 +48,7 @@ class NotificationsConfigTestCase:
 
 @freeze_time("2024-2-2T00:00:00Z")
 @patch("notifications_api_common.viewsets.send_notification.delay")
-@override_settings(NOTIFICATIONS_DISABLED=False)
+@override_settings(NOTIFICATIONS_DISABLED=False, LOG_NOTIFICATIONS_IN_DB=False)
 class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
     @classmethod
     def setUpTestData(cls):
@@ -174,7 +175,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
 
 
 @freeze_time("2024-2-2T00:00:00Z")
-@override_settings(NOTIFICATIONS_DISABLED=False)
+@override_settings(NOTIFICATIONS_DISABLED=False, LOG_NOTIFICATIONS_IN_DB=False)
 @patch("notifications_api_common.viewsets.send_notification.delay")
 class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCase):
     @classmethod
@@ -301,7 +302,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
 
 
 @freeze_time("2024-2-2T00:00:00Z")
-@override_settings(NOTIFICATIONS_DISABLED=False)
+@override_settings(NOTIFICATIONS_DISABLED=False, LOG_NOTIFICATIONS_IN_DB=False)
 @patch("notifications_api_common.viewsets.send_notification.delay")
 class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestCase):
     @classmethod
