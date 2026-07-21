@@ -9,3 +9,5 @@ django-localflavor
 django-setup-configuration
 
 maykin-common[axes,mfa,otel,cli,health-checks]
+
+notifications-api-common @ git+https://github.com/maykinmedia/notifications-api-common.git@feature/ok-598-changes

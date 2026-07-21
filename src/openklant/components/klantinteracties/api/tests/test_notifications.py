@@ -9,6 +9,11 @@ from vng_api_common.tests import reverse
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
+from openklant.components.klantinteracties.api.tests.factories import (
+    BetrokkeneDataFactory,
+    KlantContactDataFactory,
+    OnderwerpObjectDataFactory,
+)
 from openklant.components.klantinteracties.models.constants import SoortPartij
 from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
@@ -19,6 +24,7 @@ from openklant.components.klantinteracties.models.tests.factories import (
     RekeningnummerFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase
+from openklant.conf.base import LOG_NOTIFICATIONS_IN_DB
 
 
 class NotificationsConfigTestCase:
@@ -42,7 +48,7 @@ class NotificationsConfigTestCase:
 
 @freeze_time("2024-2-2T00:00:00Z")
 @patch("notifications_api_common.viewsets.send_notification.delay")
-@override_settings(NOTIFICATIONS_DISABLED=False)
+@override_settings(NOTIFICATIONS_DISABLED=False, LOG_NOTIFICATIONS_IN_DB=False)
 class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
     @classmethod
     def setUpTestData(cls):
@@ -93,7 +99,8 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_update_object(self, m):
@@ -115,7 +122,8 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_partial_update_object(self, m):
@@ -139,7 +147,8 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_delete_object(self, m):
@@ -160,12 +169,13 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                     "interneNotitie": "interneNotitie",
                     "soortPartij": "organisatie",
                 },
-            }
+            },
+            None,
         )
 
 
 @freeze_time("2024-2-2T00:00:00Z")
-@override_settings(NOTIFICATIONS_DISABLED=False)
+@override_settings(NOTIFICATIONS_DISABLED=False, LOG_NOTIFICATIONS_IN_DB=False)
 @patch("notifications_api_common.viewsets.send_notification.delay")
 class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCase):
     @classmethod
@@ -215,7 +225,8 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "toelichting": "toelichting",
                     "status": "verwerkt",
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_update_object(self, m):
@@ -238,7 +249,8 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "toelichting": "toelichting",
                     "status": "verwerkt",
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_partial_update_object(self, m):
@@ -261,7 +273,8 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "toelichting": "test",
                     "status": "te_verwerken",
                 },
-            }
+            },
+            None,
         )
 
     def test_send_notification_delete_object(self, m):
@@ -283,5 +296,162 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                     "toelichting": "test",
                     "status": "te_verwerken",
                 },
-            }
+            },
+            None,
+        )
+
+
+@freeze_time("2024-2-2T00:00:00Z")
+@override_settings(NOTIFICATIONS_DISABLED=False, LOG_NOTIFICATIONS_IN_DB=False)
+@patch("notifications_api_common.viewsets.send_notification.delay")
+class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.actor = ActorFactory.create()
+        cls.klantcontact = KlantcontactFactory.create(
+            nummer="123456789",
+            kanaal="email",
+            onderwerp="klacht",
+            taal="nld",
+            vertrouwelijk=False,
+            indicatie_contact_gelukt=True,
+        )
+        cls.list_url = reverse("klantinteracties:klantcontact-list")
+        cls.detail_url = reverse(
+            "klantinteracties:klantcontact-detail",
+            kwargs={"uuid": str(cls.klantcontact.uuid)},
+        )
+        cls.data = {
+            "nummer": "987654321",
+            "kanaal": "email",
+            "onderwerp": "klacht",
+            "taal": "nld",
+            "vertrouwelijk": False,
+            "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
+            "indicatieContactGelukt": False,
+            "verdereActieOndernomen": False,
+        }
+
+    def test_send_notification_create_object(self, m):
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(self.list_url, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        m.assert_called_with(
+            {
+                "kanaal": "klantcontacten",
+                "hoofdObject": data["url"],
+                "resource": "klantcontact",
+                "resourceUrl": data["url"],
+                "actie": "create",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
+                    "indicatieContactGelukt": False,
+                    "verdereActieOndernomen": False,
+                },
+            },
+            None,
+        )
+
+    def test_send_notification_update_object(self, m):
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.put(self.detail_url, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        m.assert_called_with(
+            {
+                "kanaal": "klantcontacten",
+                "hoofdObject": data["url"],
+                "resource": "klantcontact",
+                "resourceUrl": data["url"],
+                "actie": "update",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
+                    "indicatieContactGelukt": False,
+                    "verdereActieOndernomen": False,
+                },
+            },
+            None,
+        )
+
+    def test_send_notification_partial_update_object(self, m):
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.patch(
+                self.detail_url, {"indicatieContactGelukt": False}
+            )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        m.assert_called_with(
+            {
+                "kanaal": "klantcontacten",
+                "hoofdObject": data["url"],
+                "resource": "klantcontact",
+                "resourceUrl": data["url"],
+                "actie": "partial_update",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "hoofdOnderwerpType": "",
+                    "indicatieContactGelukt": False,
+                    "verdereActieOndernomen": False,
+                },
+            },
+            None,
+        )
+
+    def test_send_notification_delete_object(self, m):
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.delete(self.detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        m.assert_called_with(
+            {
+                "kanaal": "klantcontacten",
+                "hoofdObject": f"http://testserver{self.detail_url}",
+                "resource": "klantcontact",
+                "resourceUrl": f"http://testserver{self.detail_url}",
+                "actie": "destroy",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "hoofdOnderwerpType": "",
+                    "indicatieContactGelukt": True,
+                    "verdereActieOndernomen": False,
+                },
+            },
+            None,
+        )
+
+    def test_send_notification_maak_klantcontact(self, m):
+        url = reverse("klantinteracties:maak-klantcontact-list")
+        data = {
+            "klantcontact": KlantContactDataFactory.create(),
+            "betrokkene": BetrokkeneDataFactory.create(),
+            "onderwerpobject": OnderwerpObjectDataFactory.create(),
+        }
+
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        m.assert_called_with(
+            {
+                "kanaal": "klantcontacten",
+                "hoofdObject": data["klantcontact"]["url"],
+                "resource": "klantcontact",
+                "resourceUrl": data["klantcontact"]["url"],
+                "actie": "create",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "hoofdOnderwerpType": "",
+                    "indicatieContactGelukt": False,
+                    "verdereActieOndernomen": False,
+                },
+            },
+            None,
         )

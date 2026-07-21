@@ -175,6 +175,10 @@
             [
                 "log_outgoing_requests",
                 "outgoingrequestslog"
+            ],
+            [
+                "notifications_api_common",
+                "failednotification"
             ]
         ]
     }

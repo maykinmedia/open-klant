@@ -736,3 +736,57 @@ class IntereTaakAdminTests(WebTest):
         response: TestResponse = form.submit()
         self.assertEqual(response.status_code, 302)
         self.assertFalse(InterneTaak.objects.filter(uuid=internetaak.uuid).exists())
+
+
+@disable_admin_mfa()
+class KlantContactAdminTest(WebTest):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.user = SuperUserFactory.create()
+
+    def test_klantcontact_create(self):
+        self.app.set_user(self.user)
+
+        admin_url = reverse("admin:klantinteracties_klantcontact_add")
+
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.forms["klantcontact_form"]
+        form["kanaal"] = "kanaal"
+        form["onderwerp"] = "onderwerp"
+        form["inhoud"] = "inhoud"
+        form["indicatie_contact_gelukt"] = "true"  # select field
+        form["verdere_actie_ondernomen"] = False
+        form["taal"] = "ndl"
+        form["vertrouwelijk"] = "true"
+
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Klantcontact.objects.count(), 1)
+
+    def test_klantcontact_create_verdere_actie_ondernomen_when_contact_gelukt(self):
+        self.app.set_user(self.user)
+
+        admin_url = reverse("admin:klantinteracties_klantcontact_add")
+
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.forms["klantcontact_form"]
+        form["kanaal"] = "kanaal"
+        form["onderwerp"] = "onderwerp"
+        form["inhoud"] = "inhoud"
+        form["indicatie_contact_gelukt"] = "true"  # select field
+        form["verdere_actie_ondernomen"] = True
+        form["taal"] = "ndl"
+        form["vertrouwelijk"] = "true"
+
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["adminform"],
+            None,
+            errors="Als het contact gelukt is kan er geen verdere actie zijn ondernomen",
+        )

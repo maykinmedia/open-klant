@@ -20,6 +20,7 @@ from openklant.components.klantinteracties.api.serializers.digitaal_adres import
 from openklant.components.klantinteracties.api.validators import (
     FKUniqueTogetherValidator,
     KanaalValidator,
+    VerdereActieOndernomenValidator,
     betrokkene_exists,
     bijlage_exists,
     klantcontact_exists,
@@ -331,6 +332,8 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             "inhoud",
             "reactie",
             "indicatie_contact_gelukt",
+            "hoofd_onderwerp_type",
+            "verdere_actie_ondernomen",
             "taal",
             "vertrouwelijk",
             "plaatsgevonden_op",
@@ -347,6 +350,7 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
                 "validators": [KanaalValidator()],
             },
         }
+        validators = [VerdereActieOndernomenValidator()]
 
     @extend_schema_field(ActorSerializer(many=True))
     def get_had_betrokken_actoren(self, obj):

@@ -10,6 +10,7 @@ from drf_spectacular.utils import (
     extend_schema_view,
 )
 from notifications_api_common.cloudevents import process_cloudevent
+from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.response import Response
 from vng_api_common.pagination import DynamicPageSizePagination
@@ -35,6 +36,7 @@ from openklant.components.klantinteracties.api.serializers.klantcontacten import
     MaakKlantcontactSerializer,
     OnderwerpobjectSerializer,
 )
+from openklant.components.klantinteracties.kanalen import KANAAL_KLANTCONTACT
 from openklant.components.klantinteracties.metrics import (
     betrokkenen_create_counter,
     betrokkenen_delete_counter,
@@ -56,6 +58,7 @@ from openklant.components.token.models import TokenAuth
 from openklant.components.token.permission import TokenPermissions
 from openklant.components.utils.api import get_related_object_uuid
 from openklant.components.utils.mixins import ExpandMixin
+from openklant.utils.notifications import MultipleNotificationCreateMixin
 
 logger = structlog.stdlib.get_logger(__name__)
 
@@ -88,7 +91,9 @@ logger = structlog.stdlib.get_logger(__name__)
         description="Verwijder een klant contact.",
     ),
 )
-class KlantcontactViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelViewSet):
+class KlantcontactViewSet(
+    CheckQueryParamsMixin, ExpandMixin, NotificationViewSetMixin, viewsets.ModelViewSet
+):
     """
     Contact tussen een klant of een vertegenwoordiger van een
     klant en de gemeente over een onderwerp.
@@ -108,6 +113,7 @@ class KlantcontactViewSet(CheckQueryParamsMixin, ExpandMixin, viewsets.ModelView
     pagination_class = DynamicPageSizePagination
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+    notifications_kanaal = KANAAL_KLANTCONTACT
 
     @property
     def filterset_class(self):
@@ -405,7 +411,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
             )
 
             process_cloudevent(
-                type=ZAAK_GEKOPPELD,
+                event_type=ZAAK_GEKOPPELD,
                 subject=instance.onderwerpobjectidentificator.get("object_id"),
                 data={
                     "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",
@@ -463,7 +469,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
 
             transaction.on_commit(
                 lambda: process_cloudevent(
-                    type=ZAAK_ONTKOPPELD,
+                    event_type=ZAAK_ONTKOPPELD,
                     subject=old_ident.get("object_id"),
                     data={
                         "zaak": f"urn:uuid:{old_ident.get('object_id')}",
@@ -484,7 +490,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
 
             transaction.on_commit(
                 lambda: process_cloudevent(
-                    type=ZAAK_GEKOPPELD,
+                    event_type=ZAAK_GEKOPPELD,
                     subject=new_ident.get("object_id"),
                     data={
                         "zaak": f"urn:uuid:{new_ident.get('object_id')}",
@@ -531,7 +537,7 @@ class OnderwerpobjectViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
 
             transaction.on_commit(
                 lambda: process_cloudevent(
-                    type=ZAAK_ONTKOPPELD,
+                    event_type=ZAAK_ONTKOPPELD,
                     subject=instance.onderwerpobjectidentificator.get("object_id"),
                     data={
                         "zaak": f"urn:uuid:{instance.onderwerpobjectidentificator.get('object_id')}",
@@ -789,7 +795,9 @@ class ActorKlantcontactViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
         description="Maak een KlantContact, Betrokkene en een OnderwerpObject aan.",
     ),
 )
-class MaakKlantcontactViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class MaakKlantcontactViewSet(
+    MultipleNotificationCreateMixin, mixins.CreateModelMixin, viewsets.GenericViewSet
+):
     """
     Endpoint om in één request een Klantcontact met een Betrokkene en een OnderwerpObject
     aan te maken. De aangemaakte objecten worden automatisch aan elkaar gekoppeld.
@@ -798,6 +806,13 @@ class MaakKlantcontactViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = MaakKlantcontactSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (TokenPermissions,)
+
+    notification_fields = {
+        "klantcontact": {
+            "notifications_kanaal": KANAAL_KLANTCONTACT,
+            "model": Klantcontact,
+        },
+    }
 
     @transaction.atomic
     def perform_create(self, serializer):
