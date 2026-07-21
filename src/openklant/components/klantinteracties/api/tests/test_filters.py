@@ -1096,6 +1096,28 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_digitaaladres_adres_no_duplicates(self):
+        betrokkene = BetrokkeneFactory.create()
+
+        DigitaalAdresFactory.create(
+            betrokkene=betrokkene,
+            adres="test@example.com",
+        )
+        DigitaalAdresFactory.create(
+            betrokkene=betrokkene,
+            adres="test@example.com",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"verstrektedigitaalAdres__adres": "test@example.com"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
+
     def test_filter_was_partij_url(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
@@ -1242,6 +1264,33 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_partij_identificator_code_objecttype_no_duplicates(self):
+        partij = PartijFactory.create()
+        betrokkene = BetrokkeneFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "wasPartij__partijIdentificator__codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
+
     def test_filter_was_partij_partij_identificator_soort_object_id(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
@@ -1314,6 +1363,31 @@ class BetrokkeneFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_partij_identificator_object_id_no_duplicates(self):
+        partij = PartijFactory.create()
+        betrokkene = BetrokkeneFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_object_id="123456789",
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_object_id="123456789",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"wasPartij__partijIdentificator__objectId": "123456789"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
+
     def test_filter_was_partij_partij_identificator_code_register(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
@@ -1346,6 +1420,33 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_partij_identificator_code_register_no_duplicates(self):
+        partij = PartijFactory.create()
+        betrokkene = BetrokkeneFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "wasPartij__partijIdentificator__codeRegister": PartijIdentificatorCodeRegister.brp.value
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(betrokkene.uuid), data[0]["uuid"])
 
     def test_digitale_adressen_inclusion_param(self):
         betrokkene = BetrokkeneFactory.create()
@@ -1493,6 +1594,32 @@ class PartijFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_partij_identificator_code_objecttype_no_duplicates(self):
+        partij = PartijFactory.create()
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "partijIdentificator__codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(partij.uuid), data[0]["uuid"])
+
     def test_filter_identificator_soort_object_id(self):
         partij, partij2 = PartijFactory.create_batch(2)
         PartijIdentificatorFactory.create(
@@ -1559,6 +1686,30 @@ class PartijFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_partij_identificator_object_id_no_duplicates(self):
+        partij = PartijFactory.create()
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_object_id="123456789",
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_object_id="123456789",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"partijIdentificator__objectId": "123456789"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(partij.uuid), data[0]["uuid"])
+
     def test_filter_identificator_code_register(self):
         partij, partij2 = PartijFactory.create_batch(2)
         PartijIdentificatorFactory.create(
@@ -1587,6 +1738,32 @@ class PartijFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_partij_identificator_code_register_no_duplicates(self):
+        partij = PartijFactory.create()
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "partijIdentificator__codeRegister": PartijIdentificatorCodeRegister.brp.value
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(partij.uuid), data[0]["uuid"])
 
     def test_filter_categorie_relaties_categorie_naam(self):
         partij, partij2 = PartijFactory.create_batch(2)
@@ -1628,6 +1805,23 @@ class PartijFilterSetTests(APITestCase):
             self.assertEqual(2, len(data))
             self.assertEqual(str(partij2.uuid), data[0]["uuid"])
             self.assertEqual(str(partij.uuid), data[1]["uuid"])
+
+    def test_filter_categorierelatie_categorie_naam_no_duplicates(self):
+        partij = PartijFactory.create()
+        categorie = CategorieFactory.create(naam="one")
+
+        CategorieRelatieFactory.create(partij=partij, categorie=categorie)
+        CategorieRelatieFactory.create(partij=partij, categorie=categorie)
+
+        response = self.client.get(
+            self.url,
+            {"categorierelatie__categorie__naam": "one"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(partij.uuid), data[0]["uuid"])
 
     def test_invalid_filters(self):
         # detail
@@ -1756,6 +1950,36 @@ class PartijFilterSetTests(APITestCase):
         self.assertEqual(data[0]["uuid"], str(vestiging_b.uuid))
         self.assertEqual(data[1]["uuid"], str(vestiging_a.uuid))
 
+    def test_filter_sub_identificator_object_id_no_duplicates(self):
+        partij = PartijFactory.create()
+        parent = PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_object_id="12345678",
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            sub_identificator_van=parent,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
+            partij_identificator_object_id="12345678",
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            sub_identificator_van=parent,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_object_id="12345678",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"subIdentificatorVan__objectId": "12345678"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(partij.uuid), data[0]["uuid"])
+
     def test_filter_by_sub_identificator_code_objecttype(self):
         company = PartijFactory.create()
 
@@ -1786,6 +2010,38 @@ class PartijFilterSetTests(APITestCase):
 
         self.assertEqual(1, len(data))
         self.assertEqual(str(vestiging.uuid), data[0]["uuid"])
+
+    def test_filter_sub_identificator_code_objecttype_no_duplicates(self):
+        partij = PartijFactory.create()
+        parent = PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.vestiging.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            sub_identificator_van=parent,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.vestiging.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            sub_identificator_van=parent,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.vestiging.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "subIdentificatorVan__codeObjecttype": PartijIdentificatorCodeObjectType.vestiging.value
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(partij.uuid), data[0]["uuid"])
 
     def test_filter_by_sub_identificator_code_soort_object_id(self):
         company = PartijFactory.create()
@@ -1851,6 +2107,38 @@ class PartijFilterSetTests(APITestCase):
 
         self.assertEqual(1, len(data))
         self.assertEqual(str(vestiging.uuid), data[0]["uuid"])
+
+    def test_filter_sub_identificator_code_register_no_duplicates(self):
+        partij = PartijFactory.create()
+        parent = PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            sub_identificator_van=parent,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.vestigingsnummer.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            sub_identificator_van=parent,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.hr.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "subIdentificatorVan__codeRegister": PartijIdentificatorCodeRegister.hr.value
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(partij.uuid), data[0]["uuid"])
 
 
 class CategorieRelatieFiltersetTests(APITestCase):
@@ -2704,6 +2992,33 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_partij_identificator_code_objecttype_no_duplicates(self):
+        partij = PartijFactory.create()
+        obj = DigitaalAdresFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+        )
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_objecttype=PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "verstrektDoorPartij__partijIdentificator__codeObjecttype": PartijIdentificatorCodeObjectType.natuurlijk_persoon.value,
+            },
+        )
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(obj.uuid), data[0]["uuid"])
+
     def test_filter_verstrekt_door_partij_partij_identificator_soort_object_id(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
@@ -2778,6 +3093,31 @@ class DigitaalAdresFilterSetTests(APITestCase):
 
             self.assertEqual(response.json()["count"], 0)
 
+    def test_filter_partij_identificator_object_id_no_duplicates(self):
+        partij = PartijFactory.create()
+        obj = DigitaalAdresFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_object_id="123456789",
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_object_id="123456789",
+        )
+
+        response = self.client.get(
+            self.url,
+            {"verstrektDoorPartij__partijIdentificator__objectId": "123456789"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(obj.uuid), data[0]["uuid"])
+
     def test_filter_verstrekt_door_partij_partij_identificator_code_register(self):
         partij = PartijFactory.create()
         partij2 = PartijFactory.create()
@@ -2812,6 +3152,33 @@ class DigitaalAdresFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             self.assertEqual(response.json()["count"], 0)
+
+    def test_filter_partij_identificator_code_register_no_duplicates(self):
+        partij = PartijFactory.create()
+        obj = DigitaalAdresFactory.create(partij=partij)
+
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.bsn.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+        PartijIdentificatorFactory.create(
+            partij=partij,
+            partij_identificator_code_soort_object_id=PartijIdentificatorCodeSoortObjectId.kvk_nummer.value,
+            partij_identificator_code_register=PartijIdentificatorCodeRegister.brp.value,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "verstrektDoorPartij__partijIdentificator__codeRegister": PartijIdentificatorCodeRegister.brp.value
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(1, len(data))
+        self.assertEqual(str(obj.uuid), data[0]["uuid"])
 
     def test_verstrekt_door_betrokkene__rol(self):
         betrokkene = BetrokkeneFactory(rol=Klantcontrol.klant)
