@@ -24,7 +24,6 @@ from openklant.components.klantinteracties.models.tests.factories import (
     RekeningnummerFactory,
 )
 from openklant.components.token.tests.api_testcase import APITestCase
-from openklant.conf.base import LOG_NOTIFICATIONS_IN_DB
 
 
 class NotificationsConfigTestCase:

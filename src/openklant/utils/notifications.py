@@ -41,7 +41,9 @@ class MultipleNotificationMixin(NotificationMixin):
                 pk = create_failed_notification(message, NotificationTypes.notification)
 
                 transaction.on_commit(
-                    lambda msg=message: send_notification.delay(msg, pk)
+                    lambda msg=message, notification_id=pk: send_notification.delay(
+                        msg, notification_id
+                    )
                 )
 
 
