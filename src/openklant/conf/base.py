@@ -126,22 +126,6 @@ CELERY_TASK_SOFT_TIME_LIMIT = config(
 )  # soft
 
 #
-# CELERY-ONCE
-#
-CELERY_ONCE_REDIS_URL = config(
-    "CELERY_ONCE_REDIS_URL",
-    default=CELERY_BROKER_URL,
-    documentation=no_doc,
-)
-CELERY_ONCE = {
-    "backend": "celery_once.backends.Redis",
-    "settings": {
-        "url": CELERY_ONCE_REDIS_URL,
-        "default_timeout": 60 * 60,  # one hour
-    },
-}
-
-#
 # Notifications
 #
 # Override the default to be `True`, to make notifications opt-in
