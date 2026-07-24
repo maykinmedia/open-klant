@@ -92,9 +92,6 @@ jobs:
         env:
           SECRET_KEY: dummy
           CELERY_BROKER_URL: 'redis://bad-host:6379/0'
-          # specified explicitly, since the broker URL is broken, but the once backend
-          # needs to be available even with CELERY_TASK_ALWAYS_EAGER
-          CELERY_ONCE_REDIS_URL: 'redis://localhost:6379/0'
 
       - name: Publish coverage report
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
