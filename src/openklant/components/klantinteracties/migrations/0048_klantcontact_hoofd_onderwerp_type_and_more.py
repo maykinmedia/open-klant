@@ -22,6 +22,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='klantcontact',
-            constraint=models.CheckConstraint(condition=models.Q(('indicatie_contact_gelukt', True), ('verdere_actie_ondernomen', True), _negated=True), name='no_further_action_when_contact_succesful', violation_error_message='Als het contact gelukt is kan er geen verdere actie zijn ondernomen'),
+            constraint=models.CheckConstraint(condition=models.Q(('indicatie_contact_gelukt', True), ('verdere_actie_ondernomen', True), _negated=True), name='no-further-action-when-contact-succesful', violation_error_message='Als het contact gelukt is kan er geen verdere actie zijn ondernomen'),
         ),
     ]

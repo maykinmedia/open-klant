@@ -285,7 +285,7 @@ class VerdereActieOndernomenValidator:
     """
 
     message = _("Als het contact gelukt is kan er geen verdere actie zijn ondernomen")
-    code = "no_further_action_when_contact_succesful"
+    code = "no-further-action-when-contact-succesful"
     requires_context = True
 
     def __call__(self, attrs, serializer):

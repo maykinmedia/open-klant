@@ -140,7 +140,7 @@ class Klantcontact(APIMixin, models.Model):
                 condition=~(
                     Q(indicatie_contact_gelukt=True) & Q(verdere_actie_ondernomen=True)
                 ),
-                name="no_further_action_when_contact_succesful",
+                name="no-further-action-when-contact-succesful",
                 violation_error_message=_(
                     "Als het contact gelukt is kan er geen verdere actie zijn ondernomen"
                 ),

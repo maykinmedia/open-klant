@@ -349,6 +349,9 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             "kanaal": {
                 "validators": [KanaalValidator()],
             },
+            "verdere_actie_ondernomen": {
+                "default": Klantcontact.verdere_actie_ondernomen.field.default,  # pyright: ignore[reportAttributeAccessIssue]
+            },
         }
         validators = [VerdereActieOndernomenValidator()]
 

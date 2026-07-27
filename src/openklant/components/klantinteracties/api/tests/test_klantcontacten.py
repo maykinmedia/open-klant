@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 
 from rest_framework import status
 from structlog.testing import capture_logs
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_validation_errors, reverse
 
 from openklant.components.klantinteracties.models import (
     Actor,
@@ -177,8 +177,11 @@ class KlantContactTests(APITestCase):
         response = self.client.post(list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "no-further-action-when-contact-succesful")
         self.assertEqual(
-            response.json()["invalidParams"][0]["reason"],
+            error["reason"],
             _("Als het contact gelukt is kan er geen verdere actie zijn ondernomen"),
         )
 
