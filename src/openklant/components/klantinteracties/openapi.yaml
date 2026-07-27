@@ -5169,6 +5169,17 @@ components:
           nullable: true
           description: Geeft, indien bekend, aan of de poging contact tussen de gemeente
             en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
+        hoofdOnderwerpType:
+          type: string
+          format: uri
+          description: Het type van het onderwerp van het contact (bijvoorbeeld een
+            zaaktype)
+          maxLength: 200
+        verdereActieOndernomen:
+          type: boolean
+          default: false
+          description: Geeft aan of het systeem waar het contact heeft plaats gevonden
+            zelf actie onderneemt als het niet lukt om de klant te bereiken.
         taal:
           type: string
           description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
@@ -6522,6 +6533,17 @@ components:
           nullable: true
           description: Geeft, indien bekend, aan of de poging contact tussen de gemeente
             en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
+        hoofdOnderwerpType:
+          type: string
+          format: uri
+          description: Het type van het onderwerp van het contact (bijvoorbeeld een
+            zaaktype)
+          maxLength: 200
+        verdereActieOndernomen:
+          type: boolean
+          default: false
+          description: Geeft aan of het systeem waar het contact heeft plaats gevonden
+            zelf actie onderneemt als het niet lukt om de klant te bereiken.
         taal:
           type: string
           description: 'Taal, in ISO 639-2/B formaat, waarin de partij bij voorkeur
@@ -6931,13 +6953,30 @@ tags:
     **Kenmerken**
 
     * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
-    * `gevraagde_handeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
+    * `gevraagdeHandeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
     * `toelichting`: Toelichting die, aanvullend bij de inhoud van het klantcontact dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan het kunnen afhandelen van de taak.
     * `status`: Aanduiding van de vordering bij afhandeling van de interne taak.
 
     **Resources en acties**
     - `internetaak`: create, update, destroy
 - name: klanten contacten
+  description: |
+    Deze API publiceert notificaties op het kanaal `klantcontacten`.
+
+    **Main resource**
+
+    `klantcontact`
+
+
+
+    **Kenmerken**
+
+    * `hoofdOnderwerpType`: Het type van het onderwerp van het contact (bijvoorbeeld een zaaktype)
+    * `indicatieContactGelukt`: Geeft, indien bekend, aan of de poging contact tussen de gemeente en inwoner(s) of organisatie(s) tot stand te brengen succesvol was.
+    * `verdereActieOndernomen`: Geeft aan of het systeem waar het contact heeft plaats gevonden zelf actie onderneemt als het niet lukt om de klant te bereiken.
+
+    **Resources en acties**
+    - `klantcontact`: create, update, destroy
 - name: onderwerpobjecten
 - name: partij-identificatoren
   description: |2+
@@ -7049,8 +7088,8 @@ tags:
     **Kenmerken**
 
     * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
-    * `interne_notitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
-    * `soort_partij`: Geeft aan van welke specifieke soort partij sprake is.
+    * `interneNotitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
+    * `soortPartij`: Geeft aan van welke specifieke soort partij sprake is.
 
     **Resources en acties**
 - name: rekeningnummers

@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 
 from rest_framework import status
 from structlog.testing import capture_logs
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_validation_errors, reverse
 
 from openklant.components.klantinteracties.models import (
     Actor,
@@ -160,6 +160,30 @@ class KlantContactTests(APITestCase):
                 response_data["invalidParams"][0]["reason"],
                 "Er bestaat al een klantcontact met eenzelfde nummer.",
             )
+
+    def test_create_klantcontact_verdere_actie_ondernomen_constraint(self):
+        list_url = reverse("klantinteracties:klantcontact-list")
+        data = {
+            "nummer": "1234567890",
+            "kanaal": "kanaal",
+            "onderwerp": "onderwerp",
+            "inhoud": "inhoud",
+            "indicatieContactGelukt": True,
+            "verdereActieOndernomen": True,
+            "taal": "ndl",
+            "vertrouwelijk": True,
+            "plaatsgevondenOp": "2019-08-24T14:15:22Z",
+        }
+        response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "no-further-action-when-contact-succesful")
+        self.assertEqual(
+            error["reason"],
+            _("Als het contact gelukt is kan er geen verdere actie zijn ondernomen"),
+        )
 
     def test_create_klantcontact_with_reverse_lookup_fields(self):
         list_url = reverse("klantinteracties:klantcontact-list")
@@ -2222,6 +2246,8 @@ class MaakKlantcontactEndpointTests(APITestCase):
                     }
                 ],
                 "indicatieContactGelukt": False,
+                "hoofdOnderwerpType": "",
+                "verdereActieOndernomen": False,
                 "inhoud": "changed",
                 "reactie": "",
                 "kanaal": "changed",
@@ -2694,6 +2720,8 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "hadBetrokkenActoren": [],
                 "hadBetrokkenen": [],
                 "indicatieContactGelukt": False,
+                "hoofdOnderwerpType": "",
+                "verdereActieOndernomen": False,
                 "inhoud": "changed",
                 "reactie": "",
                 "kanaal": "changed",

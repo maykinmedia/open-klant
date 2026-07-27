@@ -1,5 +1,6 @@
 from notifications_api_common.kanalen import Kanaal
 
+from openklant.components.klantinteracties.models import Klantcontact
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.partijen import Partij
 
@@ -21,5 +22,15 @@ KANAAL_INTERNETAAK = Kanaal(
         "gevraagde_handeling",
         "toelichting",
         "status",
+    ),
+)
+
+KANAAL_KLANTCONTACT = Kanaal(
+    "klantcontacten",
+    main_resource=Klantcontact,
+    kenmerken=(
+        "hoofd_onderwerp_type",
+        "indicatie_contact_gelukt",
+        "verdere_actie_ondernomen",
     ),
 )
