@@ -24,7 +24,7 @@ attrs==23.2.0
     #   referencing
 billiard==4.2.1
     # via celery
-bleach==6.1.0
+bleach==6.4.0
     # via open-api-framework
 boltons==24.0.0
     # via
@@ -60,15 +60,15 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.12.0
+commonground-api-common==2.13.0
     # via open-api-framework
-cryptography==46.0.7
+cryptography==50.0.0
     # via
     #   django-simple-certmanager
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==5.2.15
+django==5.2.17
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -151,10 +151,11 @@ django-otp==1.5.1
     # via django-two-factor-auth
 django-phonenumber-field==7.3.0
     # via django-two-factor-auth
-django-privates==3.1.1
+django-privates==4.0.3
     # via
     #   django-simple-certmanager
     #   open-api-framework
+    #   zgw-consumers
 django-redis==5.4.0
     # via open-api-framework
 django-relativedelta==2.0.0
@@ -170,7 +171,7 @@ django-setup-configuration==0.11.0
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
     #   open-api-framework
-django-simple-certmanager==2.3.0
+django-simple-certmanager==4.0.0
     # via
     #   open-api-framework
     #   zgw-consumers
@@ -269,7 +270,7 @@ mozilla-django-oidc-db==2.0.1
     #   open-api-framework
 notifications-api-common==0.13.0
     # via commonground-api-common
-open-api-framework==0.14.0
+open-api-framework==0.14.1
     # via -r requirements/base.in
 opentelemetry-api==1.36.0
     # via
@@ -387,12 +388,12 @@ pygments==2.20.0
     # via
     #   django-log-outgoing-requests
     #   rich
-pyjwt==2.12.1
+pyjwt==2.13.0
     # via
     #   commonground-api-common
     #   mozilla-django-oidc
     #   zgw-consumers
-pyopenssl==26.0.0
+pyopenssl==26.4.0
     # via webauthn
 pypng==0.20220715.0
     # via qrcode
@@ -455,7 +456,6 @@ shellingham==1.5.4
     # via typer
 six==1.16.0
     # via
-    #   bleach
     #   furl
     #   orderedmultidict
     #   python-dateutil
@@ -466,7 +466,7 @@ structlog==25.4.0
     #   django-structlog
     #   notifications-api-common
     #   open-api-framework
-tornado==6.5.5
+tornado==6.5.8
     # via flower
 typer==0.21.1
     # via maykin-common
@@ -515,7 +515,7 @@ wrapt==1.16.0
     #   opentelemetry-instrumentation
     #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-redis
-zgw-consumers==1.0.0
+zgw-consumers==2.0.3
     # via
     #   commonground-api-common
     #   notifications-api-common
