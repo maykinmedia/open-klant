@@ -142,7 +142,7 @@ jobs:
     needs:
       - open-api-publish
     with:
-      image_name: maykinmedia/open-klant
+      image-name: maykinmedia/open-klant
       config-file: './docker/ci/config.json'
       output-file: './docker/ci/README.md'
     secrets:
