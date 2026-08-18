@@ -2,6 +2,70 @@
 Change history
 ==============
 
+2.18.0
+======
+*August 18, 2026*
+
+.. note::
+
+  The environment variable used to configure the uWSGI port in the Docker
+  entrypoint has been renamed from ``UWSGI_PORT`` to ``OPENKLANT_PORT``
+  (see :ref:`installation_env_config`). Deployments that override the uWSGI
+  port need to update their configuration accordingly.
+
+**New features**
+
+* [:open-klant:`623`] Increase the maximum character limit for ``metadata`` values to 255 and ``reactie`` to 4000 in klantcontacten.
+* [:open-klant:`359`] Add additional query parameters to ``/klantcontacten`` endpoint:
+
+    * ``hadBetrokkene__wasPartij``
+    * ``hadBetrokkene__digitaaladres__adres__icontains``
+    * ``leiddeTotInterneTaken``
+
+
+* [:open-klant:`598`] Add notifications for klantcontacten to the Notifications API.
+
+    * Add new fields ``verdereActieOndernomen`` and ``hoofdOnderwerpType`` to klantcontact.
+    * Add ``klantcontacten`` kanaal (make sure to register it in Open Notificaties, see :ref:`register_notification_channels`).
+    * [:open-object:`757`] Improve the notifications error queue by adding an admin view to display failed notifications and make it possible to reschedule them.
+
+**Bugfixes**
+
+* [:open-klant:`595`] Improve partij-identificator admin UI performance by using a raw ID widget for ``sub_identificator_van``.
+* [:open-klant:`636`] Fix memory retention caused by the ``_expand`` parameter.
+* [:open-klant:`624`] Fix duplicate results returned by the following filtersets:
+
+  * ``DigitaalAdresFilterSet``
+  * ``BetrokkeneFilterSet``
+  * ``PartijFilterSet``
+  * ``CategorieRelatieFilterSet``
+
+**Maintenance**
+
+* [:open-api-workflows:`60`] Upgrade ``open-api-workflows`` to ``v7.0.0`` and reenable OAS workflow and replace spectral-cli with vacuum.
+* Remove unused ``celery-once`` setting
+* Rename the environment variable from ``UWSGI_PORT`` to ``OPENKLANT_PORT``.
+* Prevent npm post-install scripts from running via ``.npmrc``.
+* Configure Dependabot to keep GitHub Actions up to date, group these updates into a single PR and move the configuration to the ``.github`` directory.
+* Configure ``actions/stale`` to automatically close stale issues and PRs.
+* Upgrade python dependencies
+
+    * ``django`` to 5.2.17
+    * ``cryptography`` to 50.0.0
+    * ``vcrpy`` to 8.3.0
+    * ``pyjwt`` to 2.13.0
+    * ``setuptools`` to 84.0.0
+    * ``zgw-consumers`` to 2.0.3
+    * ``django-simple-certmanager`` to 4.0.0
+    * ``django-privates`` to 4.0.3
+    * ``commonground-api-common`` to 2.13.0
+    * ``open-api-framework`` to 0.14.1
+    * ``notifications-api-common`` to 0.13.0
+
+**Documentation**
+
+* [:open-klant:`283`] Ensure ``_expand`` attributes are camelCased in OAS.
+
 2.17.1
 ======
 *July 14, 2026*

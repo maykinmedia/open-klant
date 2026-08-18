@@ -36,10 +36,10 @@ installation.
       - **Organization**: *For example:* ``Organization XYZ``
       - **Application**: *For example:* ``Application XYZ``
       - **Administration**: *For example:* ``Administration XYZ``
-   
+
    d. Click **Opslaan**.
 
-After creating the **Token**, the **key** can be used in the ``Authorization`` header for make the requests. 
+After creating the **Token**, the **key** can be used in the ``Authorization`` header for make the requests.
 Example of an API call here :ref:`command line <installation_configuration_api_call>`,
 
 .. _installation_configuration_notificaties_api:
@@ -135,18 +135,20 @@ All done!
 Now Open Klant and Open Notificaties can access each other.
 
 
+.. _register_notification_channels:
+
 Register Notification channels
 ------------------------------
 
 Before notifications can be sent to ``kanalen`` in Open Notificaties, these ``kanalen``
 must first be registered via Open Klant.
 
-.. warning::  
+.. warning::
    Ensure that the ``SITE_DOMAIN`` environment variable is correctly set before registering channels,
-   as it defines the source from which the channels are retrieved. 
-   For more details, see :ref:`Environment configuration reference <installation_env_config>` for the full list of available variables 
+   as it defines the source from which the channels are retrieved.
+   For more details, see :ref:`Environment configuration reference <installation_env_config>` for the full list of available variables
    and how to configure them.
-   
+
 
 Register the required channels:
 
