@@ -113,6 +113,7 @@ linkcheck_ignore = [
 
 extlinks = {
     "open-klant": ("https://github.com/maykinmedia/open-klant/issues/%s", "#%s"),
+    "open-object": ("https://github.com/maykinmedia/open-object/issues/%s", "#%s"),
     "commonground-api-common": (
         "https://github.com/maykinmedia/commonground-api-common/issues/%s",
         "#%s",
