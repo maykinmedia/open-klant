@@ -1,0 +1,23 @@
+{
+    "supportedTags": [
+        {
+            "gitRef": "master",
+            "tag": "latest"
+        },
+        {
+            "gitRef": "2.18.0",
+            "tag": "2.18.0"
+        },
+        {
+            "gitRef": "stable/2.17.x",
+            "tag": null
+        }
+    ],
+    "dockerOrg": "maykinmedia",
+    "dockerRepo": "open-klant",
+    "githubOrg": "maykinmedia",
+    "githubRepo": "open-klant",
+    "projectName": "Open Klant",
+    "projectDocumentation": "https://open-klant.readthedocs.io/en/stable/",
+    "projectDescription": "Open Klant is a modern, open-source data- and services-layer to store and expose client metadata and communications between clients and the municipality. It implements the VNG API standard for Klantinteracties in line with the Common Ground model."
+}
