@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from typing import Any
 
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
@@ -266,7 +265,7 @@ class KanaalValidator:
 
 def get_from_serializer_data_or_instance(
     field: str, data: dict, serializer: Serializer
-) -> Any:
+) -> object:
     serializer_field = serializer.fields[field]
     data_value = data.get(serializer_field.source, fields.empty)
     if data_value is not fields.empty:

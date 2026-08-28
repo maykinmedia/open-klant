@@ -28,7 +28,7 @@ def validate_country(value: str) -> None:
         )
 
 
-def validate_charfield_entry(value, allow_apostrophe=False):
+def validate_charfield_entry(value: str, allow_apostrophe=False):
     """
     Validates a charfield entry according with Belastingdienst requirements.
 
@@ -73,7 +73,7 @@ class RegexWithDisallowedPrefixesValidator(RegexValidator):
     def __eq__(self, other):
         return (
             isinstance(other, self.__class__)
-            and self.regex.pattern == other.regex.pattern
+            and self.regex.pattern == other.regex.pattern  # type: ignore[reportAttributeAccessIssue]
             and self.disallowed_prefixes == other.disallowed_prefixes
         )
 
@@ -99,7 +99,7 @@ class CustomRegexValidator(RegexValidator):
         """
         Validates that the input matches the regular expression.
         """
-        if not self.regex.search(force_str(value)):
+        if not self.regex.search(force_str(value)):  # type: ignore[reportAttributeAccessIssue]
             message = "{0}: {1}".format(self.message, force_str(value))
             raise ValidationError(message, code=self.code)
 
@@ -115,7 +115,7 @@ validate_iban = CustomRegexValidator(
 )
 
 validate_no_space = CustomRegexValidator(
-    regex="^[\S]+$", message=_("Geen spaties toegestaan")
+    regex=r"^[\S]+$", message=_("Geen spaties toegestaan")
 )
 
 validate_bag_id = CustomRegexValidator(

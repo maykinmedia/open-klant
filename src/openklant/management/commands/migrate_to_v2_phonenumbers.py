@@ -4,7 +4,7 @@
 
 import os
 from dataclasses import fields as dataclass_fields
-from typing import Any, Tuple
+from typing import Any, Tuple  # noqa: TID251
 from urllib.parse import parse_qs, urlparse
 
 from django.conf import settings

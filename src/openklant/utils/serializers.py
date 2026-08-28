@@ -1,10 +1,10 @@
-from typing import Any
+from typing import Any  # noqa: TID251
 
 from django.db.models import Model
 from django.utils.module_loading import import_string
 
 from rest_framework.serializers import Serializer
-from rest_framework_nested.serializers import NestedHyperlinkedRelatedField
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 
 
 # TODO should be moved to vng-api-common once merged/reviewed
@@ -47,7 +47,7 @@ class ExpandSerializer(NestedHyperlinkedRelatedField):
                 serializer.parent = self
 
         if self.default_serializer_kwargs.get("many", False):
-            value = value.all()
+            value = value.all()  # type: ignore[reportAttributeAccessIssue]
 
         return serializer.to_representation(value)
 
