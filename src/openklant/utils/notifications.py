@@ -18,7 +18,7 @@ class MultipleNotificationMixin(NotificationMixin):
         self,
         status_code: int,
         data: Union[List, Dict],
-        instance: models.Model = None,
+        instance: models.Model | None = None,
         **kwargs,
     ) -> None:
         super().notify(status_code, data, instance)
@@ -30,7 +30,7 @@ class MultipleNotificationMixin(NotificationMixin):
 
             for notif in notifications:
                 # build the content of the notification
-                message = self.construct_message(
+                message = self.construct_message(  # type: ignore[reportAttributeAccessIssue]
                     notif,
                     instance=instance,
                     kanaal=config["notifications_kanaal"],
@@ -41,7 +41,7 @@ class MultipleNotificationMixin(NotificationMixin):
                 pk = create_failed_notification(message, NotificationTypes.notification)
 
                 transaction.on_commit(
-                    lambda msg=message, notification_id=pk: send_notification.delay(
+                    lambda msg=message, notification_id=pk: send_notification.delay(  # type: ignore[reportCallIssue]
                         msg, notification_id
                     )
                 )

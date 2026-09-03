@@ -15,8 +15,6 @@ annotated-types==0.7.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pydantic
-anyio==4.10.0
-    # via httpx
 ape-pie==0.2.0
     # via
     #   -c requirements/ci.txt
@@ -49,8 +47,6 @@ attrs==23.2.0
     #   glom
     #   jsonschema
     #   referencing
-autopep8==2.3.2
-    # via django-silk
 babel==2.15.0
     # via
     #   -c requirements/ci.txt
@@ -76,14 +72,6 @@ boltons==24.0.0
     #   -r requirements/ci.txt
     #   face
     #   glom
-bracex==2.6
-    # via wcmatch
-build==1.2.2.post1
-    # via pip-tools
-bump-my-version==1.2.1
-    # via -r requirements/dev.in
-bump2version==1.0.1
-    # via -r requirements/dev.in
 cbor2==5.9.0
     # via
     #   -c requirements/ci.txt
@@ -100,8 +88,6 @@ certifi==2024.7.4
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   elastic-apm
-    #   httpcore
-    #   httpx
     #   requests
     #   sentry-sdk
 cffi==2.0.0
@@ -109,8 +95,6 @@ cffi==2.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   cryptography
-cfgv==3.4.0
-    # via pre-commit
 charset-normalizer==3.3.2
     # via
     #   -c requirements/ci.txt
@@ -120,13 +104,10 @@ click==8.1.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   bump-my-version
     #   celery
     #   click-didyoumean
     #   click-plugins
     #   click-repl
-    #   pip-tools
-    #   rich-click
     #   typer
 click-didyoumean==0.3.1
     # via
@@ -179,8 +160,6 @@ dill==0.3.8
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-distlib==0.3.9
-    # via virtualenv
 django==5.2.17
     # via
     #   -c requirements/ci.txt
@@ -191,7 +170,6 @@ django==5.2.17
     #   django-axes
     #   django-cors-headers
     #   django-csp
-    #   django-debug-toolbar
     #   django-extensions
     #   django-filter
     #   django-formtools
@@ -209,7 +187,6 @@ django==5.2.17
     #   django-sendfile2
     #   django-sessionprofile
     #   django-setup-configuration
-    #   django-silk
     #   django-simple-certmanager
     #   django-solo
     #   django-structlog
@@ -256,13 +233,10 @@ django-csp==4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-django-debug-toolbar==5.2.0
-    # via -r requirements/dev.in
 django-extensions==4.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   -r requirements/dev.in
 django-filter==24.2
     # via
     #   -c requirements/ci.txt
@@ -353,8 +327,6 @@ django-setup-configuration==0.11.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-django-silk==5.3.2
-    # via -r requirements/dev.in
 django-simple-certmanager==4.0.0
     # via
     #   -c requirements/ci.txt
@@ -375,14 +347,10 @@ django-structlog==9.1.1
     #   -r requirements/ci.txt
 django-stubs==6.1.0
     # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
+    #   -r requirements/type-checking.in
     #   djangorestframework-stubs
 django-stubs-ext==6.1.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-stubs
+    # via django-stubs
 django-two-factor-auth==1.16.0
     # via
     #   -c requirements/ci.txt
@@ -423,9 +391,7 @@ djangorestframework-inclusions==1.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
 djangorestframework-stubs==3.18.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
+    # via -r requirements/type-checking.in
 dnspython==2.8.0
     # via
     #   -c requirements/ci.txt
@@ -480,8 +446,6 @@ faker==37.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-filelock==3.20.3
-    # via virtualenv
 flower==2.0.1
     # via
     #   -c requirements/ci.txt
@@ -495,10 +459,6 @@ furl==2.1.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   ape-pie
-gitdb==4.0.11
-    # via gitpython
-gitpython==3.1.59
-    # via -r requirements/dev.in
 glom==23.5.0
     # via
     #   -c requirements/ci.txt
@@ -510,32 +470,20 @@ googleapis-common-protos==1.70.0
     #   -r requirements/ci.txt
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-gprof2dot==2024.6.6
-    # via django-silk
 grpcio==1.74.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   opentelemetry-exporter-otlp-proto-grpc
-h11==0.16.0
-    # via httpcore
-httpcore==1.0.9
-    # via httpx
-httpx==0.28.1
-    # via bump-my-version
 humanize==4.10.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   flower
-identify==2.6.10
-    # via pre-commit
 idna==3.18
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   anyio
-    #   httpx
     #   requests
 imagesize==1.4.1
     # via
@@ -627,8 +575,6 @@ mozilla-django-oidc-db==2.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-nodeenv==1.9.1
-    # via pre-commit
 notifications-api-common==0.13.0
     # via
     #   -c requirements/ci.txt
@@ -766,11 +712,9 @@ packaging==25.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   build
     #   django-csp
     #   opentelemetry-instrumentation
     #   sphinx
-    #   wheel
 pep8==1.7.1
     # via
     #   -c requirements/ci.txt
@@ -780,18 +724,11 @@ phonenumberslite==8.13.42
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-pip==26.1.2
-    # via pip-tools
-pip-tools==7.4.1
-    # via -r requirements/dev.in
 platformdirs==4.3.8
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-    #   virtualenv
-pre-commit==4.2.0
-    # via -r requirements/dev.in
 prometheus-client==0.20.0
     # via
     #   -c requirements/ci.txt
@@ -802,7 +739,6 @@ prompt-toolkit==3.0.47
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   click-repl
-    #   questionary
 protobuf==6.33.5
     # via
     #   -c requirements/ci.txt
@@ -823,8 +759,6 @@ psycopg-pool==3.2.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-pycodestyle==2.12.0
-    # via autopep8
 pycparser==2.22
     # via
     #   -c requirements/ci.txt
@@ -834,7 +768,6 @@ pydantic==2.10.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   bump-my-version
     #   django-setup-configuration
     #   pydantic-settings
 pydantic-core==2.27.1
@@ -846,7 +779,6 @@ pydantic-settings==2.6.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   bump-my-version
     #   django-setup-configuration
 pygments==2.20.0
     # via
@@ -856,8 +788,6 @@ pygments==2.20.0
     #   rich
     #   sphinx
     #   sphinx-tabs
-pygraphviz==1.14
-    # via -r requirements/dev.in
 pyjwt==2.13.0
     # via
     #   -c requirements/ci.txt
@@ -879,10 +809,6 @@ pypng==0.20220715.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   qrcode
-pyproject-hooks==1.2.0
-    # via
-    #   build
-    #   pip-tools
 pyquery==2.0.0
     # via
     #   -c requirements/ci.txt
@@ -926,7 +852,6 @@ pyyaml==6.0.1
     #   -r requirements/ci.txt
     #   drf-spectacular
     #   oyaml
-    #   pre-commit
     #   pydantic-settings
     #   vcrpy
 qrcode==7.4.2
@@ -934,8 +859,6 @@ qrcode==7.4.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-questionary==2.1.0
-    # via bump-my-version
 recommonmark==0.7.1
     # via
     #   -c requirements/ci.txt
@@ -973,11 +896,7 @@ rich==14.2.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   bump-my-version
-    #   rich-click
     #   typer
-rich-click==1.8.9
-    # via bump-my-version
 roman-numerals==4.1.0
     # via
     #   -c requirements/ci.txt
@@ -1014,8 +933,6 @@ sentry-sdk==2.12.0
     #   -r requirements/ci.txt
     #   commonground-api-common
     #   open-api-framework
-setuptools==84.0.0
-    # via pip-tools
 shellingham==1.5.4
     # via
     #   -c requirements/ci.txt
@@ -1028,10 +945,6 @@ six==1.16.0
     #   furl
     #   orderedmultidict
     #   python-dateutil
-smmap==5.0.1
-    # via gitdb
-sniffio==1.3.1
-    # via anyio
 snowballstemmer==2.2.0
     # via
     #   -c requirements/ci.txt
@@ -1098,8 +1011,6 @@ sqlparse==0.5.5
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django
-    #   django-debug-toolbar
-    #   django-silk
 structlog==25.4.0
     # via
     #   -c requirements/ci.txt
@@ -1114,7 +1025,6 @@ tomlkit==0.13.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   bump-my-version
     #   pylint
 tornado==6.5.8
     # via
@@ -1127,15 +1037,12 @@ typer==0.21.1
     #   -r requirements/ci.txt
 types-pyyaml==6.0.12.20260815
     # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
     #   django-stubs
     #   djangorestframework-stubs
 typing-extensions==4.12.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   anyio
     #   django-log-outgoing-requests
     #   django-stubs
     #   django-stubs-ext
@@ -1152,7 +1059,6 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   pyopenssl
     #   qrcode
-    #   rich-click
     #   typer
     #   zgw-consumers
 tzdata==2025.2
@@ -1188,15 +1094,11 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.36.1
-    # via pre-commit
 waitress==3.0.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   webtest
-wcmatch==10.1
-    # via bump-my-version
 wcwidth==0.2.13
     # via
     #   -c requirements/ci.txt
@@ -1222,10 +1124,6 @@ webtest==3.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-webtest
-wheel==0.46.3
-    # via pip-tools
-whitenoise==6.9.0
-    # via -r requirements/dev.in
 wrapt==1.16.0
     # via
     #   -c requirements/ci.txt

@@ -24,6 +24,12 @@ uv pip compile \
     "$@" \
     "$root_dir/requirements/base.in"
 
+# Type checking stubs
+uv pip compile \
+    --output-file requirements/type-checking.txt \
+    "$@" \
+    requirements/type-checking.in
+
 # Dependencies for testing
 uv pip compile \
     --output-file "$root_dir/requirements/ci.txt" \
