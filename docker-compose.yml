@@ -36,14 +36,17 @@ services:
       CACHE_AXES: redis:6379/0
       SUBPATH: ${SUBPATH:-/}
       SECRET_KEY: ${SECRET_KEY:-django-insecure-f8s@b*ds4t84-q_2#c0j0506@!l2q6r5_pq5e!vm^_9c*#^66b}
-      CELERY_BROKER_URL: redis://redis:6379/0
-      CELERY_RESULT_BACKEND: redis://redis:6379/0
       DISABLE_2FA: true
       LOG_NOTIFICATIONS_IN_DB: ${LOG_NOTIFICATIONS_IN_DB:-yes}
       DB_CONN_MAX_AGE: "0"
       DB_POOL_ENABLED: True
       # Celery
       CELERY_WORKER_NAME: celery@docker
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      CELERY_RESULT_EXPIRES: 3600
+      CELERY_LOGLEVEL: DEBUG
+      CELERY_WORKER_CONCURRENCY: ${CELERY_WORKER_CONCURRENCY:-100}
       # Enabling Open Telemetry requires the services in docker/docker-compose.observability.yml
       # to be up and running.
       OTEL_SDK_DISABLED: ${OTEL_SDK_DISABLED:-true}
