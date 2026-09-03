@@ -328,8 +328,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
             "taal": "nld",
             "vertrouwelijk": False,
             "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
-            "indicatieContactGelukt": False,
-            "verdereActieOndernomen": False,
+            "indicatieContactGelukt": "False",
+            "verdereActieOndernomen": "False",
         }
 
     def test_send_notification_create_object(self, m):
@@ -348,8 +348,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
                     "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
-                    "indicatieContactGelukt": False,
-                    "verdereActieOndernomen": False,
+                    "indicatieContactGelukt": "False",
+                    "verdereActieOndernomen": "False",
                 },
             },
             None,
@@ -371,8 +371,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
                     "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
-                    "indicatieContactGelukt": False,
-                    "verdereActieOndernomen": False,
+                    "indicatieContactGelukt": "False",
+                    "verdereActieOndernomen": "False",
                 },
             },
             None,
@@ -396,8 +396,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
                     "hoofdOnderwerpType": "",
-                    "indicatieContactGelukt": False,
-                    "verdereActieOndernomen": False,
+                    "indicatieContactGelukt": "False",
+                    "verdereActieOndernomen": "False",
                 },
             },
             None,
@@ -418,8 +418,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
                     "hoofdOnderwerpType": "",
-                    "indicatieContactGelukt": True,
-                    "verdereActieOndernomen": False,
+                    "indicatieContactGelukt": "True",
+                    "verdereActieOndernomen": "False",
                 },
             },
             None,
@@ -448,8 +448,8 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
                     "hoofdOnderwerpType": "",
-                    "indicatieContactGelukt": False,
-                    "verdereActieOndernomen": False,
+                    "indicatieContactGelukt": "False",
+                    "verdereActieOndernomen": "False",
                 },
             },
             None,

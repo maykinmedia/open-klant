@@ -643,7 +643,7 @@ mozilla-django-oidc-db==2.0.1
     #   -r requirements/base.txt
     #   -r requirements/type-checking.txt
     #   open-api-framework
-notifications-api-common==0.13.0
+notifications-api-common==0.13.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

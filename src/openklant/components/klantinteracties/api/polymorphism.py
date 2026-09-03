@@ -51,7 +51,7 @@ class Discriminator(VngDiscriminator):
 
         return internal_value
 
-    def to_representation(self, instance) -> OrderedDict:
+    def to_representation(self, instance, context: dict | None = None) -> OrderedDict:
         discriminator_value = getattr(instance, self.discriminator_field)
         serializer = self.mapping.get(discriminator_value)
         if serializer is None:

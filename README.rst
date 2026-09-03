@@ -6,7 +6,7 @@ Open Klant
     :height: 100px
     :alt: Open Klant
 
-:Version: 2.18.0
+:Version: 2.18.1
 :Source: https://github.com/maykinmedia/open-klant
 :Keywords: klanten, klantinteracties, contactgegevens, api, common ground
 :License: EUPL

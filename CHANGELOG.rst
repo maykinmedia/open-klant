@@ -2,6 +2,24 @@
 Change history
 ==============
 
+2.18.1
+======
+*September 3, 2026*
+
+**Maintenance**
+
+    * Upgrade python dependencies
+
+        * ``notifications-api-common`` to 0.13.1
+
+
+    * [:open-api-workflows:`64`] Add action to generate and update Docker Hub description
+    * [:open-api-framework:`228`] Add environment variable CELERY_RESULT_EXPIRES to change how long the results will be stored in Redis (see :ref:`installation_env_config` > Celery for more information)
+
+**Bugfixes**
+
+    * [:open-klant:`656`] Change notification kenmerken back to use string values to ensure compliance with Notificaties API specification
+
 2.18.0
 ======
 *August 18, 2026*
