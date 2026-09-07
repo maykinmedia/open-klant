@@ -26,4 +26,5 @@ class DigitaalAdresAdmin(admin.ModelAdmin):
         "uuid",
     )
     autocomplete_fields = ("partij",)
+    raw_id_fields = ("betrokkene",)
     form = DigitaalAdresAdminForm
