@@ -209,6 +209,52 @@ class PartijAdminTests(WebTest):
 
 
 @disable_admin_mfa()
+class RekeningnummerAdminTests(WebTest):
+    def test_changelist_accessible(self):
+        user = SuperUserFactory.create()
+        self.app.set_user(user)
+
+        rekeningnummer = RekeningnummerFactory.create(iban="NL91ABNA0417164300")
+
+        admin_url = reverse("admin:klantinteracties_rekeningnummer_changelist")
+        response: TestResponse = self.app.get(admin_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, rekeningnummer.iban)
+
+    def test_search(self):
+        user = SuperUserFactory.create()
+        self.app.set_user(user)
+
+        matching_rekeningnummer = RekeningnummerFactory.create(
+            iban="NL91ABNA0417164300"
+        )
+        other_rekeningnummer = RekeningnummerFactory.create(iban="NL02ABNA0123456789")
+
+        admin_url = reverse("admin:klantinteracties_rekeningnummer_changelist")
+        response: TestResponse = self.app.get(admin_url)
+        search_form = response.forms["changelist-search"]
+
+        search_form["q"] = matching_rekeningnummer.iban
+        search_response = search_form.submit()
+
+        self.assertContains(search_response, matching_rekeningnummer.iban)
+        self.assertNotContains(search_response, other_rekeningnummer.iban)
+
+    def test_voorkeurs_rekeningnummer_raw_id_popup_resolves(self):
+        user = SuperUserFactory.create()
+        self.app.set_user(user)
+
+        popup_url = (
+            reverse("admin:klantinteracties_rekeningnummer_changelist")
+            + "?_to_field=id&_popup=1"
+        )
+        response: TestResponse = self.app.get(popup_url)
+
+        self.assertEqual(response.status_code, 200)
+
+
+@disable_admin_mfa()
 class DigitaalAdresAdminTests(WebTest):
     @tag("gh-234")
     def test_email_validation(self):
