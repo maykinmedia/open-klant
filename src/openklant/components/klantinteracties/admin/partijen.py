@@ -221,6 +221,7 @@ class PartijAdmin(admin.ModelAdmin):
     )
     search_fields = ("nummer", "uuid", "voorkeurs_digitaal_adres__adres")
     autocomplete_fields = ("voorkeurs_digitaal_adres",)
+    raw_id_fields = ("voorkeurs_rekeningnummer",)
     readonly_fields = ("uuid",)
     fieldsets = [
         (

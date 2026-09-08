@@ -15,6 +15,7 @@ class BetrokkeneInlineAdmin(admin.StackedInline):
         "contactnaam_achternaam",
     )
     autocomplete_fields = ("partij",)
+    raw_id_fields = ("klantcontact",)
     readonly_fields = ("uuid",)
     fieldsets = [
         (
@@ -88,6 +89,7 @@ class BetrokkeneAdmin(admin.ModelAdmin):
         "contactnaam_achternaam",
     )
     autocomplete_fields = ("partij",)
+    raw_id_fields = ("klantcontact",)
     readonly_fields = ("uuid",)
     fieldsets = [
         (
