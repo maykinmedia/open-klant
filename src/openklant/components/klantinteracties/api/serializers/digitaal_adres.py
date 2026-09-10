@@ -104,7 +104,15 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                     "   * Internationaal met '+': +31612345678\n"
                     "   * Internationaal met '00': 0031612345678\n"
                     " * Niet toegestaan:\n"
-                    "   * 0800, 0900, 1400, 140xx."
+                    "   * 0800, 0900, 1400, 140xx.\n\n"
+                    "Het is toegestaan om meerdere DigitaleAdressen aan te maken met "
+                    "dezelfde waarde voor `adres`, omdat het mogelijk moet zijn om hetzelfde "
+                    "adres meerdere keren te registreren met verschillende waardes voor "
+                    "`referentie`. Dit maakt het mogelijk om een van die adressen te "
+                    "wijzigen, zonder de andere DigitaleAdressen te wijzigen. Bijv.: een partij "
+                    "gebruikt hetzelfde `adres` in meerdere DigitaleAdressen, maar wil "
+                    "alleen `adres` van het DigitaalAdres "
+                    "met als `referentie` `portaalvoorkeur` wijzigen en de overige hetzelfde laten."
                 )
             },
             "url": {
