@@ -170,6 +170,7 @@ class RekeningnummerInlineAdmin(admin.StackedInline):
 
 
 class PersoonInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
     model = Persoon
     extra = 0
 
@@ -191,6 +192,7 @@ class ContactpersoonInlineAdmin(admin.StackedInline):
 
 
 class OrganisatieInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
     model = Organisatie
     extra = 0
 

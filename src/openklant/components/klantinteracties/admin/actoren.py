@@ -36,6 +36,7 @@ class ActorKlantcontactInlineAdmin(admin.StackedInline):
 
 
 class InterneTaakInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
     model = Actor.internetaak_set.through
     raw_id_fields = ("internetaak",)
     verbose_name = _("Interne taak")
