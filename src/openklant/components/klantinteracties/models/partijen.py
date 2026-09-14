@@ -225,6 +225,11 @@ class Categorie(models.Model):
 
 
 class Organisatie(models.Model):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van de organisatie."),
+    )
     partij = models.OneToOneField(
         Partij,
         on_delete=models.CASCADE,
@@ -246,6 +251,11 @@ class Organisatie(models.Model):
 
 
 class Persoon(ContactnaamMixin):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_("Unieke (technische) identificatiecode van de persoon."),
+    )
     partij = models.OneToOneField(
         Partij,
         on_delete=models.CASCADE,
