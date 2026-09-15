@@ -26,6 +26,55 @@ To export only specific data, the desired component names can be specified:
 
 Adding the "--csv" flag exports all tables in the supplied components to CSV files. These files are temporarily placed in "csv_dumps" and combined into a TAR file.
 
+Delete Klantcontacten not related to Zaken
+-------------------------------------------
+
+The ``delete_klantcontacten_not_related_to_zaken`` management command is a temporary
+cleanup script that deletes **Klantcontacten** that are not related to a **Zaak**,
+along with everything that is removed as a result of that deletion. The command uses
+Django's deletion collector (``Collector``) to determine the records that will be
+deleted, rather than maintaining a manual list of related models. This ensures that
+everything actually deleted is explicitly included in the destruction list
+("vernietigingslijst").
+
+If a record that would be deleted is protected by another record (for example, a
+``PartijIdentificator`` with a sub-identificator still pointing to it), the command
+aborts with a clear error identifying the blocking record(s), without deleting
+anything. This also applies in preview mode.
+
+This script exists as a stopgap while `Open Archiefbeheer <https://github.com/maykinmedia/open-archiefbeheer>`_
+does not yet support archiving/destroying Klantcontacten that have no Zaak relation.
+
+By default, only Klantcontacten with a ``plaatsgevondenOp`` date at least 12 months in
+the past are eligible, and the command runs in **preview mode** (``--dry-run``, enabled
+by default): it prints a destruction list ("vernietigingslijst") without deleting
+anything. Pass ``--no-dry-run`` to actually delete the listed records.
+
+.. code-block:: shell
+
+    python src/manage.py delete_klantcontacten_not_related_to_zaken
+
+Optionally, a date range can be specified with ``--minimum-date`` and/or
+``--maximum-date`` (format ``YYYY-MM-DD``). ``--maximum-date`` must be at least 12
+months in the past.
+
+.. code-block:: shell
+
+    python src/manage.py delete_klantcontacten_not_related_to_zaken \\
+        --minimum-date 2020-01-01 --maximum-date 2023-01-01
+
+To actually delete the eligible records instead of only previewing them:
+
+.. code-block:: shell
+
+    python src/manage.py delete_klantcontacten_not_related_to_zaken --no-dry-run
+
+.. note::
+
+    Run this command inside the Docker container, e.g. via
+    ``docker compose exec web python src/manage.py delete_klantcontacten_not_related_to_zaken``,
+    when running Open Klant with Docker Compose.
+
 Environment variabelen
 ----------------------
 
