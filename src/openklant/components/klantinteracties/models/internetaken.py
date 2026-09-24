@@ -120,6 +120,14 @@ class InterneTaak(models.Model):
 
 
 class InterneTakenActorenThoughModel(models.Model):
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        help_text=_(
+            "Unieke (technische) identificatiecode van de toewijzing van de "
+            "interne taak aan de actor."
+        ),
+    )
     actor = models.ForeignKey("klantinteracties.Actor", on_delete=models.CASCADE)
     internetaak = models.ForeignKey(
         "klantinteracties.InterneTaak", on_delete=models.CASCADE
@@ -127,3 +135,5 @@ class InterneTakenActorenThoughModel(models.Model):
 
     class Meta:
         ordering = ("pk",)
+        verbose_name = _("interne taak - toegewezen actor")
+        verbose_name_plural = _("interne taken - toegewezen actoren")
