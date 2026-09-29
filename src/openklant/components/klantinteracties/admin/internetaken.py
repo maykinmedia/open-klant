@@ -12,6 +12,7 @@ class InterneTaakInlineAdmin(admin.StackedInline):
 
 
 class ActorInlineAdmin(admin.StackedInline):
+    readonly_fields = ("uuid",)
     model = InterneTaak.actoren.through
     raw_id_fields = ("actor",)
     verbose_name = _("Actor")
