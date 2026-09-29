@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from django.test import override_settings
+from django.test import override_settings, tag
 
 from freezegun import freeze_time
 from notifications_api_common.models import NotificationsConfig
@@ -95,6 +95,39 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
                     "nummer": "123456789",
+                    "interneNotitie": "interneNotitie",
+                    "soortPartij": SoortPartij.organisatie.value,
+                },
+            },
+            None,
+        )
+
+    @tag("gh-668")
+    def test_send_notification_create_object_nullable_kenmerken_changed_to_empty_strings(
+        self, m
+    ):
+        """
+        Workaround for https://github.com/open-zaak/open-notificaties/issues/434
+        """
+        data = {
+            **self.data,
+            "nummer": None,
+        }
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        m.assert_called_with(
+            {
+                "kanaal": "partijen",
+                "hoofdObject": data["url"],
+                "resource": "partij",
+                "resourceUrl": data["url"],
+                "actie": "create",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "nummer": "",
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
@@ -228,6 +261,37 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
             None,
         )
 
+    @tag("gh-668")
+    def test_send_notification_create_object_nullable_kenmerken_changed_to_empty_strings(
+        self, m
+    ):
+        """
+        Workaround for https://github.com/open-zaak/open-notificaties/issues/434
+        """
+        data = {**self.data, "nummer": None}
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        m.assert_called_with(
+            {
+                "kanaal": "internetaken",
+                "hoofdObject": data["url"],
+                "resource": "internetaak",
+                "resourceUrl": data["url"],
+                "actie": "create",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "nummer": "",
+                    "gevraagdeHandeling": "gevraagdeHandeling",
+                    "toelichting": "toelichting",
+                    "status": "verwerkt",
+                },
+            },
+            None,
+        )
+
     def test_send_notification_update_object(self, m):
         with self.captureOnCommitCallbacks(execute=True):
             response = self.client.put(self.detail_url, self.data)
@@ -349,6 +413,40 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
                 "kenmerken": {
                     "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
                     "indicatieContactGelukt": "False",
+                    "verdereActieOndernomen": "False",
+                },
+            },
+            None,
+        )
+
+    @tag("gh-668")
+    def test_send_notification_create_object_nullable_kenmerken_changed_to_empty_strings(
+        self, m
+    ):
+        """
+        Workaround for https://github.com/open-zaak/open-notificaties/issues/434
+        """
+        data = {
+            **self.data,
+            "indicatieContactGelukt": None,
+        }
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.json()
+        m.assert_called_with(
+            {
+                "kanaal": "klantcontacten",
+                "hoofdObject": data["url"],
+                "resource": "klantcontact",
+                "resourceUrl": data["url"],
+                "actie": "create",
+                "aanmaakdatum": "2024-02-02T00:00:00Z",
+                "kenmerken": {
+                    "hoofdOnderwerpType": "https://openzaak-zgw.maykin.nl/catalogi/api/v1/zaaktypen/b51b2a95-36ab-4628-8dbe-c2ecabc23afa",
+                    # Null value is converted to empty string
+                    "indicatieContactGelukt": "",
                     "verdereActieOndernomen": "False",
                 },
             },
