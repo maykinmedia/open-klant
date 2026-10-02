@@ -2,6 +2,35 @@
 Change history
 ==============
 
+2.19.0
+======
+*October 2, 2026*
+
+**New features**
+
+    * [:open-klant:`663`] Add temporary ``delete_klantcontacten_not_related_to_zaken`` management command to delete Klantcontacten that are not related to a Zaak, as a stopgap while Open Archiefbeheer does not yet support this (see :ref:`scripts`).
+
+**Bugfixes**
+
+    * [:open-klant:`626`] Use ``raw_id_fields`` for the klantcontact, digitaal adres and partijen admin FK fields that were missing it.
+    * [:open-klant:`668`] Fix nullable ``kenmerken`` in notifications by upgrading ``notifications-api-common`` to 0.13.2.
+
+**Maintenance**
+
+    * [:open-klant:`626`] Add system check for admin FK fields missing ``raw_id_fields``.
+    * [:open-klant:`649`] Clarify in the Digitaal Adres helptext (and OpenAPI schema) why duplicate addresses are allowed.
+    * Upgrade python dependencies
+
+        * ``anyio`` to 4.14.2
+        * ``djangorestframework`` to 3.18.1
+        * ``maykin-common`` to 0.22.0
+        * ``notifications-api-common`` to 0.13.2
+        * ``open-api-framework`` to 0.16.0
+        * ``pip`` to 26.2.1
+        * ``sqlparse`` to 0.6.0
+        * ``webob`` to 1.8.11
+        * ``zgw-consumers`` to 2.1.0
+
 2.18.1
 ======
 *September 3, 2026*

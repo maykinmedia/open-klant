@@ -15,7 +15,7 @@ annotated-types==0.7.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pydantic
-anyio==4.10.0
+anyio==4.14.2
     # via httpx
 ape-pie==0.2.0
     # via
@@ -397,7 +397,7 @@ django-webtest==1.9.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-djangorestframework==3.15.2
+djangorestframework==3.18.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -602,7 +602,7 @@ maykin-2fa==1.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-maykin-common==0.20.1
+maykin-common==0.22.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -634,7 +634,7 @@ notifications-api-common==0.13.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.14.1
+open-api-framework==0.16.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -780,7 +780,7 @@ phonenumberslite==8.13.42
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-pip==26.1.2
+pip==26.2.1
     # via pip-tools
 pip-tools==7.4.1
     # via -r requirements/dev.in
@@ -1030,8 +1030,6 @@ six==1.16.0
     #   python-dateutil
 smmap==5.0.1
     # via gitdb
-sniffio==1.3.1
-    # via anyio
 snowballstemmer==2.2.0
     # via
     #   -c requirements/ci.txt
@@ -1093,7 +1091,7 @@ sphinxcontrib-serializinghtml==2.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   sphinx
-sqlparse==0.5.5
+sqlparse==0.6.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1212,7 +1210,7 @@ webencodings==0.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   bleach
-webob==1.8.10
+webob==1.8.11
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1235,7 +1233,7 @@ wrapt==1.16.0
     #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-redis
     #   vcrpy
-zgw-consumers==2.0.3
+zgw-consumers==2.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

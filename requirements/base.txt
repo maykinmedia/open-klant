@@ -187,7 +187,7 @@ django-two-factor-auth==1.16.0
     # via maykin-2fa
 django-upgrade-check==1.1.0
     # via open-api-framework
-djangorestframework==3.15.2
+djangorestframework==3.18.1
     # via
     #   commonground-api-common
     #   djangorestframework-gis
@@ -256,7 +256,7 @@ maykin-2fa==1.0.1
     # via
     #   maykin-common
     #   open-api-framework
-maykin-common==0.20.1
+maykin-common==0.22.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
@@ -269,8 +269,10 @@ mozilla-django-oidc-db==2.0.1
     #   -r requirements/base.in
     #   open-api-framework
 notifications-api-common==0.13.2
-    # via commonground-api-common
-open-api-framework==0.14.1
+    # via
+    #   commonground-api-common
+    #   open-api-framework
+open-api-framework==0.16.0
     # via -r requirements/base.in
 opentelemetry-api==1.36.0
     # via
@@ -459,7 +461,7 @@ six==1.16.0
     #   furl
     #   orderedmultidict
     #   python-dateutil
-sqlparse==0.5.5
+sqlparse==0.6.0
     # via django
 structlog==25.4.0
     # via
@@ -515,7 +517,7 @@ wrapt==1.16.0
     #   opentelemetry-instrumentation
     #   opentelemetry-instrumentation-dbapi
     #   opentelemetry-instrumentation-redis
-zgw-consumers==2.0.3
+zgw-consumers==2.1.0
     # via
     #   commonground-api-common
     #   notifications-api-common

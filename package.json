@@ -1,6 +1,6 @@
 {
   "name": "openklant",
-  "version": "2.18.1",
+  "version": "2.19.0",
   "description": "openklant project",
   "main": "src/static/openklant/js/openklant.js",
   "directories": {
@@ -57,7 +57,7 @@
     "url-loader": "latest",
     "webpack": "latest",
     "webpack-cli": "latest",
-    "webpack-dev-server": "^5.2.2",
+    "webpack-dev-server": "^6.0.0",
     "webpack-stream": "latest",
     "yargs": "latest"
   }

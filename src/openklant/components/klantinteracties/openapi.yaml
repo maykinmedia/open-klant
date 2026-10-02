@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: klantinteracties
-  version: 0.9.0
+  version: 0.9.1
   description: |2
 
     **Warning: Difference between `PUT` and `PATCH`**
@@ -4843,6 +4843,7 @@ components:
             of kanalen met dit adres contact kan worden opgenomen.
         isStandaardAdres:
           type: boolean
+          default: false
           description: Geeft aan of dit digitaal adres het standaard adres is voor
             het `soortDigitaalAdres` voor de deze `partij`. Per `partij` en `soortDigitaalAdres`
             kan er maar één standaard adres zijn, zodra een ander adres gemarkeerd
@@ -6373,6 +6374,7 @@ components:
             of kanalen met dit adres contact kan worden opgenomen.
         isStandaardAdres:
           type: boolean
+          default: false
           description: Geeft aan of dit digitaal adres het standaard adres is voor
             het `soortDigitaalAdres` voor de deze `partij`. Per `partij` en `soortDigitaalAdres`
             kan er maar één standaard adres zijn, zodra een ander adres gemarkeerd
