@@ -1,5 +1,7 @@
 from django.db import IntegrityError
+from django.test import tag
 
+from openklant.components.klantinteracties.models.constants import SoortActor
 from openklant.tests.test_migrate import BaseMigrationTest
 
 
@@ -425,3 +427,62 @@ class TestValidateBagId(BaseMigrationTest):
         )
         self.assertNotEqual(records[0].bezoekadres_nummeraanduiding_id, "ABC")
         self.assertNotEqual(records[0].correspondentieadres_nummeraanduiding_id, "DEF")
+
+
+@tag("gh-672")
+class NewlyAddedUUIDFieldsUniquenessTest(BaseMigrationTest):
+    app = "klantinteracties"
+    migrate_from = "0048_klantcontact_hoofd_onderwerp_type_and_more"
+    migrate_to = "0049_internetaken_actoren_verbose_name"
+
+    def test_ensure_existing_rows_have_unique_uuids(self):
+        InterneTakenActorenThoughModel = self.old_app_state.get_model(
+            "klantinteracties", "InterneTakenActorenThoughModel"
+        )
+        Organisatie = self.old_app_state.get_model("klantinteracties", "Organisatie")
+        Persoon = self.old_app_state.get_model("klantinteracties", "Persoon")
+        Partij = self.old_app_state.get_model("klantinteracties", "Partij")
+        Actor = self.old_app_state.get_model("klantinteracties", "Actor")
+        InterneTaak = self.old_app_state.get_model("klantinteracties", "InterneTaak")
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        for i in range(2):
+            partij = Partij.objects.create(
+                indicatie_actief=True,
+            )
+            actor = Actor.objects.create(
+                naam="actor1",
+                soort_actor=SoortActor.medewerker,
+            )
+            klantcontact = Klantcontact.objects.create(vertrouwelijk=False, nummer=i)
+            internetaak = InterneTaak.objects.create(klantcontact=klantcontact)
+
+            # create two instances of the affected models
+            InterneTakenActorenThoughModel.objects.create(
+                actor=actor, internetaak=internetaak
+            )
+            Organisatie.objects.create(partij=partij, naam="foo")
+            Persoon.objects.create(
+                partij=partij,
+            )
+
+        self._perform_migration()
+
+        InterneTakenActorenThoughModel = self.apps.get_model(
+            "klantinteracties", "InterneTakenActorenThoughModel"
+        )
+        Organisatie = self.apps.get_model("klantinteracties", "Organisatie")
+        Persoon = self.apps.get_model("klantinteracties", "Persoon")
+
+        self.assertEqual(InterneTakenActorenThoughModel.objects.count(), 2)
+        self.assertEqual(Organisatie.objects.count(), 2)
+        self.assertEqual(Persoon.objects.count(), 2)
+
+        self.assertNotEqual(
+            InterneTakenActorenThoughModel.objects.first().uuid,
+            InterneTakenActorenThoughModel.objects.last().uuid,
+        )
+        self.assertNotEqual(
+            Organisatie.objects.first().uuid, Organisatie.objects.last().uuid
+        )
+        self.assertNotEqual(Persoon.objects.first().uuid, Persoon.objects.last().uuid)

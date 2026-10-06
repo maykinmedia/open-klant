@@ -2,9 +2,22 @@
 Change history
 ==============
 
+2.19.1
+======
+
+*October 6, 2026*
+
+**Bugfixes**
+
+* [:open-klant:`672`] Fix failing migration by ensuring defaults are correctly set for newly added UUIDs to several tables
+
 2.19.0
 ======
 *October 2, 2026*
+
+.. warning::
+
+  This release contains a database migration that crashes, make sure to upgrade to 2.19.1 instead
 
 **New features**
 
