@@ -1,17 +1,16 @@
 {
-  "name": "openklant",
+  "name": "Open Klant",
   "version": "2.19.1",
   "description": "openklant project",
-  "main": "src/static/openklant/js/openklant.js",
+  "type": "module",
+  "main": "src/openklant/static/bundles/index.js",
   "directories": {
     "doc": "doc"
   },
   "scripts": {
-    "build": "npm run bundle",
-    "bundle": "webpack",
-    "test": "karma start",
-    "watch": "webpack -w",
-    "convert": "swagger2openapi $SCHEMA_PATH/swagger2.0.json -o $SCHEMA_PATH/openapi.yaml"
+    "build": "node build.js",
+    "test": "echo 'no tests defined' && exit 1",
+    "watch": "node build.js --watch"
   },
   "repository": {
     "type": "git",
@@ -29,36 +28,8 @@
     "instrument": false
   },
   "devDependencies": {
-    "@babel/core": "latest",
-    "@babel/polyfill": "latest",
-    "@babel/preset-env": "latest",
-    "autoprefixer": "latest",
-    "babel-loader": "latest",
-    "babel-plugin-istanbul": "^6.1.1",
-    "chai": "latest",
-    "css-loader": "latest",
-    "cssnano": "latest",
-    "karma": "^6.3.14",
-    "karma-chrome-launcher": "latest",
-    "karma-coverage": "latest",
-    "karma-junit-reporter": "latest",
-    "karma-mocha": "latest",
-    "karma-spec-reporter": "latest",
-    "karma-webpack": "latest",
-    "mini-css-extract-plugin": "latest",
-    "mocha": "^11.1.0",
-    "postcss-loader": "latest",
-    "postcss-selector-lint": "latest",
-    "sass": "latest",
-    "sass-loader": "latest",
-    "simulant": "latest",
-    "sinon": "latest",
-    "swagger2openapi": "^7.0.4",
-    "url-loader": "latest",
-    "webpack": "latest",
-    "webpack-cli": "latest",
-    "webpack-dev-server": "^6.0.0",
-    "webpack-stream": "latest",
-    "yargs": "latest"
+    "esbuild": "latest",
+    "esbuild-sass-plugin": "latest",
+    "sass-embedded": "latest"
   }
 }
