@@ -19,15 +19,17 @@ RUN pip install -r requirements/production.txt
 
 
 # Stage 2 - build frontend
-FROM node:24-trixie-slim AS frontend-build
+FROM node:26-trixie-slim AS frontend-build
 
 WORKDIR /app
 
 # copy configuration/build files
-COPY ./*.json ./*.js /app/
+COPY ./*.json /app/
 
 # install WITH dev tooling
 RUN npm ci --legacy-peer-deps
+
+COPY ./*.js /app/
 
 # copy source code
 COPY ./src /app/src
