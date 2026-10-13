@@ -482,6 +482,10 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         },
         same_model=False,
         group_field="partij_identificatie",
+        help_text=_(
+            "De toegestane eigenschappen zijn afhankelijk van `soortPartij`. "
+            "Onbekende eigenschappen zijn niet toegestaan."
+        ),
     )
     betrokkenen = BetrokkeneForeignKeySerializer(
         read_only=True,
@@ -594,6 +598,31 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 "help_text": _("De unieke URL van deze partij binnen deze API."),
             },
         }
+
+    def to_internal_value(self, data):
+        soort_partij = data.get(
+            "soort_partij",
+            getattr(self.instance, "soort_partij", None),
+        )
+        partij_identificatie = data.get("partij_identificatie")
+
+        if partij_identificatie is not None and soort_partij is not None:
+            serializer = self.discriminator.mapping[soort_partij]
+            partij_identificatie_serializer = serializer.fields["partij_identificatie"]
+
+            allowed_fields = set(partij_identificatie_serializer.fields)
+            unknown_fields = set(partij_identificatie) - allowed_fields
+
+            if unknown_fields:
+                raise serializers.ValidationError(
+                    {
+                        "partij_identificatie": _(
+                            "Onbekende eigenschappen zijn niet toegestaan: {fields}."
+                        ).format(fields=", ".join(sorted(unknown_fields)))
+                    }
+                )
+
+        return super().to_internal_value(data)
 
     @extend_schema_field(PartijForeignKeySerializer(many=True))
     def get_vertegenwoordigden(self, obj):
@@ -811,9 +840,9 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
         partij = super().update(instance, validated_data)
 
         if partij_identificatie:
-            serializer_class = self.discriminator.mapping[
-                validated_data.get("soort_partij")
-            ]
+            soort_partij = validated_data.get("soort_partij", instance.soort_partij)
+
+            serializer_class = self.discriminator.mapping[soort_partij]
             serializer = serializer_class.get_fields()["partij_identificatie"]
 
             # remove the previous data

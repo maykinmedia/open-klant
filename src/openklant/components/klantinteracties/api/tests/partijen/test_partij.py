@@ -517,12 +517,6 @@ class PartijTests(APITestCase):
         )
 
     def test_create_organisatie(self):
-        contactpersoon = ContactpersoonFactory.create(
-            contactnaam_voorletters="P",
-            contactnaam_voornaam="Phil",
-            contactnaam_voorvoegsel_achternaam="",
-            contactnaam_achternaam="Bozeman",
-        )
         list_url = reverse("klantinteracties:partij-list")
         data = {
             "nummer": "1298329191",
@@ -561,12 +555,10 @@ class PartijTests(APITestCase):
             "soortPartij": SoortPartij.organisatie.value,
             "partijIdentificatie": {
                 "naam": "Whitechapel",
-                "contactpersonen": [{"id": contactpersoon.id}],
             },
         }
 
         response = self.client.post(list_url, data)
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response_data = response.json()
@@ -2300,6 +2292,150 @@ class PartijTests(APITestCase):
         self.assertEqual(len(received_adressen), 1)
         self.assertEqual(
             received_adressen[0]["url"], f"http://testserver{expected_url}"
+        )
+
+    def test_patch_rejects_partij_identificatie_with_wrong_shape(self):
+        digitaal_adres = DigitaalAdresFactory.create()
+        rekeningnummer = RekeningnummerFactory.create()
+
+        list_url = reverse("klantinteracties:partij-list")
+        create_data = {
+            "nummer": "1298329191",
+            "interneNotitie": "interneNotitie",
+            "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
+            "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
+            "rekeningnummers": [{"uuid": str(rekeningnummer.uuid)}],
+            "voorkeursRekeningnummer": {"uuid": str(rekeningnummer.uuid)},
+            "soortPartij": SoortPartij.persoon.value,
+            "voorkeurstaal": "ndl",
+            "indicatieActief": True,
+            "bezoekadres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
+                "land": "NL",
+            },
+            "correspondentieadres": {
+                "nummeraanduidingId": "1234567890000001",
+                "straatnaam": "straat",
+                "huisnummer": 10,
+                "huisnummertoevoeging": "A2",
+                "postcode": "1008 DG",
+                "stad": "Amsterdam",
+                "adresregel1": "adres1",
+                "adresregel2": "adres2",
+                "adresregel3": "adres3",
+                "land": "NL",
+            },
+            "partijIdentificatie": {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            },
+        }
+        response = self.client.post(list_url, create_data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.json()["soortPartij"], "persoon")
+        self.assertEqual(
+            response.json()["partijIdentificatie"],
+            {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                },
+                "volledigeNaam": "Phil Bozeman",
+            },
+        )
+
+        partij_uuid = response.json()["uuid"]
+        detail_url = reverse(
+            "klantinteracties:partij-detail", kwargs={"uuid": partij_uuid}
+        )
+
+        patch_data = {
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {
+                "contactnaam": {
+                    "voorletters": "P",
+                    "voornaam": "Phil",
+                    "voorvoegselAchternaam": "",
+                    "achternaam": "Bozeman",
+                }
+            },
+        }
+        response = self.client.patch(detail_url, patch_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data["invalid_params"][0]["name"],
+            "partijIdentificatie",
+        )
+        self.assertEqual(
+            response.data["invalid_params"][0]["reason"],
+            "Onbekende eigenschappen zijn niet toegestaan: contactnaam.",
+        )
+
+    def test_create_rejects_unknown_partij_identificatie_fields(self):
+        list_url = reverse("klantinteracties:partij-list")
+        data = {
+            "nummer": "9998",
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {
+                "naam": "Test Organisation",
+                "someNonExistentField": "foo",
+            },
+        }
+
+        response = self.client.post(list_url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data["invalid_params"][0]["name"],
+            "partijIdentificatie",
+        )
+        self.assertEqual(
+            response.data["invalid_params"][0]["reason"],
+            "Onbekende eigenschappen zijn niet toegestaan: some_non_existent_field.",
+        )
+
+    def test_patch_accepts_partij_identificatie_with_correct_shape(self):
+        partij = PartijFactory.create(
+            soort_partij=SoortPartij.persoon,
+        )
+        PersoonFactory.create(
+            partij=partij,
+            contactnaam_voornaam="Phil",
+            contactnaam_achternaam="Bozeman",
+        )
+
+        detail_url = reverse(
+            "klantinteracties:partij-detail",
+            kwargs={"uuid": partij.uuid},
+        )
+        patch_data = {
+            "soortPartij": SoortPartij.organisatie.value,
+            "partijIdentificatie": {
+                "naam": "Test Organisation",
+            },
+        }
+
+        response = self.client.patch(detail_url, patch_data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["soort_partij"], SoortPartij.organisatie)
+        self.assertEqual(
+            response.data["partij_identificatie"],
+            {"naam": "Test Organisation"},
         )
 
 
