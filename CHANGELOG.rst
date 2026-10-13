@@ -2,6 +2,27 @@
 Change history
 ==============
 
+2.X.X
+=====
+
+.. warning::
+
+    ``nummer`` of ``Partij``, ``Klantcontact`` and ``InterneTaak`` is now zero
+    padded to 12 digits (``0000000056`` becomes ``000000000056``), also for
+    existing records. The migration stops if this creates duplicates (e.g.
+    ``56`` and ``0000000056`` in the same table): fix those before upgrading.
+
+.. note::
+
+    In the next major release clients can no longer provide their own
+    ``nummer``. Use ``referentienummer`` instead.
+
+**Bugfixes**
+
+* [:open-klant:`631`] ``nummer`` is generated automatically again, by a PostgreSQL sequence. This
+  fixes the ``IntegrityError`` on create and the race condition between
+  concurrent requests.
+
 2.19.1
 ======
 
