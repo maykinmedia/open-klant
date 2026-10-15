@@ -16,6 +16,7 @@ from openklant.components.klantinteracties.models.actoren import Actor
 from openklant.components.klantinteracties.models.constants import Taakstatus
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.klantcontacten import Klantcontact
+from openklant.components.klantinteracties.utils import validate_nummer
 
 
 class InterneTaakForeignKeySerializer(serializers.HyperlinkedModelSerializer):
@@ -82,6 +83,10 @@ class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
                 "help_text": _("De unieke URL van deze interne taak binnen deze API."),
             },
         }
+
+    def validate_nummer(self, attrs):
+        attrs = validate_nummer(InterneTaak, attrs, self.instance)
+        return attrs
 
     def to_representation(self, instance):
         response = super().to_representation(instance)

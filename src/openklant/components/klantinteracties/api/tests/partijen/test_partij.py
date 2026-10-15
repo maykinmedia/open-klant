@@ -99,7 +99,7 @@ class PartijTests(APITestCase):
         rekeningnummer, rekeningnummer2 = RekeningnummerFactory.create_batch(2)
         list_url = reverse("klantinteracties:partij-list")
         data = {
-            "nummer": "1298329191",
+            "nummer": "001298329191",
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
@@ -153,7 +153,7 @@ class PartijTests(APITestCase):
         rekeningnummer, rekeningnummer2 = RekeningnummerFactory.create_batch(2)
         list_url = reverse("klantinteracties:partij-list")
         data = {
-            "nummer": "1298329191",
+            "nummer": "001298329191",
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
@@ -202,7 +202,7 @@ class PartijTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1298329191")
+        self.assertEqual(data["nummer"], "001298329191")
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"][0]["uuid"], str(digitaal_adres.uuid))
         self.assertEqual(
@@ -260,7 +260,7 @@ class PartijTests(APITestCase):
         )
 
         with self.subTest("create_partij_without_foreignkey_relations"):
-            data["nummer"] = "1298329192"
+            data["nummer"] = "001298329192"
             data["digitaleAdressen"] = []
             data["voorkeursDigitaalAdres"] = None
             data["rekeningnummers"] = []
@@ -272,7 +272,7 @@ class PartijTests(APITestCase):
 
             response_data = response.json()
 
-            self.assertEqual(response_data["nummer"], "1298329192")
+            self.assertEqual(response_data["nummer"], "001298329192")
             self.assertEqual(response_data["interneNotitie"], "interneNotitie")
             self.assertEqual(response_data["digitaleAdressen"], [])
             self.assertIsNone(response_data["voorkeursDigitaalAdres"])
@@ -326,9 +326,25 @@ class PartijTests(APITestCase):
             )
 
         with self.subTest("nummer_unique_validation"):
-            data["nummer"] = "1298329192"
+            data["nummer"] = "001298329192"
             response = self.client.post(list_url, data)
 
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "nummer")
+            self.assertEqual(error["code"], "unique")
+            self.assertEqual(
+                error["reason"], "Er bestaat al een partij met eenzelfde nummer."
+            )
+
+        with self.subTest("padding_zero"):
+            data["nummer"] = "888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["nummer"], "000000000888")
+
+        with self.subTest("unique_with_padding"):
+            data["nummer"] = "888"
+            response = self.client.post(list_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             error = get_validation_errors(response, "nummer")
             self.assertEqual(error["code"], "unique")
@@ -413,7 +429,7 @@ class PartijTests(APITestCase):
     def test_create_persoon(self):
         list_url = reverse("klantinteracties:partij-list")
         data = {
-            "nummer": "1298329191",
+            "nummer": "001298329191",
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
@@ -463,7 +479,7 @@ class PartijTests(APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response_data["nummer"], "1298329191")
+        self.assertEqual(response_data["nummer"], "001298329191")
         self.assertEqual(response_data["interneNotitie"], "interneNotitie")
         self.assertEqual(response_data["digitaleAdressen"], [])
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
@@ -525,7 +541,7 @@ class PartijTests(APITestCase):
         )
         list_url = reverse("klantinteracties:partij-list")
         data = {
-            "nummer": "1298329191",
+            "nummer": "001298329191",
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
@@ -571,7 +587,7 @@ class PartijTests(APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response_data["nummer"], "1298329191")
+        self.assertEqual(response_data["nummer"], "001298329191")
         self.assertEqual(response_data["interneNotitie"], "interneNotitie")
         self.assertEqual(response_data["digitaleAdressen"], [])
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
@@ -620,7 +636,7 @@ class PartijTests(APITestCase):
         organisatie = PartijFactory.create(soort_partij=SoortPartij.organisatie.value)
         list_url = reverse("klantinteracties:partij-list")
         data = {
-            "nummer": "1298329191",
+            "nummer": "001298329191",
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
@@ -673,7 +689,7 @@ class PartijTests(APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response_data["nummer"], "1298329191")
+        self.assertEqual(response_data["nummer"], "001298329191")
         self.assertEqual(response_data["interneNotitie"], "interneNotitie")
         self.assertEqual(response_data["digitaleAdressen"], [])
         self.assertIsNone(response_data["voorkeursDigitaalAdres"])
@@ -732,7 +748,7 @@ class PartijTests(APITestCase):
 
     def test_update_partij(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -781,7 +797,7 @@ class PartijTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1298329191")
+        self.assertEqual(data["nummer"], "001298329191")
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(
             data["digitaleAdressen"],
@@ -851,7 +867,7 @@ class PartijTests(APITestCase):
         )
 
         data = {
-            "nummer": "6427834668",
+            "nummer": "006427834668",
             "interneNotitie": "changed",
             "digitaleAdressen": [{"uuid": str(digitaal_adres2.uuid)}],
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres2.uuid)},
@@ -899,7 +915,7 @@ class PartijTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "6427834668")
+        self.assertEqual(data["nummer"], "006427834668")
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(
             data["digitaleAdressen"],
@@ -1027,7 +1043,7 @@ class PartijTests(APITestCase):
             )
         with self.subTest("set_foreignkey_fields_to_none"):
             data = {
-                "nummer": "6427834668",
+                "nummer": "006427834668",
                 "interneNotitie": "changed",
                 "digitaleAdressen": [],
                 "voorkeursDigitaalAdres": None,
@@ -1075,7 +1091,7 @@ class PartijTests(APITestCase):
             self.assertFalse(partij.digitaaladres_set.exists())
             self.assertFalse(partij.rekeningnummer_set.exists())
 
-            self.assertEqual(data["nummer"], "6427834668")
+            self.assertEqual(data["nummer"], "006427834668")
             self.assertEqual(data["interneNotitie"], "changed")
             self.assertEqual(data["digitaleAdressen"], [])
             self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -1118,7 +1134,7 @@ class PartijTests(APITestCase):
 
     def test_update_partij_only_required(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -1170,7 +1186,7 @@ class PartijTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
 
-        self.assertEqual(response_data["nummer"], "1298329191")
+        self.assertEqual(response_data["nummer"], "001298329191")
         self.assertEqual(response_data["soortPartij"], SoortPartij.organisatie.value)
         self.assertEqual(
             response_data["digitaleAdressen"][0]["uuid"], str(digitaal_adres.uuid)
@@ -1236,7 +1252,7 @@ class PartijTests(APITestCase):
 
     def test_update_partially_partij_only_required(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -1253,7 +1269,7 @@ class PartijTests(APITestCase):
         response = self.client.patch(detail_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
-        self.assertEqual(response_data["nummer"], "1298329191")
+        self.assertEqual(response_data["nummer"], "001298329191")
         self.assertEqual(response_data["interneNotitie"], "interneNotitie")
         self.assertEqual(response_data["voorkeursDigitaalAdres"], None)
         self.assertEqual(response_data["voorkeursRekeningnummer"], None)
@@ -1264,7 +1280,7 @@ class PartijTests(APITestCase):
 
     def test_update_partij_persoon(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -1306,7 +1322,7 @@ class PartijTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1298329191")
+        self.assertEqual(data["nummer"], "001298329191")
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -1360,7 +1376,7 @@ class PartijTests(APITestCase):
         )
 
         data = {
-            "nummer": "6427834668",
+            "nummer": "006427834668",
             "interneNotitie": "changed",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
@@ -1408,7 +1424,7 @@ class PartijTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "6427834668")
+        self.assertEqual(data["nummer"], "006427834668")
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -1463,7 +1479,7 @@ class PartijTests(APITestCase):
 
     def test_update_partij_organisatie(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -1499,7 +1515,7 @@ class PartijTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1298329191")
+        self.assertEqual(data["nummer"], "001298329191")
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -1542,7 +1558,7 @@ class PartijTests(APITestCase):
         self.assertEqual(data["partijIdentificatie"], {"naam": "Whitechapel"})
 
         data = {
-            "nummer": "6427834668",
+            "nummer": "006427834668",
             "interneNotitie": "changed",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
@@ -1583,7 +1599,7 @@ class PartijTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "6427834668")
+        self.assertEqual(data["nummer"], "006427834668")
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -1627,7 +1643,7 @@ class PartijTests(APITestCase):
 
     def test_update_partij_contactpersoon(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -1679,7 +1695,7 @@ class PartijTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1298329191")
+        self.assertEqual(data["nummer"], "001298329191")
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -1737,7 +1753,7 @@ class PartijTests(APITestCase):
         )
 
         data = {
-            "nummer": "6427834668",
+            "nummer": "006427834668",
             "interneNotitie": "changed",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
@@ -1786,7 +1802,7 @@ class PartijTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "6427834668")
+        self.assertEqual(data["nummer"], "006427834668")
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -1845,7 +1861,7 @@ class PartijTests(APITestCase):
 
     def test_update_partij_contactpersoon_to_persoon(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -1889,7 +1905,7 @@ class PartijTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1298329191")
+        self.assertEqual(data["nummer"], "001298329191")
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -1947,7 +1963,7 @@ class PartijTests(APITestCase):
         )
 
         data = {
-            "nummer": "6427834668",
+            "nummer": "006427834668",
             "interneNotitie": "changed",
             "digitaleAdressen": [],
             "voorkeursDigitaalAdres": None,
@@ -1995,7 +2011,7 @@ class PartijTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "6427834668")
+        self.assertEqual(data["nummer"], "006427834668")
         self.assertEqual(data["interneNotitie"], "changed")
         self.assertEqual(data["digitaleAdressen"], [])
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -2050,7 +2066,7 @@ class PartijTests(APITestCase):
 
     def test_partial_update_partij(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -2099,7 +2115,7 @@ class PartijTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1298329191")
+        self.assertEqual(data["nummer"], "001298329191")
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"][0]["uuid"], str(digitaal_adres.uuid))
         self.assertIsNone(data["voorkeursDigitaalAdres"])
@@ -2160,7 +2176,7 @@ class PartijTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1298329191")
+        self.assertEqual(data["nummer"], "001298329191")
         self.assertEqual(data["interneNotitie"], "interneNotitie")
         self.assertEqual(data["digitaleAdressen"][0]["uuid"], str(digitaal_adres.uuid))
         self.assertEqual(
@@ -2910,7 +2926,7 @@ class NestedPartijIdentificatorTests(APITestCase):
 
     def test_partially_update_with_null_values(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -2940,7 +2956,7 @@ class NestedPartijIdentificatorTests(APITestCase):
 
     def test_partially_update_where_all_partij_identificatoren_have_uuid(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -3019,7 +3035,7 @@ class NestedPartijIdentificatorTests(APITestCase):
 
     def test_partially_update_where_no_partij_identificatoren_have_uuid(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -3077,7 +3093,7 @@ class NestedPartijIdentificatorTests(APITestCase):
 
     def test_partially_update_where_not_all_partij_identificatoren_have_uuid(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -3156,7 +3172,7 @@ class NestedPartijIdentificatorTests(APITestCase):
 
     def test_partially_update_overwriting_partij_identificator(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
@@ -3308,7 +3324,7 @@ class NestedPartijIdentificatorTests(APITestCase):
 
     def test_update_partij_identificatoren_only_required(self):
         partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             voorkeurs_digitaal_adres=None,
             voorkeurs_rekeningnummer=None,
