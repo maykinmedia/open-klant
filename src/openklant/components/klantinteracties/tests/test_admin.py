@@ -48,7 +48,7 @@ class PartijAdminTests(WebTest):
         self.app.set_user(user)
 
         nummer_persoon = PersoonFactory(
-            partij__nummer="123456789",
+            partij__nummer="000123456789",
             contactnaam_voornaam="Willem",
             contactnaam_achternaam="Wever",
         )
@@ -229,7 +229,9 @@ class RekeningnummerAdminTests(WebTest):
         matching_rekeningnummer = RekeningnummerFactory.create(
             iban="NL91ABNA0417164300"
         )
-        other_rekeningnummer = RekeningnummerFactory.create(iban="NL02ABNA0123456789")
+        other_rekeningnummer = RekeningnummerFactory.create(
+            iban="NL02ABNA0000123456789"
+        )
 
         admin_url = reverse("admin:klantinteracties_rekeningnummer_changelist")
         response: TestResponse = self.app.get(admin_url)
@@ -616,8 +618,8 @@ class IntereTaakAdminTests(WebTest):
         actor: Actor = ActorFactory.create(naam="Richard")
         actor2: Actor = ActorFactory.create(naam="Pauline")
 
-        InterneTaakFactory.create(nummer="0000000001", actoren=[actor])
-        InterneTaakFactory.create(nummer="0000000002", actoren=[actor2])
+        InterneTaakFactory.create(nummer="0000000111", actoren=[actor])
+        InterneTaakFactory.create(nummer="0000000222", actoren=[actor2])
 
         admin_url = reverse("admin:klantinteracties_internetaak_changelist")
 
@@ -634,14 +636,14 @@ class IntereTaakAdminTests(WebTest):
 
         self.assertEqual(search_response.status_code, 200)
         self.assertContains(search_response, "field-nummer")
-        self.assertContains(search_response, "0000000001")
-        self.assertNotContains(search_response, "0000000002")
+        self.assertContains(search_response, "000000000111")
+        self.assertNotContains(search_response, "000000000222")
 
     def test_internetaak_filter_status(self):
         self.app.set_user(self.user)
 
-        InterneTaakFactory.create(nummer="0000000001", status=Taakstatus.te_verwerken)
-        InterneTaakFactory.create(nummer="0000000002", status=Taakstatus.verwerkt)
+        InterneTaakFactory.create(nummer="0000000111", status=Taakstatus.te_verwerken)
+        InterneTaakFactory.create(nummer="0000000222", status=Taakstatus.verwerkt)
 
         admin_url = reverse("admin:klantinteracties_internetaak_changelist")
 
@@ -656,8 +658,8 @@ class IntereTaakAdminTests(WebTest):
 
         self.assertEqual(search_response.status_code, 200)
         self.assertContains(search_response, "field-nummer")
-        self.assertContains(search_response, "0000000002")
-        self.assertNotContains(search_response, "0000000001")
+        self.assertContains(search_response, "000000000222")
+        self.assertNotContains(search_response, "000000000111")
 
     def test_interetaak_create(self):
         assert not InterneTaak.objects.exists()
@@ -676,7 +678,7 @@ class IntereTaakAdminTests(WebTest):
         form["internetakenactorenthoughmodel_set-TOTAL_FORMS"] = 1
 
         form["klantcontact"] = str(klantcontact.pk)
-        form["nummer"] = "0000000001"
+        form["nummer"] = "000000000001"
         form["gevraagde_handeling"] = "Terugbellen"
         form["toelichting"] = "bla bla bla"
         form["status"].select(text=_(Taakstatus.verwerkt.label))
@@ -695,7 +697,7 @@ class IntereTaakAdminTests(WebTest):
         created_internetaak: InterneTaak = InterneTaak.objects.get()
 
         self.assertEqual(created_internetaak.klantcontact, klantcontact)
-        self.assertEqual(created_internetaak.nummer, "0000000001")
+        self.assertEqual(created_internetaak.nummer, "000000000001")
         self.assertEqual(created_internetaak.gevraagde_handeling, "Terugbellen")
         self.assertEqual(created_internetaak.toelichting, "bla bla bla")
         self.assertEqual(created_internetaak.status, Taakstatus.verwerkt)
@@ -752,7 +754,7 @@ class IntereTaakAdminTests(WebTest):
         created_internetaak: InterneTaak = InterneTaak.objects.get()
 
         self.assertEqual(created_internetaak.klantcontact, klantcontact2)
-        self.assertEqual(created_internetaak.nummer, "0000000009")
+        self.assertEqual(created_internetaak.nummer, "000000000009")
         self.assertEqual(created_internetaak.gevraagde_handeling, "Terugbellen")
         self.assertEqual(created_internetaak.toelichting, "bla bla bla")
         self.assertEqual(created_internetaak.status, Taakstatus.verwerkt)

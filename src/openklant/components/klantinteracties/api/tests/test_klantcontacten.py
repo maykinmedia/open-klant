@@ -125,7 +125,7 @@ class KlantContactTests(APITestCase):
     def test_create_klantcontact(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
-            "nummer": "1234567890",
+            "nummer": "001234567890",
             "kanaal": "kanaal",
             "onderwerp": "onderwerp",
             "inhoud": "inhoud",
@@ -141,7 +141,7 @@ class KlantContactTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1234567890")
+        self.assertEqual(data["nummer"], "001234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
         self.assertEqual(data["inhoud"], "inhoud")
@@ -151,7 +151,7 @@ class KlantContactTests(APITestCase):
         self.assertTrue(data["vertrouwelijk"])
 
         with self.subTest("nummer_unique_validation"):
-            data["nummer"] = "1234567890"
+            data["nummer"] = "001234567890"
             response = self.client.post(list_url, data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -161,10 +161,26 @@ class KlantContactTests(APITestCase):
                 "Er bestaat al een klantcontact met eenzelfde nummer.",
             )
 
+        with self.subTest("padding_zero"):
+            data["nummer"] = "888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["nummer"], "000000000888")
+
+        with self.subTest("unique_with_padding"):
+            data["nummer"] = "888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "nummer")
+            self.assertEqual(error["code"], "unique")
+            self.assertEqual(
+                error["reason"], "Er bestaat al een klantcontact met eenzelfde nummer."
+            )
+
     def test_create_klantcontact_verdere_actie_ondernomen_constraint(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
-            "nummer": "1234567890",
+            "nummer": "001234567890",
             "kanaal": "kanaal",
             "onderwerp": "onderwerp",
             "inhoud": "inhoud",
@@ -188,7 +204,7 @@ class KlantContactTests(APITestCase):
     def test_create_klantcontact_with_reverse_lookup_fields(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {
-            "nummer": "1234567890",
+            "nummer": "001234567890",
             "kanaal": "kanaal",
             "onderwerp": "onderwerp",
             "inhoud": "inhoud",
@@ -204,7 +220,7 @@ class KlantContactTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1234567890")
+        self.assertEqual(data["nummer"], "001234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
         self.assertEqual(data["inhoud"], "inhoud")
@@ -215,7 +231,7 @@ class KlantContactTests(APITestCase):
 
     def test_update_klantcontact(self):
         klantcontact = KlantcontactFactory.create(
-            nummer="1234567890",
+            nummer="001234567890",
             kanaal="kanaal",
             onderwerp="onderwerp",
             inhoud="inhoud",
@@ -231,7 +247,7 @@ class KlantContactTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1234567890")
+        self.assertEqual(data["nummer"], "001234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
         self.assertEqual(data["inhoud"], "inhoud")
@@ -241,7 +257,7 @@ class KlantContactTests(APITestCase):
         self.assertTrue(data["vertrouwelijk"])
 
         data = {
-            "nummer": "7948723947",
+            "nummer": "007948723947",
             "kanaal": "changed",
             "onderwerp": "changed",
             "inhoud": "changed",
@@ -255,7 +271,7 @@ class KlantContactTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "7948723947")
+        self.assertEqual(data["nummer"], "007948723947")
         self.assertEqual(data["kanaal"], "changed")
         self.assertEqual(data["onderwerp"], "changed")
         self.assertEqual(data["inhoud"], "changed")
@@ -266,7 +282,7 @@ class KlantContactTests(APITestCase):
 
     def test_update_klantcontact_with_reverse_lookup_fields(self):
         klantcontact = KlantcontactFactory.create(
-            nummer="1234567890",
+            nummer="001234567890",
             kanaal="kanaal",
             onderwerp="onderwerp",
             inhoud="inhoud",
@@ -283,7 +299,7 @@ class KlantContactTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1234567890")
+        self.assertEqual(data["nummer"], "001234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
         self.assertEqual(data["inhoud"], "inhoud")
@@ -293,7 +309,7 @@ class KlantContactTests(APITestCase):
         self.assertTrue(data["vertrouwelijk"])
 
         data = {
-            "nummer": "7948723947",
+            "nummer": "007948723947",
             "kanaal": "changed",
             "onderwerp": "changed",
             "inhoud": "changed",
@@ -309,7 +325,7 @@ class KlantContactTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["nummer"], "7948723947")
+        self.assertEqual(data["nummer"], "007948723947")
         self.assertEqual(data["kanaal"], "changed")
         self.assertEqual(data["onderwerp"], "changed")
         self.assertEqual(data["inhoud"], "changed")
@@ -321,7 +337,7 @@ class KlantContactTests(APITestCase):
     def test_partial_update_klantcontact(self):
         actor, actor2 = ActorFactory.create_batch(2)
         klantcontact = KlantcontactFactory.create(
-            nummer="1234567890",
+            nummer="001234567890",
             kanaal="kanaal",
             onderwerp="onderwerp",
             inhoud="inhoud",
@@ -344,7 +360,7 @@ class KlantContactTests(APITestCase):
         response = self.client.get(detail_url)
         data = response.json()
 
-        self.assertEqual(data["nummer"], "1234567890")
+        self.assertEqual(data["nummer"], "001234567890")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
         self.assertEqual(data["inhoud"], "inhoud")
@@ -354,7 +370,7 @@ class KlantContactTests(APITestCase):
         self.assertTrue(data["vertrouwelijk"])
 
         data = {
-            "nummer": "7948723947",
+            "nummer": "007948723947",
         }
 
         response = self.client.patch(detail_url, data)
@@ -363,7 +379,7 @@ class KlantContactTests(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["nummer"], "7948723947")
+        self.assertEqual(data["nummer"], "007948723947")
         self.assertEqual(data["kanaal"], "kanaal")
         self.assertEqual(data["onderwerp"], "onderwerp")
         self.assertEqual(data["inhoud"], "inhoud")
@@ -2253,7 +2269,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "kanaal": "changed",
                 "leiddeTotInterneTaken": [],
                 "metadata": {},
-                "nummer": "7948723947",
+                "nummer": "007948723947",
                 "referentienummer": None,
                 "omvatteBijlagen": [],
                 "onderwerp": "changed",
@@ -2727,7 +2743,7 @@ class MaakKlantcontactEndpointTests(APITestCase):
                 "kanaal": "changed",
                 "leiddeTotInterneTaken": [],
                 "metadata": {},
-                "nummer": "7948723947",
+                "nummer": "007948723947",
                 "referentienummer": None,
                 "omvatteBijlagen": [],
                 "onderwerp": "changed",
