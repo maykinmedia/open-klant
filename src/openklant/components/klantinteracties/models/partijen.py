@@ -10,6 +10,7 @@ from openklant.components.utils.mixins import APIMixin
 from openklant.utils.fields import GeneratedCharField
 from openklant.utils.validators import validate_regex_nummer
 
+from ..utils import validate_nummer
 from .constants import (
     PartijIdentificatorCodeObjectType,
     PartijIdentificatorCodeRegister,
@@ -108,6 +109,13 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
 
     def __str__(self):
         return self.nummer if self.nummer else str(self.uuid)
+
+    def clean(self):
+        super().clean()
+        try:
+            self.nummer = validate_nummer(Partij, self.nummer, self)
+        except ValidationError as exc:
+            raise ValidationError({"nummer": exc})
 
 
 class Vertegenwoordigden(models.Model):

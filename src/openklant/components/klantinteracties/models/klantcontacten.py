@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.core.validators import validate_integer
 from django.db import models
 from django.db.models import CheckConstraint, Q
@@ -12,6 +13,7 @@ from openklant.components.utils.mixins import APIMixin
 from openklant.utils.fields import GeneratedCharField
 from openklant.utils.validators import validate_regex_nummer
 
+from ..utils import validate_nummer
 from .constants import Klantcontrol
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
 from .validators import validate_metadata
@@ -158,6 +160,11 @@ class Klantcontact(APIMixin, models.Model):
 
         if self.metadata is None:
             self.metadata = {}
+
+        try:
+            self.nummer = validate_nummer(Klantcontact, self.nummer, self)
+        except ValidationError as exc:
+            raise ValidationError({"nummer": exc})
 
 
 class Betrokkene(

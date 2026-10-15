@@ -91,6 +91,11 @@ class NummerHypothesisTests(TestCase):
                 Klantcontact, other_format, Klantcontact(vertrouwelijk=False)
             )
         self.assertEqual(cm.exception.error_list[0].code, "unique")
+        self.assertEqual(
+            cm.exception.messages[0],
+            f"Er bestaat al een {Klantcontact._meta.verbose_name} "
+            f"met nummer {pad_nummer(value)}.",
+        )
 
     @nummer_settings
     @given(value=valid_nummers)
@@ -151,3 +156,24 @@ class NummerHypothesisTests(TestCase):
     @given(value=empty)
     def test_pad_nummer_empty_is_unchanged(self, value):
         self.assertEqual(pad_nummer(value), value)
+
+    @nummer_settings
+    @given(value=valid_nummers)
+    def test_unchanged_nummer_is_kept_as_it_is(self, value):
+        klantcontact = Klantcontact.objects.create(vertrouwelijk=False, nummer=value)
+        klantcontact.refresh_from_db()
+
+        self.assertEqual(
+            validate_nummer(Klantcontact, klantcontact.nummer, klantcontact),
+            klantcontact.nummer,
+        )
+
+    @nummer_settings
+    @given(value=valid_nummers, new_value=valid_nummers)
+    def test_changed_nummer_is_checked(self, value, new_value):
+        assume(int(value) != int(new_value))
+        klantcontact = Klantcontact.objects.create(vertrouwelijk=False, nummer=value)
+        Klantcontact.objects.create(vertrouwelijk=False, nummer=new_value)
+
+        with self.assertRaises(ValidationError):
+            validate_nummer(Klantcontact, new_value, klantcontact)
