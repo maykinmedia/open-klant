@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.core.validators import validate_integer
 from django.db import models
 from django.utils import timezone
@@ -8,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from openklant.utils.fields import GeneratedCharField
 from openklant.utils.validators import validate_regex_nummer
 
+from ..utils import validate_nummer
 from .constants import Taakstatus
 from .klantcontacten import Klantcontact
 
@@ -114,6 +116,13 @@ class InterneTaak(models.Model):
             if self.status == Taakstatus.te_verwerken:
                 self.afgehandeld_op = None
         return super().save(*args, **kwargs)
+
+    def clean(self):
+        super().clean()
+        try:
+            self.nummer = validate_nummer(InterneTaak, self.nummer, self)
+        except ValidationError as exc:
+            raise ValidationError({"nummer": exc})
 
     def __str__(self):
         return (
