@@ -22,7 +22,7 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 
 **Kenmerken**
 
-* `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+* `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
 * `gevraagdeHandeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
 * `toelichting`: Toelichting die, aanvullend bij de inhoud van het klantcontact dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan het kunnen afhandelen van de taak.
 * `status`: Aanduiding van de vordering bij afhandeling van de interne taak.
@@ -69,7 +69,7 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 
 **Kenmerken**
 
-* `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
+* `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
 * `interneNotitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
 * `soortPartij`: Geeft aan van welke specifieke soort partij sprake is.
 

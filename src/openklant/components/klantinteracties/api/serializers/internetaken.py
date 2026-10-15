@@ -36,7 +36,7 @@ class InterneTaakForeignKeySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-@extend_schema_serializer(deprecate_fields=["toegewezen_aan_actor", "nummer"])
+@extend_schema_serializer(deprecate_fields=["toegewezen_aan_actor"])
 class InterneTaakSerializer(serializers.HyperlinkedModelSerializer):
     toegewezen_aan_actor = ActorForeignKeySerializer(
         required=False,
