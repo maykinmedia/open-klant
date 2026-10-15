@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
+
+from hypothesis import given, strategies as st
 
 from openklant.utils.validators import (
     validate_bag_id,
@@ -9,6 +11,7 @@ from openklant.utils.validators import (
     validate_no_space,
     validate_phone_number,
     validate_postal_code,
+    validate_regex_nummer,
 )
 
 
@@ -206,3 +209,25 @@ class ValidatorsTestCase(SimpleTestCase):
                 validate_country,
                 code,
             )
+
+
+class ValidateNummerTests(TestCase):
+    @given(nummer=st.text(alphabet="0123456789", min_size=1, max_size=12))
+    def test_validate_regex_nummer_valid(self, nummer):
+        validate_regex_nummer(nummer)
+
+    @given(nummer=st.text(alphabet="0123456789", min_size=13))
+    def test_validate_regex_nummer_too_long(self, nummer):
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Het nummer moet uit 1 tot 12 cijfers bestaan.",
+        ):
+            validate_regex_nummer(nummer)
+
+    @given(nummer=st.text().filter(lambda value: not value.isdigit()))
+    def test_validate_regex_nummer_invalid(self, nummer):
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Het nummer moet uit 1 tot 12 cijfers bestaan.",
+        ):
+            validate_regex_nummer(nummer)
