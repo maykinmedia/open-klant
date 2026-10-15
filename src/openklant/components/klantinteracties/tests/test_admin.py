@@ -35,6 +35,7 @@ from ..models import (
     InterneTakenActorenThoughModel,
     Klantcontact,
     Medewerker,
+    Partij,
     SoortActor,
     SoortPartij,
     Taakstatus,
@@ -43,6 +44,11 @@ from ..models import (
 
 @disable_admin_mfa()
 class PartijAdminTests(WebTest):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.user = SuperUserFactory.create()
+
     def test_search(self):
         user = SuperUserFactory.create()
         self.app.set_user(user)
@@ -102,6 +108,40 @@ class PartijAdminTests(WebTest):
         self.assertContains(search_response, digitaal_adres_persoon.get_full_name())
         self.assertNotContains(search_response, nummer_persoon.get_full_name())
         self.assertNotContains(search_response, uuid_persoon.get_full_name())
+
+    def test_partij_create_nummer_error(self):
+        self.assertFalse(Partij.objects.exists())
+        self.app.set_user(self.user)
+        admin_url = reverse("admin:klantinteracties_partij_add")
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.forms["partij_form"]
+        form["nummer"] = "456"
+        form["soort_partij"].select(text=_(SoortPartij.persoon.label))
+
+        add_response: TestResponse = form.submit(name="_save")
+
+        self.assertRedirects(
+            add_response, reverse("admin:klantinteracties_partij_changelist")
+        )
+        created: Partij = Partij.objects.get()
+        # check nummer
+        self.assertEqual(created.nummer, "000000000456")
+
+        # set same nummer
+        self.assertEqual(Partij.objects.count(), 1)
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.forms["partij_form"]
+        form["nummer"] = "456"
+        form["soort_partij"].select(text=_(SoortPartij.persoon.label))
+
+        add_response: TestResponse = form.submit(name="_save")
+        self.assertEqual(
+            add_response.context["errors"],
+            [["Er bestaat al een partij met eenzelfde nummer."]],
+        )
+        self.assertEqual(Partij.objects.count(), 1)
 
     @disable_admin_mfa()
     def test_digitaal_adres_inline(self):
@@ -710,6 +750,43 @@ class IntereTaakAdminTests(WebTest):
 
         self.assertEqual(created_internetaak.actoren.get(), actor)
 
+    def test_interetaak_create_nummer_error(self):
+        self.app.set_user(self.user)
+        klantcontact: Klantcontact = KlantcontactFactory.create()
+        admin_url = reverse("admin:klantinteracties_internetaak_add")
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.forms["internetaak_form"]
+        form["klantcontact"] = str(klantcontact.pk)
+        form["nummer"] = "456"
+        form["gevraagde_handeling"] = "Terugbellen"
+        form["status"].select(text=_(Taakstatus.verwerkt.label))
+
+        add_response: TestResponse = form.submit(name="_save")
+
+        self.assertRedirects(
+            add_response, reverse("admin:klantinteracties_internetaak_changelist")
+        )
+        created_internetaak: InterneTaak = InterneTaak.objects.get()
+        # check nummer
+        self.assertEqual(created_internetaak.nummer, "000000000456")
+
+        # set same nummer
+        self.assertEqual(InterneTaak.objects.count(), 1)
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.forms["internetaak_form"]
+        form["klantcontact"] = str(klantcontact.pk)
+        form["nummer"] = "456"
+        form["gevraagde_handeling"] = "Terugbellen"
+        form["status"].select(text=_(Taakstatus.verwerkt.label))
+        add_response: TestResponse = form.submit(name="_save")
+        self.assertEqual(
+            add_response.context["errors"],
+            [["Er bestaat al een interne taak met eenzelfde nummer."]],
+        )
+        self.assertEqual(InterneTaak.objects.count(), 1)
+
     def test_internetaak_update(self):
         self.app.set_user(self.user)
 
@@ -812,6 +889,44 @@ class KlantContactAdminTest(WebTest):
         response = form.submit()
 
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(Klantcontact.objects.count(), 1)
+
+    def test_klantcontact_create_nummer_error(self):
+        self.app.set_user(self.user)
+
+        admin_url = reverse("admin:klantinteracties_klantcontact_add")
+
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.forms["klantcontact_form"]
+        form["nummer"] = "456"
+        form["kanaal"] = "kanaal"
+        form["onderwerp"] = "onderwerp"
+        form["taal"] = "ndl"
+
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Klantcontact.objects.count(), 1)
+        created: Klantcontact = Klantcontact.objects.get()
+        # check nummer
+        self.assertEqual(created.nummer, "000000000456")
+
+        # set same nummer
+        self.assertEqual(Klantcontact.objects.count(), 1)
+        response: TestResponse = self.app.get(admin_url)
+
+        form = response.forms["klantcontact_form"]
+        form["nummer"] = "456"
+        form["kanaal"] = "kanaal"
+        form["onderwerp"] = "onderwerp"
+        form["taal"] = "ndl"
+
+        response: TestResponse = form.submit(name="_save")
+        self.assertEqual(
+            response.context["errors"],
+            [["Er bestaat al een klantcontact met eenzelfde nummer."]],
+        )
         self.assertEqual(Klantcontact.objects.count(), 1)
 
     def test_klantcontact_create_verdere_actie_ondernomen_when_contact_gelukt(self):
