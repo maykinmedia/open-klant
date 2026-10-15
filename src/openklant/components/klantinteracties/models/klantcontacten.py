@@ -9,7 +9,8 @@ from django.utils.translation import gettext_lazy as _
 from vng_api_common.descriptors import GegevensGroepType
 
 from openklant.components.utils.mixins import APIMixin
-from openklant.utils.help_text import mark_deprecated
+from openklant.utils.fields import GeneratedCharField
+from openklant.utils.validators import validate_regex_nummer
 
 from .constants import Klantcontrol
 from .mixins import BezoekadresMixin, ContactnaamMixin, CorrespondentieadresMixin
@@ -24,19 +25,21 @@ class Klantcontact(APIMixin, models.Model):
             "Unieke (technische) identificatiecode van de betrokkene bij klantcontact."
         ),
     )
-    nummer = models.CharField(
+    # DEPRECATED 3.X.X
+    nummer = GeneratedCharField(
         _("nummer"),
-        help_text=mark_deprecated(
-            _(
-                "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
-                "worden gebruikt om het specifieke klantcontact aan te duiden."
-            )
+        help_text=_(
+            "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
+            "worden gebruikt om het specifieke klantcontact aan te duiden. "
+            "Wordt automatisch gegenereerd als het niet wordt opgegeven. "
+            "Let op: vanaf de volgende major release kan dit nummer niet meer door "
+            "clients worden opgegeven en wordt het altijd automatisch gegenereerd. "
+            "Gebruik ``referentienummer`` om een eigen nummer vast te leggen."
         ),
-        validators=[validate_integer],
-        max_length=10,
+        validators=[validate_regex_nummer],
+        max_length=12,
         unique=True,
         blank=True,
-        null=True,
     )
     referentienummer = models.CharField(
         _("referentienummer"),

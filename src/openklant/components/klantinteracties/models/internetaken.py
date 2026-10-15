@@ -5,7 +5,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from openklant.utils.help_text import mark_deprecated
+from openklant.utils.fields import GeneratedCharField
+from openklant.utils.validators import validate_regex_nummer
 
 from .constants import Taakstatus
 from .klantcontacten import Klantcontact
@@ -31,19 +32,22 @@ class InterneTaak(models.Model):
             "Het klantcontact dat aanleiding gaf tot het ontstaan van een interne taak."
         ),
     )
-    nummer = models.CharField(
+
+    # DEPRECATED 3.X.X
+    nummer = GeneratedCharField(
         _("nummer"),
-        help_text=mark_deprecated(
-            _(
-                "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
-                "worden gebruikt om de specifieke interne taak aan te duiden."
-            )
+        help_text=_(
+            "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
+            "worden gebruikt om de specifieke interne taak aan te duiden. "
+            "Wordt automatisch gegenereerd als het niet wordt opgegeven. "
+            "Let op: vanaf de volgende major release kan dit nummer niet meer door "
+            "clients worden opgegeven en wordt het altijd automatisch gegenereerd. "
+            "Gebruik ``referentienummer`` om een eigen nummer vast te leggen."
         ),
-        validators=[validate_integer],
-        max_length=10,
+        validators=[validate_regex_nummer],
+        max_length=12,
         unique=True,
         blank=True,
-        null=True,
     )
 
     referentienummer = models.CharField(
