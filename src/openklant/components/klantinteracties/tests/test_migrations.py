@@ -1,4 +1,4 @@
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.test import tag
 
 from openklant.components.klantinteracties.models.constants import SoortActor
@@ -486,3 +486,187 @@ class NewlyAddedUUIDFieldsUniquenessTest(BaseMigrationTest):
             Organisatie.objects.first().uuid, Organisatie.objects.last().uuid
         )
         self.assertNotEqual(Persoon.objects.first().uuid, Persoon.objects.last().uuid)
+
+
+class TestNummerAutogenerate(BaseMigrationTest):
+    app = "klantinteracties"
+    migrate_from = "0049_internetaken_actoren_verbose_name"
+    migrate_to = "0050_backfill_nummer_and_autogeneration"
+
+    def test_existing_nummers_are_not_changed(self):
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        klantcontact1 = Klantcontact.objects.create(vertrouwelijk=False, nummer="1")
+        klantcontact2 = Klantcontact.objects.create(vertrouwelijk=False, nummer="123")
+        klantcontact3 = Klantcontact.objects.create(
+            vertrouwelijk=False, nummer="0000000456"
+        )
+
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+
+        self.assertEqual(Klantcontact.objects.get(pk=klantcontact1.pk).nummer, "1")
+        self.assertEqual(Klantcontact.objects.get(pk=klantcontact2.pk).nummer, "123")
+        self.assertEqual(
+            Klantcontact.objects.get(pk=klantcontact3.pk).nummer, "0000000456"
+        )
+
+    def test_saving_existing_record_keeps_old_nummer(self):
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+        klantcontact = Klantcontact.objects.create(vertrouwelijk=False, nummer="123")
+
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+
+        klantcontact = Klantcontact.objects.get(pk=klantcontact.pk)
+        klantcontact.save()
+        klantcontact.refresh_from_db()
+
+        self.assertEqual(klantcontact.nummer, "123")
+
+    def test_empty_and_null_nummers_are_generated(self):
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        existing = Klantcontact.objects.create(vertrouwelijk=False, nummer="0000000010")
+        empty = Klantcontact.objects.create(vertrouwelijk=False, nummer="")
+        null1 = Klantcontact.objects.create(vertrouwelijk=False, nummer=None)
+        null2 = Klantcontact.objects.create(vertrouwelijk=False, nummer=None)
+
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+
+        records = Klantcontact.objects.all()
+        self.assertEqual(records.count(), 4)
+        # existing nummer unchanged
+        self.assertEqual(records.get(pk=existing.pk).nummer, "0000000010")
+        # the sequence continues after the highest existing number; the order
+        # in which the backfill assigns them is not guaranteed
+        self.assertEqual(
+            {records.get(pk=obj.pk).nummer for obj in (empty, null1, null2)},
+            {"000000000011", "000000000012", "000000000013"},
+        )
+
+    def test_manual_nummer_is_padded_and_moves_sequence(self):
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+
+        manual = Klantcontact.objects.create(vertrouwelijk=False, nummer="500")
+        manual.refresh_from_db()
+        self.assertEqual(manual.nummer, "000000000500")
+
+        generated = Klantcontact.objects.create(vertrouwelijk=False, nummer="")
+        generated.refresh_from_db()
+        self.assertEqual(generated.nummer, "000000000501")
+
+        # skip numbers from 502 to 799
+        jump = Klantcontact.objects.create(vertrouwelijk=False, nummer="800")
+        jump.refresh_from_db()
+        self.assertEqual(jump.nummer, "000000000800")
+
+        generated = Klantcontact.objects.create(vertrouwelijk=False, nummer="")
+        generated.refresh_from_db()
+        self.assertEqual(generated.nummer, "000000000801")
+
+    def test_lower_manual_nummer_does_not_move_sequence_back(self):
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+
+        Klantcontact.objects.create(vertrouwelijk=False, nummer="100")
+        Klantcontact.objects.create(vertrouwelijk=False, nummer="30")
+
+        # the sequence never goes back
+        generated = Klantcontact.objects.create(vertrouwelijk=False, nummer="")
+        generated.refresh_from_db()
+        self.assertEqual(generated.nummer, "000000000101")
+
+    def test_max_nummer_does_not_block_generation(self):
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+
+        Klantcontact.objects.create(vertrouwelijk=False, nummer="999999999999")
+        generated = Klantcontact.objects.create(vertrouwelijk=False, nummer="")
+        generated.refresh_from_db()
+
+        # the sequence cycles and restarts from the first free number
+        self.assertEqual(generated.nummer, "000000000001")
+
+    def test_generation_ignores_numbers_in_old_format(self):
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+
+        Klantcontact.objects.create(vertrouwelijk=False, nummer="0000000001")
+        Klantcontact.objects.create(vertrouwelijk=False, nummer="2")
+
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+
+        # make the sequence cycle back to 1
+        Klantcontact.objects.create(vertrouwelijk=False, nummer="999999999999")
+        generated = Klantcontact.objects.create(vertrouwelijk=False, nummer="")
+        generated.refresh_from_db()
+
+        # old formats are different strings: they don't block the 12 digit ones
+        self.assertEqual(generated.nummer, "000000000001")
+
+    def test_all_models(self):
+        Klantcontact = self.old_app_state.get_model("klantinteracties", "Klantcontact")
+        Partij = self.old_app_state.get_model("klantinteracties", "Partij")
+        InterneTaak = self.old_app_state.get_model("klantinteracties", "InterneTaak")
+
+        klantcontact = Klantcontact.objects.create(vertrouwelijk=False, nummer="7")
+        partij = Partij.objects.create(
+            soort_partij="persoon", indicatie_actief=True, nummer=None
+        )
+        internetaak = InterneTaak.objects.create(
+            klantcontact=klantcontact,
+            gevraagde_handeling="Terugbellen",
+            status="te_verwerken",
+            nummer="",
+        )
+
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+        Partij = self.apps.get_model("klantinteracties", "Partij")
+        InterneTaak = self.apps.get_model("klantinteracties", "InterneTaak")
+
+        # existing nummer unchanged
+        self.assertEqual(Klantcontact.objects.get(pk=klantcontact.pk).nummer, "7")
+        # every table has its own sequence
+        self.assertEqual(Partij.objects.get(pk=partij.pk).nummer, "000000000001")
+        self.assertEqual(
+            InterneTaak.objects.get(pk=internetaak.pk).nummer, "000000000001"
+        )
+
+    def test_no_integrity_error_without_nummer(self):
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+
+        for nummer in ("", "", None, None):
+            Klantcontact.objects.create(vertrouwelijk=False, nummer=nummer)
+
+        nummers = list(Klantcontact.objects.values_list("nummer", flat=True))
+        self.assertEqual(len(nummers), 4)
+        self.assertEqual(len(set(nummers)), 4)
+        self.assertNotIn("", nummers)
+        self.assertNotIn(None, nummers)
+
+    def test_unique_constraint_is_still_enforced(self):
+        self._perform_migration()
+
+        Klantcontact = self.apps.get_model("klantinteracties", "Klantcontact")
+        Klantcontact.objects.create(vertrouwelijk=False, nummer="56")
+
+        # "56" and "000000000056" are both stored as "000000000056"
+        for nummer in ("56", "000000000056"):
+            with self.subTest(nummer=nummer):
+                with self.assertRaises(IntegrityError):
+                    with transaction.atomic():
+                        Klantcontact.objects.create(vertrouwelijk=False, nummer=nummer)

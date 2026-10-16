@@ -68,7 +68,6 @@ logger = structlog.stdlib.get_logger(__name__)
     list=extend_schema(
         summary="Alle klanten contacten opvragen.",
         description="Alle klanten contacten opvragen.",
-        parameters=[OpenApiParameter(name="nummer", deprecated=True)],
     ),
     retrieve=extend_schema(
         summary="Een specifiek klant contact opvragen.",
@@ -187,10 +186,6 @@ class KlantcontactViewSet(
     list=extend_schema(
         summary="Alle betrokkenen opvragen.",
         description="Alle betrokkenen opvragen.",
-        parameters=[
-            OpenApiParameter(name="hadKlantcontact__nummer", deprecated=True),
-            OpenApiParameter(name="wasPartij__nummer", deprecated=True),
-        ],
     ),
     retrieve=extend_schema(
         summary="Een specifiek betrokkene opvragen.",

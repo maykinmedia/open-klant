@@ -2,6 +2,24 @@
 Change history
 ==============
 
+2.19.2
+======
+
+**Bugfixes**
+
+* [:open-klant:`631`] ``nummer`` of ``Klantcontact``, ``Partij`` and ``InterneTaak`` is generated
+  again, at database level (PostgreSQL sequence + trigger):
+
+  * fixes the ``IntegrityError`` on create and the race condition between concurrent requests
+  * now ``nummer`` can have up to 12 digits
+  * existing numbers are not changed, so filters keep working with the old values
+  * new numbers are zero padded to 12 digits, also client POST values (``500`` becomes ``000000000500``)
+
+.. note::
+
+    In the next major release clients can no longer provide their own
+    ``nummer``. Use ``referentienummer`` instead.
+
 2.19.1
 ======
 

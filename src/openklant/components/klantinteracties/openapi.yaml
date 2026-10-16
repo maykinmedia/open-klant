@@ -514,7 +514,7 @@ paths:
         name: hadKlantcontact__nummer
         schema:
           type: string
-        deprecated: true
+        description: Zoek betrokkene object op basis van het klantcontact nummer
       - in: query
         name: hadKlantcontact__referentienummer
         schema:
@@ -572,7 +572,7 @@ paths:
         name: wasPartij__nummer
         schema:
           type: string
-        deprecated: true
+        description: Zoek betrokkene object op basis van het partij nummer
       - in: query
         name: wasPartij__partijIdentificator__codeObjecttype
         schema:
@@ -1064,7 +1064,7 @@ paths:
         name: partij__nummer
         schema:
           type: string
-        deprecated: true
+        description: Zoek categorie relatie object op basis van het partij nummer.
       - in: query
         name: partij__url
         schema:
@@ -1824,7 +1824,12 @@ paths:
         name: klantcontact__nummer
         schema:
           type: string
-        deprecated: true
+        description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+          mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+          Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf
+          de volgende major release kan dit nummer niet meer door clients worden opgegeven
+          en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+          om een eigen nummer vast te leggen.'
       - in: query
         name: klantcontact__referentienummer
         schema:
@@ -1842,7 +1847,12 @@ paths:
         name: nummer
         schema:
           type: string
-        deprecated: true
+        description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+          mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+          Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf
+          de volgende major release kan dit nummer niet meer door clients worden opgegeven
+          en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+          om een eigen nummer vast te leggen.'
       - name: page
         required: false
         in: query
@@ -2167,7 +2177,12 @@ paths:
         name: nummer
         schema:
           type: string
-        deprecated: true
+        description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+          mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+          Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf
+          de volgende major release kan dit nummer niet meer door clients worden opgegeven
+          en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+          om een eigen nummer vast te leggen.'
       - in: query
         name: onderwerp
         schema:
@@ -3095,7 +3110,12 @@ paths:
         name: nummer
         schema:
           type: string
-        deprecated: true
+        description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+          mensen kan worden gebruikt om de specifieke partij aan te duiden. Wordt
+          automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf de volgende
+          major release kan dit nummer niet meer door clients worden opgegeven en
+          wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer`` om
+          een eigen nummer vast te leggen.'
       - name: page
         required: false
         in: query
@@ -4097,11 +4117,14 @@ components:
           maxLength: 1000
         nummer:
           type: string
-          nullable: true
-          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-            tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.'
-          maxLength: 10
-          deprecated: true
+          description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om de specifieke partij aan te duiden. Wordt
+            automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf de
+            volgende major release kan dit nummer niet meer door clients worden opgegeven
+            en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+            om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
+          maxLength: 12
         interneNotitie:
           type: string
           description: Mededelingen, aantekeningen of bijzonderheden over de partij,
@@ -5016,12 +5039,14 @@ components:
           maxLength: 1000
         nummer:
           type: string
-          nullable: true
-          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-            tussen mensen kan worden gebruikt om de specifieke interne taak aan te
-            duiden.'
-          maxLength: 10
-          deprecated: true
+          description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+            Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf
+            de volgende major release kan dit nummer niet meer door clients worden
+            opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+            om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
+          maxLength: 12
         referentienummer:
           type: string
           nullable: true
@@ -5142,12 +5167,14 @@ components:
           description: Klantcontact dat leidde tot een interne taak.
         nummer:
           type: string
-          nullable: true
-          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-            tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
-            duiden.'
-          maxLength: 10
-          deprecated: true
+          description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+            Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf
+            de volgende major release kan dit nummer niet meer door clients worden
+            opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+            om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
+          maxLength: 12
         referentienummer:
           type: string
           nullable: true
@@ -6413,12 +6440,14 @@ components:
           maxLength: 1000
         nummer:
           type: string
-          nullable: true
-          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-            tussen mensen kan worden gebruikt om de specifieke interne taak aan te
-            duiden.'
-          maxLength: 10
-          deprecated: true
+          description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+            Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf
+            de volgende major release kan dit nummer niet meer door clients worden
+            opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+            om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
+          maxLength: 12
         referentienummer:
           type: string
           nullable: true
@@ -6515,12 +6544,14 @@ components:
           description: Klantcontact dat leidde tot een interne taak.
         nummer:
           type: string
-          nullable: true
-          description: '**DEPRECATED** Uniek identificerend nummer dat tijdens communicatie
-            tussen mensen kan worden gebruikt om het specifieke klantcontact aan te
-            duiden.'
-          maxLength: 10
-          deprecated: true
+          description: 'Uniek identificerend nummer dat tijdens communicatie tussen
+            mensen kan worden gebruikt om het specifieke klantcontact aan te duiden.
+            Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf
+            de volgende major release kan dit nummer niet meer door clients worden
+            opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+            om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
+          maxLength: 12
         referentienummer:
           type: string
           nullable: true
@@ -6970,7 +7001,7 @@ tags:
 
     **Kenmerken**
 
-    * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden.
+    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke interne taak aan te duiden. Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf de volgende major release kan dit nummer niet meer door clients worden opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer`` om een eigen nummer vast te leggen.
     * `gevraagdeHandeling`: Handeling die moet worden uitgevoerd om de taak af te ronden.
     * `toelichting`: Toelichting die, aanvullend bij de inhoud van het klantcontact dat aanleiding gaf tot de taak en de gevraagde handeling, bijdraagt aan het kunnen afhandelen van de taak.
     * `status`: Aanduiding van de vordering bij afhandeling van de interne taak.
@@ -7105,7 +7136,7 @@ tags:
 
     **Kenmerken**
 
-    * `nummer`: **DEPRECATED** Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden.
+    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden. Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf de volgende major release kan dit nummer niet meer door clients worden opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer`` om een eigen nummer vast te leggen.
     * `interneNotitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
     * `soortPartij`: Geeft aan van welke specifieke soort partij sprake is.
 
