@@ -16,5 +16,7 @@ codecov
 # Code formatting
 ruff
 
+hypothesis
+
 # Documentations
 django-extensions

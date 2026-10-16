@@ -177,6 +177,66 @@ class KlantContactTests(APITestCase):
                 error["reason"], "Er bestaat al een klantcontact met eenzelfde nummer."
             )
 
+    def test_klantcontact_nummer(self):
+        list_url = reverse("klantinteracties:klantcontact-list")
+        data = {
+            "nummer": "001234567890",
+            "kanaal": "kanaal",
+            "onderwerp": "onderwerp",
+            "inhoud": "inhoud",
+            "indicatieContactGelukt": True,
+            "taal": "ndl",
+            "vertrouwelijk": True,
+            "plaatsgevondenOp": "2019-08-24T14:15:22Z",
+        }
+        with self.subTest("post new nummer"):
+            data["nummer"] = "888888888888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["nummer"], "888888888888")
+
+        with self.subTest("validation sequence post new nummer"):
+            data["nummer"] = "888888888888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "nummer")
+            self.assertEqual(error["code"], "unique")
+            self.assertEqual(
+                error["reason"], "Er bestaat al een klantcontact met eenzelfde nummer."
+            )
+
+        with self.subTest("update patch new nummer"):
+            data["nummer"] = "888888888889"
+            klantcontact = Klantcontact.objects.get(nummer="888888888888")
+            detail_url = reverse(
+                "klantinteracties:klantcontact-detail",
+                kwargs={"uuid": str(klantcontact.uuid)},
+            )
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["nummer"], "888888888889")
+            self.assertFalse(
+                Klantcontact.objects.filter(nummer="888888888888").exists()
+            )
+            self.assertTrue(Klantcontact.objects.filter(nummer="888888888889").exists())
+
+        with self.subTest("update patch empty nummer"):
+            data["nummer"] = ""
+            klantcontact = Klantcontact.objects.get(nummer="888888888889")
+            detail_url = reverse(
+                "klantinteracties:klantcontact-detail",
+                kwargs={"uuid": str(klantcontact.uuid)},
+            )
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["nummer"], "888888888889")
+            # old nummer
+            self.assertTrue(Klantcontact.objects.filter(nummer="888888888889").exists())
+            # check new nummer
+            self.assertFalse(
+                Klantcontact.objects.filter(nummer="888888888890").exists()
+            )
+
     def test_create_klantcontact_verdere_actie_ondernomen_constraint(self):
         list_url = reverse("klantinteracties:klantcontact-list")
         data = {

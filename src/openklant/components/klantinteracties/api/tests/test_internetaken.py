@@ -1,6 +1,6 @@
 from freezegun import freeze_time
 from rest_framework import status
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_validation_errors, reverse
 
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.tests.factories import (
@@ -115,6 +115,62 @@ class InterneTaakTests(APITestCase):
                 response_data["invalidParams"][0]["reason"],
                 "Er bestaat al een interne taak met eenzelfde nummer.",
             )
+
+    def test_internetaak_nummer(self):
+        klantcontact = KlantcontactFactory.create()
+        actor = ActorFactory.create()
+        list_url = reverse("klantinteracties:internetaak-list")
+        data = {
+            "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
+            "gevraagdeHandeling": "gevraagdeHandeling",
+            "toelichting": "toelichting",
+            "status": "verwerkt",
+        }
+
+        with self.subTest("post new nummer"):
+            data["nummer"] = "888888888888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["nummer"], "888888888888")
+
+        with self.subTest("validation sequence post new nummer"):
+            data["nummer"] = "888888888888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "nummer")
+            self.assertEqual(error["code"], "unique")
+            self.assertEqual(
+                error["reason"], "Er bestaat al een interne taak met eenzelfde nummer."
+            )
+
+        with self.subTest("update patch new nummer"):
+            data["nummer"] = "888888888889"
+            internetaak = InterneTaak.objects.get(nummer="888888888888")
+            detail_url = reverse(
+                "klantinteracties:internetaak-detail",
+                kwargs={"uuid": str(internetaak.uuid)},
+            )
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["nummer"], "888888888889")
+            self.assertFalse(InterneTaak.objects.filter(nummer="888888888888").exists())
+            self.assertTrue(InterneTaak.objects.filter(nummer="888888888889").exists())
+
+        with self.subTest("update patch empty nummer"):
+            data["nummer"] = ""
+            internetaak = InterneTaak.objects.get(nummer="888888888889")
+            detail_url = reverse(
+                "klantinteracties:internetaak-detail",
+                kwargs={"uuid": str(internetaak.uuid)},
+            )
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["nummer"], "888888888889")
+            # old nummer
+            self.assertTrue(InterneTaak.objects.filter(nummer="888888888889").exists())
+            # check new nummer
+            self.assertFalse(InterneTaak.objects.filter(nummer="888888888890").exists())
 
     @freeze_time("2024-01-01T12:00:00Z")
     def test_create_internetaak_with_status_te_verwerken(self):
