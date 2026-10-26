@@ -1,7 +1,8 @@
 from django.core.exceptions import ValidationError
-from django.test import SimpleTestCase, TestCase
+from django.test import SimpleTestCase
 
 from hypothesis import given, strategies as st
+from hypothesis.extra.django import TestCase as HypothesisTestCase
 
 from openklant.utils.validators import (
     validate_bag_id,
@@ -211,7 +212,7 @@ class ValidatorsTestCase(SimpleTestCase):
             )
 
 
-class ValidateNummerTests(TestCase):
+class ValidateNummerTests(HypothesisTestCase):
     @given(nummer=st.text(alphabet="0123456789", min_size=1, max_size=12))
     def test_validate_regex_nummer_valid(self, nummer):
         validate_regex_nummer(nummer)

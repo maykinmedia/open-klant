@@ -167,7 +167,7 @@ class Migration(migrations.Migration):
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
                         message="Het nummer moet uit 1 tot 12 cijfers bestaan.",
-                        regex=re.compile("^[0-9]{1,12}$"),
+                        regex=re.compile("\\A[0-9]{1,12}\\Z"),
                     )
                 ],
                 verbose_name="nummer",
@@ -185,7 +185,7 @@ class Migration(migrations.Migration):
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
                         message="Het nummer moet uit 1 tot 12 cijfers bestaan.",
-                        regex=re.compile("^[0-9]{1,12}$"),
+                        regex=re.compile("\\A[0-9]{1,12}\\Z"),
                     )
                 ],
                 verbose_name="nummer",
@@ -203,7 +203,7 @@ class Migration(migrations.Migration):
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
                         message="Het nummer moet uit 1 tot 12 cijfers bestaan.",
-                        regex=re.compile("^[0-9]{1,12}$"),
+                        regex=re.compile("\\A[0-9]{1,12}\\Z"),
                     )
                 ],
                 verbose_name="nummer",
@@ -232,7 +232,7 @@ class Migration(migrations.Migration):
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
                         message="Het nummer moet uit 1 tot 12 cijfers bestaan.",
-                        regex=re.compile("^[0-9]{1,12}$"),
+                        regex=re.compile("\\A[0-9]{1,12}\\Z"),
                     )
                 ],
                 verbose_name="nummer",
@@ -249,7 +249,7 @@ class Migration(migrations.Migration):
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
                         message="Het nummer moet uit 1 tot 12 cijfers bestaan.",
-                        regex=re.compile("^[0-9]{1,12}$"),
+                        regex=re.compile("\\A[0-9]{1,12}\\Z"),
                     )
                 ],
                 verbose_name="nummer",
@@ -266,7 +266,7 @@ class Migration(migrations.Migration):
                 validators=[
                     openklant.utils.validators.CustomRegexValidator(
                         message="Het nummer moet uit 1 tot 12 cijfers bestaan.",
-                        regex=re.compile("^[0-9]{1,12}$"),
+                        regex=re.compile("\\A[0-9]{1,12}\\Z"),
                     )
                 ],
                 verbose_name="nummer",

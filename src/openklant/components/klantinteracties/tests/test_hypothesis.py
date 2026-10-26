@@ -3,7 +3,7 @@ import re
 from django.core.exceptions import ValidationError
 
 from hypothesis import assume, given, settings, strategies as st
-from hypothesis.extra.django import TestCase
+from hypothesis.extra.django import TestCase as HypothesisTestCase
 
 from openklant.components.klantinteracties.models import Klantcontact, Partij
 from openklant.components.klantinteracties.utils import (
@@ -16,7 +16,7 @@ from openklant.utils.validators import validate_regex_nummer
 
 empty = st.sampled_from(["", None])
 valid_nummers = st.text(alphabet="0123456789", min_size=1, max_size=NUMMER_LENGTH)
-ascii_digits = st.text(alphabet="0123456789", max_size=NUMMER_LENGTH + 3)
+digits_and_newlines = st.text(alphabet="0123456789", max_size=NUMMER_LENGTH + 3)
 signed_integers = st.integers().map(str) | st.integers().map(lambda i: f"{i:+d}")
 any_script_digits = st.text(
     alphabet=st.characters(categories=["Nd"]), max_size=NUMMER_LENGTH + 3
@@ -25,7 +25,7 @@ any_script_digits = st.text(
 nummers_input = (
     empty
     | valid_nummers
-    | ascii_digits
+    | digits_and_newlines
     | signed_integers
     | any_script_digits
     | st.text()
@@ -38,7 +38,7 @@ def only_ascii_digits(value) -> bool:
     return value is not None and re.fullmatch(r"[0-9]+", value) is not None
 
 
-class NummerHypothesisTests(TestCase):
+class NummerHypothesisTests(HypothesisTestCase):
     @nummer_settings
     @given(value=nummers_input)
     def test_padding_is_idempotent(self, value):
@@ -93,8 +93,7 @@ class NummerHypothesisTests(TestCase):
         self.assertEqual(cm.exception.error_list[0].code, "unique")
         self.assertEqual(
             cm.exception.messages[0],
-            f"Er bestaat al een {Klantcontact._meta.verbose_name} "
-            f"met nummer {pad_nummer(value)}.",
+            f"Er bestaat al een {Klantcontact._meta.verbose_name} met eenzelfde nummer.",
         )
 
     @nummer_settings

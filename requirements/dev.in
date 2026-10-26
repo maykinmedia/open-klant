@@ -14,7 +14,5 @@ django-extensions
 django-silk
 whitenoise
 
-hypothesis
-
 # docs
 pygraphviz

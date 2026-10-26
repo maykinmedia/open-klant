@@ -3112,7 +3112,10 @@ paths:
           type: string
         description: 'Uniek identificerend nummer dat tijdens communicatie tussen
           mensen kan worden gebruikt om de specifieke partij aan te duiden. Wordt
-          automatisch gegenereerd als het niet wordt opgegeven. '
+          automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf de volgende
+          major release kan dit nummer niet meer door clients worden opgegeven en
+          wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer`` om
+          een eigen nummer vast te leggen.'
       - name: page
         required: false
         in: query
@@ -4116,7 +4119,11 @@ components:
           type: string
           description: 'Uniek identificerend nummer dat tijdens communicatie tussen
             mensen kan worden gebruikt om de specifieke partij aan te duiden. Wordt
-            automatisch gegenereerd als het niet wordt opgegeven. '
+            automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf de
+            volgende major release kan dit nummer niet meer door clients worden opgegeven
+            en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
+            om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
           maxLength: 12
         interneNotitie:
           type: string
@@ -5038,6 +5045,7 @@ components:
             de volgende major release kan dit nummer niet meer door clients worden
             opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
             om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
           maxLength: 12
         referentienummer:
           type: string
@@ -5165,6 +5173,7 @@ components:
             de volgende major release kan dit nummer niet meer door clients worden
             opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
             om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
           maxLength: 12
         referentienummer:
           type: string
@@ -6437,6 +6446,7 @@ components:
             de volgende major release kan dit nummer niet meer door clients worden
             opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
             om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
           maxLength: 12
         referentienummer:
           type: string
@@ -6540,6 +6550,7 @@ components:
             de volgende major release kan dit nummer niet meer door clients worden
             opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer``
             om een eigen nummer vast te leggen.'
+          pattern: ^[0-9]{1,12}$
           maxLength: 12
         referentienummer:
           type: string
@@ -7102,18 +7113,33 @@ tags:
     itself can be modified or removed.
 
 - name: partijen
-  description: "\n**Atomicity in Partij and PartijIdentificator**\n\nThe `Partij`\
-    \ endpoint handles `partijIdentificator` objects more effectively,\nallowing them\
-    \ to be processed within the same request.\nThis ensures that both entities are\
-    \ handled atomically, preventing incompleteness,\nand offering better control\
-    \ over the uniqueness of `partijIdentificator` objects.\n\nFor `POST`, `PATCH`,\
-    \ and `PUT` requests for `Partij`,\nit is possible to send a list of `partijIdentificator`\
-    \ objects.\n\n\nDeze API publiceert notificaties op het kanaal `partijen`.\n\n\
-    **Main resource**\n\n`partij`\n\n\n\n**Kenmerken**\n\n* `nummer`: Uniek identificerend\
-    \ nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke\
-    \ partij aan te duiden. Wordt automatisch gegenereerd als het niet wordt opgegeven.\
-    \ \n* `interneNotitie`: Mededelingen, aantekeningen of bijzonderheden over de\
-    \ partij, bedoeld voor intern gebruik.\n* `soortPartij`: Geeft aan van welke specifieke\
-    \ soort partij sprake is.\n\n**Resources en acties**\n"
+  description: |2
+
+    **Atomicity in Partij and PartijIdentificator**
+
+    The `Partij` endpoint handles `partijIdentificator` objects more effectively,
+    allowing them to be processed within the same request.
+    This ensures that both entities are handled atomically, preventing incompleteness,
+    and offering better control over the uniqueness of `partijIdentificator` objects.
+
+    For `POST`, `PATCH`, and `PUT` requests for `Partij`,
+    it is possible to send a list of `partijIdentificator` objects.
+
+
+    Deze API publiceert notificaties op het kanaal `partijen`.
+
+    **Main resource**
+
+    `partij`
+
+
+
+    **Kenmerken**
+
+    * `nummer`: Uniek identificerend nummer dat tijdens communicatie tussen mensen kan worden gebruikt om de specifieke partij aan te duiden. Wordt automatisch gegenereerd als het niet wordt opgegeven. Let op: vanaf de volgende major release kan dit nummer niet meer door clients worden opgegeven en wordt het altijd automatisch gegenereerd. Gebruik ``referentienummer`` om een eigen nummer vast te leggen.
+    * `interneNotitie`: Mededelingen, aantekeningen of bijzonderheden over de partij, bedoeld voor intern gebruik.
+    * `soortPartij`: Geeft aan van welke specifieke soort partij sprake is.
+
+    **Resources en acties**
 - name: rekeningnummers
 - name: vertegenwoordigingen

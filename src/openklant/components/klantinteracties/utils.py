@@ -9,26 +9,32 @@ NUMMER_LENGTH = 12
 MAX_NUMMER = 10**NUMMER_LENGTH - 1  # 999999999999
 BATCH_SIZE = 1000
 
-REGEX_NUMMER = re.compile(r"^[0-9]{1,12}$")
+REGEX_NUMMER = re.compile(r"\A[0-9]{1,12}\Z")
 
 
 def validate_nummer(model, nummer: str | None, instance=None) -> str | None:
     """
     Zero pad a new or changed ``nummer`` and check it isn't used by another
     ``model`` object.
-    """
-    if not nummer:
-        return nummer
 
-    # unchanged nummer of an existing object: keep it as it is
+    * existing object, empty ``nummer`` (e.g. PATCH with ``""``): keeps the
+      stored nummer, the sequence is not used
+    * existing object, unchanged ``nummer``: kept as it is, old formats
+    * new object, empty ``nummer``: returned as is, the database generates it
+    """
+
     if instance is not None and instance.pk:
         stored = (
             model.objects.filter(pk=instance.pk)
             .values_list("nummer", flat=True)
             .first()
         )
-        if nummer == stored:
-            return nummer
+        # empty or unchanged: keep the stored nummer
+        if not nummer or nummer == stored:
+            return stored
+
+    if not nummer:
+        return nummer
 
     nummer = pad_nummer(nummer)
 
@@ -38,9 +44,9 @@ def validate_nummer(model, nummer: str | None, instance=None) -> str | None:
 
     if qs.exists():
         raise ValidationError(
-            _("Er bestaat al een %(model)s met nummer %(nummer)s."),
+            _("Er bestaat al een %(model)s met eenzelfde nummer."),
             code="unique",
-            params={"model": model._meta.verbose_name, "nummer": nummer},
+            params={"model": model._meta.verbose_name},
         )
     return nummer
 
