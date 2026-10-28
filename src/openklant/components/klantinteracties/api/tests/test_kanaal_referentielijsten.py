@@ -27,7 +27,7 @@ class KanaalValidatorAPITestCase(ClearCachesMixin, APITestCase, VCRTestCase):
     def setUp(self):
         super().setUp()
         self.initial_data = {
-            "nummer": "9999999999",
+            "nummer": "999999999999",
             "kanaal": "email",
             "onderwerp": "Initial contact for update tests",
             "inhoud": "Test inhoud",
@@ -70,7 +70,7 @@ class KanaalValidatorAPITestCase(ClearCachesMixin, APITestCase, VCRTestCase):
         mock_get_solo.return_value = self.config
         url = reverse("klantinteracties:klantcontact-list", kwargs={"version": "1"})
         data = self.initial_data.copy()
-        data["nummer"] = "0000000001"
+        data["nummer"] = "000000000001"
 
         response = self.client.post(url, data, format="json")
 

@@ -144,8 +144,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         )
 
         partij = Partij.objects.get()
-
-        self.assertEqual(partij.nummer, "024325818")
+        self.assertEqual(partij.nummer, "000024325818")
 
         partij_identificator = partij.partijidentificator_set.get()
 
@@ -192,7 +191,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         partij = Partij.objects.get()
 
-        self.assertEqual(partij.nummer, "111222333")
+        self.assertEqual(partij.nummer, "000111222333")
 
         partij_identificator = partij.partijidentificator_set.get()
 
@@ -259,7 +258,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij, persoon.partij)
 
         self.assertEqual(partij.soort_partij, SoortPartij.persoon)
-        self.assertEqual(partij.nummer, "024325818")
+        self.assertEqual(partij.nummer, "000024325818")
         self.assertIsNone(partij.voorkeurs_digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
@@ -297,7 +296,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij, persoon.partij)
 
         self.assertEqual(partij.soort_partij, SoortPartij.persoon)
-        self.assertEqual(partij.nummer, "012345672")
+        self.assertEqual(partij.nummer, "000012345672")
         self.assertIsNone(partij.voorkeurs_digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
@@ -348,7 +347,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij, organisatie.partij)
 
         self.assertEqual(partij.soort_partij, SoortPartij.organisatie)
-        self.assertEqual(partij.nummer, "80737144")
+        self.assertEqual(partij.nummer, "000080737144")
         self.assertIsNone(partij.voorkeurs_digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
@@ -401,7 +400,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij, organisatie.partij)
 
         self.assertEqual(partij.soort_partij, SoortPartij.organisatie)
-        self.assertEqual(partij.nummer, "123456789")
+        self.assertEqual(partij.nummer, "000123456789")
         self.assertIsNone(partij.voorkeurs_digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
@@ -436,7 +435,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij, persoon.partij)
 
         self.assertEqual(partij.soort_partij, SoortPartij.persoon)
-        self.assertEqual(partij.nummer, "024325818")
+        self.assertEqual(partij.nummer, "000024325818")
         self.assertIsNone(partij.voorkeurs_digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
@@ -474,7 +473,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         self.assertEqual(partij, persoon.partij)
 
         self.assertEqual(partij.soort_partij, SoortPartij.persoon)
-        self.assertEqual(partij.nummer, "024325818")
+        self.assertEqual(partij.nummer, "000024325818")
         self.assertIsNone(partij.voorkeurs_digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
@@ -658,7 +657,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(partij, organisatie.partij)
         self.assertEqual(partij.soort_partij, SoortPartij.organisatie)
-        self.assertEqual(partij.nummer, "296648875")
+        self.assertEqual(partij.nummer, "000296648875")
         self.assertIsNone(partij.voorkeurs_digitaal_adres)
         self.assertIsNone(partij.voorkeurs_rekeningnummer)
         self.assertEqual(partij.interne_notitie, "")
@@ -695,7 +694,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
     def test_telefoonnummer(self):
         partij = PartijFactory.create(
-            soort_partij=SoortPartij.persoon, nummer="024325818"
+            soort_partij=SoortPartij.persoon, nummer="000024325818"
         )
 
         stdout = StringIO()
@@ -743,7 +742,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
     def test_skip_telefoonnummer(self):
         partij = PartijFactory.create(
-            soort_partij=SoortPartij.persoon, nummer="024325818"
+            soort_partij=SoortPartij.persoon, nummer="000024325818"
         )
         DigitaalAdresFactory.create(
             partij=partij,
@@ -776,7 +775,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
     def test_no_telefoonnummer(self):
         partij = PartijFactory.create(
-            soort_partij=SoortPartij.persoon, nummer="024325818"
+            soort_partij=SoortPartij.persoon, nummer="000024325818"
         )
 
         stdout = StringIO()

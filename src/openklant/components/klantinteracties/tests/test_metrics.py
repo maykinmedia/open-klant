@@ -256,7 +256,7 @@ class InterneTaakTests(APITestCase):
             {
                 "toegewezenAanActor": {"uuid": str(actor.uuid)},
                 "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
-                "nummer": "1312312312",
+                "nummer": "001312312312",
                 "gevraagdeHandeling": "gevraagdeHandeling",
                 "toelichting": "toelichting",
                 "status": "verwerkt",

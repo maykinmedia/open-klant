@@ -1,6 +1,5 @@
 -c base.txt
 -r base.txt
--r type-checking.txt
 
 # Dependencies only relevant for (unit) testing
 django-webtest
@@ -16,6 +15,8 @@ waitress>=2.1.1
 codecov
 # Code formatting
 ruff
+
+hypothesis
 
 # Documentations
 django-extensions

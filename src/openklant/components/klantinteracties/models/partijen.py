@@ -1,15 +1,16 @@
 import uuid
 
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_integer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
 
 from openklant.components.utils.mixins import APIMixin
-from openklant.utils.help_text import mark_deprecated
+from openklant.utils.fields import GeneratedCharField
+from openklant.utils.validators import validate_regex_nummer
 
+from ..utils import validate_nummer
 from .constants import (
     PartijIdentificatorCodeObjectType,
     PartijIdentificatorCodeRegister,
@@ -43,20 +44,24 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         null=True,
         blank=True,
     )
-    nummer = models.CharField(
+
+    # DEPRECATED 3.X.X
+    nummer = GeneratedCharField(
         _("nummer"),
-        help_text=mark_deprecated(
-            _(
-                "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
-                "worden gebruikt om de specifieke partij aan te duiden."
-            )
+        help_text=_(
+            "Uniek identificerend nummer dat tijdens communicatie tussen mensen kan "
+            "worden gebruikt om de specifieke partij aan te duiden. "
+            "Wordt automatisch gegenereerd als het niet wordt opgegeven. "
+            "Let op: vanaf de volgende major release kan dit nummer niet meer door "
+            "clients worden opgegeven en wordt het altijd automatisch gegenereerd. "
+            "Gebruik ``referentienummer`` om een eigen nummer vast te leggen."
         ),
-        validators=[validate_integer],
-        max_length=10,
+        validators=[validate_regex_nummer],
+        max_length=12,
         unique=True,
         blank=True,
-        null=True,
     )
+
     interne_notitie = models.TextField(
         _("interne notitie"),
         help_text=_(
@@ -104,6 +109,13 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
 
     def __str__(self):
         return self.nummer if self.nummer else str(self.uuid)
+
+    def clean(self):
+        super().clean()
+        try:
+            self.nummer = validate_nummer(Partij, self.nummer, self)
+        except ValidationError as exc:
+            raise ValidationError({"nummer": exc})
 
 
 class Vertegenwoordigden(models.Model):

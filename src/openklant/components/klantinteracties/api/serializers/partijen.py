@@ -48,6 +48,7 @@ from openklant.components.klantinteracties.models.validators import (
     PartijIdentificatorTypesValidator,
     PartijIdentificatorUniquenessValidator,
 )
+from openklant.components.klantinteracties.utils import validate_nummer
 from openklant.utils.decorators import handle_db_exceptions
 from openklant.utils.serializers import get_field_instance_by_uuid, get_field_value
 
@@ -467,7 +468,6 @@ class PartijIdentificatorSerializer(
         return super().create(validated_data)
 
 
-@extend_schema_serializer(deprecate_fields=["nummer"])
 class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
     from openklant.components.klantinteracties.api.serializers.rekeningnummers import (
         RekeningnummerForeignKeySerializer,
@@ -628,6 +628,10 @@ class PartijSerializer(NestedGegevensGroepMixin, PolymorphicSerializer):
                 },
                 code="duplicated",
             )
+
+    def validate_nummer(self, attrs):
+        attrs = validate_nummer(Partij, attrs, self.instance)
+        return attrs
 
     def validate_partij_identificatoren(self, attrs):
         if attrs:
