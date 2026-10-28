@@ -53,7 +53,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
         cls.partij = PartijFactory.create(
-            nummer="1298329191",
+            nummer="001298329191",
             interne_notitie="interneNotitie",
             soort_partij="organisatie",
             voorkeurstaal="ndl",
@@ -67,7 +67,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
         digitaal_adres = DigitaalAdresFactory.create()
         rekeningnummer = RekeningnummerFactory.create()
         cls.data = {
-            "nummer": "123456789",
+            "nummer": "000123456789",
             "interneNotitie": "interneNotitie",
             "digitaleAdressen": [{"uuid": str(digitaal_adres.uuid)}],
             "voorkeursDigitaalAdres": {"uuid": str(digitaal_adres.uuid)},
@@ -94,7 +94,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "create",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "123456789",
+                    "nummer": "000123456789",
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
@@ -111,7 +111,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
         """
         data = {
             **self.data,
-            "nummer": None,
+            "nummer": "111",
         }
         with self.captureOnCommitCallbacks(execute=True):
             response = self.client.post(self.list_url, data)
@@ -127,7 +127,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "create",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "",
+                    "nummer": "000000000111",
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
@@ -150,7 +150,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "123456789",
+                    "nummer": "000123456789",
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
@@ -175,7 +175,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "partial_update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "1298329191",
+                    "nummer": "001298329191",
                     "interneNotitie": "interneNotitie",
                     "soortPartij": SoortPartij.organisatie.value,
                 },
@@ -197,7 +197,7 @@ class SendNotificationPartijTestCase(NotificationsConfigTestCase, APITestCase):
                 "actie": "destroy",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "1298329191",
+                    "nummer": "001298329191",
                     "interneNotitie": "interneNotitie",
                     "soortPartij": "organisatie",
                 },
@@ -217,7 +217,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
         cls.klantcontact = KlantcontactFactory.create()
         cls.internetaak = InterneTaakFactory.create(
             klantcontact=cls.klantcontact,
-            nummer="1298329191",
+            nummer="001298329191",
             gevraagde_handeling="test",
             toelichting="test",
             status="te_verwerken",
@@ -231,7 +231,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
         cls.data = {
             "toegewezenAanActor": {"uuid": str(cls.actor.uuid)},
             "aanleidinggevendKlantcontact": {"uuid": str(cls.klantcontact.uuid)},
-            "nummer": "1312312312",
+            "nummer": "001312312312",
             "gevraagdeHandeling": "gevraagdeHandeling",
             "toelichting": "toelichting",
             "status": "verwerkt",
@@ -252,7 +252,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "create",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "1312312312",
+                    "nummer": "001312312312",
                     "gevraagdeHandeling": "gevraagdeHandeling",
                     "toelichting": "toelichting",
                     "status": "verwerkt",
@@ -268,7 +268,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
         """
         Workaround for https://github.com/open-zaak/open-notificaties/issues/434
         """
-        data = {**self.data, "nummer": None}
+        data = {**self.data, "nummer": "222"}
         with self.captureOnCommitCallbacks(execute=True):
             response = self.client.post(self.list_url, data)
 
@@ -283,7 +283,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "create",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "",
+                    "nummer": "000000000222",
                     "gevraagdeHandeling": "gevraagdeHandeling",
                     "toelichting": "toelichting",
                     "status": "verwerkt",
@@ -307,7 +307,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "1312312312",
+                    "nummer": "001312312312",
                     "gevraagdeHandeling": "gevraagdeHandeling",
                     "toelichting": "toelichting",
                     "status": "verwerkt",
@@ -318,7 +318,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
 
     def test_send_notification_partial_update_object(self, m):
         with self.captureOnCommitCallbacks(execute=True):
-            response = self.client.patch(self.detail_url, {"nummer": "123456789"})
+            response = self.client.patch(self.detail_url, {"nummer": "000123456789"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
@@ -331,7 +331,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "partial_update",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "123456789",
+                    "nummer": "000123456789",
                     "gevraagdeHandeling": "test",
                     "toelichting": "test",
                     "status": "te_verwerken",
@@ -354,7 +354,7 @@ class SendNotificationInterneTaakTestCase(NotificationsConfigTestCase, APITestCa
                 "actie": "destroy",
                 "aanmaakdatum": "2024-02-02T00:00:00Z",
                 "kenmerken": {
-                    "nummer": "1298329191",
+                    "nummer": "001298329191",
                     "gevraagdeHandeling": "test",
                     "toelichting": "test",
                     "status": "te_verwerken",
@@ -373,7 +373,7 @@ class SendNotificationKlantContactTestCase(NotificationsConfigTestCase, APITestC
         super().setUpTestData()
         cls.actor = ActorFactory.create()
         cls.klantcontact = KlantcontactFactory.create(
-            nummer="123456789",
+            nummer="000123456789",
             kanaal="email",
             onderwerp="klacht",
             taal="nld",

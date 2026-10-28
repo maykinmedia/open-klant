@@ -6,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 
 from localflavor.generic.countries.iso_3166 import ISO_3166_1_ALPHA2_COUNTRY_CODES
 
+from openklant.components.klantinteracties.utils import REGEX_NUMMER
+
 
 def validate_country(value: str) -> None:
     """
@@ -120,4 +122,9 @@ validate_no_space = CustomRegexValidator(
 
 validate_bag_id = CustomRegexValidator(
     regex="^[0-9]{16}$", message=_("Ongeldige nummeraanduiding BAG-ID")
+)
+
+validate_regex_nummer = CustomRegexValidator(
+    regex=REGEX_NUMMER,
+    message=_("Het nummer moet uit 1 tot 12 cijfers bestaan."),
 )
