@@ -95,7 +95,7 @@ celery==5.5.3
     #   -r requirements/ci.txt
     #   flower
     #   notifications-api-common
-certifi==2024.7.4
+certifi==2026.10.23
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -516,6 +516,7 @@ hypothesis==6.170.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   -r requirements/dev.in
 identify==2.6.10
     # via pre-commit
 idna==3.18
@@ -846,7 +847,7 @@ pygments==2.20.0
     #   sphinx-tabs
 pygraphviz==1.14
     # via -r requirements/dev.in
-pyjwt==2.13.0
+pyjwt==2.15.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1109,7 +1110,7 @@ tomlkit==0.13.0
     #   -r requirements/ci.txt
     #   bump-my-version
     #   pylint
-tornado==6.5.8
+tornado==6.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1150,7 +1151,7 @@ uritemplate==4.1.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   drf-spectacular
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
