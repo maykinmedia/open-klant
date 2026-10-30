@@ -2,6 +2,47 @@
 Change history
 ==============
 
+2.18.2
+======
+
+*October 30, 2026*
+
+**Bugfixes**
+
+* [:open-klant:`631`] ``nummer`` of ``Klantcontact``, ``Partij`` and ``InterneTaak`` is generated
+  again, at database level (PostgreSQL sequence + trigger):
+
+  * fixes the ``IntegrityError`` on create and the race condition between concurrent requests
+  * now ``nummer`` can have up to 12 digits
+  * existing numbers are not changed, so filters keep working with the old values
+  * new numbers are zero padded to 12 digits, also client POST values (``500`` becomes ``000000000500``)
+  * after the maximum limit the sequence restarts from 1, skipping numbers already in use, so generation never gets stuck
+
+.. note::
+
+    In the next major release clients can no longer provide their own
+    ``nummer``. Use ``referentienummer`` instead.
+
+**Maintenance**
+
+* Upgrade python dependencies
+
+    * ``certifi`` to 2026.10.23
+    * ``pyjwt`` to 2.15.1
+    * ``urllib3`` to 2.8.0
+    * ``tornado`` to 6.5.10
+
+
+**Security**
+
+* Require ``certifi>=2026.10.19``, which no longer trusts the eMudhra root whose
+  intermediate CA keys were compromised. Also update ``pip`` to 26.2.2 or later and
+  rebuild your images without cache, to update the system certificates. See the
+  `Python advisory <https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576>`_.
+* Require ``PyJWT>=2.15.1``. Older versions have known vulnerabilities, among
+  them a ``RecursionError`` on a deeply nested JWT, which anyone could trigger
+  without credentials and which gave a 500 (CVE-2026-101918). It is now a 403.
+
 2.18.1
 ======
 *September 3, 2026*

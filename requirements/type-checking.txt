@@ -83,7 +83,7 @@ celery==5.5.3
     #   -r requirements/ci.txt
     #   flower
     #   notifications-api-common
-certifi==2024.7.4
+certifi==2026.10.23
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -480,6 +480,10 @@ humanize==4.10.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   flower
+hypothesis==6.170.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 idna==3.18
     # via
     #   -c requirements/ci.txt
@@ -575,7 +579,7 @@ mozilla-django-oidc-db==2.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-notifications-api-common==0.13.0
+notifications-api-common==0.13.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -788,7 +792,7 @@ pygments==2.20.0
     #   rich
     #   sphinx
     #   sphinx-tabs
-pyjwt==2.13.0
+pyjwt==2.15.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -950,6 +954,11 @@ snowballstemmer==2.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   sphinx
+sortedcontainers==2.4.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   hypothesis
 soupsieve==2.9.2
     # via
     #   -c requirements/ci.txt
@@ -1026,7 +1035,7 @@ tomlkit==0.13.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-tornado==6.5.8
+tornado==6.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1072,7 +1081,7 @@ uritemplate==4.1.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   drf-spectacular
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

@@ -20,6 +20,7 @@ from openklant.components.klantinteracties.models import (
     DigitaalAdres,
     Partij,
 )
+from openklant.components.klantinteracties.utils import pad_nummer
 from openklant.components.token.models import TokenAuth
 from openklant.migration.client import Client
 from openklant.migration.utils import (
@@ -120,7 +121,9 @@ def _save_klanten_phonenumbers(
         )
         try:
             soort_partij = klant._get_soort_partij()
-            partij = partijen_to_use.get(soort_partij=soort_partij, nummer=nummer)
+            partij = partijen_to_use.get(
+                soort_partij=soort_partij, nummer=pad_nummer(nummer)
+            )
         except Partij.DoesNotExist:
             logger.warning(
                 "partij_not_found",

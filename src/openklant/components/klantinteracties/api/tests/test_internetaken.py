@@ -1,6 +1,6 @@
 from freezegun import freeze_time
 from rest_framework import status
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_validation_errors, reverse
 
 from openklant.components.klantinteracties.models.internetaken import InterneTaak
 from openklant.components.klantinteracties.models.tests.factories import (
@@ -58,7 +58,7 @@ class InterneTaakTests(APITestCase):
         data = {
             "toegewezenAanActor": {"uuid": str(actor.uuid)},
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
-            "nummer": "1312312312",
+            "nummer": "001312312312",
             "gevraagdeHandeling": "gevraagdeHandeling",
             "toelichting": "toelichting",
             "status": "verwerkt",
@@ -80,7 +80,7 @@ class InterneTaakTests(APITestCase):
             response_data["aanleidinggevendKlantcontact"]["uuid"],
             str(klantcontact.uuid),
         )
-        self.assertEqual(response_data["nummer"], "1312312312")
+        self.assertEqual(response_data["nummer"], "001312312312")
         self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(response_data["toelichting"], "toelichting")
         self.assertEqual(response_data["status"], "verwerkt")
@@ -89,7 +89,7 @@ class InterneTaakTests(APITestCase):
         )
 
         with self.subTest("nummer_unique_validation"):
-            data["nummer"] = "1312312312"
+            data["nummer"] = "001312312312"
             response = self.client.post(list_url, data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -98,6 +98,79 @@ class InterneTaakTests(APITestCase):
                 response_data["invalidParams"][0]["reason"],
                 "Er bestaat al een interne taak met eenzelfde nummer.",
             )
+
+        with self.subTest("padding_zero"):
+            data["nummer"] = "888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["nummer"], "000000000888")
+
+        with self.subTest("padding_zero"):
+            data["nummer"] = "888"
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            response_data = response.json()
+            self.assertEqual(
+                response_data["invalidParams"][0]["reason"],
+                "Er bestaat al een interne taak met eenzelfde nummer.",
+            )
+
+    def test_internetaak_nummer(self):
+        klantcontact = KlantcontactFactory.create()
+        actor = ActorFactory.create()
+        list_url = reverse("klantinteracties:internetaak-list")
+        data = {
+            "toegewezenAanActor": {"uuid": str(actor.uuid)},
+            "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
+            "gevraagdeHandeling": "gevraagdeHandeling",
+            "toelichting": "toelichting",
+            "status": "verwerkt",
+        }
+
+        with self.subTest("post new nummer"):
+            data["nummer"] = "888888888888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["nummer"], "888888888888")
+
+        with self.subTest("validation sequence post new nummer"):
+            data["nummer"] = "888888888888"
+            response = self.client.post(list_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "nummer")
+            self.assertEqual(error["code"], "unique")
+            self.assertEqual(
+                error["reason"], "Er bestaat al een interne taak met eenzelfde nummer."
+            )
+
+        with self.subTest("update patch new nummer"):
+            data["nummer"] = "888888888889"
+            internetaak = InterneTaak.objects.get(nummer="888888888888")
+            detail_url = reverse(
+                "klantinteracties:internetaak-detail",
+                kwargs={"uuid": str(internetaak.uuid)},
+            )
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["nummer"], "888888888889")
+            self.assertFalse(InterneTaak.objects.filter(nummer="888888888888").exists())
+            self.assertTrue(InterneTaak.objects.filter(nummer="888888888889").exists())
+
+        with self.subTest("update patch empty nummer"):
+            data["nummer"] = ""
+            internetaak = InterneTaak.objects.get(nummer="888888888889")
+            detail_url = reverse(
+                "klantinteracties:internetaak-detail",
+                kwargs={"uuid": str(internetaak.uuid)},
+            )
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["nummer"], "888888888889")
+            # old nummer
+            self.assertTrue(InterneTaak.objects.filter(nummer="888888888889").exists())
+            # check new nummer
+            self.assertFalse(InterneTaak.objects.filter(nummer="888888888890").exists())
 
     @freeze_time("2024-01-01T12:00:00Z")
     def test_create_internetaak_with_status_te_verwerken(self):
@@ -108,7 +181,7 @@ class InterneTaakTests(APITestCase):
         data = {
             "toegewezenAanActor": {"uuid": str(actor.uuid)},
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
-            "nummer": "1312312312",
+            "nummer": "001312312312",
             "gevraagdeHandeling": "gevraagdeHandeling",
             "toelichting": "toelichting",
             "status": "te_verwerken",
@@ -130,7 +203,7 @@ class InterneTaakTests(APITestCase):
             response_data["aanleidinggevendKlantcontact"]["uuid"],
             str(klantcontact.uuid),
         )
-        self.assertEqual(response_data["nummer"], "1312312312")
+        self.assertEqual(response_data["nummer"], "001312312312")
         self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(response_data["toelichting"], "toelichting")
         self.assertEqual(response_data["status"], "te_verwerken")
@@ -158,7 +231,7 @@ class InterneTaakTests(APITestCase):
         data = {
             "toegewezenAanActor": {"uuid": str(actor.uuid)},
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
-            "nummer": "1312312312",
+            "nummer": "001312312312",
             "gevraagdeHandeling": "gevraagdeHandeling",
             "toelichting": "toelichting",
             "status": "verwerkt",
@@ -184,7 +257,7 @@ class InterneTaakTests(APITestCase):
             response_data["aanleidinggevendKlantcontact"]["uuid"],
             str(klantcontact.uuid),
         )
-        self.assertEqual(response_data["nummer"], "1312312312")
+        self.assertEqual(response_data["nummer"], "001312312312")
         self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(response_data["toelichting"], "toelichting")
         self.assertEqual(response_data["status"], "verwerkt")
@@ -204,7 +277,7 @@ class InterneTaakTests(APITestCase):
                 {"uuid": str(actor.uuid)},
             ],
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact.uuid)},
-            "nummer": "1312312312",
+            "nummer": "001312312312",
             "gevraagdeHandeling": "gevraagdeHandeling",
             "toelichting": "toelichting",
             "status": "verwerkt",
@@ -230,7 +303,7 @@ class InterneTaakTests(APITestCase):
             response_data["aanleidinggevendKlantcontact"]["uuid"],
             str(klantcontact.uuid),
         )
-        self.assertEqual(response_data["nummer"], "1312312312")
+        self.assertEqual(response_data["nummer"], "001312312312")
         self.assertEqual(response_data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(response_data["toelichting"], "toelichting")
         self.assertEqual(response_data["status"], "verwerkt")
@@ -245,7 +318,7 @@ class InterneTaakTests(APITestCase):
         internetaak = InterneTaakFactory.create(
             actoren=[actor],
             klantcontact=klantcontact,
-            nummer="1237713712",
+            nummer="001237713712",
             gevraagde_handeling="gevraagdeHandeling",
             toelichting="toelichting",
             status="te_verwerken",
@@ -266,7 +339,7 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(
             data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
-        self.assertEqual(data["nummer"], "1237713712")
+        self.assertEqual(data["nummer"], "001237713712")
         self.assertEqual(data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(data["toelichting"], "toelichting")
         self.assertEqual(data["status"], "te_verwerken")
@@ -274,7 +347,7 @@ class InterneTaakTests(APITestCase):
         data = {
             "toegewezenAanActor": {"uuid": str(actor2.uuid)},
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
-            "nummer": "9999999999",
+            "nummer": "999999999999",
             "gevraagdeHandeling": "changed",
             "toelichting": "changed",
             "status": "verwerkt",
@@ -291,7 +364,7 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(
             data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact2.uuid)
         )
-        self.assertEqual(data["nummer"], "9999999999")
+        self.assertEqual(data["nummer"], "999999999999")
         self.assertEqual(data["gevraagdeHandeling"], "changed")
         self.assertEqual(data["toelichting"], "changed")
         self.assertEqual(data["status"], "verwerkt")
@@ -344,7 +417,7 @@ class InterneTaakTests(APITestCase):
             self.assertEqual(
                 data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact2.uuid)
             )
-            self.assertEqual(data["nummer"], "9999999999")
+            self.assertEqual(data["nummer"], "999999999999")
             self.assertEqual(data["gevraagdeHandeling"], "changed")
             self.assertEqual(data["toelichting"], "changed")
             self.assertEqual(data["status"], "verwerkt")
@@ -414,7 +487,7 @@ class InterneTaakTests(APITestCase):
         internetaak = InterneTaakFactory.create(
             actoren=[actor],
             klantcontact=klantcontact,
-            nummer="1237713712",
+            nummer="001237713712",
             gevraagde_handeling="gevraagdeHandeling",
             toelichting="toelichting",
             status="te_verwerken",
@@ -435,7 +508,7 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(
             data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
-        self.assertEqual(data["nummer"], "1237713712")
+        self.assertEqual(data["nummer"], "001237713712")
         self.assertEqual(data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(data["toelichting"], "toelichting")
         self.assertEqual(data["status"], "te_verwerken")
@@ -446,7 +519,7 @@ class InterneTaakTests(APITestCase):
                 {"uuid": str(actor2.uuid)},
             ],
             "aanleidinggevendKlantcontact": {"uuid": str(klantcontact2.uuid)},
-            "nummer": "9999999999",
+            "nummer": "999999999999",
             "gevraagdeHandeling": "changed",
             "toelichting": "changed",
             "status": "verwerkt",
@@ -470,7 +543,7 @@ class InterneTaakTests(APITestCase):
             response_data["aanleidinggevendKlantcontact"]["uuid"],
             str(klantcontact2.uuid),
         )
-        self.assertEqual(response_data["nummer"], "9999999999")
+        self.assertEqual(response_data["nummer"], "999999999999")
         self.assertEqual(response_data["gevraagdeHandeling"], "changed")
         self.assertEqual(response_data["toelichting"], "changed")
         self.assertEqual(response_data["status"], "verwerkt")
@@ -505,7 +578,7 @@ class InterneTaakTests(APITestCase):
         internetaak = InterneTaakFactory.create(
             actoren=[actor],
             klantcontact=klantcontact,
-            nummer="1237713712",
+            nummer="001237713712",
             gevraagde_handeling="gevraagdeHandeling",
             toelichting="toelichting",
             status="verwerkt",
@@ -521,12 +594,12 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(
             data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
-        self.assertEqual(data["nummer"], "1237713712")
+        self.assertEqual(data["nummer"], "001237713712")
         self.assertEqual(data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(data["toelichting"], "toelichting")
         self.assertEqual(data["status"], "verwerkt")
 
-        data = {"nummer": "0000000000"}
+        data = {"nummer": "111122223333"}
 
         response = self.client.patch(detail_url, data)
 
@@ -538,7 +611,7 @@ class InterneTaakTests(APITestCase):
         self.assertEqual(
             data["aanleidinggevendKlantcontact"]["uuid"], str(klantcontact.uuid)
         )
-        self.assertEqual(data["nummer"], "0000000000")
+        self.assertEqual(data["nummer"], "111122223333")
         self.assertEqual(data["gevraagdeHandeling"], "gevraagdeHandeling")
         self.assertEqual(data["toelichting"], "toelichting")
         self.assertEqual(data["status"], "verwerkt")

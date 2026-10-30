@@ -2,7 +2,7 @@ import factory
 
 
 class KlantContactDataFactory(factory.DictFactory):
-    nummer = "7948723947"
+    nummer = "007948723947"
     kanaal = "changed"
     onderwerp = "changed"
     inhoud = "changed"

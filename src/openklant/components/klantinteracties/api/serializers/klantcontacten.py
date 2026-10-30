@@ -2,7 +2,7 @@ from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 import structlog
-from drf_spectacular.utils import extend_schema_field, extend_schema_serializer
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 from vng_api_common.utils import get_help_text
@@ -37,6 +37,7 @@ from openklant.components.klantinteracties.models.klantcontacten import (
     Onderwerpobject,
 )
 from openklant.components.klantinteracties.models.partijen import Partij
+from openklant.components.klantinteracties.utils import validate_nummer
 
 logger = structlog.stdlib.get_logger(__name__)
 
@@ -261,7 +262,6 @@ class BetrokkeneSerializer(
         return super().create(validated_data)
 
 
-@extend_schema_serializer(deprecate_fields=["nummer"])
 class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
     from openklant.components.klantinteracties.api.serializers.internetaken import (
         InterneTaakForeignKeySerializer,
@@ -354,6 +354,10 @@ class KlantcontactSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
         validators = [VerdereActieOndernomenValidator()]
+
+    def validate_nummer(self, attrs):
+        attrs = validate_nummer(Klantcontact, attrs, self.instance)
+        return attrs
 
     @extend_schema_field(ActorSerializer(many=True))
     def get_had_betrokken_actoren(self, obj):

@@ -921,14 +921,14 @@ class BetrokkeneFilterSetTests(APITestCase):
 
     def test_filter_had_klantcontact_nummer(self):
         klantcontact = KlantcontactFactory.create(nummer="6237172371")
-        klantcontact2 = KlantcontactFactory.create(nummer="9999999999")
+        klantcontact2 = KlantcontactFactory.create(nummer="999999999999")
         betrokkene = BetrokkeneFactory.create(klantcontact=klantcontact)
         BetrokkeneFactory.create(klantcontact=klantcontact2)
 
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"hadKlantcontact__nummer": str(6237172371)},
+                {"hadKlantcontact__nummer": "006237172371"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1200,15 +1200,15 @@ class BetrokkeneFilterSetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_was_partij_nummer(self):
-        partij = PartijFactory.create(nummer="8123973457")
-        partij2 = PartijFactory.create(nummer="9999999999")
+        partij = PartijFactory.create(nummer="008123973457")
+        partij2 = PartijFactory.create(nummer="999999999999")
         betrokkene = BetrokkeneFactory.create(partij=partij)
         BetrokkeneFactory.create(partij=partij2)
 
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"wasPartij__nummer": "8123973457"},
+                {"wasPartij__nummer": "008123973457"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -2224,7 +2224,7 @@ class CategorieRelatieFiltersetTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_partij_nummer(self):
-        partij = PartijFactory.create(nummer="1111111111")
+        partij = PartijFactory.create(nummer="111111111111")
         partij2 = PartijFactory.create(nummer="2222222222")
         categorie_relatie = CategorieRelatieFactory.create(partij=partij)
         CategorieRelatieFactory.create(partij=partij2)
@@ -2232,7 +2232,7 @@ class CategorieRelatieFiltersetTests(APITestCase):
         with self.subTest("happy flow"):
             response = self.client.get(
                 self.url,
-                {"partij__nummer": "1111111111"},
+                {"partij__nummer": "111111111111"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 

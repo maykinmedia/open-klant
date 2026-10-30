@@ -95,7 +95,7 @@ celery==5.5.3
     #   -r requirements/ci.txt
     #   flower
     #   notifications-api-common
-certifi==2024.7.4
+certifi==2026.10.23
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -213,8 +213,6 @@ django==5.2.17
     #   django-simple-certmanager
     #   django-solo
     #   django-structlog
-    #   django-stubs
-    #   django-stubs-ext
     #   django-two-factor-auth
     #   django-upgrade-check
     #   djangorestframework
@@ -373,16 +371,6 @@ django-structlog==9.1.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-django-stubs==6.1.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   djangorestframework-stubs
-django-stubs-ext==6.1.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-stubs
 django-two-factor-auth==1.16.0
     # via
     #   -c requirements/ci.txt
@@ -419,10 +407,6 @@ djangorestframework-gis==1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
 djangorestframework-inclusions==1.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-djangorestframework-stubs==3.18.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -528,6 +512,11 @@ humanize==4.10.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   flower
+hypothesis==6.170.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   -r requirements/dev.in
 identify==2.6.10
     # via pre-commit
 idna==3.18
@@ -858,7 +847,7 @@ pygments==2.20.0
     #   sphinx-tabs
 pygraphviz==1.14
     # via -r requirements/dev.in
-pyjwt==2.13.0
+pyjwt==2.15.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1037,6 +1026,11 @@ snowballstemmer==2.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   sphinx
+sortedcontainers==2.4.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   hypothesis
 soupsieve==2.9.2
     # via
     #   -c requirements/ci.txt
@@ -1116,7 +1110,7 @@ tomlkit==0.13.0
     #   -r requirements/ci.txt
     #   bump-my-version
     #   pylint
-tornado==6.5.8
+tornado==6.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1125,21 +1119,12 @@ typer==0.21.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-types-pyyaml==6.0.12.20260815
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-stubs
-    #   djangorestframework-stubs
 typing-extensions==4.12.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   anyio
     #   django-log-outgoing-requests
-    #   django-stubs
-    #   django-stubs-ext
-    #   djangorestframework-stubs
     #   mozilla-django-oidc-db
     #   opentelemetry-api
     #   opentelemetry-exporter-otlp-proto-grpc
@@ -1166,7 +1151,7 @@ uritemplate==4.1.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   drf-spectacular
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
