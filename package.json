@@ -1,6 +1,6 @@
 {
   "name": "Open Klant",
-  "version": "2.19.1",
+  "version": "2.19.2",
   "description": "openklant project",
   "type": "module",
   "main": "src/openklant/static/bundles/index.js",
