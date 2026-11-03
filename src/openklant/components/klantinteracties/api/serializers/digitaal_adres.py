@@ -64,6 +64,16 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         ),
         source="betrokkene",
     )
+    # DRF 3.18.2 added explicit defaults to some fields, which changes the behavior of
+    # PUT requests in a backwards incompatible way (if the field is not specified, it is
+    # reset to the default). To avoid this from happening the field is explicitly defined
+    # and this behavior should be tackled in https://github.com/maykinmedia/open-klant/issues/538
+    referentie = serializers.SlugField(
+        allow_blank=True,
+        required=False,
+        max_length=50,  # match your model's max_length
+        help_text=DigitaalAdres._meta.get_field("referentie").help_text,
+    )
 
     inclusion_serializers = {
         # 1 level
@@ -119,10 +129,6 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
                 "view_name": "klantinteracties:digitaaladres-detail",
                 "lookup_field": "uuid",
                 "help_text": _("De unieke URL van dit digitaal adres binnen deze API."),
-            },
-            "referentie": {
-                "allow_blank": True,
-                "required": False,
             },
         }
 
