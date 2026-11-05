@@ -20,8 +20,9 @@ logger = structlog.stdlib.get_logger(__name__)
 
 class Discriminator(VngDiscriminator):
     def __init__(self, *args, **kwargs):
+        self.required = kwargs.pop("required", False)
+        self.help_text = kwargs.pop("help_text", None)
         super().__init__(*args, **kwargs)
-        self.required = kwargs.get("required", False)
 
     def to_internal_value(self, data) -> OrderedDict:
         # CUSTOM CODE: try catch to support patch call functionalities
@@ -124,7 +125,10 @@ class PolyMorphicSerializerMetaclass(VngPolymorphicSerializerMetaclass):
                         source = field_name
 
                 group_field = serializer.__class__(
-                    source=source, required=False, label=discriminator.group_field
+                    source=source,
+                    required=False,
+                    label=discriminator.group_field,
+                    help_text=discriminator.help_text,
                 )
 
                 group_serializer_class = type(
