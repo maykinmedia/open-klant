@@ -1,9 +1,10 @@
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.urls import exceptions, reverse
 from django.utils.crypto import get_random_string
+
+from openklant.accounts.models import User
 
 
 class Command(BaseCommand):
@@ -20,7 +21,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        User = get_user_model()
         username = options["username"]
         email = options["email"]
 

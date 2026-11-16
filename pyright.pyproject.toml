@@ -3,7 +3,14 @@ pythonVersion = "3.12"
 pythonPlatform = "Linux"
 reportUnnecessaryTypeIgnoreComment = "error"
 include = [
-    "src/openklant/utils"
+    "src/openklant/__init__.py",
+    "src/openklant/accounts",
+    "src/openklant/celery",
+    "src/openklant/cloud_events",
+    "src/openklant/conf",
+    "src/openklant/urls.py",
+    "src/openklant/utils",
+    "src/openklant/wsgi.py",
 ]
 exclude = [
     "src/openklant/conf/dev.py"

@@ -1,11 +1,11 @@
 import os
 
 from maykin_common.config import config  # noqa
-from notifications_api_common.settings import *  # noqa
+from notifications_api_common.settings import *  # noqa  # pyright: ignore[reportWildcardImportFromLibrary]
 
 os.environ["_USE_STRUCTLOG"] = "True"
 
-from open_api_framework.conf.base import *  # noqa
+from open_api_framework.conf.base import *  # noqa  # pyright: ignore[reportWildcardImportFromLibrary]
 from upgrade_check import UpgradeCheck, VersionRange
 from upgrade_check.constraints import UpgradePaths
 from maykin_common.branding import ProductDefinition

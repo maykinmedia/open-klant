@@ -95,10 +95,8 @@ urlpatterns += staticfiles_urlpatterns() + static(
 )
 
 if settings.DEBUG and apps.is_installed("debug_toolbar"):
-    import debug_toolbar
-
     urlpatterns = [
-        path("__debug__/", include(debug_toolbar.urls)),
+        path("__debug__/", include("debug_toolbar.urls")),
     ] + urlpatterns
 
 if apps.is_installed("silk"):
