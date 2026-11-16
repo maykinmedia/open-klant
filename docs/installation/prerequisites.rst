@@ -23,10 +23,10 @@ Open Klant currently only supports PostgreSQL as datastore.
 
 The supported versions in the table below are tested in the CI pipeline.
 
-================ =========== ======= ======= ======= =======
-Postgres version 13 or lower 14      15      16      17
-================ =========== ======= ======= ======= =======
-Supported?       |cross|     |check| |check| |check| |check|
+================ =========== ======= ======= ======= ======= 
+Postgres version 14 or lower 15      16      17      18      
+================ =========== ======= ======= ======= ======= 
+Supported?       |cross|     |check| |check| |check| |check| 
 ================ =========== ======= ======= ======= =======
 
 .. warning:: Open Klant only supports maintained versions of PostgreSQL. Once a version is
