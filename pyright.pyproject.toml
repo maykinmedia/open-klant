@@ -16,7 +16,8 @@ include = [
     "src/openklant/components/klantinteracties/admin",
     "src/openklant/components/views.py",
     "src/openklant/config",
-    "src/openklant/setup_configuration"
+    "src/openklant/setup_configuration",
+    "src/openklant/migration"
 ]
 exclude = [
     "src/openklant/conf/dev.py"

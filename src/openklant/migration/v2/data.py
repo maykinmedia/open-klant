@@ -1,9 +1,10 @@
 from dataclasses import asdict, dataclass, fields as dataclass_fields
-from typing import Iterable, Optional
+from typing import Iterable
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 
 
+@dataclass
 class APIClass:
     @property
     def required_fields(self) -> Iterable:
@@ -17,9 +18,9 @@ class APIClass:
 class DigitaalAdres(APIClass):
     adres: str
     omschrijving: str = ""
-    soort_digitaal_adres: SoortDigitaalAdres = "email"
-    verstrekt_door_betrokkene: Optional[dict] = None
-    verstrekt_door_partij: Optional[dict] = None
+    soort_digitaal_adres: SoortDigitaalAdres = SoortDigitaalAdres.email
+    verstrekt_door_betrokkene: dict | None = None
+    verstrekt_door_partij: dict | None = None
 
     @property
     def required_fields(self):
@@ -30,16 +31,16 @@ class DigitaalAdres(APIClass):
 class Partij(APIClass):
     nummer: str
 
-    partij_identificatie: dict
+    partij_identificatie: dict | None
     soort_partij: str
 
     indicatie_actief: bool = True
     indicatie_geheimhouding: bool = False
-    rekeningnummers: Optional[list] = None
-    voorkeurs_rekeningnummer: Optional[dict] = None
-    digitale_adressen: Optional[list] = None
-    voorkeurs_digitaal_adres: Optional[dict] = None
-    partij_identificatoren: Optional[list[dict]] = None
+    rekeningnummers: list | None = None
+    voorkeurs_rekeningnummer: dict | None = None
+    digitale_adressen: list | None = None
+    voorkeurs_digitaal_adres: dict | None = None
+    partij_identificatoren: list[dict] | None = None
 
     @property
     def required_fields(self):
