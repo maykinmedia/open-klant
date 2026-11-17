@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -9,6 +11,15 @@ from openklant.config.models import ReferentielijstenConfig
 
 
 class TokenAuthConfigurationModel(ConfigurationModel):
+    if TYPE_CHECKING:
+        identifier: str
+        token: str
+        contact_person: str
+        email: str
+        organization: str
+        application: str
+        administration: str
+
     class Meta:
         django_model_refs = {
             TokenAuth: (

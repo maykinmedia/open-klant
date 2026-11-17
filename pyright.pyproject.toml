@@ -13,7 +13,10 @@ include = [
     "src/openklant/wsgi.py",
     "src/openklant/setup.py",
     "src/openklant/components/token",
-    "src/openklant/components/klantinteracties/admin"
+    "src/openklant/components/klantinteracties/admin",
+    "src/openklant/components/views.py",
+    "src/openklant/config",
+    "src/openklant/setup_configuration"
 ]
 exclude = [
     "src/openklant/conf/dev.py"

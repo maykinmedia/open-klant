@@ -109,5 +109,5 @@ class ReferentielijstenConfig(SingletonModel):
     def __str__(self):
         return "Referentielijsten configuration"
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         verbose_name = _("Referentielijsten configuration")
