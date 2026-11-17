@@ -185,6 +185,7 @@ class Betrokkene(
         null=True,
         blank=True,
     )
+    partij_id: int | None
     klantcontact = models.ForeignKey(
         Klantcontact,
         on_delete=models.CASCADE,
@@ -193,6 +194,7 @@ class Betrokkene(
             "Het klantcontact waar deze persoon of organisatie bij betrokken was."
         ),
     )
+    klantcontact_id: int
     rol = models.CharField(
         _("rol"),
         help_text=_(

@@ -129,7 +129,7 @@ class DSOApi50Tests(APITestCase):
 
     def test_412_error(self):
         self.assertErrorResponse(
-            views.PreconditionFailed,
+            views.PreconditionFailedView,
             {
                 "code": "precondition_failed",
                 "title": _("Precondition failed"),

@@ -17,7 +17,16 @@ include = [
     "src/openklant/components/views.py",
     "src/openklant/config",
     "src/openklant/setup_configuration",
-    "src/openklant/migration"
+    "src/openklant/migration",
+    "src/openklant/management",
+    "src/openklant/tests",
+    "src/openklant/components/__init__.py",
+    "src/openklant/components/klantinteracties/apps.py",
+    "src/openklant/components/klantinteracties/constants.py",
+    "src/openklant/components/klantinteracties/kanalen.py",
+    "src/openklant/components/klantinteracties/metrics.py",
+    "src/openklant/components/klantinteracties/utils.py",
+    "src/openklant/components/contactgegevens/tests"
 ]
 exclude = [
     "src/openklant/conf/dev.py"

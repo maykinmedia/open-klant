@@ -103,6 +103,8 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         ),
     )
 
+    partijidentificator_set: models.Manager["PartijIdentificator"]
+
     class Meta:
         verbose_name = _("partij")
         verbose_name_plural = _("partijen")

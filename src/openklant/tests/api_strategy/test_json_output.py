@@ -24,8 +24,14 @@ class NoContentTypeRequestFactory(APIRequestFactory):
     def generic(self, method, path, data="", content_type=None, secure=False, **extra):
         if "CONTENT_TYPE" in extra:
             del extra["CONTENT_TYPE"]
+        # Django skips the header when `content_type` is None; the stubs only allow str
         request = super().generic(
-            method, path, data, content_type=None, secure=secure, **extra
+            method,
+            path,
+            data,
+            content_type=None,  # pyright: ignore[reportArgumentType]
+            secure=secure,
+            **extra,
         )
         return request
 
@@ -43,10 +49,6 @@ class JSONFormatTests(APITestCase):
         request = request or self.factory.get("/foo")
         response = _view(request)
         response.render()
-
-        # quick access
-        response.json = lambda: json.loads(response.content)
-
         return response
 
     def test_accept_and_return_json(self):
@@ -78,7 +80,7 @@ class JSONFormatTests(APITestCase):
         """
         response = self._get_response()
 
-        rendered = response.json()
+        rendered = json.loads(response.content)
         self.assertIn("snakeCase", rendered)
 
     def test_no_pretty_print(self):
@@ -99,7 +101,7 @@ class JSONFormatTests(APITestCase):
         """
         response = self._get_response()
 
-        data = response.json()
+        data = json.loads(response.content)
         self.assertEqual(list(data.keys()), ["snakeCase"])
 
     def test_content_type_json_is_supported(self):
