@@ -68,7 +68,7 @@ def monkeypatch_requests():
         )
         return
 
-    Session._original_request = Session.request
+    Session._original_request = Session.request  # pyright: ignore[reportAttributeAccessIssue]
 
     def new_request(self, *args, **kwargs):
         kwargs.setdefault("timeout", settings.REQUESTS_DEFAULT_TIMEOUT)

@@ -30,7 +30,8 @@ class PartijAdminForm(forms.ModelForm):
         fields = "__all__"
 
     def clean(self):
-        cleaned_data = super().clean()
+        super().clean()
+        cleaned_data = self.cleaned_data
 
         if voorkeurs_digitaal_adres := cleaned_data.get("voorkeurs_digitaal_adres"):
             if not self.instance.pk:
@@ -96,7 +97,8 @@ class PartijIdentificatorAdminForm(forms.ModelForm):
         fields = "__all__"
 
     def clean(self):
-        cleaned_data = super().clean()
+        super().clean()
+        cleaned_data = self.cleaned_data
 
         values = [
             cleaned_data.get("partij_identificator_code_objecttype"),
@@ -291,7 +293,7 @@ class PartijAdmin(admin.ModelAdmin):
             )
         )
 
-    @admin.display(empty_value="---")
+    @admin.display(description=_("naam"), empty_value="---")
     def get_name(self, obj):
         match obj.soort_partij:
             case SoortPartij.persoon.value:
@@ -300,8 +302,6 @@ class PartijAdmin(admin.ModelAdmin):
                 return self.get_contactpersonen(obj)
             case SoortPartij.organisatie.value:
                 return self.get_organisaties(obj)
-
-    get_name.short_description = _("naam")
 
     def get_personen(self, obj):
         return obj.persoon.get_full_name() if hasattr(obj, "persoon") else "---"
