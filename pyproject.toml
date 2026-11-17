@@ -32,6 +32,11 @@ replace = ':Version: {new_version}'
 [[tool.bumpversion.files]]
 filename = "src/openklant/__init__.py"
 
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+]
+
 # Ruff configuration
 [tool.ruff]
 # Exclude folders and files
