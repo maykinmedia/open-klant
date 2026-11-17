@@ -89,7 +89,7 @@ class BaseMigrationTest(TransactionTestCase):
         super().tearDownClass()
 
         # reset to latest migration
-        call_command("migrate", verbosity=0, database=connection._alias)
+        call_command("migrate", verbosity=0, database=connection.alias)
 
 
 class MigrateTestCase(VCRMixin, LiveServerTestCase):
@@ -710,7 +710,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(digitaal_adressen.count(), 1)
 
-        digitaal_adres = digitaal_adressen.first()
+        digitaal_adres = digitaal_adressen.get()
         self.assertEqual(digitaal_adres.adres, "0612345678")
         self.assertEqual(digitaal_adres.soort_digitaal_adres, "telefoonnummer")
         self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")
@@ -734,7 +734,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(digitaal_adressen.count(), 1)
 
-        digitaal_adres = digitaal_adressen.first()
+        digitaal_adres = digitaal_adressen.get()
         self.assertEqual(digitaal_adres.adres, "0612345678")
         self.assertEqual(digitaal_adres.soort_digitaal_adres, "telefoonnummer")
         self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")
@@ -767,7 +767,7 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
 
         self.assertEqual(digitaal_adressen.count(), 1)
 
-        digitaal_adres = digitaal_adressen.first()
+        digitaal_adres = digitaal_adressen.get()
         self.assertEqual(digitaal_adres.adres, "0123456789")
         self.assertEqual(digitaal_adres.soort_digitaal_adres, "telefoonnummer")
         self.assertEqual(digitaal_adres.referentie, "portaalvoorkeur")

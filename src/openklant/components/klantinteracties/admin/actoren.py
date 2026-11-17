@@ -8,6 +8,7 @@ from ..models.actoren import (
     Medewerker,
     OrganisatorischeEenheid,
 )
+from ..models.internetaken import InterneTakenActorenThoughModel
 
 
 class GeautomatiseerdeActorInlineAdmin(admin.StackedInline):
@@ -37,7 +38,7 @@ class ActorKlantcontactInlineAdmin(admin.StackedInline):
 
 class InterneTaakInlineAdmin(admin.StackedInline):
     readonly_fields = ("uuid",)
-    model = Actor.internetaak_set.through
+    model = InterneTakenActorenThoughModel
     raw_id_fields = ("internetaak",)
     verbose_name = _("Interne taak")
     verbose_name_plural = _("Interne taken")

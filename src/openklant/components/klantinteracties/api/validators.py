@@ -183,7 +183,9 @@ def Rekeningnummer_exists(value):
 
 
 class SoortDigitaalAdresValidator:
-    def __call__(self, soort_digitaal_adres: SoortDigitaalAdres, value: str):
+    def __call__(
+        self, soort_digitaal_adres: SoortDigitaalAdres | str | None, value: str
+    ) -> None:
         match soort_digitaal_adres:
             case SoortDigitaalAdres.email:
                 EmailValidator()(value)

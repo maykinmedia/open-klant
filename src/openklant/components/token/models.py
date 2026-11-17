@@ -53,10 +53,10 @@ class TokenAuth(models.Model):
         verbose_name = _("token authorization")
         verbose_name_plural = _("token authorizations")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.contact_person
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         if not self.token:
             existing_tokens = TokenAuth.objects.values_list("token", flat=True)
             self.token = get_token(existing_tokens=existing_tokens)

@@ -103,6 +103,12 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
         ),
     )
 
+    partijidentificator_set: models.Manager["PartijIdentificator"]
+    # reverse one-to-one relations, only present for the matching `soort_partij`
+    persoon: "Persoon"
+    contactpersoon: "Contactpersoon"
+    organisatie: "Organisatie"
+
     class Meta:
         verbose_name = _("partij")
         verbose_name_plural = _("partijen")

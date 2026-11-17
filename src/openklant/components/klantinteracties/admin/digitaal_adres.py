@@ -10,7 +10,7 @@ class DigitaalAdresAdminForm(forms.ModelForm):
         model = DigitaalAdres
         fields = "__all__"
 
-    def clean_adres(self):
+    def clean_adres(self) -> str:
         data = self.cleaned_data
         SoortDigitaalAdresValidator()(
             soort_digitaal_adres=data.get("soort_digitaal_adres"), value=data["adres"]

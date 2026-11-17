@@ -54,13 +54,22 @@ class Client:
             )
             return
 
+        if not isinstance(response_data, (list, dict)):
+            logger.error(
+                "unexpected_response_content_type",
+                url=url,
+                content_type=type(response_data).__name__,
+            )
+            return
+
         return response_data
 
-    def retrieve(self, url: str, params: dict | None = None) -> list | dict | None:
+    def retrieve(self, url: str, /, params: dict | None = None) -> list | dict | None:
         return self._request("GET", url, params=params)
 
-    def create(self, url: str, data: dict) -> dict | None:
-        return self._request("POST", url, data=data)
+    def create(self, url: str, /, data: dict) -> dict | None:
+        response_data = self._request("POST", url, data=data)
+        return response_data if isinstance(response_data, dict) else None
 
 
 class BaseOpenKlantClient(Client):
@@ -76,10 +85,11 @@ class BaseOpenKlantClient(Client):
 
         self.headers = {"Authorization": f"{self.token_prefix} {self.token}"}
 
-    def retrieve(self, path: str, params: dict | None = None) -> list | dict | None:
+    def retrieve(self, path: str, /, params: dict | None = None) -> list | dict | None:
         url = self.base_url + path
         return self._request("GET", url, headers=self.headers, params=params)
 
-    def create(self, path: str, data: dict) -> dict | None:
+    def create(self, path: str, /, data: dict) -> dict | None:
         url = self.base_url + path
-        return self._request("POST", url, data=data, headers=self.headers)
+        response_data = self._request("POST", url, data=data, headers=self.headers)
+        return response_data if isinstance(response_data, dict) else None

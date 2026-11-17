@@ -114,7 +114,9 @@ class Klant:
     def _get_subject(
         self,
     ) -> NatuurlijkPersoon | NietNatuurlijkPersoon | Vestiging | None:
-        subject_mapping = {
+        subject_mapping: dict[
+            str, type[NatuurlijkPersoon | NietNatuurlijkPersoon | Vestiging]
+        ] = {
             KlantType.natuurlijk_persoon: NatuurlijkPersoon,
             KlantType.niet_natuurlijk_persoon: NietNatuurlijkPersoon,
             KlantType.vestiging: Vestiging,
@@ -156,7 +158,10 @@ class Klant:
             )
 
     def _get_soort_partij(self) -> SoortPartij:
-        mapping = {
+        if self.subject_type is None:
+            raise KeyError("subject_type is not set")
+
+        mapping: dict[str, SoortPartij] = {
             KlantType.natuurlijk_persoon: SoortPartij.persoon,
             KlantType.niet_natuurlijk_persoon: SoortPartij.organisatie,
             KlantType.vestiging: SoortPartij.organisatie,
@@ -261,21 +266,22 @@ class Klant:
                     }
                 )
 
-        data = dict(
+        digitale_adressen = None
+        voorkeurs_digitaal_adres = None
+
+        if digitaal_adres:
+            digitale_adressen = [dict(uuid=digitaal_adres)]
+            voorkeurs_digitaal_adres = dict(uuid=digitaal_adres)
+
+        return Partij(
             indicatie_actief=True,
             indicatie_geheimhouding=False,
             rekeningnummers=[],
             voorkeurs_rekeningnummer=None,
-            digitale_adressen=None,
-            voorkeurs_digitaal_adres=None,
+            digitale_adressen=digitale_adressen,
+            voorkeurs_digitaal_adres=voorkeurs_digitaal_adres,
             soort_partij=soort_partij,
             nummer=subject.nummer if subject else "",
             partij_identificatie=subject.migrate() if subject else None,
             partij_identificatoren=partij_identificatoren,
         )
-
-        if digitaal_adres:
-            data["digitale_adressen"] = [dict(uuid=digitaal_adres)]
-            data["voorkeurs_digitaal_adres"] = dict(uuid=digitaal_adres)
-
-        return Partij(**data)

@@ -3,7 +3,30 @@ pythonVersion = "3.12"
 pythonPlatform = "Linux"
 reportUnnecessaryTypeIgnoreComment = "error"
 include = [
-    "src/openklant/utils"
+    "src/openklant/__init__.py",
+    "src/openklant/accounts",
+    "src/openklant/celery",
+    "src/openklant/cloud_events",
+    "src/openklant/conf",
+    "src/openklant/urls.py",
+    "src/openklant/utils",
+    "src/openklant/wsgi.py",
+    "src/openklant/setup.py",
+    "src/openklant/components/token",
+    "src/openklant/components/klantinteracties/admin",
+    "src/openklant/components/views.py",
+    "src/openklant/config",
+    "src/openklant/setup_configuration",
+    "src/openklant/migration",
+    "src/openklant/management",
+    "src/openklant/tests",
+    "src/openklant/components/__init__.py",
+    "src/openklant/components/klantinteracties/apps.py",
+    "src/openklant/components/klantinteracties/constants.py",
+    "src/openklant/components/klantinteracties/kanalen.py",
+    "src/openklant/components/klantinteracties/metrics.py",
+    "src/openklant/components/klantinteracties/utils.py",
+    "src/openklant/components/contactgegevens/tests"
 ]
 exclude = [
     "src/openklant/conf/dev.py"

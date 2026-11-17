@@ -1,6 +1,9 @@
-from django.apps import apps
+from collections.abc import Iterable, Sequence
+
+from django.apps import AppConfig, apps
 from django.contrib import admin
-from django.core.checks import Error, register
+from django.contrib.admin.options import BaseModelAdmin
+from django.core.checks import CheckMessage, Error, register
 from django.db import models
 
 ALLOWED_UNOPTIMIZED_RELATIONS = {
@@ -8,28 +11,32 @@ ALLOWED_UNOPTIMIZED_RELATIONS = {
 }
 
 
-def _flatten(fields):
-    result = []
+def _flatten(fields: Iterable[str | Sequence[str]]) -> list[str]:
+    result: list[str] = []
     for field in fields:
-        if isinstance(field, (list, tuple)):
-            result.extend(field)
-        else:
+        if isinstance(field, str):
             result.append(field)
+        else:
+            result.extend(field)
     return result
 
 
-def _get_declared_field_names(model_admin):
+def _get_declared_field_names(model_admin: BaseModelAdmin) -> set[str] | None:
     if model_admin.fields:
         return set(_flatten(model_admin.fields))
     if model_admin.fieldsets:
-        names = []
+        names: list[str] = []
         for _label, options in model_admin.fieldsets:
             names.extend(_flatten(options.get("fields", ())))
         return set(names)
     return None
 
 
-def _resolve_inline_fk_name(inline_model, parent_model, fk_name):
+def _resolve_inline_fk_name(
+    inline_model: type[models.Model],
+    parent_model: type[models.Model],
+    fk_name: str | None,
+) -> str | None:
     if fk_name:
         return fk_name
 
@@ -43,8 +50,12 @@ def _resolve_inline_fk_name(inline_model, parent_model, fk_name):
     return None
 
 
-def _check_model_admin(model, model_admin, fk_name=None):
-    errors = []
+def _check_model_admin(
+    model: type[models.Model],
+    model_admin: BaseModelAdmin,
+    fk_name: str | None = None,
+) -> list[CheckMessage]:
+    errors: list[CheckMessage] = []
 
     optimized_fields = set(model_admin.raw_id_fields) | set(
         model_admin.autocomplete_fields
@@ -101,19 +112,21 @@ def _check_model_admin(model, model_admin, fk_name=None):
 
 
 @register()
-def check_admin_relation_fields(app_configs, **kwargs):
+def check_admin_relation_fields(
+    app_configs: Sequence[AppConfig] | None, **kwargs
+) -> list[CheckMessage]:
     if app_configs is None:
-        app_configs = {
+        app_config_set = {
             ac
             for ac in apps.get_app_configs()
             if ac.name == "openklant" or ac.name.startswith("openklant.")
         }
     else:
-        app_configs = set(app_configs)
+        app_config_set = set(app_configs)
 
-    errors = []
+    errors: list[CheckMessage] = []
     for model, model_admin in admin.site._registry.items():
-        if model._meta.app_config not in app_configs:
+        if model._meta.app_config not in app_config_set:
             continue
         errors.extend(_check_model_admin(model, model_admin))
     return errors

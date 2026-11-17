@@ -1,6 +1,7 @@
 import re
 
 from django.core.exceptions import ValidationError
+from django.db.models import Model
 from django.utils.translation import gettext_lazy as _
 
 APP_LABEL = "klantinteracties"
@@ -12,7 +13,9 @@ BATCH_SIZE = 1000
 REGEX_NUMMER = re.compile(r"\A[0-9]{1,12}\Z")
 
 
-def validate_nummer(model, nummer: str | None, instance=None) -> str | None:
+def validate_nummer(
+    model: type[Model], nummer: str | None, instance: Model | None = None
+) -> str | None:
     """
     Zero pad a new or changed ``nummer`` and check it isn't used by another
     ``model`` object.

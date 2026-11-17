@@ -194,9 +194,7 @@ class KlantcontactAdmin(admin.ModelAdmin):
     date_hierarchy = "plaatsgevonden_op"
     readonly_fields = ("uuid",)
 
-    @admin.display(empty_value="---")
-    def betrokkene_namen(self, obj):
+    @admin.display(description=_("betrokkene namen"), empty_value="---")
+    def betrokkene_namen(self, obj: Klantcontact) -> list[str] | None:
         if betrokkene := obj.betrokkene_set.all():
             return [person.get_full_name() for person in betrokkene]
-
-    betrokkene_namen.short_description = _("betrokkene namen")
