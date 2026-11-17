@@ -30,7 +30,7 @@ def validate_country(value: str) -> None:
         )
 
 
-def validate_charfield_entry(value: str, allow_apostrophe=False):
+def validate_charfield_entry(value: str, allow_apostrophe: bool = False) -> str:
     """
     Validates a charfield entry according with Belastingdienst requirements.
 
@@ -59,20 +59,20 @@ FORBIDDEN_PREFIXES = (
 
 @deconstructible
 class RegexWithDisallowedPrefixesValidator(RegexValidator):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.disallowed_prefixes = kwargs.pop("disallowed_prefixes")
         self.message_disallowed_prefix = kwargs.pop("message_disallowed_prefix")
 
         super().__init__(*args, **kwargs)
 
-    def __call__(self, value):
+    def __call__(self, value: str) -> None:
         for prefix in self.disallowed_prefixes:
             if value.startswith(prefix):
                 raise ValidationError(self.message_disallowed_prefix)
 
         super().__call__(value)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         return (
             isinstance(other, self.__class__)
             and self.regex.pattern == other.regex.pattern  # type: ignore[reportAttributeAccessIssue]
@@ -97,7 +97,7 @@ class CustomRegexValidator(RegexValidator):
     CustomRegexValidator because the validated value is append to the message.
     """
 
-    def __call__(self, value):
+    def __call__(self, value: object) -> None:
         """
         Validates that the input matches the regular expression.
         """

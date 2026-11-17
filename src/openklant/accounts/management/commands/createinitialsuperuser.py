@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.mail import send_mail
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 from django.urls import exceptions, reverse
 from django.utils.crypto import get_random_string
 
@@ -10,7 +10,7 @@ from openklant.accounts.models import User
 class Command(BaseCommand):
     help = "Creates an initial superuser account and mails the credentials to the specified email"
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument(
             "username",
             help="Specifies the username for the superuser.",
@@ -20,7 +20,7 @@ class Command(BaseCommand):
             help="Specifies the email for the superuser.",
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
         username = options["username"]
         email = options["email"]
 

@@ -24,7 +24,7 @@ logger = structlog.stdlib.get_logger(__name__)
 _env_setup_done = False
 
 
-def setup_env():
+def setup_env() -> None:
     global _env_setup_done
     if _env_setup_done:
         return
@@ -51,7 +51,7 @@ def setup_env():
     _env_setup_done = True
 
 
-def monkeypatch_requests():
+def monkeypatch_requests() -> None:
     """
     Add a default timeout for any requests calls.
 

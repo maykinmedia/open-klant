@@ -7,8 +7,8 @@ import structlog
 
 
 def receiver_setup_logging(
-    loglevel, logfile, format, colorize, **kwargs
-):  # pragma: no cover
+    loglevel: int, logfile: str | None, format: str, colorize: bool, **kwargs
+) -> None:  # pragma: no cover
     logging.config.dictConfig(
         {
             "version": 1,

@@ -137,6 +137,8 @@ class Klantcontact(APIMixin, models.Model):
         validators=[validate_metadata],
     )
 
+    betrokkene_set: models.Manager["Betrokkene"]
+
     class Meta:
         verbose_name = _("klantcontact")
         verbose_name_plural = _("klantcontacten")

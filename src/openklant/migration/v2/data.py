@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass, fields as dataclass_fields
+from dataclasses import Field, asdict, dataclass, fields as dataclass_fields
 from typing import Iterable
 
 from openklant.components.klantinteracties.constants import SoortDigitaalAdres
@@ -23,7 +23,7 @@ class DigitaalAdres(APIClass):
     verstrekt_door_partij: dict | None = None
 
     @property
-    def required_fields(self):
+    def required_fields(self) -> dict[str, Field]:
         return {field.name: field for field in dataclass_fields(self)}
 
 
@@ -43,7 +43,7 @@ class Partij(APIClass):
     partij_identificatoren: list[dict] | None = None
 
     @property
-    def required_fields(self):
+    def required_fields(self) -> tuple[str, ...]:
         return (
             "digitale_adressen",
             "voorkeurs_digitaal_adres",

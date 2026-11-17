@@ -1,7 +1,8 @@
 from django.conf import settings as django_settings
+from django.http import HttpRequest
 
 
-def settings(request):
+def settings(request: HttpRequest) -> dict[str, object]:
     public_settings = (
         "GOOGLE_ANALYTICS_ID",
         "ENVIRONMENT",
@@ -11,7 +12,7 @@ def settings(request):
         "ENVIRONMENT_SHOWN_IN_ADMIN",
     )
 
-    context = {
+    context: dict[str, object] = {
         "settings": dict(
             [(k, getattr(django_settings, k, None)) for k in public_settings]
         ),

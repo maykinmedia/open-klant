@@ -1,23 +1,26 @@
 from django import template
 from django.conf import settings
+from django.template.base import NodeList, Parser, Token
+from django.template.context import Context
 from django.utils.html import format_html
+from django.utils.safestring import SafeString
 
 register = template.Library()
 
 
 class CaptureNode(template.Node):
-    def __init__(self, nodelist, var_name):
+    def __init__(self, nodelist: NodeList, var_name: str) -> None:
         self.nodelist = nodelist
         self.var_name = var_name
 
-    def render(self, context):
+    def render(self, context: Context) -> str:
         output = self.nodelist.render(context)
         context[self.var_name] = output
         return ""
 
 
 @register.tag
-def capture(parser, token):
+def capture(parser: Parser, token: Token) -> CaptureNode:
     """
     Captures contents and assigns them to variable.
     Allows capturing templatetags that don't support "as".
@@ -39,7 +42,7 @@ def capture(parser, token):
 
 
 @register.simple_tag
-def placekitten(width=800, height=600):
+def placekitten(width: int = 800, height: int = 600) -> SafeString:
     """
     Renders a "placekitten" placeholder image.
 
@@ -52,7 +55,7 @@ def placekitten(width=800, height=600):
 
 
 @register.simple_tag
-def placekitten_src(width=800, height=600):
+def placekitten_src(width: int = 800, height: int = 600) -> str:
     """
     Return a "placekitten" placeholder image url.
 
@@ -66,5 +69,5 @@ def placekitten_src(width=800, height=600):
 
 
 @register.simple_tag
-def version():
+def version() -> str:
     return settings.RELEASE

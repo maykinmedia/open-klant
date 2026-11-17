@@ -1,5 +1,3 @@
-from typing import Dict, List, Union
-
 from django.db import models, transaction
 
 from notifications_api_common.models import NotificationTypes
@@ -17,13 +15,15 @@ class MultipleNotificationMixin(NotificationMixin):
     def notify(
         self,
         status_code: int,
-        data: Union[List, Dict],
+        data: list | dict,
         instance: models.Model | None = None,
         **kwargs,
     ) -> None:
         super().notify(status_code, data, instance)
 
-    def _message(self, data, instance=None):
+    def _message(
+        self, data: dict[str, object], instance: models.Model | None = None
+    ) -> None:
         for field, config in self.notification_fields.items():
             field_data = data[field]
             notifications = field_data if isinstance(field_data, list) else [field_data]
