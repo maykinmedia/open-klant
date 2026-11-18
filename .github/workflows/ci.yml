@@ -45,7 +45,7 @@ jobs:
       changed-requirements: ${{ steps.changed-requirements.outputs.any_changed }}
 
   tests:
-    name: Tests (PG ${{ matrix.postgres }})
+    name: Tests (PG ${{ matrix.postgres }}) ${{matrix.use_pooling && 'with connection pooling' || ''}}
     runs-on: ubuntu-latest
     needs:
       - changed-files
