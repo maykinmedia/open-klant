@@ -148,8 +148,10 @@ django-markup==1.8.1
     # via open-api-framework
 django-ordered-model==3.7.4
     # via django-admin-index
-django-otp==1.5.1
-    # via django-two-factor-auth
+django-otp==1.7.5
+    # via
+    #   django-two-factor-auth
+    #   maykin-2fa
 django-phonenumber-field==7.3.0
     # via django-two-factor-auth
 django-privates==4.0.3
@@ -183,8 +185,10 @@ django-solo==2.3.0
     #   notifications-api-common
     #   zgw-consumers
 django-structlog==9.1.1
-    # via open-api-framework
-django-two-factor-auth==1.16.0
+    # via
+    #   maykin-common
+    #   open-api-framework
+django-two-factor-auth==1.18.1
     # via maykin-2fa
 django-upgrade-check==1.1.0
     # via open-api-framework
@@ -251,11 +255,11 @@ kombu==5.5.2
     # via celery
 markdown-it-py==4.0.0
     # via rich
-maykin-2fa==1.0.1
+maykin-2fa==3.0.0
     # via
     #   maykin-common
     #   open-api-framework
-maykin-common==0.22.0
+maykin-common==0.23.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
@@ -365,8 +369,6 @@ packaging==25.0
     # via
     #   django-csp
     #   opentelemetry-instrumentation
-phonenumberslite==8.13.42
-    # via django-two-factor-auth
 prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.47
@@ -475,6 +477,7 @@ structlog==25.4.0
     # via
     #   commonground-api-common
     #   django-structlog
+    #   maykin-common
     #   notifications-api-common
     #   open-api-framework
 tornado==6.6
