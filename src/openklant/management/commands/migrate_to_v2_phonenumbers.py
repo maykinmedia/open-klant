@@ -124,6 +124,13 @@ def _save_klanten_phonenumbers(
             partij = partijen_to_use.get(
                 soort_partij=soort_partij, nummer=pad_nummer(nummer)
             )
+        except KeyError:
+            logger.warning(
+                "unable_to_determine_soortpartij",
+                klant=klant,
+                subject_type=subject_type,
+            )
+            continue
         except Partij.DoesNotExist:
             logger.warning(
                 "partij_not_found",

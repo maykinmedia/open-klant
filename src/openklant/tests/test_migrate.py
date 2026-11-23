@@ -9,10 +9,11 @@ from django.core.management import CommandError, call_command
 from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
 from django.db.migrations.state import StateApps
-from django.test import LiveServerTestCase, TransactionTestCase
+from django.test import LiveServerTestCase, TestCase, TransactionTestCase
 
 from maykin_common.vcr import VCRMixin
 from requests import Request
+from structlog.testing import capture_logs
 from vcr.config import RecordMode
 from vng_api_common.tests import reverse
 
@@ -34,7 +35,11 @@ from openklant.components.klantinteracties.models.tests.factories import (
     PartijFactory,
 )
 from openklant.components.token.models import TokenAuth
+from openklant.management.commands.migrate_to_v2_phonenumbers import (
+    _save_klanten_phonenumbers,
+)
 from openklant.migration.utils import generate_jwt_token
+from openklant.migration.v1.data import Klant
 
 LIVE_SERVER_HOST = "localhost"
 LIVE_SERVER_PORT = 8005
@@ -790,3 +795,30 @@ class MigrateTestCase(VCRMixin, LiveServerTestCase):
         digitaal_adressen = DigitaalAdres.objects.filter(partij=partij)
 
         self.assertEqual(digitaal_adressen.count(), 0)
+
+
+class SaveKlantenPhonenumbersTests(TestCase):
+    def test_skips_klanten_without_soort_partij(self):
+        klanten = [
+            Klant(subject_type=None, telefoonnummer="0612345678"),
+            Klant(subject_type="foo", telefoonnummer="0612345678"),
+        ]
+
+        with capture_logs() as cap_logs:
+            updated = _save_klanten_phonenumbers(
+                "http://localhost:8000", "token", klanten
+            )
+
+        self.assertEqual(updated, [])
+        self.assertFalse(DigitaalAdres.objects.exists())
+        self.assertEqual(
+            [
+                (log["event"], log["subject_type"])
+                for log in cap_logs
+                if log["event"] == "unable_to_determine_soortpartij"
+            ],
+            [
+                ("unable_to_determine_soortpartij", None),
+                ("unable_to_determine_soortpartij", "foo"),
+            ],
+        )
