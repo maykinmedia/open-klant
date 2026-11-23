@@ -33,9 +33,9 @@ def _generate_dummy_token() -> str:
             application=MIGRATION_TOKEN_IDENTIFIER
         )
     except TokenAuth.MultipleObjectsReturned:
-        dummy_tokens = TokenAuth.objects.get_or_create(
+        dummy_tokens = TokenAuth.objects.filter(
             application=MIGRATION_TOKEN_IDENTIFIER
-        )
+        ).order_by("pk")
 
         token_auth = dummy_tokens.first()
         deletion_tokens = dummy_tokens.exclude(pk=token_auth.pk)
