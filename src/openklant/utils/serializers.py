@@ -10,7 +10,7 @@ from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 # TODO should be moved to vng-api-common once merged/reviewed
 # in Open Zaak: https://github.com/open-zaak/open-zaak/pull/1037
 class ExpandSerializer(NestedHyperlinkedRelatedField):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         # For some reason self.field_name is empty for `many=True`
         self.name = kwargs.pop("name")
 
@@ -30,7 +30,9 @@ class ExpandSerializer(NestedHyperlinkedRelatedField):
 
         super().__init__(*args, **kwargs)
 
-    def to_representation(self, value):
+    def to_representation(
+        self, value: object
+    ):  # returns serializer data, not a Hyperlink
         serializer_class = self.default_serializer
         if isinstance(self.default_serializer, str):
             serializer_class = import_string(self.default_serializer)
@@ -77,7 +79,7 @@ def get_field_instance_by_uuid(
     attrs: dict[str, Any],
     field_name: str,
     model_class: type[Model],
-):
+) -> Model | None:
     """
     Retrieves an instance of the specified model using the UUID present in the serializer data.
 

@@ -1,5 +1,7 @@
 # Documentation on CORS spec, see MDN
 # https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
+from typing import TYPE_CHECKING
+from unittest import TestCase
 from unittest.mock import patch
 
 from django.test import override_settings
@@ -22,7 +24,13 @@ class View(views.APIView):
 urlpatterns = [path("cors", View.as_view())]
 
 
-class CorsMixin:
+if TYPE_CHECKING:
+    _TestCaseBase = TestCase
+else:
+    _TestCaseBase = object
+
+
+class CorsMixin(_TestCaseBase):
     def setUp(self):
         super().setUp()
         mocker = patch(

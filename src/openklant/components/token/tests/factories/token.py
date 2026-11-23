@@ -9,5 +9,5 @@ class TokenAuthFactory(DjangoModelFactory):
     contact_person = factory.Faker("name")
     email = factory.Faker("email")
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         model = TokenAuth

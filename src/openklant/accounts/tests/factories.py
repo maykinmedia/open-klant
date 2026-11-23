@@ -14,7 +14,7 @@ class TOTPDeviceFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory("nrc.accounts.tests.factories.UserFactory")
     key = factory.LazyAttribute(lambda o: random_hex())
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         model = "otp_totp.TOTPDevice"
 
 
@@ -22,7 +22,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: f"user-{n}")
     password = factory.PostGenerationMethodCall("set_password", "secret")
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         model = "accounts.User"
 
     class Params:
@@ -48,7 +48,7 @@ class RecoveryDeviceFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory("nrc.accounts.tests.factories.UserFactory")
     name = "backup"
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         model = StaticDevice
 
 
@@ -56,7 +56,7 @@ class RecoveryTokenFactory(factory.django.DjangoModelFactory):
     device = factory.SubFactory(RecoveryDeviceFactory)
     token = factory.LazyFunction(StaticToken.random_token)
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         model = StaticToken
 
 

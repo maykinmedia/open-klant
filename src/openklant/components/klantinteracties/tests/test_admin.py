@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from django.test import tag
+from django.test import TestCase, tag
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
@@ -25,7 +25,7 @@ from openklant.components.klantinteracties.models.tests.factories import (
 )
 from openklant.utils.tests.webtest import add_dynamic_field
 
-from ..admin import PartijAdminForm
+from ..admin import PartijAdminForm, PartijIdentificatorAdminForm
 from ..constants import SoortDigitaalAdres
 from ..models import (
     Actor,
@@ -374,6 +374,27 @@ class DigitaalAdresAdminTests(WebTest):
 
         self.assertEqual(response.status_code, 302)
         self.assertTrue(DigitaalAdres.objects.exists())
+
+    def test_missing_soort_digitaal_adres(self):
+        user = SuperUserFactory.create()
+        self.app.set_user(user)
+        betrokkene = BetrokkeneFactory.create()
+
+        response: TestResponse = self.app.get(
+            reverse("admin:klantinteracties_digitaaladres_add")
+        )
+        form = response.forms["digitaaladres_form"]
+        form["betrokkene"] = betrokkene.pk
+        form["soort_digitaal_adres"] = ""
+        form["adres"] = "foo@bar.com"
+        form["omschrijving"] = "foo"
+        form["referentie"] = "some-referentie"
+
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(DigitaalAdres.objects.exists())
+        self.assertIn("soort_digitaal_adres", response.context["adminform"].form.errors)
 
 
 @disable_admin_mfa()
@@ -952,4 +973,21 @@ class KlantContactAdminTest(WebTest):
             response.context["adminform"],
             None,
             errors="Als het contact gelukt is kan er geen verdere actie zijn ondernomen",
+        )
+
+
+class PartijIdentificatorAdminFormTests(TestCase):
+    def test_incomplete_partij_identificator(self):
+        partij = PartijFactory.create()
+
+        form = PartijIdentificatorAdminForm(
+            data={
+                "partij": partij.pk,
+                "partij_identificator_code_objecttype": "natuurlijk_persoon",
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            "PartijIdentificator moet volledig gevuld zijn.", form.non_field_errors()
         )

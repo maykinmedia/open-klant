@@ -1,6 +1,5 @@
-from typing import Dict, Optional
-
 from django.conf import settings
+from django.http import HttpRequest, HttpResponseBase
 
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -10,7 +9,7 @@ from vng_api_common.middleware import (
 )
 
 
-def get_version_mapping() -> Dict[str, str]:
+def get_version_mapping() -> dict[str, str]:
     apis = (
         "klantinteracties",
         "contactgegevens",
@@ -26,12 +25,12 @@ def get_version_mapping() -> Dict[str, str]:
 
 
 class APIVersionHeaderMiddleware(_APIVersionHeaderMiddleware):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.version_mapping = get_version_mapping()
 
-    def __call__(self, request):
+    def __call__(self, request: HttpRequest) -> HttpResponseBase | None:
         if self.get_response is None:
             return None
 
@@ -48,7 +47,7 @@ class APIVersionHeaderMiddleware(_APIVersionHeaderMiddleware):
 
         return response
 
-    def _get_version(self, path: str) -> Optional[str]:
+    def _get_version(self, path: str) -> str | None:
         for prefix, version in self.version_mapping.items():
             if path.startswith(prefix):
                 return version

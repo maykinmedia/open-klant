@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: EUPL-1.2
 # Copyright (C) 2023 Dimpact
+from django.core.management.base import CommandParser
+
 from drf_spectacular.management.commands import spectacular
 
 SCHEMA_MAPPING = {
@@ -9,7 +11,7 @@ SCHEMA_MAPPING = {
 
 
 class Command(spectacular.Command):
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         super().add_arguments(parser)
 
         parser.add_argument(
@@ -19,7 +21,7 @@ class Command(spectacular.Command):
             help="The component name to define urlconf and schema info",
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
         component = options.pop("component").replace("/", ".")
 
         # rewrite command arguments based on the component

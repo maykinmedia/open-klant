@@ -4,15 +4,15 @@
 
 import os
 from dataclasses import asdict, fields as dataclass_fields
-from typing import Any, Tuple  # noqa: TID251
+from typing import Any  # noqa: TID251
 from urllib.parse import parse_qs, urlparse
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.management import CommandError
 from django.core.management.base import BaseCommand, CommandParser
+from django.core.validators import URLValidator
 
-from rest_framework.fields import URLValidator
 from rest_framework.reverse import reverse_lazy
 
 from openklant.components.token.models import TokenAuth
@@ -40,7 +40,7 @@ PARTIJEN_PATH = reverse_lazy(
 )
 
 
-def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | None]:
+def _retrieve_klanten(url: str, access_token: str) -> tuple[list[Klant], str | None]:
     klanten_path = "/klanten/api/v1/klanten"
 
     _url = urlparse(url)
@@ -83,7 +83,7 @@ def _retrieve_klanten(url: str, access_token: str) -> Tuple[list[Klant], str | N
     return klanten, next_url
 
 
-def _save_klanten(url: str, token: TokenAuth, klanten: list[Klant]) -> list[str]:
+def _save_klanten(url: str, token: str, klanten: list[Klant]) -> list[str]:
     if not klanten:
         logger.info("no_klanten_to_save")
         return []

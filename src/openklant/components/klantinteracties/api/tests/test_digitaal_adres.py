@@ -337,6 +337,54 @@ class DigitaalAdresTests(APITestCase):
             )
             self.assertEqual(digitaal_adres.adres, "whatever")
 
+    def test_create_digitaal_adres_invalid_soort(self):
+        list_url = reverse("klantinteracties:digitaaladres-list")
+        data = {
+            "verstrektDoorBetrokkene": None,
+            "verstrektDoorPartij": None,
+            "adres": "foo@bar.com",
+            "omschrijving": "omschrijving",
+            "referentie": "my-referentie",
+        }
+
+        with self.subTest("unknown soort"):
+            response = self.client.post(list_url, {**data, "soortDigitaalAdres": "foo"})
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "soortDigitaalAdres")
+            self.assertEqual(error["code"], "invalid_choice")
+            self.assertIsNone(get_validation_errors(response, "adres"))
+
+        with self.subTest("missing soort"):
+            response = self.client.post(list_url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "soortDigitaalAdres")
+            self.assertEqual(error["code"], "required")
+            self.assertIsNone(get_validation_errors(response, "adres"))
+
+    def test_update_digitaal_adres_invalid_soort(self):
+        digitaal_adres = DigitaalAdresFactory.create(
+            soort_digitaal_adres=SoortDigitaalAdres.email, adres="foo@bar.com"
+        )
+        detail_url = reverse(
+            "klantinteracties:digitaaladres-detail",
+            kwargs={"uuid": str(digitaal_adres.uuid)},
+        )
+
+        response = self.client.patch(
+            detail_url, {"soortDigitaalAdres": "foo", "adres": "whatever"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "soortDigitaalAdres")
+        self.assertEqual(error["code"], "invalid_choice")
+        self.assertIsNone(get_validation_errors(response, "adres"))
+
+        digitaal_adres.refresh_from_db()
+        self.assertEqual(digitaal_adres.soort_digitaal_adres, SoortDigitaalAdres.email)
+        self.assertEqual(digitaal_adres.adres, "foo@bar.com")
+
     def test_create_digitaal_adres_is_standaard_adres(self):
         """
         Creating a DigitaalAdres with isStandaardAdres=True should make other existing

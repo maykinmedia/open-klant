@@ -10,6 +10,7 @@ from solo.models import SingletonModel
 from zgw_consumers.models import Service
 
 from openklant.components.klantinteracties.models import Klantcontact
+from openklant.utils.typing import StrOrPromise
 from referentielijsten_client.client import (
     REFERENTIELIJST_CLIENT_CACHE_PREFIX,
     get_referentielijsten_client,
@@ -41,7 +42,7 @@ class ReferentielijstenConfig(SingletonModel):
         blank=True,
     )
 
-    def clean(self):
+    def clean(self) -> None:
         if not self.enabled:
             return
 
@@ -77,7 +78,7 @@ class ReferentielijstenConfig(SingletonModel):
                 ).format(invalid_kanalen=invalid_kanalen)
             )
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         if self.kanalen_tabel_code:
             cache.delete(
                 f"{REFERENTIELIJST_CLIENT_CACHE_PREFIX}{self.kanalen_tabel_code}"
@@ -85,7 +86,7 @@ class ReferentielijstenConfig(SingletonModel):
         return super().save(*args, **kwargs)
 
     @property
-    def connection_check(self):
+    def connection_check(self) -> tuple[StrOrPromise | list[dict], int | None]:
         if not self.service or not self.kanalen_tabel_code:
             return _(
                 "Not performing connection check, service and/or kanalen tabel code are not configured"
@@ -106,8 +107,8 @@ class ReferentielijstenConfig(SingletonModel):
         except RequestException:
             return _("Unable to retrieve items from Referentielijsten API"), None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "Referentielijsten configuration"
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         verbose_name = _("Referentielijsten configuration")

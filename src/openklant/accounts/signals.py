@@ -1,7 +1,7 @@
 from io import StringIO
 from typing import Literal
 
-from django.apps import apps
+from django.apps import AppConfig, apps
 from django.contrib.auth.signals import (
     user_logged_in,
     user_logged_out,
@@ -19,7 +19,7 @@ from .metrics import login_failures, logins, logouts, user_lockouts
 from .models import User
 
 
-def update_admin_index(sender, **kwargs):
+def update_admin_index(sender: AppConfig, **kwargs) -> None:
     AppGroup.objects.all().delete()
 
     project_name = __name__.split(".")[0]
@@ -55,8 +55,8 @@ def increment_logouts_counter(
 
 @receiver(user_login_failed, dispatch_uid="user_login_failed.increment_counter")
 def increment_login_failure_counter(
-    sender, request: HttpRequest | None = None, **kwargs
-):
+    sender: str, request: HttpRequest | None = None, **kwargs
+) -> None:
     login_failures.add(
         1,
         attributes={"http_target": request.path if request else ""},

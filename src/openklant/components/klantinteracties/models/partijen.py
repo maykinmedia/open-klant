@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import uuid
 
 from django.core.exceptions import ValidationError
@@ -102,6 +104,12 @@ class Partij(APIMixin, BezoekadresMixin, CorrespondentieadresMixin):
             "Gegevens van niet-actieve partijen mogen hiervoor niet worden gebruikt."
         ),
     )
+
+    partijidentificator_set: models.Manager[PartijIdentificator]
+    # reverse one-to-one relations, only present for the matching `soort_partij`
+    persoon: Persoon
+    contactpersoon: Contactpersoon
+    organisatie: Organisatie
 
     class Meta:
         verbose_name = _("partij")

@@ -1,11 +1,18 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import exceptions
 from rest_framework.authentication import TokenAuthentication as _TokenAuthentication
 
+if TYPE_CHECKING:
+    from .models import TokenAuth
+
 
 class TokenAuthentication(_TokenAuthentication):
-    def authenticate_credentials(self, key):
+    def authenticate_credentials(self, key: str) -> tuple[None, TokenAuth]:
         from .models import TokenAuth
 
         try:

@@ -38,6 +38,7 @@ def _generate_dummy_token() -> str:
         ).order_by("pk")
 
         token_auth = dummy_tokens.first()
+        assert token_auth is not None  # MultipleObjectsReturned implies >= 2 rows
         deletion_tokens = dummy_tokens.exclude(pk=token_auth.pk)
         deleted_token_ids = list(deletion_tokens.values_list("id", flat=True))
         deletion_tokens.delete()
