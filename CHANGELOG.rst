@@ -2,6 +2,17 @@
 Change history
 ==============
 
+2.20.0
+======
+
+*Unreleased*
+
+**Project maintenance**
+
+* [:open-api-framework:`236`] Upgrade postgres support in CI
+    * Drop support for postgres 14 (EOL)
+    * Add support for postgres 18
+
 2.19.2
 ======
 
