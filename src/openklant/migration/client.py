@@ -60,7 +60,8 @@ class Client:
         return self._request("GET", url, params=params)
 
     def create(self, url: str, data: dict) -> dict | None:
-        return self._request("POST", url, data=data)
+        response_data = self._request("POST", url, data=data)
+        return response_data if isinstance(response_data, dict) else None
 
 
 class BaseOpenKlantClient(Client):
@@ -82,4 +83,5 @@ class BaseOpenKlantClient(Client):
 
     def create(self, path: str, data: dict) -> dict | None:
         url = self.base_url + path
-        return self._request("POST", url, data=data, headers=self.headers)
+        response_data = self._request("POST", url, data=data, headers=self.headers)
+        return response_data if isinstance(response_data, dict) else None
