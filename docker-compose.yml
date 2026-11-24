@@ -5,14 +5,14 @@ services:
   db:
     # NOTE: No persistance storage configured.
     # See: https://hub.docker.com/_/postgres/
-    image: postgres:17
+    image: postgres:18
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
     # NOTE: this works for bitnami, not sure if this works for regular
     # postgres image
     volumes:
       - ./docker-init-db.sql:/docker-entrypoint-initdb.d/init_db.sql
-      - db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
