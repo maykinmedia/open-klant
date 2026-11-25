@@ -1,10 +1,13 @@
 import argparse
 import calendar
 import os
+from collections.abc import Iterable
 from datetime import date, datetime, timedelta
+from typing import Protocol, runtime_checkable
+from uuid import UUID
 
 from django.core.management.base import BaseCommand, CommandError, CommandParser
-from django.db.models import Exists, Model, OuterRef, Q, QuerySet
+from django.db.models import Exists, Field, Model, OuterRef, Q, QuerySet
 from django.db.models.deletion import Collector, ProtectedError
 from django.utils import timezone
 from django.utils.text import capfirst
@@ -21,14 +24,44 @@ from openklant.components.klantinteracties.models.partijen import (
     Partij,
     PartijIdentificator,
 )
+from openklant.utils.typing import StrOrPromise
 
 logger = structlog.stdlib.get_logger(__name__)
 
 MINIMUM_MONTHS_IN_THE_PAST = 12
 
 
-def _record_type_label(model: type[Model]) -> str:
+def _record_type_label(model: type[Model]) -> StrOrPromise | None:
     return capfirst(model._meta.verbose_name)
+
+
+@runtime_checkable
+class _HasUUID(Protocol):
+    uuid: UUID
+
+
+def _identificatie(obj: Model) -> str:
+    assert isinstance(obj, _HasUUID), f"{type(obj).__name__} has no uuid field"
+    return str(obj.uuid)
+
+
+def _collect(
+    collector: Collector, objs: Iterable[Model], collect_related: bool = True
+) -> None:
+    # django-stubs types `objs` as an invariant `_IndexableCollection[Model | None]`,
+    # which rejects querysets/lists of concrete models that Django accepts.
+    collector.collect(
+        objs,  # pyright: ignore[reportArgumentType]
+        collect_related=collect_related,
+    )
+
+
+def _collected[M: Model](collector: Collector, model: type[M]) -> list[M]:
+    objs: list[M] = []
+    for obj in collector.data.get(model, ()):
+        assert isinstance(obj, model)
+        objs.append(obj)
+    return objs
 
 
 def _subtract_months(d: date, months: int) -> date:
@@ -227,19 +260,19 @@ class Command(BaseCommand):
         collector = Collector(using=klantcontacten.db)
 
         try:
-            collector.collect(klantcontacten)
+            _collect(collector, klantcontacten)
 
             klantcontact_datums = {
                 klantcontact.pk: klantcontact.plaatsgevonden_op.isoformat()
-                for klantcontact in collector.data.get(Klantcontact, [])
+                for klantcontact in _collected(collector, Klantcontact)
             }
             klantcontact_ids = list(klantcontact_datums)
-            betrokkenen = list(collector.data.get(Betrokkene, []))
+            betrokkenen = _collected(collector, Betrokkene)
 
             orphan_digitale_adressen = DigitaalAdres.objects.filter(
                 betrokkene__in=betrokkenen, partij__isnull=True
             )
-            collector.collect(orphan_digitale_adressen)
+            _collect(collector, orphan_digitale_adressen)
 
             partij_datums: dict[int, str] = {}
             for betrokkene in betrokkenen:
@@ -272,13 +305,13 @@ class Command(BaseCommand):
                         collector, orphaned_partij_ids
                     )
                 )
-                collector.collect(orphaned_partijen)
+                _collect(collector, orphaned_partijen)
                 self._detach_externally_referenced_identificatoren(
                     collector, identificatoren_to_detach
                 )
         except ProtectedError as error:
             blocking = sorted(
-                f"{_record_type_label(type(obj))} {obj.uuid}"
+                f"{_record_type_label(type(obj))} {_identificatie(obj)}"
                 for obj in error.protected_objects
             )
             raise CommandError(
@@ -320,7 +353,7 @@ class Command(BaseCommand):
             .values_list("sub_identificator_van_id", flat=True)
         )
 
-        collector.collect(identificatoren, collect_related=False)
+        _collect(collector, identificatoren, collect_related=False)
 
         return [
             identificator
@@ -340,13 +373,17 @@ class Command(BaseCommand):
         if not identificatoren:
             return
 
+        detached = set(identificatoren)
         collected = collector.data.get(PartijIdentificator)
         if collected:
-            for identificator in identificatoren:
-                collected.discard(identificator)
+            collector.data[PartijIdentificator] = {
+                obj for obj in collected if obj not in detached
+            }
 
         collector.add_field_update(
-            PartijIdentificator._meta.get_field("partij"), None, identificatoren
+            PartijIdentificator.partij.field,
+            None,
+            identificatoren,  # pyright: ignore[reportArgumentType]
         )
 
     def _build_records(
@@ -370,7 +407,7 @@ class Command(BaseCommand):
                 datum = object_datums[(model, obj.pk)]
                 records.append(
                     {
-                        "identificatie": str(obj.uuid),
+                        "identificatie": _identificatie(obj),
                         "type": type_label,
                         "aangemaakt": datum,
                         "gesloten": datum,
@@ -424,10 +461,11 @@ class Command(BaseCommand):
         record that has already been resolved.
         """
         for field in type(obj)._meta.get_fields():
-            if not getattr(field, "concrete", False):
+            if not isinstance(field, Field) or not field.concrete:
                 continue
             if not (field.many_to_one or field.one_to_one):
                 continue
+            assert field.related_model is not None
             value = getattr(obj, field.attname, None)
             if value is None:
                 continue

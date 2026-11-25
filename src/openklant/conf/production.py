@@ -23,7 +23,7 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = [
 
 # The file storage engine to use when collecting static files with the
 # collectstatic management command.
-STORAGES["staticfiles"]["BACKEND"] = (  # pyright: ignore
+STORAGES["staticfiles"]["BACKEND"] = (
     "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 )
 

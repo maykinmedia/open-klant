@@ -4,5 +4,5 @@ from django.apps import AppConfig
 class UtilsConfig(AppConfig):
     name = "openklant.utils"
 
-    def ready(self):
+    def ready(self) -> None:
         from . import checks, query  # noqa

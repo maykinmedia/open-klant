@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import uuid
 
 from django.core.exceptions import ValidationError
@@ -137,6 +139,8 @@ class Klantcontact(APIMixin, models.Model):
         validators=[validate_metadata],
     )
 
+    betrokkene_set: models.Manager[Betrokkene]
+
     class Meta:
         verbose_name = _("klantcontact")
         verbose_name_plural = _("klantcontacten")
@@ -185,6 +189,7 @@ class Betrokkene(
         null=True,
         blank=True,
     )
+    partij_id: int | None
     klantcontact = models.ForeignKey(
         Klantcontact,
         on_delete=models.CASCADE,
@@ -193,6 +198,7 @@ class Betrokkene(
             "Het klantcontact waar deze persoon of organisatie bij betrokken was."
         ),
     )
+    klantcontact_id: int
     rol = models.CharField(
         _("rol"),
         help_text=_(

@@ -20,10 +20,10 @@ class Command(BaseCommand):
     that all mandatory intermediate versions have been correctly applied.
     """
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
         self._detect_current_verion()
 
-    def _table_has_column(self, table_name, column_name):
+    def _table_has_column(self, table_name: str, column_name: str) -> bool:
         if table_name in connection.introspection.table_names():
             with connection.cursor() as cursor:
                 columns = [
@@ -35,7 +35,7 @@ class Command(BaseCommand):
             return column_name in columns
         return True
 
-    def _detect_current_verion(self):
+    def _detect_current_verion(self) -> None:
         if not self._table_has_column("token_tokenauth", "identifier"):
             # As the starting version is unknown, we determine it based on the existence
             # of the field added in the minimal version.

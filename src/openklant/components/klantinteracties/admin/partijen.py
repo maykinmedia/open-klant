@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
+from django.db.models import QuerySet
+from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from openklant.components.klantinteracties.models.rekeningnummers import Rekeningnummer
@@ -29,8 +31,9 @@ class PartijAdminForm(forms.ModelForm):
         model = Partij
         fields = "__all__"
 
-    def clean(self):
-        cleaned_data = super().clean()
+    def clean(self) -> dict[str, object]:
+        super().clean()
+        cleaned_data = self.cleaned_data
 
         if voorkeurs_digitaal_adres := cleaned_data.get("voorkeurs_digitaal_adres"):
             if not self.instance.pk:
@@ -84,7 +87,7 @@ class PartijAdminForm(forms.ModelForm):
 
 
 class PartijIdentificatorAdminForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.fields["partij_identificator_code_objecttype"].required = True
         self.fields["partij_identificator_code_soort_object_id"].required = True
@@ -95,8 +98,9 @@ class PartijIdentificatorAdminForm(forms.ModelForm):
         model = PartijIdentificator
         fields = "__all__"
 
-    def clean(self):
-        cleaned_data = super().clean()
+    def clean(self) -> dict[str, object]:
+        super().clean()
+        cleaned_data = self.cleaned_data
 
         values = [
             cleaned_data.get("partij_identificator_code_objecttype"),
@@ -278,7 +282,7 @@ class PartijAdmin(admin.ModelAdmin):
         ),
     ]
 
-    def get_queryset(self, request):
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Partij]:
         return (
             super()
             .get_queryset(request)
@@ -291,8 +295,8 @@ class PartijAdmin(admin.ModelAdmin):
             )
         )
 
-    @admin.display(empty_value="---")
-    def get_name(self, obj):
+    @admin.display(description=_("naam"), empty_value="---")
+    def get_name(self, obj: Partij) -> str | None:
         match obj.soort_partij:
             case SoortPartij.persoon.value:
                 return self.get_personen(obj)
@@ -301,19 +305,17 @@ class PartijAdmin(admin.ModelAdmin):
             case SoortPartij.organisatie.value:
                 return self.get_organisaties(obj)
 
-    get_name.short_description = _("naam")
-
-    def get_personen(self, obj):
+    def get_personen(self, obj: Partij) -> str:
         return obj.persoon.get_full_name() if hasattr(obj, "persoon") else "---"
 
-    def get_contactpersonen(self, obj):
+    def get_contactpersonen(self, obj: Partij) -> str:
         return (
             obj.contactpersoon.get_full_name()
             if hasattr(obj, "contactpersoon")
             else "---"
         )
 
-    def get_organisaties(self, obj):
+    def get_organisaties(self, obj: Partij) -> str:
         return obj.organisatie.naam if hasattr(obj, "organisatie") else "---"
 
 

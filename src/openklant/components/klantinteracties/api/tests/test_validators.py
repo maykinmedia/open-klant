@@ -1,10 +1,12 @@
 from uuid import uuid4
 
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from rest_framework import serializers
 
 from openklant.components.klantinteracties.api.validators import (
+    SoortDigitaalAdresValidator,
     actor_exists,
     actor_is_valid_instance,
     betrokkene_exists,
@@ -22,6 +24,7 @@ from openklant.components.klantinteracties.api.validators import (
     partij_is_organisatie,
     partij_is_valid_instance,
 )
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.tests.factories import (
     ActorFactory,
     BetrokkeneFactory,
@@ -173,3 +176,25 @@ class FieldValidatorsTests(TestCase):
         with self.subTest("doesn't_exist"):
             with self.assertRaises(serializers.ValidationError):
                 partij_identificator_exists(str(uuid4()))
+
+
+class SoortDigitaalAdresValidatorTests(TestCase):
+    def test_email(self):
+        SoortDigitaalAdresValidator()(SoortDigitaalAdres.email, "foo@bar.com")
+
+        with self.assertRaises(ValidationError):
+            SoortDigitaalAdresValidator()(SoortDigitaalAdres.email, "invalid")
+
+    def test_telefoonnummer(self):
+        SoortDigitaalAdresValidator()(SoortDigitaalAdres.telefoonnummer, "0612345678")
+
+        with self.assertRaises(ValidationError):
+            SoortDigitaalAdresValidator()(SoortDigitaalAdres.telefoonnummer, "invalid")
+
+    def test_overig_has_no_validation(self):
+        SoortDigitaalAdresValidator()(SoortDigitaalAdres.overig, "whatever")
+
+    def test_unknown_soort_is_a_programming_error(self):
+        # callers must convert to SoortDigitaalAdres before calling the validator
+        with self.assertRaises(AssertionError):
+            SoortDigitaalAdresValidator()("foo", "whatever")  # pyright: ignore[reportArgumentType]

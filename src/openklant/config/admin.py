@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from solo.admin import SingletonModelAdmin
 
 from openklant.config.models import ReferentielijstenConfig
+from openklant.utils.typing import StrOrPromise
 
 
 @admin.register(ReferentielijstenConfig)
@@ -27,7 +28,7 @@ class ReferentielijstenConfigAdmin(SingletonModelAdmin):
     readonly_fields = ("get_connection_check",)
 
     @admin.display(description=_("Kanalen found for tabel code"))
-    def get_connection_check(self, obj):
+    def get_connection_check(self, obj: ReferentielijstenConfig) -> StrOrPromise:
         if obj.pk is None:
             return _("n/a")
 

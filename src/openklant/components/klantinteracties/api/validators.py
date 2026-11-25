@@ -1,3 +1,4 @@
+import typing
 from datetime import datetime, timezone
 
 from django.core.exceptions import ValidationError
@@ -183,14 +184,16 @@ def Rekeningnummer_exists(value):
 
 
 class SoortDigitaalAdresValidator:
-    def __call__(self, soort_digitaal_adres: SoortDigitaalAdres, value: str):
+    def __call__(self, soort_digitaal_adres: SoortDigitaalAdres, value: str) -> None:
         match soort_digitaal_adres:
             case SoortDigitaalAdres.email:
                 EmailValidator()(value)
             case SoortDigitaalAdres.telefoonnummer:
                 validate_phone_number(value)
-            case _:
+            case SoortDigitaalAdres.overig:
                 return
+            case ever:
+                typing.assert_never(ever)
 
 
 class InvalidReferentielijstenConfiguration(Exception):

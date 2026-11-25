@@ -1,5 +1,5 @@
 from djangorestframework_camel_case.settings import api_settings
-from vng_api_common.conf.api import *  # noqa - imports white-listed
+from vng_api_common.conf.api import *  # noqa - imports white-listed  # pyright: ignore[reportWildcardImportFromLibrary]
 
 # Remove the reference - we don't have a single API version.
 del API_VERSION  # noqa

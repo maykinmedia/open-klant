@@ -1,3 +1,5 @@
+from typing import ClassVar, Self
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
@@ -45,12 +47,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
-    objects = UserManager()
+    objects: ClassVar[UserManager[Self]] = UserManager()  # pyright: ignore[reportIncompatibleVariableOverride]
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         verbose_name = _("user")
         verbose_name_plural = _("users")
         constraints = [
@@ -59,13 +61,13 @@ class User(AbstractBaseUser, PermissionsMixin):
             )
         ]
 
-    def get_full_name(self):
+    def get_full_name(self) -> str:
         """
         Returns the first_name plus the last_name, with a space in between.
         """
         full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name.strip()
 
-    def get_short_name(self):
+    def get_short_name(self) -> str:
         "Returns the short name for the user."
         return self.first_name

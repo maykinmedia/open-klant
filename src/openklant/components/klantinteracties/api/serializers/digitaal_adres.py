@@ -11,6 +11,7 @@ from openklant.components.klantinteracties.api.validators import (
     SoortDigitaalAdresValidator,
     digitaal_adres_exists,
 )
+from openklant.components.klantinteracties.constants import SoortDigitaalAdres
 from openklant.components.klantinteracties.models.digitaal_adres import (
     REFERENTIE_UNIQUENESS_CONDITION,
     DigitaalAdres,
@@ -168,12 +169,12 @@ class DigitaalAdresSerializer(serializers.HyperlinkedModelSerializer):
         Define the validator here, to avoid DRF spectacular marking the format for
         `adres` as `email`
         """
-        soort_digitaal_adres = get_field_value(
-            self, self.initial_data, "soort_digitaal_adres"
-        )
-        SoortDigitaalAdresValidator()(
-            soort_digitaal_adres=soort_digitaal_adres, value=adres
-        )
+        raw = get_field_value(self, self.initial_data, "soort_digitaal_adres")
+        try:
+            soort = SoortDigitaalAdres(raw)
+        except ValueError:
+            return adres  # invalid/missing soort is reported on its own field
+        SoortDigitaalAdresValidator()(soort, adres)
         return adres
 
     def validate(self, attrs):
